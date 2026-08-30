@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   BookOpen, Calendar, Clock, Sparkles, Eye, EyeOff, Save, 
   Search, Plus, Trash2, FileText, Layers, CheckCircle2, 
@@ -8,7 +8,7 @@ import {
   Filter, Lightbulb, Bookmark, Tag, X, Download, PenTool,
   Maximize2, Minimize2, PanelLeftClose, PanelLeftOpen, ArrowLeft, ArrowRight,
   ExternalLink, FileCode, Check, Copy, Edit3, Wand2, RefreshCw, Zap, AlertTriangle,
-  KeyRound, Settings, Bot, Cpu, Star, ShieldCheck
+  KeyRound, Settings, Bot, Cpu, Star, ShieldCheck, Video, CheckCircle, Flame, CheckSquare
 } from 'lucide-react';
 import { CornellNote } from '@/types';
 import { 
@@ -19,6 +19,7 @@ import {
 } from '@/services/studentSyncService';
 import { transformToCornell, CornellTransformResult, AIProvider, OpenAIModel } from '@/services/aiCornellService';
 import { trackEvent } from '@/services/telemetryService';
+import { getDateForLesson, getSemester2026Weeks } from '@/lib/semesterUtils';
 
 interface CadernoCornellPageProps {
 
@@ -189,16 +190,148 @@ Apresentação da ementa e introdução à transição teológica da Escolástic
   },
 };
 
-const disciplinasList = [
-  { name: '01 - História do Congregacionalismo - Ary Júnior', shortName: 'História do Congregacionalismo', code: 'HIS-202', prof: 'Profº Ary Júnior' },
-  { name: '02 - História do Pensamento Cristão II - Hilário Bispo', shortName: 'História do Pensamento Cristão II', code: 'HIS-102', prof: 'Profº Hilário Bispo' },
-  { name: '03 - Aconselhamento Bíblico II - Uilian Santos', shortName: 'Aconselhamento Bíblico II', code: 'ACO-202', prof: 'Profº Uilian Santos' },
-  { name: '04 - Direitos Humanos - Cleiton Barbirato', shortName: 'Direitos Humanos', code: 'DIR-101', prof: 'Profº Cleiton Barbirato' },
-  { name: '05 - Ética Cristã - Karoline Evangelista', shortName: 'Ética Cristã', code: 'ETI-201', prof: 'Profª Karoline Evangelista' },
-  { name: '06 - Novo Testamento III - Epístolas Gerais - Marcio Leal', shortName: 'Novo Testamento III - Epístolas Gerais', code: 'NT-301', prof: 'Profº Marcio Leal' },
-  { name: '07 - Plantação e Revitalização de Igrejas II - Thácyto Lessa', shortName: 'Plantação e Revitalização de Igrejas II', code: 'PRI-202', prof: 'Profº Thácyto Lessa' },
-  { name: '08 - TCC I - Gabriela Leal', shortName: 'TCC I', code: 'TCC-101', prof: 'Profª Gabriela Leal' },
-  { name: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva', shortName: 'História da Cultura Afro Brasileira e Indígena', code: 'CAB-201', prof: 'Profº Emerson Silva' },
+export interface DisciplinaConfigItem {
+  name: string;
+  shortName: string;
+  code: string;
+  prof: string;
+  dayOfWeek: string;
+  time: string;
+  num: string;
+  colorName: string;
+  badgeBg: string;
+  badgeText: string;
+  activeBorder: string;
+  tagColor: string;
+}
+
+const disciplinasList: DisciplinaConfigItem[] = [
+  { 
+    name: '01 - História do Congregacionalismo - Ary Júnior', 
+    shortName: 'História do Congregacionalismo', 
+    code: 'HIS-202', 
+    prof: 'Profº Ary Júnior',
+    dayOfWeek: 'Terça-feira',
+    time: '19:00 – 20:25',
+    num: '01',
+    colorName: 'blue',
+    badgeBg: 'bg-blue-100',
+    badgeText: 'text-blue-800',
+    activeBorder: 'border-blue-500 ring-2 ring-blue-400/40 bg-blue-50/80 shadow-md',
+    tagColor: 'bg-blue-600'
+  },
+  { 
+    name: '02 - História do Pensamento Cristão II - Hilário Bispo', 
+    shortName: 'História do Pensamento Cristão II', 
+    code: 'HIS-102', 
+    prof: 'Profº Hilário Bispo',
+    dayOfWeek: 'Terça-feira',
+    time: '20:35 – 22:00',
+    num: '02',
+    colorName: 'indigo',
+    badgeBg: 'bg-indigo-100',
+    badgeText: 'text-indigo-800',
+    activeBorder: 'border-indigo-500 ring-2 ring-indigo-400/40 bg-indigo-50/80 shadow-md',
+    tagColor: 'bg-indigo-600'
+  },
+  { 
+    name: '03 - Aconselhamento Bíblico II - Uilian Santos', 
+    shortName: 'Aconselhamento Bíblico II', 
+    code: 'ACO-202', 
+    prof: 'Profº Uilian Santos',
+    dayOfWeek: 'Quarta-feira',
+    time: '19:00 – 20:25',
+    num: '03',
+    colorName: 'emerald',
+    badgeBg: 'bg-emerald-100',
+    badgeText: 'text-emerald-800',
+    activeBorder: 'border-emerald-500 ring-2 ring-emerald-400/40 bg-emerald-50/80 shadow-md',
+    tagColor: 'bg-emerald-600'
+  },
+  { 
+    name: '04 - Direitos Humanos - Cleiton Barbirato', 
+    shortName: 'Direitos Humanos', 
+    code: 'DIR-101', 
+    prof: 'Profº Cleiton Barbirato',
+    dayOfWeek: 'Quarta-feira',
+    time: '20:35 – 22:00',
+    num: '04',
+    colorName: 'teal',
+    badgeBg: 'bg-teal-100',
+    badgeText: 'text-teal-800',
+    activeBorder: 'border-teal-500 ring-2 ring-teal-400/40 bg-teal-50/80 shadow-md',
+    tagColor: 'bg-teal-600'
+  },
+  { 
+    name: '05 - Ética Cristã - Karoline Evangelista', 
+    shortName: 'Ética Cristã', 
+    code: 'ETI-201', 
+    prof: 'Profª Karoline Evangelista',
+    dayOfWeek: 'Quinta-feira',
+    time: '19:00 – 20:25',
+    num: '05',
+    colorName: 'purple',
+    badgeBg: 'bg-purple-100',
+    badgeText: 'text-purple-800',
+    activeBorder: 'border-purple-500 ring-2 ring-purple-400/40 bg-purple-50/80 shadow-md',
+    tagColor: 'bg-purple-600'
+  },
+  { 
+    name: '06 - Novo Testamento III - Epístolas Gerais - Marcio Leal', 
+    shortName: 'Novo Testamento III (Epístolas)', 
+    code: 'NT-301', 
+    prof: 'Profº Marcio Leal',
+    dayOfWeek: 'Quinta-feira',
+    time: '20:35 – 22:00',
+    num: '06',
+    colorName: 'violet',
+    badgeBg: 'bg-violet-100',
+    badgeText: 'text-violet-800',
+    activeBorder: 'border-violet-500 ring-2 ring-violet-400/40 bg-violet-50/80 shadow-md',
+    tagColor: 'bg-violet-600'
+  },
+  { 
+    name: '07 - Plantação e Revitalização de Igrejas II - Thácyto Lessa', 
+    shortName: 'Plantação & Revitalização II', 
+    code: 'PRI-202', 
+    prof: 'Profº Thácyto Lessa',
+    dayOfWeek: 'Sexta-feira',
+    time: '19:00 – 20:00',
+    num: '07',
+    colorName: 'amber',
+    badgeBg: 'bg-amber-100',
+    badgeText: 'text-amber-800',
+    activeBorder: 'border-amber-500 ring-2 ring-amber-400/40 bg-amber-50/80 shadow-md',
+    tagColor: 'bg-amber-600'
+  },
+  { 
+    name: '08 - TCC I - Gabriela Leal', 
+    shortName: 'TCC I', 
+    code: 'TCC-101', 
+    prof: 'Profª Gabriela Leal',
+    dayOfWeek: 'Sexta-feira',
+    time: '20:00 – 21:00',
+    num: '08',
+    colorName: 'orange',
+    badgeBg: 'bg-orange-100',
+    badgeText: 'text-orange-800',
+    activeBorder: 'border-orange-500 ring-2 ring-orange-400/40 bg-orange-50/80 shadow-md',
+    tagColor: 'bg-orange-600'
+  },
+  { 
+    name: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva', 
+    shortName: 'Cultura Afro & Indígena', 
+    code: 'CAB-201', 
+    prof: 'Profº Emerson Silva',
+    dayOfWeek: 'Sexta-feira',
+    time: '21:00 – 22:00 (EAD)',
+    num: '09',
+    colorName: 'yellow',
+    badgeBg: 'bg-yellow-100',
+    badgeText: 'text-yellow-800',
+    activeBorder: 'border-yellow-500 ring-2 ring-yellow-400/40 bg-yellow-50/80 shadow-md',
+    tagColor: 'bg-yellow-600'
+  },
 ];
 
 export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
@@ -796,6 +929,29 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
     }
   };
 
+  // Helper para normalizar datas para comparação
+  const normalizeToIso = (dateStr: string): string => {
+    if (!dateStr) return '';
+    if (dateStr.includes('/')) {
+      const parts = dateStr.split('/');
+      if (parts.length === 3) {
+        return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    }
+    return dateStr;
+  };
+
+  const normalizeToBr = (dateStr: string): string => {
+    if (!dateStr) return '';
+    if (dateStr.includes('-')) {
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+      }
+    }
+    return dateStr;
+  };
+
   // Filtragem e Ordenação Cronológica das Anotações
   const allNotesList = Object.values(allNotes);
 
@@ -819,6 +975,73 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
     }
   };
 
+  // Disciplina atualmente ativa no filtro
+  const activeDiscObj = useMemo(() => {
+    return disciplinasList.find((d) => d.name === filterDisciplina) || null;
+  }, [filterDisciplina]);
+
+  // Cronograma oficial das 16 Aulas do Semestre 2026.2 para a matéria selecionada
+  const scheduledLessonsForDisc = useMemo(() => {
+    if (!activeDiscObj) return [];
+    const list = [];
+    for (let w = 0; w < 16; w++) {
+      const aulaNum = w + 1;
+      const dateBr = getDateForLesson(w, activeDiscObj.dayOfWeek); // '11/08/2026'
+      const dateIso = normalizeToIso(dateBr); // '2026-08-11'
+
+      // Checa se já existe anotação no allNotes
+      const matchingKey = Object.keys(allNotes).find((k) => {
+        const n = allNotes[k];
+        const matchDisc =
+          n.disciplina_name.toLowerCase() === activeDiscObj.name.toLowerCase() ||
+          n.disciplina_name.toLowerCase().includes(activeDiscObj.shortName.toLowerCase());
+        const matchDate =
+          normalizeToIso(n.date) === dateIso ||
+          normalizeToBr(n.date) === dateBr;
+        return matchDisc && matchDate;
+      });
+
+      const existingNote = matchingKey ? allNotes[matchingKey] : null;
+
+      list.push({
+        aulaNum,
+        dateBr,
+        dateIso,
+        hasNote: Boolean(existingNote),
+        noteId: existingNote?.id || null,
+        note: existingNote,
+        theme: existingNote?.theme || `Aula ${aulaNum} • ${activeDiscObj.shortName}`,
+        hasAiSummary: Boolean(existingNote?.ai_summary_text || existingNote?.ai_summary_url),
+      });
+    }
+    return list;
+  }, [activeDiscObj, allNotes]);
+
+  // Ação ao clicar em um dia de aula no cronograma
+  const handleSelectOrInitLesson = (lesson: {
+    aulaNum: number;
+    dateBr: string;
+    dateIso: string;
+    noteId: string | null;
+  }) => {
+    if (!activeDiscObj) return;
+
+    if (lesson.noteId && allNotes[lesson.noteId]) {
+      handleSelectNote(lesson.noteId);
+      setSaveStatusMessage(`Folha da Aula ${lesson.aulaNum} (${lesson.dateBr}) carregada.`);
+    } else {
+      handleProcessOpenDetail({
+        disciplina_name: activeDiscObj.name,
+        disciplina_code: activeDiscObj.code,
+        professor_name: activeDiscObj.prof,
+        date: lesson.dateIso,
+        dateFormatted: lesson.dateBr,
+        theme: `Aula ${lesson.aulaNum} • ${activeDiscObj.shortName} (${lesson.dateBr})`,
+      });
+    }
+    setTimeout(() => setSaveStatusMessage(null), 3000);
+  };
+
   // Filtragem na Sidebar Histórica
   const filteredNoteKeys = Object.keys(allNotes).filter((key) => {
     const note = allNotes[key];
@@ -839,7 +1062,6 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
 
   // Gerador de Resumos Consolidados (Consolidated Summary Generator)
   const handleOpenConsolidatedModal = () => {
-    // Carrega todas as notas disponíveis (se filtro for 'all', traz todas; senão, traz da matéria)
     const targetNotes = filterDisciplina === 'all' 
       ? allNotesList.sort((a, b) => (a.date || '').localeCompare(b.date || ''))
       : notesOfActiveScope;
@@ -932,7 +1154,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
           </h1>
           <p className="text-xs sm:text-sm text-blue-200/90 max-w-3xl leading-relaxed">
             Anotações de aula em tempo real integradas com os resumos inteligentes gerados pela IA do Google Meet (Gemini),
-            navegação cronológica por disciplina e modo de auto-teste.
+            navegação por disciplina e cronograma semanal de aulas.
           </p>
         </div>
 
@@ -979,113 +1201,326 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
         </div>
       </div>
 
-      {/* BARRA DE FILTRO POR MATÉRIA & NAVEGAÇÃO CRONOLÓGICA ENTRE DIAS */}
-      <div className="p-4 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        {/* Seletor / Filtro por Matéria */}
-        <div className="flex items-center gap-2.5 w-full md:w-auto">
-          <span className="p-2 bg-blue-50 text-blue-800 rounded-xl">
-            <Filter className="w-4 h-4" />
-          </span>
-          <div className="flex-1 md:w-80">
-            <label className="block text-[10px] font-extrabold text-gray-500 uppercase tracking-wider mb-0.5">
-              Filtrar por Matéria / Disciplina:
-            </label>
-            <select
-              value={filterDisciplina}
-              onChange={(e) => {
-                const selected = e.target.value;
-                setFilterDisciplina(selected);
-                const scoped = allNotesList.filter(n => selected === 'all' || n.disciplina_name === selected);
-                if (scoped.length > 0) {
-                  setActiveNoteId(scoped[scoped.length - 1].id);
-                  setCurrentNote(scoped[scoped.length - 1]);
-                }
-              }}
-              className="w-full p-2 text-xs font-bold border border-gray-200 rounded-xl bg-gray-50 text-blue-950 outline-none focus:border-blue-500 focus:bg-white transition"
-            >
-              <option value="all">📚 Todas as Disciplinas ({allNotesList.length} aulas)</option>
-              {disciplinasList.map((d) => {
-                const count = allNotesList.filter((n) => n.disciplina_name === d.name).length;
-                return (
-                  <option key={d.name} value={d.name}>
-                    {d.name} ({count} {count === 1 ? 'aula' : 'aulas'})
-                  </option>
-                );
-              })}
-            </select>
+      {/* ─────────────────────────────────────────────────────────────
+          1. SELETOR VISUAL DE MATÉRIAS (BOTÕES GRANDES E CLAROS)
+      ─────────────────────────────────────────────────────────────── */}
+      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 bg-blue-100 text-blue-700 rounded-lg">
+              <Layers className="w-4 h-4" />
+            </span>
+            <h2 className="text-xs sm:text-sm font-black text-gray-900 uppercase tracking-wider">
+              1. Selecione a Matéria / Disciplina
+            </h2>
           </div>
+          <span className="text-[11px] font-bold text-gray-500">
+            Clique na matéria desejada para carregar o cronograma de aulas:
+          </span>
         </div>
 
-        {/* Navegador Cronológico de Dias da Matéria Selecionada */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={handleNavigatePreviousNote}
-              disabled={currentNoteIndexInScope <= 0}
-              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
-              title="Voltar para a aula do dia anterior"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Aula Anterior</span>
-            </button>
-
-            <span className="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg">
-              {currentNoteIndexInScope >= 0 ? `${currentNoteIndexInScope + 1} de ${notesOfActiveScope.length}` : '—'}
-            </span>
-
-            <button
-              onClick={handleNavigateNextNote}
-              disabled={currentNoteIndexInScope < 0 || currentNoteIndexInScope >= notesOfActiveScope.length - 1}
-              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
-              title="Avançar para a próxima aula"
-            >
-              <span>Próxima Aula</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Botão de alternar Histórico */}
+        {/* Grid com os Botões/Cards Grandes de Matérias */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {/* Card: Todas as Disciplinas */}
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border shadow-2xs cursor-pointer ${
-              !isSidebarOpen
-                ? 'bg-blue-50 hover:bg-blue-100 text-blue-800 border-blue-200'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
+            onClick={() => {
+              setFilterDisciplina('all');
+              if (allNotesList.length > 0) {
+                setActiveNoteId(allNotesList[allNotesList.length - 1].id);
+                setCurrentNote(allNotesList[allNotesList.length - 1]);
+              }
+            }}
+            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
+              filterDisciplina === 'all'
+                ? 'border-blue-600 ring-2 ring-blue-500/30 bg-blue-50/80 shadow-md scale-[1.02]'
+                : 'border-gray-200 bg-gray-50/60 hover:bg-white hover:border-gray-300'
             }`}
           >
-            {isSidebarOpen ? <PanelLeftClose className="w-3.5 h-3.5" /> : <PanelLeftOpen className="w-3.5 h-3.5" />}
-            <span>{isSidebarOpen ? 'Ocultar Histórico' : `Histórico (${filteredNoteKeys.length})`}</span>
-          </button>
-        </div>
-      </div>
+            <div className="flex items-center justify-between">
+              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${
+                filterDisciplina === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+              }`}>
+                TODAS
+              </span>
+              <BookOpen className={`w-3.5 h-3.5 ${filterDisciplina === 'all' ? 'text-blue-600' : 'text-gray-400'}`} />
+            </div>
 
-      {/* Pílulas de Aulas Registradas para Navegação Rápida entre Dias */}
-      {notesOfActiveScope.length > 0 && (
-        <div className="flex items-center gap-2 overflow-x-auto pb-1">
-          <span className="text-[11px] font-bold text-gray-400 whitespace-nowrap flex items-center gap-1">
-            <Clock className="w-3 h-3" /> Dias Gravados:
-          </span>
-          {notesOfActiveScope.map((n, idx) => {
-            const isSelected = n.id === currentNote.id;
+            <div>
+              <div className="text-xs font-black text-gray-900 leading-tight">
+                Todas as Disciplinas
+              </div>
+              <div className="text-[11px] text-gray-500 mt-0.5">
+                Visão unificada do semestre
+              </div>
+            </div>
+
+            <div className="pt-1 border-t border-gray-200/60 flex items-center justify-between text-[10px] font-bold text-gray-600">
+              <span>{allNotesList.length} cadernos salvos</span>
+            </div>
+          </button>
+
+          {/* Cards das 9 Matérias */}
+          {disciplinasList.map((disc) => {
+            const isSelected = filterDisciplina === disc.name;
+            const notesCount = allNotesList.filter((n) => n.disciplina_name === disc.name).length;
+
             return (
               <button
-                key={n.id}
-                onClick={() => handleSelectNote(n.id)}
-                className={`px-3 py-1 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+                key={disc.name}
+                onClick={() => {
+                  setFilterDisciplina(disc.name);
+                  const scoped = allNotesList.filter((n) => n.disciplina_name === disc.name);
+                  if (scoped.length > 0) {
+                    setActiveNoteId(scoped[scoped.length - 1].id);
+                    setCurrentNote(scoped[scoped.length - 1]);
+                  }
+                }}
+                className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between space-y-2 relative group ${
                   isSelected
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                    ? disc.activeBorder
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-xs'
                 }`}
               >
-                <span>🗓️ {n.date}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
-                }`}>
-                  Aula {idx + 1}
-                </span>
+                {/* Cabeçalho do Card */}
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${disc.badgeBg} ${disc.badgeText}`}>
+                    {disc.num} • {disc.code}
+                  </span>
+                  {notesCount > 0 ? (
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" title={`${notesCount} anotações registradas`} />
+                  ) : (
+                    <span className="w-2 h-2 rounded-full bg-gray-300" title="Nenhuma anotação ainda" />
+                  )}
+                </div>
+
+                {/* Título & Professor */}
+                <div>
+                  <div className={`text-xs font-black leading-snug line-clamp-2 transition-colors ${
+                    isSelected ? 'text-gray-950 font-black' : 'text-gray-800 group-hover:text-blue-600'
+                  }`}>
+                    {disc.shortName}
+                  </div>
+                  <div className="text-[11px] text-gray-500 font-medium mt-0.5 truncate">
+                    {disc.prof}
+                  </div>
+                </div>
+
+                {/* Rodapé: Dia / Horário & Contagem */}
+                <div className="pt-1 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 font-bold">
+                  <span className="truncate max-w-[90px]">{disc.dayOfWeek.split('-')[0]}</span>
+                  <span className={`px-1.5 py-0.2 rounded-md text-[10px] font-bold ${
+                    notesCount > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'
+                  }`}>
+                    {notesCount} {notesCount === 1 ? 'aula' : 'aulas'}
+                  </span>
+                </div>
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2. NAVEGADOR CRONOLÓGICO DE DIAS DE AULA (AULAS 1 A 16)
+      ─────────────────────────────────────────────────────────────── */}
+      {activeDiscObj ? (
+        /* Modo 1: Disciplina Específica Selecionada -> Mostra as 16 aulas oficiais */
+        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm space-y-4 animate-fadeIn">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-gray-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className={`w-3 h-3 rounded-full ${activeDiscObj.tagColor}`} />
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-wide">
+                  2. Dias de Aula • {activeDiscObj.shortName} (Grade 2026.2)
+                </h3>
+              </div>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {activeDiscObj.dayOfWeek} às {activeDiscObj.time} • Docente: <strong>{activeDiscObj.prof}</strong>
+              </p>
+            </div>
+
+            {/* Ações de Navegação e Histórico */}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={handleNavigatePreviousNote}
+                disabled={currentNoteIndexInScope <= 0}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
+                title="Voltar para anotação anterior"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Aula Anterior</span>
+              </button>
+
+              <span className="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg">
+                {currentNoteIndexInScope >= 0 ? `Folha ${currentNoteIndexInScope + 1} de ${notesOfActiveScope.length}` : '—'}
+              </span>
+
+              <button
+                onClick={handleNavigateNextNote}
+                disabled={currentNoteIndexInScope < 0 || currentNoteIndexInScope >= notesOfActiveScope.length - 1}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
+                title="Avançar para a próxima anotação"
+              >
+                <span>Próxima Aula</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border shadow-2xs cursor-pointer ${
+                  !isSidebarOpen
+                    ? 'bg-blue-50 hover:bg-blue-100 text-blue-800 border-blue-200'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
+                }`}
+              >
+                {isSidebarOpen ? <PanelLeftClose className="w-3.5 h-3.5" /> : <PanelLeftOpen className="w-3.5 h-3.5" />}
+                <span>{isSidebarOpen ? 'Ocultar Histórico' : `Histórico (${filteredNoteKeys.length})`}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Carrossel / Barra Horizontal com as 16 Aulas do Semestre */}
+          <div className="space-y-2">
+            <div className="text-[11px] font-bold text-gray-500 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-600" />
+                <span>Selecione a data da aula para abrir ou criar a folha Cornell:</span>
+              </span>
+              <span className="text-[10px] text-gray-400">16 encontros previstos</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2.5">
+              {scheduledLessonsForDisc.map((lesson) => {
+                const isCurrentlyActiveNote =
+                  currentNote.disciplina_name === activeDiscObj.name &&
+                  (normalizeToIso(currentNote.date) === lesson.dateIso ||
+                   normalizeToBr(currentNote.date) === lesson.dateBr);
+
+                return (
+                  <button
+                    key={`lesson-${lesson.aulaNum}-${lesson.dateIso}`}
+                    onClick={() => handleSelectOrInitLesson(lesson)}
+                    className={`p-2.5 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-between space-y-1.5 ${
+                      isCurrentlyActiveNote
+                        ? 'bg-blue-600 text-white border-blue-700 shadow-md ring-2 ring-blue-400/40 scale-[1.03]'
+                        : lesson.hasNote
+                        ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950 hover:bg-emerald-100/80 shadow-2xs'
+                        : 'bg-gray-50 border-gray-200/80 text-gray-600 hover:bg-white hover:border-blue-300'
+                    }`}
+                    title={lesson.hasNote ? `Abrir anotações da Aula ${lesson.aulaNum} (${lesson.dateBr})` : `Criar nova folha Cornell para a Aula ${lesson.aulaNum} (${lesson.dateBr})`}
+                  >
+                    {/* Número da Aula */}
+                    <div className="flex items-center justify-between w-full">
+                      <span className={`text-[10px] font-black uppercase px-1.5 py-0.2 rounded ${
+                        isCurrentlyActiveNote
+                          ? 'bg-white/20 text-white'
+                          : lesson.hasNote
+                          ? 'bg-emerald-200/70 text-emerald-900 font-extrabold'
+                          : 'bg-gray-200 text-gray-600'
+                      }`}>
+                        Aula {lesson.aulaNum}
+                      </span>
+
+                      {lesson.hasAiSummary && (
+                        <span className={`text-[10px] ${isCurrentlyActiveNote ? 'text-amber-300' : 'text-purple-600'}`} title="Resumo IA do Google Meet disponível">
+                          ✨
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Data formatada */}
+                    <div className={`text-xs font-black ${
+                      isCurrentlyActiveNote ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {lesson.dateBr.substring(0, 5)}
+                    </div>
+
+                    {/* Status da Aula */}
+                    <div className="text-[9px] font-bold uppercase tracking-wider">
+                      {isCurrentlyActiveNote ? (
+                        <span className="text-blue-100 font-black">● Folha Ativa</span>
+                      ) : lesson.hasNote ? (
+                        <span className="text-emerald-700 font-extrabold">✓ Anotada</span>
+                      ) : (
+                        <span className="text-gray-400">+ Iniciar</span>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Modo 2: "Todas as Disciplinas" selecionada */
+        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm space-y-3 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
+            <div>
+              <h3 className="text-xs sm:text-sm font-black text-gray-900 uppercase tracking-wide flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-600" />
+                <span>Todas as Aulas Anotadas ({allNotesList.length} cadernos salvos)</span>
+              </h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Navegue pelas anotações cronológicas de todas as disciplinas ou selecione uma matéria acima.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleNavigatePreviousNote}
+                disabled={currentNoteIndexInScope <= 0}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Anterior</span>
+              </button>
+
+              <span className="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg">
+                {currentNoteIndexInScope >= 0 ? `${currentNoteIndexInScope + 1} de ${notesOfActiveScope.length}` : '—'}
+              </span>
+
+              <button
+                onClick={handleNavigateNextNote}
+                disabled={currentNoteIndexInScope < 0 || currentNoteIndexInScope >= notesOfActiveScope.length - 1}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-800 text-xs font-bold rounded-xl transition flex items-center gap-1 cursor-pointer"
+              >
+                <span>Próxima</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>{isSidebarOpen ? 'Ocultar Histórico' : `Histórico (${filteredNoteKeys.length})`}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Pílulas de todas as notas salvas */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+            {notesOfActiveScope.map((n, idx) => {
+              const isSelected = n.id === currentNote.id;
+              return (
+                <button
+                  key={n.id}
+                  onClick={() => handleSelectNote(n.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  <span>🗓️ {n.date}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-md ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700 font-bold'
+                  }`}>
+                    {n.disciplina_name.split('-')[0].trim()}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 

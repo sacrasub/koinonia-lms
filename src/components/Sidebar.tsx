@@ -50,6 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'aluno':
         return [
           { id: 'aluno-disciplinas', label: 'Minhas Disciplinas (Estudos)', icon: GraduationCap },
+          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Matéria)', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -71,6 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'professor':
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen },
+          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Visão)', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -91,6 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'monitor':
         return [
           { id: 'monitor-escala', label: 'Grade & Links de Presença', icon: UserCheck },
+          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -108,6 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'admin':
         return [
           { id: 'admin-dashboard', label: 'Painel do Administrador', icon: ShieldCheck },
+          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },

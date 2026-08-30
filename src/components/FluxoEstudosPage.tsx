@@ -7,13 +7,15 @@ import {
   Bot, Headphones, FileText, ChevronRight, Layers, Bookmark, 
   HelpCircle, ArrowRight, ShieldCheck, UserCheck, Flame, 
   Share2, Download, AlertCircle, RefreshCw, Star, Cpu, 
-  PenTool, Award, Library, Target, MessageSquare, Heart, CheckSquare
+  PenTool, Award, Library, Target, MessageSquare, Heart, CheckSquare,
+  Edit3, Settings, X, Save, Link2
 } from 'lucide-react';
 import { mockDisciplinas, mockAulas, datasAvaliacoesMap } from '@/lib/mockData';
 import { getAllGravacoes } from '@/services/gravacoesService';
 import { getSemester2026Weeks, getCurrentWeekIndex } from '@/lib/semesterUtils';
 import { getLocalTimeZoneInfo, TimeZoneInfo } from '@/lib/timeUtils';
 import { trackEvent } from '@/services/telemetryService';
+import { GoogleAgendaView } from '@/components/GoogleAgendaView';
 
 interface FluxoEstudosPageProps {
   userEmail?: string;
@@ -419,6 +421,73 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
   const [selectedPersonaId, setSelectedPersonaId] = useState<string>('persona-01');
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
   const [copiedQuestion, setCopiedQuestion] = useState<string | null>(null);
+
+  // Links Personalizados das Personas do Gemini (Zero-Egress / Local-First)
+  const [customPersonaLinks, setCustomPersonaLinks] = useState<Record<string, string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`lms_custom_personas_${normalizedEmail}`);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  // Links Personalizados dos Cadernos NotebookLM (Zero-Egress / Local-First)
+  const [customNotebookLinks, setCustomNotebookLinks] = useState<Record<string, string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(`lms_custom_notebooks_${normalizedEmail}`);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  // Estados dos Modais de Personalização
+  const [editingPersonaLink, setEditingPersonaLink] = useState<{ id: string; num: string; disciplina: string; personaTitle: string; currentUrl: string } | null>(null);
+  const [tempPersonaUrl, setTempPersonaUrl] = useState<string>('');
+
+  const [editingNotebookLink, setEditingNotebookLink] = useState<{ id: string; num: string; title: string; currentUrl: string } | null>(null);
+  const [tempNotebookUrl, setTempNotebookUrl] = useState<string>('');
+
+  const [customToastMsg, setCustomToastMsg] = useState<string | null>(null);
+
+  // Salvar Link da Persona
+  const handleSavePersonaLink = () => {
+    if (!editingPersonaLink) return;
+    const updated = { ...customPersonaLinks };
+    if (tempPersonaUrl.trim()) {
+      updated[editingPersonaLink.id] = tempPersonaUrl.trim();
+    } else {
+      delete updated[editingPersonaLink.id];
+    }
+    setCustomPersonaLinks(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`lms_custom_personas_${normalizedEmail}`, JSON.stringify(updated));
+    }
+    setEditingPersonaLink(null);
+    setCustomToastMsg(`Link da Persona ${editingPersonaLink.num} salvo com sucesso!`);
+    setTimeout(() => setCustomToastMsg(null), 3000);
+  };
+
+  // Salvar Link do NotebookLM
+  const handleSaveNotebookLink = () => {
+    if (!editingNotebookLink) return;
+    const updated = { ...customNotebookLinks };
+    if (tempNotebookUrl.trim()) {
+      updated[editingNotebookLink.id] = tempNotebookUrl.trim();
+    } else {
+      delete updated[editingNotebookLink.id];
+    }
+    setCustomNotebookLinks(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`lms_custom_notebooks_${normalizedEmail}`, JSON.stringify(updated));
+    }
+    setEditingNotebookLink(null);
+    setCustomToastMsg(`Link do Caderno NotebookLM ${editingNotebookLink.num} salvo com sucesso!`);
+    setTimeout(() => setCustomToastMsg(null), 3000);
+  };
 
   // Semestre e Semana Atual
   const semesterWeeks = getSemester2026Weeks();
@@ -1089,6 +1158,14 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
         </div>
       )}
 
+      {/* Notificação Toast Temporária de Personalização */}
+      {customToastMsg && (
+        <div className="fixed bottom-6 right-6 z-50 p-4 bg-slate-900 text-white rounded-2xl border border-slate-700 shadow-2xl text-xs font-bold flex items-center gap-2.5 animate-fadeIn">
+          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+          <span>{customToastMsg}</span>
+        </div>
+      )}
+
       {/* ─────────────────────────────────────────────────────────────
           ABA 3: PERSONAS ACADÊMICAS DO GEMINI (COM PROMPTS PRONTOS)
       ─────────────────────────────────────────────────────────────── */}
@@ -1116,6 +1193,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                 <div className="space-y-1.5 max-h-[600px] overflow-y-auto pr-1">
                   {PERSONAS_CONFIG.map((p) => {
                     const isSelected = p.id === selectedPersonaId;
+                    const hasCustomLink = Boolean(customPersonaLinks[p.id]);
 
                     return (
                       <button
@@ -1132,8 +1210,13 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                         </span>
 
                         <div className="min-w-0 flex-1">
-                          <div className="text-xs font-bold text-gray-900 truncate">
-                            {p.disciplina}
+                          <div className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
+                            <span>{p.disciplina}</span>
+                            {hasCustomLink && (
+                              <span className="text-[10px] text-amber-500" title="Link personalizado ativo">
+                                ✨
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-gray-500 truncate">
                             {p.personaTitle}
@@ -1160,9 +1243,16 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                       {selectedPersona.num}
                     </span>
                     <div>
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 mb-1">
-                        <Bot className="w-3 h-3" />
-                        <span>Persona Especializada Gemini Pro</span>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800">
+                          <Bot className="w-3 h-3" />
+                          <span>Persona Especializada Gemini Pro</span>
+                        </span>
+                        {customPersonaLinks[selectedPersona.id] && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                            ✨ Link Pessoal Ativo
+                          </span>
+                        )}
                       </div>
                       <h2 className="text-xl font-bold text-gray-900">
                         {selectedPersona.personaTitle}
@@ -1174,6 +1264,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
+                    {/* Botão de Personalizar Link */}
+                    <button
+                      onClick={() => {
+                        setTempPersonaUrl(customPersonaLinks[selectedPersona.id] || '');
+                        setEditingPersonaLink({
+                          id: selectedPersona.id,
+                          num: selectedPersona.num,
+                          disciplina: selectedPersona.disciplina,
+                          personaTitle: selectedPersona.personaTitle,
+                          currentUrl: customPersonaLinks[selectedPersona.id] || '',
+                        });
+                      }}
+                      className="px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold transition-all flex items-center gap-1.5 border border-gray-200 cursor-pointer"
+                      title="Personalizar a URL do seu Gem ou chat do Gemini desta matéria"
+                    >
+                      <Edit3 className="w-3.5 h-3.5 text-gray-600" />
+                      <span>{customPersonaLinks[selectedPersona.id] ? 'Editar Link' : 'Personalizar Link'}</span>
+                    </button>
+
+                    {/* Copiar Prompt */}
                     <button
                       onClick={() => handleCopyPrompt(selectedPersona.systemPrompt, selectedPersona.id)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
@@ -1195,14 +1305,15 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                       )}
                     </button>
 
+                    {/* Abrir Gemini com Link Personalizado ou Padrão */}
                     <a
-                      href="https://gemini.google.com/"
+                      href={customPersonaLinks[selectedPersona.id] || 'https://gemini.google.com/'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold transition-all flex items-center gap-1.5"
+                      className="px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition-all flex items-center gap-1.5 border border-purple-200"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
-                      <span>Abrir Gemini</span>
+                      <span>{customPersonaLinks[selectedPersona.id] ? 'Abrir Meu Gem' : 'Abrir Gemini'}</span>
                     </a>
                   </div>
                 </div>
@@ -1287,194 +1398,297 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                   <span>Cadernos de Estudo no Gemini Notebook (NotebookLM)</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Seus 9 cadernos configurados no NotebookLM com as fontes de cada matéria para sintetizar ideias, gerar Podcasts de áudio e criar mapas conceituais.
+                  Seus 9 cadernos configurados no NotebookLM com fontes de cada matéria. Você pode personalizar o link para apontar direto para os seus próprios cadernos!
                 </p>
               </div>
 
-              <a
-                href="https://notebooklm.google.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-white font-bold text-xs hover:bg-amber-600 transition-all shadow-sm"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Abrir NotebookLM Oficial</span>
-              </a>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="https://notebooklm.google.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-white font-bold text-xs hover:bg-amber-600 transition-all shadow-sm"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Abrir NotebookLM Geral</span>
+                </a>
+              </div>
             </div>
 
             {/* Grade dos 9 Cadernos do NotebookLM */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {PERSONAS_CONFIG.map((p) => (
-                <div 
-                  key={p.id}
-                  className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all flex flex-col justify-between space-y-4 hover:border-amber-300"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className={`w-8 h-8 rounded-xl font-extrabold text-xs flex items-center justify-center border shadow-sm ${p.badgeColor}`}>
-                        {p.num}
-                      </span>
+              {PERSONAS_CONFIG.map((p) => {
+                const customLink = customNotebookLinks[p.id];
+                const targetUrl = customLink || 'https://notebooklm.google.com/';
 
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                        <Library className="w-3 h-3" />
-                        <span>{p.sourcesCount} fontes</span>
-                      </span>
+                return (
+                  <div 
+                    key={p.id}
+                    className={`rounded-2xl p-5 border transition-all flex flex-col justify-between space-y-4 hover:shadow-md ${
+                      customLink 
+                        ? 'bg-amber-50/40 border-amber-300 ring-2 ring-amber-400/20' 
+                        : 'bg-slate-50/70 border-slate-200/80 hover:border-amber-300'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className={`w-8 h-8 rounded-xl font-extrabold text-xs flex items-center justify-center border shadow-sm ${p.badgeColor}`}>
+                          {p.num}
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          {customLink && (
+                            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-200/80 text-amber-900 border border-amber-300">
+                              ✨ Meu Caderno
+                            </span>
+                          )}
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-gray-100 text-gray-700 border border-gray-200">
+                            <Library className="w-3 h-3" />
+                            <span>{p.sourcesCount} fontes</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <h3 className="text-sm font-bold text-gray-900 leading-snug">
+                        {p.notebookLmTitle}
+                      </h3>
+
+                      <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
+                        {p.shortDesc}
+                      </p>
                     </div>
 
-                    <h3 className="text-sm font-bold text-gray-900 leading-snug">
-                      {p.notebookLmTitle}
-                    </h3>
+                    <div className="pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs">
+                      {/* Botão de Personalizar Link */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setTempNotebookUrl(customLink || '');
+                          setEditingNotebookLink({
+                            id: p.id,
+                            num: p.num,
+                            title: p.notebookLmTitle,
+                            currentUrl: customLink || '',
+                          });
+                        }}
+                        className="p-1.5 rounded-lg text-gray-500 hover:text-amber-700 hover:bg-amber-100/60 transition-all cursor-pointer inline-flex items-center gap-1"
+                        title="Personalizar a URL do seu caderno próprio desta disciplina"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span className="text-[11px] font-bold">{customLink ? 'Editar Link' : 'Vincular'}</span>
+                      </button>
 
-                    <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                      {p.shortDesc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1.5 text-gray-500 text-[11px] font-medium">
-                      <Headphones className="w-3.5 h-3.5 text-purple-600" />
-                      <span>Deep Dive Audio</span>
+                      {/* Abrir Caderno */}
+                      <a
+                        href={targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-amber-700 font-bold hover:underline flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-100/50 hover:bg-amber-100 border border-amber-200/60 transition-colors"
+                      >
+                        <span>{customLink ? 'Abrir Meu Caderno' : 'Abrir Caderno'}</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
                     </div>
-
-                    <a
-                      href="https://notebooklm.google.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-amber-700 font-bold hover:underline flex items-center gap-1"
-                    >
-                      <span>Abrir Caderno</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          ABA 5: GOOGLE AGENDA & HORÁRIOS SEMANAIS
+          ABA 5: GOOGLE AGENDA & HORÁRIOS SEMANAIS (INTERATIVO)
       ─────────────────────────────────────────────────────────────── */}
       {activeSubTab === 'agenda' && (
-        <div className="space-y-6 animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-emerald-600" />
-                  <span>Google Agenda Semanal • Grade 2026.2</span>
-                </h2>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Horários e links de todas as aulas organizadas de Segunda a Sexta-feira com o fuso {tzInfo.gmtOffset}.
-                </p>
+        <div className="animate-fadeIn">
+          <GoogleAgendaView 
+            userEmail={userEmail} 
+            onTabChange={onTabChange} 
+          />
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          MODAIS DE PERSONALIZAÇÃO DE LINKS (PERSONA & NOTEBOOKLM)
+      ─────────────────────────────────────────────────────────────── */}
+
+      {/* Modal 1: Personalizar Link da Persona do Gemini */}
+      {editingPersonaLink && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-5 animate-scaleUp">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <span className="p-2 rounded-xl bg-purple-100 text-purple-700">
+                  <Bot className="w-5 h-5" />
+                </span>
+                <div>
+                  <h3 className="text-base font-black text-gray-900">
+                    Personalizar Persona do Gemini ({editingPersonaLink.num})
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    {editingPersonaLink.disciplina}
+                  </p>
+                </div>
               </div>
 
-              <a
-                href="https://calendar.google.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs hover:bg-emerald-100 transition-all border border-emerald-200"
+              <button
+                onClick={() => setEditingPersonaLink(null)}
+                className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all cursor-pointer"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Abrir Google Agenda</span>
-              </a>
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Grid dos Blocos de Aulas da Semana */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {/* TERÇA-FEIRA */}
-              <div className="bg-blue-50/50 rounded-2xl p-5 border border-blue-200/80 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-blue-200/60">
-                  <h3 className="text-sm font-extrabold text-blue-900 uppercase">Terça-feira</h3>
-                  <span className="text-[10px] font-bold bg-blue-200/60 text-blue-800 px-2 py-0.5 rounded-full">2 Aulas</span>
-                </div>
+            <div className="space-y-4">
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Você pode colar o link direto do seu <strong>Gem personalizado</strong> no Gemini ou de um chat salvo da disciplina. O botão <em>"Abrir Gemini"</em> desta persona abrirá sua URL personalizada automaticamente.
+              </p>
 
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-xl border border-blue-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">19:00 – 20:25</span>
-                    <div className="text-xs font-bold text-gray-900">01 - História do Congregacionalismo</div>
-                    <div className="text-[11px] text-gray-500">Profº Ary Júnior</div>
-                  </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  URL da Persona / Gem no Gemini:
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://gemini.google.com/gems/..."
+                  value={tempPersonaUrl}
+                  onChange={(e) => setTempPersonaUrl(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                />
+                <span className="text-[11px] text-gray-400 mt-1 block">
+                  Ex: Link de um Gem criado por você no Google Gemini ou link de chat compartilhado.
+                </span>
+              </div>
+            </div>
 
-                  <div className="bg-white p-3 rounded-xl border border-blue-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">20:35 – 22:00</span>
-                    <div className="text-xs font-bold text-gray-900">02 - História do Pensamento Cristão II</div>
-                    <div className="text-[11px] text-gray-500">Profº Hilário Bispo</div>
-                  </div>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setTempPersonaUrl('');
+                  const updated = { ...customPersonaLinks };
+                  delete updated[editingPersonaLink.id];
+                  setCustomPersonaLinks(updated);
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem(`lms_custom_personas_${normalizedEmail}`, JSON.stringify(updated));
+                  }
+                  setEditingPersonaLink(null);
+                  setCustomToastMsg('Link da Persona restaurado para o padrão oficial.');
+                  setTimeout(() => setCustomToastMsg(null), 3000);
+                }}
+                className="text-xs font-bold text-gray-500 hover:text-red-600 transition-colors cursor-pointer"
+              >
+                Restaurar Padrão
+              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingPersonaLink(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-all cursor-pointer"
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSavePersonaLink}
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white transition-all shadow-sm cursor-pointer"
+                >
+                  Salvar Link
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 2: Personalizar Link do Caderno no NotebookLM */}
+      {editingNotebookLink && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-5 animate-scaleUp">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <span className="p-2 rounded-xl bg-amber-100 text-amber-800">
+                  <BookOpen className="w-5 h-5" />
+                </span>
+                <div>
+                  <h3 className="text-base font-black text-gray-900">
+                    Vincular Caderno NotebookLM ({editingNotebookLink.num})
+                  </h3>
+                  <p className="text-xs text-gray-500 truncate max-w-[280px]">
+                    {editingNotebookLink.title}
+                  </p>
                 </div>
               </div>
 
-              {/* QUARTA-FEIRA */}
-              <div className="bg-emerald-50/50 rounded-2xl p-5 border border-emerald-200/80 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-emerald-200/60">
-                  <h3 className="text-sm font-extrabold text-emerald-900 uppercase">Quarta-feira</h3>
-                  <span className="text-[10px] font-bold bg-emerald-200/60 text-emerald-800 px-2 py-0.5 rounded-full">2 Aulas</span>
-                </div>
+              <button
+                onClick={() => setEditingNotebookLink(null)}
+                className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">19:00 – 20:25</span>
-                    <div className="text-xs font-bold text-gray-900">03 - Aconselhamento Bíblico II</div>
-                    <div className="text-[11px] text-gray-500">Profº Uilian Santos</div>
-                  </div>
+            <div className="space-y-4">
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Cole a URL do <strong>caderno que você criou no seu Google NotebookLM</strong> para esta disciplina. O botão <em>"Abrir Caderno"</em> redirecionará você direto para o seu ambiente com suas fontes e notas.
+              </p>
 
-                  <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">20:35 – 22:00</span>
-                    <div className="text-xs font-bold text-gray-900">04 - Direitos Humanos</div>
-                    <div className="text-[11px] text-gray-500">Profº Cleiton Barbirato</div>
-                  </div>
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  URL do Caderno no NotebookLM:
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://notebooklm.google.com/notebook/..."
+                  value={tempNotebookUrl}
+                  onChange={(e) => setTempNotebookUrl(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                />
+                <span className="text-[11px] text-gray-400 mt-1 block">
+                  Ex: Abra o caderno no NotebookLM e copie a URL da barra do navegador.
+                </span>
               </div>
+            </div>
 
-              {/* QUINTA-FEIRA */}
-              <div className="bg-purple-50/50 rounded-2xl p-5 border border-purple-200/80 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-purple-200/60">
-                  <h3 className="text-sm font-extrabold text-purple-900 uppercase">Quinta-feira</h3>
-                  <span className="text-[10px] font-bold bg-purple-200/60 text-purple-800 px-2 py-0.5 rounded-full">2 Aulas</span>
-                </div>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => {
+                  setTempNotebookUrl('');
+                  const updated = { ...customNotebookLinks };
+                  delete updated[editingNotebookLink.id];
+                  setCustomNotebookLinks(updated);
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem(`lms_custom_notebooks_${normalizedEmail}`, JSON.stringify(updated));
+                  }
+                  setEditingNotebookLink(null);
+                  setCustomToastMsg('Link do NotebookLM restaurado para o padrão.');
+                  setTimeout(() => setCustomToastMsg(null), 3000);
+                }}
+                className="text-xs font-bold text-gray-500 hover:text-red-600 transition-colors cursor-pointer"
+              >
+                Restaurar Padrão
+              </button>
 
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-xl border border-purple-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded">19:00 – 20:25</span>
-                    <div className="text-xs font-bold text-gray-900">05 - Ética Cristã</div>
-                    <div className="text-[11px] text-gray-500">Profª Karoline Evangelista</div>
-                  </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingNotebookLink(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-all cursor-pointer"
+                >
+                  Cancelar
+                </button>
 
-                  <div className="bg-white p-3 rounded-xl border border-purple-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded">20:35 – 22:00</span>
-                    <div className="text-xs font-bold text-gray-900">06 - Novo Testamento III (Epístolas)</div>
-                    <div className="text-[11px] text-gray-500">Profº Marcio Leal</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* SEXTA-FEIRA */}
-              <div className="bg-amber-50/50 rounded-2xl p-5 border border-amber-200/80 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-amber-200/60">
-                  <h3 className="text-sm font-extrabold text-amber-900 uppercase">Sexta-feira</h3>
-                  <span className="text-[10px] font-bold bg-amber-200/60 text-amber-800 px-2 py-0.5 rounded-full">3 Aulas</span>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">19:00 – 20:00</span>
-                    <div className="text-xs font-bold text-gray-900">07 - Plantação & Revitalização II</div>
-                    <div className="text-[11px] text-gray-500">Profº Thácyto Lessa</div>
-                  </div>
-
-                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">20:00 – 21:00</span>
-                    <div className="text-xs font-bold text-gray-900">08 - TCC I</div>
-                    <div className="text-[11px] text-gray-500">Profª Gabriela Leal</div>
-                  </div>
-
-                  <div className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm space-y-1.5">
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">21:00 – 22:00 (EAD)</span>
-                    <div className="text-xs font-bold text-gray-900">09 - Cultura Afro e Indígena</div>
-                    <div className="text-[11px] text-gray-500">Profº Emerson Silva</div>
-                  </div>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveNotebookLink}
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white transition-all shadow-sm cursor-pointer"
+                >
+                  Salvar Caderno
+                </button>
               </div>
             </div>
           </div>

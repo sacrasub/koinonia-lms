@@ -40,6 +40,7 @@ import { HomileticaEstudioPage } from '@/components/HomileticaEstudioPage';
 import { MetaversoTeologicoPage } from '@/components/MetaversoTeologicoPage';
 import { TccSacramentoPage } from '@/components/TccSacramentoPage';
 import { FluxoEstudosPage } from '@/components/FluxoEstudosPage';
+import { GoogleAgendaView } from '@/components/GoogleAgendaView';
 
 
 
@@ -499,6 +500,10 @@ export default function Home() {
         />
       );
     }
+    if (activeTab === 'google-agenda' || activeTab === 'agenda' || activeTab === 'grade-horaria') {
+      return <GoogleAgendaView userEmail={userEmail} onTabChange={handleTabChange} />;
+    }
+
     if (activeTab === 'fluxo-estudos' || activeTab === 'estudos' || activeTab === 'ecossistema') {
       return <FluxoEstudosPage userEmail={userEmail} onTabChange={handleTabChange} />;
     }
