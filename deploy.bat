@@ -72,7 +72,8 @@ echo           DEPLOY CONCLUIDO COM SUCESSO!
 echo ========================================================
 echo.
 echo Koinonia LMS esta online e atualizado em:
-echo https://uiecblms.vercel.app
+echo - URL Oficial: https://koinonialms.vercel.app
+echo - Link Legado: https://uiecblms.vercel.app
 echo.
 echo Pressione qualquer tecla para fechar esta janela...
 pause >nul
