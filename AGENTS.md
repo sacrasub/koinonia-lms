@@ -93,3 +93,31 @@ O sistema suporta 4 perfis distintos com permissões e visões dedicadas:
 7. **Debounce em Formulários e Digitação**:
    - Salvamento automático de textos (como notas de estudo, resumos de Cornell, checklists) deve aplicar debounce de pelo menos **3 a 5 segundos** antes de enviar à nuvem.
 
+---
+
+## 7. Módulos Especiais de Produtividade do Aluno
+
+### 7.1. Caderno Cornell & Cronograma de Aulas
+- **Seleção Visual por Disciplinas**: 10 botões/cards grandes para seleção direta da matéria ou visualização consolidada ("Todas as Disciplinas").
+- **Cronograma Semanal 2026.2 (16 Aulas)**: Cada disciplina computa suas 16 aulas com data real de aula (Terça a Sexta).
+- **Status das Folhas**: `🟢 Anotada`, `✨ Resumo IA Meet`, `⚪ + Iniciar`.
+- **Navegação Contínua**: Botões `← Aula Anterior`, `Folha X de 16` e `Próxima Aula →`.
+
+### 7.2. Hub de Inteligência Artificial & Links Personalizados
+- **Personas do Gemini Pro**: 9 personas acadêmicas especializadas com diretrizes de sistema (`systemPrompt`) e perguntas simuladas. Cada aluno pode vincular a URL do seu próprio **Gem** (`lms_custom_personas_${normalizedEmail}`).
+- **Gemini Notebook (NotebookLM)**: 9 cadernos configurados com contagem de fontes e geração de áudio. Cada aluno pode vincular a URL do seu **caderno particular do NotebookLM** (`lms_custom_notebooks_${normalizedEmail}`).
+
+### 7.3. Google Agenda & Sincronização Semanal
+- **Grade Oficial 2026.2**: Visualização semanal interativa em 4 colunas (Terça a Sexta).
+- **Sincronização em Lote (.ICS)**: Exportação unificada de todas as 9 disciplinas (`Grade_Completa_2026_2_Seminario_Koinonia.ics`) com horários, reuniões Google Meet, telefones, PINs e pastas do Drive.
+- **Agenda Individual**: Suporte a link da agenda pessoal do aluno (`lms_custom_calendar_url_${normalizedEmail}`).
+
+---
+
+## 8. Ambientes e URLs de Produção
+
+- **URL Oficial de Produção**: `https://koinonialms.vercel.app`
+- **URL Legada (Alias Retrocompatível)**: `https://uiecblms.vercel.app`
+- **Repositório GitHub**: `https://github.com/sacrasub/koinonia-lms` (branch `main`)
+
+
