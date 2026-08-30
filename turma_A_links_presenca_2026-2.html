@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turma A - Grade Horária e Lista de Presença</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --success-color: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 8px 0;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0 0 12px 0;
+        }
+
+        .tz-banner {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 500px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+        }
+
+        .subject-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .professor-name {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .monitor-tag {
+            display: inline-block;
+            background-color: #fef3c7;
+            color: #92400e;
+            font-size: 0.85rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .time-tag {
+            display: inline-block;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.85rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-meet {
+            width: 100%;
+            justify-content: center;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-sizing: border-box;
+        }
+
+        .btn-meet:hover {
+            background-color: #b91c1c;
+        }
+
+        button.btn-copy {
+            width: 100%;
+            justify-content: center;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        button.btn-copy:hover {
+            background-color: #1e3a8a;
+        }
+
+        button.btn-copy.copied {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .day-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: #0f172a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Turma A - Grade Horária e Monitores</h1>
+        <p class="subtitle">Horários convertidos automaticamente para o seu fuso horário local (Horário base: Brasília / UTC-3).</p>
+        <div id="tzBanner" class="tz-banner">🌐 Identificando fuso horário local...</div>
+    </header>
+
+    <!-- NOTIFICAÇÃO TOAST -->
+    <div id="toast" class="toast">Link de presença copiado!</div>
+
+    <div id="scheduleContainer">
+        <!-- Conteúdo renderizado via JavaScript -->
+    </div>
+</div>
+
+<script>
+    // Horários base oficiais de Brasília conforme o Horário Integrado 2026_2
+    const scheduleData = [
+        {
+            day: "Terça-feira",
+            classes: [
+                {
+                    title: "História do Congregacionalismo",
+                    professor: "Profº Ary Júnior",
+                    startBRT: "19:00",
+                    endBRT: "20:25",
+                    monitor: "Camila",
+                    link: "https://forms.gle/2X7xGqge3dqdRKrGA",
+                    meetUrl: "https://meet.google.com/sef-ggpp-bbn"
+                },
+                {
+                    title: "História do Pensamento Cristão II",
+                    professor: "Profº Hilário Bispo",
+                    startBRT: "20:35",
+                    endBRT: "22:00",
+                    monitor: "Cristiano",
+                    link: "https://forms.gle/hM2j2fb7DK923wdR7",
+                    meetUrl: "https://meet.google.com/cxj-yetd-xpf"
+                }
+            ]
+        },
+        {
+            day: "Quarta-feira",
+            classes: [
+                {
+                    title: "Aconselhamento Bíblico II",
+                    professor: "Profº Uilian Santos",
+                    startBRT: "19:00",
+                    endBRT: "20:25",
+                    monitor: "Rosiane",
+                    link: "https://forms.gle/iSLGtjyaTnM9tFGb6",
+                    meetUrl: "https://meet.google.com/ifv-zsdd-gjx"
+                },
+                {
+                    title: "Direitos Humanos",
+                    professor: "Profº Cleiton Barbirato",
+                    startBRT: "20:35",
+                    endBRT: "22:00",
+                    monitor: "Cristiano",
+                    link: "https://forms.gle/QiWRgTit6XjxP9Ci7",
+                    meetUrl: "https://meet.google.com/uva-zmav-rds"
+                }
+            ]
+        },
+        {
+            day: "Quinta-feira",
+            classes: [
+                {
+                    title: "Ética Cristã",
+                    professor: "Profª Karoline Evangelista",
+                    startBRT: "19:00",
+                    endBRT: "20:25",
+                    monitor: "Rosiane",
+                    link: "https://forms.gle/Tn3Ln3iS9cbAUEsJ8",
+                    meetUrl: "https://meet.google.com/ypd-yzwg-nrw"
+                },
+                {
+                    title: "Novo Testamento III - Epístolas Gerais",
+                    professor: "Profº Marcio Leal",
+                    startBRT: "20:35",
+                    endBRT: "22:00",
+                    monitor: "Camila",
+                    link: "https://forms.gle/SC1mSMSZfDhJPPVE9",
+                    meetUrl: "https://meet.google.com/nyn-xjqk-vky"
+                }
+            ]
+        },
+        {
+            day: "Sexta-feira",
+            classes: [
+                {
+                    title: "Plantação e Revitalização de Igrejas II",
+                    professor: "Profº Thácyto",
+                    startBRT: "19:00",
+                    endBRT: "20:00",
+                    monitor: "Camila",
+                    link: "https://forms.gle/bSqjHe7zsV1EJDDB6",
+                    meetUrl: "https://meet.google.com/jwb-wpvc-pzm"
+                },
+                {
+                    title: "TCC I",
+                    professor: "Profª Gabriela Leal",
+                    startBRT: "20:00",
+                    endBRT: "21:00",
+                    monitor: "Rosiane",
+                    link: "https://forms.gle/vULryGYArnJZgBF28",
+                    meetUrl: "https://meet.google.com/jnz-hkqd-edc"
+                },
+                {
+                    title: "História da Cultura Afro Brasileira e Indígena",
+                    professor: "Profº Emerson Silva",
+                    startBRT: "21:00",
+                    endBRT: "22:00",
+                    typeTag: "📹 Módulo Gravado",
+                    link: "",
+                    meetUrl: ""
+                }
+            ]
+        }
+    ];
+
+    function convertBRTToLocal(hhmm) {
+        const parts = hhmm.split(':');
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const dateBRT = new Date(`2026-08-11T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00-03:00`);
+        return dateBRT.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+
+    function renderSchedule() {
+        const container = document.getElementById('scheduleContainer');
+        container.innerHTML = '';
+
+        const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || "Local";
+        const now = new Date();
+        const offsetMinutes = -now.getTimezoneOffset();
+        const offsetHours = offsetMinutes / 60;
+        const gmtString = `GMT${offsetHours >= 0 ? '+' : ''}${offsetHours}`;
+        
+        document.getElementById('tzBanner').innerHTML = `🌐 Horário Local Detectado: <strong>${tzName} (${gmtString})</strong>`;
+
+        scheduleData.forEach(dayGroup => {
+            const dayBadge = document.createElement('div');
+            dayBadge.className = 'day-badge';
+            dayBadge.textContent = dayGroup.day;
+            container.appendChild(dayBadge);
+
+            const grid = document.createElement('div');
+            grid.className = 'card-grid';
+
+            dayGroup.classes.forEach(c => {
+                const localStart = convertBRTToLocal(c.startBRT);
+                const localEnd = convertBRTToLocal(c.endBRT);
+                const localTimeRange = `${localStart} – ${localEnd}`;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const monitorOrTag = c.monitor 
+                    ? `<span class="monitor-tag">👑 Monitor(a): ${c.monitor}</span>`
+                    : `<span class="monitor-tag">${c.typeTag}</span>`;
+
+                let meetButton = '';
+                if (c.meetUrl) {
+                    meetButton = `<a class="btn-meet" href="${c.meetUrl}" target="_blank" rel="noopener noreferrer">🎥 Entrar no Google Meet</a>`;
+                }
+
+                let actionButton = '';
+                if (c.link) {
+                    actionButton = `<button class="btn-copy" data-link="${c.link}" onclick="copyPresenca(this)">📋 Copiar Link de Presença</button>`;
+                } else {
+                    actionButton = `<button class="btn-copy" style="background-color: #94a3b8; cursor: not-allowed;" disabled>Sem link de presença</button>`;
+                }
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="subject-title">${c.title}</div>
+                        <div class="professor-name">${c.professor}</div>
+                        <div class="tags">
+                            <span class="time-tag">⏰ ${localTimeRange}</span>
+                            ${monitorOrTag}
+                        </div>
+                    </div>
+                    <div class="actions">
+                        ${meetButton}
+                        ${actionButton}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            container.appendChild(grid);
+        });
+    }
+
+    function copyPresenca(btnElement) {
+        const link = btnElement.getAttribute('data-link');
+        const textToCopy = `Lista de Presença:
+${link}`;
+        copyText(textToCopy, btnElement);
+    }
+
+    function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    function copyText(text, btnElement) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                handleCopySuccess(btnElement);
+            }).catch(err => {
+                fallbackCopy(text, btnElement);
+            });
+        } else {
+            fallbackCopy(text, btnElement);
+        }
+    }
+
+    function fallbackCopy(text, btnElement) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            handleCopySuccess(btnElement);
+        } catch (err) {
+            alert('Não foi possível copiar automaticamente.');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function handleCopySuccess(btnElement) {
+        showToast();
+        if (btnElement) {
+            const originalText = btnElement.innerHTML;
+            btnElement.innerHTML = '✓ Copiado!';
+            btnElement.classList.add('copied');
+            setTimeout(() => {
+                btnElement.innerHTML = originalText;
+                btnElement.classList.remove('copied');
+            }, 2000);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderSchedule);
+</script>
+
+</body>
+</html>

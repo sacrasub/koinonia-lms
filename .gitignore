@@ -1,0 +1,33 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build output
+/.next/
+/out/
+
+# Production
+/build
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files (Proteção de Chaves e Credenciais)
+.env*.local
+.env
+*.pem
+
+# Vercel
+.vercel
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# OS Files & temporary artifacts
+.DS_Store
+Thumbs.db
+*.log
