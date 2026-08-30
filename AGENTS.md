@@ -1,11 +1,11 @@
-# Regras de Negócio e Diretrizes do Projeto LMS-UIECB
+# Regras de Negócio e Diretrizes do Projeto Koinonia LMS (koinonia-lms)
 
-Este documento contém a especificação arquitetural, regras de negócio e diretrizes operacionais para a criação do Learning Management System (LMS) do Seminário Teológico.
+Este documento contém a especificação arquitetural, regras de negócio e diretrizes operacionais para a criação do Learning Management System (LMS) do Seminário Teológico Koinonia.
 
 ---
 
 ## 1. Visão Geral do Sistema
-O **LMS-UIECB** é uma plataforma modernizada para gestão acadêmica de seminário teológico, focada em alto desempenho, segurança e transição suave do ecossistema de ferramentas legado (Google Workspace/Cerebrum).
+O **Koinonia LMS** (`koinonia-lms`) é uma plataforma modernizada para gestão acadêmica de seminário teológico, focada em alto desempenho, segurança e transição suave do ecossistema de ferramentas legado (Google Workspace/Cerebrum).
 
 ---
 
