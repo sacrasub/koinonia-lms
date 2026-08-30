@@ -1,4 +1,4 @@
-# Gerenciador de Pontos de Restauracao (Snapshots) do LMS-UIECB
+# Gerenciador de Pontos de Restauracao (Snapshots) do Koinonia LMS
 # Permite criar pontos de backup instantaneos e restaurar o projeto a qualquer momento.
 
 param (
@@ -10,7 +10,7 @@ param (
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-$ProjectRoot = "c:\Projetos\seminario\LMS-UIECB"
+$ProjectRoot = "c:\Projetos\seminario\Koinonia-LMS"
 $BackupBaseDir = "c:\Projetos\seminario\_LMS_PONTOS_RESTAURACAO"
 
 if (-not (Test-Path $BackupBaseDir)) {
@@ -20,7 +20,7 @@ if (-not (Test-Path $BackupBaseDir)) {
 function Show-Header {
     Clear-Host
     Write-Host "================================================================================" -ForegroundColor Cyan
-    Write-Host "         LMS-UIECB - GERENCIADOR DE PONTOS DE RESTAURACAO (BACKUP)              " -ForegroundColor Yellow
+    Write-Host "        KOINONIA LMS - GERENCIADOR DE PONTOS DE RESTAURACAO (BACKUP)            " -ForegroundColor Yellow
     Write-Host "================================================================================" -ForegroundColor Cyan
     Write-Host " Diretorio do Projeto : $ProjectRoot" -ForegroundColor Gray
     Write-Host " Cofre de Restauracao : $BackupBaseDir" -ForegroundColor Gray
