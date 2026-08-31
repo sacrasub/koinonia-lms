@@ -917,13 +917,11 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                 className="bg-blue-50 border border-blue-200 text-blue-900 font-bold text-xs rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer max-w-[240px] sm:max-w-md truncate"
               >
                 {availableDisciplinas.map((d, idx) => {
-                  const aulasCount = getAulasByTurma(d.turma_idx ?? studentTurmaIdx).filter(
-                    (a) => a.disciplina_name === d.name || a.disciplina_id === d.id
-                  ).length || 16;
+                  const cleanName = d.name.replace(/^\d{1,2}\s*[-–.]\s*/, '');
                   const numStr = String(idx + 1).padStart(2, '0');
                   return (
                     <option key={d.id} value={d.id}>
-                      {numStr} - {d.name} ({d.code || 'MAT'}) • {aulasCount} Aulas
+                      {numStr} - {cleanName} ({d.code || 'MAT'})
                     </option>
                   );
                 })}
