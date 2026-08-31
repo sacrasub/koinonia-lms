@@ -21,6 +21,7 @@ import {
 } from '@/services/googleAgendaService';
 import { GoogleAgendaEventModal } from '@/components/GoogleAgendaEventModal';
 import { getLocalTimeZoneInfo } from '@/lib/timeUtils';
+import { getGravacoesForDisciplina } from '@/services/gravacoesService';
 
 interface GoogleAgendaViewProps {
   userEmail?: string;
@@ -318,12 +319,34 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                           {event.title}
                         </div>
 
-                        {/* DOCENTE */}
+                        {/* DOCENTE & BOTÕES RÁPIDOS (MEET E GRAVAÇÃO) */}
                         <div className="text-[11px] text-gray-500 font-medium flex items-center justify-between">
-                          <span>{event.professorName}</span>
+                          <span className="truncate max-w-[120px]">{event.professorName}</span>
                           
-                          {/* BOTÃO RÁPIDO DE GOOGLE MEET */}
-                          <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100">
+                          {/* BOTÕES RÁPIDOS DE GRAVAÇÃO E GOOGLE MEET */}
+                          <div className="flex items-center gap-1 opacity-90 group-hover:opacity-100">
+                            {(() => {
+                              const gravacoes = getGravacoesForDisciplina(event.disciplinaId, event.title);
+                              const latest = gravacoes.length > 0 ? gravacoes[gravacoes.length - 1] : null;
+
+                              if (latest) {
+                                return (
+                                  <a
+                                    href={latest.video_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    title={`Assistir Aula Gravada (${latest.title})`}
+                                    className="p-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center gap-0.5"
+                                  >
+                                    <Video className="w-3.5 h-3.5 text-red-600" />
+                                    <span className="text-[9px] font-extrabold pr-0.5">REC</span>
+                                  </a>
+                                );
+                              }
+                              return null;
+                            })()}
+
                             <a
                               href={event.googleMeetUrl}
                               target="_blank"

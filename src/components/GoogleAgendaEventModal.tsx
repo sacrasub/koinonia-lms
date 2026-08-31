@@ -16,6 +16,11 @@ import {
   generateGoogleCalendarUrl, 
   downloadIcsFile 
 } from '@/services/googleAgendaService';
+import { 
+  getGravacoesForDisciplina, 
+  getGravacaoForAula, 
+  OFFICIAL_DRIVE_RECORDINGS_FOLDER 
+} from '@/services/gravacoesService';
 
 interface GoogleAgendaEventModalProps {
   isOpen: boolean;
@@ -202,8 +207,8 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
             </div>
           </div>
 
-          {/* BOTÃO PRINCIPAL: ENTRAR COM O GOOGLE MEET */}
-          <div className="space-y-2.5 pt-1">
+          {/* BOTÃO PRINCIPAL: ENTRAR COM O GOOGLE MEET & AULA GRAVADA */}
+          <div className="space-y-3 pt-1">
             <div className="flex items-center gap-3">
               {/* Ícone de Câmera Meet Amarelo/Multicolor */}
               <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
@@ -237,6 +242,60 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
               <span className="font-mono text-gray-300">{event.googleMeetCode}</span>
               {copiedMeet && <span className="text-emerald-400 text-[11px] font-semibold animate-fadeIn">Link copiado!</span>}
             </div>
+
+            {/* BOTÃO EM DESTAQUE: ASSISTIR AULA GRAVADA DO DIA E MATÉRIA */}
+            {(() => {
+              const gravacoes = getGravacoesForDisciplina(event.disciplinaId, event.title);
+              const latest = gravacoes.length > 0 ? gravacoes[gravacoes.length - 1] : null;
+
+              if (latest) {
+                return (
+                  <div className="pl-11 pt-1">
+                    <a
+                      href={latest.video_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-between gap-3 w-full p-3 rounded-2xl bg-gradient-to-r from-red-950/70 via-rose-950/60 to-purple-950/60 hover:from-red-900/80 hover:to-rose-900/80 text-rose-200 border border-red-800/60 transition-all shadow-sm group active:scale-98"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-red-600/30 text-red-300 flex items-center justify-center font-bold border border-red-500/40">
+                          📹
+                        </div>
+                        <div className="text-left">
+                          <div className="text-xs font-bold text-white group-hover:text-rose-100 flex items-center gap-1.5">
+                            <span>Assistir Aula Gravada ({latest.aula_num ? `Aula ${latest.aula_num}` : 'HD'})</span>
+                            <span className="text-[10px] bg-red-500/30 text-red-200 px-1.5 py-0.2 rounded-full font-bold">
+                              {latest.data_aula || event.dayOfWeek}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-rose-300/80 truncate max-w-[280px]">
+                            {latest.title}
+                          </p>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform shrink-0 mr-1" />
+                    </a>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="pl-11 pt-1">
+                  <a
+                    href={event.driveFolderUrl || OFFICIAL_DRIVE_RECORDINGS_FOLDER}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between gap-3 w-full p-2.5 rounded-2xl bg-gray-800/80 hover:bg-gray-700/80 text-gray-300 border border-gray-700 transition-all group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Video className="w-4 h-4 text-red-400" />
+                      <span className="text-xs font-medium">Pasta de Gravações da Matéria (Drive)</span>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:scale-110 transition-transform shrink-0" />
+                  </a>
+                </div>
+              );
+            })()}
           </div>
 
           {/* PARTICIPAR POR TELEFONE */}
@@ -325,7 +384,7 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
             </div>
           </div>
 
-          {/* ANEXOS & MATERIAIS DE ESTUDO (GOOGLE DRIVE & CORNELL DOCS) */}
+          {/* ANEXOS & MATERIAIS DE ESTUDO (GOOGLE DRIVE & CORNELL DOCS & GRAVAÇÕES) */}
           <div className="flex items-start gap-3 text-xs sm:text-sm">
             <FolderOpen className="w-4 h-4 text-gray-400 mt-1 shrink-0" />
             <div className="flex-1 space-y-2">
@@ -350,11 +409,44 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
                     if (onOpenCornell) onOpenCornell(event.disciplinaId);
                     onClose();
                   }}
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-950/60 hover:bg-blue-900/60 text-blue-200 text-xs font-medium border border-blue-800/60 transition-colors group"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-950/60 hover:bg-blue-900/60 text-blue-200 text-xs font-medium border border-blue-800/60 transition-colors group cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
                   <span>Anotações Cornell</span>
                 </button>
+
+                {/* Chip 3: Gravações da Disciplina */}
+                {(() => {
+                  const gravacoes = getGravacoesForDisciplina(event.disciplinaId, event.title);
+                  if (gravacoes.length === 0) {
+                    return (
+                      <a
+                        href={event.driveFolderUrl || OFFICIAL_DRIVE_RECORDINGS_FOLDER}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 text-xs font-medium border border-rose-800/50 transition-colors group"
+                      >
+                        <Video className="w-3.5 h-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
+                        <span>Gravações (Drive)</span>
+                        <ExternalLink className="w-3 h-3 text-rose-400 ml-1" />
+                      </a>
+                    );
+                  }
+
+                  return gravacoes.map((rec) => (
+                    <a
+                      key={rec.id}
+                      href={rec.video_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-950/70 to-rose-950/70 hover:from-red-900/90 hover:to-rose-900/90 text-rose-200 text-xs font-semibold border border-rose-700/60 transition-all group shadow-xs active:scale-95"
+                    >
+                      <Video className="w-3.5 h-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
+                      <span>{rec.aula_num ? `Aula ${rec.aula_num} Gravada` : 'Aula Gravada (Drive)'}</span>
+                      <ExternalLink className="w-3 h-3 text-rose-300 ml-1" />
+                    </a>
+                  ));
+                })()}
               </div>
             </div>
           </div>
