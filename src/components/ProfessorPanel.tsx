@@ -52,7 +52,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   currentRole = 'professor'
 }) => {
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
-  const isAdmin = currentRole === 'admin' || normalizedEmail === 'sacrasub@gmail.com' || normalizedEmail === 'sacrasub03@gmail.com' || normalizedEmail === 'tondedez@gmail.com' || normalizedEmail === 'ead@uiecbead.com.br';
+  const isAdmin = currentRole === 'admin';
 
   // Lista de todas as disciplinas carregadas do storage/serviço
   const [allDisciplinasList, setAllDisciplinasList] = useState<Disciplina[]>([]);

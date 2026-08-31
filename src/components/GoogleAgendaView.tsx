@@ -26,12 +26,14 @@ interface GoogleAgendaViewProps {
   userEmail?: string;
   onTabChange?: (tab: string) => void;
   compact?: boolean;
+  currentRole?: 'aluno' | 'professor' | 'monitor' | 'admin';
 }
 
 export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
   userEmail,
   onTabChange,
-  compact = false
+  compact = false,
+  currentRole = 'aluno',
 }) => {
   const normalizedEmail = (userEmail || 'sacrasub@gmail.com').toLowerCase().trim();
   const tzInfo = useMemo(() => getLocalTimeZoneInfo(), []);
@@ -366,6 +368,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
         isOpen={selectedEvent !== null}
         onClose={() => setSelectedEvent(null)}
         event={selectedEvent}
+        currentRole={currentRole}
         onOpenCornell={(disciplinaId) => {
           if (onTabChange) onTabChange('aluno-caderno');
         }}

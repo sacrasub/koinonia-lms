@@ -51,6 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           { id: 'aluno-disciplinas', label: 'Minhas Disciplinas (Estudos)', icon: GraduationCap },
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Matéria)', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -73,6 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen },
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Visão)', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -94,6 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           { id: 'monitor-escala', label: 'Grade & Links de Presença', icon: UserCheck },
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
@@ -112,6 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           { id: 'admin-dashboard', label: 'Painel do Administrador', icon: ShieldCheck },
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },

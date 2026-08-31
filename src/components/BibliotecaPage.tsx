@@ -78,8 +78,8 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
   userEmail = 'sacrasub@gmail.com'
 }) => {
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
-  const canAddBooks = currentRole === 'admin' || currentRole === 'professor' || currentRole === 'monitor' || normalizedEmail === 'sacrasub@gmail.com';
-  const canOpenRootDrive = currentRole === 'admin' || currentRole === 'monitor' || normalizedEmail === 'sacrasub@gmail.com';
+  const canAddBooks = currentRole === 'admin' || currentRole === 'professor' || currentRole === 'monitor';
+  const canOpenRootDrive = currentRole === 'admin' || currentRole === 'monitor';
 
   const [allBooks, setAllBooks] = useState<BibliotecaBook[]>(() => getAllBibliotecaBooks());
   const [searchTerm, setSearchTerm] = useState('');

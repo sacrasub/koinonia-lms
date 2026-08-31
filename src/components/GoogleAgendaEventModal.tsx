@@ -23,6 +23,7 @@ interface GoogleAgendaEventModalProps {
   event: GoogleAgendaEvent | null;
   onOpenCornell?: (disciplinaId: string) => void;
   onOpenDrive?: (driveUrl: string) => void;
+  currentRole?: 'aluno' | 'professor' | 'monitor' | 'admin';
 }
 
 export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
@@ -30,7 +31,8 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
   onClose,
   event,
   onOpenCornell,
-  onOpenDrive
+  onOpenDrive,
+  currentRole = 'aluno',
 }) => {
   const [copiedMeet, setCopiedMeet] = useState<boolean>(false);
   const [copiedPhone, setCopiedPhone] = useState<boolean>(false);
@@ -353,17 +355,6 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
                   <FileText className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
                   <span>Anotações Cornell</span>
                 </button>
-
-                {/* Chip 3: Formulário de Presença */}
-                <a
-                  href={event.attendanceFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-200 text-xs font-medium border border-emerald-800/60 transition-colors group"
-                >
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <span>Lista de Presença</span>
-                </a>
               </div>
             </div>
           </div>

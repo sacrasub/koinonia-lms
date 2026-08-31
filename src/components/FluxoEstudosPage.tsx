@@ -16,10 +16,12 @@ import { getSemester2026Weeks, getCurrentWeekIndex } from '@/lib/semesterUtils';
 import { getLocalTimeZoneInfo, TimeZoneInfo } from '@/lib/timeUtils';
 import { trackEvent } from '@/services/telemetryService';
 import { GoogleAgendaView } from '@/components/GoogleAgendaView';
+import { UserRole } from '@/types';
 
 interface FluxoEstudosPageProps {
   userEmail?: string;
   onTabChange?: (tab: string) => void;
+  currentRole?: UserRole;
 }
 
 // ── DEFINIÇÃO DAS 9 PERSONAS DO GEMINI ──
@@ -413,7 +415,7 @@ const DRIVE_FOLDERS_11: DriveFolderItem[] = [
   }
 ];
 
-export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, onTabChange }) => {
+export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, onTabChange, currentRole = 'aluno' }) => {
   const normalizedEmail = (userEmail || 'sacrasub@gmail.com').toLowerCase().trim();
 
   // Abas de navegação interna do módulo
@@ -1505,6 +1507,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
           <GoogleAgendaView 
             userEmail={userEmail} 
             onTabChange={onTabChange} 
+            currentRole={currentRole}
           />
         </div>
       )}

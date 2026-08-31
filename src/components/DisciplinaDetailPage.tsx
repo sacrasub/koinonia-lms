@@ -9,7 +9,8 @@ import {
   Presentation, Maximize2, Minimize2, PenTool, ChevronLeft, ChevronRight, Settings, Play
 } from 'lucide-react';
 import { Disciplina, Aula, LivroRecomendadoDisciplina, GeminiNoteItem, GravacaoAulaItem, Material, AvisoLeituraPreAula, UserRole } from '@/types';
-import { getAllDisciplinas, updateDisciplina } from '@/services/disciplinasService';
+import { getAllDisciplinas, updateDisciplina, getDisciplinasForUser } from '@/services/disciplinasService';
+import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { 
   getLivrosRecomendadosForDisciplina, 
   addLivroRecomendado, 
@@ -47,7 +48,7 @@ import {
   deleteAnnouncement
 } from '@/services/announcementsService';
 import { getAllBibliotecaBooks } from '@/services/bibliotecaService';
-import { getAulasByTurma } from '@/lib/mockData';
+import { getAulasByTurma, getDisciplinasByTurma } from '@/lib/mockData';
 import { getDateForLesson, getShortDateForLesson } from '@/lib/semesterUtils';
 import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { 
@@ -80,6 +81,41 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   const canRecord = (currentRole === 'monitor' || currentRole === 'admin') && !isAluno;
   const canManageContent = (currentRole === 'admin' || currentRole === 'professor' || currentRole === 'monitor') && !isAluno;
   const canManage = canManageContent;
+
+  // Obtém turma do aluno a partir do perfil salvo / cadastro
+  const studentTurmaIdx = useMemo(() => {
+    let initialT = 1;
+    const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
+    if (authUser && authUser.turmaIdx !== undefined) initialT = authUser.turmaIdx;
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem(`lms_profile_${normalizedEmail}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.turmaIdx !== undefined) return Number(parsed.turmaIdx);
+        }
+        const portalStored = localStorage.getItem(`lms_user_portal_profile_${normalizedEmail}`);
+        if (portalStored) {
+          const parsed = JSON.parse(portalStored);
+          if (parsed.turmaIdx !== undefined) return Number(parsed.turmaIdx);
+        }
+      } catch (e) {}
+    }
+    return initialT;
+  }, [normalizedEmail]);
+
+  // Lista de matérias correspondentes à configuração de período/turma do aluno ou perfil ativo
+  const availableDisciplinas = useMemo(() => {
+    if (currentRole === 'aluno') {
+      const turmaDiscs = getDisciplinasByTurma(studentTurmaIdx);
+      return turmaDiscs.length > 0 ? turmaDiscs : getAllDisciplinas();
+    }
+    if (currentRole === 'professor') {
+      const profDiscs = getDisciplinasForUser(normalizedEmail, 'professor');
+      return profDiscs.length > 0 ? profDiscs : getAllDisciplinas();
+    }
+    return getAllDisciplinas();
+  }, [currentRole, studentTurmaIdx, normalizedEmail]);
 
   const [activeSubTab, setActiveSubTab] = useState<'geral' | 'slides' | 'livros' | 'gemini' | 'gravacoes' | 'aulas' | 'materiais' | 'leituras'>(() => {
     if (typeof window !== 'undefined') {
@@ -240,7 +276,18 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   // Carregar dados da disciplina
   const refreshData = () => {
     const allDisc = getAllDisciplinas();
-    const found = allDisc.find((d) => d.id === disciplinaId) || allDisc[0];
+    let found = allDisc.find((d) => d.id === disciplinaId);
+
+    // Se for aluno, garante que a matéria selecionada pertence à sua turma configurada
+    if (currentRole === 'aluno') {
+      const turmaDiscs = getDisciplinasByTurma(studentTurmaIdx);
+      if (turmaDiscs.length > 0 && (!found || !turmaDiscs.some((td) => td.id === found?.id))) {
+        found = turmaDiscs[0];
+      }
+    } else if (!found) {
+      found = allDisc[0];
+    }
+
     if (found) {
       setDisciplina(found);
       setLivrosRecomendados(getLivrosRecomendadosForDisciplina(found.id));
@@ -855,27 +902,33 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
 
           <span className="text-gray-300 hidden sm:inline">|</span>
 
-          {/* Seletor Rápido de Matéria */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-500 font-semibold">Matéria:</span>
-            <select
-              value={disciplina.id}
-              onChange={(e) => {
-                const newId = e.target.value;
-                if (typeof window !== 'undefined') {
-                  window.dispatchEvent(new CustomEvent('lms_open_disciplina_detail', { detail: { disciplinaId: newId } }));
-                }
-              }}
-              aria-label="Selecionar Disciplina"
-              className="bg-blue-50 border border-blue-200 text-blue-900 font-bold text-xs rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer max-w-[220px] sm:max-w-xs truncate"
-            >
-              {getAllDisciplinas().map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name} ({d.code || 'MAT'})
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Seletor Rápido de Matéria */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-gray-500 font-semibold">Matéria:</span>
+              <select
+                value={disciplina.id}
+                onChange={(e) => {
+                  const newId = e.target.value;
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('lms_open_disciplina_detail', { detail: { disciplinaId: newId } }));
+                  }
+                }}
+                aria-label="Selecionar Disciplina"
+                className="bg-blue-50 border border-blue-200 text-blue-900 font-bold text-xs rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer max-w-[240px] sm:max-w-md truncate"
+              >
+                {availableDisciplinas.map((d, idx) => {
+                  const aulasCount = getAulasByTurma(d.turma_idx ?? studentTurmaIdx).filter(
+                    (a) => a.disciplina_name === d.name || a.disciplina_id === d.id
+                  ).length || 16;
+                  const numStr = String(idx + 1).padStart(2, '0');
+                  return (
+                    <option key={d.id} value={d.id}>
+                      {numStr} - {d.name} ({d.code || 'MAT'}) • {aulasCount} Aulas
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
         </div>
 
         <div className="flex items-center gap-2 self-end sm:self-auto">

@@ -41,6 +41,7 @@ import { MetaversoTeologicoPage } from '@/components/MetaversoTeologicoPage';
 import { TccSacramentoPage } from '@/components/TccSacramentoPage';
 import { FluxoEstudosPage } from '@/components/FluxoEstudosPage';
 import { GoogleAgendaView } from '@/components/GoogleAgendaView';
+import { PlanoEstudosPage } from '@/components/PlanoEstudosPage';
 
 
 
@@ -501,11 +502,19 @@ export default function Home() {
       );
     }
     if (activeTab === 'google-agenda' || activeTab === 'agenda' || activeTab === 'grade-horaria') {
-      return <GoogleAgendaView userEmail={userEmail} onTabChange={handleTabChange} />;
+      return <GoogleAgendaView userEmail={userEmail} onTabChange={handleTabChange} currentRole={currentRole} />;
     }
 
     if (activeTab === 'fluxo-estudos' || activeTab === 'estudos' || activeTab === 'ecossistema') {
-      return <FluxoEstudosPage userEmail={userEmail} onTabChange={handleTabChange} />;
+      return <FluxoEstudosPage userEmail={userEmail} onTabChange={handleTabChange} currentRole={currentRole} />;
+    }
+
+    if (activeTab === 'plano-estudos' || activeTab === 'plano-2026' || activeTab === 'cronograma-semestre') {
+      return (
+        <div className="bg-white rounded-3xl border border-amber-100 shadow-sm p-4 sm:p-6">
+          <PlanoEstudosPage userEmail={userEmail} onTabChange={handleTabChange} />
+        </div>
+      );
     }
 
     if (activeTab === 'tcc-sacramento' || activeTab === 'tcc-painel') {

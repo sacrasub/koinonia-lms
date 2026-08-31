@@ -68,7 +68,7 @@ export function getDisciplinasForUser(userEmail?: string, userRole?: UserRole): 
   const normalized = userEmail.toLowerCase().trim();
 
   // Admins possuem visão e controle global sobre todas as matérias
-  if (userRole === 'admin' || normalized === 'sacrasub@gmail.com' || normalized === 'sacrasub03@gmail.com' || normalized === 'tondedez@gmail.com' || normalized === 'ead@uiecbead.com.br') {
+  if (userRole === 'admin') {
     return all;
   }
 
