@@ -9,6 +9,8 @@ export interface Entregavel {
   dataLimite: string;
   dataISO: string;
   tipo: 'prova' | 'trabalho' | 'resumo' | 'apresentacao' | 'entrega';
+  isCustomStudentItem?: boolean;
+  createdBy?: string;
 }
 
 export interface LivroRecomendado {

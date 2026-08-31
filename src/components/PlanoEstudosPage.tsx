@@ -48,10 +48,14 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
   const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
   const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || normalizedEmail.includes('sacra') || normalizedEmail.includes('admin') || normalizedEmail.includes('tondedez') || normalizedEmail.includes('ead@');
+  
+  // Aluno Especial: tem permissão para visualizar e alternar livremente entre turmas mesmo como Aluno
+  const isSpecialStudent = isSuperAdmin || (authUser && authUser.roles && (authUser.roles.includes('admin') || authUser.roles.includes('monitor')));
 
   // Permissões RBAC
   const isMonitorOrAdmin = currentRole === 'monitor' || currentRole === 'admin' || isSuperAdmin;
   const isProfessor = currentRole === 'professor';
+  const isAluno = currentRole === 'aluno';
 
   // Determina o perfil acadêmico do aluno (Turma e Período)
   const studentDefaultTurmaIdx = useMemo(() => {
@@ -107,8 +111,11 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
     if (isMonitorOrAdmin) return true;
     if (isProfessor) {
       const dName = item.disciplina.toLowerCase().trim();
-      const profName = authUser?.name?.toLowerCase() || '';
       return professorDisciplinaNames.has(dName) || (item.disciplinaId && professorDisciplinas.some(d => d.id === item.disciplinaId));
+    }
+    // Aluno comum só pode editar ou excluir entregáveis criados por ele mesmo
+    if (isAluno) {
+      return !!(item.isCustomStudentItem || item.createdBy === normalizedEmail);
     }
     return false;
   };
@@ -124,6 +131,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
       const isNameMatch = authName && (authName.includes(dProfName) || dProfName.includes(authName));
       return isEmailMatch || isNameMatch || professorDisciplinaNames.has(disc.nome.toLowerCase().trim());
     }
+    // Aluno comum NUNCA pode editar requisitos oficiais
     return false;
   };
 
@@ -143,7 +151,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
     }
   }, [selectedTurmaIdx]);
 
-  // Checklist de progresso individual
+  // Checklist de progresso individual de entregáveis
   const [checkedIds, setCheckedIds] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
@@ -151,6 +159,30 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch { return new Set(); }
   });
+
+  // Checklist de Livros Lidos pelo Aluno
+  const [booksReadSet, setBooksReadSet] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const saved = localStorage.getItem(`lms_livros_lidos_${normalizedEmail}`);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  const toggleBookRead = (bookKey: string) => {
+    setBooksReadSet(prev => {
+      const next = new Set(prev);
+      if (next.has(bookKey)) {
+        next.delete(bookKey);
+      } else {
+        next.add(bookKey);
+      }
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`lms_livros_lidos_${normalizedEmail}`, JSON.stringify(Array.from(next)));
+      }
+      return next;
+    });
+  };
 
   const [expandedDisciplina, setExpandedDisciplina] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'cronograma' | 'requisitos' | 'livros'>('cronograma');
@@ -380,6 +412,39 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
               <Plus className="w-4 h-4" />
               <span>+ Novo Entregável</span>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* BARRA DE ALUNO ESPECIAL (CRISTIANO SACRAMENTO / ADMIN EM MODO ALUNO) */}
+      {isAluno && isSpecialStudent && (
+        <div className="p-3.5 bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-2xl text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-blue-400/30">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 rounded-lg bg-blue-500/20 border border-blue-400/30">
+              <GraduationCap className="w-4 h-4 text-amber-300" />
+            </div>
+            <div>
+              <span className="text-xs font-black text-blue-200">
+                🎓 Modo Aluno Especial • Visualização & Lançamento Multiturma
+              </span>
+              <p className="text-[11px] text-blue-300/80">
+                Como aluno especial, você pode alternar e auditar qualquer turma e período.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-blue-200 font-bold">Ver Turma:</span>
+            <select
+              value={selectedTurmaIdx}
+              onChange={(e) => setSelectedTurmaIdx(Number(e.target.value))}
+              className="bg-blue-900 text-white rounded-lg px-2.5 py-1 font-bold text-xs border border-blue-400/40 focus:outline-none cursor-pointer"
+            >
+              <option value={1}>Turma A (7º Período)</option>
+              <option value={2}>Turma B (3º Período)</option>
+              <option value={0}>Fim de Semana (5º Período)</option>
+              <option value={3}>Curso Básico de Teologia</option>
+            </select>
           </div>
         </div>
       )}
@@ -618,20 +683,113 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
         </div>
       )}
 
-      {/* ── SEÇÃO: LIVROS ── */}
+      {/* ── SEÇÃO: LIVROS COM CHECKLIST DE LEITURA ── */}
       {activeSection === 'livros' && (
         <div className="space-y-5">
+          {/* Card de Progresso Geral de Leituras */}
+          {(() => {
+            const totalLivros = livrosObrigatorios.length + livrosBase.length + livrosRecomendados.length;
+            let readCount = 0;
+            [...livrosObrigatorios, ...livrosBase, ...livrosRecomendados].forEach(l => {
+              const key = `${l.d}_${l.t}`.toLowerCase();
+              if (booksReadSet.has(key)) readCount++;
+            });
+            const pct = totalLivros > 0 ? Math.round((readCount / totalLivros) * 100) : 0;
+
+            return (
+              <div className="p-4 sm:p-5 bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 rounded-2xl text-white border border-emerald-500/30 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center font-black text-lg">
+                    📚
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white">Progresso de Leituras do Aluno</h3>
+                    <p className="text-xs text-emerald-200/80">
+                      {readCount} de {totalLivros} livros lidos nesta turma ({pct}% concluído)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full sm:w-56 space-y-1">
+                  <div className="flex justify-between text-[11px] font-bold text-emerald-300">
+                    <span>Concluído</span>
+                    <span>{pct}%</span>
+                  </div>
+                  <div className="h-2 bg-black/40 rounded-full overflow-hidden border border-emerald-500/30">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full transition-all duration-500"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Obrigatórios */}
           {livrosObrigatorios.length > 0 && (
             <div>
-              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-red-500" /><h3 className="text-sm font-bold text-red-700">📕 Leitura Obrigatória ({turmaNome})</h3></div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                <h3 className="text-sm font-bold text-red-700">📕 Leitura Obrigatória ({turmaNome})</h3>
+              </div>
               <div className="space-y-2">
-                {livrosObrigatorios.map((l, i) => (
-                  <div key={i} className="rounded-xl border border-red-200 p-4 bg-white shadow-sm flex items-start gap-3">
-                    <span className="text-2xl flex-shrink-0">📕</span>
-                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
-                  </div>
-                ))}
+                {livrosObrigatorios.map((l, i) => {
+                  const key = `${l.d}_${l.t}`.toLowerCase();
+                  const isRead = booksReadSet.has(key);
+
+                  return (
+                    <div
+                      key={i}
+                      className={`rounded-2xl border p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
+                        isRead ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-red-200'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl flex-shrink-0">📕</span>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className={`font-bold text-sm ${isRead ? 'line-through text-slate-500' : 'text-slate-800'}`}>
+                              {l.t}
+                            </p>
+                            {isRead && (
+                              <span className="text-[10px] bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded-full">
+                                ✓ Lido
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 mb-1">{l.a}</p>
+                          <span className="text-xs bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded-full">
+                            {l.d}
+                          </span>
+                          <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleBookRead(key)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 self-start sm:self-center active:scale-95 ${
+                          isRead
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
+                            : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-300'
+                        }`}
+                      >
+                        {isRead ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Lido / Concluído</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 inline-block" />
+                            <span>Marcar como Lido</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -639,14 +797,67 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
           {/* Base */}
           {livrosBase.length > 0 && (
             <div>
-              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-blue-500" /><h3 className="text-sm font-bold text-blue-700">📘 Livro-Texto (Base das Aulas)</h3></div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <h3 className="text-sm font-bold text-blue-700">📘 Livro-Texto (Base das Aulas)</h3>
+              </div>
               <div className="space-y-2">
-                {livrosBase.map((l, i) => (
-                  <div key={i} className="rounded-xl border border-blue-200 p-4 bg-white shadow-sm flex items-start gap-3">
-                    <span className="text-2xl flex-shrink-0">📘</span>
-                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
-                  </div>
-                ))}
+                {livrosBase.map((l, i) => {
+                  const key = `${l.d}_${l.t}`.toLowerCase();
+                  const isRead = booksReadSet.has(key);
+
+                  return (
+                    <div
+                      key={i}
+                      className={`rounded-2xl border p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
+                        isRead ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-blue-200'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl flex-shrink-0">📘</span>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className={`font-bold text-sm ${isRead ? 'line-through text-slate-500' : 'text-slate-800'}`}>
+                              {l.t}
+                            </p>
+                            {isRead && (
+                              <span className="text-[10px] bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded-full">
+                                ✓ Lido
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 mb-1">{l.a}</p>
+                          <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
+                            {l.d}
+                          </span>
+                          <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleBookRead(key)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 self-start sm:self-center active:scale-95 ${
+                          isRead
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
+                            : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-300'
+                        }`}
+                      >
+                        {isRead ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Lido / Concluído</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 inline-block" />
+                            <span>Marcar como Lido</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -654,14 +865,66 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
           {/* Recomendados */}
           {livrosRecomendados.length > 0 && (
             <div>
-              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-green-500" /><h3 className="text-sm font-bold text-green-700">📗 Leituras Recomendadas</h3></div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                <h3 className="text-sm font-bold text-green-700">📗 Leituras Recomendadas</h3>
+              </div>
               <div className="space-y-2">
-                {livrosRecomendados.map((l, i) => (
-                  <div key={i} className="rounded-xl border border-green-200 p-3 bg-white shadow-sm flex items-start gap-3">
-                    <span className="text-xl flex-shrink-0">📗</span>
-                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full">{l.d}</span></div>
-                  </div>
-                ))}
+                {livrosRecomendados.map((l, i) => {
+                  const key = `${l.d}_${l.t}`.toLowerCase();
+                  const isRead = booksReadSet.has(key);
+
+                  return (
+                    <div
+                      key={i}
+                      className={`rounded-2xl border p-3.5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
+                        isRead ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-green-200'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-xl flex-shrink-0">📗</span>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className={`font-bold text-sm ${isRead ? 'line-through text-slate-500' : 'text-slate-800'}`}>
+                              {l.t}
+                            </p>
+                            {isRead && (
+                              <span className="text-[10px] bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded-full">
+                                ✓ Lido
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 mb-1">{l.a}</p>
+                          <span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full">
+                            {l.d}
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleBookRead(key)}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 self-start sm:self-center active:scale-95 ${
+                          isRead
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
+                            : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-300'
+                        }`}
+                      >
+                        {isRead ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Lido</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="w-3.5 h-3.5 rounded-full border-2 border-slate-400 inline-block" />
+                            <span>Marcar Lido</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

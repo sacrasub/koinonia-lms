@@ -95,9 +95,25 @@ export const CentralAjudaPage: React.FC<CentralAjudaPageProps> = ({
     return () => window.removeEventListener('lms_tutoriais_updated', handleUpdate);
   }, []);
 
-  // Filtros
+  // Filtros com RBAC Estrito (Alunos só veem vídeos de alunos)
   const filteredTutorials = useMemo(() => {
     return tutorials.filter((tut) => {
+      // 1. Regra Supremamente Estrita de Audiência por Perfil
+      if (currentRole === 'aluno') {
+        if (tut.audience !== 'aluno' && tut.audience !== 'todos') {
+          return false; // Aluno NUNCA vê vídeos de monitor ou professor
+        }
+      } else if (currentRole === 'professor') {
+        if (tut.audience !== 'professor' && tut.audience !== 'todos') {
+          return false;
+        }
+      } else if (currentRole === 'monitor') {
+        if (tut.audience !== 'monitor' && tut.audience !== 'aluno' && tut.audience !== 'todos') {
+          return false;
+        }
+      }
+
+      // 2. Filtro da Aba Selecionada (se admin ou monitor)
       const matchesAudience = 
         selectedAudience === 'todos' 
           ? true 
@@ -113,7 +129,7 @@ export const CentralAjudaPage: React.FC<CentralAjudaPageProps> = ({
 
       return matchesAudience && matchesQuery;
     });
-  }, [tutorials, selectedAudience, searchQuery]);
+  }, [tutorials, selectedAudience, searchQuery, currentRole]);
 
   // Contagens por perfil
   const countTodos = tutorials.length;
@@ -278,59 +294,107 @@ export const CentralAjudaPage: React.FC<CentralAjudaPageProps> = ({
       {/* BARRA DE FILTROS POR PERFIL E BUSCA */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs space-y-4">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          {/* Abas de Perfil */}
+          {/* Abas de Perfil Condicionais ao RBAC */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 no-scrollbar">
-            <button
-              type="button"
-              onClick={() => setSelectedAudience('todos')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
-                selectedAudience === 'todos'
-                  ? 'bg-blue-950 text-white shadow-xs'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Todos os Tutoriais ({countTodos})</span>
-            </button>
+            {currentRole === 'aluno' && (
+              <div className="px-3.5 py-2 rounded-xl text-xs font-black bg-blue-700 text-white shadow-xs flex items-center gap-2 shrink-0">
+                <GraduationCap className="w-4 h-4" />
+                <span>Tutoriais em Vídeo para Alunos ({countAlunos})</span>
+              </div>
+            )}
 
-            <button
-              type="button"
-              onClick={() => setSelectedAudience('aluno')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
-                selectedAudience === 'aluno'
-                  ? 'bg-blue-700 text-white shadow-xs'
-                  : 'bg-blue-50 text-blue-900 hover:bg-blue-100'
-              }`}
-            >
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>Para Alunos ({countAlunos})</span>
-            </button>
+            {currentRole === 'professor' && (
+              <div className="px-3.5 py-2 rounded-xl text-xs font-black bg-purple-800 text-white shadow-xs flex items-center gap-2 shrink-0">
+                <BookOpen className="w-4 h-4" />
+                <span>Tutoriais para Professores ({countProfessores})</span>
+              </div>
+            )}
 
-            <button
-              type="button"
-              onClick={() => setSelectedAudience('monitor')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
-                selectedAudience === 'monitor'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100'
-              }`}
-            >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>Para Monitores ({countMonitores})</span>
-            </button>
+            {currentRole === 'monitor' && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('monitor')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'monitor'
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100'
+                  }`}
+                >
+                  <UserCheck className="w-3.5 h-3.5" />
+                  <span>Para Monitores ({countMonitores})</span>
+                </button>
 
-            <button
-              type="button"
-              onClick={() => setSelectedAudience('professor')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
-                selectedAudience === 'professor'
-                  ? 'bg-purple-800 text-white shadow-xs'
-                  : 'bg-purple-50 text-purple-900 hover:bg-purple-100'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Para Professores ({countProfessores})</span>
-            </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('aluno')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'aluno'
+                      ? 'bg-blue-700 text-white shadow-xs'
+                      : 'bg-blue-50 text-blue-900 hover:bg-blue-100'
+                  }`}
+                >
+                  <GraduationCap className="w-3.5 h-3.5" />
+                  <span>Para Alunos ({countAlunos})</span>
+                </button>
+              </>
+            )}
+
+            {currentRole === 'admin' && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('todos')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'todos'
+                      ? 'bg-blue-950 text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Todos os Tutoriais ({countTodos})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('aluno')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'aluno'
+                      ? 'bg-blue-700 text-white shadow-xs'
+                      : 'bg-blue-50 text-blue-900 hover:bg-blue-100'
+                  }`}
+                >
+                  <GraduationCap className="w-3.5 h-3.5" />
+                  <span>Para Alunos ({countAlunos})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('monitor')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'monitor'
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100'
+                  }`}
+                >
+                  <UserCheck className="w-3.5 h-3.5" />
+                  <span>Para Monitores ({countMonitores})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedAudience('professor')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 cursor-pointer ${
+                    selectedAudience === 'professor'
+                      ? 'bg-purple-800 text-white shadow-xs'
+                      : 'bg-purple-50 text-purple-900 hover:bg-purple-100'
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Para Professores ({countProfessores})</span>
+                </button>
+              </>
+            )}
           </div>
 
           {/* Campo de Busca Rápida */}
