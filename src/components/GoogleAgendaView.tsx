@@ -162,13 +162,25 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
     setTimeout(() => setSyncStatusMsg(null), 4000);
   };
 
-  // Navegação no Calendário
-  const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  // Navegação no Calendário (Mês ou Semana)
+  const handlePrev = () => {
+    if (viewMode === 'semana') {
+      const d = new Date(currentDate);
+      d.setDate(d.getDate() - 7);
+      setCurrentDate(d);
+    } else {
+      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    }
   };
 
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  const handleNext = () => {
+    if (viewMode === 'semana') {
+      const d = new Date(currentDate);
+      d.setDate(d.getDate() + 7);
+      setCurrentDate(d);
+    } else {
+      setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    }
   };
 
   const handleGoToday = () => {
@@ -179,6 +191,52 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
       setCurrentDate(new Date(2026, 7, 25)); // 25 de Agosto de 2026
     }
   };
+
+  // Mapeamento dos 7 Dias da Semana Selecionada
+  const weekDaysGrid = useMemo(() => {
+    const sunday = new Date(currentDate);
+    sunday.setDate(currentDate.getDate() - currentDate.getDay());
+
+    const days: { date: Date; dateStr: string; dayNum: number; dayName: string; dayFullName: string; isToday: boolean }[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(sunday);
+      d.setDate(sunday.getDate() + i);
+
+      const mStr = String(d.getMonth() + 1).padStart(2, '0');
+      const dStr = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${d.getFullYear()}-${mStr}-${dStr}`;
+
+      const now = new Date();
+      const isToday = now.getFullYear() === d.getFullYear() && now.getMonth() === d.getMonth() && now.getDate() === d.getDate();
+
+      days.push({
+        date: d,
+        dateStr,
+        dayNum: d.getDate(),
+        dayName: WEEKDAY_NAMES[i],
+        dayFullName: WEEKDAY_FULL_NAMES[i],
+        isToday,
+      });
+    }
+
+    return days;
+  }, [currentDate]);
+
+  // Título Dinâmico do Cabeçalho (Mês ou Intervalo da Semana)
+  const headerDateTitle = useMemo(() => {
+    if (viewMode === 'semana') {
+      const first = weekDaysGrid[0];
+      const last = weekDaysGrid[6];
+      if (first && last) {
+        if (first.date.getMonth() === last.date.getMonth()) {
+          return `${first.dayNum} a ${last.dayNum} de ${MONTH_NAMES[first.date.getMonth()]} de ${first.date.getFullYear()}`;
+        }
+        return `${first.dayNum} de ${MONTH_NAMES[first.date.getMonth()]} – ${last.dayNum} de ${MONTH_NAMES[last.date.getMonth()]} de ${last.date.getFullYear()}`;
+      }
+    }
+    return `${MONTH_NAMES[currentDate.getMonth()]} de ${currentDate.getFullYear()}`;
+  }, [currentDate, viewMode, weekDaysGrid]);
 
   // Abre criação de evento em data específica
   const handleOpenCreateForDate = (dateStr: string) => {
@@ -430,24 +488,24 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                 Hoje
               </button>
               <button
-                onClick={handlePrevMonth}
-                title="Mês anterior"
+                onClick={handlePrev}
+                title="Período anterior"
                 className="p-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 transition cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
-                onClick={handleNextMonth}
-                title="Próximo mês"
+                onClick={handleNext}
+                title="Próximo período"
                 className="p-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 transition cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* TÍTULO DO MÊS / ANO ATUAL */}
+            {/* TÍTULO DO MÊS OU INTERVALO DA SEMANA */}
             <h2 className="text-base sm:text-lg font-extrabold text-slate-900">
-              {MONTH_NAMES[currentDate.getMonth()]} de {currentDate.getFullYear()}
+              {headerDateTitle}
             </h2>
           </div>
 
@@ -464,6 +522,15 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
               >
                 <CalendarIcon className="w-3.5 h-3.5" />
                 <span>Mês</span>
+              </button>
+              <button
+                onClick={() => setViewMode('semana')}
+                className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 ${
+                  viewMode === 'semana' ? 'bg-white text-blue-700 shadow-xs font-black' : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Grid className="w-3.5 h-3.5" />
+                <span>Semana</span>
               </button>
               <button
                 onClick={() => setViewMode('programacao')}
@@ -656,7 +723,163 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* 3. VISÃO 2: PROGRAMAÇÃO (AGENDA LINEAR CRONOLÓGICA)                        */}
+      {/* 2.5 VISÃO: SEMANA (7 COLUNAS DA SEMANA COM EVENTOS E ATALHOS)             */}
+      {/* ========================================================================= */}
+      {viewMode === 'semana' && (
+        <div className="bg-white rounded-3xl border border-gray-200/90 shadow-sm overflow-hidden p-4 sm:p-5 space-y-4">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
+              <Grid className="w-5 h-5 text-blue-600" />
+              <span>Visão Semanal • {headerDateTitle}</span>
+            </h3>
+            <span className="text-xs font-bold text-gray-500">
+              7 dias • Domingo a Sábado
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3">
+            {weekDaysGrid.map((dayItem) => {
+              const dayEvents = eventsByDateMap[dayItem.dateStr] || [];
+
+              return (
+                <div
+                  key={dayItem.dateStr}
+                  className={`rounded-2xl p-3 border transition-all flex flex-col justify-between min-h-[320px] ${
+                    dayItem.isToday
+                      ? 'bg-blue-50/40 border-blue-300 ring-2 ring-blue-400/20'
+                      : 'bg-slate-50/70 border-gray-200/80 hover:border-blue-200'
+                  }`}
+                >
+                  <div className="space-y-2.5">
+                    {/* Cabeçalho do Dia */}
+                    <div className="flex items-center justify-between pb-2 border-b border-gray-200/60">
+                      <div>
+                        <div className="text-[11px] font-black text-slate-600 uppercase">
+                          {dayItem.dayName}
+                        </div>
+                        <div className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                          <span
+                            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                              dayItem.isToday
+                                ? 'bg-blue-600 text-white shadow-xs'
+                                : 'text-slate-900'
+                            }`}
+                          >
+                            {dayItem.dayNum}
+                          </span>
+                          {dayItem.isToday && (
+                            <span className="text-[9px] font-bold text-blue-600 uppercase">Hoje</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleOpenCreateForDate(dayItem.dateStr)}
+                        title={`Adicionar compromisso em ${dayItem.dayNum}/${dayItem.date.getMonth() + 1}`}
+                        className="w-6 h-6 rounded-full bg-white hover:bg-blue-600 hover:text-white border border-gray-300 text-slate-700 font-black text-xs flex items-center justify-center transition shadow-2xs cursor-pointer"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Lista de Eventos do Dia */}
+                    <div className="space-y-2">
+                      {dayEvents.length === 0 ? (
+                        <div className="py-8 text-center text-gray-400 text-[11px] font-medium">
+                          Sem aulas ou entregas
+                        </div>
+                      ) : (
+                        dayEvents.map((ev) => (
+                          <div
+                            key={ev.id}
+                            onClick={() => setSelectedUniversalEvent(ev)}
+                            className="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs hover:border-blue-300 transition cursor-pointer space-y-1.5 group"
+                          >
+                            <div className="flex items-center justify-between gap-1">
+                              <span
+                                style={{ backgroundColor: ev.colorTag }}
+                                className="text-[9px] text-white font-extrabold px-1.5 py-0.2 rounded font-mono"
+                              >
+                                {ev.startTime || 'Dia todo'}
+                              </span>
+                              <span className={`text-[8px] font-black uppercase px-1 rounded ${
+                                ev.category === 'aula'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : ev.category === 'entregavel'
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : ev.category === 'dia_especial'
+                                  ? 'bg-orange-100 text-orange-800'
+                                  : 'bg-purple-100 text-purple-800'
+                              }`}>
+                                {ev.category === 'evento_pessoal' ? 'Pessoal' : ev.category}
+                              </span>
+                            </div>
+
+                            <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-600 transition leading-snug line-clamp-2">
+                              {ev.title}
+                            </div>
+
+                            {ev.professorName && (
+                              <div className="text-[10px] text-gray-500 truncate">
+                                👨‍🏫 {ev.professorName}
+                              </div>
+                            )}
+
+                            {/* Atalhos Rápidos */}
+                            <div className="flex items-center gap-1 pt-1 border-t border-gray-100">
+                              {ev.meetUrl && (
+                                <a
+                                  href={ev.meetUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="px-2 py-0.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded text-[10px] font-bold flex items-center gap-1"
+                                >
+                                  <Video className="w-2.5 h-2.5" />
+                                  <span>Meet</span>
+                                </a>
+                              )}
+                              {ev.videoUrl && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveVideoModal({
+                                      isOpen: true,
+                                      title: ev.title,
+                                      videoUrl: ev.videoUrl!,
+                                      disciplinaName: ev.disciplinaCode,
+                                    });
+                                  }}
+                                  className="px-2 py-0.5 bg-red-50 text-red-700 hover:bg-red-100 rounded text-[10px] font-bold flex items-center gap-0.5 cursor-pointer"
+                                >
+                                  <span>REC</span>
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOpenCreateForDate(dayItem.dateStr)}
+                    className="w-full mt-2 py-1 bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-[11px] font-bold rounded-lg border border-dashed border-gray-300 transition text-center cursor-pointer"
+                  >
+                    + Adicionar
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 3. VISÃO 3: PROGRAMAÇÃO (AGENDA LINEAR CRONOLÓGICA)                        */}
       {/* ========================================================================= */}
       {viewMode === 'programacao' && (
         <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm space-y-4">
