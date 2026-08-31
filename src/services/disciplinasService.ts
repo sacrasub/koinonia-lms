@@ -153,9 +153,10 @@ export function saveAllMateriais(list: Material[]): void {
   }
 }
 
-export function getMateriaisForDisciplinas(disciplinaIds: string[]): Material[] {
+export function getMateriaisForDisciplinas(disciplinaIds?: string[]): Material[] {
   const all = getAllMateriais();
-  if (!disciplinaIds || disciplinaIds.length === 0) return all;
+  if (disciplinaIds === undefined) return all;
+  if (disciplinaIds.length === 0) return [];
   const set = new Set(disciplinaIds);
   return all.filter((m) => set.has(m.disciplina_id));
 }
@@ -230,9 +231,10 @@ export function saveAllAvaliacoes(list: Avaliacao[]): void {
   }
 }
 
-export function getAvaliacoesForDisciplinas(disciplinaIds: string[]): Avaliacao[] {
+export function getAvaliacoesForDisciplinas(disciplinaIds?: string[]): Avaliacao[] {
   const all = getAllAvaliacoes();
-  if (!disciplinaIds || disciplinaIds.length === 0) return all;
+  if (disciplinaIds === undefined) return all;
+  if (disciplinaIds.length === 0) return [];
   const set = new Set(disciplinaIds);
   return all.filter((a) => set.has(a.disciplina_id));
 }

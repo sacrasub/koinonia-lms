@@ -58,10 +58,34 @@ export const PastasVirtuaisPage: React.FC<PastasVirtuaisPageProps> = ({
     return () => window.removeEventListener('lms_disciplinas_updated', handleUpdate);
   }, []);
 
-  // Filtra as disciplinas pela turma e termo de busca
+  // Filtra as disciplinas pela turma, termo de busca e perfil do professor
   const filteredDisciplinas = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
-    return disciplinasList.filter((d) => {
+    let baseList = disciplinasList;
+
+    // Se for professor, restringe estritamente às matérias que ele leciona
+    if (currentRole === 'professor') {
+      baseList = baseList.filter((d) => {
+        const dProfEmail = (d.professor_email || '').toLowerCase().trim();
+        const dProfName = d.professor_name.toLowerCase().trim();
+        const isEmailMatch = dProfEmail && dProfEmail === normalizedEmail;
+        const authName = INITIAL_AUTHORIZED_USERS[normalizedEmail]?.name?.toLowerCase() || '';
+        const isNameMatch = authName && (authName.includes(dProfName) || dProfName.includes(authName));
+        return isEmailMatch || isNameMatch;
+      });
+
+      return baseList.filter((d) => {
+        if (!q) return true;
+        return (
+          d.name.toLowerCase().includes(q) ||
+          d.professor_name.toLowerCase().includes(q) ||
+          d.day_of_week.toLowerCase().includes(q) ||
+          (d.code && d.code.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    return baseList.filter((d) => {
       const matchTurma = (d.turma_idx ?? 1) === selectedTurmaIdx;
       if (!matchTurma) return false;
       if (!q) return true;
@@ -72,7 +96,7 @@ export const PastasVirtuaisPage: React.FC<PastasVirtuaisPageProps> = ({
         (d.code && d.code.toLowerCase().includes(q))
       );
     });
-  }, [disciplinasList, selectedTurmaIdx, searchQuery]);
+  }, [disciplinasList, selectedTurmaIdx, searchQuery, currentRole, normalizedEmail]);
 
   // Agrupamento de disciplinas por dia da semana para a Visão por Dias
   const groupedByDay = useMemo(() => {

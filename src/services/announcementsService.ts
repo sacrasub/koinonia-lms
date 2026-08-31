@@ -196,13 +196,14 @@ export function unarchiveAnnouncement(id: string): void {
 }
 
 export function getAnnouncementsForDisciplinas(
-  disciplinaIds: string[],
+  disciplinaIds?: string[],
   includeArchived: boolean = true
 ): AvisoLeituraPreAula[] {
   const all = getAnnouncements();
   let filtered = all;
 
-  if (disciplinaIds && disciplinaIds.length > 0) {
+  if (disciplinaIds !== undefined) {
+    if (disciplinaIds.length === 0) return [];
     const set = new Set(disciplinaIds);
     filtered = filtered.filter((a) => set.has(a.disciplina_id));
   }
