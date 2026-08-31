@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   BookOpen, Calendar, AlertTriangle,
   ChevronDown, ChevronUp, Target,
   FileText, GraduationCap,
   Info, MessageSquare, Check
 } from 'lucide-react';
+import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 
 interface PlanoEstudosPageProps {
   userEmail?: string;
@@ -48,13 +49,17 @@ interface RequisitosDisciplina {
   whatsapp?: string;
 }
 
-const DIAS_ESPECIAIS = [
+// Dias especiais exclusivos para o Curso Básico de Teologia
+const DIAS_ESPECIAIS_CURSO_BASICO = [
   { data: '08/09/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 07/09 (Independência do Brasil)' },
   { data: '13/10/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 12/10 (Nossa Senhora Aparecida)' },
   { data: '03/11/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 02/11 (Finados)' },
 ];
 
-const ENTREGAVEIS: Entregavel[] = [
+// ============================================================
+// DADOS DA TURMA A (7º PERÍODO)
+// ============================================================
+const ENTREGAVEIS_TURMA_A: Entregavel[] = [
   { id: 'e-tcc-projeto', disciplina: 'TCC I', titulo: 'Projeto de Pesquisa Estruturado ABNT', descricao: 'Estrutura: Capa, Sumário, Objetivos (geral + 2-3 específicos), Justificativa, Referencial Teórico, Cronograma. Linguagem científica impessoal. Proibido uso de IA.', dataLimite: '04/09/2026 (Sex)', dataISO: '2026-09-04', tipo: 'entrega' },
   { id: 'e-his-av1', disciplina: 'História do Congregacionalismo', titulo: 'AV1: Prova Escrita — Unidade 1 (Congregacionalismo Mundial)', descricao: '0-8 pts prova + 1 pt frequência + 1 pt leitura obrigatória. Câmeras obrigatórias.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
   { id: 'e-hpc-av1', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho' },
@@ -72,7 +77,7 @@ const ENTREGAVEIS: Entregavel[] = [
   { id: 'e-tcc-artigo', disciplina: 'TCC I', titulo: 'Entrega Final: Artigo Científico Completo (máx. 20 pág.)', descricao: 'Sem IA. Ordem: Metodologia → Desenvolvimento → Conclusão → Resumo & Introdução por último. Referências ABNT em ordem alfabética.', dataLimite: '04/12/2026 (Sex)', dataISO: '2026-12-04', tipo: 'entrega' },
 ];
 
-const REQUISITOS_DISCIPLINAS: RequisitosDisciplina[] = [
+const REQUISITOS_TURMA_A: RequisitosDisciplina[] = [
   {
     id: 'disc-1', num: '01', nome: 'História do Congregacionalismo', professor: 'Profº Ary Júnior',
     cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
@@ -137,6 +142,89 @@ const REQUISITOS_DISCIPLINAS: RequisitosDisciplina[] = [
   },
 ];
 
+// ============================================================
+// DADOS DA TURMA B (3º PERÍODO)
+// ============================================================
+const ENTREGAVEIS_TURMA_B: Entregavel[] = [
+  { id: 'e-tb-int-av1', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV1: Prova Escrita — Contexto Histórico e Canonicidade', descricao: 'Avaliação sobre formação do cânon e evangelhos sinóticos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
+  { id: 'e-tb-her-av1', disciplina: 'Hermenêutica Bíblica', titulo: 'AV1: Trabalho de Exegese e Interpretação de Texto', descricao: 'Aplicação dos princípios hermenêuticos histórico-gramaticais.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
+  { id: 'e-tb-dis-av1', disciplina: 'Fundamentos e Prática do Discipulado', titulo: 'AV1: Projeto de Discipulado na Igreja Local', descricao: 'Elaboração de um guia prático de mentoria e acompanhamento espiritual.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega' },
+  { id: 'e-tb-mis-av1', disciplina: 'Teologia da Missão', titulo: 'AV1: Resenha Crítica de Missiologia Contemporânea', descricao: 'Análise teológica dos desafios missionários urbanos e transculturais.', dataLimite: '02/10/2026 (Sex)', dataISO: '2026-10-02', tipo: 'resumo' },
+  { id: 'e-tb-int-av2', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV2: Prova Objetiva Final — Cartas Paulinas e Gerais', descricao: 'Prova final via Google Forms abrangendo todo o conteúdo semestral.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
+  { id: 'e-tb-her-av2', disciplina: 'Hermenêutica Bíblica', titulo: 'AV2: Prova Prática de Interpretação', descricao: 'Análise e resolução de passagens bíblicas complexas.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
+  { id: 'e-tb-ts-av2', disciplina: 'Teologia Sistemática III', titulo: 'AV2: Artigo de Cristologia e Pneumatologia', descricao: 'Síntese doutrinária das naturezas de Cristo e obra do Espírito Santo.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'entrega' },
+  { id: 'e-tb-hom-av2', disciplina: 'Homilética II', titulo: 'AV2: Pregação Expositiva em Vídeo', descricao: 'Gravação e entrega de sermão expositivo estruturado.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'apresentacao' },
+];
+
+const REQUISITOS_TURMA_B: RequisitosDisciplina[] = [
+  {
+    id: 'disc-b1', num: '01', nome: 'Introdução ao Novo Testamento', professor: 'Profº Ary Júnior',
+    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
+    regrasGerais: ['📷 Câmeras ligadas durante toda a aula', '📅 Leitura obrigatória de artigos e sínteses exegéticas'],
+    criteriosAvaliacao: ['✍️ AV1 e AV2: Provas escritas e participação ativa'],
+    livros: [{ titulo: 'Introdução ao Novo Testamento', autor: 'D. A. Carson & Douglas J. Moo', tipo: 'base' }],
+  },
+  {
+    id: 'disc-b2', num: '02', nome: 'Hermenêutica Bíblica', professor: 'Profº Hilário Bispo',
+    cor: 'text-blue-800', corFundo: 'bg-blue-50', corBorda: 'border-blue-300',
+    regrasGerais: ['📝 Exercícios exegéticos semanais', '🎯 Foco na interpretação literal histórico-gramatical'],
+    criteriosAvaliacao: ['📄 AV1: Trabalho de análise de texto', '📱 AV2: Prova prática'],
+    livros: [{ titulo: 'Entendes o que Lês?', autor: 'Gordon Fee & Douglas Stuart', tipo: 'obrigatorio' }],
+  },
+  {
+    id: 'disc-b3', num: '03', nome: 'Fundamentos e Prática do Discipulado', professor: 'Profº Uilian Santos',
+    cor: 'text-emerald-800', corFundo: 'bg-emerald-50', corBorda: 'border-emerald-300',
+    regrasGerais: ['📋 Exercícios práticos na igreja local', '✅ Presença e pontualidade nas transmissões'],
+    criteriosAvaliacao: ['📱 Provas objetivas e plano de discipulado prático'],
+    livros: [{ titulo: 'O Plano Mestre de Evangelismo', autor: 'Robert Coleman', tipo: 'obrigatorio' }],
+  },
+  {
+    id: 'disc-b4', num: '04', nome: 'Teologia da Missão', professor: 'Profº Cleiton Barbirato',
+    cor: 'text-indigo-800', corFundo: 'bg-indigo-50', corBorda: 'border-indigo-300',
+    regrasGerais: ['📊 Leituras missiológicas e debates', '📧 Trabalhos enviados por e-mail'],
+    criteriosAvaliacao: ['✍️ Resenha crítica e prova objetiva'],
+    livros: [{ titulo: 'A Missão da Igreja Hoje', autor: 'Michael Green', tipo: 'recomendado' }],
+  },
+];
+
+// ============================================================
+// DADOS DO FIM DE SEMANA (5º PERÍODO)
+// ============================================================
+const ENTREGAVEIS_FDS: Entregavel[] = [
+  { id: 'e-fds-at-av1', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV1: Prova Escrita — Alianças e Lei Mosaica', descricao: 'Avaliação das narrativas de Gênesis a Deuteronômio.', dataLimite: '03/10/2026 (Sáb)', dataISO: '2026-10-03', tipo: 'prova' },
+  { id: 'e-fds-edu-av1', disciplina: 'Educação Cristã', titulo: 'AV1: Plano Pedagógico para Escola Bíblica', descricao: 'Elaboração de currículo e didática para igreja local.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'trabalho' },
+  { id: 'e-fds-at-av2', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV2: Prova Final de Teologia do Pentateuco', descricao: 'Exame online e síntese temática.', dataLimite: '28/11/2026 (Sáb)', dataISO: '2026-11-28', tipo: 'prova' },
+];
+
+const REQUISITOS_FDS: RequisitosDisciplina[] = [
+  {
+    id: 'disc-fds-1', num: '01', nome: 'Antigo Testamento I (Pentateuco)', professor: 'Profº Ary Júnior',
+    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
+    regrasGerais: ['📷 Câmeras ligadas aos sábados e domingos', '📚 Leitura integral do Pentateuco'],
+    criteriosAvaliacao: ['✍️ Provas escritas e trabalhos temáticos'],
+    livros: [{ titulo: 'Panorama do Antigo Testamento', autor: 'William Sanford LaSor', tipo: 'base' }],
+  },
+];
+
+// ============================================================
+// DADOS DO CURSO BÁSICO DE TEOLOGIA
+// ============================================================
+const ENTREGAVEIS_BASICO: Entregavel[] = [
+  { id: 'e-bas-pan-av1', disciplina: 'Panorama Bíblico', titulo: 'AV1: Prova Objetiva — Linha do Tempo Bíblica', descricao: 'Avaliação das grandes épocas da história bíblica.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
+  { id: 'e-bas-dout-av1', disciplina: 'Doutrinas Fundamentais', titulo: 'AV1: Questionário Doutrinário', descricao: 'Respostas fundamentadas sobre os pilares da fé cristã.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
+  { id: 'e-bas-pan-av2', disciplina: 'Panorama Bíblico', titulo: 'AV2: Exame Final de Panorama Bíblico', descricao: 'Exame de conclusão da disciplina.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
+];
+
+const REQUISITOS_BASICO: RequisitosDisciplina[] = [
+  {
+    id: 'disc-bas-1', num: '01', nome: 'Panorama Bíblico', professor: 'Profº Ary Júnior',
+    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
+    regrasGerais: ['📅 Aulas às terças e quartas-feiras', '📝 Leitura diária da Bíblia'],
+    criteriosAvaliacao: ['✍️ Provas de verificação e questionários'],
+    livros: [{ titulo: 'Bíblia de Estudo', autor: 'Vários', tipo: 'obrigatorio' }],
+  },
+];
+
 // ── Helpers ──
 function getDiasRestantes(dataISO: string): number {
   const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
@@ -159,13 +247,91 @@ function getBadgeTipo(tipo: Entregavel['tipo']) {
 // COMPONENTE PRINCIPAL
 // ============================================================
 export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail }) => {
+  const normalizedEmail = (userEmail || '').toLowerCase().trim();
+
+  // Determina o perfil acadêmico do aluno (Turma e Período)
+  const studentProfile = useMemo(() => {
+    let initialP = 7;
+    let initialT = 1;
+    const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
+    if (authUser) {
+      if (authUser.turmaIdx !== undefined) initialT = authUser.turmaIdx;
+      if (authUser.periodoNum !== undefined) initialP = authUser.periodoNum;
+    }
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem(`lms_profile_${normalizedEmail}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          const p = parsed.periodoNum !== undefined ? Number(parsed.periodoNum) : initialP;
+          const t = parsed.turmaIdx !== undefined ? Number(parsed.turmaIdx) : initialT;
+          return { periodoNum: p, turmaIdx: t };
+        }
+        const portalStored = localStorage.getItem(`lms_user_portal_profile_${normalizedEmail}`);
+        if (portalStored) {
+          const parsed = JSON.parse(portalStored);
+          const p = parsed.periodoNum !== undefined ? Number(parsed.periodoNum) : initialP;
+          const t = parsed.turmaIdx !== undefined ? Number(parsed.turmaIdx) : initialT;
+          return { periodoNum: p, turmaIdx: t };
+        }
+      } catch (e) {}
+    }
+    return { periodoNum: initialP, turmaIdx: initialT };
+  }, [normalizedEmail]);
+
+  // Nome e identificação da turma
+  const turmaNome = useMemo(() => {
+    switch (studentProfile.turmaIdx) {
+      case 0:
+        return 'Fim de Semana (5º Período)';
+      case 1:
+        return 'Turma A — 7º Período';
+      case 2:
+        return 'Turma B — 3º Período';
+      case 3:
+        return 'Curso Básico de Teologia';
+      default:
+        return `Turma A — ${studentProfile.periodoNum}º Período`;
+    }
+  }, [studentProfile]);
+
+  // Lista de entregáveis e requisitos correlacionados com a turma
+  const entregaveisList = useMemo(() => {
+    switch (studentProfile.turmaIdx) {
+      case 0:
+        return ENTREGAVEIS_FDS;
+      case 2:
+        return ENTREGAVEIS_TURMA_B;
+      case 3:
+        return ENTREGAVEIS_BASICO;
+      case 1:
+      default:
+        return ENTREGAVEIS_TURMA_A;
+    }
+  }, [studentProfile.turmaIdx]);
+
+  const requisitosList = useMemo(() => {
+    switch (studentProfile.turmaIdx) {
+      case 0:
+        return REQUISITOS_FDS;
+      case 2:
+        return REQUISITOS_TURMA_B;
+      case 3:
+        return REQUISITOS_BASICO;
+      case 1:
+      default:
+        return REQUISITOS_TURMA_A;
+    }
+  }, [studentProfile.turmaIdx]);
+
   const [checkedIds, setCheckedIds] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem(`lms_plano_checklist_${userEmail}`);
+      const saved = localStorage.getItem(`lms_plano_checklist_${normalizedEmail}`);
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch { return new Set(); }
   });
+
   const [expandedDisciplina, setExpandedDisciplina] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'cronograma' | 'requisitos' | 'livros'>('cronograma');
 
@@ -173,20 +339,55 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
     setCheckedIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id); else next.add(id);
-      try { localStorage.setItem(`lms_plano_checklist_${userEmail}`, JSON.stringify([...next])); } catch {}
+      try { localStorage.setItem(`lms_plano_checklist_${normalizedEmail}`, JSON.stringify([...next])); } catch {}
       return next;
     });
   };
 
-  const entregaveisOrdenados = [...ENTREGAVEIS].sort(
-    (a, b) => new Date(a.dataISO).getTime() - new Date(b.dataISO).getTime()
-  );
-  const completados = ENTREGAVEIS.filter(e => checkedIds.has(e.id)).length;
-  const progresso = Math.round((completados / ENTREGAVEIS.length) * 100);
+  const entregaveisOrdenados = useMemo(() => {
+    return [...entregaveisList].sort(
+      (a, b) => new Date(a.dataISO).getTime() - new Date(b.dataISO).getTime()
+    );
+  }, [entregaveisList]);
+
+  const completados = entregaveisList.filter(e => checkedIds.has(e.id)).length;
+  const totalEntregaveis = entregaveisList.length;
+  const progresso = totalEntregaveis > 0 ? Math.round((completados / totalEntregaveis) * 100) : 0;
+
+  // Extração consolidada de livros por categoria
+  const livrosObrigatorios = useMemo(() => {
+    const list: { t: string; a: string; d: string; n?: string }[] = [];
+    requisitosList.forEach(r => {
+      r.livros.filter(l => l.tipo === 'obrigatorio').forEach(l => {
+        list.push({ t: l.titulo, a: l.autor, d: r.nome, n: `Leitura obrigatória indicada na disciplina de ${r.nome}.` });
+      });
+    });
+    return list;
+  }, [requisitosList]);
+
+  const livrosBase = useMemo(() => {
+    const list: { t: string; a: string; d: string; n?: string }[] = [];
+    requisitosList.forEach(r => {
+      r.livros.filter(l => l.tipo === 'base').forEach(l => {
+        list.push({ t: l.titulo, a: l.autor, d: r.nome, n: `Livro-texto base adotado para acompanhamento das aulas de ${r.nome}.` });
+      });
+    });
+    return list;
+  }, [requisitosList]);
+
+  const livrosRecomendados = useMemo(() => {
+    const list: { t: string; a: string; d: string }[] = [];
+    requisitosList.forEach(r => {
+      r.livros.filter(l => l.tipo === 'recomendado').forEach(l => {
+        list.push({ t: l.titulo, a: l.autor, d: r.nome });
+      });
+    });
+    return list;
+  }, [requisitosList]);
 
   return (
     <div className="space-y-5 px-1 pb-8">
-      {/* HEADER */}
+      {/* HEADER DINÂMICO CONFORME A TURMA E PERÍODO */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 p-5 text-white shadow-xl">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-4 right-8 w-32 h-32 rounded-full bg-amber-400 blur-3xl" />
@@ -197,11 +398,11 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
             <div className="p-2 rounded-xl bg-white/10"><Target className="w-6 h-6 text-amber-300" /></div>
             <div>
               <h1 className="text-lg font-bold">Plano de Estudos 2026.2</h1>
-              <p className="text-slate-300 text-xs">Seminário Teológico Congregacional • Turma A — 7º Período</p>
+              <p className="text-slate-300 text-xs">Seminário Teológico Congregacional • {turmaNome}</p>
             </div>
           </div>
           <div className="flex justify-between text-xs text-slate-300 mb-1">
-            <span>{completados} de {ENTREGAVEIS.length} entregáveis marcados</span>
+            <span>{completados} de {totalEntregaveis} entregáveis marcados</span>
             <span className="font-bold text-amber-300">{progresso}%</span>
           </div>
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -210,29 +411,46 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
         </div>
       </div>
 
-      {/* ALERTA DIAS ESPECIAIS */}
-      <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          <h2 className="font-bold text-amber-800 text-sm">Dias Letivos Especiais — Curso Básico de Teologia</h2>
-        </div>
-        <p className="text-amber-700 text-xs mb-3">Haverá aulas normais nos dias abaixo para compensar feriados, evitando prejuízo na carga horária:</p>
-        <div className="space-y-2">
-          {DIAS_ESPECIAIS.map((d, i) => (
-            <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-3 border border-amber-200">
-              <span className="text-base">📅</span>
-              <div>
-                <p className="font-semibold text-amber-800 text-xs">{d.data}</p>
-                <p className="text-amber-700 text-xs">{d.descricao}</p>
-                <p className="text-amber-500 text-xs italic">{d.motivo}</p>
+      {/* ALERTA DIAS ESPECIAIS (APENAS PARA CURSO BÁSICO DE TEOLOGIA) */}
+      {(studentProfile.turmaIdx === 3 || studentProfile.periodoNum === 0) && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 shadow-sm animate-fade-in">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+            <h2 className="font-bold text-amber-800 text-sm">Dias Letivos Especiais — Curso Básico de Teologia</h2>
+          </div>
+          <p className="text-amber-700 text-xs mb-3">Haverá aulas normais nos dias abaixo para compensar feriados, evitando prejuízo na carga horária:</p>
+          <div className="space-y-2">
+            {DIAS_ESPECIAIS_CURSO_BASICO.map((d, i) => (
+              <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-3 border border-amber-200">
+                <span className="text-base">📅</span>
+                <div>
+                  <p className="font-semibold text-amber-800 text-xs">{d.data}</p>
+                  <p className="text-amber-700 text-xs">{d.descricao}</p>
+                  <p className="text-amber-500 text-xs italic">{d.motivo}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="mt-3 bg-amber-100 rounded-lg p-2 text-xs text-amber-700">
+            💬 Canal de comunicação: <strong>grupos de WhatsApp da turma</strong>.
+          </div>
         </div>
-        <div className="mt-3 bg-amber-100 rounded-lg p-2 text-xs text-amber-700">
-          💬 Canal de comunicação: <strong>grupos de WhatsApp por disciplina</strong>. TCC I: <em>"TCC1 - segundo semestre 2026"</em>.
+      )}
+
+      {/* BANNER INFORMATIVO PARA TURMA A E DEMAIS TURMAS */}
+      {studentProfile.turmaIdx === 1 && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50/80 p-3.5 text-xs text-blue-900 flex items-center gap-2.5 shadow-2xs">
+          <MessageSquare className="w-4 h-4 text-blue-600 shrink-0" />
+          <span>💬 Canal oficial de comunicação: <strong>grupos de WhatsApp por disciplina</strong>. TCC I: <em>"TCC1 - segundo semestre 2026"</em>.</span>
         </div>
-      </div>
+      )}
+
+      {studentProfile.turmaIdx === 2 && (
+        <div className="rounded-xl border border-purple-200 bg-purple-50/80 p-3.5 text-xs text-purple-900 flex items-center gap-2.5 shadow-2xs">
+          <MessageSquare className="w-4 h-4 text-purple-600 shrink-0" />
+          <span>💬 Canal oficial de comunicação da Turma B: <strong>grupos de WhatsApp por disciplina e avisos acadêmicos</strong>.</span>
+        </div>
+      )}
 
       {/* SELETOR DE SEÇÃO */}
       <div className="flex bg-slate-100 p-1 rounded-xl gap-1">
@@ -242,7 +460,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
           { id: 'livros', emoji: '📚', label: 'Livros' },
         ].map(s => (
           <button key={s.id} onClick={() => setActiveSection(s.id as any)}
-            className={`flex-1 py-2 px-2 rounded-lg text-xs font-semibold transition-all ${activeSection === s.id ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+            className={`flex-1 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeSection === s.id ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
             {s.emoji} {s.label}
           </button>
         ))}
@@ -251,7 +469,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
       {/* ── SEÇÃO: CRONOGRAMA & CHECKLIST ── */}
       {activeSection === 'cronograma' && (
         <div className="space-y-3">
-          <p className="text-slate-500 text-xs">Marque os itens conforme for concluindo. O progresso é salvo automaticamente.</p>
+          <p className="text-slate-500 text-xs">Marque os itens conforme for concluindo. O progresso é salvo automaticamente para a sua turma ({turmaNome}).</p>
           {entregaveisOrdenados.map(e => {
             const dias = getDiasRestantes(e.dataISO);
             const done = checkedIds.has(e.id);
@@ -261,7 +479,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
             return (
               <div key={e.id} className={`rounded-xl border p-4 transition-all shadow-sm ${done ? 'bg-green-50 border-green-200 opacity-70' : vencido ? 'bg-red-50 border-red-200' : urgente ? 'bg-amber-50 border-amber-300' : 'bg-white border-slate-200'}`}>
                 <div className="flex items-start gap-3">
-                  <button onClick={() => toggleCheck(e.id)} className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${done ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-green-400'}`}>
+                  <button onClick={() => toggleCheck(e.id)} className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer ${done ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-green-400'}`}>
                     {done && <Check className="w-3.5 h-3.5" />}
                   </button>
                   <div className="flex-1 min-w-0">
@@ -289,13 +507,13 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
       {/* ── SEÇÃO: REQUISITOS POR MATÉRIA ── */}
       {activeSection === 'requisitos' && (
         <div className="space-y-3">
-          <p className="text-slate-500 text-xs">Diretrizes oficiais informadas pelos professores no início do semestre. Clique para expandir cada matéria.</p>
-          {REQUISITOS_DISCIPLINAS.map(disc => {
+          <p className="text-slate-500 text-xs">Diretrizes oficiais informadas pelos professores para {turmaNome}. Clique para expandir cada matéria.</p>
+          {requisitosList.map(disc => {
             const expanded = expandedDisciplina === disc.id;
             return (
               <div key={disc.id} className={`rounded-xl border ${disc.corBorda} ${disc.corFundo} shadow-sm overflow-hidden`}>
                 <button onClick={() => setExpandedDisciplina(prev => prev === disc.id ? null : disc.id)}
-                  className="w-full flex items-center gap-3 p-4 text-left hover:opacity-80 transition-opacity">
+                  className="w-full flex items-center gap-3 p-4 text-left hover:opacity-80 transition-opacity cursor-pointer">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/70 ${disc.cor}`}>{disc.num}</span>
@@ -360,75 +578,69 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
       {activeSection === 'livros' && (
         <div className="space-y-5">
           {/* Obrigatórios */}
-          <div>
-            <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-red-500" /><h3 className="text-sm font-bold text-red-700">📕 Leitura Obrigatória</h3></div>
-            <div className="space-y-2">
-              {[
-                { t: 'A Treliça e a Videira', a: 'Colin Marshall & Tony Payne', d: 'Plantação e Revitalização II', n: 'Base da AV1: resumo manuscrito de 12 páginas (1 por capítulo). Enviar até 27/11.' },
-                { t: 'E se Jesus não tivesse nascido', a: 'D. James Kennedy & Jerry Newcombe', d: 'Direitos Humanos', n: 'Leitura obrigatória para V1 e V2.' },
-                { t: 'Catecismo Maior de Westminster', a: 'Westminster Assembly (1648)', d: 'Ética Cristã', n: 'Seção dos Dez Mandamentos — base do Seminário (AV1/AV2).' },
-                { t: 'Livro sobre Congregacionalismo (Idauro Campos)', a: 'Profº Idauro Campos', d: 'História do Congregacionalismo', n: 'Leitura verificada por autodeclaração na prova (+1 ponto).' },
-              ].map((l, i) => (
-                <div key={i} className="rounded-xl border border-red-200 p-4 bg-white shadow-sm flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">📕</span>
-                  <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
-                </div>
-              ))}
+          {livrosObrigatorios.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-red-500" /><h3 className="text-sm font-bold text-red-700">📕 Leitura Obrigatória ({turmaNome})</h3></div>
+              <div className="space-y-2">
+                {livrosObrigatorios.map((l, i) => (
+                  <div key={i} className="rounded-xl border border-red-200 p-4 bg-white shadow-sm flex items-start gap-3">
+                    <span className="text-2xl flex-shrink-0">📕</span>
+                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
           {/* Base */}
-          <div>
-            <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-blue-500" /><h3 className="text-sm font-bold text-blue-700">📘 Livro-Texto (Base das Aulas)</h3></div>
-            <div className="space-y-2">
-              {[
-                { t: 'Introdução ao Novo Testamento', a: 'Carson, Moo & Morris', d: 'NT III — Epístolas Gerais', n: 'Base das 150 questões da avaliação. Slides são sintéticos — anote tudo em aula!' },
-                { t: 'Ética Cristã: Opções e Questões Contemporâneas', a: 'Norman Geisler', d: 'Ética Cristã', n: 'Livro-texto oficial para o Seminário (AV1/AV2).' },
-              ].map((l, i) => (
-                <div key={i} className="rounded-xl border border-blue-200 p-4 bg-white shadow-sm flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">📘</span>
-                  <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
-                </div>
-              ))}
+          {livrosBase.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-blue-500" /><h3 className="text-sm font-bold text-blue-700">📘 Livro-Texto (Base das Aulas)</h3></div>
+              <div className="space-y-2">
+                {livrosBase.map((l, i) => (
+                  <div key={i} className="rounded-xl border border-blue-200 p-4 bg-white shadow-sm flex items-start gap-3">
+                    <span className="text-2xl flex-shrink-0">📘</span>
+                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">{l.d}</span><p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{l.n}</p></div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
           {/* Recomendados */}
-          <div>
-            <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-green-500" /><h3 className="text-sm font-bold text-green-700">📗 Leituras Recomendadas</h3></div>
-            <div className="space-y-2">
-              {[
-                { t: 'Lutero como Conselheiro Espiritual', a: 'Theodore Tappert', d: 'Aconselhamento Bíblico II' },
-                { t: 'Aconselhamento Cristão', a: 'Gary Collins', d: 'Aconselhamento Bíblico II' },
-                { t: 'Aconselhamento a partir da Cruz', a: 'Elyse Fitzpatrick', d: 'Aconselhamento Bíblico II' },
-                { t: 'Ego Transformado', a: 'Timothy Keller', d: 'Aconselhamento Bíblico II' },
-                { t: 'Quem eram os Puritanos', a: 'Erroll Hulse', d: 'História do Congregacionalismo' },
-                { t: 'Santos no Mundo', a: 'Leland Ryken', d: 'História do Congregacionalismo' },
-                { t: 'Os Puritanos: suas origens e sucessores', a: 'D. Martin Lloyd-Jones', d: 'História do Congregacionalismo' },
-                { t: 'A Verdadeira Natureza de uma Igreja Evangélica', a: 'John Owen', d: 'História do Congregacionalismo' },
-              ].map((l, i) => (
-                <div key={i} className="rounded-xl border border-green-200 p-3 bg-white shadow-sm flex items-start gap-3">
-                  <span className="text-xl flex-shrink-0">📗</span>
-                  <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full">{l.d}</span></div>
-                </div>
-              ))}
+          {livrosRecomendados.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2"><div className="w-2.5 h-2.5 rounded-full bg-green-500" /><h3 className="text-sm font-bold text-green-700">📗 Leituras Recomendadas</h3></div>
+              <div className="space-y-2">
+                {livrosRecomendados.map((l, i) => (
+                  <div key={i} className="rounded-xl border border-green-200 p-3 bg-white shadow-sm flex items-start gap-3">
+                    <span className="text-xl flex-shrink-0">📗</span>
+                    <div><p className="font-bold text-slate-800 text-sm">{l.t}</p><p className="text-xs text-slate-500 mb-1">{l.a}</p><span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full">{l.d}</span></div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          {/* Aviso TCC */}
-          <div className="rounded-xl border border-teal-300 bg-teal-50 p-4">
-            <div className="flex items-start gap-3">
-              <FileText className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-bold text-teal-800 text-sm mb-1">🚫 TCC I — Regra sobre IA</h3>
-                <p className="text-teal-700 text-xs leading-relaxed">
-                  É <strong>terminantemente proibido</strong> o uso de Inteligência Artificial ou terceiros para redigir o TCC. 
-                  Somente correções ortográficas e formatação técnica externa são permitidas.
-                </p>
-                <div className="mt-2 bg-teal-100 rounded-lg p-2">
-                  <p className="text-teal-700 text-xs font-bold mb-1">Ordem de escrita obrigatória:</p>
-                  <p className="text-teal-600 text-xs">1º Metodologia → 2º Desenvolvimento → 3º Conclusão → 4º <strong>Resumo & Introdução (por último!)</strong></p>
+          )}
+
+          {/* Aviso TCC (Apenas para Turma A - 7º Período) */}
+          {studentProfile.turmaIdx === 1 && (
+            <div className="rounded-xl border border-teal-300 bg-teal-50 p-4">
+              <div className="flex items-start gap-3">
+                <FileText className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-bold text-teal-800 text-sm mb-1">🚫 TCC I — Regra sobre IA</h3>
+                  <p className="text-teal-700 text-xs leading-relaxed">
+                    É <strong>terminantemente proibido</strong> o uso de Inteligência Artificial ou terceiros para redigir o TCC. 
+                    Somente correções ortográficas e formatação técnica externa são permitidas.
+                  </p>
+                  <div className="mt-2 bg-teal-100 rounded-lg p-2">
+                    <p className="text-teal-700 text-xs font-bold mb-1">Ordem de escrita obrigatória:</p>
+                    <p className="text-teal-600 text-xs">1º Metodologia → 2º Desenvolvimento → 3º Conclusão → 4º <strong>Resumo & Introdução (por último!)</strong></p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

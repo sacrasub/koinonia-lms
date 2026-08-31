@@ -1158,6 +1158,12 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
               {(() => {
                 const currentList = announcements.filter((a) => {
+                  // Filtra para exibir apenas avisos pertencentes às matérias da turma do aluno
+                  const isFromStudentTurma = studentAulas.some(
+                    (sa) => sa.disciplina_id === a.disciplina_id || sa.disciplina_name.toLowerCase().trim() === a.disciplina_name.toLowerCase().trim()
+                  );
+                  if (!isFromStudentTurma) return false;
+
                   if (studentAnnouncementsTab === 'pending') {
                     return !a.is_archived && !readAnnouncementIds.includes(a.id);
                   }
