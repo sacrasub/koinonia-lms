@@ -1,229 +1,26 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   BookOpen, Calendar, AlertTriangle,
   ChevronDown, ChevronUp, Target,
   FileText, GraduationCap,
-  Info, MessageSquare, Check
+  Info, MessageSquare, Check, Plus, Edit3, Trash2, X, Sparkles, ShieldCheck, UserCheck, Layers
 } from 'lucide-react';
+import { UserRole } from '@/types';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
+import {
+  Entregavel, LivroRecomendado, RequisitosDisciplina,
+  getPlanoEstudosForTurma, savePlanoEstudosForTurma,
+  addOrUpdateEntregavel, deleteEntregavel, updateRequisitosDisciplina
+} from '@/services/planoEstudosService';
+import { getDisciplinasForUser } from '@/services/disciplinasService';
 
 interface PlanoEstudosPageProps {
   userEmail?: string;
+  currentRole?: UserRole;
   onTabChange?: (tab: string) => void;
 }
-
-// ============================================================
-// ESTRUTURA DE DADOS
-// ============================================================
-
-interface Entregavel {
-  id: string;
-  disciplina: string;
-  titulo: string;
-  descricao: string;
-  dataLimite: string;
-  dataISO: string;
-  tipo: 'prova' | 'trabalho' | 'resumo' | 'apresentacao' | 'entrega';
-}
-
-interface LivroRecomendado {
-  titulo: string;
-  autor: string;
-  tipo: 'obrigatorio' | 'base' | 'recomendado';
-}
-
-interface RequisitosDisciplina {
-  id: string;
-  num: string;
-  nome: string;
-  professor: string;
-  cor: string;
-  corFundo: string;
-  corBorda: string;
-  regrasGerais: string[];
-  criteriosAvaliacao: string[];
-  livros: LivroRecomendado[];
-  infoExtra?: string;
-  whatsapp?: string;
-}
-
-// Dias especiais exclusivos para o Curso Básico de Teologia
-const DIAS_ESPECIAIS_CURSO_BASICO = [
-  { data: '08/09/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 07/09 (Independência do Brasil)' },
-  { data: '13/10/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 12/10 (Nossa Senhora Aparecida)' },
-  { data: '03/11/2026 (Terça-feira)', descricao: 'Aula normal — Curso Básico de Teologia', motivo: 'Compensação pelo feriado de 02/11 (Finados)' },
-];
-
-// ============================================================
-// DADOS DA TURMA A (7º PERÍODO)
-// ============================================================
-const ENTREGAVEIS_TURMA_A: Entregavel[] = [
-  { id: 'e-tcc-projeto', disciplina: 'TCC I', titulo: 'Projeto de Pesquisa Estruturado ABNT', descricao: 'Estrutura: Capa, Sumário, Objetivos (geral + 2-3 específicos), Justificativa, Referencial Teórico, Cronograma. Linguagem científica impessoal. Proibido uso de IA.', dataLimite: '04/09/2026 (Sex)', dataISO: '2026-09-04', tipo: 'entrega' },
-  { id: 'e-his-av1', disciplina: 'História do Congregacionalismo', titulo: 'AV1: Prova Escrita — Unidade 1 (Congregacionalismo Mundial)', descricao: '0-8 pts prova + 1 pt frequência + 1 pt leitura obrigatória. Câmeras obrigatórias.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-  { id: 'e-hpc-av1', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho' },
-  { id: 'e-aco-av1', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV1: Prova Objetiva via Google Forms', descricao: 'Questões estritamente dos slides. Sem trabalhos escritos. Correção automática.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
-  { id: 'e-dir-av1', disciplina: 'Direitos Humanos', titulo: 'V1: Prova Forms (peso 8) + Pesquisa Escrita (peso 2)', descricao: 'Prova objetiva Google Forms sem consulta (peso 8). Trabalho de pesquisa escrito por e-mail (peso 2). Média >= 7,0.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
-  { id: 'e-etc-av1', disciplina: 'Ética Cristã', titulo: 'AV1: Slides do Seminário (elaboração coletiva em grupo)', descricao: 'Nota de elaboração dos slides (grupo de 3-4 alunos). Base: Dez Mandamentos — Catecismo Maior de Westminster e Norman Geisler.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega' },
-  { id: 'e-nt-av1', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV Semestral: Bateria de 150 Questões (parte 1)', descricao: 'Questões baseadas em Carson/Moo/Morris e anotações dos slides. Câmeras obrigatórias.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova' },
-  { id: 'e-etc-seminario', disciplina: 'Ética Cristã', titulo: 'AV2: Seminários em Grupo — Dez Mandamentos (22/10 a 19/11)', descricao: 'Apresentação 30 min (10 min/orador com cronômetro). Nota individual de oratória e tribuna.', dataLimite: '22/10 – 19/11/2026', dataISO: '2026-10-22', tipo: 'apresentacao' },
-  { id: 'e-his-av2', disciplina: 'História do Congregacionalismo', titulo: 'AV2: Prova Escrita — Unidade 2 (Congregacionalismo no Brasil)', descricao: 'Prova final da segunda unidade. Mesma composição da AV1.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-  { id: 'e-hpc-av2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV2: Prova Objetiva 10 Questões — Google Forms', descricao: 'Prova objetiva 10 questões Google Forms. Resultado instantâneo.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-  { id: 'e-aco-av2', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV2: Prova Objetiva Final — Google Forms', descricao: 'Segunda prova objetiva. Questões dos slides. Correção automática.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
-  { id: 'e-dir-av2', disciplina: 'Direitos Humanos', titulo: 'V2: Prova Forms (peso 8) + Pesquisa Escrita (peso 2)', descricao: 'Mesma estrutura da V1. Média final >= 7,0 para aprovação.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
-  { id: 'e-pla-resumo', disciplina: 'Plantação e Revitalização II', titulo: 'AV1: Resumo Manuscrito — "A Treliça e a Videira" (12 pág.)', descricao: '1 página por capítulo (12 folhas). Enviar para thacyto@gmail.com. Prazo improrrogável.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'resumo' },
-  { id: 'e-pla-av2', disciplina: 'Plantação e Revitalização II', titulo: 'AV2: Prova por Link (com consulta às anotações)', descricao: 'Prova online agendada para 27/11. Consulta livre às anotações pessoais.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'prova' },
-  { id: 'e-tcc-artigo', disciplina: 'TCC I', titulo: 'Entrega Final: Artigo Científico Completo (máx. 20 pág.)', descricao: 'Sem IA. Ordem: Metodologia → Desenvolvimento → Conclusão → Resumo & Introdução por último. Referências ABNT em ordem alfabética.', dataLimite: '04/12/2026 (Sex)', dataISO: '2026-12-04', tipo: 'entrega' },
-];
-
-const REQUISITOS_TURMA_A: RequisitosDisciplina[] = [
-  {
-    id: 'disc-1', num: '01', nome: 'História do Congregacionalismo', professor: 'Profº Ary Júnior',
-    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
-    regrasGerais: ['📷 Câmeras obrigatoriamente abertas durante toda a aula', '📅 16 encontros em 2 unidades: Unidade 1 (Congregacionalismo Mundial) e Unidade 2 (Congregacionalismo Brasileiro)', '📚 Leitura obrigatória dos textos indicados — verificada por autodeclaração na prova (+1 ponto)'],
-    criteriosAvaliacao: ['✍️ AV1 e AV2: Provas escritas ao final de cada unidade — até 8 pontos', '👥 +1 ponto de frequência e participação ativa', '📖 +1 ponto pela leitura obrigatória (autodeclaração)', '🏆 Total: 10 pontos por avaliação'],
-    livros: [{ titulo: 'Livro sobre Congregacionalismo (Origens)', autor: 'Profº Idauro Campos', tipo: 'obrigatorio' }, { titulo: 'Quem eram os Puritanos', autor: 'Erroll Hulse', tipo: 'recomendado' }, { titulo: 'Santos no Mundo', autor: 'Leland Ryken', tipo: 'recomendado' }, { titulo: 'Os Puritanos: suas origens e sucessores', autor: 'D. Martin Lloyd-Jones', tipo: 'recomendado' }, { titulo: 'A Verdadeira Natureza de uma Igreja Evangélica', autor: 'John Owen', tipo: 'recomendado' }],
-  },
-  {
-    id: 'disc-2', num: '02', nome: 'História do Pensamento Cristão II', professor: 'Profº Hilário Bispo',
-    cor: 'text-blue-800', corFundo: 'bg-blue-50', corBorda: 'border-blue-300',
-    regrasGerais: ['📝 AV1: Trabalho acadêmico ABNT (individual ou grupos de até 3 alunos)', '📊 AV2: Prova objetiva com 10 questões Google Forms', '🎤 AV3 (apenas recuperação): Exame oral temático com o professor'],
-    criteriosAvaliacao: ['📄 AV1: Pesquisa científica ABNT — Iluminismo & Modernidade (Razão vs Revelação)', '📱 AV2: 10 questões objetivas Google Forms — resultado instantâneo', '🗣️ AV3 (somente recuperação): Exame oral temático'],
-    livros: [{ titulo: 'Material de aula (apostila)', autor: 'Profº Hilário Bispo', tipo: 'base' }],
-    infoExtra: 'Temas centrais: Escolástica (Anselmo, Aquino), Nominalismo de Ockham, Humanismo Renascentista, Iluminismo (Kant), Liberalismo Teológico (Schleiermacher) e Ortodoxia Contemporânea.',
-  },
-  {
-    id: 'disc-3', num: '03', nome: 'Aconselhamento Bíblico II', professor: 'Profº Uilian Santos',
-    cor: 'text-emerald-800', corFundo: 'bg-emerald-50', corBorda: 'border-emerald-300',
-    regrasGerais: ['📋 Avaliação EXCLUSIVA por 2 provas objetivas Google Forms — sem trabalhos escritos', '🎯 Conteúdo RESTRITO aos slides apresentados em aula', '✅ Lista de presença ao final de cada aula'],
-    criteriosAvaliacao: ['📱 AV1: Prova objetiva Google Forms — questões dos slides — correção automática', '📱 AV2: Prova objetiva Google Forms — questões dos slides — correção automática', '⚠️ Nenhum trabalho escrito é exigido'],
-    livros: [{ titulo: 'Lutero como Conselheiro Espiritual', autor: 'Theodore Tappert', tipo: 'recomendado' }, { titulo: 'Aconselhamento Cristão', autor: 'Gary Collins', tipo: 'recomendado' }, { titulo: 'Aconselhamento a partir da Cruz', autor: 'Elyse Fitzpatrick', tipo: 'recomendado' }, { titulo: 'Ego Transformado', autor: 'Timothy Keller', tipo: 'recomendado' }],
-  },
-  {
-    id: 'disc-4', num: '04', nome: 'Direitos Humanos', professor: 'Profº Cleiton Barbirato',
-    cor: 'text-indigo-800', corFundo: 'bg-indigo-50', corBorda: 'border-indigo-300',
-    regrasGerais: ['📊 V1 e V2: Prova objetiva Forms (peso 8) + Trabalho de pesquisa individual (peso 2)', '🚫 Prova objetiva: sem consulta', '📧 Trabalho de pesquisa: envio por e-mail', '🎯 Média >= 7,0 para aprovação direta; abaixo, prova extra (recuperação)'],
-    criteriosAvaliacao: ['📱 Prova objetiva múltipla escolha Google Forms — peso 8,0 — sem consulta', '✍️ Trabalho de pesquisa escrito individual — peso 2,0', '🏆 Média V1 e V2 >= 7,0 para aprovação'],
-    livros: [{ titulo: 'E se Jesus não tivesse nascido', autor: 'D. James Kennedy & Jerry Newcombe', tipo: 'obrigatorio' }],
-    infoExtra: 'Textos e slides gratuitos disponíveis na pasta virtual da disciplina no Google Drive.',
-  },
-  {
-    id: 'disc-5', num: '05', nome: 'Ética Cristã', professor: 'Profª Karoline Evangelista',
-    cor: 'text-violet-800', corFundo: 'bg-violet-50', corBorda: 'border-violet-300',
-    regrasGerais: ['👥 Apresentações em grupos de 3 a 4 alunos (duplas/trios segundo o documento original)', '📅 Período: 22/10 a 19/11/2026', '⏱️ 30 minutos por grupo — 10 minutos EXATOS por orador (cronômetro)', '🎯 Nota INDIVIDUAL — cada aluno é avaliado de forma independente'],
-    criteriosAvaliacao: ['📊 AV1: Pesquisa teológica + confecção coletiva dos slides (nota individual)', '🗣️ AV2: Desempenho individual na tribuna de apresentação', '📖 Base: Catecismo Maior de Westminster — seção dos Dez Mandamentos'],
-    livros: [{ titulo: 'Ética Cristã: Opções e Questões Contemporâneas', autor: 'Norman Geisler', tipo: 'base' }, { titulo: 'Catecismo Maior de Westminster', autor: 'Westminster Assembly (1648)', tipo: 'obrigatorio' }],
-  },
-  {
-    id: 'disc-6', num: '06', nome: 'NT III — Epístolas Gerais', professor: 'Profº Marcio Leal',
-    cor: 'text-rose-800', corFundo: 'bg-rose-50', corBorda: 'border-rose-300',
-    regrasGerais: ['📷 Câmeras obrigatoriamente ligadas — flexibilidade no horário de encerramento', '📝 Slides são INTENCIONALMENTE SINTÉTICOS para forçar anotações manuais', '✏️ Faça anotações detalhadas — as provas são baseadas nelas'],
-    criteriosAvaliacao: ['📱 Exames objetivos via Google Forms', '📚 Carga de 150 questões discursivas/orais baseadas no livro-base e slides'],
-    livros: [{ titulo: 'Introdução ao Novo Testamento', autor: 'Carson, Moo & Morris', tipo: 'base' }],
-    infoExtra: 'Abrange: Hebreus, Tiago, 1 e 2 Pedro, 1, 2 e 3 João, e Judas.',
-  },
-  {
-    id: 'disc-7', num: '07', nome: 'Plantação e Revitalização de Igrejas II', professor: 'Profº Thácyto Lessa',
-    cor: 'text-orange-800', corFundo: 'bg-orange-50', corBorda: 'border-orange-300',
-    regrasGerais: ['⏰ Início pontual às 19:00 — sem atrasos', '📷 Câmeras obrigatoriamente ligadas (avaliadas para presença/participação)', '🔒 Slides NÃO são liberados até a aula final de revisão', '📧 AV1: Enviar resumo para thacyto@gmail.com até 27/11/2026 (improrrogável)'],
-    criteriosAvaliacao: ['📖 AV1: Resumo individual MANUSCRITO de "A Treliça e a Videira" — 1 pág./cap. (12 folhas) — entrega 27/11', '📱 AV2: Prova online (link) com consulta às anotações pessoais — 27/11/2026'],
-    livros: [{ titulo: 'A Treliça e a Videira', autor: 'Colin Marshall & Tony Payne', tipo: 'obrigatorio' }],
-    infoExtra: 'ATENÇÃO: O resumo manuscrito é OBRIGATÓRIO: caneta, papel, 1 página por capítulo, 12 capítulos = 12 folhas. Enviar por e-mail até 27/11.',
-  },
-  {
-    id: 'disc-8', num: '08', nome: 'TCC I', professor: 'Profª Gabriela Leal',
-    cor: 'text-teal-800', corFundo: 'bg-teal-50', corBorda: 'border-teal-300',
-    regrasGerais: ['💬 Grupo WhatsApp oficial: "TCC1 - segundo semestre 2026"', '🏫 Normas: Faculdade Maciço do Baturité (UNIMB)', '📄 Extensão máxima: 20 páginas (Capa até Anexos)', '🚫 USO DE IA É TERMINANTEMENTE PROIBIDO (apenas correção ortográfica e formatação técnica externa são liberadas)', '👨‍🏫 Orientador escolhido por afinidade temática'],
-    criteriosAvaliacao: ['📋 Sem provas tradicionais — avaliação contínua de participação e progresso', '🗓️ Etapa 1: Projeto de Pesquisa estruturado — prazo 04/09/2026', '📝 Etapa Final: Artigo científico completo — prazo 04/12/2026'],
-    livros: [{ titulo: 'Manual de Metodologia Científica (consultar com orientador)', autor: 'A definir', tipo: 'recomendado' }],
-    infoExtra: 'Ordem de escrita obrigatória:\n1º Metodologia (começar imediatamente)\n2º Referencial Teórico e Desenvolvimento\n3º Conclusão\n4º Resumo e Introdução (escrever POR ÚLTIMO, após concluir o artigo)\n\nReferências ABNT: somente obras citadas no texto, em ordem alfabética.',
-    whatsapp: 'TCC1 - segundo semestre 2026',
-  },
-];
-
-// ============================================================
-// DADOS DA TURMA B (3º PERÍODO)
-// ============================================================
-const ENTREGAVEIS_TURMA_B: Entregavel[] = [
-  { id: 'e-tb-int-av1', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV1: Prova Escrita — Contexto Histórico e Canonicidade', descricao: 'Avaliação sobre formação do cânon e evangelhos sinóticos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-  { id: 'e-tb-her-av1', disciplina: 'Hermenêutica Bíblica', titulo: 'AV1: Trabalho de Exegese e Interpretação de Texto', descricao: 'Aplicação dos princípios hermenêuticos histórico-gramaticais.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
-  { id: 'e-tb-dis-av1', disciplina: 'Fundamentos e Prática do Discipulado', titulo: 'AV1: Projeto de Discipulado na Igreja Local', descricao: 'Elaboração de um guia prático de mentoria e acompanhamento espiritual.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega' },
-  { id: 'e-tb-mis-av1', disciplina: 'Teologia da Missão', titulo: 'AV1: Resenha Crítica de Missiologia Contemporânea', descricao: 'Análise teológica dos desafios missionários urbanos e transculturais.', dataLimite: '02/10/2026 (Sex)', dataISO: '2026-10-02', tipo: 'resumo' },
-  { id: 'e-tb-int-av2', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV2: Prova Objetiva Final — Cartas Paulinas e Gerais', descricao: 'Prova final via Google Forms abrangendo todo o conteúdo semestral.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-  { id: 'e-tb-her-av2', disciplina: 'Hermenêutica Bíblica', titulo: 'AV2: Prova Prática de Interpretação', descricao: 'Análise e resolução de passagens bíblicas complexas.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
-  { id: 'e-tb-ts-av2', disciplina: 'Teologia Sistemática III', titulo: 'AV2: Artigo de Cristologia e Pneumatologia', descricao: 'Síntese doutrinária das naturezas de Cristo e obra do Espírito Santo.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'entrega' },
-  { id: 'e-tb-hom-av2', disciplina: 'Homilética II', titulo: 'AV2: Pregação Expositiva em Vídeo', descricao: 'Gravação e entrega de sermão expositivo estruturado.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'apresentacao' },
-];
-
-const REQUISITOS_TURMA_B: RequisitosDisciplina[] = [
-  {
-    id: 'disc-b1', num: '01', nome: 'Introdução ao Novo Testamento', professor: 'Profº Ary Júnior',
-    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
-    regrasGerais: ['📷 Câmeras ligadas durante toda a aula', '📅 Leitura obrigatória de artigos e sínteses exegéticas'],
-    criteriosAvaliacao: ['✍️ AV1 e AV2: Provas escritas e participação ativa'],
-    livros: [{ titulo: 'Introdução ao Novo Testamento', autor: 'D. A. Carson & Douglas J. Moo', tipo: 'base' }],
-  },
-  {
-    id: 'disc-b2', num: '02', nome: 'Hermenêutica Bíblica', professor: 'Profº Hilário Bispo',
-    cor: 'text-blue-800', corFundo: 'bg-blue-50', corBorda: 'border-blue-300',
-    regrasGerais: ['📝 Exercícios exegéticos semanais', '🎯 Foco na interpretação literal histórico-gramatical'],
-    criteriosAvaliacao: ['📄 AV1: Trabalho de análise de texto', '📱 AV2: Prova prática'],
-    livros: [{ titulo: 'Entendes o que Lês?', autor: 'Gordon Fee & Douglas Stuart', tipo: 'obrigatorio' }],
-  },
-  {
-    id: 'disc-b3', num: '03', nome: 'Fundamentos e Prática do Discipulado', professor: 'Profº Uilian Santos',
-    cor: 'text-emerald-800', corFundo: 'bg-emerald-50', corBorda: 'border-emerald-300',
-    regrasGerais: ['📋 Exercícios práticos na igreja local', '✅ Presença e pontualidade nas transmissões'],
-    criteriosAvaliacao: ['📱 Provas objetivas e plano de discipulado prático'],
-    livros: [{ titulo: 'O Plano Mestre de Evangelismo', autor: 'Robert Coleman', tipo: 'obrigatorio' }],
-  },
-  {
-    id: 'disc-b4', num: '04', nome: 'Teologia da Missão', professor: 'Profº Cleiton Barbirato',
-    cor: 'text-indigo-800', corFundo: 'bg-indigo-50', corBorda: 'border-indigo-300',
-    regrasGerais: ['📊 Leituras missiológicas e debates', '📧 Trabalhos enviados por e-mail'],
-    criteriosAvaliacao: ['✍️ Resenha crítica e prova objetiva'],
-    livros: [{ titulo: 'A Missão da Igreja Hoje', autor: 'Michael Green', tipo: 'recomendado' }],
-  },
-];
-
-// ============================================================
-// DADOS DO FIM DE SEMANA (5º PERÍODO)
-// ============================================================
-const ENTREGAVEIS_FDS: Entregavel[] = [
-  { id: 'e-fds-at-av1', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV1: Prova Escrita — Alianças e Lei Mosaica', descricao: 'Avaliação das narrativas de Gênesis a Deuteronômio.', dataLimite: '03/10/2026 (Sáb)', dataISO: '2026-10-03', tipo: 'prova' },
-  { id: 'e-fds-edu-av1', disciplina: 'Educação Cristã', titulo: 'AV1: Plano Pedagógico para Escola Bíblica', descricao: 'Elaboração de currículo e didática para igreja local.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'trabalho' },
-  { id: 'e-fds-at-av2', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV2: Prova Final de Teologia do Pentateuco', descricao: 'Exame online e síntese temática.', dataLimite: '28/11/2026 (Sáb)', dataISO: '2026-11-28', tipo: 'prova' },
-];
-
-const REQUISITOS_FDS: RequisitosDisciplina[] = [
-  {
-    id: 'disc-fds-1', num: '01', nome: 'Antigo Testamento I (Pentateuco)', professor: 'Profº Ary Júnior',
-    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
-    regrasGerais: ['📷 Câmeras ligadas aos sábados e domingos', '📚 Leitura integral do Pentateuco'],
-    criteriosAvaliacao: ['✍️ Provas escritas e trabalhos temáticos'],
-    livros: [{ titulo: 'Panorama do Antigo Testamento', autor: 'William Sanford LaSor', tipo: 'base' }],
-  },
-];
-
-// ============================================================
-// DADOS DO CURSO BÁSICO DE TEOLOGIA
-// ============================================================
-const ENTREGAVEIS_BASICO: Entregavel[] = [
-  { id: 'e-bas-pan-av1', disciplina: 'Panorama Bíblico', titulo: 'AV1: Prova Objetiva — Linha do Tempo Bíblica', descricao: 'Avaliação das grandes épocas da história bíblica.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-  { id: 'e-bas-dout-av1', disciplina: 'Doutrinas Fundamentais', titulo: 'AV1: Questionário Doutrinário', descricao: 'Respostas fundamentadas sobre os pilares da fé cristã.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
-  { id: 'e-bas-pan-av2', disciplina: 'Panorama Bíblico', titulo: 'AV2: Exame Final de Panorama Bíblico', descricao: 'Exame de conclusão da disciplina.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-];
-
-const REQUISITOS_BASICO: RequisitosDisciplina[] = [
-  {
-    id: 'disc-bas-1', num: '01', nome: 'Panorama Bíblico', professor: 'Profº Ary Júnior',
-    cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
-    regrasGerais: ['📅 Aulas às terças e quartas-feiras', '📝 Leitura diária da Bíblia'],
-    criteriosAvaliacao: ['✍️ Provas de verificação e questionários'],
-    livros: [{ titulo: 'Bíblia de Estudo', autor: 'Vários', tipo: 'obrigatorio' }],
-  },
-];
 
 // ── Helpers ──
 function getDiasRestantes(dataISO: string): number {
@@ -243,45 +40,96 @@ function getBadgeTipo(tipo: Entregavel['tipo']) {
   return map[tipo] || { label: tipo, cls: 'bg-gray-100 text-gray-700' };
 }
 
-// ============================================================
-// COMPONENTE PRINCIPAL
-// ============================================================
-export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail }) => {
+export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
+  userEmail,
+  currentRole = 'aluno',
+  onTabChange,
+}) => {
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
+  const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
+  const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || normalizedEmail.includes('sacra') || normalizedEmail.includes('admin') || normalizedEmail.includes('tondedez') || normalizedEmail.includes('ead@');
+
+  // Permissões RBAC
+  const isMonitorOrAdmin = currentRole === 'monitor' || currentRole === 'admin' || isSuperAdmin;
+  const isProfessor = currentRole === 'professor';
 
   // Determina o perfil acadêmico do aluno (Turma e Período)
-  const studentProfile = useMemo(() => {
-    let initialP = 7;
+  const studentDefaultTurmaIdx = useMemo(() => {
     let initialT = 1;
-    const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
-    if (authUser) {
-      if (authUser.turmaIdx !== undefined) initialT = authUser.turmaIdx;
-      if (authUser.periodoNum !== undefined) initialP = authUser.periodoNum;
-    }
+    if (authUser && authUser.turmaIdx !== undefined) initialT = authUser.turmaIdx;
     if (typeof window !== 'undefined') {
       try {
         const stored = localStorage.getItem(`lms_profile_${normalizedEmail}`);
         if (stored) {
           const parsed = JSON.parse(stored);
-          const p = parsed.periodoNum !== undefined ? Number(parsed.periodoNum) : initialP;
-          const t = parsed.turmaIdx !== undefined ? Number(parsed.turmaIdx) : initialT;
-          return { periodoNum: p, turmaIdx: t };
-        }
-        const portalStored = localStorage.getItem(`lms_user_portal_profile_${normalizedEmail}`);
-        if (portalStored) {
-          const parsed = JSON.parse(portalStored);
-          const p = parsed.periodoNum !== undefined ? Number(parsed.periodoNum) : initialP;
-          const t = parsed.turmaIdx !== undefined ? Number(parsed.turmaIdx) : initialT;
-          return { periodoNum: p, turmaIdx: t };
+          if (parsed.turmaIdx !== undefined) return Number(parsed.turmaIdx);
         }
       } catch (e) {}
     }
-    return { periodoNum: initialP, turmaIdx: initialT };
-  }, [normalizedEmail]);
+    return initialT;
+  }, [authUser, normalizedEmail]);
 
-  // Nome e identificação da turma
+  // Turma atualmente selecionada para visualização/edição
+  const [selectedTurmaIdx, setSelectedTurmaIdx] = useState<number>(studentDefaultTurmaIdx);
+
+  // Dados carregados da turma
+  const [planoData, setPlanoData] = useState(() => getPlanoEstudosForTurma(selectedTurmaIdx));
+
+  // Recarrega dados quando a turma muda ou quando ocorre evento customizado
+  useEffect(() => {
+    setPlanoData(getPlanoEstudosForTurma(selectedTurmaIdx));
+
+    const handleUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent<{ turmaIdx: number }>;
+      if (customEvent.detail && customEvent.detail.turmaIdx === selectedTurmaIdx) {
+        setPlanoData(getPlanoEstudosForTurma(selectedTurmaIdx));
+      } else {
+        setPlanoData(getPlanoEstudosForTurma(selectedTurmaIdx));
+      }
+    };
+
+    window.addEventListener('lms_plano_estudos_updated', handleUpdate);
+    return () => window.removeEventListener('lms_plano_estudos_updated', handleUpdate);
+  }, [selectedTurmaIdx]);
+
+  // Matérias sob responsabilidade do professor autenticado
+  const professorDisciplinas = useMemo(() => {
+    if (!isProfessor && !isMonitorOrAdmin) return [];
+    return getDisciplinasForUser(normalizedEmail, 'professor');
+  }, [isProfessor, isMonitorOrAdmin, normalizedEmail]);
+
+  const professorDisciplinaNames = useMemo(() => {
+    return new Set(professorDisciplinas.map((d) => d.name.toLowerCase().trim()));
+  }, [professorDisciplinas]);
+
+  // Verifica se o usuário atual tem permissão para editar um entregável específico
+  const canEditEntregavel = (item: Entregavel) => {
+    if (isMonitorOrAdmin) return true;
+    if (isProfessor) {
+      const dName = item.disciplina.toLowerCase().trim();
+      const profName = authUser?.name?.toLowerCase() || '';
+      return professorDisciplinaNames.has(dName) || (item.disciplinaId && professorDisciplinas.some(d => d.id === item.disciplinaId));
+    }
+    return false;
+  };
+
+  // Verifica se o usuário atual tem permissão para editar uma disciplina específica
+  const canEditDisciplina = (disc: RequisitosDisciplina) => {
+    if (isMonitorOrAdmin) return true;
+    if (isProfessor) {
+      const dProfEmail = (disc.professorEmail || '').toLowerCase().trim();
+      const dProfName = disc.professor.toLowerCase().trim();
+      const authName = authUser?.name?.toLowerCase() || '';
+      const isEmailMatch = dProfEmail && dProfEmail === normalizedEmail;
+      const isNameMatch = authName && (authName.includes(dProfName) || dProfName.includes(authName));
+      return isEmailMatch || isNameMatch || professorDisciplinaNames.has(disc.nome.toLowerCase().trim());
+    }
+    return false;
+  };
+
+  // Nome formatado da turma
   const turmaNome = useMemo(() => {
-    switch (studentProfile.turmaIdx) {
+    switch (selectedTurmaIdx) {
       case 0:
         return 'Fim de Semana (5º Período)';
       case 1:
@@ -291,39 +139,11 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
       case 3:
         return 'Curso Básico de Teologia';
       default:
-        return `Turma A — ${studentProfile.periodoNum}º Período`;
+        return `Turma ${selectedTurmaIdx}`;
     }
-  }, [studentProfile]);
+  }, [selectedTurmaIdx]);
 
-  // Lista de entregáveis e requisitos correlacionados com a turma
-  const entregaveisList = useMemo(() => {
-    switch (studentProfile.turmaIdx) {
-      case 0:
-        return ENTREGAVEIS_FDS;
-      case 2:
-        return ENTREGAVEIS_TURMA_B;
-      case 3:
-        return ENTREGAVEIS_BASICO;
-      case 1:
-      default:
-        return ENTREGAVEIS_TURMA_A;
-    }
-  }, [studentProfile.turmaIdx]);
-
-  const requisitosList = useMemo(() => {
-    switch (studentProfile.turmaIdx) {
-      case 0:
-        return REQUISITOS_FDS;
-      case 2:
-        return REQUISITOS_TURMA_B;
-      case 3:
-        return REQUISITOS_BASICO;
-      case 1:
-      default:
-        return REQUISITOS_TURMA_A;
-    }
-  }, [studentProfile.turmaIdx]);
-
+  // Checklist de progresso individual
   const [checkedIds, setCheckedIds] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
@@ -335,6 +155,31 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
   const [expandedDisciplina, setExpandedDisciplina] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'cronograma' | 'requisitos' | 'livros'>('cronograma');
 
+  // Estado dos Modais de Edição
+  const [editingEntregavel, setEditingEntregavel] = useState<Entregavel | null>(null);
+  const [isNewEntregavelModalOpen, setIsNewEntregavelModalOpen] = useState(false);
+  const [editingDisciplina, setEditingDisciplina] = useState<RequisitosDisciplina | null>(null);
+
+  // Estados dos formulários de entregável
+  const [formDisciplina, setFormDisciplina] = useState('');
+  const [formTitulo, setFormTitulo] = useState('');
+  const [formTipo, setFormTipo] = useState<Entregavel['tipo']>('prova');
+  const [formDataLimite, setFormDataLimite] = useState('');
+  const [formDataISO, setFormDataISO] = useState('');
+  const [formDescricao, setFormDescricao] = useState('');
+
+  // Estados dos formulários de disciplina
+  const [formRegrasGerais, setFormRegrasGerais] = useState('');
+  const [formCriteriosAvaliacao, setFormCriteriosAvaliacao] = useState('');
+  const [formWhatsapp, setFormWhatsapp] = useState('');
+  const [formInfoExtra, setFormInfoExtra] = useState('');
+  const [formLivros, setFormLivros] = useState<LivroRecomendado[]>([]);
+
+  // Novo livro temporário dentro do modal de disciplina
+  const [newLivroTitulo, setNewLivroTitulo] = useState('');
+  const [newLivroAutor, setNewLivroAutor] = useState('');
+  const [newLivroTipo, setNewLivroTipo] = useState<'obrigatorio' | 'base' | 'recomendado'>('obrigatorio');
+
   const toggleCheck = (id: string) => {
     setCheckedIds(prev => {
       const next = new Set(prev);
@@ -345,48 +190,200 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
   };
 
   const entregaveisOrdenados = useMemo(() => {
-    return [...entregaveisList].sort(
+    return [...planoData.entregaveis].sort(
       (a, b) => new Date(a.dataISO).getTime() - new Date(b.dataISO).getTime()
     );
-  }, [entregaveisList]);
+  }, [planoData.entregaveis]);
 
-  const completados = entregaveisList.filter(e => checkedIds.has(e.id)).length;
-  const totalEntregaveis = entregaveisList.length;
+  const completados = planoData.entregaveis.filter(e => checkedIds.has(e.id)).length;
+  const totalEntregaveis = planoData.entregaveis.length;
   const progresso = totalEntregaveis > 0 ? Math.round((completados / totalEntregaveis) * 100) : 0;
 
-  // Extração consolidada de livros por categoria
+  // Abertura do Modal de Novo Entregável
+  const handleOpenNewEntregavel = (presetDisciplina?: string) => {
+    const defaultDisc = presetDisciplina || (isProfessor && professorDisciplinas.length > 0 ? professorDisciplinas[0].name : (planoData.requisitos[0]?.nome || ''));
+    setEditingEntregavel(null);
+    setFormDisciplina(defaultDisc);
+    setFormTitulo('');
+    setFormTipo('prova');
+    setFormDataLimite('');
+    setFormDataISO(new Date().toISOString().split('T')[0]);
+    setFormDescricao('');
+    setIsNewEntregavelModalOpen(true);
+  };
+
+  // Abertura do Modal de Edição de Entregável
+  const handleOpenEditEntregavel = (item: Entregavel) => {
+    setEditingEntregavel(item);
+    setFormDisciplina(item.disciplina);
+    setFormTitulo(item.titulo);
+    setFormTipo(item.tipo);
+    setFormDataLimite(item.dataLimite);
+    setFormDataISO(item.dataISO);
+    setFormDescricao(item.descricao);
+    setIsNewEntregavelModalOpen(true);
+  };
+
+  // Salvar Entregável
+  const handleSaveEntregavel = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formTitulo.trim() || !formDisciplina.trim()) return;
+
+    const matchedReq = planoData.requisitos.find(r => r.nome.toLowerCase().trim() === formDisciplina.toLowerCase().trim());
+
+    const itemToSave: Entregavel = {
+      id: editingEntregavel ? editingEntregavel.id : `e-${Date.now()}`,
+      disciplina: formDisciplina,
+      disciplinaId: matchedReq ? matchedReq.id : editingEntregavel?.disciplinaId,
+      titulo: formTitulo.trim(),
+      tipo: formTipo,
+      dataLimite: formDataLimite.trim() || formDataISO,
+      dataISO: formDataISO || new Date().toISOString().split('T')[0],
+      descricao: formDescricao.trim(),
+    };
+
+    addOrUpdateEntregavel(selectedTurmaIdx, itemToSave);
+    setIsNewEntregavelModalOpen(false);
+    setEditingEntregavel(null);
+  };
+
+  // Excluir Entregável
+  const handleDeleteEntregavel = (id: string) => {
+    if (confirm('Tem certeza que deseja remover este entregável do plano de estudos?')) {
+      deleteEntregavel(selectedTurmaIdx, id);
+    }
+  };
+
+  // Abertura do Modal de Edição de Disciplina
+  const handleOpenEditDisciplina = (disc: RequisitosDisciplina) => {
+    setEditingDisciplina(disc);
+    setFormRegrasGerais(disc.regrasGerais.join('\n'));
+    setFormCriteriosAvaliacao(disc.criteriosAvaliacao.join('\n'));
+    setFormWhatsapp(disc.whatsapp || '');
+    setFormInfoExtra(disc.infoExtra || '');
+    setFormLivros(disc.livros ? [...disc.livros] : []);
+  };
+
+  // Salvar Edição da Disciplina
+  const handleSaveDisciplina = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingDisciplina) return;
+
+    const patch: Partial<RequisitosDisciplina> = {
+      regrasGerais: formRegrasGerais.split('\n').map(s => s.trim()).filter(Boolean),
+      criteriosAvaliacao: formCriteriosAvaliacao.split('\n').map(s => s.trim()).filter(Boolean),
+      whatsapp: formWhatsapp.trim() || undefined,
+      infoExtra: formInfoExtra.trim() || undefined,
+      livros: formLivros,
+    };
+
+    updateRequisitosDisciplina(selectedTurmaIdx, editingDisciplina.id, patch);
+    setEditingDisciplina(null);
+  };
+
+  // Adicionar Livro na lista da disciplina
+  const handleAddLivroToDisciplina = () => {
+    if (!newLivroTitulo.trim()) return;
+    setFormLivros(prev => [
+      ...prev,
+      {
+        id: `liv-${Date.now()}`,
+        titulo: newLivroTitulo.trim(),
+        autor: newLivroAutor.trim() || 'A definir',
+        tipo: newLivroTipo,
+      }
+    ]);
+    setNewLivroTitulo('');
+    setNewLivroAutor('');
+  };
+
+  // Remover Livro da lista da disciplina
+  const handleRemoveLivro = (idx: number) => {
+    setFormLivros(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  // Extração consolidada de livros para a aba Livros
   const livrosObrigatorios = useMemo(() => {
     const list: { t: string; a: string; d: string; n?: string }[] = [];
-    requisitosList.forEach(r => {
-      r.livros.filter(l => l.tipo === 'obrigatorio').forEach(l => {
+    planoData.requisitos.forEach(r => {
+      (r.livros || []).filter(l => l.tipo === 'obrigatorio').forEach(l => {
         list.push({ t: l.titulo, a: l.autor, d: r.nome, n: `Leitura obrigatória indicada na disciplina de ${r.nome}.` });
       });
     });
     return list;
-  }, [requisitosList]);
+  }, [planoData.requisitos]);
 
   const livrosBase = useMemo(() => {
     const list: { t: string; a: string; d: string; n?: string }[] = [];
-    requisitosList.forEach(r => {
-      r.livros.filter(l => l.tipo === 'base').forEach(l => {
+    planoData.requisitos.forEach(r => {
+      (r.livros || []).filter(l => l.tipo === 'base').forEach(l => {
         list.push({ t: l.titulo, a: l.autor, d: r.nome, n: `Livro-texto base adotado para acompanhamento das aulas de ${r.nome}.` });
       });
     });
     return list;
-  }, [requisitosList]);
+  }, [planoData.requisitos]);
 
   const livrosRecomendados = useMemo(() => {
     const list: { t: string; a: string; d: string }[] = [];
-    requisitosList.forEach(r => {
-      r.livros.filter(l => l.tipo === 'recomendado').forEach(l => {
+    planoData.requisitos.forEach(r => {
+      (r.livros || []).filter(l => l.tipo === 'recomendado').forEach(l => {
         list.push({ t: l.titulo, a: l.autor, d: r.nome });
       });
     });
     return list;
-  }, [requisitosList]);
+  }, [planoData.requisitos]);
 
   return (
     <div className="space-y-5 px-1 pb-8">
+      {/* BARRA DE CONTROLE DE GESTÃO PARA MONITORES E PROFESSORES */}
+      {(isMonitorOrAdmin || isProfessor) && (
+        <div className="p-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-2xl text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border border-purple-400/30">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-purple-500/20 border border-purple-400/30">
+              {isMonitorOrAdmin ? <ShieldCheck className="w-5 h-5 text-purple-300" /> : <UserCheck className="w-5 h-5 text-amber-300" />}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black uppercase tracking-wider text-purple-200">
+                  {isMonitorOrAdmin ? '👑 Gestão Total do Monitor / Coordenação' : '👨‍🏫 Gestão Docente da Disciplina'}
+                </span>
+              </div>
+              <p className="text-xs text-purple-100/80">
+                {isMonitorOrAdmin
+                  ? 'Você tem permissão para editar todo o plano de estudos, requisitos e cronogramas de qualquer turma.'
+                  : 'Você pode adicionar e editar os entregáveis, regras e livros afetos às suas disciplinas.'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            {isMonitorOrAdmin && (
+              <div className="flex items-center gap-1 bg-black/30 p-1 rounded-xl border border-white/10 text-xs">
+                <span className="text-[10px] text-gray-300 font-bold px-1.5">Turma:</span>
+                <select
+                  value={selectedTurmaIdx}
+                  onChange={(e) => setSelectedTurmaIdx(Number(e.target.value))}
+                  className="bg-purple-950 text-white rounded-lg px-2 py-1 font-bold text-xs border border-purple-500/40 focus:outline-none cursor-pointer"
+                >
+                  <option value={1}>Turma A (7º Período)</option>
+                  <option value={2}>Turma B (3º Período)</option>
+                  <option value={0}>Fim de Semana (5º Período)</option>
+                  <option value={3}>Curso Básico de Teologia</option>
+                </select>
+              </div>
+            )}
+
+            <button
+              onClick={() => handleOpenNewEntregavel()}
+              className="py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
+            >
+              <Plus className="w-4 h-4" />
+              <span>+ Novo Entregável</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* HEADER DINÂMICO CONFORME A TURMA E PERÍODO */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 p-5 text-white shadow-xl">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
@@ -411,56 +408,20 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
         </div>
       </div>
 
-      {/* ALERTA DIAS ESPECIAIS (APENAS PARA CURSO BÁSICO DE TEOLOGIA) */}
-      {(studentProfile.turmaIdx === 3 || studentProfile.periodoNum === 0) && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 shadow-sm animate-fade-in">
-          <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-            <h2 className="font-bold text-amber-800 text-sm">Dias Letivos Especiais — Curso Básico de Teologia</h2>
-          </div>
-          <p className="text-amber-700 text-xs mb-3">Haverá aulas normais nos dias abaixo para compensar feriados, evitando prejuízo na carga horária:</p>
-          <div className="space-y-2">
-            {DIAS_ESPECIAIS_CURSO_BASICO.map((d, i) => (
-              <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-3 border border-amber-200">
-                <span className="text-base">📅</span>
-                <div>
-                  <p className="font-semibold text-amber-800 text-xs">{d.data}</p>
-                  <p className="text-amber-700 text-xs">{d.descricao}</p>
-                  <p className="text-amber-500 text-xs italic">{d.motivo}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 bg-amber-100 rounded-lg p-2 text-xs text-amber-700">
-            💬 Canal de comunicação: <strong>grupos de WhatsApp da turma</strong>.
-          </div>
-        </div>
-      )}
-
-      {/* BANNER INFORMATIVO PARA TURMA A E DEMAIS TURMAS */}
-      {studentProfile.turmaIdx === 1 && (
-        <div className="rounded-xl border border-blue-200 bg-blue-50/80 p-3.5 text-xs text-blue-900 flex items-center gap-2.5 shadow-2xs">
-          <MessageSquare className="w-4 h-4 text-blue-600 shrink-0" />
-          <span>💬 Canal oficial de comunicação: <strong>grupos de WhatsApp por disciplina</strong>. TCC I: <em>"TCC1 - segundo semestre 2026"</em>.</span>
-        </div>
-      )}
-
-      {studentProfile.turmaIdx === 2 && (
-        <div className="rounded-xl border border-purple-200 bg-purple-50/80 p-3.5 text-xs text-purple-900 flex items-center gap-2.5 shadow-2xs">
-          <MessageSquare className="w-4 h-4 text-purple-600 shrink-0" />
-          <span>💬 Canal oficial de comunicação da Turma B: <strong>grupos de WhatsApp por disciplina e avisos acadêmicos</strong>.</span>
-        </div>
-      )}
-
       {/* SELETOR DE SEÇÃO */}
       <div className="flex bg-slate-100 p-1 rounded-xl gap-1">
         {[
-          { id: 'cronograma', emoji: '📅', label: 'Cronograma' },
-          { id: 'requisitos', emoji: '📋', label: 'Requisitos' },
+          { id: 'cronograma', emoji: '📅', label: `Cronograma (${planoData.entregaveis.length})` },
+          { id: 'requisitos', emoji: '📋', label: `Requisitos (${planoData.requisitos.length})` },
           { id: 'livros', emoji: '📚', label: 'Livros' },
         ].map(s => (
-          <button key={s.id} onClick={() => setActiveSection(s.id as any)}
-            className={`flex-1 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeSection === s.id ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+          <button
+            key={s.id}
+            onClick={() => setActiveSection(s.id as any)}
+            className={`flex-1 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              activeSection === s.id ? 'bg-white text-slate-800 shadow-sm font-extrabold' : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
             {s.emoji} {s.label}
           </button>
         ))}
@@ -469,60 +430,143 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
       {/* ── SEÇÃO: CRONOGRAMA & CHECKLIST ── */}
       {activeSection === 'cronograma' && (
         <div className="space-y-3">
-          <p className="text-slate-500 text-xs">Marque os itens conforme for concluindo. O progresso é salvo automaticamente para a sua turma ({turmaNome}).</p>
-          {entregaveisOrdenados.map(e => {
-            const dias = getDiasRestantes(e.dataISO);
-            const done = checkedIds.has(e.id);
-            const badge = getBadgeTipo(e.tipo);
-            const urgente = !done && dias >= 0 && dias <= 14;
-            const vencido = !done && dias < 0;
-            return (
-              <div key={e.id} className={`rounded-xl border p-4 transition-all shadow-sm ${done ? 'bg-green-50 border-green-200 opacity-70' : vencido ? 'bg-red-50 border-red-200' : urgente ? 'bg-amber-50 border-amber-300' : 'bg-white border-slate-200'}`}>
-                <div className="flex items-start gap-3">
-                  <button onClick={() => toggleCheck(e.id)} className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer ${done ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-green-400'}`}>
-                    {done && <Check className="w-3.5 h-3.5" />}
-                  </button>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap gap-2 mb-1">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge.cls}`}>{badge.label}</span>
-                      {urgente && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 border border-amber-300">⚡ {dias === 0 ? 'Hoje!' : `${dias}d restantes`}</span>}
-                      {vencido && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-800 border border-red-300">⚠️ Vencido</span>}
-                      {!urgente && !vencido && !done && dias > 0 && <span className="text-xs text-slate-400">{dias}d restantes</span>}
-                    </div>
-                    <p className="text-xs font-semibold text-slate-500">{e.disciplina}</p>
-                    <p className={`text-sm font-bold ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}>{e.titulo}</p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{e.descricao}</p>
-                    <div className="flex items-center gap-1 mt-2">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                      <span className="text-xs font-medium text-slate-600">{e.dataLimite}</span>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-slate-500 text-xs">
+              Marque os itens conforme for concluindo. O progresso é salvo automaticamente para a sua turma ({turmaNome}).
+            </p>
+            {(isMonitorOrAdmin || isProfessor) && (
+              <button
+                onClick={() => handleOpenNewEntregavel()}
+                className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" /> Adicionar Avaliação / Trabalho
+              </button>
+            )}
+          </div>
+
+          {entregaveisOrdenados.length === 0 ? (
+            <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-500 text-xs">
+              Nenhum entregável cadastrado para esta turma até o momento.
+            </div>
+          ) : (
+            entregaveisOrdenados.map(e => {
+              const dias = getDiasRestantes(e.dataISO);
+              const done = checkedIds.has(e.id);
+              const badge = getBadgeTipo(e.tipo);
+              const urgente = !done && dias >= 0 && dias <= 14;
+              const vencido = !done && dias < 0;
+              const userCanEdit = canEditEntregavel(e);
+
+              return (
+                <div key={e.id} className={`rounded-xl border p-4 transition-all shadow-sm group ${done ? 'bg-green-50 border-green-200 opacity-70' : vencido ? 'bg-red-50 border-red-200' : urgente ? 'bg-amber-50 border-amber-300' : 'bg-white border-slate-200'}`}>
+                  <div className="flex items-start gap-3">
+                    <button
+                      onClick={() => toggleCheck(e.id)}
+                      className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer ${
+                        done ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-green-400'
+                      }`}
+                    >
+                      {done && <Check className="w-3.5 h-3.5" />}
+                    </button>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge.cls}`}>{badge.label}</span>
+                          {urgente && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 border border-amber-300">⚡ {dias === 0 ? 'Hoje!' : `${dias}d restantes`}</span>}
+                          {vencido && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-800 border border-red-300">⚠️ Vencido</span>}
+                          {!urgente && !vencido && !done && dias > 0 && <span className="text-xs text-slate-400">{dias}d restantes</span>}
+                        </div>
+
+                        {/* Botões de Ação de Edição / Exclusão */}
+                        {userCanEdit && (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleOpenEditEntregavel(e)}
+                              title="Editar este entregável"
+                              className="p-1.5 text-gray-500 hover:text-blue-700 bg-gray-100 hover:bg-blue-50 rounded-lg transition cursor-pointer"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteEntregavel(e.id)}
+                              title="Excluir este entregável"
+                              className="p-1.5 text-gray-500 hover:text-red-700 bg-gray-100 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="text-xs font-semibold text-slate-500">{e.disciplina}</p>
+                      <p className={`text-sm font-bold ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}>{e.titulo}</p>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">{e.descricao}</p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="text-xs font-medium text-slate-600">{e.dataLimite}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
       )}
 
       {/* ── SEÇÃO: REQUISITOS POR MATÉRIA ── */}
       {activeSection === 'requisitos' && (
         <div className="space-y-3">
-          <p className="text-slate-500 text-xs">Diretrizes oficiais informadas pelos professores para {turmaNome}. Clique para expandir cada matéria.</p>
-          {requisitosList.map(disc => {
+          <p className="text-slate-500 text-xs">
+            Diretrizes oficiais informadas pelos professores para {turmaNome}. Clique para expandir cada matéria.
+          </p>
+
+          {planoData.requisitos.map(disc => {
             const expanded = expandedDisciplina === disc.id;
+            const userCanEdit = canEditDisciplina(disc);
+
             return (
               <div key={disc.id} className={`rounded-xl border ${disc.corBorda} ${disc.corFundo} shadow-sm overflow-hidden`}>
-                <button onClick={() => setExpandedDisciplina(prev => prev === disc.id ? null : disc.id)}
-                  className="w-full flex items-center gap-3 p-4 text-left hover:opacity-80 transition-opacity cursor-pointer">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/70 ${disc.cor}`}>{disc.num}</span>
+                <div className="flex items-center justify-between p-4 gap-3">
+                  <button
+                    onClick={() => setExpandedDisciplina(prev => prev === disc.id ? null : disc.id)}
+                    className="flex-1 flex items-center gap-3 text-left hover:opacity-80 transition-opacity cursor-pointer"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/70 ${disc.cor}`}>{disc.num}</span>
+                      </div>
+                      <p className={`font-bold text-sm ${disc.cor}`}>{disc.nome}</p>
+                      <p className="text-xs text-slate-500">{disc.professor}</p>
                     </div>
-                    <p className={`font-bold text-sm ${disc.cor}`}>{disc.nome}</p>
-                    <p className="text-xs text-slate-500">{disc.professor}</p>
-                  </div>
-                  {expanded ? <ChevronUp className={`w-4 h-4 ${disc.cor}`} /> : <ChevronDown className={`w-4 h-4 ${disc.cor}`} />}
-                </button>
+                    {expanded ? <ChevronUp className={`w-4 h-4 ${disc.cor}`} /> : <ChevronDown className={`w-4 h-4 ${disc.cor}`} />}
+                  </button>
+
+                  {/* Botão de Edição Rápida da Disciplina */}
+                  {userCanEdit && (
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        onClick={() => handleOpenNewEntregavel(disc.nome)}
+                        title="Adicionar avaliação para esta matéria"
+                        className="p-1.5 bg-white/80 hover:bg-white text-slate-700 hover:text-blue-700 rounded-lg text-xs font-bold border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Nova Prova</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleOpenEditDisciplina(disc)}
+                        title="Editar diretrizes, critérios e livros desta matéria"
+                        className="p-1.5 bg-white/80 hover:bg-white text-slate-700 hover:text-purple-700 rounded-lg text-xs font-bold border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Editar Matéria</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {expanded && (
                   <div className="border-t border-white/40 bg-white/70 p-4 space-y-4">
                     <div>
@@ -551,7 +595,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
                         </div>
                       </div>
                     )}
-                    {disc.livros.length > 0 && (
+                    {disc.livros && disc.livros.length > 0 && (
                       <div>
                         <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wide mb-2 flex items-center gap-1"><BookOpen className="w-3 h-3" /> Leituras</h3>
                         <div className="space-y-1.5">
@@ -621,26 +665,319 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({ userEmail })
               </div>
             </div>
           )}
+        </div>
+      )}
 
-          {/* Aviso TCC (Apenas para Turma A - 7º Período) */}
-          {studentProfile.turmaIdx === 1 && (
-            <div className="rounded-xl border border-teal-300 bg-teal-50 p-4">
-              <div className="flex items-start gap-3">
-                <FileText className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+      {/* ============================================================ */}
+      {/* MODAL 1: ADICIONAR / EDITAR ENTREGÁVEL */}
+      {/* ============================================================ */}
+      {isNewEntregavelModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-gray-100 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                <Target className="w-5 h-5 text-blue-600" />
+                <span>{editingEntregavel ? 'Editar Entregável / Avaliação' : 'Novo Entregável / Avaliação'}</span>
+              </h3>
+              <button
+                onClick={() => setIsNewEntregavelModalOpen(false)}
+                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEntregavel} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Disciplina</label>
+                {isProfessor && !isMonitorOrAdmin ? (
+                  <select
+                    value={formDisciplina}
+                    onChange={(e) => setFormDisciplina(e.target.value)}
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                  >
+                    {professorDisciplinas.map((d) => (
+                      <option key={d.id} value={d.name}>
+                        {d.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    value={formDisciplina}
+                    onChange={(e) => setFormDisciplina(e.target.value)}
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                  >
+                    {planoData.requisitos.map((r) => (
+                      <option key={r.id} value={r.nome}>
+                        {r.nome} ({r.professor})
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Título da Atividade</label>
+                <input
+                  type="text"
+                  value={formTitulo}
+                  onChange={(e) => setFormTitulo(e.target.value)}
+                  placeholder="Ex: AV1: Prova Escrita — Unidade 1"
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <h3 className="font-bold text-teal-800 text-sm mb-1">🚫 TCC I — Regra sobre IA</h3>
-                  <p className="text-teal-700 text-xs leading-relaxed">
-                    É <strong>terminantemente proibido</strong> o uso de Inteligência Artificial ou terceiros para redigir o TCC. 
-                    Somente correções ortográficas e formatação técnica externa são permitidas.
-                  </p>
-                  <div className="mt-2 bg-teal-100 rounded-lg p-2">
-                    <p className="text-teal-700 text-xs font-bold mb-1">Ordem de escrita obrigatória:</p>
-                    <p className="text-teal-600 text-xs">1º Metodologia → 2º Desenvolvimento → 3º Conclusão → 4º <strong>Resumo & Introdução (por último!)</strong></p>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Tipo de Entrega</label>
+                  <select
+                    value={formTipo}
+                    onChange={(e) => setFormTipo(e.target.value as any)}
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  >
+                    <option value="prova">📝 Prova Escrita / Forms</option>
+                    <option value="trabalho">📄 Trabalho Acadêmico</option>
+                    <option value="resumo">📖 Resumo Manuscrito</option>
+                    <option value="apresentacao">🎤 Seminário / Apresentação</option>
+                    <option value="entrega">📤 Entrega de Projeto / Artigo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Data Limite (ISO)</label>
+                  <input
+                    type="date"
+                    value={formDataISO}
+                    onChange={(e) => {
+                      setFormDataISO(e.target.value);
+                      if (e.target.value) {
+                        const parts = e.target.value.split('-');
+                        if (parts.length === 3) {
+                          setFormDataLimite(`${parts[2]}/${parts[1]}/${parts[0]}`);
+                        }
+                      }
+                    }}
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Data Formatada (Texto)</label>
+                <input
+                  type="text"
+                  value={formDataLimite}
+                  onChange={(e) => setFormDataLimite(e.target.value)}
+                  placeholder="Ex: 29/09/2026 (Ter)"
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Descrição / Instruções aos Alunos</label>
+                <textarea
+                  value={formDescricao}
+                  onChange={(e) => setFormDescricao(e.target.value)}
+                  placeholder="Detalhes sobre a prova, critérios de correção, formato e regras..."
+                  rows={3}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setIsNewEntregavelModalOpen(false)}
+                  className="px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 text-xs font-bold text-white bg-blue-900 hover:bg-blue-800 rounded-xl shadow-xs transition cursor-pointer"
+                >
+                  {editingEntregavel ? 'Salvar Alterações' : 'Criar Entregável'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* MODAL 2: EDITAR DIRETRIZES & LIVROS DA DISCIPLINA */}
+      {/* ============================================================ */}
+      {editingDisciplina && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-7 max-w-2xl w-full shadow-2xl border border-gray-100 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div>
+                <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                  <Edit3 className="w-5 h-5 text-purple-600" />
+                  <span>Diretrizes & Livros: {editingDisciplina.nome}</span>
+                </h3>
+                <p className="text-xs text-gray-500">Docente: {editingDisciplina.professor}</p>
+              </div>
+              <button
+                onClick={() => setEditingDisciplina(null)}
+                className="p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveDisciplina} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Regras Gerais da Matéria (1 por linha)
+                </label>
+                <textarea
+                  value={formRegrasGerais}
+                  onChange={(e) => setFormRegrasGerais(e.target.value)}
+                  placeholder="Ex: Câmeras abertas durante toda a aula&#10;16 encontros no semestre&#10;Pontualidade rígida às 19h"
+                  rows={3}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Critérios de Avaliação (1 por linha)
+                </label>
+                <textarea
+                  value={formCriteriosAvaliacao}
+                  onChange={(e) => setFormCriteriosAvaliacao(e.target.value)}
+                  placeholder="Ex: AV1: Prova escrita até 8 pontos&#10;+1 ponto de frequência ativa&#10;+1 ponto de leitura obrigatória"
+                  rows={3}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Grupo Oficial WhatsApp</label>
+                  <input
+                    type="text"
+                    value={formWhatsapp}
+                    onChange={(e) => setFormWhatsapp(e.target.value)}
+                    placeholder='Ex: "TCC1 - segundo semestre 2026"'
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Observações / Dicas Extras</label>
+                  <input
+                    type="text"
+                    value={formInfoExtra}
+                    onChange={(e) => setFormInfoExtra(e.target.value)}
+                    placeholder="Ex: Textos e apostilas gratuitos na pasta virtual do Drive"
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Seção de Gestão de Livros da Matéria */}
+              <div className="border border-purple-200 bg-purple-50/50 p-4 rounded-2xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold text-purple-950 uppercase tracking-wide flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-purple-700" />
+                    <span>Livros e Bibliografia ({formLivros.length})</span>
+                  </h4>
+                </div>
+
+                {/* Lista de Livros Cadastrados */}
+                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                  {formLivros.length === 0 ? (
+                    <p className="text-xs text-gray-500 italic">Nenhum livro adicionado.</p>
+                  ) : (
+                    formLivros.map((liv, idx) => (
+                      <div key={idx} className="flex items-center justify-between gap-2 p-2 bg-white rounded-xl border border-purple-100 text-xs">
+                        <div className="min-w-0">
+                          <span className={`text-[10px] font-black px-1.5 py-0.5 rounded mr-1.5 ${
+                            liv.tipo === 'obrigatorio' ? 'bg-red-100 text-red-800' : liv.tipo === 'base' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                          }`}>
+                            {liv.tipo.toUpperCase()}
+                          </span>
+                          <strong className="text-slate-800">{liv.titulo}</strong>
+                          <span className="text-slate-500 ml-1">({liv.autor})</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveLivro(idx)}
+                          className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Formulário de Adicionar Livro */}
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 pt-2 border-t border-purple-200">
+                  <div className="sm:col-span-5">
+                    <input
+                      type="text"
+                      placeholder="Título do Livro..."
+                      value={newLivroTitulo}
+                      onChange={(e) => setNewLivroTitulo(e.target.value)}
+                      className="w-full p-2 bg-white border border-gray-300 rounded-xl text-xs"
+                    />
+                  </div>
+                  <div className="sm:col-span-4">
+                    <input
+                      type="text"
+                      placeholder="Autor..."
+                      value={newLivroAutor}
+                      onChange={(e) => setNewLivroAutor(e.target.value)}
+                      className="w-full p-2 bg-white border border-gray-300 rounded-xl text-xs"
+                    />
+                  </div>
+                  <div className="sm:col-span-3 flex items-center gap-1">
+                    <select
+                      value={newLivroTipo}
+                      onChange={(e) => setNewLivroTipo(e.target.value as any)}
+                      className="w-full p-2 bg-white border border-gray-300 rounded-xl text-xs"
+                    >
+                      <option value="obrigatorio">Obrigatório</option>
+                      <option value="base">Livro-Base</option>
+                      <option value="recomendado">Recomendado</option>
+                    </select>
+                    <button
+                      type="button"
+                      onClick={handleAddLivroToDisciplina}
+                      className="p-2 bg-purple-700 hover:bg-purple-800 text-white rounded-xl font-bold text-xs shrink-0 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingDisciplina(null)}
+                  className="px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 rounded-xl shadow-xs transition cursor-pointer"
+                >
+                  Salvar Diretrizes
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

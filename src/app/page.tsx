@@ -512,7 +512,7 @@ export default function Home() {
     if (activeTab === 'plano-estudos' || activeTab === 'plano-2026' || activeTab === 'cronograma-semestre') {
       return (
         <div className="bg-white rounded-3xl border border-amber-100 shadow-sm p-4 sm:p-6">
-          <PlanoEstudosPage userEmail={userEmail} onTabChange={handleTabChange} />
+          <PlanoEstudosPage userEmail={userEmail} currentRole={currentRole} onTabChange={handleTabChange} />
         </div>
       );
     }
