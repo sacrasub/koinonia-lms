@@ -21,6 +21,9 @@ import {
   getGravacaoForAula, 
   OFFICIAL_DRIVE_RECORDINGS_FOLDER 
 } from '@/services/gravacoesService';
+import { getSafeStreamUrl } from '@/lib/videoUtils';
+import { VideoPlayerModal } from '@/components/VideoPlayerModal';
+import { GravacaoAulaItem } from '@/types';
 
 interface GoogleAgendaEventModalProps {
   isOpen: boolean;
@@ -46,6 +49,15 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
   const [showMorePhones, setShowMorePhones] = useState<boolean>(false);
   const [rsvp, setRsvp] = useState<RSVPStatus>('yes');
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
+  // Player de Vídeo Nativo Seguro Integrado
+  const [activeVideoPlayer, setActiveVideoPlayer] = useState<{
+    isOpen: boolean;
+    title: string;
+    videoUrl: string;
+    disciplinaName?: string;
+    aulaNum?: number;
+  } | null>(null);
 
   useEffect(() => {
     if (event) {
@@ -251,11 +263,18 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
               if (latest) {
                 return (
                   <div className="pl-11 pt-1">
-                    <a
-                      href={latest.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-between gap-3 w-full p-3 rounded-2xl bg-gradient-to-r from-red-950/70 via-rose-950/60 to-purple-950/60 hover:from-red-900/80 hover:to-rose-900/80 text-rose-200 border border-red-800/60 transition-all shadow-sm group active:scale-98"
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveVideoPlayer({
+                          isOpen: true,
+                          title: latest.title,
+                          videoUrl: getSafeStreamUrl(latest.video_url),
+                          disciplinaName: event.title.split('-')[0].trim(),
+                          aulaNum: latest.aula_num,
+                        });
+                      }}
+                      className="inline-flex items-center justify-between gap-3 w-full p-3 rounded-2xl bg-gradient-to-r from-red-950/70 via-rose-950/60 to-purple-950/60 hover:from-red-900/80 hover:to-rose-900/80 text-rose-200 border border-red-800/60 transition-all shadow-sm group active:scale-98 cursor-pointer text-left"
                     >
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-red-600/30 text-red-300 flex items-center justify-center font-bold border border-red-500/40">
@@ -273,8 +292,10 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
                           </p>
                         </div>
                       </div>
-                      <ExternalLink className="w-4 h-4 text-rose-400 group-hover:scale-110 transition-transform shrink-0 mr-1" />
-                    </a>
+                      <span className="px-2.5 py-1 rounded-xl bg-red-600/40 text-red-200 text-[11px] font-bold border border-red-500/40 group-hover:bg-red-600 transition-colors shrink-0 mr-1 flex items-center gap-1">
+                        <span>▶ Assistir</span>
+                      </span>
+                    </button>
                   </div>
                 );
               }
@@ -434,17 +455,24 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
                   }
 
                   return gravacoes.map((rec) => (
-                    <a
+                    <button
                       key={rec.id}
-                      href={rec.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-950/70 to-rose-950/70 hover:from-red-900/90 hover:to-rose-900/90 text-rose-200 text-xs font-semibold border border-rose-700/60 transition-all group shadow-xs active:scale-95"
+                      type="button"
+                      onClick={() => {
+                        setActiveVideoPlayer({
+                          isOpen: true,
+                          title: rec.title,
+                          videoUrl: getSafeStreamUrl(rec.video_url),
+                          disciplinaName: event.title.split('-')[0].trim(),
+                          aulaNum: rec.aula_num,
+                        });
+                      }}
+                      className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-950/70 to-rose-950/70 hover:from-red-900/90 hover:to-rose-900/90 text-rose-200 text-xs font-semibold border border-rose-700/60 transition-all group shadow-xs active:scale-95 cursor-pointer"
                     >
                       <Video className="w-3.5 h-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
                       <span>{rec.aula_num ? `Aula ${rec.aula_num} Gravada` : 'Aula Gravada (Drive)'}</span>
-                      <ExternalLink className="w-3 h-3 text-rose-300 ml-1" />
-                    </a>
+                      <span className="text-[10px] bg-red-500/30 text-red-200 px-1 rounded font-bold ml-0.5">▶</span>
+                    </button>
                   ));
                 })()}
               </div>
@@ -509,6 +537,18 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
         </div>
 
       </div>
+
+      {/* MODAL DE REPRODUÇÃO DE VÍDEO SEGURO NATIVO (SEM OPÇÃO DE DOWNLOAD) */}
+      {activeVideoPlayer && (
+        <VideoPlayerModal
+          isOpen={activeVideoPlayer.isOpen}
+          onClose={() => setActiveVideoPlayer(null)}
+          title={activeVideoPlayer.title}
+          videoUrl={activeVideoPlayer.videoUrl}
+          disciplinaName={activeVideoPlayer.disciplinaName}
+          aulaNum={activeVideoPlayer.aulaNum}
+        />
+      )}
     </div>
   );
 };

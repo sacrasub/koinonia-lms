@@ -67,7 +67,7 @@ export function getVideoSourceType(url: string): VideoSourceType {
   return 'other_embed';
 }
 
-// Retorna a URL de Embed ideal para iframe no Desktop e Celular
+// Retorna a URL de Embed ideal para iframe no Desktop e Celular (Modo Player Limpo sem download)
 export function getEmbedVideoUrl(url: string): string {
   if (!url) return '';
   const trimmed = url.trim();
@@ -88,14 +88,26 @@ export function getEmbedVideoUrl(url: string): string {
   return trimmed;
 }
 
-// Retorna o link nativo direto para abrir no app do Drive / YouTube ou em nova aba no Celular
+// Retorna a URL protegida do Google Drive (/preview) sem a barra de menus com opcao de download
+export function getSafeStreamUrl(url: string): string {
+  if (!url) return '';
+  const trimmed = url.trim();
+  const driveId = extractDriveFileId(trimmed);
+  if (driveId) {
+    return `https://drive.google.com/file/d/${driveId}/preview`;
+  }
+  return trimmed;
+}
+
+// Retorna o link nativo direto para reprodução protegida em tela cheia (sem menu de download do Google Drive)
 export function getNativeAppOrDirectLink(url: string): string {
   if (!url) return '';
   const trimmed = url.trim();
 
   const driveId = extractDriveFileId(trimmed);
   if (driveId) {
-    return `https://drive.google.com/file/d/${driveId}/view?usp=drivesdk`;
+    // Rota /preview do Google Drive não exibe o menu "Arquivo -> Baixar (Ctrl+D)" nem barra de ferramentas
+    return `https://drive.google.com/file/d/${driveId}/preview`;
   }
 
   const ytId = extractYouTubeId(trimmed);
