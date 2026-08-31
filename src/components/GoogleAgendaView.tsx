@@ -68,7 +68,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
     return new Date(2026, 7, 25); // 25 de Agosto de 2026
   });
 
-  const [viewMode, setViewMode] = useState<CalendarViewMode>('mes');
+  const [viewMode, setViewMode] = useState<CalendarViewMode>('semana');
   const [selectedUniversalEvent, setSelectedUniversalEvent] = useState<CalendarUniversalEvent | null>(null);
   const [selectedAgendaEvent, setSelectedAgendaEvent] = useState<GoogleAgendaEvent | null>(null);
   const [liveInfo, setLiveInfo] = useState(() => getLiveEventNow());
