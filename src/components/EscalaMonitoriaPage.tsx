@@ -53,6 +53,16 @@ import {
   playClosingAlarm, 
   playTestBeep 
 } from '@/lib/soundEffects';
+import { 
+  getDiretrizes, 
+  saveDiretrizes, 
+  addDiretriz, 
+  getOcorrencias, 
+  saveOcorrencias, 
+  addOcorrencia, 
+  DiretrizAcesso, 
+  OcorrenciaMonitoria 
+} from '@/services/monitoriaIncidentsService';
 import { supabase } from '@/lib/supabaseClient';
 
 export interface EscalaItem {
@@ -548,7 +558,19 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [turmaPrintTab, setTurmaPrintTab] = useState<'Turma A' | 'Turma B' | 'Todos'>('Turma A');
   const [turmaEquipeTab, setTurmaEquipeTab] = useState<'Todas' | 'Turma A' | 'Turma B'>('Todas');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'compacto' | 'grade' | 'equipe' | 'checklist' | 'trocas' | 'leituras' | 'materiais'>('grade');
+  const [activeTab, setActiveTab] = useState<'compacto' | 'grade' | 'equipe' | 'checklist' | 'trocas' | 'leituras' | 'materiais' | 'portaria'>('grade');
+
+  // Diretrizes da Coordenação, Validador de Alunos e Diário de Ocorrências
+  const [diretrizesList, setDiretrizesList] = useState<DiretrizAcesso[]>(() => getDiretrizes());
+  const [ocorrenciasList, setOcorrenciasList] = useState<OcorrenciaMonitoria[]>(() => getOcorrencias());
+  const [studentSearchTerm, setStudentSearchTerm] = useState<string>('');
+  const [copiedStudentEmail, setCopiedStudentEmail] = useState<string | null>(null);
+  const [modalNovaOcorrencia, setModalNovaOcorrencia] = useState<boolean>(false);
+  const [formOcorrenciaTipo, setFormOcorrenciaTipo] = useState<OcorrenciaMonitoria['tipo']>('liberacao_acesso');
+  const [formOcorrenciaAluno, setFormOcorrenciaAluno] = useState<string>('');
+  const [formOcorrenciaEmail, setFormOcorrenciaEmail] = useState<string>('');
+  const [formOcorrenciaDisciplina, setFormOcorrenciaDisciplina] = useState<string>('');
+  const [formOcorrenciaDesc, setFormOcorrenciaDesc] = useState<string>('');
 
   const [copiedLinkMap, setCopiedLinkMap] = useState<Record<string, boolean>>({});
   const [copiedMeetMap, setCopiedMeetMap] = useState<Record<string, boolean>>({});
@@ -2070,6 +2092,21 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveTab('portaria')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'portaria'
+                ? 'bg-purple-700 text-white shadow-sm'
+                : 'text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200'
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4 text-purple-400" />
+            <span>🛡️ Portaria & Validador</span>
+            <span className="text-[10px] bg-purple-900 text-purple-200 px-1.5 py-0.2 rounded-full font-black">
+              Novo
+            </span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('materiais')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTab === 'materiais'
@@ -3544,6 +3581,461 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
             currentRole={currentRole}
             userEmail={userEmail}
           />
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ABA 8: PORTARIA VIRTUAL, VALIDADOR DE ALUNOS & DIRETRIZES DA COORDENAÇÃO  */}
+      {/* ========================================================================= */}
+      {activeTab === 'portaria' && (
+        <div className="space-y-6">
+          {/* BANNER DE CABEÇALHO */}
+          <div className="bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl border border-purple-500/30 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-purple-500/20 text-purple-300 rounded-2xl border border-purple-400/30">
+                  <ShieldCheck className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-widest font-black text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+                      Plantão & Portaria Virtual
+                    </span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                    Diretrizes Oficiais & Validador de Alunos
+                  </h2>
+                  <p className="text-xs text-purple-200/80 max-w-2xl">
+                    Consulte e-mails de estudantes instantaneamente, audite pedidos de entrada na sala do Google Meet e acompanhe as diretrizes emitidas pela coordenação e direção.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setFormOcorrenciaAluno('');
+                  setFormOcorrenciaEmail('');
+                  setFormOcorrenciaDisciplina('');
+                  setFormOcorrenciaDesc('');
+                  setModalNovaOcorrencia(true);
+                }}
+                className="py-2.5 px-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Registrar Ocorrência / Entrada</span>
+              </button>
+            </div>
+          </div>
+
+          {/* GRID DE DUAS COLUNAS: VALIDADOR DE ALUNOS (ESQ) & DIRETRIZES DA COORDENAÇÃO (DIR) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* COLUNA ESQUERDA: VALIDADOR INSTANTÂNEO DE ALUNOS & CONSULTA DE E-MAIL */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-purple-200/80 shadow-xs space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 bg-purple-100 text-purple-800 rounded-xl">
+                      <Search className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-slate-900 text-sm">
+                        Validador Rápido de Estudantes
+                      </h3>
+                      <p className="text-[11px] text-gray-500">
+                        Digite qualquer nome para ver o e-mail Google cadastrado e liberar no Meet.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-extrabold bg-purple-100 text-purple-900 px-2 py-0.5 rounded-full">
+                    {Object.keys(INITIAL_AUTHORIZED_USERS).length} no Diretório
+                  </span>
+                </div>
+
+                {/* Campo de Busca Instantânea */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={studentSearchTerm}
+                    onChange={(e) => setStudentSearchTerm(e.target.value)}
+                    placeholder="Digite o nome da aluna(o) (Ex: Adriana Cláudia, Renata, Cristian...)"
+                    className="w-full bg-slate-50 border border-purple-200 text-slate-900 rounded-2xl pl-10 pr-4 py-3 text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-purple-500 focus:outline-none transition shadow-2xs"
+                  />
+                  <Search className="w-4 h-4 text-purple-600 absolute left-3.5 top-3.5" />
+                  {studentSearchTerm && (
+                    <button
+                      onClick={() => setStudentSearchTerm('')}
+                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-xs font-bold"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                {/* Lista de Resultados da Busca de Alunos */}
+                <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                  {(() => {
+                    const allList = Object.values(INITIAL_AUTHORIZED_USERS).filter(u => u.roles.includes('aluno'));
+                    const q = studentSearchTerm.toLowerCase().trim();
+                    const filtered = q
+                      ? allList.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
+                      : allList.slice(0, 8);
+
+                    if (filtered.length === 0) {
+                      return (
+                        <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-1">
+                          <p className="text-xs font-bold text-slate-700">Nenhum aluno localizado com "{studentSearchTerm}".</p>
+                          <p className="text-[11px] text-gray-500">
+                            Caso seja um participante externo, aplique a <strong>Regra RULE-001</strong> (bloqueio ou contingenciamento com anotação).
+                          </p>
+                        </div>
+                      );
+                    }
+
+                    return filtered.map((st) => (
+                      <div
+                        key={st.email}
+                        className="p-3.5 bg-gradient-to-r from-slate-50 to-purple-50/40 rounded-2xl border border-purple-100 hover:border-purple-300 transition flex items-center justify-between gap-3 shadow-2xs"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <img
+                            src={st.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(st.name)}&background=6b21a8&color=fff&bold=true`}
+                            alt={st.name}
+                            className="w-10 h-10 rounded-xl object-cover border border-purple-200 shrink-0 bg-purple-100"
+                          />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <h4 className="font-extrabold text-xs text-slate-900 truncate">
+                                {st.name}
+                              </h4>
+                              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-200">
+                                🟢 Matriculado
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 font-mono truncate select-all">
+                              {st.email}
+                            </p>
+                            <span className="text-[10px] text-purple-800 font-semibold block mt-0.5">
+                              {st.turmaIdx === 0 ? 'Fim de Semana (5º Período)' : st.turmaIdx === 2 ? 'Turma B (3º Período)' : 'Turma A (7º Período)'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(st.email);
+                              setCopiedStudentEmail(st.email);
+                              showToast(`E-mail de ${st.name} copiado!`);
+                              setTimeout(() => setCopiedStudentEmail(null), 2500);
+                            }}
+                            title="Copiar e-mail para colar no Meet ou verificar no Google Admin"
+                            className="px-2.5 py-1.5 bg-white hover:bg-purple-100 text-purple-900 border border-purple-200 rounded-xl text-[11px] font-bold transition flex items-center gap-1 cursor-pointer"
+                          >
+                            {copiedStudentEmail === st.email ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                <span>Copiado!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5" />
+                                <span>Copiar E-mail</span>
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              addOcorrencia({
+                                data: new Date().toLocaleDateString('pt-BR'),
+                                timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                                monitor: 'Monitor de Plantão',
+                                tipo: 'liberacao_acesso',
+                                alunoNome: st.name,
+                                alunoEmail: st.email,
+                                disciplina: 'Aulas Ao Vivo',
+                                descricao: `Acesso validado e liberado pelo monitor no plantão virtual para ${st.name}.`,
+                                status: 'resolvido',
+                              });
+                              setOcorrenciasList(getOcorrencias());
+                              showToast(`Entrada de ${st.name} registrada no diário com sucesso!`);
+                            }}
+                            title="Registrar liberação de entrada no diário de ocorrências"
+                            className="px-2.5 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl text-[11px] font-bold shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Registrar Entrada</span>
+                          </button>
+                        </div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              </div>
+            </div>
+
+            {/* COLUNA DIREITA: DIRETRIZES & REGRAS OFICIAIS DE ACESSO */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-blue-200/80 shadow-xs space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 bg-blue-100 text-blue-800 rounded-xl">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-slate-900 text-sm">
+                        Diretrizes Oficiais de Portaria & Coordenação
+                      </h3>
+                      <p className="text-[11px] text-gray-500">
+                        Orientações emitidas por Robert FMB e Diretora Karla no grupo oficial.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-extrabold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-full">
+                    {diretrizesList.length} Diretrizes
+                  </span>
+                </div>
+
+                {/* Lista de Diretrizes */}
+                <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                  {diretrizesList.map((dir) => (
+                    <div
+                      key={dir.id}
+                      className={`p-4 rounded-2xl border transition space-y-2 shadow-2xs ${
+                        dir.tipo === 'bloqueio'
+                          ? 'bg-rose-50/60 border-rose-200'
+                          : dir.tipo === 'contingencia'
+                          ? 'bg-amber-50/60 border-amber-200'
+                          : 'bg-blue-50/60 border-blue-200'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${
+                            dir.tipo === 'bloqueio'
+                              ? 'bg-rose-600 text-white'
+                              : dir.tipo === 'contingencia'
+                              ? 'bg-amber-600 text-white'
+                              : 'bg-blue-600 text-white'
+                          }`}>
+                            {dir.id} • {dir.tipo.replace('_', ' ').toUpperCase()}
+                          </span>
+                          {dir.escopo && (
+                            <span className="text-[10px] font-bold bg-white text-slate-700 px-2 py-0.5 rounded-md border border-slate-200">
+                              {dir.escopo}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-slate-500 font-medium">
+                          {dir.data} às {dir.timestamp}
+                        </span>
+                      </div>
+
+                      <h4 className="font-extrabold text-xs sm:text-sm text-slate-900">
+                        {dir.titulo}
+                      </h4>
+                      <p className="text-xs text-slate-700 leading-relaxed">
+                        {dir.descricao}
+                      </p>
+                      <div className="text-[10px] font-bold text-slate-500 pt-1 border-t border-slate-200/60 flex items-center justify-between">
+                        <span>Emissor: <strong>{dir.emissor}</strong></span>
+                        <span className="text-emerald-700">✓ Em Vigor</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* SEÇÃO INFERIOR: DIÁRIO DE BORDO & OCORRÊNCIAS REGISTRADAS */}
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/80 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-emerald-100 text-emerald-800 rounded-xl">
+                  <CheckSquare className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-sm">
+                    Diário de Bordo & Auditoria de Ocorrências da Monitoria
+                  </h3>
+                  <p className="text-[11px] text-gray-500">
+                    Histórico de plantão com registros de liberações de entrada, relatórios e contingenciamentos.
+                  </p>
+                </div>
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                {ocorrenciasList.length} Registros no Livro de Plantão
+              </span>
+            </div>
+
+            {/* Listagem de Ocorrências */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {ocorrenciasList.map((oc) => (
+                <div
+                  key={oc.id}
+                  className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-2 hover:border-slate-300 transition shadow-2xs"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-purple-100 text-purple-900 border border-purple-200">
+                      {oc.id}
+                    </span>
+                    <span className="text-[10px] text-slate-500 font-medium">
+                      {oc.data} • {oc.timestamp}
+                    </span>
+                  </div>
+
+                  {oc.alunoNome && (
+                    <div className="p-2 bg-white rounded-xl border border-slate-200 text-xs space-y-0.5">
+                      <span className="font-extrabold text-slate-900 block">
+                        👤 {oc.alunoNome}
+                      </span>
+                      {oc.alunoEmail && (
+                        <span className="text-[11px] text-slate-500 font-mono block">
+                          {oc.alunoEmail}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <p className="text-xs text-slate-700 leading-relaxed">
+                    {oc.descricao}
+                  </p>
+
+                  <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                    <span>Monitor: <strong>{oc.monitor}</strong></span>
+                    <span className={`font-bold px-1.5 py-0.5 rounded ${
+                      oc.status === 'resolvido' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      {oc.status === 'resolvido' ? '✓ Resolvido' : '⏳ Pendente'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL PARA REGISTRAR NOVA OCORRÊNCIA NO DIÁRIO DE BORDO                   */}
+      {/* ========================================================================= */}
+      {modalNovaOcorrencia && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 space-y-4 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-purple-600" />
+                <span>Registrar Ocorrência / Entrada de Aluno</span>
+              </h3>
+              <button
+                onClick={() => setModalNovaOcorrencia(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 font-bold flex items-center justify-center cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                addOcorrencia({
+                  data: new Date().toLocaleDateString('pt-BR'),
+                  timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                  monitor: userEmail ? (INITIAL_AUTHORIZED_USERS[userEmail.toLowerCase()]?.name || userEmail) : 'Monitor de Plantão',
+                  tipo: formOcorrenciaTipo,
+                  alunoNome: formOcorrenciaAluno.trim() || undefined,
+                  alunoEmail: formOcorrenciaEmail.trim() || undefined,
+                  disciplina: formOcorrenciaDisciplina.trim() || undefined,
+                  descricao: formOcorrenciaDesc.trim() || 'Liberação de acesso registrada pelo monitor.',
+                  status: 'resolvido',
+                });
+                setOcorrenciasList(getOcorrencias());
+                setModalNovaOcorrencia(false);
+                showToast('Ocorrência registrada no Diário de Bordo com sucesso!');
+              }}
+              className="space-y-3.5"
+            >
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Tipo de Ocorrência</label>
+                <select
+                  value={formOcorrenciaTipo}
+                  onChange={(e) => setFormOcorrenciaTipo(e.target.value as any)}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+                  <option value="liberacao_acesso">✅ Liberação de Acesso no Google Meet</option>
+                  <option value="relatorio_diario">📋 Relatório de Plantão de Sala</option>
+                  <option value="aluno_nao_identificado">⚠️ Aluno Não Identificado / Bloqueio</option>
+                  <option value="problema_tecnico">🔧 Problema Técnico / Link / Áudio</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Nome do Aluno(a)</label>
+                  <input
+                    type="text"
+                    value={formOcorrenciaAluno}
+                    onChange={(e) => setFormOcorrenciaAluno(e.target.value)}
+                    placeholder="Ex: Adriana Cláudia"
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">E-mail Cadastrado</label>
+                  <input
+                    type="email"
+                    value={formOcorrenciaEmail}
+                    onChange={(e) => setFormOcorrenciaEmail(e.target.value)}
+                    placeholder="Ex: adrianaclaudia@gmail.com"
+                    className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Disciplina / Aula</label>
+                <input
+                  type="text"
+                  value={formOcorrenciaDisciplina}
+                  onChange={(e) => setFormOcorrenciaDisciplina(e.target.value)}
+                  placeholder="Ex: História do Congregacionalismo ou Aula Fim de Semana"
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Descrição / Detalhes</label>
+                <textarea
+                  value={formOcorrenciaDesc}
+                  onChange={(e) => setFormOcorrenciaDesc(e.target.value)}
+                  placeholder="Descreva as providências tomadas no plantão..."
+                  rows={3}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setModalNovaOcorrencia(false)}
+                  className="px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 text-xs font-bold text-white bg-purple-900 hover:bg-purple-800 rounded-xl shadow-xs transition cursor-pointer"
+                >
+                  Salvar Ocorrência
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

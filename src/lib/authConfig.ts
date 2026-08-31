@@ -132,7 +132,25 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
     avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
   },
 
+  // Coordenação & Direção STC
+  'robert.fmb@uiecbead.com.br': {
+    email: 'robert.fmb@uiecbead.com.br',
+    name: 'Robert FMB (Coordenação / Monitoria)',
+    roles: ['admin', 'monitor', 'aluno'],
+    defaultRole: 'monitor',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  },
+  'karla.direcao@uiecbead.com.br': {
+    email: 'karla.direcao@uiecbead.com.br',
+    name: 'STC Diretora Karla DIREÇÃO',
+    roles: ['admin', 'professor', 'aluno'],
+    defaultRole: 'admin',
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+  },
+
   // Alunos Matriculados e Participantes (Semestre 2026.2)
+  'adrianaclaudia@gmail.com': { email: 'adrianaclaudia@gmail.com', name: 'Adriana Cláudia', roles: ['aluno'], defaultRole: 'aluno', turmaIdx: 0, periodoNum: 5 },
+  'adriana.claudia@uiecbead.com.br': { email: 'adriana.claudia@uiecbead.com.br', name: 'Adriana Cláudia', roles: ['aluno'], defaultRole: 'aluno', turmaIdx: 0, periodoNum: 5 },
   'riffocristianmision@gmail.com': { email: 'riffocristianmision@gmail.com', name: 'Cristian Riffo', roles: ['aluno'], defaultRole: 'aluno' },
   'adrielfofucho@gmail.com': { email: 'adrielfofucho@gmail.com', name: 'Adriel', roles: ['aluno'], defaultRole: 'aluno' },
   'alcimarluizdasilva3@gmail.com': { email: 'alcimarluizdasilva3@gmail.com', name: 'Alcimar Luiz da Silva', roles: ['aluno'], defaultRole: 'aluno' },
