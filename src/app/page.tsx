@@ -388,7 +388,7 @@ export default function Home() {
     if (activeTab === 'aluno-portal-2026') {
       return <PortalAcademicoPage userEmail={userEmail} currentRole={currentRole} onTabChange={handleTabChange} />;
     }
-    if (activeTab === 'aluno-caderno' || activeTab === 'caderno') {
+    if (activeTab === 'aluno-caderno' || activeTab === 'caderno' || activeTab === 'aluno-anotacoes' || activeTab === 'anotacoes' || activeTab === 'cornell') {
       return <CadernoCornellPage userEmail={userEmail} />;
     }
     if (activeTab === 'aluno-biblioteca' || activeTab === 'biblioteca') {

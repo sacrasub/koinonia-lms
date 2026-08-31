@@ -467,20 +467,30 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   };
 
   const handleOpenOrCreateCornellForLesson = (aula: Aula, dateForDay: string) => {
+    const payload = {
+      disciplina_name: aula.disciplina_name,
+      disciplina_code: aula.code || aula.id,
+      professor_name: aula.professor_name || (aula as any).professor || '',
+      date: dateForDay,
+      dateFormatted: dateForDay,
+      theme: `${aula.code || aula.id} - ${aula.disciplina_name} (${dateForDay})`,
+    };
+
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-anotacoes' }));
+      try {
+        localStorage.setItem('lms_cornell_pending_open', JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    if (onTabChange) {
+      onTabChange('aluno-caderno');
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-caderno' }));
       setTimeout(() => {
-        window.dispatchEvent(
-          new CustomEvent('lms_create_cornell_from_lesson', {
-            detail: {
-              subject: aula.disciplina_name,
-              lessonDate: dateForDay,
-              topic: `${aula.code || aula.id} - ${aula.disciplina_name} (${dateForDay})`,
-              professor: aula.professor_name || (aula as any).professor || '',
-            },
-          })
-        );
-      }, 80);
+        window.dispatchEvent(new CustomEvent('lms_open_cornell_note', { detail: payload }));
+      }, 100);
     }
   };
 
