@@ -99,8 +99,24 @@ export interface CornellNote {
   ai_summary_url?: string; // Link para o documento Google Docs gerado pela IA do Meet
   ai_summary_text?: string; // Texto estruturado / transcrição gerada pela IA
   tags?: string[];
+  sheet_index?: number; // Número da folha na mesma aula (1, 2, 3...)
+  sheet_title?: string; // Título opcional da folha (ex: "Parte 1", "Discussão")
   created_at?: string;
   updated_at?: string;
+}
+
+export interface SystemUpdate {
+  id: string;
+  version: string;
+  title: string;
+  description: string;
+  date: string; // ex: "01/09/2026"
+  category: 'novidade' | 'melhoria' | 'correcao' | 'comunicado';
+  highlights: string[];
+  badge?: string;
+  link_url?: string;
+  link_label?: string;
+  author?: string;
 }
 
 export interface AvisoLeituraPreAula {
@@ -153,7 +169,7 @@ export interface LivroRecomendadoDisciplina {
   category?: string;
   notes?: string; // Ex: "Capítulos 1 a 4 para a Prova AV1"
   added_by_name: string;
-  added_by_role: 'professor' | 'monitor' | 'admin';
+  added_by_role: UserRole;
   added_by_email?: string;
   created_at: string;
 }

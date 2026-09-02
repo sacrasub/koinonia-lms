@@ -641,10 +641,11 @@ export function getLiveEventNow(): { isLive: boolean; currentEvent: GoogleAgenda
     const startMin = sH * 60 + sM;
     const endMin = eH * 60 + eM;
 
-    if (currentMinutes >= startMin && currentMinutes <= endMin) {
+    // Identifica evento ativo (com 15 min de antecedência)
+    if (currentMinutes >= (startMin - 15) && currentMinutes <= endMin) {
       currentEvent = ev;
       break;
-    } else if (currentMinutes < startMin && !nextEvent) {
+    } else if (currentMinutes < (startMin - 15) && !nextEvent) {
       nextEvent = ev;
     }
   }

@@ -25,6 +25,7 @@ import { formatPhone, cleanPhoneNumber, getWhatsAppUrl } from '@/lib/phoneUtils'
 import { getAllDisciplinas, updateDisciplina } from '@/services/disciplinasService';
 import { AdminAnalyticsView } from '@/components/AdminAnalyticsView';
 import { AdminTCCResearchView } from '@/components/AdminTCCResearchView';
+import { InviteUserModal } from '@/components/InviteUserModal';
 
 export interface AdminPanelProps {
   initialSubTab?: 'analytics' | 'tcc' | 'requests' | 'users' | 'disciplinas';
@@ -86,6 +87,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     mailtoUrl: string;
     copied: boolean;
   } | null>(null);
+
+  // Modal de Envio Rápido de Convite para Usuários
+  const [inviteModalUser, setInviteModalUser] = useState<UserRoleMapping | null>(null);
 
   // Modal State para Editar Disciplina
   const [editingDisc, setEditingDisc] = useState<Disciplina | null>(null);
@@ -572,10 +576,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         </td>
 
                         <td className="p-3.5 text-right">
-                          <div className="flex items-center justify-end gap-1">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => setInviteModalUser(u)}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-[11px] rounded-lg shadow-2xs transition active:scale-95 cursor-pointer"
+                              title={`Enviar convite de acesso para ${u.name}`}
+                            >
+                              <Send className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Convidar</span>
+                            </button>
+
                             <button
                               onClick={() => handleOpenEditUser(u)}
-                              className="p-1.5 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition"
+                              className="p-1.5 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition cursor-pointer"
                               title="Editar Perfil, Turma e Papéis"
                             >
                               <Edit3 className="w-4 h-4" />
@@ -584,7 +597,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                             {u.email !== 'sacrasub@gmail.com' && (
                               <button
                                 onClick={() => handleRemoveUser(u.email)}
-                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition cursor-pointer"
                                 title="Revogar Acesso"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -1079,6 +1092,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         </div>
       )}
+
+      {/* MODAL DE ENVIO RÁPIDO DE CONVITE */}
+      <InviteUserModal
+        isOpen={!!inviteModalUser}
+        onClose={() => setInviteModalUser(null)}
+        user={inviteModalUser}
+      />
     </div>
   );
 };

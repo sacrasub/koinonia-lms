@@ -9,9 +9,10 @@ import {
   Upload, Link as LinkIcon, PlusCircle, FileText, Check, AlertCircle, 
   ToggleLeft, ToggleRight, Sparkles, Video, FolderOpen, Copy, ExternalLink, 
   Clock, Calendar, BookOpen, Settings, Edit3, Trash2, ShieldCheck, UserCheck, RefreshCw,
-  Archive, ArchiveRestore, Layers, Presentation, UploadCloud, Activity, Flame, Mic, Box
+  Archive, ArchiveRestore, Layers, Presentation, UploadCloud, Activity, Flame, Mic, Box,
+  BookMarked, Library
 } from 'lucide-react';
-import { Disciplina, Material, Avaliacao, AvisoLeituraPreAula, UserRole } from '@/types';
+import { Disciplina, Material, Avaliacao, AvisoLeituraPreAula, UserRole, LivroRecomendadoDisciplina } from '@/types';
 import { 
   getAllDisciplinas, 
   getDisciplinasForUser, 
@@ -40,6 +41,11 @@ import {
   deleteSlideItem, 
   SlideItem 
 } from '@/services/slidesService';
+import { 
+  getAllLivrosRecomendados, 
+  addLivroRecomendado, 
+  deleteLivroRecomendado 
+} from '@/services/livrosRecomendadosService';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
 
 interface ProfessorPanelProps {
@@ -115,6 +121,17 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const [slideNotes, setSlideNotes] = useState<string>('');
   const [disciplinaSlides, setDisciplinaSlides] = useState<SlideItem[]>([]);
 
+  // Gestão de Livros Recomendados pelo Professor
+  const [livrosRecomendados, setLivrosRecomendados] = useState<LivroRecomendadoDisciplina[]>([]);
+  const [isAddLivroModalOpen, setIsAddLivroModalOpen] = useState(false);
+  const [livroDisciplinaId, setLivroDisciplinaId] = useState<string>('');
+  const [livroTitle, setLivroTitle] = useState<string>('');
+  const [livroAuthor, setLivroAuthor] = useState<string>('');
+  const [livroUrl, setLivroUrl] = useState<string>('');
+  const [livroCategory, setLivroCategory] = useState<string>('04 - Teologia Sistemática');
+  const [livroNotes, setLivroNotes] = useState<string>('');
+  const [livroIsMandatory, setLivroIsMandatory] = useState<boolean>(false);
+
   // Gravador de Aulas
   const [isRecorderOpen, setIsRecorderOpen] = useState(false);
   const [recorderDisciplinaId, setRecorderDisciplinaId] = useState<string>('');
@@ -132,17 +149,20 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     const handleMatUpd = () => refreshScopedData();
     const handleAvUpd = () => refreshScopedData();
     const handleAnnUpd = () => refreshScopedData();
+    const handleLivrosUpd = () => refreshScopedData();
 
     window.addEventListener('lms_disciplinas_updated', handleDiscUpd);
     window.addEventListener('lms_materials_updated', handleMatUpd);
     window.addEventListener('lms_avaliacoes_updated', handleAvUpd);
     window.addEventListener('lms_announcements_updated', handleAnnUpd);
+    window.addEventListener('lms_livros_recomendados_updated', handleLivrosUpd);
 
     return () => {
       window.removeEventListener('lms_disciplinas_updated', handleDiscUpd);
       window.removeEventListener('lms_materials_updated', handleMatUpd);
       window.removeEventListener('lms_avaliacoes_updated', handleAvUpd);
       window.removeEventListener('lms_announcements_updated', handleAnnUpd);
+      window.removeEventListener('lms_livros_recomendados_updated', handleLivrosUpd);
     };
   }, []);
 
@@ -198,12 +218,15 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     return userDisciplinas.map((d) => d.id);
   }, [userDisciplinas]);
 
-  // Recarrega materiais, avaliações e anúncios com escopo nas disciplinas ativas
+  // Recarrega materiais, avaliações, anúncios e livros recomendados com escopo nas disciplinas ativas
   const refreshScopedData = () => {
     const ids = activeDisciplinaIds;
     setMaterials(getMateriaisForDisciplinas(ids));
     setAvaliacoes(getAvaliacoesForDisciplinas(ids));
     setAnnouncements(getAnnouncementsForDisciplinas(ids));
+    
+    const allLivros = getAllLivrosRecomendados();
+    setLivrosRecomendados(allLivros.filter((l) => ids.includes(l.disciplina_id)));
   };
 
   useEffect(() => {
@@ -218,6 +241,9 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
       }
       if (!avaliacaoDisciplinaId || !userDisciplinas.some(d => d.id === avaliacaoDisciplinaId)) {
         setAvaliacaoDisciplinaId(firstId);
+      }
+      if (!livroDisciplinaId || !userDisciplinas.some(d => d.id === livroDisciplinaId)) {
+        setLivroDisciplinaId(firstId);
       }
     }
   }, [userDisciplinas]);
@@ -239,6 +265,46 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const showNotification = (msg: string) => {
     setMessage(msg);
     setTimeout(() => setMessage(null), 3500);
+  };
+
+  // Handlers para Gestão de Livros Recomendados pelo Professor
+  const handleAddLivro = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!livroTitle.trim() || !livroDisciplinaId) {
+      showNotification('Por favor, informe ao menos o título da obra e selecione a disciplina.');
+      return;
+    }
+
+    const disc = allDisciplinasList.find((d) => d.id === livroDisciplinaId);
+    const addedItem = addLivroRecomendado({
+      disciplina_id: livroDisciplinaId,
+      disciplina_name: disc?.name || 'Disciplina Teológica',
+      book_title: livroTitle.trim(),
+      book_author: livroAuthor.trim() || 'Autor não informado',
+      book_url: livroUrl.trim() || disc?.google_drive_url || 'https://drive.google.com',
+      category: livroCategory,
+      notes: livroNotes.trim() || `Livro recomendado pelo docente para aprofundamento na matéria.`,
+      is_mandatory: livroIsMandatory,
+      added_by_name: authorName || 'Professor',
+      added_by_role: currentRole || 'professor',
+    });
+
+    showNotification(`📚 Livro "${addedItem.book_title}" recomendado com sucesso para ${disc?.name}!`);
+    setIsAddLivroModalOpen(false);
+    setLivroTitle('');
+    setLivroAuthor('');
+    setLivroUrl('');
+    setLivroNotes('');
+    setLivroIsMandatory(false);
+    refreshScopedData();
+  };
+
+  const handleDeleteLivro = (id: string, title: string) => {
+    if (confirm(`Deseja realmente remover a recomendação do livro "${title}"?`)) {
+      deleteLivroRecomendado(id);
+      showNotification(`Recomendação do livro removida com sucesso.`);
+      refreshScopedData();
+    }
   };
 
   const handleCopyMeet = (url: string, id: string) => {
@@ -1455,6 +1521,113 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
         </div>
       </div>
 
+      {/* SEÇÃO 3.5: RECOMENDAÇÕES BIBLIOGRÁFICAS & LIVROS INDICADOS */}
+      <div className="bg-white p-6 rounded-3xl border border-amber-200/90 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-100 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-2xl bg-amber-600 flex items-center justify-center text-white shadow-md">
+              <BookMarked className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">
+                Recomendações Bibliográficas da Matéria
+              </h3>
+              <p className="text-xs text-amber-800 font-medium">
+                Indique livros essenciais, biografias, compêndios e leituras obrigatórias para suas turmas.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (userDisciplinas.length > 0 && !livroDisciplinaId) {
+                setLivroDisciplinaId(userDisciplinas[0].id);
+              }
+              setIsAddLivroModalOpen(true);
+            }}
+            className="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer active:scale-95"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>+ Recomendar Novo Livro</span>
+          </button>
+        </div>
+
+        {livrosRecomendados.length === 0 ? (
+          <div className="p-8 text-center bg-amber-50/40 rounded-2xl border border-dashed border-amber-200 text-amber-800 space-y-2">
+            <BookOpen className="w-8 h-8 text-amber-500 mx-auto" />
+            <div className="font-bold text-slate-800 text-sm">Nenhum livro recomendado para suas disciplinas ainda</div>
+            <p className="text-xs text-slate-500">Clique no botão acima para adicionar uma recomendação literária oficial com link e orientações pedagógicas.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {livrosRecomendados.map((livro) => (
+              <div
+                key={livro.id}
+                className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
+                  livro.is_mandatory
+                    ? 'bg-amber-50/60 border-amber-300 ring-1 ring-amber-400/30'
+                    : 'bg-white border-slate-200 hover:border-amber-300 shadow-2xs'
+                }`}
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-600 bg-slate-100 px-2 py-0.5 rounded truncate max-w-[150px]">
+                      {livro.disciplina_name}
+                    </span>
+                    {livro.is_mandatory ? (
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-200 text-amber-950 px-2 py-0.5 rounded shadow-2xs">
+                        ⭐ Obrigatório
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-slate-500 bg-slate-50 px-1.5 py-0.5 rounded">
+                        Complementar
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h4 className="font-black text-slate-900 text-xs sm:text-sm leading-snug line-clamp-2">
+                      {livro.book_title}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-semibold mt-0.5">
+                      ✍️ {livro.book_author}
+                    </p>
+                  </div>
+
+                  {livro.notes && (
+                    <p className="text-[11px] text-slate-600 bg-white/80 p-2 rounded-xl border border-slate-100 line-clamp-2 italic">
+                      "{livro.notes}"
+                    </p>
+                  )}
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <a
+                    href={livro.book_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-1.5 px-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Acessar Obra</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteLivro(livro.id, livro.book_title)}
+                    className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                    title="Excluir recomendação"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* SEÇÃO 4: MATERIAIS DE APOIO & GEMINI NOTEBOOK (NOTEBOOKLM) */}
       <div className="space-y-4">
         <SupportMaterialsHub
@@ -1928,6 +2101,174 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
           <MetaversoTeologicoPage userEmail={normalizedEmail} userName="" currentRole={currentRole} />
         </div>
       </div>
+
+      {/* MODAL: RECOMENDAR NOVO LIVRO PARA A DISCIPLINA */}
+      {isAddLivroModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in">
+          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 sm:p-7 space-y-5 border border-amber-200 my-8">
+            <div className="flex justify-between items-center border-b border-amber-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-amber-100 text-amber-900 rounded-xl">
+                  <BookMarked className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-base sm:text-lg text-slate-900 leading-tight">
+                    Recomendar Livro / Bibliografia
+                  </h3>
+                  <p className="text-xs text-amber-800">
+                    A indicação ficará disponível para todos os alunos matriculados
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddLivroModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs hover:bg-slate-200 transition cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleAddLivro} className="space-y-4 text-left">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Disciplina Vinculada:
+                </label>
+                <select
+                  value={livroDisciplinaId}
+                  onChange={(e) => setLivroDisciplinaId(e.target.value)}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  required
+                >
+                  {userDisciplinas.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name} ({d.code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Título da Obra / Livro:
+                </label>
+                <input
+                  type="text"
+                  value={livroTitle}
+                  onChange={(e) => setLivroTitle(e.target.value)}
+                  placeholder="Ex: Introdução ao Estudo do Novo Testamento"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Autor(a) ou Tradutor(a):
+                  </label>
+                  <input
+                    type="text"
+                    value={livroAuthor}
+                    onChange={(e) => setLivroAuthor(e.target.value)}
+                    placeholder="Ex: F. F. Bruce / Ed. Vida Nova"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Categoria Temática:
+                  </label>
+                  <select
+                    value={livroCategory}
+                    onChange={(e) => setLivroCategory(e.target.value)}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  >
+                    <option value="01 - Bíblia e Referência">01 - Bíblia e Referência</option>
+                    <option value="02 - Exegese e Hermenêutica">02 - Exegese e Hermenêutica</option>
+                    <option value="03 - Línguas Bíblicas (Hebraico e Grego)">03 - Línguas Bíblicas</option>
+                    <option value="04 - Teologia Sistemática">04 - Teologia Sistemática</option>
+                    <option value="06 - Teologia Histórica e Patrística">06 - Teologia Histórica</option>
+                    <option value="08 - Missões e Evangelismo">08 - Missões e Evangelismo</option>
+                    <option value="11 - Ética Cristã e Bioética">11 - Ética Cristã</option>
+                    <option value="14 - Sociologia e Ciências Afins">14 - Sociologia / Ciências Afins</option>
+                    <option value="16 - Aconselhamento Bíblico e Cuidado da Alma">16 - Aconselhamento Bíblico</option>
+                    <option value="17 - Liderança e Administração Eclesiástica">17 - Liderança</option>
+                    <option value="18 - Educação Cristã e Discipulado">18 - Educação Cristã</option>
+                    <option value="21 - História do Congregacionalismo e Tradição Reformada">21 - Hist. Congregacionalismo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Link da Obra no Google Drive / Pasta Digital (Opcional):
+                </label>
+                <input
+                  type="url"
+                  value={livroUrl}
+                  onChange={(e) => setLivroUrl(e.target.value)}
+                  placeholder="https://drive.google.com/open?id=..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Orientação Pedagógica / Notas para os Alunos:
+                </label>
+                <textarea
+                  rows={2}
+                  value={livroNotes}
+                  onChange={(e) => setLivroNotes(e.target.value)}
+                  placeholder="Ex: Leitura recomendada para fundamentação dos seminários da Unidade 2..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-amber-500 focus:outline-none resize-none"
+                ></textarea>
+              </div>
+
+              {/* Toggle de Leitura Obrigatória */}
+              <div className="p-3 bg-amber-50/80 rounded-2xl border border-amber-200 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-black text-amber-950 block">
+                    {livroIsMandatory ? '⭐ Leitura Obrigatória' : '📖 Leitura Complementar'}
+                  </span>
+                  <span className="text-[11px] text-amber-800">
+                    {livroIsMandatory ? 'Exigida para as avaliações da disciplina' : 'Indicação livre de aprofundamento acadêmico'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLivroIsMandatory(!livroIsMandatory)}
+                  className="cursor-pointer"
+                >
+                  {livroIsMandatory ? (
+                    <ToggleRight className="w-8 h-8 text-amber-600" />
+                  ) : (
+                    <ToggleLeft className="w-8 h-8 text-slate-400" />
+                  )}
+                </button>
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddLivroModalOpen(false)}
+                  className="flex-1 py-3 bg-slate-100 text-slate-700 font-extrabold text-xs rounded-xl hover:bg-slate-200 transition cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-black text-xs rounded-xl shadow-md transition cursor-pointer active:scale-95"
+                >
+                  Publicar Recomendação
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

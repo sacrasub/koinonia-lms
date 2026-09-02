@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
-  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu
+  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
 import { fetchGravacoesFromCloud } from '@/services/gravacoesService';
+import { getUnreadUpdatesCount } from '@/services/systemUpdatesService';
 import { UserProfileModal } from '@/components/UserProfileModal';
+import { SystemUpdatesModal } from '@/components/SystemUpdatesModal';
 import { MobileDrawerMenu } from '@/components/MobileDrawerMenu';
 import { useDeviceMode } from '@/hooks/useDeviceMode';
 
@@ -43,7 +45,25 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [syncing, setSyncing] = useState(false);
   const [showSyncSuccess, setShowSyncSuccess] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isUpdatesModalOpen, setIsUpdatesModalOpen] = useState(false);
+  const [unreadUpdatesCount, setUnreadUpdatesCount] = useState<number>(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    const updateUnread = () => {
+      setUnreadUpdatesCount(getUnreadUpdatesCount(normalizedEmail));
+    };
+    updateUnread();
+
+    const handleUpdatesUpdated = () => updateUnread();
+    window.addEventListener('lms_system_updates_updated', handleUpdatesUpdated);
+    window.addEventListener('lms_read_updates_updated', handleUpdatesUpdated);
+
+    return () => {
+      window.removeEventListener('lms_system_updates_updated', handleUpdatesUpdated);
+      window.removeEventListener('lms_read_updates_updated', handleUpdatesUpdated);
+    };
+  }, [normalizedEmail]);
 
   const [avatarUrl, setAvatarUrl] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -156,7 +176,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* LADO DIREITO: Ações Rápidas Adaptativas */}
-        <div className="flex items-center gap-1.5 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
+          {/* Botão do Sininho de Atualizações do Sistema */}
+          <button
+            onClick={() => setIsUpdatesModalOpen(true)}
+            className={`relative p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border flex items-center gap-1.5 cursor-pointer active:scale-95 ${
+              unreadUpdatesCount > 0
+                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 border-blue-300 ring-2 ring-blue-400/20'
+                : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300'
+            }`}
+            title={unreadUpdatesCount > 0 ? `${unreadUpdatesCount} novas atualizações do LMS!` : 'Atualizações e Novidades do LMS'}
+          >
+            <div className="relative flex items-center justify-center">
+              <Bell className={`w-4 h-4 ${unreadUpdatesCount > 0 ? 'text-blue-600 animate-bounce' : 'text-gray-500'}`} />
+              {unreadUpdatesCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-black shadow-xs animate-pulse">
+                  {unreadUpdatesCount}
+                </span>
+              )}
+            </div>
+            <span className="hidden md:inline font-bold">
+              {unreadUpdatesCount > 0 ? 'Novidades' : 'Atualizações'}
+            </span>
+          </button>
+
           {/* Botão de Ajuda & Tutoriais */}
           <button
             data-tour="btn-ajuda"
@@ -301,6 +344,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         onProfileUpdated={() => {
           if (onProfileUpdated) onProfileUpdated();
         }}
+      />
+
+      {/* Modal de Atualizações & Novidades do LMS (Sininho) */}
+      <SystemUpdatesModal
+        isOpen={isUpdatesModalOpen}
+        onClose={() => setIsUpdatesModalOpen(false)}
+        userEmail={normalizedEmail}
       />
     </>
   );

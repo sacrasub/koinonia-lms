@@ -42,8 +42,8 @@ import { TccSacramentoPage } from '@/components/TccSacramentoPage';
 import { FluxoEstudosPage } from '@/components/FluxoEstudosPage';
 import { GoogleAgendaView } from '@/components/GoogleAgendaView';
 import { PlanoEstudosPage } from '@/components/PlanoEstudosPage';
-
-
+import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
+import { AttendanceAlarmModal } from '@/components/AttendanceAlarmModal';
 
 export default function Home() {
   const router = useRouter();
@@ -618,6 +618,13 @@ export default function Home() {
         <Sidebar currentRole={currentRole} activeTab={activeTab} onTabChange={handleTabChange} userEmail={userEmail} />
         
         <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full overflow-x-hidden">
+          {/* Card de Aula Ao Vivo Global exibido em todas as páginas para o Aluno */}
+          {currentRole === 'aluno' && activeTab !== 'aluno-disciplinas' && (
+            <LiveAulaGlobalBanner 
+              userEmail={userEmail} 
+              onTabChange={handleTabChange} 
+            />
+          )}
           {renderContent()}
         </main>
       </div>
@@ -703,6 +710,12 @@ export default function Home() {
 
       {/* MODAL E BANNER DE PESQUISA CIENTÍFICA DO TCC (ALUNOS E PROFESSORES) */}
       <TCCSurveyModal currentRole={currentRole} userEmail={userEmail} />
+
+      {/* ALARME SONORO E VISUAL DA LISTA DE PRESENÇA AOS 50% DA AULA */}
+      <AttendanceAlarmModal 
+        userEmail={userEmail} 
+        currentRole={currentRole} 
+      />
 
       {/* GRAVADOR GLOBAL DE AULAS COM SUPORTE A MINIMIZAÇÃO (PICTURE-IN-PICTURE) */}
       <AulaRecorderModal

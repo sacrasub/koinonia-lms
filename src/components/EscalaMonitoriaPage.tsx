@@ -159,16 +159,35 @@ function compressImageFile(file: File): Promise<string> {
 
 export const DEFAULT_MONITORES_DATA: Record<string, MonitorInfo> = {
   // ==========================================
+  // COORDENAÇÃO GERAL (Robert FMB)
+  // ==========================================
+  Robert: {
+    name: 'Robert FMB',
+    shortName: 'Robert',
+    email: 'robert.fmb@uiecbead.com.br',
+    turma: 'Coordenação Geral',
+    turmaLabel: 'Coordenação Geral de Monitoria & Suporte',
+    roleDescription: 'Coordenador Geral de Suporte e Monitoria STC',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
+    disciplinas: ['Supervisão Geral de Turmas A, B e Fim de Semana', 'Suporte Técnico e Alinhamento com Professores'],
+    days: ['Segunda a Sábado'],
+    totalWeeklyHours: 'Coordenação',
+    color: 'from-purple-600 to-indigo-700',
+    badgeBg: 'bg-purple-100 text-purple-900 border-purple-200',
+    borderColor: 'border-purple-500'
+  },
+
+  // ==========================================
   // MONITORES - TURMA A (7º Período - Veteranos)
   // ==========================================
   Camila: {
-    name: 'Camila Balbi',
+    name: 'Camila Vieira',
     shortName: 'Camila',
     email: 'camilagbalbi@gmail.com',
     turma: 'Turma A',
     turmaLabel: 'Turma A (7º Período - Veteranos)',
     roleDescription: 'Monitora de Terças, Quintas e Sextas',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
     disciplinas: [
       'História do Congregacionalismo (Terça 19h)',
       'Novo Testamento III - Epístolas Gerais (Quinta 20h35)',
@@ -186,26 +205,27 @@ export const DEFAULT_MONITORES_DATA: Record<string, MonitorInfo> = {
     email: 'riffocristianmision@gmail.com',
     turma: 'Turma A',
     turmaLabel: 'Turma A (7º Período - Veteranos)',
-    roleDescription: 'Monitor de Terças e Quartas (2º Horário)',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
+    roleDescription: 'Monitor de Terças, Quartas e Sextas (2º Horário)',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
     disciplinas: [
       'História do Pensamento Cristão II (Terça 20h35)',
-      'Direitos Humanos (Quarta 20h35)'
+      'Direitos Humanos (Quarta 20h35)',
+      'História da Cultura Afro Brasileira e Indígena (Sexta 21h)'
     ],
-    days: ['Terça-feira', 'Quarta-feira'],
-    totalWeeklyHours: '2h 50min',
+    days: ['Terça-feira', 'Quarta-feira', 'Sexta-feira'],
+    totalWeeklyHours: '3h 50min',
     color: 'from-blue-600 to-indigo-600',
     badgeBg: 'bg-blue-100 text-blue-800 border-blue-200',
     borderColor: 'border-blue-500'
   },
   Rosiane: {
-    name: 'Rosiane Santos',
-    shortName: 'Rosiane',
+    name: 'Rosi (Rosiane Lima)',
+    shortName: 'Rosi',
     email: 'rosianelcs73@gmail.com',
     turma: 'Turma A',
     turmaLabel: 'Turma A (7º Período - Veteranos)',
     roleDescription: 'Monitora de Quartas, Quintas e Sextas',
-    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
     disciplinas: [
       'Aconselhamento Bíblico II (Quarta 19h)',
       'Ética Cristã (Quinta 19h)',
@@ -219,33 +239,123 @@ export const DEFAULT_MONITORES_DATA: Record<string, MonitorInfo> = {
   },
 
   // ==========================================
-  // MONITORES - TURMA B (3º Período - Semanal Noturno)
-  // Estrutura pronta para os novos monitores da Turma B
+  // MONITORES - TURMA B (3º Período - Novos Alunos)
   // ==========================================
-  'Monitoria Turma B': {
-    name: 'Equipe de Monitoria (Turma B)',
-    shortName: 'Turma B',
-    email: 'ead@uiecbead.com.br',
+  André: {
+    name: 'André',
+    shortName: 'André',
+    email: 'andreseminariouiecb@gmail.com',
     turma: 'Turma B',
-    turmaLabel: 'Turma B (3º Período)',
-    roleDescription: 'Equipe de Acompanhamento das Aulas da Turma B',
-    avatarUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=200&auto=format&fit=crop&q=80',
+    turmaLabel: 'Turma B (3º Período - Noturno)',
+    roleDescription: 'Monitor Titular de Terças e Quartas',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
     disciplinas: [
       'Introdução ao Novo Testamento (Terça 19h)',
       'Hermenêutica Bíblica (Terça 20h35)',
-      'Fundamentos e Prática do Discipulado (Quarta 19h)',
+      'Fundamentos e Prática do Discipulado (Quarta 19h)'
+    ],
+    days: ['Terça-feira', 'Quarta-feira'],
+    totalWeeklyHours: '4h 15min',
+    color: 'from-amber-600 to-orange-500',
+    badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+    borderColor: 'border-amber-500'
+  },
+  Daniel: {
+    name: 'Daniel',
+    shortName: 'Daniel',
+    email: 'daniel.monitor@uiecbead.com.br',
+    turma: 'Turma B',
+    turmaLabel: 'Turma B (3º Período - Noturno)',
+    roleDescription: 'Monitor Titular de Quartas, Quintas e Sextas',
+    avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&auto=format&fit=crop&q=80',
+    disciplinas: [
       'Teologia da Missão (Quarta 20h35)',
       'Teologia Sistemática III (Quinta 19h)',
       'Antigo Testamento II (Quinta 20h35)',
-      'Plantação e Revitalização de Igrejas II (Sexta 19h)',
-      'Liderança Cristã (Sexta 19h)'
+      'Liderança Cristã (Sexta 21h)'
     ],
-    days: ['Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'],
-    totalWeeklyHours: 'A definir',
-    color: 'from-amber-600 to-yellow-600',
-    badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
-    borderColor: 'border-amber-500',
-    isPendingRegistration: true
+    days: ['Quarta-feira', 'Quinta-feira', 'Sexta-feira'],
+    totalWeeklyHours: '4h 15min',
+    color: 'from-cyan-600 to-blue-600',
+    badgeBg: 'bg-cyan-100 text-cyan-900 border-cyan-200',
+    borderColor: 'border-cyan-500'
+  },
+  Renata: {
+    name: 'Renata',
+    shortName: 'Renata',
+    email: 'renata.monitora@uiecbead.com.br',
+    turma: 'Turma B',
+    turmaLabel: 'Turma B (3º Período - Noturno)',
+    roleDescription: 'Monitora Auxiliar (Adicionada em 05/08/2026 para apoio aos novos alunos)',
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
+    disciplinas: [
+      'Apoio em Introdução ao NT e Hermenêutica',
+      'Plantação e Revitalização de Igrejas II (Sexta 19h)',
+      'Plantão de Dúvidas dos Novos Alunos'
+    ],
+    days: ['Terça-feira', 'Quinta-feira', 'Sexta-feira'],
+    totalWeeklyHours: '3h 30min',
+    color: 'from-violet-600 to-fuchsia-600',
+    badgeBg: 'bg-violet-100 text-violet-900 border-violet-200',
+    borderColor: 'border-violet-500'
+  },
+
+  // ==========================================
+  // MONITORES - TURMA DE FIM DE SEMANA (5º Período)
+  // ==========================================
+  Thiago: {
+    name: 'Thiago',
+    shortName: 'Thiago',
+    email: 'thiago.monitor@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    turmaLabel: 'Turma de Fim de Semana (5º Período)',
+    roleDescription: 'Monitor Titular de Sextas e Sábados',
+    avatarUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80',
+    disciplinas: [
+      'Grego I / Grego II (Sexta 19h)',
+      'Apologética I / II (Sábado 07h)'
+    ],
+    days: ['Sexta-feira', 'Sábado'],
+    totalWeeklyHours: '4h 50min',
+    color: 'from-teal-600 to-emerald-600',
+    badgeBg: 'bg-teal-100 text-teal-900 border-teal-200',
+    borderColor: 'border-teal-500'
+  },
+  Júlia: {
+    name: 'Júlia',
+    shortName: 'Júlia',
+    email: 'julia.monitora@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    turmaLabel: 'Turma de Fim de Semana (5º Período)',
+    roleDescription: 'Monitora Auxiliar (Adicionada em 05/08/2026 após saída de Renan Bonacorso)',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    disciplinas: [
+      'Exegese do Novo Testamento (Sexta 21h)',
+      'História do Pensamento Cristão I/II (Sábado 13h)'
+    ],
+    days: ['Sexta-feira', 'Sábado'],
+    totalWeeklyHours: '3h 50min',
+    color: 'from-rose-600 to-pink-600',
+    badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+    borderColor: 'border-rose-500'
+  },
+  'Paulo Roberto': {
+    name: 'Paulo Roberto',
+    shortName: 'Paulo Roberto',
+    email: 'pauloroberto.monitor@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    turmaLabel: 'Turma de Fim de Semana (5º Período)',
+    roleDescription: 'Monitor Auxiliar (Adicionado em 05/08/2026 após saída de Renan Bonacorso)',
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
+    disciplinas: [
+      'Novo Testamento II - Epístolas Paulinas (Sábado 10h)',
+      'História do Pensamento Cristão I/II (Sábado 13h)'
+    ],
+    days: ['Sábado'],
+    totalWeeklyHours: '4h 10min',
+    color: 'from-indigo-600 to-sky-600',
+    badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+    borderColor: 'border-indigo-500'
   }
 };
 
@@ -391,6 +501,7 @@ export const ESCALA_DATA: EscalaItem[] = [
 
   // ==========================================
   // TURMA B (3º Período - Semanal Noturno)
+  // Monitores: André, Daniel e Renata
   // ==========================================
   {
     id: 'esc-tb-1',
@@ -400,12 +511,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº Leonardo Paulino',
     startBRT: '19:00',
     endBRT: '20:25',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'André',
+    monitorEmail: 'andreseminariouiecb@gmail.com',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: 'https://meet.google.com/esq-sjmd-sau',
-    description: 'Acompanhamento do 1º horário de Introdução ao Novo Testamento.'
+    description: 'Acompanhamento do 1º horário de Introdução ao Novo Testamento (Monitor Titular: André / Apoio: Renata).'
   },
   {
     id: 'esc-tb-2',
@@ -415,12 +526,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº David Bezerra',
     startBRT: '20:35',
     endBRT: '22:00',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'André',
+    monitorEmail: 'andreseminariouiecb@gmail.com',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: 'https://meet.google.com/vee-maaz-cdn',
-    description: 'Acompanhamento do 2º horário de Hermenêutica Bíblica.'
+    description: 'Acompanhamento do 2º horário de Hermenêutica Bíblica (Monitor: André).'
   },
   {
     id: 'esc-tb-3',
@@ -430,12 +541,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº José Milton',
     startBRT: '19:00',
     endBRT: '20:25',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'André',
+    monitorEmail: 'andreseminariouiecb@gmail.com',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: 'https://meet.google.com/xrk-hfza-tks',
-    description: 'Acompanhamento do 1º horário de Discipulado Cristão.'
+    description: 'Acompanhamento do 1º horário de Discipulado Cristão (Monitor: André).'
   },
   {
     id: 'esc-tb-4',
@@ -445,12 +556,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº Jefferson Pontes',
     startBRT: '20:35',
     endBRT: '22:00',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'Daniel',
+    monitorEmail: 'daniel.monitor@uiecbead.com.br',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: 'https://meet.google.com/gjg-jrbq-atk',
-    description: 'Acompanhamento do 2º horário de Teologia da Missão.'
+    description: 'Acompanhamento do 2º horário de Teologia da Missão (Monitor: Daniel).'
   },
   {
     id: 'esc-tb-5',
@@ -460,12 +571,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº Marcio Leal',
     startBRT: '19:00',
     endBRT: '20:25',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'Daniel',
+    monitorEmail: 'daniel.monitor@uiecbead.com.br',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: '',
-    description: 'Doutrina de Cristo e do Espírito Santo.'
+    description: 'Doutrina de Cristo e do Espírito Santo (Monitor: Daniel).'
   },
   {
     id: 'esc-tb-6',
@@ -475,12 +586,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profª Betânia Barbosa',
     startBRT: '20:35',
     endBRT: '22:00',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'Daniel',
+    monitorEmail: 'daniel.monitor@uiecbead.com.br',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: '',
-    description: 'Exegese e história dos Livros Históricos.'
+    description: 'Exegese e história dos Livros Históricos (Monitor: Daniel).'
   },
   {
     id: 'esc-tb-7',
@@ -490,12 +601,12 @@ export const ESCALA_DATA: EscalaItem[] = [
     professor: 'Profº Thácyto Lessa',
     startBRT: '19:00',
     endBRT: '20:25',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    monitor: 'Renata',
+    monitorEmail: 'renata.monitora@uiecbead.com.br',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: 'https://meet.google.com/jwb-wpvc-pzm',
-    description: 'Metodologias práticas e estratégias de plantação e renovação.'
+    description: 'Metodologias de plantação e revitalização (Monitora: Renata - auxílio aos novos alunos).'
   },
   {
     id: 'esc-tb-8',
@@ -503,14 +614,14 @@ export const ESCALA_DATA: EscalaItem[] = [
     dayIndex: 5,
     title: 'Liderança Cristã',
     professor: 'Profº Sandro Cruz',
-    startBRT: '19:00',
-    endBRT: '20:25',
-    monitor: 'Monitoria Turma B',
-    monitorEmail: 'ead@uiecbead.com.br',
+    startBRT: '21:00',
+    endBRT: '22:00',
+    monitor: 'Daniel',
+    monitorEmail: 'daniel.monitor@uiecbead.com.br',
     turma: 'Turma B',
     presencaUrl: '',
     meetUrl: '',
-    description: 'Princípios e formação de liderança cristã bíblica.'
+    description: 'Princípios e formação de liderança cristã bíblica (Monitor: Daniel).'
   },
   {
     id: 'esc-tb-9',
@@ -527,6 +638,86 @@ export const ESCALA_DATA: EscalaItem[] = [
     presencaUrl: '',
     meetUrl: '',
     description: 'Conteúdo gravado disponibilizado para estudo assíncrono.'
+  },
+
+  // ==========================================
+  // TURMA DE FIM DE SEMANA (5º Período - Sexta/Sábado)
+  // Monitores: Thiago, Júlia e Paulo Roberto
+  // ==========================================
+  {
+    id: 'esc-fds-1',
+    dayOfWeek: 'Sexta-feira',
+    dayIndex: 5,
+    title: 'Grego I / Grego II',
+    professor: 'Profº Samuel Cesarino',
+    startBRT: '19:00',
+    endBRT: '21:00',
+    monitor: 'Thiago',
+    monitorEmail: 'thiago.monitor@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    presencaUrl: '',
+    meetUrl: '',
+    description: 'Morfologia, vocabulário e exegese básica de Grego Instrumental (Monitor: Thiago).'
+  },
+  {
+    id: 'esc-fds-2',
+    dayOfWeek: 'Sexta-feira',
+    dayIndex: 5,
+    title: 'Exegese do Novo Testamento',
+    professor: 'Profº Willian Orlandi',
+    startBRT: '21:00',
+    endBRT: '22:00',
+    monitor: 'Júlia',
+    monitorEmail: 'julia.monitora@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    presencaUrl: '',
+    meetUrl: '',
+    description: 'Métodos exegéticos aplicados aos textos neo-testamentários (Monitora: Júlia).'
+  },
+  {
+    id: 'esc-fds-3',
+    dayOfWeek: 'Sexta-feira', // No sábado às 07h, registrado na escala
+    dayIndex: 6,
+    title: 'Apologética I / Apologética II',
+    professor: 'Profª Karoline Evangelista',
+    startBRT: '07:00',
+    endBRT: '09:50',
+    monitor: 'Thiago',
+    monitorEmail: 'thiago.monitor@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    presencaUrl: '',
+    meetUrl: '',
+    description: 'Defesa racional e bíblica da fé cristã (Sábado matutino - Monitor: Thiago).'
+  },
+  {
+    id: 'esc-fds-4',
+    dayOfWeek: 'Sexta-feira', // No sábado às 10h
+    dayIndex: 6,
+    title: 'Novo Testamento II - Epístolas Paulinas',
+    professor: 'Profº Alexsandro Silva',
+    startBRT: '10:00',
+    endBRT: '11:20',
+    monitor: 'Paulo Roberto',
+    monitorEmail: 'pauloroberto.monitor@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    presencaUrl: '',
+    meetUrl: '',
+    description: 'Estudo das epístolas do apóstolo Paulo (Sábado - Monitor: Paulo Roberto).'
+  },
+  {
+    id: 'esc-fds-5',
+    dayOfWeek: 'Sexta-feira', // No sábado às 13h
+    dayIndex: 6,
+    title: 'História do Pensamento Cristão I / II',
+    professor: 'Profº Leonardo Paulino',
+    startBRT: '13:00',
+    endBRT: '15:50',
+    monitor: 'Júlia',
+    monitorEmail: 'julia.monitora@uiecbead.com.br',
+    turma: 'Fim de Semana',
+    presencaUrl: '',
+    meetUrl: '',
+    description: 'Desenvolvimento histórico do pensamento cristão (Sábado vespertino - Monitores: Júlia & Paulo Roberto).'
   }
 ];
 
@@ -804,6 +995,22 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           g.data_aula === todayFormatted
       );
 
+      // 0. Alarme Prévio de Preparação (15 min antes do início da aula)
+      if (currentMinutes >= (startMin - 15) && currentMinutes < startMin) {
+        if (!activeSession && !isAlreadyRecordedToday) {
+          const minLeft = startMin - currentMinutes;
+          return {
+            type: 'recording' as const,
+            key: `prep_${aula.id}_${startMin}`,
+            aula,
+            title: `⏰ Preparação da Aula: ${aula.title}`,
+            message: `A aula inicia em ${minLeft} min (às ${aula.startBRT} BRT). Acesse a sala do Google Meet com 15 min de antecedência para abrir a sessão e acolher a turma!`,
+            actionLabel: '📹 Acessar Sala do Google Meet',
+            badge: `Inicia em ${minLeft} min`,
+          };
+        }
+      }
+
       // 1. Alarme de Início de Aula & Gravação: SÓ ALARMAR NO HORÁRIO CERTO DO INÍCIO (a partir de startMin até midMin)
       // REGRA: Se qualquer monitor já iniciou a gravação OU a aula já foi gravada hoje, o alarme DESAPARECE!
       if (currentMinutes >= startMin && currentMinutes < midMin) {
@@ -852,7 +1059,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     return null;
   }, [currentMinutesTick, selectedTurma, activeRecordings, allGravacoes]);
 
-  // Cálculo da Aula Ativa em Andamento e Barra de Progresso/Contagem (Idêntica ao Painel do Aluno)
+  // Cálculo da Aula Ativa em Andamento e Barra de Progresso/Contagem (com 15 min de antecedência)
   const activeLiveAulaMonitor = useMemo(() => {
     const now = new Date();
     const dayIndex = now.getDay();
@@ -878,10 +1085,12 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       const startMin = startH * 60 + startM;
       const endMin = endH * 60 + endM;
 
-      if (currentMinutes >= startMin && currentMinutes <= endMin) {
+      if (currentMinutes >= (startMin - 15) && currentMinutes <= endMin) {
         const totalDuration = endMin - startMin;
-        const elapsed = currentMinutes - startMin;
-        const pct = Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
+        const isPreLive = currentMinutes < startMin;
+        const minutesToStart = isPreLive ? startMin - currentMinutes : 0;
+        const elapsed = isPreLive ? 0 : currentMinutes - startMin;
+        const pct = isPreLive ? 0 : Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
         const is50PercentReached = pct >= 50;
 
         return {
@@ -890,6 +1099,8 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           endMin,
           totalDuration,
           elapsed,
+          isPreLive,
+          minutesToStart,
           progressPercent: pct,
           is50PercentReached,
         };
@@ -1762,11 +1973,16 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-xl space-y-4 animate-in fade-in duration-300">
           {/* Topo do Card de Aula Ativa */}
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <span className="w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse shadow-xs" />
               <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
                 Aula Ativa: <span className="text-blue-700">{activeLiveAulaMonitor.aula.title}</span>
               </h3>
+              {activeLiveAulaMonitor.isPreLive && (
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-xs animate-pulse">
+                  ⏰ Sala Aberta (Inicia em {activeLiveAulaMonitor.minutesToStart} min)
+                </span>
+              )}
             </div>
 
             <div className="text-xs text-gray-600 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -1787,14 +2003,18 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs">
               <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-600" /> Progresso de Duração da Aula em Andamento
+                <Clock className="w-3.5 h-3.5 text-blue-600" /> {activeLiveAulaMonitor.isPreLive ? 'Sala aberta com 15 min de antecedência' : 'Progresso de Duração da Aula em Andamento'}
               </span>
               <span className={`font-black px-2.5 py-0.5 rounded-md ${
                 activeLiveAulaMonitor.is50PercentReached
                   ? 'bg-emerald-100 text-emerald-900 border border-emerald-200'
+                  : activeLiveAulaMonitor.isPreLive
+                  ? 'bg-blue-100 text-blue-900 border border-blue-200'
                   : 'bg-amber-100 text-amber-900 border border-amber-200'
               }`}>
-                {activeLiveAulaMonitor.progressPercent}% da aula percorrida
+                {activeLiveAulaMonitor.isPreLive
+                  ? `Início oficial em ${activeLiveAulaMonitor.minutesToStart} min`
+                  : `${activeLiveAulaMonitor.progressPercent}% da aula percorrida`}
               </span>
             </div>
 
@@ -1804,9 +2024,11 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 className={`h-2.5 rounded-full transition-all duration-700 ${
                   activeLiveAulaMonitor.is50PercentReached 
                     ? 'bg-gradient-to-r from-emerald-500 to-teal-600' 
+                    : activeLiveAulaMonitor.isPreLive
+                    ? 'bg-gradient-to-r from-blue-400 to-indigo-500'
                     : 'bg-gradient-to-r from-amber-400 to-blue-500'
                 }`}
-                style={{ width: `${activeLiveAulaMonitor.progressPercent}%` }}
+                style={{ width: `${activeLiveAulaMonitor.isPreLive ? 100 : activeLiveAulaMonitor.progressPercent}%` }}
               />
             </div>
           </div>
@@ -1820,8 +2042,16 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                     <Video className="w-4 h-4" />
                   </span>
                   <div>
-                    <strong className="block text-red-900 font-extrabold text-xs sm:text-sm">Transmissão Oficial do Google Meet em Andamento</strong>
-                    <span className="text-[11px] text-red-800">Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.</span>
+                    <strong className="block text-red-900 font-extrabold text-xs sm:text-sm">
+                      {activeLiveAulaMonitor.isPreLive 
+                        ? 'Transmissão Oficial do Google Meet Liberada (15 min de antecedência)' 
+                        : 'Transmissão Oficial do Google Meet em Andamento'}
+                    </strong>
+                    <span className="text-[11px] text-red-800">
+                      {activeLiveAulaMonitor.isPreLive
+                        ? 'Acesse a sala com antecedência para abrir a sessão, testar microfone/vídeo e acolher os alunos.'
+                        : 'Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.'}
+                    </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 flex-wrap">

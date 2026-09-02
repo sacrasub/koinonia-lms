@@ -79,6 +79,37 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const [readAnnouncementIds, setReadAnnouncementIds] = useState<string[]>([]);
   const [studentAnnouncementsTab, setStudentAnnouncementsTab] = useState<'pending' | 'archived' | 'read'>('pending');
   const [showAllLeituras, setShowAllLeituras] = useState<boolean>(false);
+  
+  // Identifica se hoje é dia de aula síncrona (Terça a Sexta)
+  const isClassDay = useMemo(() => {
+    const d = new Date().getDay();
+    return d >= 2 && d <= 5; // Terça-feira (2) a Sexta-feira (5)
+  }, []);
+
+  // Estado de recolhimento inteligente das Gravações (recolhido por padrão nos dias de aula)
+  const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(() => {
+    const d = new Date().getDay();
+    return d >= 2 && d <= 5;
+  });
+
+  // Estado de recolhimento inteligente do Mural de Recursos (recolhido por padrão quando em dia / 0 pendentes)
+  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(() => {
+    const all = getAnnouncements();
+    const read = getReadAnnouncementIds(normalizedEmail);
+    const pending = all.filter((a) => !a.is_archived && !read.includes(a.id)).length;
+    return pending === 0;
+  });
+
+  const handleMarkAnnouncementRead = (id: string) => {
+    markAnnouncementAsRead(normalizedEmail, id);
+    setReadAnnouncementIds((prev) => Array.from(new Set([...prev, id])));
+  };
+
+  const handleUnmarkAnnouncementRead = (id: string) => {
+    unmarkAnnouncementAsRead(normalizedEmail, id);
+    setReadAnnouncementIds((prev) => prev.filter((item) => item !== id));
+  };
+
   // Gravações Salvas & Player de Vídeo Seguro
   const [gravacoes, setGravacoes] = useState(() => getAllGravacoes());
   const [showAllGravacoes, setShowAllGravacoes] = useState<boolean>(false);
@@ -210,6 +241,27 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     return getAulasByTurma(studentProfile.turmaIdx ?? 1);
   }, [studentProfile.turmaIdx]);
 
+  // Avisos e leituras filtrados para a turma do aluno
+  const studentTurmaAnnouncements = useMemo(() => {
+    return announcements.filter((a) => {
+      return studentAulas.some(
+        (sa) => sa.disciplina_id === a.disciplina_id || sa.disciplina_name.toLowerCase().trim() === a.disciplina_name.toLowerCase().trim()
+      );
+    });
+  }, [announcements, studentAulas]);
+
+  const pendingAnnouncementsCount = useMemo(() => {
+    return studentTurmaAnnouncements.filter((a) => !a.is_archived && !readAnnouncementIds.includes(a.id)).length;
+  }, [studentTurmaAnnouncements, readAnnouncementIds]);
+
+  const archivedAnnouncementsCount = useMemo(() => {
+    return studentTurmaAnnouncements.filter((a) => a.is_archived).length;
+  }, [studentTurmaAnnouncements]);
+
+  const readAnnouncementsCount = useMemo(() => {
+    return studentTurmaAnnouncements.filter((a) => readAnnouncementIds.includes(a.id)).length;
+  }, [studentTurmaAnnouncements, readAnnouncementIds]);
+
   // Informações de Fuso Horário do Aluno
   const [tzInfo, setTzInfo] = useState<TimeZoneInfo>({
     timeZone: 'Detectando...',
@@ -222,6 +274,8 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const [nextAulaToday, setNextAulaToday] = useState<Aula | null>(null);
   const [classesFinishedToday, setClassesFinishedToday] = useState<boolean>(false);
   const [progressPercent, setProgressPercent] = useState<number>(0);
+  const [isPreLive, setIsPreLive] = useState<boolean>(false);
+  const [minutesToStart, setMinutesToStart] = useState<number>(0);
   const [currentDayName, setCurrentDayName] = useState<string>('');
 
   // Carregar anotações, conclusões e situação do aluno via Supabase DB + Realtime + Cache Local
@@ -368,16 +422,19 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         setActiveLiveAula(null);
         setNextAulaToday(null);
         setClassesFinishedToday(false);
+        setIsPreLive(false);
+        setMinutesToStart(0);
         return;
       }
 
+      // Identifica aula ativa (incluindo janela de 15 minutos de antecedência para liberação do Google Meet)
       const liveNow = todayClasses.find((a) => {
         if (a.start_time && a.end_time) {
           const [sh, sm] = a.start_time.split(':').map(Number);
           const [eh, em] = a.end_time.split(':').map(Number);
           const startM = sh * 60 + sm;
           const endM = eh * 60 + em;
-          return currentBrtMinutes >= startM && currentBrtMinutes <= endM;
+          return currentBrtMinutes >= (startM - 15) && currentBrtMinutes <= endM;
         }
         return false;
       });
@@ -391,18 +448,33 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         const [eh, em] = liveNow.end_time.split(':').map(Number);
         const startM = sh * 60 + sm;
         const endM = eh * 60 + em;
-        const totalDuration = endM - startM;
-        const elapsed = currentBrtMinutes - startM;
-        const pct = Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
-        setProgressPercent(pct);
+
+        if (currentBrtMinutes < startM) {
+          // Janela de 15 minutos de antecedência (Google Meet liberado para preparação e acolhimento)
+          setIsPreLive(true);
+          setMinutesToStart(Math.max(1, startM - currentBrtMinutes));
+          setProgressPercent(0);
+        } else {
+          // Aula em andamento oficial
+          setIsPreLive(false);
+          setMinutesToStart(0);
+          const totalDuration = endM - startM;
+          const elapsed = currentBrtMinutes - startM;
+          const pct = Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
+          setProgressPercent(pct);
+        }
         return;
       }
 
+      setIsPreLive(false);
+      setMinutesToStart(0);
+
+      // Próximas aulas de hoje que ainda não entraram na janela de 15 minutos de antecedência
       const upcoming = todayClasses.find((a) => {
         if (a.start_time) {
           const [sh, sm] = a.start_time.split(':').map(Number);
           const startM = sh * 60 + sm;
-          return currentBrtMinutes < startM;
+          return currentBrtMinutes < (startM - 15);
         }
         return false;
       });
@@ -728,169 +800,163 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     </div>
   );
 
-  return (
-    <div className="space-y-8">
-      {/* BANNER DE AVISO OFICIAL: AULAS CANCELADAS HOJE */}
-      {aulasCanceladasHoje.length > 0 && (
-        <div className="bg-gradient-to-r from-red-950 via-rose-900 to-slate-900 border-2 border-red-500 rounded-3xl p-5 sm:p-6 text-white shadow-xl space-y-3 animate-in fade-in zoom-in-95 duration-300">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-red-600 text-white rounded-2xl animate-pulse">
-              <Ban className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-red-500 text-white px-2.5 py-0.5 rounded-full">
-                  🚫 Aviso Acadêmico Oficial
-                </span>
-                <span className="text-xs text-rose-200 font-mono">
-                  Data: {new Date().toLocaleDateString('pt-BR')}
-                </span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-black text-white mt-0.5">
-                Atenção: Não Haverá Aula Hoje
-              </h3>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            {aulasCanceladasHoje.map((canc) => (
-              <div key={canc.id} className="bg-black/30 border border-red-400/40 rounded-2xl p-3.5 space-y-1.5">
-                <h4 className="font-extrabold text-sm text-red-200 flex items-center gap-1.5">
-                  <span>📖 {canc.disciplina_name}</span>
-                </h4>
-                <p className="text-xs text-slate-100 bg-red-950/60 p-2.5 rounded-xl border border-red-500/30 leading-relaxed">
-                  <strong>Motivo informado:</strong> "{canc.motivo}"
-                </p>
-                <div className="flex items-center justify-between text-[10px] text-rose-300 pt-1">
-                  <span>Registrado por: <strong>{canc.autor_nome}</strong></span>
-                  <span>Koinonia LMS</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 1. PRIMEIRO CARD: BANNER DE FUSO HORÁRIO & PAINEL ACADÊMICO DO ALUNO (TOPO ABSOLUTO) */}
-      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-              <Sparkles className="w-3.5 h-3.5" /> Semestre Letivo 2026.2 (Turma A)
-            </span>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-              👤 Perfil Pessoal: <strong>{normalizedEmail}</strong>
-            </span>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" title="Horários convertidos automaticamente para seu fuso">
-              <Globe className="w-3.5 h-3.5 text-gray-500" /> Fuso: <strong>{tzInfo.gmtOffset}</strong>
-            </span>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-xs" title="Seus dados de aulas e caderno são sincronizados em tempo real entre PC e Celular">
-              <Cloud className="w-3.5 h-3.5 text-indigo-600" /> Sincronizado (PC & Celular)
-            </span>
-          </div>
-
-          <h2 className="text-2xl font-bold text-gray-900">Painel Acadêmico do Aluno</h2>
-          <p className="text-sm text-gray-500">
-            Navegue pelas semanas letivas do semestre e gerencie suas anotações e conclusões por data de aula.
-          </p>
-        </div>
-
-        {/* Card de Progresso da Semana Selecionada */}
-        <div className="w-full md:w-64 bg-gray-50 p-4 rounded-2xl border border-gray-200 flex-shrink-0">
-          <div className="flex justify-between items-center text-xs mb-1.5">
-            <span className="font-bold text-gray-700">Progresso da {activeWeek.formattedStart} a {activeWeek.formattedEnd}</span>
-            <span className="font-extrabold text-blue-600">{weekProgressPercent}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
-              style={{ width: `${weekProgressPercent}%` }}
-            ></div>
-          </div>
-          <span className="text-[10px] text-gray-400 mt-1 block">
-            {completedLessonsInWeek} de {totalLessonsInWeek} aulas concluídas nesta semana
+  const renderUnifiedHeader = () => (
+    <div className="bg-white p-5 sm:p-6 rounded-3xl border border-gray-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
+      <div className="space-y-2 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+            <Sparkles className="w-3.5 h-3.5" /> Semestre Letivo 2026.2
           </span>
-        </div>
-      </div>
-
-      {/* 2. BARRA COMPACTA: SITUAÇÃO ACADÊMICA CONFIGURADA (LOGO ABAIXO DO CABEÇALHO) */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl text-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border border-indigo-900/60">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="px-2.5 py-1 rounded-lg text-xs font-black bg-blue-500/30 text-blue-200 border border-blue-400/30 flex items-center gap-1.5 shrink-0 shadow-xs">
-            <GraduationCap className="w-3.5 h-3.5 text-blue-300" />
-            {studentProfile.periodoNum === 0 ? 'Curso Básico de Teologia' : `${studentProfile.periodoNum}º Período (${studentProfile.turmaIdx === 2 ? 'Turma B' : 'Turma A'})`}
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-indigo-50 text-indigo-800 border border-indigo-200 shadow-2xs">
+            <GraduationCap className="w-3.5 h-3.5 text-indigo-600" />
+            {studentProfile.periodoNum === 0 ? 'Curso Básico de Teologia' : `${studentProfile.periodoNum}º Período`}
           </span>
-
-          <div className="text-xs text-blue-100/90 flex items-center gap-1.5 flex-wrap">
-            <span className="text-blue-300 font-medium">Turma Ativa:</span>
-            <strong className="text-amber-300 font-extrabold">{
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Turma: <strong className="text-blue-900">{
               ['Fim de Semana (5º)', 'Semanal Noturno A (7º)', 'Semanal Noturno B (3º)', 'Curso Básico'][studentProfile.turmaIdx ?? 1] || 'Semanal Noturno A'
             }</strong>
-          </div>
-        </div>
-
-        {/* Botão de Configuração Oficial / Edição de Dados Acadêmicos */}
-        <button
-          type="button"
-          onClick={() => {
-            setIsFirstAccessModal(false);
-            setIsProfileModalOpen(true);
-          }}
-          className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-blue-600/30 hover:bg-blue-600 text-white border border-blue-400/40 hover:border-blue-300 transition flex items-center gap-2 shadow-xs cursor-pointer shrink-0 self-stretch sm:self-auto justify-center"
-          title="Modificar seu período, turma oficial, foto e dados de cadastro"
-        >
-          <Settings className="w-3.5 h-3.5 text-amber-300" />
-          <span>Configuração Oficial & Perfil</span>
-        </button>
-      </div>
-
-      {/* 2.1 LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
-      {!isProfileConfirmed && (
-        <div className="p-3.5 sm:p-4 bg-amber-500/15 border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-950 animate-in fade-in">
-          <div className="flex items-center gap-2.5 text-xs font-semibold">
-            <span className="p-1.5 bg-amber-500 text-slate-950 rounded-lg shrink-0">
-              <AlertCircle className="w-4 h-4" />
-            </span>
-            <div>
-              <strong className="block text-amber-950">Lembrete de Atualização de Perfil</strong>
-              <span className="text-amber-800 text-[11px]">Você ainda não confirmou seu período e turma no Seminário UIECB.</span>
-            </div>
-          </div>
+          </span>
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" title="Horários convertidos automaticamente para seu fuso">
+            <Globe className="w-3.5 h-3.5 text-gray-500" /> Fuso: <strong>{tzInfo.gmtOffset}</strong>
+          </span>
           <button
             type="button"
             onClick={() => {
-              setIsFirstAccessModal(true);
+              setIsFirstAccessModal(false);
               setIsProfileModalOpen(true);
             }}
-            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0 self-end sm:self-auto"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition cursor-pointer"
+            title="Modificar seu período, turma oficial, foto e dados de cadastro"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Confirmar Meu Perfil Agora</span>
+            <Settings className="w-3 h-3 text-amber-300" />
+            <span>Configuração Oficial & Perfil</span>
           </button>
         </div>
-      )}
+        <div>
+          <h2 className="text-2xl font-black text-gray-900 tracking-tight">Painel Acadêmico do Aluno</h2>
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+            Navegue pelas semanas letivas do semestre e gerencie suas anotações e conclusões por data de aula.
+          </p>
+        </div>
+      </div>
+      <div className="w-full md:w-64 bg-gray-50 p-4 rounded-2xl border border-gray-200 flex-shrink-0">
+        <div className="flex justify-between items-center text-xs mb-1.5">
+          <span className="font-bold text-gray-700">Progresso da {activeWeek.formattedStart} a {activeWeek.formattedEnd}</span>
+          <span className="font-extrabold text-blue-600">{weekProgressPercent}%</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+          <div
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
+            style={{ width: `${weekProgressPercent}%` }}
+          ></div>
+        </div>
+        <span className="text-[10px] text-gray-400 mt-1 block">
+          {completedLessonsInWeek} de {totalLessonsInWeek} aulas concluídas nesta semana
+        </span>
+      </div>
+    </div>
+  );
 
-      {/* 3. QUADRO DE AULA ATIVA OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
-      {activeLiveAula ? (
+  const renderAulasCanceladas = () => {
+    if (aulasCanceladasHoje.length === 0) return null;
+    return (
+      <div className="bg-gradient-to-r from-red-950 via-rose-900 to-slate-900 border-2 border-red-500 rounded-3xl p-5 sm:p-6 text-white shadow-xl space-y-3 animate-in fade-in zoom-in-95 duration-300">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-red-600 text-white rounded-2xl animate-pulse">
+            <Ban className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider bg-red-500 text-white px-2.5 py-0.5 rounded-full">
+                🚫 Aviso Acadêmico Oficial
+              </span>
+              <span className="text-xs text-rose-200 font-mono">
+                Data: {new Date().toLocaleDateString('pt-BR')}
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white mt-0.5">
+              Atenção: Não Haverá Aula Hoje
+            </h3>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          {aulasCanceladasHoje.map((canc) => (
+            <div key={canc.id} className="bg-black/30 border border-red-400/40 rounded-2xl p-3.5 space-y-1.5">
+              <h4 className="font-extrabold text-sm text-red-200 flex items-center gap-1.5">
+                <span>📖 {canc.disciplina_name}</span>
+              </h4>
+              <p className="text-xs text-slate-100 bg-red-950/60 p-2.5 rounded-xl border border-red-500/30 leading-relaxed">
+                <strong>Motivo informado:</strong> "{canc.motivo}"
+              </p>
+              <div className="flex items-center justify-between text-[10px] text-rose-300 pt-1">
+                <span>Registrado por: <strong>{canc.autor_nome}</strong></span>
+                <span>Koinonia LMS</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderProfileReminder = () => {
+    if (isProfileConfirmed) return null;
+    return (
+      <div className="p-3.5 sm:p-4 bg-amber-500/15 border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-950 animate-in fade-in">
+        <div className="flex items-center gap-2.5 text-xs font-semibold">
+          <span className="p-1.5 bg-amber-500 text-slate-950 rounded-lg shrink-0">
+            <AlertCircle className="w-4 h-4" />
+          </span>
+          <div>
+            <strong className="block text-amber-950">Lembrete de Atualização de Perfil</strong>
+            <span className="text-amber-800 text-[11px]">Você ainda não confirmou seu período e turma no Seminário UIECB.</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setIsFirstAccessModal(true);
+            setIsProfileModalOpen(true);
+          }}
+          className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0 self-end sm:self-auto"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Confirmar Meu Perfil Agora</span>
+        </button>
+      </div>
+    );
+  };
+
+  const renderAulaAoVivoOuProxima = () => {
+    if (activeLiveAula) {
+      return (
         <div className={`p-4 sm:p-6 rounded-3xl border transition-all duration-300 shadow-md max-w-full overflow-hidden animate-in fade-in slide-in-from-top-3 ${
           is50PercentReached 
             ? 'bg-gradient-to-br from-emerald-50/95 via-white to-teal-50/90 border-emerald-300 ring-2 ring-emerald-500/20' 
+            : isPreLive
+            ? 'bg-gradient-to-br from-blue-50/95 via-white to-indigo-50/90 border-blue-300 ring-2 ring-blue-500/20'
             : 'bg-gradient-to-br from-blue-50/95 via-white to-indigo-50/90 border-blue-300 ring-2 ring-blue-500/20'
         }`}>
           <div className="mb-4">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="flex h-3 w-3 relative">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'}`}></span>
-                <span className={`relative inline-flex rounded-full h-3 w-3 ${is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                  is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'
+                }`}></span>
+                <span className={`relative inline-flex rounded-full h-3 w-3 ${
+                  is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'
+                }`}></span>
               </span>
-              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-red-600 text-white shadow-xs animate-pulse">
-                🔴 Aula Ao Vivo em Andamento
+              <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-xs ${
+                isPreLive ? 'bg-red-600 animate-pulse' : 'bg-red-600 animate-pulse'
+              }`}>
+                {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
               </span>
               <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
                 Aula Ativa: <span className="text-blue-700 font-black">{activeLiveAula.disciplina_name}</span>
               </h3>
             </div>
-
             <div className="text-xs text-gray-600 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
               <span>Professor(a): <strong>{activeLiveAula.professor_name || 'Corpo Docente'}</strong></span>
               <span>•</span>
@@ -904,34 +970,35 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
               </span>
             </div>
           </div>
-
-          {/* Barra de Progresso do Tempo da Aula */}
           <div className="space-y-2 mb-4">
             <div className="flex justify-between items-center text-xs">
               <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-600" /> Progresso de Duração da Aula em Andamento
+                <Clock className="w-3.5 h-3.5 text-blue-600" /> {isPreLive ? 'Sala aberta com 15 min de antecedência' : 'Progresso de Duração da Aula em Andamento'}
               </span>
               <span className={`font-black px-2.5 py-0.5 rounded-md ${
-                is50PercentReached ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-amber-100 text-amber-900 border border-amber-200'
+                is50PercentReached 
+                  ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' 
+                  : isPreLive
+                  ? 'bg-blue-100 text-blue-900 border border-blue-200'
+                  : 'bg-amber-100 text-amber-900 border border-amber-200'
               }`}>
-                {progressPercent}% da aula percorrida
+                {isPreLive ? `Início oficial em ${minutesToStart} min` : `${progressPercent}% da aula percorrida`}
               </span>
             </div>
-
             <div className="w-full bg-gray-200 rounded-full h-3.5 overflow-hidden p-0.5 border border-gray-300/60 shadow-inner relative">
-              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-400/80 z-10" title="Gatilho de 50% de Presença"></div>
+              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-400/80 z-10"></div>
               <div
                 className={`h-2.5 rounded-full transition-all duration-700 ${
                   is50PercentReached 
                     ? 'bg-gradient-to-r from-emerald-500 to-teal-600' 
+                    : isPreLive
+                    ? 'bg-gradient-to-r from-blue-400 to-indigo-500'
                     : 'bg-gradient-to-r from-amber-400 to-blue-500'
                 }`}
-                style={{ width: `${progressPercent}%` }}
+                style={{ width: `${isPreLive ? 100 : progressPercent}%` }}
               ></div>
             </div>
           </div>
-
-          {/* BOTÃO DA SALA AO VIVO DO GOOGLE MEET & AVISO AUTOMÁTICO DE PRESENÇA */}
           <div className="space-y-3">
             {activeLiveAula.google_meet_url && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -940,23 +1007,14 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                     <Video className="w-4 h-4" />
                   </span>
                   <div>
-                    <strong className="block text-red-900">Transmissão do Google Meet em Andamento</strong>
-                    <span>Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.</span>
-                    {activeLiveAula.google_meet_phone && (
-                      <div className="mt-1 flex items-center gap-2 text-[11px] text-red-800 font-mono">
-                        <span>📞 Telefone: <strong>{activeLiveAula.google_meet_phone}</strong> • PIN: <strong>{activeLiveAula.google_meet_pin}</strong></span>
-                        {activeLiveAula.google_meet_tel_url && (
-                          <a
-                            href={activeLiveAula.google_meet_tel_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-red-700 underline font-bold"
-                          >
-                            (Discagem Direta)
-                          </a>
-                        )}
-                      </div>
-                    )}
+                    <strong className="block text-red-900">
+                      {isPreLive ? 'Transmissão do Google Meet Liberada (15 min de antecedência)' : 'Transmissão do Google Meet em Andamento'}
+                    </strong>
+                    <span>
+                      {isPreLive
+                        ? 'Clique ao lado para ingressar na sala com antecedência para testar seu áudio/vídeo e aguardar a turma.'
+                        : 'Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.'}
+                    </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
@@ -967,7 +1025,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                     onClick={() => {
                       trackEvent('meet', 'join_live_class', activeLiveAula.disciplina_name || activeLiveAula.title, { url: activeLiveAula.google_meet_url }, normalizedEmail, 'aluno');
                     }}
-                    className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 shrink-0"
+                    className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                   >
                     <Video className="w-4 h-4" />
                     <span>Entrar na Aula ao Vivo (Google Meet)</span>
@@ -975,7 +1033,6 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                 </div>
               </div>
             )}
-
             {is50PercentReached ? (
               <div className="p-4 bg-emerald-100/90 border border-emerald-300 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-full overflow-hidden">
                 <div className="flex items-start gap-3 flex-1">
@@ -991,7 +1048,6 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                     </div>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-2 w-full sm:w-auto flex-shrink-0">
                   {activeLiveAula.attendance_form_url ? (
                     <>
@@ -1002,14 +1058,14 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                         onClick={() => {
                           trackEvent('meet', 'attendance_form_click', activeLiveAula.disciplina_name || activeLiveAula.title, {}, normalizedEmail, 'aluno');
                         }}
-                        className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 text-center"
+                        className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 text-center cursor-pointer"
                       >
                         <FileText className="w-4 h-4 flex-shrink-0" />
                         <span>Preencher Lista de Presença (Google Forms)</span>
                       </a>
                       <button
                         onClick={() => handleCopyLink(activeLiveAula.attendance_form_url!, activeLiveAula.id)}
-                        className="p-2.5 bg-emerald-200 hover:bg-emerald-300 text-emerald-900 font-bold text-xs rounded-xl transition flex items-center justify-center flex-shrink-0"
+                        className="p-2.5 bg-emerald-200 hover:bg-emerald-300 text-emerald-900 font-bold text-xs rounded-xl transition flex items-center justify-center flex-shrink-0 cursor-pointer"
                         title="Copiar Link de Presença"
                       >
                         {copiedId === activeLiveAula.id ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
@@ -1032,866 +1088,820 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
             )}
           </div>
         </div>
-      ) : nextAulaToday ? (
+      );
+    }
+    if (nextAulaToday) {
+      return (
         <div className="p-5 bg-blue-50/90 border border-blue-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-blue-900 text-xs shadow-sm">
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-blue-600 flex-shrink-0" />
             <div>
-              <strong>Próxima aula de hoje ({currentDayName}):</strong> {nextAulaToday.disciplina_name} ({nextAulaToday.professor_name}) às <strong>{nextAulaToday.start_time ? convertBRTToLocalTime(nextAulaToday.start_time) : ''} (Seu Horário)</strong> / {nextAulaToday.start_time} BRT. O link de presença será liberado 50% após o início da transmissão.
+              <strong>Próxima aula de hoje ({currentDayName}):</strong> {nextAulaToday.disciplina_name} ({nextAulaToday.professor_name}) às <strong>{nextAulaToday.start_time ? convertBRTToLocalTime(nextAulaToday.start_time) : ''} (Seu Horário)</strong>.
             </div>
           </div>
           {nextAulaToday.google_meet_url && (
             <a
-              href={nextAulaToday.google_meet_url}
+href={nextAulaToday.google_meet_url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
                 trackEvent('meet', 'join_live_class', nextAulaToday.disciplina_name || nextAulaToday.title, { url: nextAulaToday.google_meet_url }, normalizedEmail, 'aluno');
               }}
-              className="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0"
+              className="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0 cursor-pointer"
             >
               <Video className="w-3.5 h-3.5" />
               <span>Sala do Meet</span>
             </a>
           )}
         </div>
-      ) : null}
+      );
+    }
 
-      {/* 3. SEÇÃO DE LEITURAS PRÉ-AULA & ARTIGOS RECOMENDADOS PELOS DOCENTES */}
-      {(() => {
-        const pendingCount = announcements.filter((a) => !a.is_archived && !readAnnouncementIds.includes(a.id)).length;
-        const archivedCount = announcements.filter((a) => a.is_archived).length;
-        const readCount = announcements.filter((a) => readAnnouncementIds.includes(a.id)).length;
-        const hasPending = pendingCount > 0;
+    if (classesFinishedToday) {
+      return (
+        <div className="p-4 sm:p-5 bg-emerald-50/90 border border-emerald-200 rounded-2xl flex items-center gap-3 text-emerald-900 text-xs shadow-sm">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+          <div>
+            <strong>As aulas de hoje ({currentDayName}) foram encerradas.</strong> O formulário oficial de presença esteve disponível durante a transmissão ao vivo. Confira a grade completa e links de apoio abaixo.
+          </div>
+        </div>
+      );
+    }
 
-        // Se houver leituras pendentes ou o aluno clicou para ver o acervo/lidas
-        if (hasPending || showAllLeituras) {
-          return (
-            <div data-tour="dashboard-mural" className="bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl border border-blue-800/60 space-y-4 animate-in fade-in duration-300">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-amber-400/20 text-amber-300 rounded-2xl border border-amber-400/30 backdrop-blur-md">
-                    <BookOpen className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-md">
-                        Mural de Recursos
-                      </span>
-                      <span className="text-xs text-blue-200">Links compartilhados em aula e leituras recomendadas</span>
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-extrabold text-white mt-0.5">
-                      Links, Leituras e Recursos das Aulas
-                    </h3>
-                  </div>
-                </div>
+    if (!isClassDay) {
+      return (
+        <div className="p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl flex items-center gap-3 text-gray-600 text-xs shadow-sm">
+          <Info className="w-5 h-5 text-blue-600 flex-shrink-0" />
+          <div>
+            <strong>Não há aulas síncronas programadas para hoje ({currentDayName}).</strong> Aproveite para revisar anotações no Caderno Cornell, assistir às gravações disponíveis e explorar os laboratórios práticos.
+          </div>
+        </div>
+      );
+    }
 
-                {/* Abas de Navegação das Leituras para o Aluno */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <div className="flex items-center bg-black/30 p-1 rounded-2xl border border-white/15 text-xs font-bold self-start sm:self-auto overflow-x-auto max-w-full">
-                    <button
-                      type="button"
-                      onClick={() => setStudentAnnouncementsTab('pending')}
-                      className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                        studentAnnouncementsTab === 'pending'
-                          ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
-                          : 'text-blue-200 hover:text-white'
-                      }`}
-                    >
-                      <span>📖 Pendentes</span>
-                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-                        studentAnnouncementsTab === 'pending' ? 'bg-slate-950 text-amber-400' : 'bg-white/20 text-white'
-                      }`}>
-                        {pendingCount}
-                      </span>
-                    </button>
+    return null;
+  };
 
-                    <button
-                      type="button"
-                      onClick={() => setStudentAnnouncementsTab('archived')}
-                      className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                        studentAnnouncementsTab === 'archived'
-                          ? 'bg-white text-slate-950 font-black shadow-xs'
-                          : 'text-blue-200 hover:text-white'
-                      }`}
-                    >
-                      <Archive className="w-3.5 h-3.5" />
-                      <span>Acervo Arquivado</span>
-                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-                        studentAnnouncementsTab === 'archived' ? 'bg-slate-950 text-white' : 'bg-white/20 text-white'
-                      }`}>
-                        {archivedCount}
-                      </span>
-                    </button>
+  // 5. Mural de Recursos e Leituras Pré-Aula (Accordion Inteligente & Destaque Dinâmico)
+  const renderMuralRecursos = (isEmEvidencia: boolean = false) => {
+    if (studentTurmaAnnouncements.length === 0) return null;
 
-                    <button
-                      type="button"
-                      onClick={() => setStudentAnnouncementsTab('read')}
-                      className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                        studentAnnouncementsTab === 'read'
-                          ? 'bg-emerald-400 text-slate-950 font-black shadow-xs'
-                          : 'text-blue-200 hover:text-white'
-                      }`}
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Já Lidas</span>
-                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-                        studentAnnouncementsTab === 'read' ? 'bg-slate-950 text-emerald-400' : 'bg-white/20 text-white'
-                      }`}>
-                        {readCount}
-                      </span>
-                    </button>
-                  </div>
-
-                  {!hasPending && showAllLeituras && (
-                    <button
-                      type="button"
-                      onClick={() => setShowAllLeituras(false)}
-                      className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/15 transition cursor-pointer"
-                      title="Recolher visualização de leituras"
-                    >
-                      🗕 Recolher
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {(() => {
-                const currentList = announcements.filter((a) => {
-                  // Filtra para exibir apenas avisos pertencentes às matérias da turma do aluno
-                  const isFromStudentTurma = studentAulas.some(
-                    (sa) => sa.disciplina_id === a.disciplina_id || sa.disciplina_name.toLowerCase().trim() === a.disciplina_name.toLowerCase().trim()
-                  );
-                  if (!isFromStudentTurma) return false;
-
-                  if (studentAnnouncementsTab === 'pending') {
-                    return !a.is_archived && !readAnnouncementIds.includes(a.id);
-                  }
-                  if (studentAnnouncementsTab === 'archived') {
-                    return a.is_archived;
-                  }
-                  if (studentAnnouncementsTab === 'read') {
-                    return readAnnouncementIds.includes(a.id);
-                  }
-                  return true;
-                });
-
-                if (currentList.length === 0) {
-                  return (
-                    <div className="p-8 bg-black/20 rounded-2xl border border-white/10 text-center space-y-2">
-                      <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-                      <p className="font-extrabold text-white text-sm">
-                        {studentAnnouncementsTab === 'pending'
-                          ? 'Parabéns! Todas as leituras e links recomendados estão em dia.'
-                          : studentAnnouncementsTab === 'archived'
-                          ? 'Nenhum recurso no acervo arquivado no momento.'
-                          : 'Você ainda não marcou nenhuma leitura como concluída.'}
-                      </p>
-                      <p className="text-xs text-blue-200">
-                        {studentAnnouncementsTab === 'pending'
-                          ? 'Quando novos links ou artigos forem publicados pelos seus professores e monitores, eles aparecerão aqui.'
-                          : studentAnnouncementsTab === 'archived'
-                          ? 'Links e textos de aulas anteriores arquivados pelos docentes ficarão disponíveis para sua consulta aqui.'
-                          : 'Clique em "Marcar como Lida" nas leituras para arquivar o que você já estudou no seu perfil.'}
-                      </p>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {currentList.map((av) => {
-                      const isRead = readAnnouncementIds.includes(av.id);
-
-                      return (
-                        <div
-                          key={av.id}
-                          className={`border rounded-2xl p-4 sm:p-5 transition-all flex flex-col justify-between space-y-4 backdrop-blur-md group ${
-                            isRead
-                              ? 'bg-emerald-950/30 border-emerald-500/30'
-                              : av.is_archived
-                              ? 'bg-amber-950/20 border-amber-400/30'
-                              : 'bg-white/10 hover:bg-white/15 border-white/15'
-                          }`}
-                        >
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between gap-2 flex-wrap">
-                              <div className="flex items-center gap-1.5 flex-wrap">
-                                <span className="text-[11px] font-extrabold uppercase tracking-wide bg-blue-500/30 text-blue-200 border border-blue-400/30 px-2.5 py-0.5 rounded-lg">
-                                  {av.disciplina_name}
-                                </span>
-                                
-                                {/* Badge de Categoria / Momento */}
-                                {av.category === 'durante_aula' ? (
-                                  <span className="text-[10px] font-black uppercase tracking-wide bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
-                                    🔴 Compartilhado em Aula
-                                  </span>
-                                ) : av.category === 'complementar' ? (
-                                  <span className="text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                    📌 Material Complementar
-                                  </span>
-                                ) : (
-                                  <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                    📖 Leitura Pré-Aula
-                                  </span>
-                                )}
-
-                                {av.is_archived && (
-                                  <span className="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.2 rounded-md flex items-center gap-1">
-                                    <Archive className="w-2.5 h-2.5" /> Arquivada
-                                  </span>
-                                )}
-                                {isRead && (
-                                  <span className="text-[10px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 px-2 py-0.2 rounded-md flex items-center gap-1">
-                                    <Check className="w-2.5 h-2.5" /> Concluída
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-[10px] text-blue-200/80">
-                                {av.target_date || 'Próxima Aula'}
-                              </span>
-                            </div>
-
-                            <h4 className="font-extrabold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
-                              {av.title}
-                            </h4>
-
-                            <div className="bg-black/25 p-3 rounded-xl border border-white/10">
-                              <p className="text-xs text-blue-100 italic">
-                                "{av.message}"
-                              </p>
-                              <span className="block text-[11px] font-semibold text-amber-200 mt-1.5">
-                                — {av.author_name} ({av.author_role === 'professor' ? 'Docente' : 'Monitor(a)'})
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 pt-1 border-t border-white/10">
-                            {/* Botão de Marcar / Desmarcar como Lida */}
-                            <div className="flex items-center gap-2">
-                              {isRead ? (
-                                <button
-                                  onClick={() => unmarkAnnouncementAsRead(normalizedEmail, av.id)}
-                                  className="w-full py-1.5 px-3 bg-white/10 hover:bg-white/20 text-blue-200 font-bold text-xs rounded-xl border border-white/20 transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                                  title="Retornar esta leitura para o feed de pendentes"
-                                >
-                                  <ArchiveRestore className="w-3.5 h-3.5 text-blue-300" />
-                                  <span>Marcar como Não Lida (Retornar p/ Pendentes)</span>
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => markAnnouncementAsRead(normalizedEmail, av.id)}
-                                  className="w-full py-1.5 px-3 bg-emerald-600/40 hover:bg-emerald-600 text-emerald-200 hover:text-white font-bold text-xs rounded-xl border border-emerald-500/50 transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                                  title="Marcar como lida (sai do feed principal)"
-                                >
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" />
-                                  <span>✓ Marcar como Lida</span>
-                                </button>
-                              )}
-                            </div>
-
-                            {/* Ações de Leitura e Compartilhamento */}
-                            <div className="flex flex-wrap items-center gap-2">
-                              <a
-                                href={av.link_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                              >
-                                <ExternalLink className="w-4 h-4" />
-                                <span>Ler Artigo</span>
-                              </a>
-
-                              <button
-                                onClick={() => {
-                                  const msg = formatAnnouncementForWhatsApp(av);
-                                  navigator.clipboard.writeText(msg);
-                                  setCopiedAvisoId(av.id);
-                                  setTimeout(() => setCopiedAvisoId(null), 2500);
-                                }}
-                                title="Copiar recado para WhatsApp"
-                                className="py-2 px-3 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl border border-white/20 transition flex items-center gap-1 active:scale-95 cursor-pointer"
-                              >
-                                {copiedAvisoId === av.id ? (
-                                  <>
-                                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                    <span>Copiado!</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="w-3.5 h-3.5" />
-                                    <span>WhatsApp</span>
-                                  </>
-                                )}
-                              </button>
-
-                              <button
-                                onClick={() => {
-                                  if (onTabChange) onTabChange('aluno-caderno');
-                                  else if (typeof window !== 'undefined') {
-                                    window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-caderno' }));
-                                  }
-                                }}
-                                title="Abrir no Caderno Cornell com IA"
-                                className="py-2 px-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1 active:scale-95 cursor-pointer"
-                              >
-                                <Sparkles className="w-3.5 h-3.5 text-purple-200" />
-                                <span>Cornell IA</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })()}
+    // Se estiver no seu lugar normal (sem pendências) e estiver recolhido
+    if (!isEmEvidencia && isMuralCollapsed) {
+      return (
+        <div data-tour="dashboard-mural" className="bg-gradient-to-r from-slate-900 via-slate-900 to-blue-950/80 p-4 sm:p-5 rounded-2xl border border-slate-800 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl">
+              <BookOpen className="w-5 h-5" />
             </div>
-          );
-        }
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
+                  <span>Mural de Recursos & Leituras</span>
+                  <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+                    ✨ Todas as leituras em dia
+                  </span>
+                </h4>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                {readAnnouncementsCount > 0
+                  ? `Você já concluiu todas as ${readAnnouncementsCount} leituras indicadas. Clique para consultar o acervo arquivado ou rever textos.`
+                  : 'Nenhuma leitura pendente no momento. Quando novos links forem publicados, eles aparecerão em destaque no topo.'}
+              </p>
+            </div>
+          </div>
 
-        // Se NÃO houver leituras pendentes e houver arquivadas/lidas no acervo, exibe apenas barra compacta
-        if (archivedCount > 0 || readCount > 0) {
-          return (
-            <div data-tour="dashboard-mural" className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-slate-100/90 hover:bg-slate-200/80 rounded-2xl border border-slate-200 text-slate-700 transition">
-              <div className="flex items-center gap-2.5 text-xs font-semibold">
-                <span className="p-1.5 bg-blue-100 text-blue-700 rounded-lg shrink-0">
-                  <BookOpen className="w-4 h-4" />
+          <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
+            <button
+              type="button"
+              onClick={() => setIsMuralCollapsed(false)}
+              className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold rounded-xl border border-slate-700 transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+            >
+              <span>Ver Acervo & Concluídas ({studentTurmaAnnouncements.length})</span>
+              <ChevronDown className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Se estiver em evidência no topo mas o usuário clicou em recolher
+    if (isEmEvidencia && isMuralCollapsed) {
+      return (
+        <div data-tour="dashboard-mural" className="bg-gradient-to-r from-amber-950 via-slate-900 to-indigo-950 p-4 sm:p-5 rounded-2xl border-2 border-amber-400/80 text-white shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-amber-400 text-slate-950 rounded-xl font-black">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md shadow-sm flex items-center gap-1">
+                  <Flame className="w-3 h-3 text-orange-600" />
+                  📖 Leituras em Aberto ({pendingAnnouncementsCount})
                 </span>
-                <span>✨ Todas as leituras recomendadas estão em dia!</span>
-                <span className="text-gray-500 hidden sm:inline">
-                  ({archivedCount} arquivada{archivedCount !== 1 ? 's' : ''} • {readCount} lida{readCount !== 1 ? 's' : ''})
+                <span className="text-xs text-amber-200 font-bold">
+                  Você possui {pendingAnnouncementsCount} {pendingAnnouncementsCount === 1 ? 'leitura recomendada pendente' : 'leituras recomendadas pendentes'}
                 </span>
               </div>
+              <p className="text-[11px] text-slate-300 mt-0.5">
+                Clique no botão ao lado para abrir e estudar os links indicados pelos professores.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsMuralCollapsed(false)}
+            className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
+          >
+            <span>Abrir Leituras Pendentes ({pendingAnnouncementsCount})</span>
+            <ChevronDown className="w-4 h-4" />
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div 
+        data-tour="dashboard-mural" 
+        className={`rounded-3xl p-5 sm:p-7 text-white shadow-xl transition-all space-y-4 animate-in fade-in duration-300 ${
+          isEmEvidencia 
+            ? 'bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 border-2 border-amber-400/80 shadow-2xl ring-4 ring-amber-400/15'
+            : 'bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 border border-blue-800/60'
+        }`}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-2xl backdrop-blur-md ${
+              isEmEvidencia 
+                ? 'bg-amber-400 text-slate-950 shadow-md font-black' 
+                : 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
+            }`}>
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {isEmEvidencia ? (
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
+                    <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                    Leituras em Aberto ({pendingAnnouncementsCount})
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-md">
+                    Mural de Recursos
+                  </span>
+                )}
+                <span className="text-xs text-blue-200">
+                  {isEmEvidencia
+                    ? 'Recomendado pelos seus professores para as próximas aulas'
+                    : 'Links compartilhados em aula e leituras de apoio'}
+                </span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-extrabold text-white mt-0.5">
+                {isEmEvidencia ? '📖 Links & Leituras Recomendadas para Estudo' : 'Links, Leituras e Recursos das Aulas'}
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center bg-black/30 p-1 rounded-2xl border border-white/15 text-xs font-bold self-start sm:self-auto overflow-x-auto max-w-full">
               <button
                 type="button"
-                onClick={() => {
-                  setStudentAnnouncementsTab(archivedCount > 0 ? 'archived' : 'read');
-                  setShowAllLeituras(true);
-                }}
-                className="px-3.5 py-1.5 bg-white hover:bg-blue-50 text-blue-900 text-xs font-bold rounded-xl border border-gray-200 shadow-2xs transition flex items-center gap-1.5 cursor-pointer self-end sm:self-auto"
+                onClick={() => setStudentAnnouncementsTab('pending')}
+                className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                  studentAnnouncementsTab === 'pending'
+                    ? 'bg-amber-400 text-slate-950 font-black shadow-xs'
+                    : 'text-blue-200 hover:text-white'
+                }`}
               >
-                <Archive className="w-3.5 h-3.5 text-blue-600" />
-                <span>Acessar Acervo Arquivado / Lidas</span>
+                <span>📖 Pendentes</span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                  studentAnnouncementsTab === 'pending' ? 'bg-slate-950 text-amber-400' : 'bg-white/20 text-white'
+                }`}>
+                  {pendingAnnouncementsCount}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStudentAnnouncementsTab('archived')}
+                className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                  studentAnnouncementsTab === 'archived'
+                    ? 'bg-white text-slate-950 font-black shadow-xs'
+                    : 'text-blue-200 hover:text-white'
+                }`}
+              >
+                <Archive className="w-3.5 h-3.5" />
+                <span>Acervo Arquivado</span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                  studentAnnouncementsTab === 'archived' ? 'bg-slate-950 text-white' : 'bg-white/20 text-white'
+                }`}>
+                  {archivedAnnouncementsCount}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStudentAnnouncementsTab('read')}
+                className={`px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                  studentAnnouncementsTab === 'read'
+                    ? 'bg-emerald-400 text-slate-950 font-black shadow-xs'
+                    : 'text-blue-200 hover:text-white'
+                }`}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Já Lidas</span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                  studentAnnouncementsTab === 'read' ? 'bg-slate-950 text-emerald-400' : 'bg-white/20 text-white'
+                }`}>
+                  {readAnnouncementsCount}
+                </span>
               </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsMuralCollapsed(true)}
+              className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/15 transition flex items-center gap-1 cursor-pointer"
+              title="Recolher visualização do mural"
+            >
+              <span>Recolher</span>
+              <ChevronUp className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {(() => {
+          const currentList = studentTurmaAnnouncements.filter((a) => {
+            if (studentAnnouncementsTab === 'pending') {
+              return !a.is_archived && !readAnnouncementIds.includes(a.id);
+            }
+            if (studentAnnouncementsTab === 'archived') {
+              return a.is_archived;
+            }
+            if (studentAnnouncementsTab === 'read') {
+              return readAnnouncementIds.includes(a.id);
+            }
+            return true;
+          });
+
+          if (currentList.length === 0) {
+            return (
+              <div className="p-8 bg-black/20 rounded-2xl border border-white/10 text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+                <p className="font-extrabold text-white text-sm">
+                  {studentAnnouncementsTab === 'pending'
+                    ? 'Parabéns! Todas as leituras e links recomendados estão em dia.'
+                    : studentAnnouncementsTab === 'archived'
+                    ? 'Nenhum recurso no acervo arquivado no momento.'
+                    : 'Você ainda não marcou nenhuma leitura como concluída.'}
+                </p>
+                <p className="text-xs text-blue-200">
+                  {studentAnnouncementsTab === 'pending'
+                    ? 'Quando novos links ou artigos forem publicados pelos seus professores e monitores, eles aparecerão aqui em evidência no topo.'
+                    : studentAnnouncementsTab === 'archived'
+                    ? 'Links e textos de aulas anteriores arquivados pelos docentes ficarão disponíveis para sua consulta aqui.'
+                    : 'Clique em "Marcar como Lida" nas leituras para arquivar o que você já estudou no seu perfil.'}
+                </p>
+              </div>
+            );
+          }
+
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {currentList.map((av) => {
+                const isRead = readAnnouncementIds.includes(av.id);
+
+                return (
+                  <div
+                    key={av.id}
+                    className={`border rounded-2xl p-4 sm:p-5 transition-all flex flex-col justify-between space-y-4 backdrop-blur-md group ${
+                      isRead
+                        ? 'bg-emerald-950/30 border-emerald-500/30'
+                        : av.is_archived
+                        ? 'bg-amber-950/20 border-amber-400/30'
+                        : 'bg-white/10 hover:bg-white/15 border-white/15'
+                    }`}
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[11px] font-extrabold uppercase tracking-wide bg-blue-500/30 text-blue-200 border border-blue-400/30 px-2.5 py-0.5 rounded-lg">
+                            {av.disciplina_name}
+                          </span>
+                          
+                          {av.category === 'durante_aula' ? (
+                            <span className="text-[10px] font-black uppercase tracking-wide bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+                              🔴 Compartilhado em Aula
+                            </span>
+                          ) : av.category === 'complementar' ? (
+                            <span className="text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              📌 Material Complementar
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              📖 Leitura Pré-Aula
+                            </span>
+                          )}
+
+                          {av.is_archived && (
+                            <span className="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.2 rounded-md flex items-center gap-1">
+                              <Archive className="w-2.5 h-2.5" /> Arquivada
+                            </span>
+                          )}
+                          {isRead && (
+                            <span className="text-[10px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 px-2 py-0.2 rounded-md flex items-center gap-1">
+                              <Check className="w-2.5 h-2.5" /> Concluída
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-blue-200/80">
+                          {av.target_date || 'Próxima Aula'}
+                        </span>
+                      </div>
+
+                      <h4 className="font-extrabold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
+                        {av.title}
+                      </h4>
+
+                      <div className="bg-black/25 p-3 rounded-xl border border-white/10">
+                        <p className="text-xs text-blue-100 italic">
+                          "{av.message}"
+                        </p>
+                        <span className="block text-[11px] font-semibold text-amber-200 mt-1.5">
+                          — {av.author_name} ({av.author_role === 'professor' ? 'Docente' : 'Monitor(a)'})
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 pt-1 border-t border-white/10">
+                      <div className="flex items-center gap-2">
+                        {isRead ? (
+                          <button
+                            onClick={() => handleUnmarkAnnouncementRead(av.id)}
+                            className="w-full py-2 px-3 bg-white/10 hover:bg-white/20 text-blue-200 font-bold text-xs rounded-xl border border-white/20 transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                            title="Retornar esta leitura para o feed de pendentes"
+                          >
+                            <ArchiveRestore className="w-3.5 h-3.5 text-blue-300" />
+                            <span>Marcar como Não Lida (Retornar p/ Pendentes)</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleMarkAnnouncementRead(av.id)}
+                            className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                            title="Marcar como lida (sai do feed principal)"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-white" />
+                            <span>✓ Marcar como Lida</span>
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        <a
+                          href={av.link_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Ler Artigo</span>
+                        </a>
+
+                        <button
+                          onClick={() => {
+                            const msg = formatAnnouncementForWhatsApp(av);
+                            navigator.clipboard.writeText(msg);
+                            setCopiedAvisoId(av.id);
+                            setTimeout(() => setCopiedAvisoId(null), 2500);
+                          }}
+                          title="Copiar recado para WhatsApp"
+                          className="py-2 px-3 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-xl border border-white/20 transition flex items-center gap-1 active:scale-95 cursor-pointer"
+                        >
+                          {copiedAvisoId === av.id ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>Copiado!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>WhatsApp</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            if (onTabChange) onTabChange('aluno-caderno');
+                            else if (typeof window !== 'undefined') {
+                              window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-caderno' }));
+                            }
+                          }}
+                          title="Abrir no Caderno Cornell com IA"
+                          className="py-2 px-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1 active:scale-95 cursor-pointer"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-purple-200" />
+                          <span>Cornell IA</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           );
-        }
+        })()}
+      </div>
+    );
+  };
 
-        return null;
-      })()}
+  const renderAulasGravadas = () => {
+    if (gravacoes.length === 0) return null;
 
-
-
-      {/* AVISO DE ENCERRAMENTO DE AULAS OU SEM AULAS HOJE (QUANDO NÃO HÁ AULA ATIVA) */}
-      {!activeLiveAula && !nextAulaToday && (
-        classesFinishedToday ? (
-          <div className="p-4 sm:p-5 bg-emerald-50/90 border border-emerald-200 rounded-2xl flex items-center gap-3 text-emerald-900 text-xs shadow-sm">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-            <div>
-              <strong>As aulas de hoje ({currentDayName}) foram encerradas.</strong> O formulário oficial de presença esteve disponível durante a transmissão ao vivo. Confira a grade completa e links de apoio abaixo.
+    if (isGravacoesCollapsed) {
+      return (
+        <div data-tour="aluno-gravacoes" className="bg-gradient-to-r from-red-950 via-slate-900 to-slate-950 p-4 sm:p-5 rounded-2xl border border-red-900/40 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-600/30 text-red-400 border border-red-500/40 rounded-xl">
+              <Video className="w-4 h-4" />
             </div>
-          </div>
-        ) : (
-          <div className="p-4 sm:p-5 bg-white border border-gray-200 rounded-2xl flex items-center gap-3 text-gray-600 text-xs shadow-sm">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0" />
             <div>
-              <strong>Não há aulas síncronas programadas para hoje ({currentDayName}).</strong> As listas de chamada (Google Forms) ficam disponíveis exclusivamente durante a transmissão oficial das aulas ao vivo (a partir dos 50% de duração).
-            </div>
-          </div>
-        )
-      )}
-
-      {/* SEÇÃO EM DESTAQUE: GRAVAÇÕES DE AULAS DISPONÍVEIS (ACESSO RÁPIDO MOBILE & DESKTOP) */}
-      {gravacoes.length > 0 && (
-        <div data-tour="aluno-gravacoes" className="bg-gradient-to-r from-red-950 via-slate-900 to-slate-950 p-4 sm:p-5 rounded-2xl border border-red-900/40 text-white shadow-md space-y-3">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 bg-red-600/30 text-red-400 border border-red-500/40 rounded-xl">
-                <Video className="w-4 h-4" />
-              </span>
-              <div>
+              <div className="flex items-center gap-2 flex-wrap">
                 <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
                   <span>Aulas Gravadas Disponíveis</span>
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-500/20 text-red-300 border border-red-500/30">
                     {gravacoes.length} {gravacoes.length === 1 ? 'aula' : 'aulas'}
                   </span>
                 </h4>
-                <p className="text-[11px] text-slate-400">
-                  Assista às aulas ministradas em alta definição diretamente no seu celular ou computador.
-                </p>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleForceSyncGravacoes}
-                disabled={isSyncingGravacoes}
-                className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 cursor-pointer"
-                title="Sincronizar gravações da nuvem"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSyncingGravacoes ? 'animate-spin text-red-400' : ''}`} />
-                <span className="hidden sm:inline">{isSyncingGravacoes ? 'Sincronizando...' : 'Sincronizar'}</span>
-              </button>
-
-              {gravacoes.length > 6 && (
-                <button
-                  onClick={() => setShowAllGravacoes(!showAllGravacoes)}
-                  className="px-2.5 py-1.5 bg-red-950/80 hover:bg-red-900/80 text-red-300 hover:text-red-200 border border-red-800/60 rounded-xl text-xs font-bold flex items-center gap-1 transition active:scale-95 cursor-pointer"
-                >
-                  <span>{showAllGravacoes ? 'Ver menos' : `Ver todas (${gravacoes.length})`}</span>
-                  {showAllGravacoes ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1">
-            {(showAllGravacoes ? gravacoes : gravacoes.slice(0, 6)).map((rec) => (
-              <div
-                key={rec.id}
-                className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-red-500/50 transition flex items-center justify-between gap-2"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 text-[10px] text-red-300 font-bold">
-                    <span>Aula {rec.aula_num || 1}</span>
-                    {rec.data_aula && <span>• {rec.data_aula}</span>}
-                  </div>
-                  <h5 className="font-bold text-xs text-white truncate pt-0.5">
-                    {rec.title}
-                  </h5>
-                  <p className="text-[10px] text-slate-400 truncate">
-                    {rec.disciplina_name}
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setActiveVideoModal({
-                      isOpen: true,
-                      title: rec.title,
-                      videoUrl: rec.video_url,
-                      disciplinaName: rec.disciplina_name,
-                      aulaNum: rec.aula_num,
-                    });
-                  }}
-                  className="px-3 py-2 bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1 shrink-0 active:scale-95 cursor-pointer"
-                  title="Assistir gravação no player seguro"
-                >
-                  <Video className="w-3.5 h-3.5" />
-                  <span>Assistir HD</span>
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {gravacoes.length > 6 && !showAllGravacoes && (
-            <div className="text-center pt-1">
-              <button
-                onClick={() => setShowAllGravacoes(true)}
-                className="text-xs text-red-400 hover:text-red-300 font-bold inline-flex items-center gap-1 p-1 hover:underline cursor-pointer"
-              >
-                <span>Mostrar mais {gravacoes.length - 6} aulas gravadas</span>
-                <ChevronDown className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* SEÇÃO DA GRADE DE AULAS COM NAVEGAÇÃO POR SEMANAS LETIVAS */}
-      <div data-tour="disciplinas-grid" className="space-y-6">
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-gray-200 pb-3">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <Video className="w-6 h-6 text-red-600" /> Grade de Aulas & Meu Caderno de Estudos (2026.2)
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Configurado conforme sua situação: <strong>{studentProfile.periodoNum === 0 ? 'Curso Básico' : `${studentProfile.periodoNum}º Período`}</strong>. Suas anotações pessoais de estudo e progresso por disciplina ficam salvos exclusivamente no seu perfil e vinculados à data de cada aula.
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                {isClassDay ? 'Recolhido para foco nas aulas de hoje • Clique para assistir gravações anteriores.' : 'Assista às aulas ministradas em alta definição diretamente no seu dispositivo.'}
               </p>
             </div>
-            <span className="px-3 py-1 bg-blue-100 text-blue-900 border border-blue-200 rounded-full text-xs font-bold w-fit">
-              9 Disciplinas Ativas ({studentProfile.periodoNum === 0 ? 'Curso Básico' : `${studentProfile.periodoNum}º Período`} - 2026.2)
-            </span>
           </div>
 
-          {/* BARRA DE NAVEGAÇÃO DE SEMANAS LETIVAS DO SEMESTRE */}
-          <div className="bg-blue-50/80 p-4 rounded-xl border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <button
-                onClick={() => setSelectedWeekIndex(Math.max(0, selectedWeekIndex - 1))}
-                disabled={selectedWeekIndex === 0}
-                className="p-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-xl text-xs font-bold transition disabled:opacity-40 flex items-center gap-1 shadow-sm"
-              >
-                <ChevronLeft className="w-4 h-4" /> Anterior
-              </button>
+          <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
+            <button
+              onClick={handleForceSyncGravacoes}
+              disabled={isSyncingGravacoes}
+              className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              title="Sincronizar gravações da nuvem"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncingGravacoes ? 'animate-spin text-red-400' : ''}`} />
+              <span className="hidden sm:inline">{isSyncingGravacoes ? 'Sincronizando...' : 'Sincronizar'}</span>
+            </button>
 
-              <button
-                onClick={() => setSelectedWeekIndex(currentWeekIdx)}
-                className={`px-3 py-2 text-xs font-bold rounded-xl border transition shadow-sm ${
-                  selectedWeekIndex === currentWeekIdx
-                    ? 'bg-blue-600 text-white border-blue-700'
-                    : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-100'
-                }`}
-              >
-                Semana Vigente
-              </button>
+            <button
+              type="button"
+              onClick={() => setIsGravacoesCollapsed(false)}
+              className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+            >
+              <span>Ver Gravações ({gravacoes.length})</span>
+              <ChevronDown className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      );
+    }
 
-              <button
-                onClick={() => setSelectedWeekIndex(Math.min(semesterWeeks.length - 1, selectedWeekIndex + 1))}
-                disabled={selectedWeekIndex === semesterWeeks.length - 1}
-                className="p-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-xl text-xs font-bold transition disabled:opacity-40 flex items-center gap-1 shadow-sm"
-              >
-                Próxima <ChevronRight className="w-4 h-4" />
-              </button>
+    return (
+      <div data-tour="aluno-gravacoes" className="bg-gradient-to-r from-red-950 via-slate-900 to-slate-950 p-4 sm:p-5 rounded-2xl border border-red-900/40 text-white shadow-md space-y-3 animate-in fade-in duration-200">
+        <div className="flex items-center justify-between gap-2 flex-wrap border-b border-red-900/40 pb-3">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 bg-red-600/30 text-red-400 border border-red-500/40 rounded-xl">
+              <Video className="w-4 h-4" />
+            </span>
+            <div>
+              <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
+                <span>Aulas Gravadas Disponíveis</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-500/20 text-red-300 border border-red-500/30">
+                  {gravacoes.length} {gravacoes.length === 1 ? 'aula' : 'aulas'}
+                </span>
+              </h4>
+              <p className="text-[11px] text-slate-400">
+                Assista às aulas ministradas em alta definição diretamente no seu celular ou computador.
+              </p>
             </div>
+          </div>
 
-            {/* Selector Dropdown das 16 Semanas */}
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Calendar className="w-4 h-4 text-blue-600 flex-shrink-0" />
-              <select
-                value={selectedWeekIndex}
-                onChange={(e) => setSelectedWeekIndex(Number(e.target.value))}
-                className="w-full sm:w-auto p-2 bg-white border border-blue-300 rounded-xl text-xs font-bold text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleForceSyncGravacoes}
+              disabled={isSyncingGravacoes}
+              className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+              title="Sincronizar gravações da nuvem"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncingGravacoes ? 'animate-spin text-red-400' : ''}`} />
+              <span className="hidden sm:inline">{isSyncingGravacoes ? 'Sincronizando...' : 'Sincronizar'}</span>
+            </button>
+
+            {gravacoes.length > 6 && (
+              <button
+                onClick={() => setShowAllGravacoes(!showAllGravacoes)}
+                className="px-2.5 py-1.5 bg-red-950/80 hover:bg-red-900/80 text-red-300 hover:text-red-200 border border-red-800/60 rounded-xl text-xs font-bold flex items-center gap-1 transition active:scale-95 cursor-pointer"
               >
-                {semesterWeeks.map((w, idx) => (
-                  <option key={w.weekNumber} value={idx}>
-                    {w.label} {idx === currentWeekIdx ? '★ (Vigente Hoje)' : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <span>{showAllGravacoes ? 'Ver menos' : `Ver todas (${gravacoes.length})`}</span>
+                {showAllGravacoes ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsGravacoesCollapsed(true)}
+              className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white text-xs font-bold rounded-xl border border-white/15 transition flex items-center gap-1 cursor-pointer"
+              title="Recolher gravações"
+            >
+              <span>Recolher</span>
+              <ChevronUp className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 
-        {/* Mapeamento por Dias da Semana na Semana Selecionada */}
-        {daysOfWeek.map((day) => {
-          const aulasDoDia = studentAulas.filter((a) => a.day_of_week === day);
-          if (aulasDoDia.length === 0) return null;
-
-          const dateForDay = getDateForLesson(selectedWeekIndex, day);
-          const isToday = selectedWeekIndex === currentWeekIdx && day === currentDayOfWeekName;
-          const isPastDay = selectedWeekIndex === currentWeekIdx && currentDayOfWeekName && baseDays.indexOf(day) < baseDays.indexOf(currentDayOfWeekName);
-
-          return (
-            <div key={day} className={`space-y-3 ${isToday ? 'p-3 bg-blue-50/40 rounded-3xl border-2 border-blue-400 shadow-sm' : ''}`}>
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm ${
-                  isToday 
-                    ? 'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white ring-2 ring-blue-400' 
-                    : isPastDay
-                    ? 'bg-slate-700 text-slate-200'
-                    : 'bg-blue-900 text-white'
-                }`}>
-                  <BookOpen className="w-3.5 h-3.5" />
-                  <span>{day} — 🗓️ {dateForDay}</span>
-                  {isToday && (
-                    <span className="ml-1 text-[10px] bg-emerald-400 text-emerald-950 px-2 py-0.2 rounded-full font-black uppercase tracking-wider">
-                      📍 Aulas de Hoje
-                    </span>
-                  )}
-                  {isPastDay && (
-                    <span className="ml-1 text-[10px] bg-slate-800 text-slate-300 px-2 py-0.2 rounded-full font-medium">
-                      Dias Anteriores
-                    </span>
-                  )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1">
+          {(showAllGravacoes ? gravacoes : gravacoes.slice(0, 6)).map((rec) => (
+            <div
+              key={rec.id}
+              className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-red-500/50 transition flex items-center justify-between gap-2"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-[10px] text-red-300 font-bold">
+                  <span>Aula {rec.aula_num || 1}</span>
+                  {rec.data_aula && <span>• {rec.data_aula}</span>}
                 </div>
+                <h5 className="font-bold text-xs text-white truncate pt-0.5">
+                  {rec.title}
+                </h5>
+                <p className="text-[10px] text-slate-400 truncate">
+                  {rec.disciplina_name}
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {aulasDoDia.map((aula) => {
-                  const isCurrentActive = activeLiveAula?.id === aula.id;
-                  const startLocal = aula.start_time ? convertBRTToLocalTime(aula.start_time) : '';
-                  const endLocal = aula.end_time ? convertBRTToLocalTime(aula.end_time) : '';
-                  const timeLocalStr = startLocal && endLocal ? `${startLocal} – ${endLocal}` : aula.scheduled_at;
+              <button
+                onClick={() => {
+                  setActiveVideoModal({
+                    isOpen: true,
+                    title: rec.title,
+                    videoUrl: rec.video_url,
+                    disciplinaName: rec.disciplina_name,
+                    aulaNum: rec.aula_num,
+                  });
+                }}
+                className="px-3 py-2 bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1 shrink-0 active:scale-95 cursor-pointer"
+                title="Assistir gravação no player seguro"
+              >
+                <Video className="w-3.5 h-3.5" />
+                <span>Assistir HD</span>
+              </button>
+            </div>
+          ))}
+        </div>
 
-                  const datas = datasAvaliacoesMap[aula.disciplina_name] || { av1: '28/09/2026', av2: '23/11/2026' };
+        {gravacoes.length > 6 && !showAllGravacoes && (
+          <div className="text-center pt-1">
+            <button
+              onClick={() => setShowAllGravacoes(true)}
+              className="text-xs text-red-400 hover:text-red-300 font-bold inline-flex items-center gap-1 p-1 hover:underline cursor-pointer"
+            >
+              <span>Mostrar mais {gravacoes.length - 6} aulas gravadas</span>
+              <ChevronDown className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
 
-                  // Chave composta com escopo por Aluno, Código e Data Específica da Aula
-                  const aulaCode = aula.code || aula.id;
-                  const itemKey = `${aulaCode}_${dateForDay}`;
-                  
-                  const isAutoPaid = isLessonAutoCompletedPrevious(aula);
-                  const isCompleted = isAutoPaid || !!completedLessons[itemKey];
-                  const currentNote = studentNotes[itemKey] || '';
+  const renderGradeAulas = () => (
+    <div data-tour="disciplinas-grid" className="space-y-6">
+      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-gray-200 pb-3">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <Video className="w-6 h-6 text-red-600" /> Grade de Aulas & Meu Caderno de Estudos (2026.2)
+            </h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Configurado conforme sua situação: <strong>{studentProfile.periodoNum === 0 ? 'Curso Básico' : `${studentProfile.periodoNum}º Período`}</strong>. Suas anotações pessoais de estudo e progresso por disciplina ficam salvos exclusivamente no seu perfil e vinculados à data de cada aula.
+            </p>
+          </div>
+          <span className="px-3 py-1 bg-blue-100 text-blue-900 border border-blue-200 rounded-full text-xs font-bold w-fit">
+            9 Disciplinas Ativas ({studentProfile.periodoNum === 0 ? 'Curso Básico' : `${studentProfile.periodoNum}º Período`} - 2026.2)
+          </span>
+        </div>
 
-                  return (
-                    <div
-                      key={aula.id}
-                      className={`p-5 rounded-2xl bg-white border transition-all flex flex-col justify-between ${
-                        isCurrentActive 
-                          ? 'border-blue-400 ring-2 ring-blue-500/20 shadow-md bg-gradient-to-b from-blue-50/30 to-white' 
-                          : 'border-gray-200 hover:border-gray-300 shadow-sm'
-                      }`}
-                    >
-                      <div>
-                        {/* Header do Card com Data Específica da Aula */}
-                        <div className="flex justify-between items-start gap-2 mb-2">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-                              {aulaCode}
-                            </span>
+        <div className="bg-blue-50/80 p-4 rounded-xl border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => setSelectedWeekIndex(Math.max(0, selectedWeekIndex - 1))}
+              disabled={selectedWeekIndex === 0}
+              className="p-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-xl text-xs font-bold transition disabled:opacity-40 flex items-center gap-1 shadow-sm cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" /> Anterior
+            </button>
 
-                            {/* SELETOR DE STATUS PESSOAL DA AULA DO ALUNO */}
-                            {(() => {
-                              const currentStatus: LessonAttendanceStatus = attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
+            <button
+              onClick={() => setSelectedWeekIndex(currentWeekIdx)}
+              className={`px-3 py-2 text-xs font-bold rounded-xl border transition shadow-sm cursor-pointer ${
+                selectedWeekIndex === currentWeekIdx
+                  ? 'bg-blue-600 text-white border-blue-700'
+                  : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-100'
+              }`}
+            >
+              Semana Vigente
+            </button>
 
-                              return (
-                                <div className="relative inline-flex items-center">
-                                  <select
-                                    value={currentStatus}
-                                    disabled={isAutoPaid}
-                                    onChange={(e) => handleSetAttendanceStatus(itemKey, e.target.value as LessonAttendanceStatus)}
-                                    className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition border focus:outline-none focus:ring-2 cursor-pointer ${
-                                      isAutoPaid
-                                        ? 'bg-emerald-100 text-emerald-950 border-emerald-300'
-                                        : currentStatus === 'presente'
-                                        ? 'bg-emerald-100 text-emerald-950 border-emerald-300 ring-emerald-200'
-                                        : currentStatus === 'reposicao'
-                                        ? 'bg-rose-100 text-rose-950 border-rose-300 ring-rose-200 animate-pulse'
-                                        : currentStatus === 'nao_houve'
-                                        ? 'bg-slate-200 text-slate-900 border-slate-300'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200'
-                                    }`}
-                                    title="Definir seu status pessoal de presença ou reposição nesta aula"
-                                  >
-                                    <option value="pendente">⏳ Pendente / Aguardando Aula</option>
-                                    <option value="presente">🟢 Assisti Online (Presença Registrada)</option>
-                                    <option value="reposicao">🔴 Não Assisti Online (Reposição por Gravação)</option>
-                                    <option value="nao_houve">⏸️ Não Houve Aula (Suspensa / Feriado)</option>
-                                  </select>
-                                </div>
-                              );
-                            })()}
-                          </div>
+            <button
+              onClick={() => setSelectedWeekIndex(Math.min(semesterWeeks.length - 1, selectedWeekIndex + 1))}
+              disabled={selectedWeekIndex === semesterWeeks.length - 1}
+              className="p-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-xl text-xs font-bold transition disabled:opacity-40 flex items-center gap-1 shadow-sm cursor-pointer"
+            >
+              Próxima <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
 
-                          <div className="text-right">
-                            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-emerald-600" /> Seu Horário: {timeLocalStr}
-                            </span>
-                            <span className="text-[10px] text-gray-400 block mt-0.5">
-                              (Brasília: {aula.start_time} – {aula.end_time} BRT)
-                            </span>
-                          </div>
-                        </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Calendar className="w-4 h-4 text-blue-600 flex-shrink-0" />
+            <select
+              value={selectedWeekIndex}
+              onChange={(e) => setSelectedWeekIndex(Number(e.target.value))}
+              className="w-full sm:w-auto p-2 bg-white border border-blue-300 rounded-xl text-xs font-bold text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
+            >
+              {semesterWeeks.map((w, idx) => (
+                <option key={w.weekNumber} value={idx}>
+                  {w.label} {idx === currentWeekIdx ? '★ (Vigente Hoje)' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
 
-                        {/* Título & Descrição */}
-                        <h4 className="text-base font-bold text-gray-900 leading-snug">{aula.disciplina_name}</h4>
-                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">{aula.description}</p>
+      {daysOfWeek.map((day) => {
+        const aulasDoDia = studentAulas.filter((a) => a.day_of_week === day);
+        if (aulasDoDia.length === 0) return null;
 
-                        {/* BOX DE AVISO: REPOSIÇÃO OBRIGATÓRIA DA AULA (QUANDO O ALUNO MARCA QUE NÃO ASSISTIU ONLINE) */}
-                        {(() => {
-                          const currentStatus: LessonAttendanceStatus = attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
-                          if (currentStatus !== 'reposicao') return null;
+        const dateForDay = getDateForLesson(selectedWeekIndex, day);
+        const isToday = selectedWeekIndex === currentWeekIdx && day === currentDayOfWeekName;
+        const isPastDay = selectedWeekIndex === currentWeekIdx && currentDayOfWeekName && baseDays.indexOf(day) < baseDays.indexOf(currentDayOfWeekName);
 
-                          // Localiza a gravação da disciplina se houver
-                          const gravacao = gravacoes.find((g) => 
-                            g.disciplina_name?.toLowerCase().includes(aula.disciplina_name.toLowerCase()) ||
-                            aula.disciplina_name.toLowerCase().includes((g.disciplina_name || '').toLowerCase())
-                          );
+        return (
+          <div key={day} className={`space-y-3 ${isToday ? 'p-3.5 bg-blue-50/50 rounded-3xl border-2 border-blue-400 shadow-md' : ''}`}>
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm ${
+                isToday 
+                  ? 'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white ring-2 ring-blue-400' 
+                  : isPastDay
+                  ? 'bg-slate-700 text-slate-200'
+                  : 'bg-blue-900 text-white'
+              }`}>
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>{day} — 🗓️ {dateForDay}</span>
+                {isToday && (
+                  <span className="ml-1 text-[10px] bg-emerald-400 text-emerald-950 px-2 py-0.2 rounded-full font-black uppercase tracking-wider">
+                    📍 Aulas de Hoje
+                  </span>
+                )}
+                {isPastDay && (
+                  <span className="ml-1 text-[10px] bg-slate-800 text-slate-300 px-2 py-0.2 rounded-full font-medium">
+                    Dias Anteriores
+                  </span>
+                )}
+              </div>
+            </div>
 
-                          return (
-                            <div className="mt-3 p-3.5 bg-rose-50 border border-rose-200 rounded-2xl space-y-2.5 text-xs text-rose-950 animate-in fade-in">
-                              <div className="flex items-center justify-between gap-2 flex-wrap">
-                                <span className="font-black text-rose-950 flex items-center gap-1.5 text-xs">
-                                  <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                                  <span>Reposição de Aula Necessária</span>
-                                </span>
-                                <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-rose-200 text-rose-900 rounded-md">
-                                  Ausente no Meet
-                                </span>
-                              </div>
-                              <p className="text-[11px] text-rose-900 leading-relaxed font-medium">
-                                Você marcou que <strong>não assistiu à transmissão ao vivo</strong> desta aula. Para cumprir os requisitos institucionais, assista à gravação oficial e elabore seu <strong>Relatório Acadêmico de Reposição</strong>.
-                              </p>
-                              <div className="flex flex-wrap items-center gap-2 pt-1">
-                                {gravacao ? (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      const url = gravacao.video_url || (gravacao as any).drive_file_url || (gravacao as any).drive_url || '#';
-                                      if (typeof window !== 'undefined' && url !== '#') {
-                                        window.open(url, '_blank', 'noopener,noreferrer');
-                                      }
-                                    }}
-                                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
-                                  >
-                                    <Video className="w-3.5 h-3.5" />
-                                    <span>Assistir Gravação da Aula</span>
-                                  </button>
-                                ) : (
-                                  <span className="text-[10px] text-rose-700 bg-rose-100 px-2.5 py-1 rounded-lg">
-                                    Gravação em processamento
-                                  </span>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleCreateReposicaoRelatorio(aula, dateForDay)}
-                                  className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
-                                >
-                                  <FileText className="w-3.5 h-3.5 text-slate-950" />
-                                  <span>📝 Criar Relatório de Reposição (Cornell)</span>
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })()}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {aulasDoDia.map((aula) => {
+                const isCurrentActive = activeLiveAula?.id === aula.id;
+                const startLocal = aula.start_time ? convertBRTToLocalTime(aula.start_time) : '';
+                const endLocal = aula.end_time ? convertBRTToLocalTime(aula.end_time) : '';
+                const timeLocalStr = startLocal && endLocal ? `${startLocal} – ${endLocal}` : aula.scheduled_at;
 
-                        {/* BOX DE AVISO: NÃO HOUVE AULA / SUSPENSÃO */}
-                        {(() => {
-                          const currentStatus: LessonAttendanceStatus = attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
-                          const canceladaStatus = getAulaCanceladaStatus(aula.id || aula.code || '', aula.disciplina_name, dateForDay);
+                const datas = datasAvaliacoesMap[aula.disciplina_name] || { av1: '28/09/2026', av2: '23/11/2026' };
 
-                          if (currentStatus === 'nao_houve' || canceladaStatus) {
+                const aulaCode = aula.code || aula.id;
+                const itemKey = `${aulaCode}_${dateForDay}`;
+                
+                const isAutoPaid = isLessonAutoCompletedPrevious(aula);
+                const isCompleted = isAutoPaid || !!completedLessons[itemKey];
+                const currentNote = studentNotes[itemKey] || '';
+
+                return (
+                  <div
+                    key={aula.id}
+                    className={`p-5 rounded-2xl bg-white border transition-all flex flex-col justify-between ${
+                      isCurrentActive 
+                        ? 'border-blue-400 ring-2 ring-blue-500/20 shadow-md bg-gradient-to-b from-blue-50/30 to-white' 
+                        : 'border-gray-200 hover:border-gray-300 shadow-sm'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start gap-2 mb-2">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                            {aulaCode}
+                          </span>
+
+                          {(() => {
+                            const currentStatus: LessonAttendanceStatus = attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
+
                             return (
-                              <div className="mt-2.5 p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1 text-xs">
-                                <div className="flex items-center gap-1.5 font-extrabold text-amber-950">
-                                  <Ban className="w-3.5 h-3.5 text-amber-600" />
-                                  <span>⏸️ NÃO HOUVE AULA NESTA DATA ({dateForDay})</span>
-                                </div>
-                                {canceladaStatus && (
-                                  <p className="text-[11px] text-amber-950 leading-relaxed bg-white/70 p-2 rounded-lg border border-amber-100 font-medium">
-                                    <strong>Motivo institucional:</strong> "{canceladaStatus.motivo}"
-                                  </p>
-                                )}
+                              <div className="relative inline-flex items-center">
+                                <select
+                                  value={currentStatus}
+                                  disabled={isAutoPaid}
+                                  onChange={(e) => handleSetAttendanceStatus(itemKey, e.target.value as LessonAttendanceStatus)}
+                                  className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition border focus:outline-none focus:ring-2 cursor-pointer ${
+                                    isAutoPaid
+                                      ? 'bg-emerald-100 text-emerald-950 border-emerald-300'
+                                      : currentStatus === 'presente'
+                                      ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                      : currentStatus === 'reposicao'
+                                      ? 'bg-purple-100 text-purple-900 border-purple-300'
+                                      : currentStatus === 'nao_houve'
+                                      ? 'bg-gray-200 text-gray-800 border-gray-300'
+                                      : 'bg-amber-100 text-amber-900 border-amber-300'
+                                  }`}
+                                >
+                                  <option value="presente">🟢 Presente na Aula</option>
+                                  <option value="reposicao">🟣 Reposição de Aula</option>
+                                  <option value="nao_houve">⚪ Não Houve Aula</option>
+                                  <option value="pendente">🟡 Pendente</option>
+                                </select>
                               </div>
                             );
-                          }
-                          return null;
-                        })()}
-
-                        {/* BOX DE LEITURA PRÉ-AULA VINCULADA À MATÉRIA (EXIBIDA EXCLUSIVAMENTE NA DATA RECOMENDADA) */}
-                        {(() => {
-                          const activeReading = announcements.find((a) => {
-                            if (a.is_archived) return false;
-                            const matchDisc =
-                              a.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim() ||
-                              a.disciplina_id === aula.disciplina_id;
-                            if (!matchDisc) return false;
-                            // A leitura só aparece no card desta aula se a data prevista (target_date) ou criação (created_at) for EXATAMENTE a data desta aula (dateForDay)
-                            return a.target_date === dateForDay || a.created_at === dateForDay;
-                          });
-
-                          if (!activeReading) return null;
-
-                          return (
-                            <div className="mt-3 p-3 bg-gradient-to-br from-amber-50 to-orange-50/60 border border-amber-200 rounded-xl space-y-2 text-xs shadow-2xs">
-                              <div className="flex items-center justify-between gap-1 flex-wrap">
-                                <span className="font-extrabold text-amber-950 flex items-center gap-1.5">
-                                  <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-                                  <span>Leitura Pré-Aula Recomendada</span>
-                                </span>
-                                <span className="text-[10px] bg-amber-200/80 text-amber-950 px-2 py-0.5 rounded-full font-bold">
-                                  {activeReading.author_name}
-                                </span>
-                              </div>
-                              <strong className="block text-slate-900 font-bold text-xs">{activeReading.title}</strong>
-                              <p className="text-[11px] text-amber-900/90 italic">"{activeReading.message}"</p>
-                              <div className="flex gap-2 pt-1">
-                                <a
-                                  href={activeReading.link_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 py-1.5 px-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] rounded-lg shadow-2xs transition flex items-center justify-center gap-1.5"
-                                >
-                                  <ExternalLink className="w-3 h-3" />
-                                  <span>Ler Texto Recomendado</span>
-                                </a>
-                              </div>
-                            </div>
-                          );
-                        })()}
-
-                        {/* Metadados: Professor e Monitor */}
-                        <div className="mt-3 pt-3 border-t border-gray-100 space-y-1 text-xs text-gray-600">
-                          <div className="flex items-center gap-1.5">
-                            <User className="w-3.5 h-3.5 text-gray-400" />
-                            <span>Prof: <strong>{aula.professor_name || 'Corpo Docente'}</strong></span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">👑 Monitor(a)</span>
-                            <span>{aula.monitor_name || 'Monitoria'}</span>
-                          </div>
+                          })()}
                         </div>
+
+                        {/* Botão de Reposição */}
+                        <button
+                          type="button"
+                          onClick={() => handleCreateReposicaoRelatorio(aula, dateForDay)}
+                          className="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[10px] font-bold transition flex items-center gap-1 cursor-pointer"
+                          title="Registrar Relatório de Reposição para esta aula"
+                        >
+                          <FileText className="w-3 h-3 text-purple-600" />
+                          <span>Reposição</span>
+                        </button>
                       </div>
 
-                      {/* Ações Consolidadas da Disciplina */}
-                      <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-2">
-                        {/* 1. Google Meet ou Aviso de Cancelamento */}
-                        {(() => {
-                          const canceladaStatus = getAulaCanceladaStatus(aula.id || aula.code || '', aula.disciplina_name, dateForDay);
-                          if (canceladaStatus) {
-                            return (
-                              <div className="flex-1 min-w-[120px] py-2 px-3 bg-red-100/80 text-red-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-red-200 shadow-2xs">
-                                <Ban className="w-3.5 h-3.5 text-red-600" />
-                                <span>Aula Cancelada</span>
-                              </div>
-                            );
-                          }
-                          if (aula.google_meet_url) {
-                            return (
-                              <a
-                                href={aula.google_meet_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 min-w-[120px] py-2 px-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition"
-                              >
-                                <Video className="w-3.5 h-3.5" /> Entrar no Meet
-                              </a>
-                            );
-                          }
-                          return (
-                            <span className="flex-1 min-w-[120px] py-2 px-3 bg-gray-100 text-gray-500 font-semibold text-xs rounded-xl flex items-center justify-center gap-1">
-                              📹 Módulo Gravado
-                            </span>
-                          );
-                        })()}
+                      <h4 className="font-black text-base text-gray-900 leading-snug">
+                        {aula.disciplina_name}
+                      </h4>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Professor(a): <strong>{aula.professor_name || (aula as any).professor || 'Corpo Docente'}</strong>
+                      </p>
 
-                        {/* 2. Pasta Virtual Drive */}
-                        {aula.google_drive_url && (
-                          <a
-                            href={aula.google_drive_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 min-w-[120px] py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-semibold text-xs rounded-xl flex items-center justify-center gap-1.5 transition"
-                            title="Pasta Virtual de Estudos no Google Drive"
-                          >
-                            <FolderOpen className="w-3.5 h-3.5" /> Pasta Drive
-                          </a>
-                        )}
+                      <div className="flex items-center gap-2 mt-2 text-xs text-gray-500 flex-wrap">
+                        <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> {timeLocalStr}
+                        </span>
+                        <span className="text-[11px] text-gray-400">
+                          (Base Brasília: {aula.start_time} – {aula.end_time} BRT)
+                        </span>
+                      </div>
+                    </div>
 
-                        {/* 2.5. Caderno Cornell Integrado da Disciplina e Data */}
+                    {/* Botões de Ação do Card */}
+                    <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        {/* 1. Caderno Cornell com IA */}
                         <button
                           type="button"
                           onClick={() => handleOpenOrCreateCornellForLesson(aula, dateForDay)}
-                          className="py-2 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition cursor-pointer"
-                          title={`Abrir Caderno Cornell de ${aula.disciplina_name} (${dateForDay})`}
+                          className="py-2 px-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-2xs transition active:scale-95 cursor-pointer"
+                          title="Abrir ou criar anotação no método Cornell com inteligência artificial"
                         >
-                          <BookOpen className="w-3.5 h-3.5 text-emerald-700" />
-                          <span>Caderno Cornell</span>
+                          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Caderno Cornell IA</span>
                         </button>
 
-                        {/* 2.8. Botão de Gravação de Aula se disponível */}
+                        {/* 2. Gravação de Aula se disponível */}
                         {(() => {
-                          const currentLessonNum = selectedWeekIndex + 1;
-                          // 1. Tenta buscar correspondência exata de matéria e número de aula
-                          let matchingGravacao = gravacoes.find(
-                            (g) => (g.disciplina_id === aula.disciplina_id || g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim()) &&
-                                   g.aula_num === currentLessonNum
+                          const matchingGravacao = gravacoes.find(
+                            (g) =>
+                              g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim() &&
+                              g.data_aula === dateForDay
+                          ) || gravacoes.find(
+                            (g) => g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim()
                           );
-                          // 2. Se não encontrar para o número exato, busca qualquer gravação da matéria
+
                           if (!matchingGravacao) {
-                            matchingGravacao = gravacoes.find(
-                              (g) => g.disciplina_id === aula.disciplina_id || g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim()
+                            return (
+                              <button
+                                type="button"
+                                disabled
+                                className="py-2 px-2.5 bg-gray-100 text-gray-400 font-semibold text-xs rounded-xl flex items-center justify-center gap-1 cursor-not-allowed"
+                                title="Gravação desta aula ainda não disponível"
+                              >
+                                <Video className="w-3.5 h-3.5" />
+                                <span>Sem Gravação</span>
+                              </button>
                             );
                           }
 
-                          if (!matchingGravacao) return null;
-
                           return (
                             <button
+                              type="button"
                               onClick={() => {
                                 setActiveVideoModal({
                                   isOpen: true,
@@ -1910,7 +1920,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                           );
                         })()}
 
-                        {/* 2.9. Materiais de Apoio & Gemini Notebook */}
+                        {/* 3. Materiais de Apoio & Gemini */}
                         <button
                           type="button"
                           onClick={() => {
@@ -1929,7 +1939,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                           <span>Materiais & Gemini</span>
                         </button>
 
-                        {/* 3. Botão AV1 com Data */}
+                        {/* 4. Botão AV1 com Data */}
                         <button
                           onClick={() => setSelectedAvaliacao({
                             title: `AV1: ${aula.disciplina_name}`,
@@ -1937,26 +1947,11 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                             data: datas.av1,
                             disciplina: aula.disciplina_name
                           })}
-                          className="py-2 px-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-semibold text-xs rounded-xl flex items-center justify-center gap-1 transition"
+                          className="py-2 px-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-semibold text-xs rounded-xl flex items-center justify-center gap-1 transition cursor-pointer"
                           title={`Ver Avaliação AV1 (${datas.av1})`}
                         >
                           <Calendar className="w-3.5 h-3.5 text-amber-600" />
                           <span>AV1 ({datas.av1})</span>
-                        </button>
-
-                        {/* 4. Botão AV2 com Data */}
-                        <button
-                          onClick={() => setSelectedAvaliacao({
-                            title: `AV2: ${aula.disciplina_name}`,
-                            tipo: 'AV2',
-                            data: datas.av2,
-                            disciplina: aula.disciplina_name
-                          })}
-                          className="py-2 px-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-semibold text-xs rounded-xl flex items-center justify-center gap-1 transition"
-                          title={`Ver Avaliação AV2 (${datas.av2})`}
-                        >
-                          <CheckSquare className="w-3.5 h-3.5 text-purple-600" />
-                          <span>AV2 ({datas.av2})</span>
                         </button>
                       </div>
 
@@ -1971,19 +1966,68 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                             );
                           }
                         }}
-                        className="mt-2.5 w-full py-2 px-3 bg-gradient-to-r from-blue-900 to-indigo-900 hover:from-blue-800 hover:to-indigo-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer border border-blue-800/40"
+                        className="mt-2 w-full py-2 px-3 bg-gradient-to-r from-blue-900 to-indigo-900 hover:from-blue-800 hover:to-indigo-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer border border-blue-800/40"
                       >
                         <Layers className="w-3.5 h-3.5 text-amber-300" />
                         <span>Ver Página Completa da Matéria (Livros & Gemini IA) ➔</span>
                       </button>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <div className="space-y-8">
+      {/* BANNER DE AVISO OFICIAL: AULAS CANCELADAS HOJE */}
+      {renderAulasCanceladas()}
+
+      {/* 1. CARD PRINCIPAL UNIFICADO: PAINEL ACADÊMICO DO ALUNO (COM PERÍODO, TURMA, SEMESTRE E FUSO) */}
+      {renderUnifiedHeader()}
+
+      {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
+      {renderProfileReminder()}
+
+      {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
+      {renderAulaAoVivoOuProxima()}
+
+      {/* 4. SE HOUVER LEITURAS EM ABERTO: CARD EM EVIDÊNCIA MÁXIMA NO TOPO (LOGO APÓS AULA AO VIVO) */}
+      {pendingAnnouncementsCount > 0 && (
+        <div className="animate-in fade-in slide-in-from-top-3 duration-300">
+          {renderMuralRecursos(true)}
+        </div>
+      )}
+
+      {/* 5. SEÇÕES PRINCIPAIS (ORDENAÇÃO INTELIGENTE CONFORME DIA LETIVO) */}
+      {isClassDay ? (
+        <>
+          {/* NOS DIAS DE AULA (TERÇA A SEXTA): GRADE DE AULAS NO TOPO */}
+          {renderGradeAulas()}
+
+          {/* QUANDO NÃO HÁ LEITURAS PENDENTES: MURAL VOLTA PARA SEU LUGAR PADRÃO ABAIXO DA GRADE (RECOLHIDO) */}
+          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+
+          {/* AULAS GRAVADAS DISPONÍVEIS (RECOLHÍVEL, RECOLHIDO NO DIA DE AULA) */}
+          {renderAulasGravadas()}
+        </>
+      ) : (
+        <>
+          {/* NOS DIAS SEM AULA (SÁBADO, DOMINGO, SEGUNDA): FOCO EM RECURSOS, GRAVAÇÕES E ESTUDO */}
+          {renderAulasGravadas()}
+
+          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+
+          {renderGradeAulas()}
+        </>
+      )}
+
+      {/* 5. RECURSOS PEDAGÓGICOS COMPLEMENTARES & LABORATÓRIOS (QUANDO NÃO EM AULA AO VIVO) */}
+      {!activeLiveAula && renderCardsMetodologias(false)}
 
       {/* RECURSOS PEDAGÓGICOS COMPLEMENTARES (EXIBIDOS NO FINAL QUANDO EM AULA AO VIVO) */}
       {activeLiveAula && renderCardsMetodologias(true)}

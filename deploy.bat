@@ -3,6 +3,9 @@ title Deploy Koinonia LMS - Vercel Producao
 color 0A
 
 set VERCEL_DISABLE_UPGRADE_CHECK=1
+set NO_UPDATE_NOTIFIER=1
+set VERCEL_NO_UPDATE=1
+set CI=1
 
 echo ========================================================
 echo        DEPLOY AUTOMATICO DO KOINONIA LMS PARA VERCEL
@@ -35,6 +38,9 @@ echo.
 
 REM 2. Compilacao Local de Producao
 echo [2/3] Executando build de producao do Next.js (npm run build)...
+if exist .next (
+    rmdir /s /q .next >nul 2>&1
+)
 call npm run build
 if %errorlevel% neq 0 (
     color 0C
@@ -51,9 +57,9 @@ echo [OK] Build de producao compilado com sucesso!
 echo.
 
 REM 3. Envio Direto para a Vercel
-echo [3/3] Enviando versao de producao para a Vercel (npx vercel --prod --yes)...
+echo [3/3] Enviando versao de producao para a Vercel (npx -y vercel@latest --prod --yes)...
 echo.
-call npx vercel --prod --yes
+call npx -y vercel@latest --prod --yes
 if %errorlevel% neq 0 (
     color 0C
     echo.

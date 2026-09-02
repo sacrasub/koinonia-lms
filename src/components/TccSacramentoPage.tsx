@@ -37,7 +37,7 @@ const INITIAL_CORNELL_SEEDS: TccCornellEntry[] = [
     date: '2026-08-25',
     theme: 'Fundamentação Teórica: A Distância Transacional de Michael G. Moore',
     subject: 'TCC - Metodologia & Fundamentação Teórica',
-    professor: 'Orientador Pastor Prata / Profª Gabriela Leal',
+    professor: 'Orientador Pastor Alexsandro Silva / Profª Gabriela Leal',
     biblical_references: '1 Tessalonicenses 2:17; 2 João 1:12',
     cues: `• O que é Distância Transacional segundo Moore?
 • A tríade: Diálogo, Estrutura e Autonomia
@@ -63,7 +63,7 @@ const INITIAL_CORNELL_SEEDS: TccCornellEntry[] = [
     date: '2026-08-28',
     theme: 'Eclesiologia Neotestamentária de Koinonia e Comunhão Digital',
     subject: 'TCC - Fundamentação Bíblico-Teológica',
-    professor: 'Orientador Pastor Prata',
+    professor: 'Orientador Pastor Alexsandro Silva',
     biblical_references: 'Atos 2:42-47; 1 Coríntios 12:12-27; Hebreus 10:24-25',
     cues: `• Significado de Koinonia no Novo Testamento
 • Compartilhamento de vida vs. Consumo de conteúdo
@@ -97,7 +97,7 @@ const INITIAL_CORNELL_SEEDS: TccCornellEntry[] = [
 - Justificativa: "A presente pesquisa justifica-se pela necessidade..." (nunca "Eu escolhi este tema porque...").
 
 2. CRONOGRAMA:
-- Alinhar com o Pastor Prata os capítulos 1 e 2.
+- Alinhar com o Pastor Alexsandro Silva os capítulos 1 e 2.
 - Tabular dados das 15 aulas sincronizadas no LMS.`,
     summary: 'O rigor científico é indispensável para que a pesquisa teológica tenha validade acadêmica. O pré-projeto segue rigorosamente a norma da ABNT e orientações da Profª Gabriela.',
     tags: ['Metodologia', 'PréProjeto', 'ABNT', 'EscritaCientífica'],
@@ -133,7 +133,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
   const [formDate, setFormDate] = useState<string>('');
   const [formTheme, setFormTheme] = useState<string>('');
   const [formSubject, setFormSubject] = useState<string>('TCC - Metodologia Científica & Koinonia');
-  const [formProfessor, setFormProfessor] = useState<string>('Orientador Pastor Prata / Profª Gabriela Leal');
+  const [formProfessor, setFormProfessor] = useState<string>('Orientador Pastor Alexsandro Silva / Profª Gabriela Leal');
   const [formBiblical, setFormBiblical] = useState<string>('');
   const [formCues, setFormCues] = useState<string>('');
   const [formNotes, setFormNotes] = useState<string>('');
@@ -205,11 +205,11 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     setFormDate(formattedDate);
     setFormTheme(`Anotações & Progresso do TCC - ${displayDate}`);
     setFormSubject('TCC - Metodologia Científica & Koinonia');
-    setFormProfessor('Orientador Pastor Prata / Profª Gabriela Leal');
+    setFormProfessor('Orientador Pastor Alexsandro Silva / Profª Gabriela Leal');
     setFormBiblical('Atos 2:42; 1 Tessalonicenses 2:17');
     setFormCues(`• Qual o foco principal do estudo de hoje?
 • Quais conceitos de Moore / Koinonia foram aprofundados?
-• Principais dúvidas para alinhar com o Pastor Prata:`);
+• Principais dúvidas para alinhar com o Pastor Alexsandro Silva:`);
     setFormNotes(`1. LEITURAS & PROGRESSO DO DIA:
 - Livro / Artigo estudado hoje: 
 - Principais citações e fichamento:
@@ -311,7 +311,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
   const handleExportAllNotes = () => {
     let content = `# DIÁRIO DE BORDO & COMPILADO DO TCC - CRISTIANO SACRAMENTO\n`;
     content += `Tema: Koinonia e a Redução da Distância Transacional no Ensino Teológico Online\n`;
-    content += `Orientador: Pastor Prata | Metodologia: Profª Gabriela Leal\n`;
+    content += `Orientador: Pastor Alexsandro Silva | Metodologia: Profª Gabriela Leal\n`;
     content += `Data da Exportação: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}\n\n`;
     content += `================================================================================\n\n`;
 
@@ -407,7 +407,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             Painel do TCC - Cristiano Sacramento
           </h1>
           <p className="text-xs sm:text-base text-blue-200">
-            Orientador: <strong className="text-white">Pastor Prata</strong> | Metodologia: <strong className="text-white">Profª Gabriela Leal</strong> | Status:{' '}
+            Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Metodologia: <strong className="text-white">Profª Gabriela Leal</strong> | Status:{' '}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
               🟢 Em Desenvolvimento
             </span>
@@ -688,7 +688,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               <span className="px-2 py-0.5 rounded-md bg-amber-600 text-white font-black text-xs">D4</span>
               <div>
                 <strong className="text-xs text-slate-900 block font-bold">Destino e Prazo</strong>
-                <p className="text-xs text-gray-600">Oficializar o orientador Pastor Prata e protocolar o Pré-Projeto.</p>
+                <p className="text-xs text-gray-600">Oficializar o orientador Pastor Alexsandro Silva e protocolar o Pré-Projeto.</p>
               </div>
             </div>
           </CardContent>
@@ -730,7 +730,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
             <span className={`text-sm font-medium ${checklist.convite_orientador ? 'line-through text-gray-400 font-normal' : 'text-gray-800'}`}>
-              Formalizar convite ao <strong>Pastor Prata</strong> como orientador oficial
+              Formalizar convite ao <strong>Pastor Alexsandro Silva</strong> como orientador oficial
             </span>
           </label>
 
@@ -985,7 +985,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
                     <span className="text-[10px] text-amber-800 font-bold">~30%</span>
                   </div>
                   <p className="text-[10px] text-gray-500 leading-tight">
-                    Palavras-chave, conceitos centrais, perguntas de pesquisa e dúvidas para o Pastor Prata.
+                    Palavras-chave, conceitos centrais, perguntas de pesquisa e dúvidas para o Pastor Alexsandro Silva.
                   </p>
                   <textarea
                     rows={12}

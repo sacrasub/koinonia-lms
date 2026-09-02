@@ -126,8 +126,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [customAvatarInput, setCustomAvatarInput] = useState<string>('');
   const [showCustomAvatarField, setShowCustomAvatarField] = useState<boolean>(false);
   const [uploadingFile, setUploadingFile] = useState<boolean>(false);
-  const [saving, setSaving] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<boolean>(false);
 
   // Carregar perfil salvo na nuvem/local ao abrir o modal e ao receber atualizações da nuvem
   useEffect(() => {
@@ -161,7 +159,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     loadProfileData();
 
     const handleSyncUpd = (e: any) => {
-      if (e?.detail?.email === normalizedEmail) {
+      if (e?.detail?.email === normalizedEmail && e?.detail?.source === 'cloud_sync') {
         loadProfileData();
       }
     };
@@ -212,15 +210,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     onClose();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
 
     try {
-      // 1. Salva no Supabase DB (student_sync) + localStorage
-      await savePortalProfile(normalizedEmail, formData);
-
-      // Marca perfil como confirmado definitivamente
+      // 1. Marca perfil como confirmado definitivamente no localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem(`lms_profile_confirmed_${normalizedEmail}`, 'true');
         localStorage.removeItem(`lms_remind_profile_later_${normalizedEmail}`);
@@ -237,24 +231,22 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         periodoNum: formData.periodoNum,
       });
 
-      // 3. Dispara evento de atualização em tempo real para a barra superior (Navbar) e painéis
+      // 3. Salva no Supabase DB (student_sync) + localStorage de forma local-first & assíncrona
+      savePortalProfile(normalizedEmail, formData);
+
+      // 4. Dispara evento de atualização em tempo real para a barra superior (Navbar) e painéis
       if (typeof window !== 'undefined') {
         window.dispatchEvent(
           new CustomEvent('lms_student_sync_updated', { detail: { email: normalizedEmail } })
         );
       }
 
-      setSuccessMessage(true);
+      // 5. Notifica o callback pai e fecha o modal imediatamente (< 1ms)
       if (onProfileUpdated) onProfileUpdated();
-
-      setTimeout(() => {
-        setSuccessMessage(false);
-        setSaving(false);
-        onClose();
-      }, 1200);
+      onClose();
     } catch (err) {
       console.error('Erro ao salvar perfil:', err);
-      setSaving(false);
+      onClose();
     }
   };
 
@@ -541,14 +533,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
           </div>
 
-          {/* Notificação de Sucesso */}
-          {successMessage && (
-            <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl flex items-center gap-2 text-emerald-800 text-xs font-bold animate-in fade-in">
-              <Check className="w-4 h-4 text-emerald-600" />
-              <span>Perfil salvo e sincronizado na nuvem com sucesso!</span>
-            </div>
-          )}
-
           {/* Footer Botões */}
           <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-3 flex-shrink-0">
             {isFirstAccess || onRemindLater ? (
@@ -573,15 +557,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             <div className="flex items-center gap-2">
               <button
                 type="submit"
-                disabled={saving}
-                className={`px-5 py-2.5 rounded-xl text-xs font-extrabold text-white shadow-md transition flex items-center gap-2 disabled:opacity-50 cursor-pointer ${
+                className={`px-5 py-2.5 rounded-xl text-xs font-extrabold text-white shadow-md transition flex items-center gap-2 cursor-pointer ${
                   isFirstAccess
                     ? 'bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700'
                     : 'bg-blue-600 hover:bg-blue-700'
                 }`}
               >
                 <Check className="w-4 h-4" />
-                <span>{saving ? 'Salvando...' : isFirstAccess ? 'Salvar e Confirmar Perfil' : 'Salvar Perfil'}</span>
+                <span>{isFirstAccess ? 'Salvar e Confirmar Perfil' : 'Salvar Perfil'}</span>
               </button>
             </div>
           </div>

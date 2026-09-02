@@ -980,6 +980,89 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
     return disciplinasList.find((d) => d.name === filterDisciplina) || null;
   }, [filterDisciplina]);
 
+  // Lista de folhas pertencentes à mesma aula / mesma disciplina e mesma data
+  const sheetsForCurrentLesson = useMemo(() => {
+    if (!currentNote || !currentNote.disciplina_name || !currentNote.date) return [currentNote];
+    const currentIso = normalizeToIso(currentNote.date);
+    const currentDiscNorm = currentNote.disciplina_name.toLowerCase().trim();
+
+    const matches = Object.values(allNotes).filter((n) => {
+      const discNorm = n.disciplina_name.toLowerCase().trim();
+      const dateIso = normalizeToIso(n.date);
+      return (discNorm === currentDiscNorm || currentDiscNorm.includes(discNorm) || discNorm.includes(currentDiscNorm)) &&
+             dateIso === currentIso;
+    });
+
+    if (matches.length === 0) return [currentNote];
+
+    return matches.sort((a, b) => {
+      const idxA = a.sheet_index !== undefined ? a.sheet_index : 1;
+      const idxB = b.sheet_index !== undefined ? b.sheet_index : 1;
+      if (idxA !== idxB) return idxA - idxB;
+      return (a.created_at || a.id).localeCompare(b.created_at || b.id);
+    });
+  }, [allNotes, currentNote.disciplina_name, currentNote.date, currentNote.id]);
+
+  const currentSheetIndexInLesson = useMemo(() => {
+    const idx = sheetsForCurrentLesson.findIndex((s) => s.id === activeNoteId);
+    return idx >= 0 ? idx : 0;
+  }, [sheetsForCurrentLesson, activeNoteId]);
+
+  // Criação de Nova Folha Adicional para a mesma aula (mesmo dia / mesma matéria)
+  const handleCreateNewSheetForCurrentLesson = () => {
+    const currentIso = normalizeToIso(currentNote.date);
+    const targetDisc = currentNote.disciplina_name;
+    const discObj = disciplinasList.find((d) => d.name === targetDisc) || disciplinasList[0];
+    const nextNum = sheetsForCurrentLesson.length + 1;
+    const newId = `note-${discObj.code.toLowerCase()}-${currentIso}-sheet-${Date.now()}`;
+
+    const baseTheme = currentNote.theme ? currentNote.theme.replace(/ \(Folha \d+\)$/, '') : `Aula de ${discObj.shortName}`;
+
+    const newSheet: CornellNote = {
+      id: newId,
+      date: currentIso,
+      disciplina_name: targetDisc,
+      disciplina_code: currentNote.disciplina_code || discObj.code,
+      professor_name: currentNote.professor_name || discObj.prof,
+      theme: `${baseTheme} (Folha ${nextNum})`,
+      biblical_references: currentNote.biblical_references || '',
+      cues: `• Perguntas e conceitos chave da Folha ${nextNum}\n• Termo central para auto-avaliação`,
+      notes: `1. CONTINUAÇÃO DAS ANOTAÇÕES (Folha ${nextNum})\n- Registros complementares da aula...\n- Tópicos adicionais e apontamentos...`,
+      summary: `Síntese dos tópicos registrados na folha ${nextNum}.`,
+      ai_summary_url: currentNote.ai_summary_url || '',
+      ai_summary_text: currentNote.ai_summary_text || '',
+      sheet_index: nextNum,
+      sheet_title: `Folha ${nextNum}`,
+      tags: [targetDisc],
+      created_at: new Date().toISOString(),
+    };
+
+    const updated = { ...allNotes, [newId]: newSheet };
+    setAllNotes(updated);
+    setActiveNoteId(newId);
+    setCurrentNote(newSheet);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`lms_cornell_active_note_${normalizedEmail}`, newId);
+    }
+    saveCornellNote(normalizedEmail, newSheet);
+    setSaveStatusMessage(`✨ Folha ${nextNum} criada com sucesso para esta aula!`);
+    setTimeout(() => setSaveStatusMessage(null), 3500);
+  };
+
+  const handleNavigatePreviousSheet = () => {
+    if (currentSheetIndexInLesson > 0) {
+      const prev = sheetsForCurrentLesson[currentSheetIndexInLesson - 1];
+      handleSelectNote(prev.id);
+    }
+  };
+
+  const handleNavigateNextSheet = () => {
+    if (currentSheetIndexInLesson < sheetsForCurrentLesson.length - 1) {
+      const next = sheetsForCurrentLesson[currentSheetIndexInLesson + 1];
+      handleSelectNote(next.id);
+    }
+  };
+
   // Cronograma oficial das 16 Aulas do Semestre 2026.2 para a matéria selecionada
   const scheduledLessonsForDisc = useMemo(() => {
     if (!activeDiscObj) return [];
@@ -989,9 +1072,8 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       const dateBr = getDateForLesson(w, activeDiscObj.dayOfWeek); // '11/08/2026'
       const dateIso = normalizeToIso(dateBr); // '2026-08-11'
 
-      // Checa se já existe anotação no allNotes
-      const matchingKey = Object.keys(allNotes).find((k) => {
-        const n = allNotes[k];
+      // Checa todas as folhas existentes para essa aula
+      const matchingNotes = Object.values(allNotes).filter((n) => {
         const matchDisc =
           n.disciplina_name.toLowerCase() === activeDiscObj.name.toLowerCase() ||
           n.disciplina_name.toLowerCase().includes(activeDiscObj.shortName.toLowerCase());
@@ -1001,17 +1083,19 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
         return matchDisc && matchDate;
       });
 
-      const existingNote = matchingKey ? allNotes[matchingKey] : null;
+      const existingNote = matchingNotes.length > 0 ? matchingNotes[0] : null;
 
       list.push({
         aulaNum,
         dateBr,
         dateIso,
-        hasNote: Boolean(existingNote),
+        hasNote: matchingNotes.length > 0,
+        noteCount: matchingNotes.length,
+        notes: matchingNotes,
         noteId: existingNote?.id || null,
         note: existingNote,
         theme: existingNote?.theme || `Aula ${aulaNum} • ${activeDiscObj.shortName}`,
-        hasAiSummary: Boolean(existingNote?.ai_summary_text || existingNote?.ai_summary_url),
+        hasAiSummary: matchingNotes.some((n) => Boolean(n.ai_summary_text || n.ai_summary_url)),
       });
     }
     return list;
@@ -1438,9 +1522,13 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                     {/* Status da Aula */}
                     <div className="text-[9px] font-bold uppercase tracking-wider">
                       {isCurrentlyActiveNote ? (
-                        <span className="text-blue-100 font-black">● Folha Ativa</span>
+                        <span className="text-blue-100 font-black">
+                          ● Folha {currentNote.sheet_index || 1}
+                        </span>
                       ) : lesson.hasNote ? (
-                        <span className="text-emerald-700 font-extrabold">✓ Anotada</span>
+                        <span className="text-emerald-700 font-extrabold">
+                          {lesson.noteCount > 1 ? `📑 ${lesson.noteCount} folhas` : '✓ Anotada'}
+                        </span>
                       ) : (
                         <span className="text-gray-400">+ Iniciar</span>
                       )}
@@ -1686,6 +1774,77 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                     <span>Modo Auto-Teste (Active Recall)</span>
                   </>
                 )}
+              </button>
+            </div>
+          </div>
+
+          {/* BARRA DE MÚLTIPLAS FOLHAS DA MESMA AULA (PAGINAÇÃO & NAVEGAÇÃO DE ESTUDO) */}
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50 via-indigo-50/80 to-blue-50 border border-purple-200/90 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-2 flex-wrap min-w-0">
+              <span className="text-xs font-black uppercase text-purple-950 flex items-center gap-1.5 shrink-0">
+                <Layers className="w-4 h-4 text-purple-700" />
+                <span>Folhas da Aula ({sheetsForCurrentLesson.length}):</span>
+              </span>
+
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+                {sheetsForCurrentLesson.map((sheet, sIdx) => {
+                  const isSheetActive = sheet.id === activeNoteId;
+                  const sheetNum = sheet.sheet_index || (sIdx + 1);
+                  return (
+                    <button
+                      key={sheet.id}
+                      type="button"
+                      onClick={() => handleSelectNote(sheet.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap ${
+                        isSheetActive
+                          ? 'bg-purple-700 text-white shadow-xs scale-102 ring-2 ring-purple-400/30'
+                          : 'bg-white hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs'
+                      }`}
+                    >
+                      <span>📄 Folha {sheetNum}</span>
+                      {sheet.sheet_title && sheet.sheet_title !== `Folha ${sheetNum}` && (
+                        <span className="text-[10px] opacity-80 truncate max-w-[90px]">({sheet.sheet_title})</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Ações de Navegação e Botão + Nova Folha */}
+            <div className="flex items-center gap-1.5 shrink-0 justify-end">
+              <button
+                type="button"
+                onClick={handleNavigatePreviousSheet}
+                disabled={currentSheetIndexInLesson <= 0}
+                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                title="Ir para a folha anterior desta aula"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              <span className="text-xs font-black text-purple-950 bg-white/80 px-2.5 py-1 rounded-lg border border-purple-200">
+                {currentSheetIndexInLesson + 1} de {sheetsForCurrentLesson.length}
+              </span>
+
+              <button
+                type="button"
+                onClick={handleNavigateNextSheet}
+                disabled={currentSheetIndexInLesson >= sheetsForCurrentLesson.length - 1}
+                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                title="Ir para a próxima folha desta aula"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCreateNewSheetForCurrentLesson}
+                className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer ml-1"
+                title="Adicionar outra folha de anotação para a mesma aula"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>+ Nova Folha (Mesma Aula)</span>
               </button>
             </div>
           </div>

@@ -116,30 +116,90 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
     avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
   },
 
-  // Monitores
-  'rosianelcs73@gmail.com': {
-    email: 'rosianelcs73@gmail.com',
-    name: 'Rosiane (Monitora)',
-    roles: ['monitor', 'aluno'],
-    defaultRole: 'monitor',
-    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-  },
-  'camilagbalbi@gmail.com': {
-    email: 'camilagbalbi@gmail.com',
-    name: 'Camila (Monitora)',
-    roles: ['monitor', 'aluno'],
-    defaultRole: 'monitor',
-    avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
-  },
+  // ============================================================
+  // EQUIPE OFICIAL DE SUPORTE E MONITORIA (COORDENAÇÃO ROBERT FMB)
+  // ============================================================
 
-  // Coordenação & Direção STC
+  // Coordenação Geral de Suporte e Monitoria
   'robert.fmb@uiecbead.com.br': {
     email: 'robert.fmb@uiecbead.com.br',
-    name: 'Robert FMB (Coordenação / Monitoria)',
+    name: 'Robert FMB (Coordenação Geral de Monitoria)',
     roles: ['admin', 'monitor', 'aluno'],
     defaultRole: 'monitor',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
   },
+
+  // Monitores - Turma A (Veteranos - 7º Período)
+  'camilagbalbi@gmail.com': {
+    email: 'camilagbalbi@gmail.com',
+    name: 'Camila Vieira (Monitora - Turma A)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 1,
+    avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
+  },
+  'rosianelcs73@gmail.com': {
+    email: 'rosianelcs73@gmail.com',
+    name: 'Rosi (Rosiane Lima - Monitora - Turma A)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 1,
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+  },
+
+  // Monitores - Turma B (3º Período)
+  'andreseminariouiecb@gmail.com': {
+    email: 'andreseminariouiecb@gmail.com',
+    name: 'André (Monitor - Turma B)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 2,
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+  },
+  'daniel.monitor@uiecbead.com.br': {
+    email: 'daniel.monitor@uiecbead.com.br',
+    name: 'Daniel (Monitor - Turma B)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 2,
+    avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+  },
+  'renata.monitora@uiecbead.com.br': {
+    email: 'renata.monitora@uiecbead.com.br',
+    name: 'Renata (Monitora Auxiliar - Turma B)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 2,
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+  },
+
+  // Monitores - Turma de Fim de Semana (5º Período)
+  'thiago.monitor@uiecbead.com.br': {
+    email: 'thiago.monitor@uiecbead.com.br',
+    name: 'Thiago (Monitor - Fim de Semana)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 0,
+    avatarUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
+  },
+  'julia.monitora@uiecbead.com.br': {
+    email: 'julia.monitora@uiecbead.com.br',
+    name: 'Júlia (Monitora Auxiliar - Fim de Semana)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 0,
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  },
+  'pauloroberto.monitor@uiecbead.com.br': {
+    email: 'pauloroberto.monitor@uiecbead.com.br',
+    name: 'Paulo Roberto (Monitor Auxiliar - Fim de Semana)',
+    roles: ['monitor', 'aluno'],
+    defaultRole: 'monitor',
+    turmaIdx: 0,
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+  },
+
+  // Direção STC
   'karla.direcao@uiecbead.com.br': {
     email: 'karla.direcao@uiecbead.com.br',
     name: 'STC Diretora Karla DIREÇÃO',
@@ -156,7 +216,6 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
   'alcimarluizdasilva3@gmail.com': { email: 'alcimarluizdasilva3@gmail.com', name: 'Alcimar Luiz da Silva', roles: ['aluno'], defaultRole: 'aluno' },
   'allemos01@gmail.com': { email: 'allemos01@gmail.com', name: 'Alex Lemos', roles: ['aluno'], defaultRole: 'aluno' },
   'andreapimentelmarianoesilvasil@gmail.com': { email: 'andreapimentelmarianoesilvasil@gmail.com', name: 'Andrea Pimentel', roles: ['aluno'], defaultRole: 'aluno' },
-  'andreseminariouiecb@gmail.com': { email: 'andreseminariouiecb@gmail.com', name: 'André Seminário', roles: ['aluno'], defaultRole: 'aluno' },
   'aricarlosjunior@gmail.com': { email: 'aricarlosjunior@gmail.com', name: 'Ari Carlos Júnior', roles: ['aluno'], defaultRole: 'aluno' },
   'bismarckjuniormqt@gmail.com': { email: 'bismarckjuniormqt@gmail.com', name: 'Bismarck Júnior', roles: ['aluno'], defaultRole: 'aluno' },
   'caiogracina98@gmail.com': { email: 'caiogracina98@gmail.com', name: 'Caio Gracina', roles: ['aluno'], defaultRole: 'aluno' },

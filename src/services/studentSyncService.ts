@@ -103,25 +103,25 @@ async function upsertToCloud(
   pendingUpserts[email] = { ...(pendingUpserts[email] || {}), ...patch };
 
   try {
-    // Busca dados atuais da nuvem para mesclar com segurança
-    const cloudCurrent = await loadFromCloud(email);
+    // Usa dados do cache local (SSOT instantânea no cliente) para mesclar sem download lento redundante
+    const local = readLocalCache(email);
 
     const mergedPayload = {
       completedLessons: patch.completed_lessons !== undefined
-        ? { ...cloudCurrent.completedLessons, ...patch.completed_lessons }
-        : cloudCurrent.completedLessons,
+        ? { ...local.completedLessons, ...patch.completed_lessons }
+        : local.completedLessons,
       studentNotes: patch.student_notes !== undefined
-        ? { ...cloudCurrent.studentNotes, ...patch.student_notes }
-        : cloudCurrent.studentNotes,
+        ? { ...local.studentNotes, ...patch.student_notes }
+        : local.studentNotes,
       cornellNotes: patch.cornell_notes !== undefined
-        ? { ...(cloudCurrent.cornellNotes || {}), ...patch.cornell_notes }
-        : (cloudCurrent.cornellNotes || {}),
+        ? { ...(local.cornellNotes || {}), ...patch.cornell_notes }
+        : (local.cornellNotes || {}),
       portalProfile: patch.portal_profile !== undefined
         ? patch.portal_profile
-        : cloudCurrent.portalProfile,
+        : local.portalProfile,
       checklistTasks: patch.checklist_tasks !== undefined
         ? patch.checklist_tasks
-        : cloudCurrent.checklistTasks,
+        : local.checklistTasks,
       updatedAt: new Date().toISOString(),
     };
 

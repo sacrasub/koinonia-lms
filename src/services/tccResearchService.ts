@@ -442,6 +442,75 @@ export async function createSurvey(
 }
 
 /**
+ * Atualiza uma pesquisa existente e suas perguntas
+ */
+export async function updateSurvey(
+  surveyId: string,
+  surveyData: Partial<Omit<TCCPesquisa, 'id' | 'criado_em'>>,
+  perguntas?: Array<Omit<TCCPergunta, 'id' | 'pesquisa_id' | 'ordem'> & { id?: string; ordem?: number }>
+): Promise<TCCPesquisa | null> {
+  const currentSurveys = await getAllSurveys();
+  const existingIndex = currentSurveys.findIndex((s) => s.id === surveyId);
+  if (existingIndex === -1) return null;
+
+  const existing = currentSurveys[existingIndex];
+  const now = new Date().toISOString();
+
+  let formattedPerguntas: TCCPergunta[] = existing.perguntas || [];
+  if (perguntas) {
+    formattedPerguntas = perguntas.map((p, idx) => ({
+      id: p.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `perg_${Date.now()}_${idx}`),
+      pesquisa_id: surveyId,
+      texto_pergunta: p.texto_pergunta,
+      pilar_tcc: p.pilar_tcc,
+      tipo: p.tipo,
+      obrigatoria: p.obrigatoria ?? true,
+      ordem: p.ordem || idx + 1,
+      criado_em: now,
+    }));
+  }
+
+  const updatedSurvey: TCCPesquisa = {
+    ...existing,
+    ...surveyData,
+    perguntas: formattedPerguntas,
+  };
+
+  currentSurveys[existingIndex] = updatedSurvey;
+  saveLocalSurveys(currentSurveys);
+
+  try {
+    await supabase.from('tcc_pesquisas').update({
+      titulo: updatedSurvey.titulo,
+      descricao: updatedSurvey.descricao,
+      alvo: updatedSurvey.alvo,
+      ativa: updatedSurvey.ativa,
+      pilar_principal: updatedSurvey.pilar_principal,
+    }).eq('id', surveyId);
+
+    if (perguntas) {
+      await supabase.from('tcc_perguntas').delete().eq('pesquisa_id', surveyId);
+      if (formattedPerguntas.length > 0) {
+        await supabase.from('tcc_perguntas').insert(formattedPerguntas);
+      }
+    }
+
+    await supabase.from('materiais').upsert({
+      id: MATERIALS_SURVEYS_ID,
+      disciplina_id: 'tcc-research-global',
+      tipo: 'OUTROS',
+      titulo: 'Sincronização de Pesquisas TCC',
+      url: JSON.stringify(currentSurveys),
+      updated_at: now,
+    });
+  } catch (e) {
+    console.warn('Erro ao atualizar pesquisa no Supabase (mantido no cache local):', e);
+  }
+
+  return updatedSurvey;
+}
+
+/**
  * Ativa ou desativa uma pesquisa
  */
 export async function toggleSurveyStatus(surveyId: string, ativa: boolean): Promise<void> {

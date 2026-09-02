@@ -5,7 +5,8 @@ import {
   GraduationCap, BookOpen, Drama, Clock, Download, 
   Plus, RefreshCw, CheckCircle2, MessageSquare, 
   BarChart3, Users, Award, ShieldCheck, Sparkles,
-  ToggleLeft, ToggleRight, Trash2, FileText, Share2, HelpCircle
+  ToggleLeft, ToggleRight, Trash2, FileText, Share2, HelpCircle,
+  Edit3
 } from 'lucide-react';
 import { 
   TCCPesquisa, 
@@ -18,6 +19,7 @@ import {
   getAllSurveys, 
   getSurveyStats, 
   createSurvey, 
+  updateSurvey,
   toggleSurveyStatus, 
   deleteSurvey, 
   exportSurveyResponsesCSV, 
@@ -54,6 +56,21 @@ export const AdminTCCResearchView: React.FC = () => {
       obrigatoria: true,
     }
   ]);
+
+  // Modal para Editar Pesquisa Existente
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [editingSurveyId, setEditingSurveyId] = useState<string>('');
+  const [editTitle, setEditTitle] = useState<string>('');
+  const [editDescription, setEditDescription] = useState<string>('');
+  const [editTarget, setEditTarget] = useState<'ALUNO' | 'PROFESSOR' | 'AMBOS'>('AMBOS');
+  const [editPilarPrincipal, setEditPilarPrincipal] = useState<TCCPilarTCC>('DISTANCIA_TRANSACIONAL');
+  const [editQuestions, setEditQuestions] = useState<Array<{
+    id?: string;
+    texto_pergunta: string;
+    pilar_tcc: TCCPilarTCC;
+    tipo: TCCQuestionType;
+    obrigatoria: boolean;
+  }>>([]);
 
   const loadData = async (isManual = false) => {
     if (isManual) setRefreshing(true);
@@ -175,6 +192,70 @@ export const AdminTCCResearchView: React.FC = () => {
     setNewQuestions([{ texto_pergunta: '', pilar_tcc: 'DISTANCIA_TRANSACIONAL', tipo: 'LIKERT_5', obrigatoria: true }]);
     setSelectedSurveyId(created.id);
     showToast('Nova pesquisa criada com sucesso!');
+    loadData(true);
+  };
+
+  const handleOpenEditModal = (survey: TCCPesquisa) => {
+    setEditingSurveyId(survey.id);
+    setEditTitle(survey.titulo);
+    setEditDescription(survey.descricao || '');
+    setEditTarget(survey.alvo);
+    setEditPilarPrincipal(survey.pilar_principal || 'DISTANCIA_TRANSACIONAL');
+    setEditQuestions(
+      (survey.perguntas || []).map((q) => ({
+        id: q.id,
+        texto_pergunta: q.texto_pergunta,
+        pilar_tcc: q.pilar_tcc,
+        tipo: q.tipo,
+        obrigatoria: q.obrigatoria ?? true,
+      }))
+    );
+    setIsEditModalOpen(true);
+  };
+
+  const handleAddEditQuestionRow = () => {
+    setEditQuestions([
+      ...editQuestions,
+      {
+        texto_pergunta: '',
+        pilar_tcc: 'DISTANCIA_TRANSACIONAL',
+        tipo: 'LIKERT_5',
+        obrigatoria: true,
+      }
+    ]);
+  };
+
+  const handleRemoveEditQuestionRow = (idx: number) => {
+    if (editQuestions.length <= 1) return;
+    setEditQuestions(editQuestions.filter((_, i) => i !== idx));
+  };
+
+  const handleUpdateSurveySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editTitle.trim()) {
+      alert('Preencha o título da pesquisa.');
+      return;
+    }
+
+    const validQuestions = editQuestions.filter((q) => q.texto_pergunta.trim().length > 0);
+    if (validQuestions.length === 0) {
+      alert('Adicione pelo menos uma pergunta com texto válido.');
+      return;
+    }
+
+    await updateSurvey(
+      editingSurveyId,
+      {
+        titulo: editTitle.trim(),
+        descricao: editDescription.trim(),
+        alvo: editTarget,
+        pilar_principal: editPilarPrincipal,
+      },
+      validQuestions
+    );
+
+    setIsEditModalOpen(false);
+    showToast('Pesquisa atualizada com sucesso!');
     loadData(true);
   };
 
@@ -418,14 +499,26 @@ export const AdminTCCResearchView: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between bg-slate-900/60 p-4 rounded-2xl border border-slate-800/80">
             <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>{stats?.pesquisa.titulo}</span>
-                {stats?.pesquisa.ativa ? (
-                  <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-black rounded-md border border-emerald-500/30">Ativa</span>
-                ) : (
-                  <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-[10px] font-black rounded-md">Inativa</span>
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                  <span>{stats?.pesquisa.titulo}</span>
+                  {stats?.pesquisa.ativa ? (
+                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-black rounded-md border border-emerald-500/30">Ativa</span>
+                  ) : (
+                    <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-[10px] font-black rounded-md">Inativa</span>
+                  )}
+                </h2>
+                {stats?.pesquisa && (
+                  <button
+                    onClick={() => handleOpenEditModal(stats.pesquisa)}
+                    className="p-1.5 bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                    title="Editar Perguntas e Detalhes desta Pesquisa"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Editar</span>
+                  </button>
                 )}
-              </h2>
+              </div>
               <p className="text-xs text-slate-400 mt-0.5">{stats?.pesquisa.descricao}</p>
             </div>
             <div className="text-right shrink-0">
@@ -571,6 +664,15 @@ export const AdminTCCResearchView: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => handleOpenEditModal(s)}
+                    className="px-3 py-1.5 bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                    title="Editar Perguntas e Detalhes da Pesquisa"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>Editar</span>
+                  </button>
+
                   <button
                     onClick={() => handleToggleSurveyStatus(s.id, s.ativa)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border ${
@@ -827,6 +929,173 @@ export const AdminTCCResearchView: React.FC = () => {
                   className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-xs font-black shadow-lg transition cursor-pointer"
                 >
                   Salvar e Publicar Pesquisa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL PARA EDITAR PESQUISA EXISTENTE */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-slate-900 w-full max-w-2xl p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-5 text-left my-8">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                  <Edit3 className="w-5 h-5 text-violet-400" />
+                  <span>Editar Pesquisa Científica</span>
+                </h3>
+                <p className="text-xs text-slate-400">Modifique o título, orientações e perguntas do questionário do TCC</p>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="p-2 text-slate-400 hover:text-white rounded-xl bg-slate-800 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateSurveySubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">Título da Pesquisa *</label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full bg-slate-950 text-white text-xs font-medium px-3.5 py-2.5 rounded-xl border border-slate-700 focus:outline-hidden focus:border-violet-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1">Público-Alvo</label>
+                  <select
+                    value={editTarget}
+                    onChange={(e) => setEditTarget(e.target.value as any)}
+                    className="w-full bg-slate-950 text-white text-xs font-medium px-3.5 py-2.5 rounded-xl border border-slate-700"
+                  >
+                    <option value="AMBOS">Ambos (Alunos & Professores)</option>
+                    <option value="ALUNO">Apenas Alunos</option>
+                    <option value="PROFESSOR">Apenas Professores</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1">Pilar Principal do TCC</label>
+                  <select
+                    value={editPilarPrincipal}
+                    onChange={(e) => setEditPilarPrincipal(e.target.value as any)}
+                    className="w-full bg-slate-950 text-white text-xs font-medium px-3.5 py-2.5 rounded-xl border border-slate-700"
+                  >
+                    <option value="DISTANCIA_TRANSACIONAL">Distância Transacional</option>
+                    <option value="METODOLOGIAS_ATIVAS_RPG">Metodologias Ativas (RPG)</option>
+                    <option value="AUTODETERMINACAO">Teoria da Autodeterminação</option>
+                    <option value="AVALIACAO_MEDIADORA">Avaliação Mediadora</option>
+                    <option value="GERAL">Geral / Multidimensional</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">Descrição / Instruções Acadêmicas</label>
+                <textarea
+                  rows={2}
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  placeholder="Explique aos participantes o objetivo científico do questionário..."
+                  className="w-full bg-slate-950 text-white text-xs font-medium px-3.5 py-2 rounded-xl border border-slate-700"
+                />
+              </div>
+
+              {/* Lista de Perguntas Dinâmicas na Edição */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-violet-400 uppercase tracking-wider">Perguntas do Questionário ({editQuestions.length})</label>
+                  <button
+                    type="button"
+                    onClick={handleAddEditQuestionRow}
+                    className="text-xs text-violet-400 hover:text-violet-300 font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Adicionar Pergunta
+                  </button>
+                </div>
+
+                {editQuestions.map((q, idx) => (
+                  <div key={idx} className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-slate-400">Pergunta #{idx + 1}</span>
+                      {editQuestions.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveEditQuestionRow(idx)}
+                          className="text-[11px] text-red-400 hover:underline cursor-pointer"
+                        >
+                          Remover
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={q.texto_pergunta}
+                      onChange={(e) => {
+                        const updated = [...editQuestions];
+                        updated[idx].texto_pergunta = e.target.value;
+                        setEditQuestions(updated);
+                      }}
+                      placeholder="Texto da pergunta..."
+                      className="w-full bg-slate-900 text-white text-xs font-medium px-3 py-2 rounded-xl border border-slate-700 focus:outline-hidden"
+                    />
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={q.pilar_tcc}
+                        onChange={(e) => {
+                          const updated = [...editQuestions];
+                          updated[idx].pilar_tcc = e.target.value as any;
+                          setEditQuestions(updated);
+                        }}
+                        className="bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded-lg border border-slate-700"
+                      >
+                        <option value="DISTANCIA_TRANSACIONAL">Distância Transacional</option>
+                        <option value="METODOLOGIAS_ATIVAS_RPG">Metodologias Ativas (RPG)</option>
+                        <option value="AUTODETERMINACAO">Autodeterminação</option>
+                        <option value="AVALIACAO_MEDIADORA">Avaliação Mediadora</option>
+                        <option value="GERAL">Geral</option>
+                      </select>
+
+                      <select
+                        value={q.tipo}
+                        onChange={(e) => {
+                          const updated = [...editQuestions];
+                          updated[idx].tipo = e.target.value as any;
+                          setEditQuestions(updated);
+                        }}
+                        className="bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded-lg border border-slate-700"
+                      >
+                        <option value="LIKERT_5">Escala Likert (1 a 5)</option>
+                        <option value="DISCURSIVA">Discursiva / Aberta</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-xs font-black shadow-lg transition cursor-pointer"
+                >
+                  Salvar Alterações
                 </button>
               </div>
             </form>
