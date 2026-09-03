@@ -6,7 +6,7 @@ import {
   HelpCircle, ArrowRight, ArrowLeft, Share2, Copy, 
   Check, Sparkles, AlertCircle, BookOpen, Send, RefreshCw, 
   MessageSquare, Lock, LogIn, ExternalLink, Info, X, Lightbulb,
-  Edit3, CheckCircle, UserCheck
+  Edit3, CheckCircle, UserCheck, BarChart3
 } from 'lucide-react';
 import { 
   TipoPublico, 
@@ -361,6 +361,16 @@ export default function PesquisaTCCPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <a
+              href="/dashboard/tcc-sacramento"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 transition cursor-pointer shadow-xs active:scale-95"
+              title="Acessar o Painel de Resultados, Estatísticas e Exportação SPSS do TCC"
+            >
+              <BarChart3 className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden sm:inline">Ver Resultados</span>
+              <span className="sm:hidden">Resultados</span>
+            </a>
+
             <button
               onClick={() => setIsGlossarioGeralAberto(true)}
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition cursor-pointer"
@@ -458,13 +468,21 @@ export default function PesquisaTCCPage() {
             </div>
 
             {/* AÇÕES PÓS-RESPOSTA */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4 flex-wrap">
               <a
                 href="/"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm shadow-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <BookOpen className="w-4 h-4 text-white" />
                 <span>Entrar na Plataforma Koinonia LMS →</span>
+              </a>
+
+              <a
+                href="/dashboard/tcc-sacramento"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-950/80 hover:bg-blue-900 text-blue-200 font-extrabold text-xs border border-blue-500/40 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+              >
+                <BarChart3 className="w-4 h-4 text-blue-400" />
+                <span>Painel de Resultados do TCC</span>
               </a>
 
               <button

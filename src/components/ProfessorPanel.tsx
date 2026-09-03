@@ -756,7 +756,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
       )}
 
       {/* SEÇÃO 1: PUBLICAR LEITURAS, LINKS E RECURSOS DA AULA (DESTAQUE PRIORITÁRIO) */}
-      <div className="bg-white p-6 sm:p-7 rounded-3xl border border-blue-200/80 shadow-xs space-y-6">
+      <div data-tour="prof-publicar-leituras" className="bg-white p-6 sm:p-7 rounded-3xl border border-blue-200/80 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-blue-50 text-blue-700 rounded-2xl border border-blue-100">

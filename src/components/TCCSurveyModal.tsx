@@ -169,9 +169,12 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
     async function checkSurvey() {
       try {
         const res = await getActiveSurveyForRole(currentRole, normalizedEmail);
-        if (res.survey && !res.alreadyAnswered) {
+        if (res.survey && res.survey.ativa === true && !res.alreadyAnswered) {
           setActiveSurvey(res.survey);
           setTimeout(() => setIsBannerVisible(true), 2500);
+        } else {
+          setActiveSurvey(null);
+          setIsBannerVisible(false);
         }
       } catch (e) {
         console.warn('Erro ao verificar pesquisa TCC:', e);
@@ -179,9 +182,20 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
     }
 
     checkSurvey();
+
+    const handleStatusChange = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (!detail?.ativa) {
+        setActiveSurvey(null);
+        setIsBannerVisible(false);
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('lms_tcc_survey_status_changed', handleStatusChange);
+    return () => window.removeEventListener('lms_tcc_survey_status_changed', handleStatusChange);
   }, [currentRole, normalizedEmail]);
 
-  if (!activeSurvey || (!isBannerVisible && !isOpen)) return null;
+  if (!activeSurvey || !activeSurvey.ativa || (!isBannerVisible && !isOpen)) return null;
 
   const perguntas = activeSurvey.perguntas || [];
   const currentQuestion = perguntas[currentStepIndex];

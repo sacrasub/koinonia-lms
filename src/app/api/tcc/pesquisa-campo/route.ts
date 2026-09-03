@@ -119,43 +119,49 @@ export async function GET(request: Request) {
 
     const { data: primaryData, error: primaryError } = await query;
 
-    // Se a tabela primária retornou registros com sucesso, devolve imediatamente
+    const resultsMap = new Map<string, any>();
+
+    // 1. Coleta da tabela primária se disponível
     if (!primaryError && primaryData && primaryData.length > 0) {
-      return NextResponse.json({
-        success: true,
-        count: primaryData.length,
-        data: primaryData,
+      primaryData.forEach((r) => {
+        if (r && r.id) resultsMap.set(r.id, r);
       });
     }
 
-    // Fallback: Recupera registros da tabela materiais
+    // 2. Coleta e mesclagem com as linhas de backup na tabela materiais
     const { data: backupRows } = await supabase
       .from('materiais')
       .select('id, title, google_drive_url, created_at')
       .like('title', '[TCC_PESQUISA_BACKUP]%')
       .order('created_at', { ascending: false });
 
-    const results: any[] = [];
     if (backupRows && backupRows.length > 0) {
       for (const row of backupRows) {
         try {
           if (row.google_drive_url) {
             const parsed = JSON.parse(row.google_drive_url);
-            if (!tipo || tipo === 'ALL' || parsed.tipo_publico === tipo) {
-              results.push({
-                id: parsed.id || row.id,
-                tipo_publico: parsed.tipo_publico,
-                created_at: parsed.created_at || row.created_at,
-                autorizou_tcc: parsed.autorizou_tcc,
-                dados_identificacao: parsed.dados_identificacao,
-                origem: parsed.origem || 'organico',
-                respostas: parsed.respostas || {},
-              });
+            const id = parsed.id || row.id;
+            if (!resultsMap.has(id)) {
+              if (!tipo || tipo === 'ALL' || parsed.tipo_publico === tipo) {
+                resultsMap.set(id, {
+                  id: id,
+                  tipo_publico: parsed.tipo_publico,
+                  created_at: parsed.created_at || row.created_at,
+                  autorizou_tcc: parsed.autorizou_tcc,
+                  dados_identificacao: parsed.dados_identificacao,
+                  origem: parsed.origem || 'organico',
+                  respostas: parsed.respostas || {},
+                });
+              }
             }
           }
         } catch (_) {}
       }
     }
+
+    const results = Array.from(resultsMap.values()).sort((a, b) => {
+      return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+    });
 
     return NextResponse.json({
       success: true,

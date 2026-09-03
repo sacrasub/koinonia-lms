@@ -331,8 +331,29 @@ export async function getOnlinePeers(currentUserEmail: string): Promise<OnlinePe
       });
     }
   } catch (e) {
-    // Fallback para presença em cache
+    // Continua para fallback
   }
+
+  // Fallback: se lms_user_sessions não existir ou estiver vazia, verifica student_sync recente em materiais
+  try {
+    const { data: recentStudents } = await supabase
+      .from('materiais')
+      .select('title, file_url, created_at')
+      .ilike('title', 'student_sync_%');
+
+    if (recentStudents) {
+      recentStudents.forEach((row) => {
+        try {
+          const parsed = JSON.parse(row.file_url);
+          const rawEmail = row.title.replace('student_sync_', '').toLowerCase().trim();
+          const lastActivity = parsed.updatedAt || row.created_at;
+          if (new Date(lastActivity).getTime() >= (now - 15 * 60 * 1000)) {
+            activeOnlineEmails.add(rawEmail);
+          }
+        } catch (_) {}
+      });
+    }
+  } catch (_) {}
 
   // 2. Verifica também heartbeats locais recentes
   Object.values(presenceMap).forEach((p) => {

@@ -10,10 +10,10 @@ import {
   TCCPilarTCC
 } from '@/types';
 
-const STORAGE_SURVEYS_KEY = 'lms_tcc_surveys_cache';
-const STORAGE_RESPONSES_KEY = 'lms_tcc_responses_cache';
-const MATERIALS_SURVEYS_ID = 'system_tcc_surveys_sync';
-const MATERIALS_RESPONSES_ID = 'system_tcc_responses_sync';
+const STORAGE_SURVEYS_KEY = 'lms_tcc_surveys_cache_v4';
+const STORAGE_RESPONSES_KEY = 'lms_tcc_responses_cache_v4';
+const MATERIALS_SURVEYS_ID = '00000000-0000-0000-0000-0000000007cc';
+const MATERIALS_RESPONSES_ID = '00000000-0000-0000-0000-0000000007cd';
 
 // =========================================================================
 // GLOSSÁRIO INTERATIVO DE TERMOS DO TCC
@@ -104,7 +104,7 @@ export const DEFAULT_TCC_SURVEY: TCCPesquisa = {
   titulo: 'Pesquisa de Impacto Pedagógico: Distância Transacional e Metodologias Ativas (Koinonia-LMS 2026.2)',
   descricao: 'Questionário empírico para avaliação do impacto das metodologias ativas, autonomia no ambiente virtual e avaliação mediadora no Seminário Teológico.',
   alvo: 'AMBOS',
-  ativa: true,
+  ativa: false,
   pilar_principal: 'DISTANCIA_TRANSACIONAL',
   criado_em: new Date().toISOString(),
   perguntas: [
@@ -189,7 +189,7 @@ export const DEFAULT_TCC_SURVEY: TCCPesquisa = {
 // =========================================================================
 
 function getLocalSurveys(): TCCPesquisa[] {
-  if (typeof window === 'undefined') return [DEFAULT_TCC_SURVEY];
+  if (typeof window === 'undefined') return [{ ...DEFAULT_TCC_SURVEY, ativa: false }];
   try {
     const raw = localStorage.getItem(STORAGE_SURVEYS_KEY);
     if (raw) {
@@ -197,7 +197,7 @@ function getLocalSurveys(): TCCPesquisa[] {
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
   } catch (e) {}
-  return [DEFAULT_TCC_SURVEY];
+  return [{ ...DEFAULT_TCC_SURVEY, ativa: false }];
 }
 
 function saveLocalSurveys(surveys: TCCPesquisa[]): void {
@@ -258,15 +258,15 @@ export async function getAllSurveys(): Promise<TCCPesquisa[]> {
       return surveys;
     }
 
-    // 2. Fallback: Busca na tabela materiais
-    const { data: matData } = await supabase
+    // 2. Fallback: Busca na tabela materiais com a coluna correta file_url
+    const { data: matData, error: matError } = await supabase
       .from('materiais')
-      .select('url')
+      .select('file_url')
       .eq('id', MATERIALS_SURVEYS_ID)
       .maybeSingle();
 
-    if (matData?.url) {
-      const parsed = JSON.parse(matData.url);
+    if (!matError && matData?.file_url) {
+      const parsed = JSON.parse(matData.file_url);
       if (Array.isArray(parsed) && parsed.length > 0) {
         saveLocalSurveys(parsed);
         return parsed;
@@ -278,8 +278,8 @@ export async function getAllSurveys(): Promise<TCCPesquisa[]> {
 
   const local = getLocalSurveys();
   if (local.length === 0) {
-    saveLocalSurveys([DEFAULT_TCC_SURVEY]);
-    return [DEFAULT_TCC_SURVEY];
+    saveLocalSurveys([{ ...DEFAULT_TCC_SURVEY, ativa: false }]);
+    return [{ ...DEFAULT_TCC_SURVEY, ativa: false }];
   }
   return local;
 }
@@ -370,11 +370,9 @@ export async function submitSurveyAnswers(
     // 2. Fallback: Grava na tabela materiais serializada
     await supabase.from('materiais').upsert({
       id: MATERIALS_RESPONSES_ID,
-      disciplina_id: 'tcc-research-global',
-      tipo: 'OUTROS',
-      titulo: 'Sincronização de Respostas do TCC (Fallback)',
-      url: JSON.stringify(updatedLocal),
-      updated_at: now,
+      title: 'system_tcc_responses_sync',
+      file_url: JSON.stringify(updatedLocal),
+      is_native_upload: false,
     });
   } catch (e) {
     console.warn('Respostas do TCC salvas em contingência local:', e);
@@ -427,11 +425,9 @@ export async function createSurvey(
       // Fallback
       await supabase.from('materiais').upsert({
         id: MATERIALS_SURVEYS_ID,
-        disciplina_id: 'tcc-research-global',
-        tipo: 'OUTROS',
-        titulo: 'Sincronização de Pesquisas TCC (Fallback)',
-        url: JSON.stringify(updatedSurveys),
-        updated_at: now,
+        title: 'system_tcc_surveys_sync',
+        file_url: JSON.stringify(updatedSurveys),
+        is_native_upload: false,
       });
     }
   } catch (e) {
@@ -497,11 +493,9 @@ export async function updateSurvey(
 
     await supabase.from('materiais').upsert({
       id: MATERIALS_SURVEYS_ID,
-      disciplina_id: 'tcc-research-global',
-      tipo: 'OUTROS',
-      titulo: 'Sincronização de Pesquisas TCC',
-      url: JSON.stringify(currentSurveys),
-      updated_at: now,
+      title: 'system_tcc_surveys_sync',
+      file_url: JSON.stringify(currentSurveys),
+      is_native_upload: false,
     });
   } catch (e) {
     console.warn('Erro ao atualizar pesquisa no Supabase (mantido no cache local):', e);
@@ -522,13 +516,17 @@ export async function toggleSurveyStatus(surveyId: string, ativa: boolean): Prom
     await supabase.from('tcc_pesquisas').update({ ativa }).eq('id', surveyId);
     await supabase.from('materiais').upsert({
       id: MATERIALS_SURVEYS_ID,
-      disciplina_id: 'tcc-research-global',
-      tipo: 'OUTROS',
-      titulo: 'Sincronização de Pesquisas TCC',
-      url: JSON.stringify(updated),
-      updated_at: new Date().toISOString(),
+      title: 'system_tcc_surveys_sync',
+      file_url: JSON.stringify(updated),
+      is_native_upload: false,
     });
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Erro ao atualizar status da pesquisa no Supabase:', e);
+  }
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('lms_tcc_survey_status_changed', { detail: { surveyId, ativa } }));
+  }
 }
 
 /**
@@ -543,13 +541,17 @@ export async function deleteSurvey(surveyId: string): Promise<void> {
     await supabase.from('tcc_pesquisas').delete().eq('id', surveyId);
     await supabase.from('materiais').upsert({
       id: MATERIALS_SURVEYS_ID,
-      disciplina_id: 'tcc-research-global',
-      tipo: 'OUTROS',
-      titulo: 'Sincronização de Pesquisas TCC',
-      url: JSON.stringify(updated),
-      updated_at: new Date().toISOString(),
+      title: 'system_tcc_surveys_sync',
+      file_url: JSON.stringify(updated),
+      is_native_upload: false,
     });
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Erro ao excluir pesquisa no Supabase:', e);
+  }
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('lms_tcc_survey_status_changed', { detail: { surveyId, ativa: false } }));
+  }
 }
 
 // =========================================================================

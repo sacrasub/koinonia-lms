@@ -742,6 +742,7 @@ export default function Home() {
         userEmail={userEmail} 
         activeTab={activeTab} 
         onTabChange={handleTabChange} 
+        currentRole={currentRole}
       />
 
       {/* SUÍTE DE COMUNICAÇÃO: PRESENÇA SOCIAL (🟢) E CHAT PRIVADO DM */}

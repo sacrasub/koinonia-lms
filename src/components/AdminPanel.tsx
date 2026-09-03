@@ -347,6 +347,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* Abas de Navegação */}
       <div className="flex border-b border-gray-200 gap-4 overflow-x-auto">
         <button
+          data-tour="admin-analytics"
           onClick={() => handleSubTabChange('analytics')}
           className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap ${
             activeSubTab === 'analytics'
@@ -379,6 +380,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </button>
 
         <button
+          data-tour="admin-usuarios"
           onClick={() => handleSubTabChange('users')}
           className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap ${
             activeSubTab === 'users'

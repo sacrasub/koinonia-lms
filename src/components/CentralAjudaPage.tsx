@@ -252,10 +252,17 @@ export const CentralAjudaPage: React.FC<CentralAjudaPageProps> = ({
             <button
               type="button"
               onClick={() => {
-                if (onTabChange) onTabChange('aluno-disciplinas');
+                const initialTab = currentRole === 'professor' 
+                  ? 'prof-disciplinas' 
+                  : currentRole === 'monitor' 
+                  ? 'monitor-escala' 
+                  : currentRole === 'admin' 
+                  ? 'admin-dashboard' 
+                  : 'aluno-disciplinas';
+                if (onTabChange) onTabChange(initialTab);
                 setTimeout(() => {
-                  window.dispatchEvent(new CustomEvent('koinonia_start_tour', { detail: { force: true } }));
-                  window.dispatchEvent(new CustomEvent('lms_start_tutorial', { detail: { force: true } }));
+                  window.dispatchEvent(new CustomEvent('koinonia_start_tour', { detail: { force: true, role: currentRole } }));
+                  window.dispatchEvent(new CustomEvent('lms_start_tutorial', { detail: { force: true, role: currentRole } }));
                 }, 100);
               }}
               className="px-4 py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer active:scale-95 border border-amber-300"
