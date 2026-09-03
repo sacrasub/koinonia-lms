@@ -92,9 +92,10 @@ export default function Home() {
       if (pullDistance > 50) {
         setRefreshing(true);
         if (userEmail) {
-          syncRbacFromCloud().then(() => {
+          syncRbacFromCloud(true).then(() => {
             if (typeof window !== 'undefined') {
               window.dispatchEvent(new CustomEvent('lms_student_sync_updated', { detail: { email: userEmail } }));
+              window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
             }
             setTimeout(() => {
               setRefreshing(false);
@@ -205,10 +206,34 @@ export default function Home() {
           startUserSession(email, name, 'aluno', avatar);
         }
         setLoadingSession(false);
+
+        // Sincroniza RBAC global da nuvem em background e revalida autorização reativa
+        syncRbacFromCloud().then(() => {
+          if (isSubscribed && email) {
+            const freshAuth = getAuthorizedUserInfo(email);
+            if (freshAuth.isAuthorized && freshAuth.user) {
+              setIsAuthorized(true);
+              const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
+              const role = storedRole && freshAuth.user.roles.includes(storedRole) ? storedRole : freshAuth.user.defaultRole;
+              setCurrentRole(role);
+            }
+          }
+        }).catch(() => {});
       }
     }
 
     initAuth();
+
+    const handleRbacUpdate = () => {
+      const stored = typeof window !== 'undefined' ? localStorage.getItem('lms_active_user_email') : null;
+      if (stored && isSubscribed) {
+        const fresh = getAuthorizedUserInfo(stored);
+        if (fresh.isAuthorized && fresh.user) {
+          setIsAuthorized(true);
+        }
+      }
+    };
+    window.addEventListener('lms_rbac_updated', handleRbacUpdate);
 
     // 5. Listener de estado de autenticação do Supabase
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -250,6 +275,7 @@ export default function Home() {
 
     return () => {
       isSubscribed = false;
+      window.removeEventListener('lms_rbac_updated', handleRbacUpdate);
       subscription.unsubscribe();
     };
   }, [router]);

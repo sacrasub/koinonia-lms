@@ -22,7 +22,7 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
 
   useEffect(() => {
     async function checkPending() {
-      await syncRbacFromCloud();
+      await syncRbacFromCloud(true);
       const requests = getPendingRequests();
       const found = requests.find((r) => r.email === userEmail.toLowerCase().trim());
       if (found) {
@@ -32,13 +32,16 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
     checkPending();
   }, [userEmail]);
 
-  const handleRequestAccess = () => {
-    setLoading(true);
-    setTimeout(() => {
-      requestAccess(userEmail, userName, userAvatar);
+  const handleRequestAccess = async () => {
+    try {
+      setLoading(true);
+      await requestAccess(userEmail, userName, userAvatar);
       setRequested(true);
+    } catch (err) {
+      console.error('Erro ao solicitar acesso:', err);
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (

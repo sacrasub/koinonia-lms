@@ -181,11 +181,12 @@ const defaultSemesterTasks: KanbanTask[] = [
     priority: 'Máxima',
     type: 'Trabalho Escrito',
     status: 'todo',
-    strategyNote: 'Consolidação das etapas V1 e V2. Cada etapa: Prova objetiva Forms sem consulta (peso 8) + Trabalho de pesquisa individual de produção textual (peso 2). Média >= 7 para aprovação.',
+    strategyNote: 'V1 (30/09/2026): Dissertação de até 1 lauda sobre Desigualdade Social e Privilégios (peso 2,0) + Prova Forms (peso 8,0). V2 (25/11/2026): Prova Forms (peso 8,0) + Pesquisa escrita (peso 2,0). Média >= 7,0 para aprovação.',
     subtasks: [
-      { id: 'st-011-1', text: 'Pesquisa e redação do trabalho individual de produção textual', done: false },
-      { id: 'st-011-2', text: 'Envio do trabalho para cleitonpb@gmail.com', done: false },
-      { id: 'st-011-3', text: 'Realização das provas objetivas de múltipla escolha no Forms', done: false },
+      { id: 'st-011-1', text: 'Redigir dissertação de até 1 lauda sobre "Desigualdade Social e Privilégios" e a Igreja como agente transformador (Times New Roman 12, esp. 1,5)', done: false },
+      { id: 'st-011-2', text: 'Enviar dissertação da AV1 para cleitonpb@gmail.com com assunto "Trabalho para composição de nota" até 30/09/2026 (Valor: 2,0 pts)', done: false },
+      { id: 'st-011-3', text: 'Realizar prova objetiva no Google Forms sem consulta na data da AV1 (Valor: 8,0 pts)', done: false },
+      { id: 'st-011-4', text: 'Preparação para as etapas da V2 (Prova Forms peso 8 + Trabalho peso 2 em 25/11)', done: false },
     ],
   },
   {

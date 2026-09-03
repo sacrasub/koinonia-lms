@@ -214,6 +214,14 @@ export function getAllAvaliacoes(): Avaliacao[] {
       localStorage.setItem(AVALIACOES_STORAGE_KEY, JSON.stringify(mockAvaliacoes));
       return mockAvaliacoes;
     }
+    // Mescla itens do mockAvaliacoes que ainda não estejam presentes no storage do usuário
+    const existingIds = new Set(parsed.map((p) => p.id));
+    const missing = mockAvaliacoes.filter((m) => !existingIds.has(m.id));
+    if (missing.length > 0) {
+      const merged = [...parsed, ...missing];
+      localStorage.setItem(AVALIACOES_STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
     return parsed;
   } catch (e) {
     console.error('Erro ao ler avaliações:', e);

@@ -26,7 +26,8 @@ import {
   exportEventsCSV, 
   downloadFile,
   getUserDetailedHistory,
-  UserDossierHistory
+  UserDossierHistory,
+  uploadLocalSessionsToCloud
 } from '@/services/telemetryService';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { TeleProximidadeDashboard } from '@/components/TeleProximidadeDashboard';
@@ -102,6 +103,9 @@ export const AdminAnalyticsView: React.FC = () => {
   const loadData = async (isManual = false) => {
     if (isManual) setRefreshing(true);
     try {
+      if (isManual) {
+        await uploadLocalSessionsToCloud();
+      }
       const data = await getAnalyticsSummary(isManual);
       setSummary(data);
     } catch (err) {
@@ -131,12 +135,15 @@ export const AdminAnalyticsView: React.FC = () => {
       } catch (e) {}
     }
 
-    loadData();
+    // Unifica sessões acumuladas deste dispositivo na nuvem e puxa o resumo global consolidado
+    uploadLocalSessionsToCloud()
+      .then(() => loadData(true))
+      .catch(() => loadData(false));
 
-    // Revalidação inteligente: atualiza apenas se a aba voltar ao foco e após 3 minutos de inatividade
+    // Revalidação inteligente: atualiza apenas se a aba voltar ao foco e após 1 minuto de inatividade
     let lastFocusRefresh = Date.now();
     const handleFocus = () => {
-      if (Date.now() - lastFocusRefresh > 180000) {
+      if (Date.now() - lastFocusRefresh > 60000) {
         lastFocusRefresh = Date.now();
         loadData(false);
       }

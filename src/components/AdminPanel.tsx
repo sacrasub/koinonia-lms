@@ -99,7 +99,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [editDriveUrl, setEditDriveUrl] = useState('');
 
   const reloadData = async () => {
-    await syncRbacFromCloud();
+    await syncRbacFromCloud(true);
     setUsersList(getAuthorizedUsersList());
     setPendingRequests(getPendingRequests());
     setDisciplinasList(getAllDisciplinas());
@@ -114,12 +114,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }, 300000); // 5 minutos
 
     const handleDiscUpd = () => setDisciplinasList(getAllDisciplinas());
-    window.addEventListener('lms_disciplinas_updated', handleDiscUpd);
+    const handleRbacUpd = () => {
+      setUsersList(getAuthorizedUsersList());
+      setPendingRequests(getPendingRequests());
+    };
 
+    window.addEventListener('lms_disciplinas_updated', handleDiscUpd);
+    window.addEventListener('lms_rbac_updated', handleRbacUpd);
 
     return () => {
       clearInterval(interval);
       window.removeEventListener('lms_disciplinas_updated', handleDiscUpd);
+      window.removeEventListener('lms_rbac_updated', handleRbacUpd);
     };
   }, []);
 
@@ -128,9 +134,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const handleApprove = (req: AccessRequest, role: UserRole) => {
-    approveAccessRequest(req.id, role);
-    reloadData();
+  const handleApprove = async (req: AccessRequest, role: UserRole) => {
+    await approveAccessRequest(req.id, role);
+    await reloadData();
     const emailInfo = formatApprovalEmail(req.name, req.email, role);
     setApprovalModalData({
       name: req.name,
@@ -144,9 +150,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     showNotify(`Solicitação de ${req.name} aprovada no perfil de ${role.toUpperCase()}!`);
   };
 
-  const handleReject = (id: string) => {
-    rejectAccessRequest(id);
-    reloadData();
+  const handleReject = async (id: string) => {
+    await rejectAccessRequest(id);
+    await reloadData();
     showNotify('Solicitação de acesso rejeitada.');
   };
 

@@ -48,6 +48,17 @@ export const INITIAL_SLIDES: SlideItem[] = [
     author_name: 'Profº Cleiton Barbirato',
     created_at: '2026-08-12T20:00:00Z',
   },
+  {
+    id: 'slide-disc4-aula3',
+    disciplina_id: 'disc-4',
+    aula_num: 3,
+    data_aula: '26/08/2026',
+    title: 'Slides • Aula 3 • Desigualdade Social e Privilégios (Trabalho AV1)',
+    slide_url: 'https://docs.google.com/presentation/d/1exampleDireitosHumanosAula3/preview',
+    notes: 'Dissertação de até 1 lauda sobre desigualdade social, privilégios e a importância da igreja como agente de transformação social. Times New Roman 12, esp. 1,5. Enviar para cleitonpb@gmail.com (Assunto: "Trabalho para composição de nota") até 30/09/2026. Valor: 2,0 pontos.',
+    author_name: 'Profº Cleiton Barbirato',
+    created_at: '2026-08-26T20:00:00Z',
+  },
 ];
 
 export function getAllSlides(): SlideItem[] {
@@ -59,7 +70,15 @@ export function getAllSlides(): SlideItem[] {
       return INITIAL_SLIDES;
     }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : INITIAL_SLIDES;
+    if (!Array.isArray(parsed)) return INITIAL_SLIDES;
+    const existingIds = new Set(parsed.map((s: any) => s.id));
+    const missing = INITIAL_SLIDES.filter((s) => !existingIds.has(s.id));
+    if (missing.length > 0) {
+      const merged = [...parsed, ...missing];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+    return parsed;
   } catch (e) {
     return INITIAL_SLIDES;
   }

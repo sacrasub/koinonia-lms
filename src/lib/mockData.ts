@@ -1260,15 +1260,25 @@ export const mockAvaliacoes: Avaliacao[] = [
   // DIREITOS HUMANOS (disc-4)
   // ==========================================
   {
+    id: 'av-dir-1-trabalho',
+    disciplina_id: 'disc-4',
+    disciplina_name: 'Direitos Humanos',
+    title: 'Trabalho para Composição de Nota (AV1) — Dissertação Individual',
+    description: 'Redigir uma dissertação de, no máximo, uma lauda.\n• Tema: Desigualdade social e privilégios conforme trabalhado no vídeo da aula do dia 26/09/2026.\n• Discutir no texto a importância da igreja como agente de transformação social.\n• Formatação: Fonte Times New Roman, Tamanho 12, Espaçamento 1,5.\n• Envio: cleitonpb@gmail.com com assunto "Trabalho para composição de nota".\n• Data Final improrrogável: 30/09/2026.\n• Valor: 02 pontos na nota da AV01.',
+    due_date: '2026-09-30T23:59:00',
+    is_legacy: false,
+    max_score: 2.0,
+  },
+  {
     id: 'av-dir-1',
     disciplina_id: 'disc-4',
     disciplina_name: 'Direitos Humanos',
-    title: 'V1: Prova Objetiva (Peso 8) + Produção Textual Individual (Peso 2)',
-    description: 'Etapa avaliativa V1 composta por: Prova objetiva Google Forms sem consulta (Peso 8,0) + Trabalho de pesquisa escrito individual enviado por e-mail/WhatsApp (Peso 2,0). Média >= 7,0 para aprovação.',
-    due_date: '2026-10-07T23:59:00',
+    title: 'V1: Prova Objetiva Google Forms (Peso 8,0)',
+    description: 'Prova objetiva via Google Forms sem consulta (Peso 8,0). Complementa os 2,0 pontos do Trabalho de Dissertação individual sobre Desigualdade Social e Privilégios (Total da AV1: 10,0 pontos). Média >= 7,0 para aprovação.',
+    due_date: '2026-09-30T23:59:00',
     google_forms_url: 'https://docs.google.com/forms/d/e/1FAIpQLSe_demo_dir_v1/viewform?embedded=true',
     is_legacy: true,
-    max_score: 10.0,
+    max_score: 8.0,
   },
   {
     id: 'av-dir-2',
@@ -1276,7 +1286,7 @@ export const mockAvaliacoes: Avaliacao[] = [
     disciplina_name: 'Direitos Humanos',
     title: 'V2: Prova Objetiva (Peso 8) + Produção Textual Individual (Peso 2)',
     description: 'Etapa avaliativa V2 composta por: Prova objetiva Google Forms sem consulta (Peso 8,0) + Trabalho de pesquisa escrito individual (Peso 2,0). Média final ponderada >= 7,0.',
-    due_date: '2026-12-02T23:59:00',
+    due_date: '2026-11-25T23:59:00',
     google_forms_url: 'https://docs.google.com/forms/d/e/1FAIpQLSe_demo_dir_v2/viewform?embedded=true',
     is_legacy: true,
     max_score: 10.0,

@@ -312,7 +312,7 @@ export function parseJwtEmailAndUser(token: string): { email?: string; name?: st
 }
 
 const RBAC_LAST_FETCH_KEY = 'lms_rbac_last_fetch_ts';
-const RBAC_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutos de cache
+const RBAC_CACHE_TTL_MS = 60 * 1000; // 1 minuto de cache inteligente para refletir novos usuários rapidamente
 
 /**
  * Busca da nuvem (Supabase) as permissões personalizadas e solicitações pendentes
@@ -331,7 +331,7 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
   try {
     localStorage.setItem(RBAC_LAST_FETCH_KEY, String(Date.now()));
 
-    // 1. Busca lista de usuários autorizados
+    // 1. Busca lista de usuários autorizados na nuvem
     const { data: usersData } = await supabase
       .from('materiais')
       .select('file_url')
@@ -340,12 +340,24 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
 
     if (usersData && usersData.length > 0 && usersData[0].file_url) {
       try {
-        const parsed = JSON.parse(usersData[0].file_url);
-        localStorage.setItem('lms_authorized_users_db', JSON.stringify(parsed));
+        const parsed: Record<string, UserRoleMapping> = JSON.parse(usersData[0].file_url);
+        // Merge bidirecional: preserva usuários locais que possam ter sido adicionados offline/em outro navegador
+        const local = getAuthorizedUsersList();
+        const mergedUsers: Record<string, UserRoleMapping> = {
+          ...INITIAL_AUTHORIZED_USERS,
+          ...local,
+          ...parsed,
+        };
+        localStorage.setItem('lms_authorized_users_db', JSON.stringify(mergedUsers));
+
+        // Se o dispositivo local tinha usuários a mais que a nuvem, envia o merge consolidado para a nuvem
+        if (Object.keys(mergedUsers).length > Object.keys(parsed).length) {
+          saveAuthorizedUsersList(mergedUsers);
+        }
       } catch (e) {}
     }
 
-    // 2. Busca solicitações pendentes
+    // 2. Busca solicitações pendentes na nuvem
     const { data: reqData } = await supabase
       .from('materiais')
       .select('file_url')
@@ -354,9 +366,26 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
 
     if (reqData && reqData.length > 0 && reqData[0].file_url) {
       try {
-        const parsed = JSON.parse(reqData[0].file_url);
-        localStorage.setItem('lms_pending_access_requests', JSON.stringify(parsed));
+        const parsed: AccessRequest[] = JSON.parse(reqData[0].file_url);
+        const localReqs = getPendingRequests();
+        const reqMap = new Map<string, AccessRequest>();
+        if (Array.isArray(parsed)) {
+          parsed.forEach((r) => reqMap.set(r.email.toLowerCase().trim(), r));
+        }
+        localReqs.forEach((r) => {
+          const norm = r.email.toLowerCase().trim();
+          if (!reqMap.has(norm)) {
+            reqMap.set(norm, r);
+          }
+        });
+        const mergedReqs = Array.from(reqMap.values());
+        localStorage.setItem('lms_pending_access_requests', JSON.stringify(mergedReqs));
       } catch (e) {}
+    }
+
+    // Dispara evento global para que componentes (Navbar, AdminPanel) atualizem a UI imediatamente
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
     }
   } catch (e) {
     console.warn('[RBAC] Exceção ao ler RBAC da nuvem:', e);
@@ -403,6 +432,9 @@ export function saveAuthorizedUsersList(users: Record<string, UserRoleMapping>) 
           await supabase.from('materiais').update({ file_url: payloadStr }).eq('title', 'system_rbac_users');
         } else {
           await supabase.from('materiais').insert({ title: 'system_rbac_users', file_url: payloadStr, is_native_upload: false });
+        }
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
         }
       } catch (err) {
         console.warn('[RBAC] Exceção ao salvar autorizações na nuvem:', err);
@@ -483,35 +515,62 @@ export function getPendingRequests(): AccessRequest[] {
   return [];
 }
 
-export function savePendingRequests(requests: AccessRequest[]) {
+export async function savePendingRequests(requests: AccessRequest[]): Promise<void> {
   if (typeof window !== 'undefined') {
     localStorage.setItem('lms_pending_access_requests', JSON.stringify(requests));
+  }
 
-    (async () => {
-      try {
-        const payloadStr = JSON.stringify(requests);
-        const { data: existing } = await supabase
-          .from('materiais')
-          .select('id')
-          .eq('title', 'system_rbac_pending_requests');
+  try {
+    const payloadStr = JSON.stringify(requests);
+    const { data: existing } = await supabase
+      .from('materiais')
+      .select('id')
+      .eq('title', 'system_rbac_pending_requests');
 
-        if (existing && existing.length > 0) {
-          await supabase.from('materiais').update({ file_url: payloadStr }).eq('title', 'system_rbac_pending_requests');
-        } else {
-          await supabase.from('materiais').insert({ title: 'system_rbac_pending_requests', file_url: payloadStr, is_native_upload: false });
-        }
-      } catch (err) {
-        console.warn('[RBAC] Exceção ao salvar solicitações na nuvem:', err);
-      }
-    })();
+    if (existing && existing.length > 0) {
+      await supabase.from('materiais').update({ file_url: payloadStr }).eq('title', 'system_rbac_pending_requests');
+    } else {
+      await supabase.from('materiais').insert({ title: 'system_rbac_pending_requests', file_url: payloadStr, is_native_upload: false });
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
+    }
+  } catch (err) {
+    console.warn('[RBAC] Exceção ao salvar solicitações na nuvem:', err);
   }
 }
 
-export function requestAccess(email: string, name?: string, avatarUrl?: string): AccessRequest {
+export async function requestAccess(email: string, name?: string, avatarUrl?: string): Promise<AccessRequest> {
   const normalized = email.toLowerCase().trim();
-  const requests = getPendingRequests();
   
-  const existing = requests.find((r) => r.email === normalized);
+  // Busca as requisições mais recentes diretamente da nuvem
+  let cloudRequests: AccessRequest[] = [];
+  try {
+    const { data } = await supabase
+      .from('materiais')
+      .select('file_url')
+      .eq('title', 'system_rbac_pending_requests')
+      .limit(1);
+
+    if (data && data.length > 0 && data[0].file_url) {
+      cloudRequests = JSON.parse(data[0].file_url);
+    }
+  } catch (e) {}
+
+  const localRequests = getPendingRequests();
+  const reqMap = new Map<string, AccessRequest>();
+  if (Array.isArray(cloudRequests)) {
+    cloudRequests.forEach((r) => reqMap.set(r.email.toLowerCase().trim(), r));
+  }
+  localRequests.forEach((r) => {
+    const norm = r.email.toLowerCase().trim();
+    if (!reqMap.has(norm)) {
+      reqMap.set(norm, r);
+    }
+  });
+
+  const existing = reqMap.get(normalized);
   if (existing) {
     return existing;
   }
@@ -525,18 +584,42 @@ export function requestAccess(email: string, name?: string, avatarUrl?: string):
     status: 'pending',
   };
 
-  requests.push(newReq);
-  savePendingRequests(requests);
+  reqMap.set(normalized, newReq);
+  const updatedList = Array.from(reqMap.values());
+  await savePendingRequests(updatedList);
+
+  // Dupla garantia: dispara também via API Route do servidor Next.js
+  try {
+    fetch('/api/auth/request-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: normalized, name, avatarUrl }),
+    }).catch(() => {});
+  } catch (e) {}
+
   return newReq;
 }
 
-export function approveAccessRequest(requestId: string, role: UserRole = 'aluno') {
-  const requests = getPendingRequests();
+export async function approveAccessRequest(requestId: string, role: UserRole = 'aluno'): Promise<void> {
+  let requests = getPendingRequests();
+  try {
+    const { data } = await supabase
+      .from('materiais')
+      .select('file_url')
+      .eq('title', 'system_rbac_pending_requests')
+      .limit(1);
+
+    if (data && data.length > 0 && data[0].file_url) {
+      requests = JSON.parse(data[0].file_url);
+    }
+  } catch (e) {}
+
   const req = requests.find((r) => r.id === requestId);
 
   if (req) {
     req.status = 'approved';
-    savePendingRequests(requests.filter((r) => r.id !== requestId));
+    const remaining = requests.filter((r) => r.id !== requestId);
+    await savePendingRequests(remaining);
 
     // Adiciona à lista de autorizados
     addOrUpdateAuthorizedUser({
@@ -545,17 +628,27 @@ export function approveAccessRequest(requestId: string, role: UserRole = 'aluno'
       roles: role === 'aluno' ? ['aluno'] : [role, 'aluno'],
       defaultRole: role,
       avatarUrl: req.avatarUrl,
+      whatsapp: req.whatsapp,
     });
   }
 }
 
-export function rejectAccessRequest(requestId: string) {
-  const requests = getPendingRequests();
-  const req = requests.find((r) => r.id === requestId);
-  if (req) {
-    req.status = 'rejected';
-    savePendingRequests(requests.filter((r) => r.id !== requestId));
-  }
+export async function rejectAccessRequest(requestId: string): Promise<void> {
+  let requests = getPendingRequests();
+  try {
+    const { data } = await supabase
+      .from('materiais')
+      .select('file_url')
+      .eq('title', 'system_rbac_pending_requests')
+      .limit(1);
+
+    if (data && data.length > 0 && data[0].file_url) {
+      requests = JSON.parse(data[0].file_url);
+    }
+  } catch (e) {}
+
+  const remaining = requests.filter((r) => r.id !== requestId);
+  await savePendingRequests(remaining);
 }
 
 /**

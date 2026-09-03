@@ -9,6 +9,7 @@ import {
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
 import { fetchGravacoesFromCloud } from '@/services/gravacoesService';
+import { uploadLocalSessionsToCloud } from '@/services/telemetryService';
 import { getUnreadUpdatesCount } from '@/services/systemUpdatesService';
 import { UserProfileModal } from '@/components/UserProfileModal';
 import { SystemUpdatesModal } from '@/components/SystemUpdatesModal';
@@ -114,10 +115,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       await Promise.allSettled([
         fetchStudentData(normalizedEmail, true),
         fetchGravacoesFromCloud(true),
-        syncRbacFromCloud(),
+        syncRbacFromCloud(true),
+        uploadLocalSessionsToCloud(),
       ]);
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('lms_student_sync_updated', { detail: { email: normalizedEmail } }));
+        window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
       }
       setShowSyncSuccess(true);
       setTimeout(() => setShowSyncSuccess(false), 2500);

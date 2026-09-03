@@ -53,7 +53,7 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
     { id: 'e-his-av1', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV1: Prova Escrita — Unidade 1 (Congregacionalismo Mundial)', descricao: '0-8 pts prova + 1 pt frequência + 1 pt leitura obrigatória. Câmeras obrigatórias.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
     { id: 'e-hpc-av1', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho' },
     { id: 'e-aco-av1', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV1: Prova Objetiva via Google Forms', descricao: 'Questões estritamente dos slides. Sem trabalhos escritos. Correção automática.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
-    { id: 'e-dir-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'V1: Prova Forms (peso 8) + Pesquisa Escrita (peso 2)', descricao: 'Prova objetiva Google Forms sem consulta (peso 8). Trabalho de pesquisa escrito por e-mail (peso 2). Média >= 7,0.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
+    { id: 'e-dir-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Trabalho Dissertativo AV1: Desigualdade Social & Privilégios (peso 2) + Prova Forms (peso 8)', descricao: 'Redigir dissertação de até 1 lauda: "Desigualdade social e privilégios conforme vídeo da aula de 26/09/2026. Discutir a importância da igreja como agente de transformação social". Formatação: Times New Roman 12, esp. 1,5. Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de nota". Prazo improrrogável: 30/09/2026. Valor: 2,0 pts. Prova Forms: 8,0 pts.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
     { id: 'e-etc-av1', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'AV1: Slides do Seminário (elaboração coletiva em grupo)', descricao: 'Nota de elaboração dos slides (grupo de 3-4 alunos). Base: Dez Mandamentos — Catecismo Maior de Westminster e Norman Geisler.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega' },
     { id: 'e-nt-av1', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV Semestral: Bateria de 150 Questões (parte 1)', descricao: 'Questões baseadas em Carson/Moo/Morris e anotações dos slides. Câmeras obrigatórias.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova' },
     { id: 'e-etc-seminario', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'AV2: Seminários em Grupo — Dez Mandamentos (22/10 a 19/11)', descricao: 'Apresentação 30 min (10 min/orador com cronômetro). Nota individual de oratória e tribuna.', dataLimite: '22/10 – 19/11/2026', dataISO: '2026-10-22', tipo: 'apresentacao' },
@@ -91,8 +91,18 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
     {
       id: 'disc-4', num: '04', nome: 'Direitos Humanos', professor: 'Profº Cleiton Barbirato', professorEmail: 'cleitonpb@gmail.com',
       cor: 'text-indigo-800', corFundo: 'bg-indigo-50', corBorda: 'border-indigo-300',
-      regrasGerais: ['📊 V1 e V2: Prova objetiva Forms (peso 8) + Trabalho de pesquisa individual (peso 2)', '🚫 Prova objetiva: sem consulta', '📧 Trabalho de pesquisa: envio por e-mail', '🎯 Média >= 7,0 para aprovação direta; abaixo, prova extra (recuperação)'],
-      criteriosAvaliacao: ['📱 Prova objetiva múltipla escolha Google Forms — peso 8,0 — sem consulta', '✍️ Trabalho de pesquisa escrito individual — peso 2,0', '🏆 Média V1 e V2 >= 7,0 para aprovação'],
+      regrasGerais: [
+        '📊 V1 e V2: Prova objetiva Forms (peso 8) + Trabalho de pesquisa individual (peso 2)',
+        '✍️ AV1: Dissertação de no máx. 1 lauda sobre Desigualdade Social e Privilégios (Times New Roman 12, esp. 1,5)',
+        '📧 Envio obrigatório para cleitonpb@gmail.com com assunto "Trabalho para composição de nota" até 30/09/2026',
+        '🚫 Prova objetiva: sem consulta (peso 8,0)',
+        '🎯 Média >= 7,0 para aprovação direta; abaixo, prova extra (recuperação)'
+      ],
+      criteriosAvaliacao: [
+        '📱 Prova objetiva múltipla escolha Google Forms — peso 8,0 — sem consulta',
+        '✍️ Trabalho dissertativo individual de até 1 lauda (Desigualdade Social, Privilégios e a Igreja como agente transformador) — peso 2,0 — prazo improrrogável 30/09/2026',
+        '🏆 Média V1 e V2 >= 7,0 para aprovação direta'
+      ],
       livros: [{ titulo: 'E se Jesus não tivesse nascido', autor: 'D. James Kennedy & Jerry Newcombe', tipo: 'obrigatorio' }],
       infoExtra: 'Textos e slides gratuitos disponíveis na pasta virtual da disciplina no Google Drive.',
     },
@@ -235,6 +245,30 @@ export function getPlanoEstudosForTurma(turmaIdx: number): PlanoEstudosTurma {
     const parsed: PlanoEstudosTurma = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.entregaveis) || !Array.isArray(parsed.requisitos)) {
       return initial;
+    }
+    // Sincroniza entregáveis e requisitos oficiais atualizados
+    let changed = false;
+    const updatedEntregaveis = parsed.entregaveis.map((item) => {
+      const initMatch = initial.entregaveis.find((ie) => ie.id === item.id);
+      if (initMatch && !item.isCustomStudentItem && item.descricao !== initMatch.descricao) {
+        changed = true;
+        return { ...item, titulo: initMatch.titulo, descricao: initMatch.descricao, dataLimite: initMatch.dataLimite, dataISO: initMatch.dataISO, tipo: initMatch.tipo };
+      }
+      return item;
+    });
+    const updatedRequisitos = initial.requisitos.map((initReq) => {
+      const existing = parsed.requisitos.find((r) => r.id === initReq.id);
+      if (existing && JSON.stringify(existing.criteriosAvaliacao) !== JSON.stringify(initReq.criteriosAvaliacao)) {
+        changed = true;
+        return { ...existing, regrasGerais: initReq.regrasGerais, criteriosAvaliacao: initReq.criteriosAvaliacao };
+      }
+      return existing || initReq;
+    });
+
+    if (changed) {
+      const merged: PlanoEstudosTurma = { ...parsed, entregaveis: updatedEntregaveis, requisitos: updatedRequisitos };
+      localStorage.setItem(`${STORAGE_PREFIX}${turmaIdx}`, JSON.stringify(merged));
+      return merged;
     }
     return parsed;
   } catch (e) {
