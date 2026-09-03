@@ -581,24 +581,26 @@ export async function uploadLocalSessionsToCloud(): Promise<UserSessionLog[]> {
   try {
     const toUpsert = merged.slice(0, 100);
     for (const s of toUpsert) {
-      supabase.from('lms_user_sessions').upsert({
-        session_token: s.id,
-        user_email: s.user_email,
-        user_name: s.user_name,
-        user_role: s.user_role,
-        avatar_url: s.avatar_url,
-        device_type: s.device_type,
-        browser: s.browser,
-        os: s.os,
-        screen_resolution: s.screen_resolution,
-        started_at: s.started_at,
-        last_heartbeat_at: s.last_heartbeat_at,
-        duration_seconds: s.duration_seconds,
-        is_active: s.is_active,
-        page_views_count: s.page_views_count,
-        events_count: s.events_count,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'session_token' }).then(() => {}).catch(() => {});
+      Promise.resolve(
+        supabase.from('lms_user_sessions').upsert({
+          session_token: s.id,
+          user_email: s.user_email,
+          user_name: s.user_name,
+          user_role: s.user_role,
+          avatar_url: s.avatar_url,
+          device_type: s.device_type,
+          browser: s.browser,
+          os: s.os,
+          screen_resolution: s.screen_resolution,
+          started_at: s.started_at,
+          last_heartbeat_at: s.last_heartbeat_at,
+          duration_seconds: s.duration_seconds,
+          is_active: s.is_active,
+          page_views_count: s.page_views_count,
+          events_count: s.events_count,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'session_token' })
+      ).catch(() => {});
     }
   } catch (e) {}
 
