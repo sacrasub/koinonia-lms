@@ -883,7 +883,7 @@ Projeto de TCC do Seminarista Cristiano Sacramento`;
 
   const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const whatsappText = `Olá, ${name || 'Estudante'}! ✝️ Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\nEsta plataforma é fruto do *Projeto de TCC do Seminarista Cristiano Sacramento*.\n\n🔗 *Link Oficial de Acesso:*\nhttps://koinonialms.vercel.app\n\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
+  const whatsappText = `Olá, *${name || 'Estudante'}*! 🙏 Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\nEsta plataforma é fruto do *Projeto de TCC do Seminarista Cristiano do Sacramento Soares (UNIMB / Seminário Teológico Congregacional)*.\n\n👉 *Link Oficial de Acesso:*\nhttps://koinonialms.vercel.app\n\n📌 *Como acessar:*\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
 
   return { subject, body, mailtoUrl, gmailUrl, whatsappUrl };
