@@ -46,15 +46,15 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({
 
   const inviteSubject = `Convite de Acesso • Koinonia LMS (Seminário Teológico Congregacional)`;
 
-  const inviteMessage = `Olá, *${userName}*! 🙏
+  const inviteMessage = `Olá, *${userName}*! ✨
 
 Seu acesso ao *Koinonia LMS* (Plataforma Acadêmica do Seminário Teológico Congregacional) está liberado e autorizado no perfil de *${roleName}*!
 Esta plataforma é fruto do Projeto de TCC do seminarista Cristiano do Sacramento Soares (UNIMB).
 
-👉 *Link Oficial de Acesso:*
+► *Link Oficial de Acesso:*
 ${platformUrl}
 
-📌 *Como Entrar:*
+✔ *Como Entrar:*
 1. Acesse o link acima no seu celular ou computador.
 2. Clique no botão *"Continuar com Google"*.
 3. Selecione o seu e-mail cadastrado: *${user.email}*.
@@ -69,7 +69,7 @@ _Projeto TCC do Seminarista Cristiano do Sacramento Soares_`;
   const mailtoUrl = `mailto:${encodeURIComponent(user.email)}?subject=${encodeURIComponent(inviteSubject)}&body=${encodeURIComponent(inviteMessage)}`;
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(user.email)}&su=${encodeURIComponent(inviteSubject)}&body=${encodeURIComponent(inviteMessage)}`;
   const whatsappUrl = cleanPhone 
-    ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(inviteMessage)}`
+    ? `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(inviteMessage)}`
     : `https://api.whatsapp.com/send?text=${encodeURIComponent(inviteMessage)}`;
 
   const handleCopyMessage = () => {
