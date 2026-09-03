@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
-  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell
+  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
@@ -49,6 +49,27 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isUpdatesModalOpen, setIsUpdatesModalOpen] = useState(false);
   const [unreadUpdatesCount, setUnreadUpdatesCount] = useState<number>(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') || localStorage.getItem('lms_theme_mode') === 'dark';
+    }
+    return false;
+  });
+
+  const toggleDarkMode = () => {
+    if (typeof window === 'undefined') return;
+    const nextMode = !isDarkMode;
+    setIsDarkMode(nextMode);
+    if (nextMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('lms_theme_mode', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('lms_theme_mode', 'light');
+    }
+    window.dispatchEvent(new CustomEvent('lms_theme_changed', { detail: { isDark: nextMode } }));
+  };
 
   useEffect(() => {
     const updateUnread = () => {
@@ -242,6 +263,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
             <span className="hidden md:inline">
               {syncing ? 'Sincronizando...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar'}
+            </span>
+          </button>
+
+          {/* Botão Alternar Modo Escuro / Dark Mode */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 flex items-center gap-1.5"
+            title={isDarkMode ? 'Mudar para Modo Claro (Light)' : 'Mudar para Modo Escuro (Dark Mode)'}
+          >
+            {isDarkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+            <span className="hidden xl:inline text-[11px] font-bold">
+              {isDarkMode ? 'Claro' : 'Escuro'}
             </span>
           </button>
 

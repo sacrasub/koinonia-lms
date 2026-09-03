@@ -32,6 +32,171 @@ const NIVEL_AUTO_AVALIACAO = [
   { valor: 5, label: 'Excelente' },
 ];
 
+export interface PreconfiguredScenario {
+  id: string;
+  titulo: string;
+  descricao_contexto: string;
+  etiqueta_digital: string;
+  icone: string;
+  categoria: string;
+  papeis: Partial<RpgPapel>[];
+}
+
+export const PRECONFIGURED_SCENARIOS: PreconfiguredScenario[] = [
+  {
+    id: 'cenario_conflito_conselho',
+    titulo: 'Mediação de Conflito em Conselho Pastoral',
+    icone: '🏛️',
+    categoria: 'Eclesiologia & Administração',
+    descricao_contexto: 'O conselho da igreja local está dividido: 60% do fundo de reserva foi pleiteado pelo ministério jovem para evangelismo urbano e acolhimento comunitário, enquanto os presbíteros veteranos exigem a reforma emergencial do telhado e preservação do patrimônio. O pastor presidente precisa conduzir a reunião para alcançar a paz com justiça bíblica, sem alienar nenhuma das partes.',
+    etiqueta_digital: 'Fale em 1ª pessoa no papel designado. Fundamente argumentos na Bíblia (Atos 6; Filipenses 2). Mantenha empatia e espírito de conciliação ministerial.',
+    papeis: [
+      {
+        nome_papel: 'Pastor Presidente (Moderador)',
+        stakeholder_tipo: 'facilitador',
+        descricao_publica: 'Conduz a reunião do conselho buscando consenso bíblico e unidade espiritual.',
+        instrucoes_secretas: 'Você não pode tomar partido imediato. Sua missão é fazer ambos os lados perceberem a legitimidade da preocupação do outro e construir uma proposta mista.',
+        objetivos_conflito: 'Evitar rachas na membresia e aprovar um plano que atenda à emergência estrutural e ao impulso missionário jovem.',
+        dicas_de_postura: 'Ouça atentamente, valide sentimentos e use Tiago 3:17-18 para orientar a sabedoria da liderança.',
+      },
+      {
+        nome_papel: 'Presbítero Tradicional',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Membro veterano da liderança, zela pela integridade do templo físico e ordem orçamentária.',
+        instrucoes_secretas: 'Você teme processos trabalhistas ou acidentes se o telhado desabar. Acha que a juventude gasta sem critério, mas ama a igreja.',
+        objetivos_conflito: 'Garantir que ao menos 70% dos recursos sejam blindados para a manutenção estrutural do templo.',
+        dicas_de_postura: 'Seja firme e prudente, mas demonstre coração pastoral ao ouvir as aspirações dos jovens.',
+      },
+      {
+        nome_papel: 'Líder da Juventude / Missões',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Representante dos jovens e dos projetos evangelísticos da comunidade.',
+        instrucoes_secretas: 'Você sente que a igreja está envelhecendo e morrendo espiritualmente se não sair dos muros. Acha que tijolo não salva vidas.',
+        objetivos_conflito: 'Conquistar orçamento real para o projeto de acolhimento e evangelismo urbano de jovens da periferia.',
+        dicas_de_postura: 'Fale com fervor e paixão evangelística, mas com reverência aos mais velhos (1 Timóteo 5:1).',
+      },
+      {
+        nome_papel: 'Diácono da Ordem (Observador)',
+        stakeholder_tipo: 'observador',
+        descricao_publica: 'Observa a dinâmica comunicacional e o equilíbrio entre verdade e graça.',
+        instrucoes_secretas: 'Anote os momentos de interrupção, falas defensivas e os argumentos bíblicos mais eficazes de conciliação.',
+        objetivos_conflito: 'Entregar um relatório de avaliação formativa sobre a empatia pastoral demonstrada.',
+        dicas_de_postura: 'Mantenha silêncio analítico durante a simulação e tome notas detalhadas.',
+      }
+    ]
+  },
+  {
+    id: 'cenario_visita_hospitalar',
+    titulo: 'Visita Pastoral Hospitalar & Dilema Bioético',
+    icone: '🏥',
+    categoria: 'Teologia Pastoral & Bioética',
+    descricao_contexto: 'Um membro de longa data da congregação encontra-se internado na UTI em fase terminal. Os familiares estão em conflito agudo: um filho insiste em prolongar medidas invasivas crendo em milagre, enquanto a esposa deseja evitar sofrimento fútil e aceitar cuidados paliativos. A equipe médica convocou o pastor para aconselhar a família.',
+    etiqueta_digital: 'Voz calma e respeitosa. Cuidado pastoral não é debate acadêmico; priorize o consolo e a presença do Espírito Santo.',
+    papeis: [
+      {
+        nome_papel: 'Pastor Visitante',
+        stakeholder_tipo: 'facilitador',
+        descricao_publica: 'Ministro religioso prestando assistência pastoral em ambiente hospitalar.',
+        instrucoes_secretas: 'Seu objetivo é trazer a paz de Cristo (Filipenses 4:7), acolher a dor da família sem fazer diagnósticos médicos e orar pela soberania de Deus.',
+        objetivos_conflito: 'Ajudar a família a encontrar união na despedida, respeitando a vida e aliviando a culpa do luto iminente.',
+        dicas_de_postura: 'Menos discurso e mais acolhimento. Toque com respeito, leia o Salmo 23 e ministre consolo.',
+      },
+      {
+        nome_papel: 'Familiar Angustiado (Filho)',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Filho mais velho, lutando contra o desespero e a perda do pai.',
+        instrucoes_secretas: 'Você sente que aceitar cuidados paliativos é equivalente a desistir ou duvidar do poder de Deus. Você carrega culpa não resolvida.',
+        objetivos_conflito: 'Exigir que a equipe médica continue todas as tentativas e pedir ao pastor que profetize a cura imediata.',
+        dicas_de_postura: 'Demonstre emoção real, dor e medo do futuro sem o pai.',
+      },
+      {
+        nome_papel: 'Médico Assistente da UTI',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Profissional de saúde responsável pelo paciente crítico.',
+        instrucoes_secretas: 'Você já esgotou as possibilidades terapêuticas curativas e deseja evitar a distanásia (sofrimento prolongado e inútil). Você respeita a fé, mas precisa de consenso.',
+        objetivos_conflito: 'Obter a concordância familiar para o protocolo de conforto e alívio da dor.',
+        dicas_de_postura: 'Comunicação clínica serena, compassiva e transparente.',
+      },
+      {
+        nome_papel: 'Seminarista em Treinamento (Observador)',
+        stakeholder_tipo: 'observador',
+        descricao_publica: 'Estudante de teologia acompanhando a capelania hospitalar.',
+        instrucoes_secretas: 'Avalie como a teologia do sofrimento e a escuta ativa foram empregadas na prática.',
+        objetivos_conflito: 'Registrar síntese reflexiva pós-simulação no Caderno Cornell.',
+        dicas_de_postura: 'Observação atenta e empática.',
+      }
+    ]
+  },
+  {
+    id: 'cenario_pre_matrimonial',
+    titulo: 'Aconselhamento Pré-Matrimonial & Alinhamento Doutrinário',
+    icone: '💍',
+    categoria: 'Aconselhamento Familiar',
+    descricao_contexto: 'Uma liderança da equipe de louvor pretende casar-se com um rapaz de boa conduta moral, mas que não compartilha da fé cristã nem frequenta a comunidade. Eles procuram o pastor para agendar o casamento no templo e pedem orientação pastoral sobre como harmonizar suas vidas.',
+    etiqueta_digital: 'Diálogo construtivo e sincero. Trate os noivos com amor sem negociar os princípios bíblicos da aliança matrimonial.',
+    papeis: [
+      {
+        nome_papel: 'Pastor Conselheiro',
+        stakeholder_tipo: 'facilitador',
+        descricao_publica: 'Líder pastoral responsável pelo curso pré-matrimonial e celebração.',
+        instrucoes_secretas: 'Esclarecer os desafios práticos de um jugo desigual (criação de filhos, finanças, culto) sem parecer punitivo ou hostil.',
+        objetivos_conflito: 'Fazer o casal refletir honestamente sobre a base espiritual do lar antes de selar o compromisso.',
+        dicas_de_postura: 'Firme na Palavra, terno no trato pessoal e acolhedor.',
+      },
+      {
+        nome_papel: 'Noiva Membro Ativa',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Cristã convicta, apaixonada pelo noivo e cheia de expectativas.',
+        instrucoes_secretas: 'Você acredita sinceramente que o noivo se converterá após o casamento e teme que a igreja a julgue.',
+        objetivos_conflito: 'Conseguir a bênção da liderança e a realização da cerimônia no templo.',
+        dicas_de_postura: 'Demonstre seu amor pelo noivo e sua lealdade à igreja.',
+      },
+      {
+        nome_papel: 'Noivo Respeitoso (Não Cristão)',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Profissional ético, disposto a casar e agradar a noiva.',
+        instrucoes_secretas: 'Você respeita a fé dela, mas tem medo de que tentem "doutriná-lo" ou controlar o casamento e a criação dos filhos.',
+        objetivos_conflito: 'Manter sua integridade e liberdade pessoal sem magoar a noiva nem o pastor.',
+        dicas_de_postura: 'Seja sincero, cortês e franco em suas dúvidas.',
+      }
+    ]
+  },
+  {
+    id: 'cenario_gestao_crise_fake_news',
+    titulo: 'Gestão de Crise e Fake News na Comunidade',
+    icone: '📢',
+    categoria: 'Ética Ministerial & Comunicação',
+    descricao_contexto: 'Mensagens anônimas e distorções financeiras sobre a aplicação de dízimos e ofertas foram espalhadas em grupos de WhatsApp de membros, gerando desconfiança, insinuações e paralisação dos ministérios voluntários.',
+    etiqueta_digital: 'Verificação criteriosa de fatos. Aplicação de Mateus 18 e restauração do testemunho da igreja.',
+    papeis: [
+      {
+        nome_papel: 'Pastor Coordenador',
+        stakeholder_tipo: 'facilitador',
+        descricao_publica: 'Lidera a gestão da comunicação e a prestação de contas.',
+        instrucoes_secretas: 'Abrir todos os livros contábeis com transparência e identificar a raiz do descontentamento sem alimentar caça às bruxas.',
+        objetivos_conflito: 'Restaurar a confiança comunitária e estabelecer diretrizes de ética digital.',
+        dicas_de_postura: 'Transparência incondicional, mansidão e autoridade espiritual.',
+      },
+      {
+        nome_papel: 'Membro Questionador Alarmado',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Membro que compartilhou os boatos acreditando estar defendendo a igreja.',
+        instrucoes_secretas: 'Você se sentiu traído pela falta de relatórios claros no passado e acreditou nas mensagens anônimas.',
+        objetivos_conflito: 'Exigir auditoria e transparência de prestação de contas.',
+        dicas_de_postura: 'Exponha sua frustração sem desrespeitar a liderança.',
+      },
+      {
+        nome_papel: 'Tesoureiro da Congregação',
+        stakeholder_tipo: 'personagem',
+        descricao_publica: 'Voluntário responsável pela contabilidade há anos.',
+        instrucoes_secretas: 'Você se sente ferido na sua honra e honestidade pessoal por acusações injustas no WhatsApp.',
+        objetivos_conflito: 'Provar sua integridade técnica e cobrar retratação pública dos boatos.',
+        dicas_de_postura: 'Apresente recibos, extratos e relatórios auditados.',
+      }
+    ]
+  }
+];
+
 export default function RPGPastoralSimulador({ userEmail, userName, userRole, disciplinaId, disciplinaName }: Props) {
   const [sessoes, setSessoes] = useState<RpgSessao[]>([]);
   const [fichasAluno, setFichasAluno] = useState<RpgFichaAluno[]>([]);
@@ -57,6 +222,17 @@ export default function RPGPastoralSimulador({ userEmail, userName, userRole, di
   const [papeis, setPapeis] = useState<Partial<RpgPapel>[]>([
     { nome_papel: '', stakeholder_tipo: 'personagem', instrucoes_secretas: '', objetivos_conflito: '', atribuido_a_email: '' },
   ]);
+
+  function aplicarCenarioPronto(cenario: PreconfiguredScenario) {
+    setNovaForm({
+      titulo: cenario.titulo,
+      descricao_contexto: cenario.descricao_contexto,
+      sala_meet_id: '',
+      etiqueta_digital: cenario.etiqueta_digital,
+    });
+    setPapeis(cenario.papeis);
+    setMensagem(`✅ Cenário "${cenario.titulo}" carregado com sucesso!`);
+  }
 
   useEffect(() => {
     carregarSessoes();
@@ -338,7 +514,51 @@ export default function RPGPastoralSimulador({ userEmail, userName, userRole, di
 
       {/* === ABA: NOVA SESSÃO (professor/admin) === */}
       {activeTab === 'nova_sessao' && isPrivileged && (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto space-y-5">
+          {/* Seletor de Modelos de Cenários Prontos (1 Clique) */}
+          <div className="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm sm:text-base font-extrabold text-amber-400 flex items-center gap-2">
+                  <span>⚡ Modelos de Cenários Prontos</span>
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                    1 Clique
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Carregue um cenário pedagógico pré-configurado com narrativa, etiqueta digital e papéis completos.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              {PRECONFIGURED_SCENARIOS.map((cen) => (
+                <button
+                  key={cen.id}
+                  type="button"
+                  onClick={() => aplicarCenarioPronto(cen)}
+                  className="p-3 text-left bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-400/60 rounded-xl transition-all group cursor-pointer active:scale-98 flex flex-col justify-between gap-1.5"
+                >
+                  <div className="flex items-start gap-2">
+                    <span className="text-xl shrink-0 group-hover:scale-110 transition-transform">{cen.icone}</span>
+                    <div className="min-w-0">
+                      <span className="text-[9px] font-black uppercase tracking-wider text-amber-400/80 block">
+                        {cen.categoria}
+                      </span>
+                      <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
+                        {cen.titulo}
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-700/50">
+                    <span>{cen.papeis.length} papéis prontos</span>
+                    <span className="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">Usar este →</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
             <h2 className="text-xl font-bold text-amber-400">✨ Criar Nova Sessão de Simulação</h2>
 

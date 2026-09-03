@@ -60,6 +60,8 @@ import {
 } from '@/services/slidesService';
 import { saveCornellNote } from '@/services/studentSyncService';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
+import { MobilePdfReaderModal } from '@/components/MobilePdfReaderModal';
+import { trackEvent } from '@/services/telemetryService';
 
 interface DisciplinaDetailPageProps {
   disciplinaId: string;
@@ -272,6 +274,9 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   const [editMaterialTitle, setEditMaterialTitle] = useState('');
   const [editMaterialDriveUrl, setEditMaterialDriveUrl] = useState('');
   const [editMaterialType, setEditMaterialType] = useState('pdf');
+
+  // Modal do Leitor de PDF Embutido (Mobile & Desktop)
+  const [mobilePdfModal, setMobilePdfModal] = useState<{ isOpen: boolean; title: string; pdfUrl: string } | null>(null);
 
   // Carregar dados da disciplina
   const refreshData = () => {
@@ -2419,17 +2424,32 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                     <span className="text-[10px] text-gray-500 truncate max-w-[140px] sm:max-w-xs">
                       {mat.google_drive_url ? 'Google Drive / Nuvem' : 'Arquivo Interno'}
                     </span>
-                    {mat.google_drive_url && (
-                      <a
-                        href={mat.google_drive_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-2xs transition active:scale-95"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Baixar / Abrir</span>
-                      </a>
-                    )}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {mat.google_drive_url && (
+                        <button
+                          onClick={() => {
+                            trackEvent('drive', 'open_material_reader', mat.title, { disciplina: disciplina.name }, userEmail, currentRole);
+                            setMobilePdfModal({ isOpen: true, title: mat.title, pdfUrl: mat.google_drive_url! });
+                          }}
+                          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 shadow-2xs transition active:scale-95 cursor-pointer"
+                          title="Ler PDF diretamente na plataforma"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>Ler no App</span>
+                        </button>
+                      )}
+                      {mat.google_drive_url && (
+                        <a
+                          href={mat.google_drive_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
+                          title="Abrir no Google Drive Externo ou Baixar"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -4121,6 +4141,17 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
         aulaNum={activeVideoModal.aulaNum}
         videoUrl={activeVideoModal.videoUrl}
       />
+
+      {/* MODAL DO LEITOR DE PDF EMBUTIDO (MOBILE & DESKTOP) */}
+      {mobilePdfModal?.isOpen && (
+        <MobilePdfReaderModal
+          isOpen={mobilePdfModal.isOpen}
+          onClose={() => setMobilePdfModal(null)}
+          title={mobilePdfModal.title}
+          pdfUrl={mobilePdfModal.pdfUrl}
+          disciplinaName={disciplina.name}
+        />
+      )}
     </div>
   );
 };

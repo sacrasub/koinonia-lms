@@ -114,6 +114,39 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
         const startM = sh * 60 + sm;
         const endM = eh * 60 + em;
 
+        // Pré-carregamento proativo (Janela 18h00 - 22h30): Salva links no cache local e pré-aquece conexões
+        try {
+          if (typeof window !== 'undefined') {
+            const cachePayload = {
+              disciplina_name: liveNow.disciplina_name,
+              google_meet_url: liveNow.google_meet_url,
+              presence_form_url: liveNow.presence_form_url,
+              start_time: liveNow.start_time,
+              end_time: liveNow.end_time,
+              cached_at: new Date().toISOString(),
+            };
+            localStorage.setItem('lms_cached_live_links', JSON.stringify(cachePayload));
+
+            // Injeta preconnect para acelerar TTFB no smartphone dos alunos
+            if (typeof document !== 'undefined') {
+              if (!document.getElementById('lms-preconnect-meet')) {
+                const linkMeet = document.createElement('link');
+                linkMeet.id = 'lms-preconnect-meet';
+                linkMeet.rel = 'preconnect';
+                linkMeet.href = 'https://meet.google.com';
+                document.head.appendChild(linkMeet);
+              }
+              if (!document.getElementById('lms-preconnect-forms')) {
+                const linkForms = document.createElement('link');
+                linkForms.id = 'lms-preconnect-forms';
+                linkForms.rel = 'preconnect';
+                linkForms.href = 'https://docs.google.com';
+                document.head.appendChild(linkForms);
+              }
+            }
+          }
+        } catch (_) {}
+
         if (currentBrtMinutes < startM) {
           setIsPreLive(true);
           setMinutesToStart(Math.max(1, startM - currentBrtMinutes));
@@ -191,10 +224,17 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
               }`}></span>
             </span>
 
-            <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-xs ${
-              isPreLive ? 'bg-blue-600 animate-pulse' : 'bg-red-600 animate-pulse'
-            }`}>
-              {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
+            <span className="flex items-center gap-1.5 flex-wrap">
+              <span className={`px-2.5 py-0.5 rounded-full font-black text-[10px] tracking-wider uppercase inline-flex items-center gap-1 shadow-xs ${
+                isPreLive 
+                  ? 'bg-blue-600 text-white animate-pulse' 
+                  : 'bg-red-600 text-white animate-pulse'
+              }`}>
+                {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
+              </span>
+              <span className="px-2 py-0.5 rounded-full font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1 shadow-2xs">
+                ⚡ Links Prontos (Pré-carregados)
+              </span>
             </span>
 
             <h3 className="font-extrabold text-sm sm:text-base text-slate-900 truncate">

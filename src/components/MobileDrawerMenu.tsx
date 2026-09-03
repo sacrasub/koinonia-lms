@@ -7,7 +7,7 @@ import {
   BookOpen, CheckSquare, Compass, Drama, MessageSquare, 
   Heart, Archive, SlidersHorizontal, Library, HelpCircle, 
   UserCheck, ShieldCheck, Calendar, LayoutDashboard, Radio, 
-  LogOut, RefreshCw, Edit3, Camera, Target
+  LogOut, RefreshCw, Edit3, Camera, Target, Moon, Sun
 } from 'lucide-react';
 
 interface MobileDrawerMenuProps {
@@ -256,8 +256,31 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
           })}
         </div>
 
-        {/* Rodapé: Sincronização e Logout */}
-        <div className="p-3 bg-gray-50 border-t border-gray-200 space-y-2">
+        {/* Rodapé: Tema, Sincronização e Logout */}
+        <div className="p-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 space-y-2">
+          {/* Alternador Modo Escuro (Mobile) */}
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                if (isCurrentlyDark) {
+                  document.documentElement.classList.remove('dark');
+                  localStorage.setItem('lms_theme_mode', 'light');
+                } else {
+                  document.documentElement.classList.add('dark');
+                  localStorage.setItem('lms_theme_mode', 'dark');
+                }
+                window.dispatchEvent(new CustomEvent('lms_theme_changed', { detail: { isDark: !isCurrentlyDark } }));
+              }
+            }}
+            className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border border-gray-200 dark:border-slate-700 text-xs font-bold transition active:scale-98 shadow-2xs"
+          >
+            <Moon className="w-3.5 h-3.5 block dark:hidden" />
+            <Sun className="w-3.5 h-3.5 hidden dark:block text-amber-400" />
+            <span className="dark:hidden">Ativar Modo Escuro (Dark Mode)</span>
+            <span className="hidden dark:inline">Ativar Modo Claro (Light Mode)</span>
+          </button>
+
           {onManualSync && (
             <button
               onClick={() => {
@@ -265,7 +288,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
                 onClose();
               }}
               disabled={isSyncing}
-              className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white hover:bg-gray-100 text-blue-700 border border-blue-200 text-xs font-bold transition active:scale-98 shadow-2xs"
+              className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-slate-700 text-xs font-bold transition active:scale-98 shadow-2xs"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
               <span>{isSyncing ? 'Sincronizando Nuvem...' : 'Sincronizar Dados com Supabase'}</span>
@@ -278,7 +301,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
                 onClose();
                 onLogout();
               }}
-              className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition active:scale-98"
+              className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/50 text-xs font-bold transition active:scale-98"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sair da Conta (Logout)</span>

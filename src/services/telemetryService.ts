@@ -78,6 +78,34 @@ export function detectDeviceDetails(): {
 // ============================================================================
 // 2. REGISTRO E GESTÃO DE SESSÃO ATIVA (AUDITORIA DE ACESSOS)
 // ============================================================================
+// 2. REGISTRO E GESTÃO DE SESSÃO ATIVA (AUDITORIA DE ACESSOS - SESSION COALESCING)
+// ============================================================================
+
+let exitListenersAttached = false;
+
+function setupExitAndDurationListeners() {
+  if (typeof window === 'undefined' || exitListenersAttached) return;
+  exitListenersAttached = true;
+
+  const flushCurrentDuration = () => {
+    if (currentSession && currentSession.started_at) {
+      const now = new Date();
+      const startTime = new Date(currentSession.started_at).getTime();
+      const durationSeconds = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+      currentSession.last_heartbeat_at = now.toISOString();
+      currentSession.duration_seconds = durationSeconds;
+      saveSessionToLocalCache(currentSession);
+      sendHeartbeatToCloud(currentSession);
+    }
+  };
+
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      flushCurrentDuration();
+    }
+  });
+  window.addEventListener('beforeunload', flushCurrentDuration);
+}
 
 export function startUserSession(
   userEmail: string,
@@ -104,15 +132,74 @@ export function startUserSession(
     return emptyLog;
   }
 
+  const normalizedEmail = userEmail.toLowerCase().trim();
   const { deviceType, browser, os, screenResolution } = detectDeviceDetails();
-  const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const safeAvatar = (avatarUrl && avatarUrl.length > 500)
-    ? (userEmail.toLowerCase().includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
+    ? (normalizedEmail.includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
     : (avatarUrl || '');
 
+  // 1. Reutilização de Sessão em Memória (Evita duplicações na mesma execução)
+  if (currentSession && currentSession.user_email === normalizedEmail && currentSession.is_active) {
+    currentSession.page_views_count = (currentSession.page_views_count || 1) + 1;
+    currentSession.last_heartbeat_at = new Date().toISOString();
+    const startTime = new Date(currentSession.started_at).getTime();
+    currentSession.duration_seconds = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    if (safeAvatar) currentSession.avatar_url = safeAvatar;
+    saveSessionToLocalCache(currentSession);
+    return currentSession;
+  }
+
+  // 2. Session Coalescing: Verifica token na sessionStorage (mesma aba recarregada)
+  // ou sessão recente nos últimos 30 minutos no cache local
+  let existingSession: UserSessionLog | undefined;
+  const sessionTokenInTab = typeof window !== 'undefined' ? sessionStorage.getItem('lms_active_session_token') : null;
+  const localSessions = getLocalSessions();
+
+  if (sessionTokenInTab) {
+    existingSession = localSessions.find((s) => s.id === sessionTokenInTab && s.user_email === normalizedEmail);
+  }
+
+  if (!existingSession) {
+    const recentCandidate = localSessions.find((s) => s.user_email === normalizedEmail);
+    if (recentCandidate && recentCandidate.last_heartbeat_at) {
+      const diffMs = Date.now() - new Date(recentCandidate.last_heartbeat_at).getTime();
+      // Se a última atividade foi há menos de 30 minutos, continua a mesma sessão
+      if (diffMs < 30 * 60 * 1000) {
+        existingSession = recentCandidate;
+      }
+    }
+  }
+
+  if (existingSession) {
+    // REUTILIZA A SESSÃO ATIVA (Zero novas linhas de 0 segundos!)
+    existingSession.is_active = true;
+    existingSession.last_heartbeat_at = new Date().toISOString();
+    existingSession.page_views_count = (existingSession.page_views_count || 1) + 1;
+    const startTime = new Date(existingSession.started_at).getTime();
+    existingSession.duration_seconds = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    existingSession.device_type = deviceType;
+    existingSession.browser = browser;
+    existingSession.os = os;
+    if (safeAvatar) existingSession.avatar_url = safeAvatar;
+
+    currentSession = existingSession;
+    try {
+      sessionStorage.setItem('lms_active_session_token', existingSession.id);
+      localStorage.setItem(CURRENT_SESSION_ID_KEY, existingSession.id);
+    } catch (_) {}
+
+    saveSessionToLocalCache(currentSession);
+    sendHeartbeatToCloud(currentSession); // Apenas UPDATE dos campos de tempo, 0 bytes download!
+    startHeartbeatTimer();
+    setupExitAndDurationListeners();
+    return currentSession;
+  }
+
+  // 3. Caso NÃO haja sessão recente ativa (< 30 min), cria uma nova sessão
+  const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   currentSession = {
     id: sessionId,
-    user_email: userEmail.toLowerCase().trim(),
+    user_email: normalizedEmail,
     user_name: userName || userEmail,
     user_role: userRole,
     avatar_url: safeAvatar,
@@ -129,12 +216,26 @@ export function startUserSession(
   };
 
   try {
+    sessionStorage.setItem('lms_active_session_token', sessionId);
     localStorage.setItem(CURRENT_SESSION_ID_KEY, sessionId);
   } catch (_) {}
+
   saveSessionToLocalCache(currentSession);
   syncSessionToCloud(currentSession);
+  startHeartbeatTimer();
+  setupExitAndDurationListeners();
 
-  // Inicia o Heartbeat ultra-leve (a cada 150 segundos com 0 bytes de Egress)
+  // Grava evento inicial de login apenas UMA vez por sessão real
+  trackEvent('session', 'user_login', `${userName} entrou na plataforma`, {
+    deviceType,
+    browser,
+    os,
+  }, normalizedEmail, userRole);
+
+  return currentSession;
+}
+
+function startHeartbeatTimer() {
   if (heartbeatInterval) clearInterval(heartbeatInterval);
   heartbeatInterval = setInterval(() => {
     if (currentSession && typeof document !== 'undefined' && document.visibilityState === 'visible') {
@@ -150,15 +251,6 @@ export function startUserSession(
       sendHeartbeatToCloud(currentSession);
     }
   }, 150000); // 150 segundos (2.5 minutos)
-
-  // Grava evento inicial de login
-  trackEvent('session', 'user_login', `${userName} entrou na plataforma`, {
-    deviceType,
-    browser,
-    os,
-  }, userEmail, userRole);
-
-  return currentSession;
 }
 
 export function endCurrentSession() {
@@ -173,6 +265,10 @@ export function endCurrentSession() {
   saveSessionToLocalCache(currentSession);
   sendHeartbeatToCloud(currentSession);
 
+  try {
+    sessionStorage.removeItem('lms_active_session_token');
+  } catch (_) {}
+
   if (heartbeatInterval) {
     clearInterval(heartbeatInterval);
     heartbeatInterval = null;
@@ -180,8 +276,22 @@ export function endCurrentSession() {
 }
 
 // ============================================================================
-// 3. RASTREAMENTO DE EVENTOS DE PRODUTO & TELEMETRIA
+// 3. RASTREAMENTO DE EVENTOS DE PRODUTO & TELEMETRIA (FILTRADO PARA O TCC)
 // ============================================================================
+
+// Categorias vitais para a pesquisa do TCC e evolução da plataforma (rejeita ruídos e poluição de banco)
+const PLATFORM_ANALYTICS_CATEGORIES = new Set<string>([
+  'cornell_notes',
+  'rpg',
+  'drive',
+  'meet',
+  'biblioteca',
+  'homiletica',
+  'metaverso',
+  'tcc_survey',
+  'checklist',
+  'session',
+]);
 
 export function trackEvent(
   category: AnalyticsCategory,
@@ -192,6 +302,20 @@ export function trackEvent(
   userRole?: UserRole
 ) {
   if (typeof window === 'undefined') return;
+
+  // Ruídos de navegação interna (ex: change_tab em cada clique) apenas incrementam visualizações de página
+  if (category === 'navigation' || action === 'change_tab') {
+    if (currentSession) {
+      currentSession.page_views_count = (currentSession.page_views_count || 0) + 1;
+      saveSessionToLocalCache(currentSession);
+    }
+    return;
+  }
+
+  // Se não for categoria de interesse do TCC ou evolução da plataforma, descarta
+  if (!PLATFORM_ANALYTICS_CATEGORIES.has(category)) {
+    return;
+  }
 
   const email = userEmail || currentSession?.user_email || localStorage.getItem('lms_active_user_email') || 'anonimo@koinonialms.com';
   const role = userRole || currentSession?.user_role || (localStorage.getItem('lms_active_user_role') as UserRole) || 'aluno';
@@ -212,9 +336,6 @@ export function trackEvent(
 
   if (currentSession) {
     currentSession.events_count = (currentSession.events_count || 0) + 1;
-    if (category === 'navigation') {
-      currentSession.page_views_count = (currentSession.page_views_count || 0) + 1;
-    }
   }
 
   pendingEventsQueue.push(event);
@@ -345,150 +466,8 @@ export function mergeSessionLists(
 }
 
 // ============================================================================
-// 5.1 PERSISTÊNCIA DUAL-LAYER EM NUVEM (RESILIÊNCIA CONTRA TABELA AUSENTE)
+// 5.1 PERSISTÊNCIA DUAL-LAYER EM NUVEM (ZERO-WASTE EGRESS)
 // ============================================================================
-
-const TELEMETRY_SESSIONS_CLOUD_KEY = 'system_telemetry_sessions_v1';
-const TELEMETRY_EVENTS_CLOUD_KEY = 'system_telemetry_events_v1';
-
-/** Lê as sessões consolidadas da nuvem via fallback resiliente em materiais */
-async function loadSessionsFromCloudFallback(): Promise<UserSessionLog[]> {
-  try {
-    const { data, error } = await supabase
-      .from('materiais')
-      .select('file_url')
-      .eq('title', TELEMETRY_SESSIONS_CLOUD_KEY)
-      .limit(1);
-
-    if (!error && data && data.length > 0 && data[0].file_url) {
-      const parsed = JSON.parse(data[0].file_url);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (e) {
-    console.warn('[TelemetryFallback] Erro ao ler sessões da nuvem:', e);
-  }
-  return [];
-}
-
-/** Salva as sessões consolidadas na nuvem via fallback resiliente em materiais (máx 1000 registros para Zero-Waste Egress) */
-async function saveSessionsToCloudFallback(sessions: UserSessionLog[]) {
-  try {
-    const sanitized = sessions.slice(0, 1000).map((s) => ({
-      ...s,
-      avatar_url: s.avatar_url && s.avatar_url.length > 500
-        ? (s.user_email?.includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
-        : (s.avatar_url || ''),
-    }));
-    const payloadStr = JSON.stringify(sanitized);
-    const { data: existing } = await supabase
-      .from('materiais')
-      .select('id')
-      .eq('title', TELEMETRY_SESSIONS_CLOUD_KEY);
-
-    if (existing && existing.length > 0) {
-      await supabase
-        .from('materiais')
-        .update({ file_url: payloadStr })
-        .eq('title', TELEMETRY_SESSIONS_CLOUD_KEY);
-    } else {
-      await supabase
-        .from('materiais')
-        .insert({ title: TELEMETRY_SESSIONS_CLOUD_KEY, file_url: payloadStr, is_native_upload: false });
-    }
-  } catch (e) {
-    console.warn('[TelemetryFallback] Erro ao salvar sessões na nuvem:', e);
-  }
-}
-
-/** Lê eventos da nuvem via fallback resiliente */
-async function loadEventsFromCloudFallback(): Promise<AnalyticsEvent[]> {
-  try {
-    const { data, error } = await supabase
-      .from('materiais')
-      .select('file_url')
-      .eq('title', TELEMETRY_EVENTS_CLOUD_KEY)
-      .limit(1);
-
-    if (!error && data && data.length > 0 && data[0].file_url) {
-      const parsed = JSON.parse(data[0].file_url);
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    }
-  } catch (e) {
-    console.warn('[TelemetryFallback] Erro ao ler eventos da nuvem:', e);
-  }
-  return [];
-}
-
-/** Salva eventos acumulados na nuvem via fallback resiliente (máx 1000 registros) */
-async function saveEventsToCloudFallback(events: AnalyticsEvent[]) {
-  try {
-    const trimmed = events.slice(0, 1000);
-    const payloadStr = JSON.stringify(trimmed);
-    const { data: existing } = await supabase
-      .from('materiais')
-      .select('id')
-      .eq('title', TELEMETRY_EVENTS_CLOUD_KEY);
-
-    if (existing && existing.length > 0) {
-      await supabase
-        .from('materiais')
-        .update({ file_url: payloadStr })
-        .eq('title', TELEMETRY_EVENTS_CLOUD_KEY);
-    } else {
-      await supabase
-        .from('materiais')
-        .insert({ title: TELEMETRY_EVENTS_CLOUD_KEY, file_url: payloadStr, is_native_upload: false });
-    }
-  } catch (e) {
-    console.warn('[TelemetryFallback] Erro ao salvar eventos na nuvem:', e);
-  }
-}
-
-let lastFallbackSync = 0;
-
-/** Inicia ou atualiza a sessão na nuvem com dual-layer persistence */
-async function syncSessionToCloud(session: UserSessionLog) {
-  let nativeSucceeded = false;
-  try {
-    const { error } = await supabase.from('lms_user_sessions').upsert({
-      session_token: session.id,
-      user_email: session.user_email,
-      user_name: session.user_name,
-      user_role: session.user_role,
-      avatar_url: session.avatar_url,
-      device_type: session.device_type,
-      browser: session.browser,
-      os: session.os,
-      screen_resolution: session.screen_resolution,
-      started_at: session.started_at,
-      last_heartbeat_at: session.last_heartbeat_at,
-      duration_seconds: session.duration_seconds,
-      is_active: session.is_active,
-      page_views_count: session.page_views_count,
-      events_count: session.events_count,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'session_token' });
-    if (!error) nativeSucceeded = true;
-  } catch (err) {
-    // Falha protegida
-  }
-
-  // Se a tabela nativa não responder ou periodicamente (a cada 2 min), sincroniza no fallback de nuvem
-  const now = Date.now();
-  if (!nativeSucceeded || now - lastFallbackSync > 120000) {
-    lastFallbackSync = now;
-    (async () => {
-      const remote = await loadSessionsFromCloudFallback();
-      const local = getLocalSessions();
-      const merged = mergeSessionLists(remote, [session, ...local]);
-      await saveSessionsToCloudFallback(merged);
-    })();
-  }
-}
 
 /** Heartbeat pontual de 0 bytes de Egress (apenas UPDATE dos campos de tempo) */
 async function sendHeartbeatToCloud(session: UserSessionLog) {
@@ -509,15 +488,40 @@ async function sendHeartbeatToCloud(session: UserSessionLog) {
   }
 }
 
-/** Envia eventos acumulados em lote direto para a tabela nativa ou fallback */
+/** Inicia ou atualiza a sessão na nuvem com projeção estrita */
+async function syncSessionToCloud(session: UserSessionLog) {
+  try {
+    await supabase.from('lms_user_sessions').upsert({
+      session_token: session.id,
+      user_email: session.user_email,
+      user_name: session.user_name,
+      user_role: session.user_role,
+      avatar_url: session.avatar_url,
+      device_type: session.device_type,
+      browser: session.browser,
+      os: session.os,
+      screen_resolution: session.screen_resolution,
+      started_at: session.started_at,
+      last_heartbeat_at: session.last_heartbeat_at,
+      duration_seconds: session.duration_seconds,
+      is_active: session.is_active,
+      page_views_count: session.page_views_count,
+      events_count: session.events_count,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'session_token' });
+  } catch (err) {
+    // Falha protegida
+  }
+}
+
+/** Envia eventos acumulados em lote direto para a tabela nativa */
 async function flushEventsToCloud() {
   if (pendingEventsQueue.length === 0) return;
   const eventsToSend = [...pendingEventsQueue];
   pendingEventsQueue = [];
 
-  let nativeSucceeded = false;
   try {
-    const { error } = await supabase.from('lms_analytics_events').insert(
+    await supabase.from('lms_analytics_events').insert(
       eventsToSend.map((evt) => ({
         session_id: evt.session_id,
         user_email: evt.user_email,
@@ -530,83 +534,40 @@ async function flushEventsToCloud() {
         timestamp: evt.timestamp,
       }))
     );
-    if (!error) nativeSucceeded = true;
   } catch (err) {
-    // Mantém no cache local sem travar o cliente
-  }
-
-  if (!nativeSucceeded) {
-    (async () => {
-      const remoteEvts = await loadEventsFromCloudFallback();
-      const map = new Map<string, AnalyticsEvent>();
-      remoteEvts.forEach((e) => map.set(e.id, e));
-      eventsToSend.forEach((e) => map.set(e.id, e));
-      const merged = Array.from(map.values()).sort(
-        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
-      await saveEventsToCloudFallback(merged);
-    })();
+    // Mantém no cache local
   }
 }
 
 /**
- * Faz o upload e a mescla definitiva do histórico de sessões locais de qualquer aparelho
- * para a nuvem. Chamado ao inicializar o admin e ao clicar no botão 'Sincronizar'.
+ * Mescla e salva o histórico local acumulado.
  */
 export async function uploadLocalSessionsToCloud(): Promise<UserSessionLog[]> {
   const local = getLocalSessions();
-  const remoteFallback = await loadSessionsFromCloudFallback();
-  const cleanLocal = local.map((s) => ({
-    ...s,
-    avatar_url: s.avatar_url && s.avatar_url.length > 500
-      ? (s.user_email?.includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
-      : (s.avatar_url || ''),
-  }));
-  const merged = mergeSessionLists(remoteFallback, cleanLocal);
-
-  if (merged.length > 0) {
-    await saveSessionsToCloudFallback(merged);
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
-        localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
-      } catch (e) {
-        // Fallback se localStorage estiver cheio: reduz para as 150 mais recentes
-        try {
-          localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged.slice(0, 150)));
-        } catch (_) {}
-      }
-    }
+  const toUpsert = local.slice(0, 50);
+  for (const s of toUpsert) {
+    Promise.resolve(
+      supabase.from('lms_user_sessions').upsert({
+        session_token: s.id,
+        user_email: s.user_email,
+        user_name: s.user_name,
+        user_role: s.user_role,
+        avatar_url: s.avatar_url,
+        device_type: s.device_type,
+        browser: s.browser,
+        os: s.os,
+        screen_resolution: s.screen_resolution,
+        started_at: s.started_at,
+        last_heartbeat_at: s.last_heartbeat_at,
+        duration_seconds: s.duration_seconds,
+        is_active: s.is_active,
+        page_views_count: s.page_views_count,
+        events_count: s.events_count,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'session_token' })
+    ).catch(() => {});
   }
-
-  // Tenta também gravar cada sessão na tabela nativa caso ela já exista
-  try {
-    const toUpsert = merged.slice(0, 100);
-    for (const s of toUpsert) {
-      Promise.resolve(
-        supabase.from('lms_user_sessions').upsert({
-          session_token: s.id,
-          user_email: s.user_email,
-          user_name: s.user_name,
-          user_role: s.user_role,
-          avatar_url: s.avatar_url,
-          device_type: s.device_type,
-          browser: s.browser,
-          os: s.os,
-          screen_resolution: s.screen_resolution,
-          started_at: s.started_at,
-          last_heartbeat_at: s.last_heartbeat_at,
-          duration_seconds: s.duration_seconds,
-          is_active: s.is_active,
-          page_views_count: s.page_views_count,
-          events_count: s.events_count,
-          updated_at: new Date().toISOString(),
-        }, { onConflict: 'session_token' })
-      ).catch(() => {});
-    }
-  } catch (e) {}
-
-  return merged;
+  return local;
 }
 
 // ============================================================================
@@ -622,7 +583,7 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
   const lastFetch = typeof window !== 'undefined' ? Number(localStorage.getItem(SESSIONS_LAST_FETCH_KEY) || 0) : 0;
   const isFresh = Date.now() - lastFetch < TELEMETRY_CACHE_TTL_MS;
 
-  // 1. Se o cache for recente e não for refresh manual, entrega instantâneo (0ms, 0 bytes)
+  // 1. Local-first: Se o cache for recente e não for refresh manual, entrega instantâneo (0ms, 0 bytes)
   if (!forceRefresh && isFresh && local.length > 0) {
     return local;
   }
@@ -630,14 +591,12 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
   let remoteSessions: UserSessionLog[] = [];
 
   try {
-    // 2. Consulta primária com projeção estrita na tabela nativa lms_user_sessions
-    const query = supabase
+    // 2. Consulta primária com projeção estrita na tabela nativa lms_user_sessions (máx 150)
+    const { data, error } = await supabase
       .from('lms_user_sessions')
       .select('session_token, user_email, user_name, user_role, avatar_url, device_type, browser, os, screen_resolution, started_at, last_heartbeat_at, duration_seconds, is_active, page_views_count, events_count')
       .order('started_at', { ascending: false })
-      .limit(2000);
-
-    const { data, error } = await query;
+      .limit(150);
 
     if (!error && data && data.length > 0) {
       remoteSessions = data.map((d) => ({
@@ -662,21 +621,13 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
     console.warn('[Telemetry] Erro ao buscar sessões na tabela nativa:', err);
   }
 
-  // 3. Fallback Resiliente: se a tabela nativa não existir ou vier vazia, consulta a nuvem consolidada
-  if (remoteSessions.length === 0) {
-    const fallbackSessions = await loadSessionsFromCloudFallback();
-    if (fallbackSessions.length > 0) {
-      remoteSessions = fallbackSessions;
-    }
-  }
-
-  // 4. Mescla o histórico recebido da nuvem com o cache local acumulado
+  // 3. Mescla o histórico recebido da nuvem com o cache local acumulado
   const merged = mergeSessionLists(remoteSessions, local);
 
   if (merged.length > 0) {
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged.slice(0, 400)));
         localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
       } catch (_) {
         try {
@@ -684,14 +635,10 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
         } catch (_) {}
       }
     }
-    // Se a nuvem estava com menos sessões que o local, envia o merge consolidado para a nuvem
-    if (merged.length > remoteSessions.length) {
-      saveSessionsToCloudFallback(merged).catch(() => {});
-    }
     return merged;
   }
 
-  return [];
+  return local;
 }
 
 export async function fetchAllEvents(forceRefresh: boolean = false): Promise<AnalyticsEvent[]> {
@@ -706,13 +653,11 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
   let remoteEvents: AnalyticsEvent[] = [];
 
   try {
-    const query = supabase
+    const { data, error } = await supabase
       .from('lms_analytics_events')
       .select('id, session_id, user_email, user_name, user_role, category, action, label, metadata, timestamp')
       .order('timestamp', { ascending: false })
-      .limit(2000);
-
-    const { data, error } = await query;
+      .limit(150);
 
     if (!error && data && data.length > 0) {
       remoteEvents = data.map((e) => ({
@@ -732,40 +677,23 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
     console.warn('[Telemetry] Erro ao buscar eventos na tabela nativa:', err);
   }
 
-  // Fallback Resiliente se a tabela nativa não existir ou vier vazia
-  if (remoteEvents.length === 0) {
-    const fallbackEvents = await loadEventsFromCloudFallback();
-    if (fallbackEvents.length > 0) {
-      remoteEvents = fallbackEvents;
-    }
-  }
-
   // Mescla por ID preservando eventos únicos
   const map = new Map<string, AnalyticsEvent>();
   remoteEvents.forEach((ev) => map.set(ev.id, ev));
   local.forEach((ev) => map.set(ev.id, ev));
 
   const merged = Array.from(map.values())
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .slice(0, 600);
 
-  if (merged.length > 0) {
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged));
-        localStorage.setItem(EVENTS_LAST_FETCH_KEY, String(Date.now()));
-      } catch (_) {
-        try {
-          localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged.slice(0, 100)));
-        } catch (_) {}
-      }
-    }
-    if (merged.length > remoteEvents.length) {
-      saveEventsToCloudFallback(merged).catch(() => {});
-    }
-    return merged;
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged));
+      localStorage.setItem(EVENTS_LAST_FETCH_KEY, String(Date.now()));
+    } catch (_) {}
   }
 
-  return [];
+  return merged;
 }
 
 // ============================================================================

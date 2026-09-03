@@ -285,10 +285,6 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('lms_active_tab', newTab);
     }
-    // Rastreia navegação entre abas
-    if (userEmail) {
-      trackEvent('navigation', 'change_tab', newTab, {}, userEmail, currentRole);
-    }
   };
 
   const handleRoleChange = (newRole: UserRole) => {

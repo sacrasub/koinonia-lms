@@ -33,6 +33,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
+                var theme = localStorage.getItem('lms_theme_mode');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
                 if (typeof window !== 'undefined' && window.localStorage) {
                   var toPurge = [];
                   for (var i = 0; i < localStorage.length; i++) {
@@ -51,7 +57,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased min-h-full bg-[#F5F5F7] text-gray-900 overflow-x-hidden selection:bg-blue-500 selection:text-white">
+      <body className="antialiased min-h-full bg-[#F5F5F7] dark:bg-[#090d16] text-gray-900 dark:text-slate-100 overflow-x-hidden selection:bg-blue-500 selection:text-white transition-colors duration-200">
         {children}
       </body>
     </html>
