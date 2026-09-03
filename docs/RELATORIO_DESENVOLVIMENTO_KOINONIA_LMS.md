@@ -143,6 +143,12 @@ Ambiente imersivo com modelos tridimensionais do Tabernáculo no Deserto, Templo
 6. **Exibição dos Números de WhatsApp no Admin**:
    - Implementado merge bidirecional seguro em `getAuthorizedUsersList()`, preservando os telefones formatados dos 11 novos contatos adicionados à lista de usuários autorizados.
 
+7. **Módulo Nativo de Pesquisa de Campo & Diagnóstico do TCC (Cristiano Sacramento Soares)**:
+   - **Banco de Dados & RLS**: Migration `20260905000000_tcc_pesquisa_respostas.sql` criando a tabela `tcc_pesquisa_respostas` com índices otimizados e políticas de segurança RLS (inserção liberada para público com `autorizou_tcc = true` e leitura restrita para administradores autenticados).
+   - **Página Pública de Coleta (`/pesquisa-tcc`)**: Interface moderna e responsiva preparada para compartilhamento no WhatsApp e redes sociais, contendo Termo de Consentimento Livre e Esclarecido (TCLE - Res. CNS 510/2016), caracterização do participante (7 perfis entre alunos UNIB, professores, monitores, pastores ordenados, alunos externos e líderes), 5 dimensões diagnósticas (Distância Transacional de Moore, Preservação da Koinonia, Transição do Internato Presencial para o Remoto Síncrono, Metodologias Ativas e Perguntas Abertas) e rascunho automático local (`lms_tcc_pesquisa_draft_v1`).
+   - **Blindagem de Egress (Zero-Waste)**: Rota `/api/tcc/pesquisa-campo` com retorno minimal HTTP 201 `{ success: true, id }`, e consultas com projeção estrita de colunas.
+   - **Painel Analítico do Pesquisador (`TccSacramentoPage.tsx`)**: Monitoramento em tempo real de respondentes por público, filtros, geração de link de compartilhamento e exportação de planilha CSV (Excel/SPSS) com 1 clique para a redação da monografia.
+
 ---
 
 ## 7. GUIA DE USO OPERACIONAL POR PERFIL

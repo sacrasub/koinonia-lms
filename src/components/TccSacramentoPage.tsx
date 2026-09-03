@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -8,9 +8,16 @@ import {
   Flame, FileText, ArrowRight, CheckSquare, Clock, 
   ExternalLink, UserCheck, BarChart3, Save, Compass,
   Plus, Calendar, Trash2, Edit3, X, Download, Tag,
-  Search, Eye, Layers, Check, Share2, Bookmark
+  Search, Eye, Layers, Check, Share2, Bookmark,
+  Send, RefreshCw, Users, Filter, CheckCircle2, ShieldCheck
 } from 'lucide-react';
 import { getSurveyResponses } from '@/services/tccResearchService';
+import { 
+  getPesquisaCampoAdminData, 
+  TipoPublico, 
+  TIPO_PUBLICO_LABELS, 
+  PERGUNTAS_PESQUISA_TCC 
+} from '@/services/pesquisaCampoService';
 
 export interface TccCornellEntry {
   id: string;
@@ -176,10 +183,86 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
   const [savedNotesStatus, setSavedNotesStatus] = useState<boolean>(false);
   const [surveyCount, setSurveyCount] = useState<number>(0);
 
+  // Pesquisa de Campo & Diagnóstico do TCC (Cristiano Sacramento)
+  const [pesquisaCampoTotal, setPesquisaCampoTotal] = useState<number>(0);
+  const [pesquisaCampoByPublico, setPesquisaCampoByPublico] = useState<Record<string, number>>({});
+  const [pesquisaCampoRecords, setPesquisaCampoRecords] = useState<any[]>([]);
+  const [pesquisaCampoLoading, setPesquisaCampoLoading] = useState<boolean>(false);
+  const [selectedResponseDetail, setSelectedResponseDetail] = useState<any | null>(null);
+  const [copiedPesquisaLink, setCopiedPesquisaLink] = useState<boolean>(false);
+  const [selectedPublicoFilter, setSelectedPublicoFilter] = useState<string>('ALL');
+
+  const loadPesquisaCampoData = async () => {
+    setPesquisaCampoLoading(true);
+    try {
+      const data = await getPesquisaCampoAdminData();
+      setPesquisaCampoTotal(data.total);
+      setPesquisaCampoByPublico(data.byPublico);
+      setPesquisaCampoRecords(data.records);
+    } catch (e) {
+      console.warn('Erro ao carregar dados da pesquisa de campo:', e);
+    } finally {
+      setPesquisaCampoLoading(false);
+    }
+  };
+
   useEffect(() => {
     const responses = getSurveyResponses();
     setSurveyCount(responses.length);
+    loadPesquisaCampoData();
   }, []);
+
+  const handleCopyPesquisaLink = () => {
+    if (typeof window === 'undefined') return;
+    const url = `${window.location.origin}/pesquisa-tcc?origem=whatsapp_externo`;
+    navigator.clipboard.writeText(url);
+    setCopiedPesquisaLink(true);
+    showToast('Link da Pesquisa copiado! Pronto para enviar no WhatsApp.');
+    setTimeout(() => setCopiedPesquisaLink(false), 3000);
+  };
+
+  const handleExportPesquisaCsv = () => {
+    if (pesquisaCampoRecords.length === 0) {
+      showToast('Nenhuma resposta para exportar.');
+      return;
+    }
+
+    const headers = ['ID', 'Data/Hora', 'Tipo de Público', 'Nome', 'Igreja', 'Cidade/UF', 'Origem', 'Autorizou TCLE', 'Média Likert'];
+    const questionCols = PERGUNTAS_PESQUISA_TCC.map((p) => p.id);
+    const questionHeaders = PERGUNTAS_PESQUISA_TCC.map((p) => `"[${p.id}] ${p.enunciado.replace(/"/g, '""')}"`);
+    const allHeaders = [...headers, ...questionHeaders].join(';');
+
+    const rows = pesquisaCampoRecords.map((r) => {
+      const pubLabel = TIPO_PUBLICO_LABELS[r.tipo_publico as TipoPublico]?.label || r.tipo_publico;
+      const base = [
+        r.id,
+        new Date(r.created_at).toLocaleString('pt-BR'),
+        `"${pubLabel}"`,
+        `"${(r.nome || '').replace(/"/g, '""')}"`,
+        `"${(r.igreja || '').replace(/"/g, '""')}"`,
+        `"${(r.cidade_uf || '').replace(/"/g, '""')}"`,
+        r.origem,
+        r.autorizou_tcc ? 'SIM' : 'NÃO',
+        r.likertAverage,
+      ];
+      const answers = questionCols.map((qId) => {
+        const val = r.respostas?.[qId];
+        if (val === undefined || val === null) return '""';
+        return `"${String(val).replace(/"/g, '""')}"`;
+      });
+      return [...base, ...answers].join(';');
+    });
+
+    const csvContent = '\uFEFF' + [allHeaders, ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Pesquisa_Campo_TCC_Cristiano_Sacramento_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast('Planilha CSV gerada e baixada com sucesso!');
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -385,6 +468,15 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
 
     return matchQuery && matchTag;
   });
+
+  const filteredPesquisaRecords = useMemo(() => {
+    return pesquisaCampoRecords.filter((r) => {
+      if (selectedPublicoFilter !== 'ALL' && r.tipo_publico !== selectedPublicoFilter) {
+        return false;
+      }
+      return true;
+    });
+  }, [pesquisaCampoRecords, selectedPublicoFilter]);
 
   return (
     <div className="p-3 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-8 animate-in fade-in duration-300">
@@ -871,6 +963,298 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
           </CardFooter>
         </Card>
       </div>
+
+      {/* ========================================================================= */}
+      {/* SEÇÃO 3: MÓDULO NATIVO DE PESQUISA DE CAMPO & DIAGNÓSTICO DO TCC          */}
+      {/* ========================================================================= */}
+      <section className="space-y-5 bg-white p-6 sm:p-8 rounded-3xl border border-indigo-200/80 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="p-2.5 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white font-black shadow-md">
+                <Users className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600">
+                  Coleta Empírica • Resolução CNS 510/2016
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+                  Pesquisa de Campo & Diagnóstico do TCC
+                </h2>
+              </div>
+            </div>
+            <p className="text-xs text-gray-600 max-w-2xl leading-relaxed">
+              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Seminário Teológico Koinonia (UNIB / UIECB).
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <Button
+              onClick={handleCopyPesquisaLink}
+              variant="outline"
+              size="sm"
+              className="border-indigo-200 text-indigo-900 hover:bg-indigo-50 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              {copiedPesquisaLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+              <span>{copiedPesquisaLink ? 'Link Copiado!' : 'Copiar Link WhatsApp'}</span>
+            </Button>
+
+            <Button
+              onClick={() => window.open('/pesquisa-tcc', '_blank')}
+              className="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Abrir Questionário Público</span>
+            </Button>
+
+            <Button
+              onClick={handleExportPesquisaCsv}
+              variant="outline"
+              size="sm"
+              className="border-emerald-300 text-emerald-900 hover:bg-emerald-50 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+              title="Exportar respostas para Excel / SPSS / Google Sheets"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Exportar CSV</span>
+            </Button>
+
+            <Button
+              onClick={loadPesquisaCampoData}
+              variant="ghost"
+              size="sm"
+              disabled={pesquisaCampoLoading}
+              className="text-gray-500 hover:text-slate-900 font-bold text-xs p-2 cursor-pointer"
+              title="Recarregar Respostas"
+            >
+              <RefreshCw className={`w-4 h-4 ${pesquisaCampoLoading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
+        </div>
+
+        {/* Cards de Métricas por Público */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="p-4 bg-slate-50 border border-gray-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-indigo-950">{pesquisaCampoTotal}</span>
+            <p className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider">Total Respostas</p>
+          </div>
+
+          <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-blue-900">{pesquisaCampoByPublico['aluno_unib'] || 0}</span>
+            <p className="text-[11px] font-extrabold text-blue-700 uppercase tracking-wider">Alunos UNIB</p>
+          </div>
+
+          <div className="p-4 bg-indigo-50/70 border border-indigo-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-indigo-900">
+              {(pesquisaCampoByPublico['professor_unib'] || 0) + (pesquisaCampoByPublico['monitor_unib'] || 0)}
+            </span>
+            <p className="text-[11px] font-extrabold text-indigo-700 uppercase tracking-wider">Docentes / Mon.</p>
+          </div>
+
+          <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-emerald-800">{pesquisaCampoByPublico['externo_pastor'] || 0}</span>
+            <p className="text-[11px] font-extrabold text-emerald-700 uppercase tracking-wider">Pastores Externos</p>
+          </div>
+
+          <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-amber-900">
+              {(pesquisaCampoByPublico['externo_aluno'] || 0) + (pesquisaCampoByPublico['externo_lider'] || 0) + (pesquisaCampoByPublico['externo_membro'] || 0)}
+            </span>
+            <p className="text-[11px] font-extrabold text-amber-700 uppercase tracking-wider">Líderes / Membros</p>
+          </div>
+
+          <div className="p-4 bg-purple-50/70 border border-purple-200 rounded-2xl text-center space-y-1">
+            <span className="text-2xl sm:text-3xl font-black text-purple-900">
+              {pesquisaCampoRecords.length > 0 
+                ? (pesquisaCampoRecords.reduce((acc, r) => acc + (r.likertAverage || 0), 0) / pesquisaCampoRecords.length).toFixed(1)
+                : '5.0'}
+            </span>
+            <p className="text-[11px] font-extrabold text-purple-700 uppercase tracking-wider">Média Likert</p>
+          </div>
+        </div>
+
+        {/* Filtros e Barra de Ações da Tabela */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <span className="text-xs font-bold text-gray-500 shrink-0">Filtrar:</span>
+            <button
+              onClick={() => setSelectedPublicoFilter('ALL')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
+                selectedPublicoFilter === 'ALL'
+                  ? 'bg-indigo-900 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              Todos ({pesquisaCampoRecords.length})
+            </button>
+            {(Object.keys(TIPO_PUBLICO_LABELS) as TipoPublico[]).map((key) => {
+              const cfg = TIPO_PUBLICO_LABELS[key];
+              const count = pesquisaCampoByPublico[key] || 0;
+              if (count === 0 && selectedPublicoFilter !== key) return null;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setSelectedPublicoFilter(key)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer shrink-0 ${
+                    selectedPublicoFilter === key
+                      ? 'bg-indigo-900 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {cfg.emoji} {cfg.label.split('/')[0].trim()} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          <span className="text-xs text-gray-500 shrink-0 font-medium">
+            Mostrando {filteredPesquisaRecords.length} de {pesquisaCampoRecords.length} respostas
+          </span>
+        </div>
+
+        {/* Tabela com Projeção Estrita */}
+        {filteredPesquisaRecords.length === 0 ? (
+          <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-gray-300 space-y-2">
+            <p className="text-sm font-bold text-slate-700">Nenhuma resposta registrada com os filtros atuais.</p>
+            <p className="text-xs text-gray-500">
+              Compartilhe o link do questionário pelo WhatsApp para iniciar a coleta empírica do seu TCC.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto border border-gray-200 rounded-2xl shadow-2xs">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-gray-200 text-slate-700 font-extrabold">
+                  <th className="p-3">Data / Hora</th>
+                  <th className="p-3">Público / Segmento</th>
+                  <th className="p-3">Identificação / Igreja</th>
+                  <th className="p-3">Cidade / UF</th>
+                  <th className="p-3">Origem</th>
+                  <th className="p-3 text-center">Média Likert</th>
+                  <th className="p-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 bg-white">
+                {filteredPesquisaRecords.map((r) => {
+                  const cfg = TIPO_PUBLICO_LABELS[r.tipo_publico as TipoPublico] || {
+                    label: r.tipo_publico,
+                    emoji: '👤',
+                    badgeColor: 'bg-gray-100 text-gray-700 border-gray-200',
+                  };
+                  return (
+                    <tr key={r.id} className="hover:bg-indigo-50/30 transition">
+                      <td className="p-3 whitespace-nowrap text-slate-600 font-medium">
+                        {new Date(r.created_at).toLocaleDateString('pt-BR')} {new Date(r.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                      </td>
+                      <td className="p-3 whitespace-nowrap">
+                        <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border inline-flex items-center gap-1 ${cfg.badgeColor}`}>
+                          <span>{cfg.emoji}</span>
+                          <span>{cfg.label.split('/')[0].trim()}</span>
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        <span className="font-bold text-slate-900 block">{r.nome}</span>
+                        {r.igreja && <span className="text-[11px] text-gray-500">{r.igreja}</span>}
+                      </td>
+                      <td className="p-3 whitespace-nowrap text-slate-600">
+                        {r.cidade_uf || '—'}
+                      </td>
+                      <td className="p-3 whitespace-nowrap">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 uppercase">
+                          {r.origem}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center font-black text-indigo-700">
+                        {r.likertAverage > 0 ? `${r.likertAverage} / 5` : '—'}
+                      </td>
+                      <td className="p-3 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => setSelectedResponseDetail(r)}
+                          className="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-xs border border-indigo-200 transition cursor-pointer"
+                        >
+                          Ver Respostas
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      {/* MODAL DETALHES DA RESPOSTA DO PARTICIPANTE */}
+      {selectedResponseDetail && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white flex items-center justify-between border-b border-indigo-900/40 shrink-0">
+              <div>
+                <span className="text-[10px] font-black uppercase text-indigo-300">
+                  Ficha de Resposta Individual • TCC
+                </span>
+                <h3 className="text-base sm:text-lg font-black text-white">
+                  {selectedResponseDetail.nome || 'Participante'} • {TIPO_PUBLICO_LABELS[selectedResponseDetail.tipo_publico as TipoPublico]?.label || selectedResponseDetail.tipo_publico}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedResponseDetail(null)}
+                className="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 bg-slate-50/50">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white p-4 rounded-2xl border border-gray-200 text-xs">
+                <div>
+                  <span className="text-gray-400 block font-bold">Data:</span>
+                  <span className="font-bold text-slate-800">{new Date(selectedResponseDetail.created_at).toLocaleString('pt-BR')}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400 block font-bold">Igreja:</span>
+                  <span className="font-bold text-slate-800">{selectedResponseDetail.igreja || 'Não informada'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400 block font-bold">Cidade/UF:</span>
+                  <span className="font-bold text-slate-800">{selectedResponseDetail.cidade_uf || 'Não informada'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-400 block font-bold">TCLE:</span>
+                  <span className="font-bold text-emerald-600">✓ Autorizado</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-xs font-black uppercase tracking-wider text-slate-700">Respostas por Pergunta:</h4>
+                {PERGUNTAS_PESQUISA_TCC.map((p, idx) => {
+                  const val = selectedResponseDetail.respostas?.[p.id];
+                  return (
+                    <div key={p.id} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-1">
+                      <p className="text-xs font-bold text-slate-900">
+                        {idx + 1}. {p.enunciado}
+                      </p>
+                      <div className="text-xs text-indigo-950 font-extrabold bg-indigo-50/60 p-2 rounded-lg border border-indigo-100">
+                        {val !== undefined && val !== null ? String(val) : 'Sem resposta'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="p-4 bg-white border-t border-gray-100 flex justify-end">
+              <Button
+                onClick={() => setSelectedResponseDetail(null)}
+                variant="outline"
+                size="sm"
+                className="font-bold cursor-pointer"
+              >
+                Fechar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* MODAL DO EDITOR CORNELL NATIVO DO TCC                                      */}

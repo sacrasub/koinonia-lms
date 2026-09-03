@@ -44,6 +44,7 @@ import { GoogleAgendaView } from '@/components/GoogleAgendaView';
 import { PlanoEstudosPage } from '@/components/PlanoEstudosPage';
 import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
 import { AttendanceAlarmModal } from '@/components/AttendanceAlarmModal';
+import PesquisaTCCPage from '@/app/pesquisa-tcc/page';
 
 export default function Home() {
   const router = useRouter();
@@ -553,6 +554,14 @@ export default function Home() {
 
     if (activeTab === 'tcc-sacramento' || activeTab === 'tcc-painel') {
       return <TccSacramentoPage onTabChange={handleTabChange} />;
+    }
+
+    if (activeTab === 'pesquisa-tcc') {
+      return (
+        <div className="rounded-3xl overflow-hidden shadow-2xl border border-indigo-900/40">
+          <PesquisaTCCPage />
+        </div>
+      );
     }
 
     if (activeTab === 'admin-dashboard' || activeTab === 'admin-analytics' || activeTab === 'telemetria' || activeTab === 'analytics') {
