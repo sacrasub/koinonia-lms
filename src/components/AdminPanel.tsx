@@ -19,7 +19,8 @@ import {
   syncRbacFromCloud,
   formatApprovalEmail,
   UserRoleMapping, 
-  AccessRequest 
+  AccessRequest,
+  INITIAL_AUTHORIZED_USERS 
 } from '@/lib/authConfig';
 import { formatPhone, cleanPhoneNumber, getWhatsAppUrl } from '@/lib/phoneUtils';
 import { getAllDisciplinas, updateDisciplina } from '@/services/disciplinasService';

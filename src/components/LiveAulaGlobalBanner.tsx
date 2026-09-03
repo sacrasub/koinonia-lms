@@ -120,7 +120,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
             const cachePayload = {
               disciplina_name: liveNow.disciplina_name,
               google_meet_url: liveNow.google_meet_url,
-              presence_form_url: liveNow.presence_form_url,
+              presence_form_url: (liveNow as any).presence_form_url || (liveNow as any).google_forms_url || '',
               start_time: liveNow.start_time,
               end_time: liveNow.end_time,
               cached_at: new Date().toISOString(),

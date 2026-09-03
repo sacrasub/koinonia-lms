@@ -41,7 +41,7 @@ export default function PesquisaTCCPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [autorizouTcle, setAutorizouTcle] = useState<boolean>(false);
   const [tipoPublico, setTipoPublico] = useState<TipoPublico>('aluno_unimb');
-  const [origem, setOrigem] = useState<OrigemPesquisa>('organico');
+  const [origem, setOrigem] = useState<OrigemPesquisa>('link_direto');
   const [dadosIdentificacao, setDadosIdentificacao] = useState<DadosIdentificacao>({
     nome: '',
     email: '',
@@ -389,26 +389,26 @@ export default function PesquisaTCCPage() {
                   <h2 className="text-xl sm:text-2xl font-black text-white">
                     Termo de Consentimento Livre e Esclarecido (TCLE)
                   </h2>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Trabalho de Conclusão do Curso Bacharel em Teologia • <strong>{INSTITUICAO_NOME}</strong>
+                  <p className="text-xs text-indigo-300 font-medium leading-relaxed">
+                    Pesquisa Acadêmica em Teologia • <strong>CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)</strong> & <strong>Seminário Teológico Koinonia</strong>
                   </p>
                 </div>
 
                 <div className="prose prose-invert max-w-none text-xs text-slate-300 space-y-3 bg-slate-950/60 p-5 rounded-2xl border border-slate-800/80 max-h-72 overflow-y-auto leading-relaxed">
                   <p>
-                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão de Curso (TCC) em Teologia do pesquisador <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong>, apresentado no <strong>{INSTITUICAO_NOME}</strong>.
+                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no <strong>CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)</strong>, pelo pesquisador <strong>Cristiano do Sacramento Soares</strong>, sob orientação do <strong>Pastor Alexsandro Silva</strong>, no âmbito do <strong>Seminário Teológico Koinonia</strong>.
                   </p>
                   <p>
-                    <strong>Título da Pesquisa:</strong> <em>"{TCC_TEMA}"</em>.
+                    <strong>Título do Trabalho:</strong> <em>"{TCC_TEMA}"</em>.
                   </p>
                   <p>
-                    <strong>Sobre a Plataforma {PLATAFORMA_NOME}:</strong> Trata-se de uma plataforma educacional aberta desenvolvida para a modernização do ensino teológico no ambiente virtual, projetada para utilização em qualquer seminário ou instituição de formação pastoral e teológica.
+                    <strong>Sobre a Plataforma {PLATAFORMA_NOME}:</strong> Trata-se de uma plataforma educacional aberta concebida para a modernização do ensino teológico no ambiente virtual, projetada para utilização em qualquer instituição de ensino e seminário de teologia.
                   </p>
                   <p>
-                    <strong>Objetivos Científicos:</strong> Investigar a distância transacional de Michael G. Moore, a preservação da koinonia (comunhão cristã) e a transição histórica do internato presencial clássico para o modelo síncrono remoto apoiado por metodologias ativas.
+                    <strong>Objetivos:</strong> Identificar a percepção de seminaristas, docentes, monitores, pastores e líderes eclesiásticos sobre a eficácia pedagógica, o acolhimento comunitário e a formação integral do caráter pastoral proporcionada pelas metodologias ativas e aulas síncronas remotas.
                   </p>
                   <p>
-                    <strong>Garantias Éticas (Res. CNS 510/2016):</strong> A participação é inteiramente voluntária, sem quaisquer custos ou riscos aos respondentes. Suas percepções serão processadas estatisticamente com garantia absoluta de anonimato e sigilo científico.
+                    <strong>Garantias Éticas:</strong> A participação é inteiramente voluntária, sem quaisquer custos ou riscos aos respondentes. Seus dados e percepções serão processados estatisticamente com garantia absoluta de anonimato e sigilo profissional.
                   </p>
                 </div>
 
@@ -421,7 +421,7 @@ export default function PesquisaTCCPage() {
                   />
                   <div className="text-xs text-slate-200">
                     <strong className="text-white block font-bold">Declaração de Concordância</strong>
-                    Declaro que li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o uso dos meus dados agregados para o TCC de {PESQUISADOR_NOME}.
+                    Li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o uso científico e estatístico das minhas respostas para o Trabalho de Conclusão de Curso em Teologia de {PESQUISADOR_NOME} ({INSTITUICAO_NOME} / Seminário Teológico Koinonia).
                   </div>
                 </label>
 

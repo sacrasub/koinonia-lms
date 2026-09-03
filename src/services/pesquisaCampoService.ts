@@ -44,7 +44,7 @@ export type TipoPublico =
   | 'professor_unib'
   | 'monitor_unib';
 
-export type OrigemPesquisa = 'interno_lms' | 'whatsapp_externo' | 'link_direto';
+export type OrigemPesquisa = 'interno_lms' | 'whatsapp_externo' | 'link_direto' | 'organico';
 
 export interface DadosIdentificacao {
   nome?: string;

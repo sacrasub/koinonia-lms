@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { mockAulas, datasAvaliacoesMap, getAulasByTurma } from '@/lib/mockData';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { 
