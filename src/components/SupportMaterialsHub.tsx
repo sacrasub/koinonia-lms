@@ -161,6 +161,10 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     } else if (allowedDisciplinas && allowedDisciplinas.length === 1) {
       setSelectedDiscFilter(allowedDisciplinas[0].id);
       setFormDisciplinaId(allowedDisciplinas[0].id);
+    } else if (allowedDisciplinas && allowedDisciplinas.length > 1) {
+      // Quando o professor possui múltiplas matérias atribuídas, o default é 'ALL' (Todas as suas matérias afetas)
+      setSelectedDiscFilter('ALL');
+      setFormDisciplinaId(allowedDisciplinas[0].id);
     }
   }, [disciplinaId, allowedDisciplinas]);
 
@@ -556,7 +560,11 @@ _Disponível no Portal do Aluno do Seminário UIECB_`;
               onChange={(e) => setSelectedDiscFilter(e.target.value)}
               className="px-3 py-2 bg-slate-50 border border-gray-200 rounded-xl text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 shrink-0"
             >
-              <option value="ALL">Todas as Matérias</option>
+              <option value="ALL">
+                {allowedDisciplinas && allowedDisciplinas.length > 1
+                  ? `Minhas Matérias (${allowedDisciplinas.length}) - Todas`
+                  : 'Todas as Matérias'}
+              </option>
               {userDisciplinas.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.name}
