@@ -56,8 +56,8 @@ export const AdminAnalyticsView: React.FC = () => {
   const [dossierUserEmail, setDossierUserEmail] = useState<string | null>(null);
   const [dossierActiveTab, setDossierActiveTab] = useState<'sessions' | 'events'>('sessions');
 
-  // Filtros e Visualização do Feed de Atividades
-  const [feedViewMode, setFeedViewMode] = useState<'grouped' | 'stream'>('stream');
+  // Filtros e Visualização do Feed de Atividades: agrupado por pessoa por padrão
+  const [feedViewMode, setFeedViewMode] = useState<'grouped' | 'stream'>('grouped');
   const [searchEventUser, setSearchEventUser] = useState<string>('');
   const [filterEventRole, setFilterEventRole] = useState<string>('all');
   const [onlyActiveNowEvents, setOnlyActiveNowEvents] = useState<boolean>(false);

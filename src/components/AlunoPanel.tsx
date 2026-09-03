@@ -86,11 +86,17 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     return d >= 2 && d <= 5; // Terça-feira (2) a Sexta-feira (5)
   }, []);
 
-  // Estado de recolhimento inteligente das Gravações (recolhido por padrão nos dias de aula)
-  const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(false);
+  // Estado de recolhimento das Gravações: recolhido por padrão
+  const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(true);
 
-  // Estado de recolhimento do Mural de Recursos
-  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(false);
+  // Estado de recolhimento do Mural de Recursos:
+  // Recolhido por padrão, a menos que tenha uma leitura pendente
+  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(() => {
+    const all = getAnnouncements();
+    const read = getReadAnnouncementIds(normalizedEmail);
+    const pending = all.filter((a) => !a.is_archived && !read.includes(a.id)).length;
+    return pending === 0;
+  });
 
   const handleMarkAnnouncementRead = (id: string) => {
     markAnnouncementAsRead(normalizedEmail, id);

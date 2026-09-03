@@ -49,6 +49,7 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({
   const inviteMessage = `Olá, *${userName}*! ✝️
 
 Seu acesso ao *Koinonia LMS* (Plataforma Acadêmica do Seminário Teológico Koinonia) está liberado e autorizado no perfil de *${roleName}*!
+Esta plataforma é fruto do Projeto de TCC do Seminarista Cristiano Sacramento.
 
 🔗 *Link Oficial de Acesso:*
 ${platformUrl}
@@ -62,9 +63,11 @@ ${platformUrl}
 Dúvidas ou suporte? Estamos à disposição!
 
 _Coordenação Acadêmica & Tecnologia_
-*Koinonia LMS • Semestre 2026.2*`;
+*Koinonia LMS • Semestre 2026.2*
+_Projeto TCC do Seminarista Cristiano Sacramento_`;
 
   const mailtoUrl = `mailto:${encodeURIComponent(user.email)}?subject=${encodeURIComponent(inviteSubject)}&body=${encodeURIComponent(inviteMessage)}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(user.email)}&su=${encodeURIComponent(inviteSubject)}&body=${encodeURIComponent(inviteMessage)}`;
   const whatsappUrl = cleanPhone 
     ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(inviteMessage)}`
     : `https://api.whatsapp.com/send?text=${encodeURIComponent(inviteMessage)}`;
@@ -182,15 +185,29 @@ _Coordenação Acadêmica & Tecnologia_
                 <span>{cleanPhone ? 'Enviar via WhatsApp' : 'Abrir WhatsApp Web'}</span>
               </a>
 
-              {/* Botão E-mail */}
+              {/* Botão Gmail Web / Celular */}
               <a
-                href={mailtoUrl}
-                className="p-3 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
+                href={gmailUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-red-600 hover:bg-red-700 active:scale-98 text-white font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
               >
                 <Mail className="w-4 h-4 shrink-0" />
-                <span>Enviar por E-mail</span>
+                <span>Abrir no Gmail (Web / Celular)</span>
               </a>
             </div>
+
+            {/* Opção alternativa caso utilize aplicativo de desktop */}
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = mailtoUrl;
+              }}
+              className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[11px] rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+              <span>Ou abrir no App de E-mail do Sistema (Outlook / Apple Mail)</span>
+            </button>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
               {/* Botão Copiar Mensagem */}

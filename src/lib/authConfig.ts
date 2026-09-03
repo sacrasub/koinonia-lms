@@ -739,28 +739,30 @@ export function formatApprovalEmail(name: string, email: string, role: UserRole)
   whatsappUrl: string;
 } {
   const roleName = role === 'admin' ? 'Administrador(a)' : role === 'professor' ? 'Professor(a)' : role === 'monitor' ? 'Monitor(a)' : 'Aluno(a)';
-  const subject = `Acesso Aprovado ao Koinonia LMS — Bem-vindo(a)!`;
-  const body = `Olá, ${name || 'Estudante'}!
+  const subject = `Acesso Aprovado ao Koinonia LMS • Projeto TCC Cristiano Sacramento`;
+  const body = `Olá, ${name || 'Estudante'}! ✝️
 
-Sua solicitação de acesso ao Koinonia LMS foi APROVADA com sucesso no perfil de ${roleName}.
+Sua solicitação de acesso ao Koinonia LMS (Plataforma Acadêmica do Seminário Teológico Koinonia) foi APROVADA com sucesso no perfil de ${roleName}!
+Esta plataforma é fruto do Projeto de TCC do Seminarista Cristiano Sacramento.
 
 🔗 Acesse a plataforma agora pelo link oficial:
 https://koinonialms.vercel.app
 
 Instruções de Acesso:
 1. Acesse o link acima no seu computador ou celular.
-2. Clique em "Continuar com Google" e selecione o e-mail: ${email}.
-3. Você terá acesso imediato à grade de aulas, materiais de estudo, biblioteca digital e transmissões ao vivo.
+2. Clique no botão "Continuar com Google" e selecione o seu e-mail cadastrado: ${email}.
+3. Você terá acesso imediato à grade semanal de aulas, links do Google Meet, pastas virtuais do Google Drive, biblioteca digital e Caderno Cornell com inteligência artificial.
 
-Seja muito bem-vindo(a)!
+Dúvidas ou suporte? Estamos à disposição!
 
 Atenciosamente,
-Coordenação Acadêmica & EAD
-Koinonia LMS • Seminário Teológico`;
+Coordenação Acadêmica & Tecnologia
+Koinonia LMS • Semestre 2026.2
+Projeto de TCC do Seminarista Cristiano Sacramento`;
 
   const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  const whatsappText = `Olá, ${name || 'Estudante'}! ✝️ Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\n🔗 *Link de Acesso:*\nhttps://koinonialms.vercel.app\n\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
+  const whatsappText = `Olá, ${name || 'Estudante'}! ✝️ Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\nEsta plataforma é fruto do *Projeto de TCC do Seminarista Cristiano Sacramento*.\n\n🔗 *Link Oficial de Acesso:*\nhttps://koinonialms.vercel.app\n\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
 
   return { subject, body, mailtoUrl, gmailUrl, whatsappUrl };
