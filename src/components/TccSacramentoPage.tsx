@@ -258,7 +258,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `Pesquisa_Campo_TCC_Cristiano_Sacramento_${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `Pesquisa_Campo_TCC_Cristiano_do_Sacramento_Soares_UNIMB_${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
     showToast('Planilha CSV gerada e baixada com sucesso!');
@@ -493,13 +493,13 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs font-black tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5 text-blue-300" />
-            <span>Área de Pesquisa Exclusiva • Cristiano Sacramento</span>
+            <span>Área de Pesquisa Exclusiva • Cristiano do Sacramento Soares</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Painel do TCC - Cristiano Sacramento
+            Painel do TCC - Cristiano do Sacramento Soares
           </h1>
           <p className="text-xs sm:text-base text-blue-200">
-            Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Metodologia: <strong className="text-white">Profª Gabriela Leal</strong> | Status:{' '}
+            Curso de Bacharelado em Teologia • <strong>Centro Universitário do Maciço de Baturité (UNIMB)</strong> | Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Status:{' '}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
               🟢 Em Desenvolvimento
             </span>
@@ -984,7 +984,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               </div>
             </div>
             <p className="text-xs text-gray-600 max-w-2xl leading-relaxed">
-              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Seminário Teológico Koinonia (UNIB / UIECB).
+              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Centro Universitário do Maciço de Baturité (UNIMB) com a plataforma <strong>Koinonia LMS</strong>.
             </p>
           </div>
 
@@ -1039,13 +1039,15 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
           </div>
 
           <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl text-center space-y-1">
-            <span className="text-2xl sm:text-3xl font-black text-blue-900">{pesquisaCampoByPublico['aluno_unib'] || 0}</span>
-            <p className="text-[11px] font-extrabold text-blue-700 uppercase tracking-wider">Alunos UNIB</p>
+            <span className="text-2xl sm:text-3xl font-black text-blue-900">
+              {(pesquisaCampoByPublico['aluno_unimb'] || 0) + (pesquisaCampoByPublico['aluno_unib'] || 0)}
+            </span>
+            <p className="text-[11px] font-extrabold text-blue-700 uppercase tracking-wider">Alunos UNIMB</p>
           </div>
 
           <div className="p-4 bg-indigo-50/70 border border-indigo-200 rounded-2xl text-center space-y-1">
             <span className="text-2xl sm:text-3xl font-black text-indigo-900">
-              {(pesquisaCampoByPublico['professor_unib'] || 0) + (pesquisaCampoByPublico['monitor_unib'] || 0)}
+              {(pesquisaCampoByPublico['professor_unimb'] || 0) + (pesquisaCampoByPublico['monitor_unimb'] || 0) + (pesquisaCampoByPublico['professor_unib'] || 0) + (pesquisaCampoByPublico['monitor_unib'] || 0)}
             </span>
             <p className="text-[11px] font-extrabold text-indigo-700 uppercase tracking-wider">Docentes / Mon.</p>
           </div>

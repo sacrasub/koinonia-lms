@@ -1,17 +1,25 @@
 -- =========================================================================
 -- LMS-KOINONIA: MIGRATION PARA COLETA DE DADOS & PESQUISA DE CAMPO DO TCC
--- Trabalho de Conclusão de Curso em Teologia: Cristiano Sacramento Soares
--- Seminário Teológico Koinonia (UNIB / UIECB)
+-- Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no
+-- CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)
+-- CURSO DE BACHARELADO EM TEOLOGIA
+--
+-- Pesquisador: Cristiano do Sacramento Soares
+-- Orientador: Pastor Alexsandro Silva
+--
 -- Tema: Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual:
 --       Distância Transacional, Preservação da Koinonia e a Transição
 --       do Internato Presencial para o Modelo Síncrono Remoto
+--
+-- Plataforma: Koinonia LMS (Concebida para modernização do ensino teológico
+--             no ambiente virtual, aplicável a qualquer instituição de ensino de teologia)
 -- =========================================================================
 
 CREATE TABLE IF NOT EXISTS public.tcc_pesquisa_respostas (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     user_email VARCHAR(255),
-    tipo_publico VARCHAR(50) NOT NULL, -- 'aluno_unib', 'professor_unib', 'monitor_unib', 'externo_pastor', 'externo_aluno', 'externo_lider', 'externo_membro'
+    tipo_publico VARCHAR(50) NOT NULL, -- 'aluno_unimb', 'professor_unimb', 'monitor_unimb', 'externo_pastor', 'externo_aluno', 'externo_lider', 'externo_membro'
     dados_identificacao JSONB DEFAULT '{}'::jsonb, -- Para externos: { nome, email, whatsapp, igreja, cidade_uf, funcao }
     autorizou_tcc BOOLEAN NOT NULL DEFAULT false, -- TCLE obrigatório
     origem VARCHAR(50) DEFAULT 'organico', -- 'interno_lms', 'whatsapp_externo', 'link_direto'

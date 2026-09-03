@@ -143,11 +143,14 @@ Ambiente imersivo com modelos tridimensionais do Tabernáculo no Deserto, Templo
 6. **Exibição dos Números de WhatsApp no Admin**:
    - Implementado merge bidirecional seguro em `getAuthorizedUsersList()`, preservando os telefones formatados dos 11 novos contatos adicionados à lista de usuários autorizados.
 
-7. **Módulo Nativo de Pesquisa de Campo & Diagnóstico do TCC (Cristiano Sacramento Soares)**:
-   - **Banco de Dados & RLS**: Migration `20260905000000_tcc_pesquisa_respostas.sql` criando a tabela `tcc_pesquisa_respostas` com índices otimizados e políticas de segurança RLS (inserção liberada para público com `autorizou_tcc = true` e leitura restrita para administradores autenticados).
-   - **Página Pública de Coleta (`/pesquisa-tcc`)**: Interface moderna e responsiva preparada para compartilhamento no WhatsApp e redes sociais, contendo Termo de Consentimento Livre e Esclarecido (TCLE - Res. CNS 510/2016), caracterização do participante (7 perfis entre alunos UNIB, professores, monitores, pastores ordenados, alunos externos e líderes), 5 dimensões diagnósticas (Distância Transacional de Moore, Preservação da Koinonia, Transição do Internato Presencial para o Remoto Síncrono, Metodologias Ativas e Perguntas Abertas) e rascunho automático local (`lms_tcc_pesquisa_draft_v1`).
-   - **Blindagem de Egress (Zero-Waste)**: Rota `/api/tcc/pesquisa-campo` com retorno minimal HTTP 201 `{ success: true, id }`, e consultas com projeção estrita de colunas.
-   - **Painel Analítico do Pesquisador (`TccSacramentoPage.tsx`)**: Monitoramento em tempo real de respondentes por público, filtros, geração de link de compartilhamento e exportação de planilha CSV (Excel/SPSS) com 1 clique para a redação da monografia.
+7. **Módulo Nativo de Pesquisa de Campo & Diagnóstico do TCC (Cristiano do Sacramento Soares — UNIMB)**:
+   - **Identidade Acadêmica**: Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no **Centro Universitário do Maciço de Baturité (UNIMB - Baturité – CE)**, sob orientação do **Pastor Alexsandro Silva**.
+   - **Plataforma Koinonia LMS**: Plataforma educacional aberta concebida para modernização do ensino teológico no ambiente virtual, aplicável a qualquer instituição e seminário de teologia.
+   - **Autenticação Obrigatória para Comunidade Interna**: Para seminaristas, professores e monitores da UNIMB, a participação exige login com Conta Google acadêmica para validação institucional, liberando acesso direto à plataforma Koinonia LMS após a resposta. Públicos externos (pastores ordenados, alunos de outros seminários, líderes e membros) possuem acesso livre e anônimo.
+   - **Explicabilidade Pedagógica & Glossário Interativo**: Inclusão de botões explicativos acessíveis durante todo o questionário, detalhando em linguagem simples e prática termos como Distância Transacional (Moore), Koinonia, Caderno Cornell com IA, NotebookLM, Simulador RPG, Estúdio de Homilética, Metaverso 3D e Trilha dos 4 Ds.
+   - **Múltiplos Preenchimentos**: O sistema permite ao mesmo respondente preencher mais de um questionário com perfis distintos (ex: discente interno e depois pastor externo), com reinicialização rápida pós-envio.
+   - **Blindagem de Egress & Persistência Indestrutível**: Rota `/api/tcc/pesquisa-campo` com retorno minimal HTTP 201 (`{ success: true, id }`), rascunho automático em `localStorage` e fallback transparente com gravação no banco sem falhas.
+   - **Painel do Pesquisador (`TccSacramentoPage.tsx`)**: Totalizadores em tempo real por segmento, visualização individual de respostas e exportação de planilha CSV formatada para Excel e SPSS em 1 clique.
 
 ---
 
