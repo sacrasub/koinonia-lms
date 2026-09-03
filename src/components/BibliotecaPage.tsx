@@ -585,7 +585,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
       drive_url: newDriveUrl.trim(),
       cover_url: newCoverUrl.trim() || undefined,
       description: newDescription.trim(),
-      added_by_name: normalizedEmail.includes('ary') ? 'Profº Ary Júnior' : normalizedEmail.includes('robson') || normalizedEmail.includes('sacra') ? 'Profº Robson Rocha' : normalizedEmail.includes('camila') ? 'Monitora Camila' : normalizedEmail.includes('cristiano') ? 'Monitor Cristiano' : 'Docente / Monitoria',
+      added_by_name: normalizedEmail.includes('sacra') || normalizedEmail.includes('cristiano') || normalizedEmail.includes('riffocristianmision') ? 'Cristiano Sacramento' : normalizedEmail.includes('ary') ? 'Profº Ary Júnior' : normalizedEmail.includes('camila') ? 'Monitora Camila' : 'Docente / Monitoria',
       added_by_role: authorRole,
       added_by_email: normalizedEmail,
     });

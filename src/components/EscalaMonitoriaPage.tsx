@@ -48,6 +48,7 @@ import {
 } from '@/lib/timeUtils';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
 import { getAllDisciplinas } from '@/services/disciplinasService';
+import { getAulaEmAndamentoHoje } from '@/lib/semesterUtils';
 import { 
   playRecordingAlarm, 
   playPresenceAlarm, 
@@ -1841,13 +1842,17 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               <button
                 onClick={() => {
                   if (typeof window !== 'undefined') {
+                    const allDiscs = getAllDisciplinas();
+                    const aulaInfo = getAulaEmAndamentoHoje(allDiscs);
+                    const targetAulaNum = aulaInfo?.aulaNum || 4;
+
                     // 1. Abre a sala do Google Meet em nova janela para o monitor entrar na aula
-                    if (monitorAlarm.aula.meetUrl) {
-                      window.open(monitorAlarm.aula.meetUrl, '_blank');
+                    const meetToOpen = monitorAlarm.aula.meetUrl || aulaInfo?.googleMeetUrl;
+                    if (meetToOpen) {
+                      window.open(meetToOpen, '_blank');
                     }
 
                     // 2. Busca disciplina correspondente para vincular
-                    const allDiscs = getAllDisciplinas();
                     const aNorm = monitorAlarm.aula.title.toLowerCase().replace(/[^a-z0-9]/g, '');
                     const found = allDiscs.find((d) => {
                       const dNorm = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -1857,9 +1862,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                     // 3. Dispara o gravador pré-configurado com Piloto Automático ativado
                     window.dispatchEvent(new CustomEvent('lms_open_recorder', {
                       detail: {
-                        disciplinaId: found?.id,
-                        disciplina: monitorAlarm.aula.title,
-                        aulaNumero: '1',
+                        disciplinaId: found?.id || aulaInfo?.disciplinaId,
+                        disciplina: found?.name || aulaInfo?.disciplinaName || monitorAlarm.aula.title,
+                        aulaNumero: String(targetAulaNum),
                         professor: monitorAlarm.aula.professor,
                         initialMode: 'autopilot',
                       }
@@ -2228,9 +2233,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 <button
                   onClick={() => {
                     if (typeof window !== 'undefined') {
+                      const allDiscs = getAllDisciplinas();
+                      const aulaInfo = getAulaEmAndamentoHoje(allDiscs);
+                      if (aulaInfo?.googleMeetUrl) {
+                        window.open(aulaInfo.googleMeetUrl, '_blank');
+                      }
                       window.dispatchEvent(new CustomEvent('lms_open_recorder', {
-                        detail: { initialMode: 'autopilot' }
+                        detail: {
+                          disciplinaId: aulaInfo?.disciplinaId,
+                          disciplina: aulaInfo?.disciplinaName,
+                          aulaNumero: String(aulaInfo?.aulaNum || 4),
+                          initialMode: 'autopilot',
+                        }
                       }));
+                      showToast(`🚀 Sala "${aulaInfo?.disciplinaName || 'Hoje'}" aberta no Meet! Gravador preparado no Piloto Automático.`);
                     }
                   }}
                   className="w-full py-2.5 px-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-purple-400/40 cursor-pointer shadow-purple-950/30"
@@ -2243,8 +2259,15 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 <button
                   onClick={() => {
                     if (typeof window !== 'undefined') {
+                      const allDiscs = getAllDisciplinas();
+                      const aulaInfo = getAulaEmAndamentoHoje(allDiscs);
                       window.dispatchEvent(new CustomEvent('lms_open_recorder', {
-                        detail: { initialMode: 'screen' }
+                        detail: {
+                          disciplinaId: aulaInfo?.disciplinaId,
+                          disciplina: aulaInfo?.disciplinaName,
+                          aulaNumero: String(aulaInfo?.aulaNum || 4),
+                          initialMode: 'screen',
+                        }
                       }));
                     }
                   }}

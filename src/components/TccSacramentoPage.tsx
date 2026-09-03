@@ -16,7 +16,13 @@ import {
   getPesquisaCampoAdminData, 
   TipoPublico, 
   TIPO_PUBLICO_LABELS, 
-  PERGUNTAS_PESQUISA_TCC 
+  PERGUNTAS_PESQUISA_TCC,
+  getPerguntasParaPublico,
+  getEnquetesPersonalizadas,
+  saveEnquetePersonalizada,
+  toggleEnqueteStatus,
+  deleteEnquetePersonalizada,
+  EnquetePersonalizada
 } from '@/services/pesquisaCampoService';
 
 export interface TccCornellEntry {
@@ -192,6 +198,27 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
   const [copiedPesquisaLink, setCopiedPesquisaLink] = useState<boolean>(false);
   const [selectedPublicoFilter, setSelectedPublicoFilter] = useState<string>('ALL');
 
+  // Enquetes Dinâmicas e Customizadas
+  const [enquetesList, setEnquetesList] = useState<EnquetePersonalizada[]>([]);
+  const [isNewEnqueteModalOpen, setIsNewEnqueteModalOpen] = useState<boolean>(false);
+  const [newEnqueteTitulo, setNewEnqueteTitulo] = useState<string>('');
+  const [newEnqueteDescricao, setNewEnqueteDescricao] = useState<string>('');
+  const [newEnquetePublico, setNewEnquetePublico] = useState<string>('todos');
+  const [newEnquetePerguntas, setNewEnquetePerguntas] = useState<Array<{
+    id: string;
+    enunciado: string;
+    tipo: 'likert_5' | 'texto' | 'multipla_escolha';
+    opcoes?: string[];
+    obrigatoria: boolean;
+  }>>([
+    {
+      id: 'q1',
+      enunciado: 'Qual é a sua avaliação sobre a metodologia pedagógica das aulas síncronas remotas?',
+      tipo: 'likert_5',
+      obrigatoria: true,
+    }
+  ]);
+
   const loadPesquisaCampoData = async () => {
     setPesquisaCampoLoading(true);
     try {
@@ -206,11 +233,98 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     }
   };
 
+  const loadEnquetesData = async () => {
+    try {
+      const list = await getEnquetesPersonalizadas();
+      setEnquetesList(list);
+    } catch (_) {}
+  };
+
   useEffect(() => {
     const responses = getSurveyResponses();
     setSurveyCount(responses.length);
     loadPesquisaCampoData();
+    loadEnquetesData();
+
+    const handleEnquetesUpdate = () => loadEnquetesData();
+    window.addEventListener('lms_enquetes_updated', handleEnquetesUpdate);
+    return () => window.removeEventListener('lms_enquetes_updated', handleEnquetesUpdate);
   }, []);
+
+  const handleAddQuestionToNewEnquete = () => {
+    const nextIdx = newEnquetePerguntas.length + 1;
+    setNewEnquetePerguntas([
+      ...newEnquetePerguntas,
+      {
+        id: `q${nextIdx}`,
+        enunciado: '',
+        tipo: 'likert_5',
+        obrigatoria: true,
+      }
+    ]);
+  };
+
+  const handleCreateEnquete = async () => {
+    if (!newEnqueteTitulo.trim()) {
+      showToast('Por favor, digite o título da nova enquete.');
+      return;
+    }
+    const validQuestions = newEnquetePerguntas.filter((q) => q.enunciado.trim() !== '');
+    if (validQuestions.length === 0) {
+      showToast('Adicione pelo menos uma pergunta à enquete.');
+      return;
+    }
+
+    const id = `enq_${Date.now()}`;
+    const newEnq: EnquetePersonalizada = {
+      id,
+      titulo: newEnqueteTitulo.trim(),
+      descricao: newEnqueteDescricao.trim(),
+      publicoAlvo: newEnquetePublico,
+      status: 'aberta',
+      permiteEdicao: true,
+      created_at: new Date().toISOString(),
+      created_by: 'Cristiano do Sacramento Soares',
+      perguntas: validQuestions,
+    };
+
+    await saveEnquetePersonalizada(newEnq);
+    await loadEnquetesData();
+    setIsNewEnqueteModalOpen(false);
+    setNewEnqueteTitulo('');
+    setNewEnqueteDescricao('');
+    setNewEnquetePerguntas([
+      {
+        id: 'q1',
+        enunciado: 'Qual é a sua avaliação sobre a metodologia pedagógica das aulas síncronas remotas?',
+        tipo: 'likert_5',
+        obrigatoria: true,
+      }
+    ]);
+    showToast('✨ Nova enquete criada com sucesso e já disponível online!');
+  };
+
+  const handleToggleEnqueteStatus = async (enq: EnquetePersonalizada) => {
+    const nextStatus = enq.status === 'aberta' ? 'encerrada' : 'aberta';
+    await toggleEnqueteStatus(enq.id, nextStatus);
+    await loadEnquetesData();
+    showToast(`Enquete "${enq.titulo}" agora está ${nextStatus === 'aberta' ? 'ABERTA para respostas' : 'ENCERRADA'}.`);
+  };
+
+  const handleDeleteEnquete = async (enq: EnquetePersonalizada) => {
+    if (confirm(`Deseja realmente excluir a enquete "${enq.titulo}"?`)) {
+      await deleteEnquetePersonalizada(enq.id);
+      await loadEnquetesData();
+      showToast('Enquete removida.');
+    }
+  };
+
+  const handleCopyEnqueteLink = (enq: EnquetePersonalizada) => {
+    if (typeof window === 'undefined') return;
+    const url = `${window.location.origin}/pesquisa-tcc?enquete=${enq.id}`;
+    navigator.clipboard.writeText(url);
+    showToast(`Link da enquete "${enq.titulo}" copiado!`);
+  };
 
   const handleCopyPesquisaLink = () => {
     if (typeof window === 'undefined') return;
@@ -228,8 +342,16 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     }
 
     const headers = ['ID', 'Data/Hora', 'Tipo de Público', 'Nome', 'Igreja', 'Cidade/UF', 'Origem', 'Autorizou TCLE', 'Média Likert'];
-    const questionCols = PERGUNTAS_PESQUISA_TCC.map((p) => p.id);
-    const questionHeaders = PERGUNTAS_PESQUISA_TCC.map((p) => `"[${p.id}] ${p.enunciado.replace(/"/g, '""')}"`);
+    
+    // Coleta todas as chaves de perguntas presentes nas respostas dos participantes
+    const allQuestionKeySet = new Set<string>();
+    pesquisaCampoRecords.forEach((r) => {
+      if (r.respostas) {
+        Object.keys(r.respostas).forEach((k) => allQuestionKeySet.add(k));
+      }
+    });
+    const questionCols = Array.from(allQuestionKeySet);
+    const questionHeaders = questionCols.map((k) => `"${k}"`);
     const allHeaders = [...headers, ...questionHeaders].join(';');
 
     const rows = pesquisaCampoRecords.map((r) => {
@@ -1008,6 +1130,14 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             </Button>
 
             <Button
+              onClick={() => setIsNewEnqueteModalOpen(true)}
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Criar Nova Enquete</span>
+            </Button>
+
+            <Button
               onClick={handleExportPesquisaCsv}
               variant="outline"
               size="sm"
@@ -1030,6 +1160,73 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             </Button>
           </div>
         </div>
+
+        {/* Banner Informativo de Alteração de Respostas */}
+        <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div>
+              <span className="font-extrabold text-emerald-900 block">Enquete Aberta para Respostas e Alterações:</span>
+              <span className="text-emerald-800 text-[11px]">
+                Os participantes podem responder e alterar suas respostas a qualquer momento até a conclusão da pesquisa. Respostas salvas online no Supabase com sincronização em tempo real.
+              </span>
+            </div>
+          </div>
+          <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 self-start sm:self-auto shrink-0 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>🟢 Status: Aberta</span>
+          </span>
+        </div>
+
+        {/* Bloco de Enquetes Customizadas Adicionais */}
+        {enquetesList.length > 0 && (
+          <div className="space-y-3 pt-2">
+            <h3 className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+              <span>Outras Enquetes Ativas no Sistema ({enquetesList.length})</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {enquetesList.map((enq) => (
+                <div key={enq.id} className="p-4 bg-slate-50 rounded-2xl border border-gray-200 space-y-3 shadow-2xs">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 className="text-sm font-extrabold text-slate-900">{enq.titulo}</h4>
+                      <p className="text-xs text-gray-500 line-clamp-2">{enq.descricao || 'Sem descrição informada.'}</p>
+                    </div>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${enq.status === 'aberta' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-gray-200 text-gray-700'}`}>
+                      {enq.status === 'aberta' ? '🟢 Aberta' : '🔒 Encerrada'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-200">
+                    <span>{enq.perguntas.length} {enq.perguntas.length === 1 ? 'pergunta' : 'perguntas'}</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleCopyEnqueteLink(enq)}
+                        className="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1 cursor-pointer"
+                        title="Copiar Link"
+                      >
+                        <Share2 className="w-3 h-3" />
+                        <span>Copiar Link</span>
+                      </button>
+                      <button
+                        onClick={() => handleToggleEnqueteStatus(enq)}
+                        className="text-slate-600 hover:text-slate-900 font-bold cursor-pointer"
+                      >
+                        {enq.status === 'aberta' ? 'Encerrar' : 'Reabrir'}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteEnquete(enq)}
+                        className="text-rose-600 hover:text-rose-800 font-bold cursor-pointer"
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Cards de Métricas por Público */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -1228,19 +1425,58 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
 
               <div className="space-y-3">
                 <h4 className="text-xs font-black uppercase tracking-wider text-slate-700">Respostas por Pergunta:</h4>
-                {PERGUNTAS_PESQUISA_TCC.map((p, idx) => {
-                  const val = selectedResponseDetail.respostas?.[p.id];
-                  return (
-                    <div key={p.id} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-1">
-                      <p className="text-xs font-bold text-slate-900">
-                        {idx + 1}. {p.enunciado}
-                      </p>
-                      <div className="text-xs text-indigo-950 font-extrabold bg-indigo-50/60 p-2 rounded-lg border border-indigo-100">
-                        {val !== undefined && val !== null ? String(val) : 'Sem resposta'}
-                      </div>
-                    </div>
+                {(() => {
+                  const perguntas = getPerguntasParaPublico(selectedResponseDetail.tipo_publico as any);
+                  const handledKeys = new Set(perguntas.map((p) => p.id));
+                  const unhandledEntries = Object.entries(selectedResponseDetail.respostas || {}).filter(
+                    ([k]) => !handledKeys.has(k)
                   );
-                })}
+
+                  return (
+                    <>
+                      {perguntas.map((p, idx) => {
+                        const val = selectedResponseDetail.respostas?.[p.id];
+                        return (
+                          <div key={p.id} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-1.5 shadow-xs">
+                            <p className="text-xs font-bold text-slate-900 leading-snug">
+                              {idx + 1}. {p.enunciado}
+                            </p>
+                            <div className="text-xs text-indigo-950 font-bold bg-indigo-50/70 p-2.5 rounded-lg border border-indigo-100 whitespace-pre-wrap">
+                              {val !== undefined && val !== null && String(val).trim() !== '' ? (
+                                typeof val === 'number' ? (
+                                  <span className="flex items-center gap-1.5 text-indigo-900">
+                                    <span>⭐ Nota: <strong>{val}</strong> de 5</span>
+                                    <span className="text-[11px] text-gray-500 font-normal">
+                                      ({val === 5 ? 'Concordo Totalmente' : val === 4 ? 'Concordo Parcialmente' : val === 3 ? 'Neutro' : val === 2 ? 'Discordo Parcialmente' : 'Discordo Totalmente'})
+                                    </span>
+                                  </span>
+                                ) : (
+                                  <span>{String(val)}</span>
+                                )
+                              ) : (
+                                <span className="text-gray-400 font-normal italic">Sem resposta</span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {unhandledEntries.length > 0 && (
+                        <div className="pt-3 border-t border-dashed border-gray-200 space-y-2">
+                          <h5 className="text-[11px] font-bold text-slate-600 uppercase">Campos e Observações Complementares:</h5>
+                          {unhandledEntries.map(([k, v]) => (
+                            <div key={k} className="p-3 bg-amber-50/70 rounded-xl border border-amber-200 space-y-1">
+                              <p className="text-xs font-bold text-amber-950">{k}:</p>
+                              <div className="text-xs text-amber-900 font-medium whitespace-pre-wrap bg-white/70 p-2 rounded-lg border border-amber-100">
+                                {String(v)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
 
@@ -1458,6 +1694,155 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* ========================================================================= */}
+      {/* MODAL DE CRIAÇÃO DE NOVA ENQUETE / PESQUISA DINÂMICA                      */}
+      {/* ========================================================================= */}
+      {isNewEnqueteModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="p-4 sm:p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white flex items-center justify-between border-b border-indigo-900/40 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-black shadow-md">
+                  <Plus className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">
+                    Formulário Dinâmico • TCC & LMS
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-black text-white">Criar Nova Enquete de Campo</h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsNewEnqueteModalOpen(false)}
+                className="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Conteúdo */}
+            <div className="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1 bg-slate-50/50">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Título da Enquete / Pesquisa: *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Avaliação do Módulo 1 • Metodologias Ativas na Teologia"
+                  value={newEnqueteTitulo}
+                  onChange={(e) => setNewEnqueteTitulo(e.target.value)}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Descrição / Objetivo Científico:</label>
+                <textarea
+                  rows={2}
+                  placeholder="Explicação para os participantes sobre a importância desta coleta empírica..."
+                  value={newEnqueteDescricao}
+                  onChange={(e) => setNewEnqueteDescricao(e.target.value)}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Público-Alvo Prioritário:</label>
+                <select
+                  value={newEnquetePublico}
+                  onChange={(e) => setNewEnquetePublico(e.target.value)}
+                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+                  <option value="todos">Todos os Públicos (Geral)</option>
+                  <option value="aluno_unimb">Seminaristas / Alunos</option>
+                  <option value="professor_unimb">Professores / Docentes</option>
+                  <option value="monitor_unimb">Monitores</option>
+                  <option value="externo_pastor">Pastores & Líderes Eclesiásticos</option>
+                </select>
+              </div>
+
+              {/* Lista de Perguntas */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-700">Perguntas da Enquete ({newEnquetePerguntas.length})</h4>
+                  <button
+                    type="button"
+                    onClick={handleAddQuestionToNewEnquete}
+                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Adicionar Pergunta</span>
+                  </button>
+                </div>
+
+                {newEnquetePerguntas.map((q, idx) => (
+                  <div key={q.id} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-2.5 shadow-2xs">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[11px] font-black uppercase text-indigo-700">Pergunta {idx + 1}</span>
+                      {newEnquetePerguntas.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setNewEnquetePerguntas(newEnquetePerguntas.filter((_, i) => i !== idx))}
+                          className="text-rose-500 hover:text-rose-700 text-xs font-bold cursor-pointer"
+                        >
+                          Remover
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Digite o enunciado da pergunta..."
+                      value={q.enunciado}
+                      onChange={(e) => {
+                        const updated = [...newEnquetePerguntas];
+                        updated[idx].enunciado = e.target.value;
+                        setNewEnquetePerguntas(updated);
+                      }}
+                      className="w-full p-2 bg-slate-50 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none focus:bg-white"
+                    />
+                    <div className="flex items-center gap-3">
+                      <label className="text-[11px] font-bold text-gray-500">Tipo de Resposta:</label>
+                      <select
+                        value={q.tipo}
+                        onChange={(e) => {
+                          const updated = [...newEnquetePerguntas];
+                          updated[idx].tipo = e.target.value as any;
+                          setNewEnquetePerguntas(updated);
+                        }}
+                        className="p-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium focus:outline-none"
+                      >
+                        <option value="likert_5">Escala Likert (1 a 5 estrelas)</option>
+                        <option value="texto">Texto Discursivo Aberto</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 bg-white border-t border-gray-100 flex items-center justify-end gap-2 shrink-0">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsNewEnqueteModalOpen(false)}
+                className="font-bold cursor-pointer"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                onClick={handleCreateEnquete}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold shadow-md cursor-pointer"
+              >
+                Criar e Publicar Enquete
+              </Button>
+            </div>
           </div>
         </div>
       )}

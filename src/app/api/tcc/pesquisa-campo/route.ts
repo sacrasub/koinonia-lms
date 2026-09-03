@@ -52,25 +52,61 @@ export async function POST(request: Request) {
 
     let recordId = payloadToStore.id;
 
-    // 3. Tentativa Primária: Tabela dedicada tcc_pesquisa_respostas
-    const { data, error } = await supabase
-      .from('tcc_pesquisa_respostas')
-      .insert([payloadToStore])
-      .select('id')
-      .single();
+    // 3. Busca se já existe submissão anterior deste participante para permitir alteração de respostas
+    const respondentEmail = (payloadToStore.user_email || payloadToStore.dados_identificacao?.email || '').toLowerCase().trim();
+    const respondentName = (payloadToStore.dados_identificacao?.nome || '').toLowerCase().trim();
+    const backupTitle = `[TCC_PESQUISA_BACKUP] ${tipo_publico} - ${payloadToStore.dados_identificacao?.nome || 'Anônimo'}`;
 
-    if (!error && data?.id) {
-      recordId = data.id;
+    let existingBackupId: string | null = null;
+
+    try {
+      const { data: existingRows } = await supabase
+        .from('materiais')
+        .select('id, google_drive_url')
+        .like('title', `[TCC_PESQUISA_BACKUP] ${tipo_publico}%`)
+        .limit(100);
+
+      if (existingRows && existingRows.length > 0) {
+        for (const row of existingRows) {
+          try {
+            const parsed = JSON.parse(row.google_drive_url);
+            const rowEmail = (parsed.user_email || parsed.dados_identificacao?.email || '').toLowerCase().trim();
+            const rowName = (parsed.dados_identificacao?.nome || '').toLowerCase().trim();
+
+            const isEmailMatch = respondentEmail && rowEmail && respondentEmail === rowEmail;
+            const isNameMatch = respondentName && rowName && respondentName === rowName;
+
+            if (isEmailMatch || isNameMatch) {
+              existingBackupId = row.id;
+              payloadToStore.id = parsed.id || payloadToStore.id;
+              break;
+            }
+          } catch (_) {}
+        }
+      }
+    } catch (findErr) {
+      console.warn('[PesquisaCampo] Aviso ao buscar submissão prévia:', findErr);
+    }
+
+    if (existingBackupId) {
+      // Atualiza a resposta existente (permitindo ao participante alterar suas respostas)
+      await supabase
+        .from('materiais')
+        .update({
+          title: backupTitle,
+          google_drive_url: JSON.stringify(payloadToStore),
+        })
+        .eq('id', existingBackupId);
+
+      recordId = existingBackupId;
     } else {
-      console.warn('[PesquisaCampo] Tabela tcc_pesquisa_respostas indisponível no schema cache. Gravando em materiais como fallback seguro...', error?.message);
-
       // Fallback seguro: Gravação na tabela materiais com UUID válido
       const { data: fallbackData, error: fallbackError } = await supabase
         .from('materiais')
         .insert([
           {
             disciplina_id: 'a1111111-1111-1111-1111-111111111111',
-            title: `[TCC_PESQUISA_BACKUP] ${tipo_publico} - ${payloadToStore.dados_identificacao?.nome || 'Anônimo'}`,
+            title: backupTitle,
             google_drive_url: JSON.stringify(payloadToStore),
             is_native_upload: false,
           },
@@ -86,7 +122,7 @@ export async function POST(request: Request) {
 
     // Resposta minimal (Zero-Waste Egress) - Sempre bem-sucedida para o respondente!
     return NextResponse.json(
-      { success: true, id: recordId, saved: true },
+      { success: true, id: recordId, updated: Boolean(existingBackupId), saved: true },
       { status: 201 }
     );
   } catch (err: any) {
@@ -157,6 +193,20 @@ export async function GET(request: Request) {
           }
         } catch (_) {}
       }
+    }
+
+    const emailParam = searchParams.get('email')?.toLowerCase().trim();
+    if (emailParam) {
+      const matched = Array.from(resultsMap.values()).find((r) => {
+        const rEmail = (r.user_email || r.dados_identificacao?.email || '').toLowerCase().trim();
+        return rEmail === emailParam;
+      });
+
+      return NextResponse.json({
+        success: true,
+        found: Boolean(matched),
+        data: matched || null,
+      });
     }
 
     const results = Array.from(resultsMap.values()).sort((a, b) => {

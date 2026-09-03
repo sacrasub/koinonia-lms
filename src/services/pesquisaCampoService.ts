@@ -997,3 +997,145 @@ export async function getPesquisaCampoAdminData(): Promise<{
     records,
   };
 }
+
+// =========================================================================
+// SISTEMA DE ENQUETES DINÂMICAS E CUSTOMIZADAS DO TCC & LMS
+// =========================================================================
+
+export interface PerguntaEnqueteCustom {
+  id: string;
+  enunciado: string;
+  tipo: 'likert_5' | 'texto' | 'multipla_escolha';
+  opcoes?: string[];
+  obrigatoria: boolean;
+}
+
+export interface EnquetePersonalizada {
+  id: string;
+  titulo: string;
+  descricao: string;
+  publicoAlvo: string; // 'todos' | TipoPublico
+  status: 'aberta' | 'encerrada';
+  permiteEdicao: boolean;
+  created_at: string;
+  created_by: string;
+  perguntas: PerguntaEnqueteCustom[];
+}
+
+const ENQUETES_CUSTOM_STORAGE_KEY = 'lms_enquetes_personalizadas_v1';
+const ENQUETES_CUSTOM_CLOUD_TITLE = 'lms_enquetes_personalizadas_cloud_v1';
+
+export async function getEnquetesPersonalizadas(): Promise<EnquetePersonalizada[]> {
+  let list: EnquetePersonalizada[] = [];
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem(ENQUETES_CUSTOM_STORAGE_KEY);
+      if (raw) list = JSON.parse(raw);
+    } catch (_) {}
+  }
+
+  try {
+    const { data } = await supabase
+      .from('materiais')
+      .select('file_url')
+      .eq('title', ENQUETES_CUSTOM_CLOUD_TITLE)
+      .limit(1);
+
+    if (data && data.length > 0 && data[0].file_url) {
+      const remoteList: EnquetePersonalizada[] = JSON.parse(data[0].file_url);
+      if (Array.isArray(remoteList)) {
+        list = remoteList;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(ENQUETES_CUSTOM_STORAGE_KEY, JSON.stringify(list));
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('[Enquetes] Fallback offline:', err);
+  }
+
+  return list;
+}
+
+export async function saveEnquetePersonalizada(enquete: EnquetePersonalizada): Promise<boolean> {
+  const current = await getEnquetesPersonalizadas();
+  const existingIdx = current.findIndex((e) => e.id === enquete.id);
+  let updated: EnquetePersonalizada[];
+  if (existingIdx >= 0) {
+    updated = [...current];
+    updated[existingIdx] = enquete;
+  } else {
+    updated = [enquete, ...current];
+  }
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(ENQUETES_CUSTOM_STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('lms_enquetes_updated', { detail: updated }));
+  }
+
+  try {
+    const jsonStr = JSON.stringify(updated);
+    const { data: existing } = await supabase
+      .from('materiais')
+      .select('id')
+      .eq('title', ENQUETES_CUSTOM_CLOUD_TITLE)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      await supabase
+        .from('materiais')
+        .update({ file_url: jsonStr })
+        .eq('id', existing[0].id);
+    } else {
+      await supabase.from('materiais').insert([
+        {
+          disciplina_id: null,
+          title: ENQUETES_CUSTOM_CLOUD_TITLE,
+          file_url: jsonStr,
+          is_native_upload: false,
+        },
+      ]);
+    }
+    return true;
+  } catch (e) {
+    console.warn('[Enquetes] Erro ao sincronizar nuvem:', e);
+    return true;
+  }
+}
+
+export async function toggleEnqueteStatus(id: string, status: 'aberta' | 'encerrada'): Promise<boolean> {
+  const current = await getEnquetesPersonalizadas();
+  const target = current.find((e) => e.id === id);
+  if (!target) return false;
+  target.status = status;
+  return saveEnquetePersonalizada(target);
+}
+
+export async function deleteEnquetePersonalizada(id: string): Promise<boolean> {
+  const current = await getEnquetesPersonalizadas();
+  const filtered = current.filter((e) => e.id !== id);
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(ENQUETES_CUSTOM_STORAGE_KEY, JSON.stringify(filtered));
+    window.dispatchEvent(new CustomEvent('lms_enquetes_updated', { detail: filtered }));
+  }
+
+  try {
+    const jsonStr = JSON.stringify(filtered);
+    const { data: existing } = await supabase
+      .from('materiais')
+      .select('id')
+      .eq('title', ENQUETES_CUSTOM_CLOUD_TITLE)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      await supabase
+        .from('materiais')
+        .update({ file_url: jsonStr })
+        .eq('id', existing[0].id);
+    }
+    return true;
+  } catch (e) {
+    return true;
+  }
+}

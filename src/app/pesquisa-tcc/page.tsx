@@ -65,6 +65,8 @@ export default function PesquisaTCCPage() {
   // Mapa de estados de todos os perfis já preenchidos neste navegador
   const [allProfileStates, setAllProfileStates] = useState<Record<string, PerfilResponseState>>({});
   const [isEditingExistingProfile, setIsEditingExistingProfile] = useState<boolean>(false);
+  const [cloudLoadedNotice, setCloudLoadedNotice] = useState<string | null>(null);
+  const [isLoadingRemoteResponses, setIsLoadingRemoteResponses] = useState<boolean>(false);
 
   // Sessão e Autenticação
   const [userAuthEmail, setUserAuthEmail] = useState<string | null>(null);
@@ -118,6 +120,40 @@ export default function PesquisaTCCPage() {
       setIsEditingExistingProfile(pState.status === 'enviado');
     }
 
+    const loadRemoteResponsesIfAny = async (emailToSearch: string) => {
+      if (!emailToSearch || !emailToSearch.includes('@')) return;
+      setIsLoadingRemoteResponses(true);
+      try {
+        const res = await fetch(`/api/tcc/pesquisa-campo?email=${encodeURIComponent(emailToSearch.toLowerCase().trim())}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.found && data.data) {
+            const rec = data.data;
+            if (rec.respostas && Object.keys(rec.respostas).length > 0) {
+              setRespostas(rec.respostas);
+              if (rec.tipo_publico) {
+                setTipoPublico(rec.tipo_publico);
+              }
+              if (rec.dados_identificacao) {
+                setDadosIdentificacao((prev) => ({
+                  ...prev,
+                  ...rec.dados_identificacao,
+                  email: emailToSearch.toLowerCase().trim(),
+                }));
+              }
+              setAutorizouTcle(true);
+              setIsEditingExistingProfile(true);
+              setCloudLoadedNotice(`✨ Respostas de ${rec.dados_identificacao?.nome || emailToSearch} recuperadas da nuvem! Você pode alterá-las livremente.`);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Aviso ao carregar respostas remotas:', e);
+      } finally {
+        setIsLoadingRemoteResponses(false);
+      }
+    };
+
     // Checa sessão Supabase
     supabase.auth.getSession().then(({ data }) => {
       setIsAuthLoading(false);
@@ -132,6 +168,9 @@ export default function PesquisaTCCPage() {
           email: prev.email || email,
           nome: prev.nome || name,
         }));
+        if (email) {
+          loadRemoteResponsesIfAny(email);
+        }
       }
     });
 
@@ -146,6 +185,9 @@ export default function PesquisaTCCPage() {
           email: prev.email || email,
           nome: prev.nome || name,
         }));
+        if (email) {
+          loadRemoteResponsesIfAny(email);
+        }
       }
     });
 
@@ -654,6 +696,16 @@ export default function PesquisaTCCPage() {
                   </div>
                 )}
 
+                {cloudLoadedNotice && (
+                  <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-400" />
+                    <div>
+                      <strong className="block text-emerald-300 font-bold">Respostas Recuperadas da Nuvem:</strong>
+                      {cloudLoadedNotice}
+                    </div>
+                  </div>
+                )}
+
                 {/* EXIGÊNCIA DE AUTENTICAÇÃO PARA COMUNIDADE INTERNA */}
                 {isComunidadeInterna && (
                   <div className="p-5 rounded-2xl bg-indigo-950/50 border border-indigo-500/40 space-y-3">
@@ -711,10 +763,55 @@ export default function PesquisaTCCPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 mb-1">WhatsApp ou E-mail (Opcional):</label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-[11px] font-bold text-slate-400">WhatsApp ou E-mail (Opcional):</label>
+                        {(dadosIdentificacao.whatsapp || dadosIdentificacao.email) && (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const emailToSearch = (dadosIdentificacao.email || dadosIdentificacao.whatsapp || '').trim().toLowerCase();
+                              if (!emailToSearch.includes('@')) {
+                                setErrorMessage('Por favor, informe um endereço de e-mail válido para buscar respostas anteriores.');
+                                return;
+                              }
+                              setIsLoadingRemoteResponses(true);
+                              try {
+                                const res = await fetch(`/api/tcc/pesquisa-campo?email=${encodeURIComponent(emailToSearch)}`);
+                                const data = await res.json();
+                                if (data.success && data.found && data.data) {
+                                  const rec = data.data;
+                                  setRespostas(rec.respostas || {});
+                                  if (rec.tipo_publico) setTipoPublico(rec.tipo_publico);
+                                  if (rec.dados_identificacao) {
+                                    setDadosIdentificacao((prev) => ({
+                                      ...prev,
+                                      ...rec.dados_identificacao,
+                                      email: emailToSearch,
+                                    }));
+                                  }
+                                  setAutorizouTcle(true);
+                                  setIsEditingExistingProfile(true);
+                                  setCloudLoadedNotice(`✨ Respostas de ${rec.dados_identificacao?.nome || emailToSearch} carregadas! Você pode alterá-las livremente.`);
+                                } else {
+                                  setErrorMessage('Nenhuma resposta prévia encontrada para este e-mail. Você pode responder agora!');
+                                }
+                              } catch (_) {
+                                setErrorMessage('Erro ao consultar respostas na nuvem.');
+                              } finally {
+                                setIsLoadingRemoteResponses(false);
+                              }
+                            }}
+                            disabled={isLoadingRemoteResponses}
+                            className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold underline flex items-center gap-1 cursor-pointer"
+                          >
+                            <RefreshCw className={`w-3 h-3 ${isLoadingRemoteResponses ? 'animate-spin' : ''}`} />
+                            <span>{isLoadingRemoteResponses ? 'Buscando...' : 'Carregar Minhas Respostas da Nuvem'}</span>
+                          </button>
+                        )}
+                      </div>
                       <input
                         type="text"
-                        placeholder="Para receber o artigo final do TCC"
+                        placeholder="Para receber o artigo do TCC ou carregar respostas para alterar"
                         value={dadosIdentificacao.whatsapp || dadosIdentificacao.email || ''}
                         onChange={(e) => setDadosIdentificacao({ ...dadosIdentificacao, whatsapp: e.target.value, email: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500"

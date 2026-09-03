@@ -11,7 +11,7 @@ import {
 import { Disciplina, UserRole } from '@/types';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { getAuthorizedUserInfo } from '@/lib/authConfig';
-import { getDateForLesson } from '@/lib/semesterUtils';
+import { getDateForLesson, getAulaEmAndamentoHoje } from '@/lib/semesterUtils';
 import { 
   addGravacao, 
   formatDuration, 
@@ -154,32 +154,54 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     }
   };
 
-  // Carrega disciplinas
+  // Carrega disciplinas e pré-configura a aula em andamento
   useEffect(() => {
     const all = getAllDisciplinas();
     setDisciplinas(all);
     if (!selectedDisciplinaId && all.length > 0) {
-      setSelectedDisciplinaId(defaultDisciplinaId || all[0].id);
+      const aulaEmAndamento = getAulaEmAndamentoHoje(all);
+      if (defaultDisciplinaId) {
+        setSelectedDisciplinaId(defaultDisciplinaId);
+      } else if (aulaEmAndamento) {
+        setSelectedDisciplinaId(aulaEmAndamento.disciplinaId);
+        setAulaNum(defaultAulaNum || aulaEmAndamento.aulaNum);
+        setDataAula(aulaEmAndamento.dataAula);
+      } else {
+        setSelectedDisciplinaId(all[0].id);
+      }
     }
-  }, [defaultDisciplinaId, selectedDisciplinaId]);
+  }, [defaultDisciplinaId, selectedDisciplinaId, defaultAulaNum]);
 
-  // Restaura do modo minimizado ao abrir explicitamente
+  // Ao abrir o modal, sempre garante a pré-configuração inteligente da aula em andamento
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && recordingState === 'idle') {
       setIsMinimized(false);
       checkPendingRecoveries();
       syncActiveCloudSessions();
-    }
-  }, [isOpen]);
 
-  useEffect(() => {
-    if (defaultDisciplinaId && recordingState === 'idle') {
-      setSelectedDisciplinaId(defaultDisciplinaId);
+      const all = getAllDisciplinas();
+      const aulaEmAndamento = getAulaEmAndamentoHoje(all);
+
+      if (defaultDisciplinaId) {
+        setSelectedDisciplinaId(defaultDisciplinaId);
+      } else if (aulaEmAndamento) {
+        setSelectedDisciplinaId(aulaEmAndamento.disciplinaId);
+      }
+
+      if (defaultAulaNum) {
+        setAulaNum(defaultAulaNum);
+      } else if (aulaEmAndamento) {
+        setAulaNum(aulaEmAndamento.aulaNum);
+        setDataAula(aulaEmAndamento.dataAula);
+      }
+
+      const mode = initialMode || 'autopilot';
+      setActiveTabMode(mode);
+      if (mode === 'autopilot') {
+        setIsAutoPilot(true);
+      }
     }
-    if (defaultAulaNum && recordingState === 'idle') {
-      setAulaNum(defaultAulaNum);
-    }
-  }, [defaultDisciplinaId, defaultAulaNum, recordingState]);
+  }, [isOpen, defaultDisciplinaId, defaultAulaNum, initialMode]);
 
   // Atualiza a data sugerida da aula ao mudar a disciplina ou número
   useEffect(() => {
@@ -192,16 +214,6 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     }
   }, [selectedDisciplinaId, aulaNum, disciplinas, recordingState]);
 
-  // Sincroniza modo inicial (ex: Piloto Automático acionado pelo monitor)
-  useEffect(() => {
-    if (initialMode && recordingState === 'idle') {
-      setActiveTabMode(initialMode);
-      if (initialMode === 'autopilot') {
-        setIsAutoPilot(true);
-      }
-    }
-  }, [initialMode, isOpen, recordingState]);
-
   const calculateAutoStopTargetTimestamp = (): number => {
     if (autoStopMode === 'fixed_time') {
       const now = new Date();
@@ -213,17 +225,20 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       }
       return target.getTime();
     } else {
-      return Date.now() + (autoStopDurationMinutes || 120) * 60 * 1000;
+      return Date.now() + autoStopDurationMinutes * 60 * 1000;
     }
   };
 
   const getEstimatedEndTimeString = (): string => {
-    const ts = calculateAutoStopTargetTimestamp();
-    const date = new Date(ts);
-    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    if (autoStopMode === 'fixed_time') {
+      return autoStopFixedTime;
+    }
+    const end = new Date(Date.now() + autoStopDurationMinutes * 60 * 1000);
+    const h = String(end.getHours()).padStart(2, '0');
+    const m = String(end.getMinutes()).padStart(2, '0');
+    return `${h}:${m}`;
   };
 
-  // Verifica gravações pendentes em IndexedDB
   const checkPendingRecoveries = async () => {
     try {
       const list = await getPendingLocalRecordings();
@@ -288,11 +303,22 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const selectedDisciplina = disciplinas.find((d) => d.id === selectedDisciplinaId);
 
   const getMonitorDisplayName = () => {
+    if (normalizedEmail.includes('sacra') || normalizedEmail.includes('cristiano') || normalizedEmail.includes('riffocristianmision')) {
+      return 'Monitor Cristiano';
+    }
     if (normalizedEmail.includes('camila')) return 'Monitora Camila';
-    if (normalizedEmail.includes('cristiano')) return 'Monitor Cristiano';
     if (normalizedEmail.includes('rosiane')) return 'Monitora Rosiane';
-    if (normalizedEmail.includes('robson') || normalizedEmail.includes('sacra')) return 'Profº Robson Rocha';
-    return 'Monitoria UIECB';
+    if (normalizedEmail.includes('andre')) return 'Monitor André';
+    if (normalizedEmail.includes('daniel')) return 'Monitor Daniel';
+    if (normalizedEmail.includes('renata')) return 'Monitora Renata';
+    if (normalizedEmail.includes('thiago')) return 'Monitor Thiago';
+    if (normalizedEmail.includes('julia')) return 'Monitora Júlia';
+    if (normalizedEmail.includes('paulo')) return 'Monitor Paulo Roberto';
+    if (normalizedEmail.includes('robert')) return 'Monitor Robert';
+    if (authInfo.user?.name) {
+      return `Monitor ${authInfo.user.name.split(' ')[0]}`;
+    }
+    return 'Monitor Cristiano';
   };
 
   // =========================================================================

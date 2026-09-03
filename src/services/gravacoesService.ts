@@ -770,7 +770,14 @@ export function getActiveRecordings(): ActiveRecordingSession[] {
       return s.status === 'recording' && now - started < 3.5 * 60 * 60 * 1000;
     });
 
-    return valid;
+    const sanitized = valid.map((s) => {
+      if (s.recordedByName?.includes('Robson') || s.recordedByEmail?.includes('sacra') || s.recordedByEmail?.includes('riffocristianmision')) {
+        return { ...s, recordedByName: 'Monitor Cristiano' };
+      }
+      return s;
+    });
+
+    return sanitized;
   } catch (e) {
     return [];
   }
@@ -797,9 +804,16 @@ export async function fetchActiveRecordingsFromCloud(): Promise<ActiveRecordingS
           return s.status === 'recording' && now - started < 3.5 * 60 * 60 * 1000;
         });
 
-        localStorage.setItem(ACTIVE_RECORDINGS_STORAGE_KEY, JSON.stringify(valid));
-        window.dispatchEvent(new CustomEvent('lms_active_recordings_updated', { detail: valid }));
-        return valid;
+        const sanitized = valid.map((s) => {
+          if (s.recordedByName?.includes('Robson') || s.recordedByEmail?.includes('sacra') || s.recordedByEmail?.includes('riffocristianmision')) {
+            return { ...s, recordedByName: 'Monitor Cristiano' };
+          }
+          return s;
+        });
+
+        localStorage.setItem(ACTIVE_RECORDINGS_STORAGE_KEY, JSON.stringify(sanitized));
+        window.dispatchEvent(new CustomEvent('lms_active_recordings_updated', { detail: sanitized }));
+        return sanitized;
       }
     }
   } catch (err) {

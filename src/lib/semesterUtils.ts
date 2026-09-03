@@ -1,3 +1,5 @@
+import { Disciplina } from '@/types';
+
 export interface SemesterWeek {
   weekNumber: number; // 1 a 16
   startDate: Date;
@@ -145,4 +147,109 @@ export function getShortDateForLesson(weekIndex: number, dayOfWeek?: string): st
   const monthStr = String(lessonDate.getMonth() + 1).padStart(2, '0');
 
   return `${dayStr}/${monthStr}`;
+}
+
+export interface AulaEmAndamentoInfo {
+  disciplinaId: string;
+  disciplinaName: string;
+  aulaNum: number;
+  dataAula: string;
+  googleMeetUrl?: string;
+  dayOfWeek: string;
+  startBRT: string;
+  endBRT: string;
+  isHappeningNow: boolean;
+}
+
+/**
+ * Identifica a aula em andamento agora no Seminário com base no horário de Brasília (BRT) e na grade semanal
+ */
+export function getAulaEmAndamentoHoje(allDisciplinas: Disciplina[]): AulaEmAndamentoInfo | null {
+  if (!allDisciplinas || allDisciplinas.length === 0) return null;
+
+  const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+  const now = new Date();
+  const brtString = now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });
+  const brtDate = new Date(brtString);
+  const currentDayIndex = brtDate.getDay();
+  const currentMinutes = brtDate.getHours() * 60 + brtDate.getMinutes();
+
+  // Se for fim de semana ou segunda, projeta para Terça-feira (início das aulas)
+  let targetDay = days[currentDayIndex];
+  if (currentDayIndex === 0 || currentDayIndex === 1 || currentDayIndex === 6) {
+    targetDay = 'Terça-feira';
+  }
+
+  const weekIndex = getCurrentWeekIndex();
+  const aulaNum = Math.max(1, Math.min(16, weekIndex + 1));
+
+  // Filtra disciplinas do dia da Turma A (ou as 9 disciplinas principais)
+  const discsToday = allDisciplinas.filter((d) => {
+    const dDay = (d.day_of_week || '').toLowerCase();
+    const tDay = targetDay.toLowerCase();
+    return dDay.includes(tDay) || tDay.includes(dDay.split(' ')[0]);
+  });
+
+  if (discsToday.length === 0) {
+    const first = allDisciplinas[0];
+    return {
+      disciplinaId: first.id,
+      disciplinaName: first.name,
+      aulaNum,
+      dataAula: getDateForLesson(weekIndex, first.day_of_week),
+      googleMeetUrl: first.google_meet_url,
+      dayOfWeek: first.day_of_week,
+      startBRT: first.start_time || '19:00',
+      endBRT: first.end_time || '20:25',
+      isHappeningNow: false,
+    };
+  }
+
+  // Ordena por horário de início
+  discsToday.sort((a, b) => {
+    const [hA, mA] = (a.start_time || '19:00').split(':').map(Number);
+    const [hB, mB] = (b.start_time || '19:00').split(':').map(Number);
+    return (hA * 60 + mA) - (hB * 60 + mB);
+  });
+
+  let chosenDisc = discsToday[0];
+  let isHappeningNow = false;
+
+  for (let i = 0; i < discsToday.length; i++) {
+    const d = discsToday[i];
+    const [startH, startM] = (d.start_time || '19:00').split(':').map(Number);
+    const [endH, endM] = (d.end_time || '20:25').split(':').map(Number);
+    const startMin = startH * 60 + startM;
+    const endMin = endH * 60 + endM;
+
+    // Se estiver no intervalo da aula (com 20 min de antecedência e até 10 min após o encerramento)
+    if (currentMinutes >= (startMin - 20) && currentMinutes <= (endMin + 10)) {
+      chosenDisc = d;
+      isHappeningNow = true;
+      break;
+    }
+  }
+
+  // Se não estiver exatamente no horário de nenhuma, mas for depois do fim da primeira aula (ex: 20:30 em diante)
+  if (!isHappeningNow && discsToday.length > 1) {
+    const [firstEndH, firstEndM] = (discsToday[0].end_time || '20:25').split(':').map(Number);
+    const firstEndMin = firstEndH * 60 + firstEndM;
+    if (currentMinutes >= firstEndMin) {
+      chosenDisc = discsToday[1];
+    }
+  }
+
+  const calculatedDate = getDateForLesson(weekIndex, chosenDisc.day_of_week);
+
+  return {
+    disciplinaId: chosenDisc.id,
+    disciplinaName: chosenDisc.name,
+    aulaNum,
+    dataAula: calculatedDate,
+    googleMeetUrl: chosenDisc.google_meet_url,
+    dayOfWeek: chosenDisc.day_of_week,
+    startBRT: chosenDisc.start_time || '19:00',
+    endBRT: chosenDisc.end_time || '22:00',
+    isHappeningNow,
+  };
 }
