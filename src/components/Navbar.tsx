@@ -182,8 +182,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md shrink-0">
-            ✝
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-md shrink-0 border border-indigo-300/40 bg-slate-900 flex items-center justify-center">
+            <img src="/logo-koinonia-lms.png" alt="Logo Oficial Koinonia LMS" className="w-full h-full object-cover" />
           </div>
 
           <div>
@@ -195,7 +195,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               )}
             </h1>
-            <p className="text-[11px] text-gray-500 font-medium hidden sm:block">Plataforma Acadêmica de Teologia (Semestre 2026.2)</p>
+            <p className="text-[11px] text-gray-500 font-medium hidden sm:block">Seminário Teológico Congregacional • Semestre 2026.2</p>
           </div>
         </div>
 

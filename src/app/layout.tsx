@@ -2,8 +2,41 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Koinonia LMS • Plataforma Teológica',
-  description: 'Plataforma Acadêmica e Seminário Teológico Koinonia LMS',
+  title: 'Koinonia LMS • Seminário Teológico Congregacional',
+  description: 'Plataforma Integrada de Gestão da Aprendizagem do Seminário Teológico Congregacional (UNIMB / UIECB)',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+  },
+  openGraph: {
+    title: 'Koinonia LMS • Seminário Teológico Congregacional',
+    description: 'Plataforma Integrada de Gestão da Aprendizagem do Seminário Teológico Congregacional (UNIMB / UIECB)',
+    url: 'https://koinonialms.vercel.app',
+    siteName: 'Koinonia LMS',
+    images: [
+      {
+        url: 'https://koinonialms.vercel.app/logo-koinonia-lms.png',
+        width: 800,
+        height: 800,
+        alt: 'Logo Oficial Koinonia LMS',
+      },
+    ],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Koinonia LMS • Seminário Teológico Congregacional',
+    description: 'Plataforma Integrada de Gestão da Aprendizagem do Seminário Teológico Congregacional',
+    images: ['https://koinonialms.vercel.app/logo-koinonia-lms.png'],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

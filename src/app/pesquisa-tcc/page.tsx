@@ -59,6 +59,8 @@ export default function PesquisaTCCPage() {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [copiedFullMessage, setCopiedFullMessage] = useState<boolean>(false);
   
   // Mapa de estados de todos os perfis já preenchidos neste navegador
   const [allProfileStates, setAllProfileStates] = useState<Record<string, PerfilResponseState>>({});
@@ -213,6 +215,38 @@ export default function PesquisaTCCPage() {
     setRespostas((prev) => ({ ...prev, [perguntaId]: text }));
   };
 
+  const getFormattedWhatsappMessage = () => {
+    return (
+      `🎓 *Pesquisa de Campo • TCC em Teologia (UNIMB)*\n` +
+      `🏛️ *Seminário Teológico Congregacional & Plataforma Koinonia LMS*\n\n` +
+      `Prezado(a) irmão(ã), pastor, professor ou seminarista,\n\n` +
+      `Gostaria de convidá-lo(a) a participar da pesquisa de campo do Trabalho de Conclusão do Curso de Bacharelado em Teologia no *Centro Universitário do Maciço de Baturité (UNIMB)*:\n\n` +
+      `📖 *Tema:* "Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual: Distância Transacional, Preservação da Koinonia e a Transição do Internato Presencial para o Modelo Síncrono Remoto"\n\n` +
+      `👤 *Pesquisador:* Cristiano do Sacramento Soares\n` +
+      `✝️ *Orientador:* Pastor Alexsandro Silva\n` +
+      `📐 *Metodologia:* Profª Gabriela Leal\n\n` +
+      `O questionário é rápido, intuitivo e conta com *perguntas personalizadas para o seu perfil* (alunos, professores, monitores, pastores ordenados ou membros de congregação).\n\n` +
+      `👉 *Acesse e participe pelo link:*\n` +
+      `https://koinonialms.vercel.app/pesquisa-tcc?origem=whatsapp_externo\n\n` +
+      `Sua colaboração é fundamental para o fortalecimento da educação teológica! Deus abençoe!`
+    );
+  };
+
+  const handleOpenWhatsappDirect = () => {
+    if (typeof window === 'undefined') return;
+    const text = getFormattedWhatsappMessage();
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
+
+  const handleCopyFullMessage = () => {
+    if (typeof window === 'undefined') return;
+    const text = getFormattedWhatsappMessage();
+    navigator.clipboard.writeText(text);
+    setCopiedFullMessage(true);
+    setTimeout(() => setCopiedFullMessage(false), 3000);
+  };
+
   const handleCopyShareLink = () => {
     if (typeof window === 'undefined') return;
     const url = `${window.location.origin}/pesquisa-tcc?origem=whatsapp_externo`;
@@ -301,8 +335,8 @@ export default function PesquisaTCCPage() {
       <header className="border-b border-indigo-900/40 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white font-black shadow-md shrink-0">
-              <GraduationCap className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-md shrink-0 border border-indigo-400/30 bg-slate-900 flex items-center justify-center">
+              <img src="/logo-koinonia-lms.png" alt="Logo Oficial Koinonia LMS" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
@@ -337,12 +371,12 @@ export default function PesquisaTCCPage() {
             </button>
 
             <button
-              onClick={handleCopyShareLink}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-indigo-200 border border-indigo-400/30 transition cursor-pointer"
-              title="Copiar link para WhatsApp"
+              onClick={() => setIsShareModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 transition cursor-pointer shadow-xs active:scale-95"
+              title="Compartilhar pesquisa com convite completo no WhatsApp"
             >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{copiedLink ? 'Copiado!' : 'Compartilhar'}</span>
+              <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Convidar no WhatsApp</span>
             </button>
           </div>
         </div>
@@ -442,11 +476,11 @@ export default function PesquisaTCCPage() {
               </button>
 
               <button
-                onClick={handleCopyShareLink}
-                className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
+                onClick={() => setIsShareModalOpen(true)}
+                className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 font-bold text-xs border border-emerald-500/40 transition flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-95"
               >
                 <Share2 className="w-4 h-4 text-emerald-400" />
-                <span>{copiedLink ? 'Link Copiado!' : 'Convidar Colegas'}</span>
+                <span>Convidar no WhatsApp</span>
               </button>
             </div>
           </div>
@@ -1277,6 +1311,73 @@ export default function PesquisaTCCPage() {
               >
                 Fechar Glossário
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE COMPARTILHAMENTO EXPLICITO PARA WHATSAPP */}
+      {isShareModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold">
+                  <Share2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-black text-white">Convidar no WhatsApp</h3>
+                  <p className="text-[11px] text-emerald-400 font-medium">Mensagem explicativa oficial pronta para envio</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsShareModalOpen(false)}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Prévia da mensagem no estilo balão do WhatsApp */}
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                Prévia da Mensagem que será Enviada:
+              </span>
+              <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-slate-200 font-mono whitespace-pre-line leading-relaxed max-h-60 overflow-y-auto select-all">
+                {getFormattedWhatsappMessage()}
+              </div>
+            </div>
+
+            {/* Ações de Compartilhamento */}
+            <div className="space-y-2 pt-2">
+              <button
+                type="button"
+                onClick={handleOpenWhatsappDirect}
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm shadow-lg transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>Abrir Diretamente no WhatsApp 🚀</span>
+              </button>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyFullMessage}
+                  className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  {copiedFullMessage ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedFullMessage ? 'Texto Copiado!' : 'Copiar Texto'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCopyShareLink}
+                  className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedLink ? 'Link Copiado!' : 'Copiar Link'}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
