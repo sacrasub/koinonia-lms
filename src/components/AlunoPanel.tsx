@@ -87,18 +87,10 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   }, []);
 
   // Estado de recolhimento inteligente das Gravações (recolhido por padrão nos dias de aula)
-  const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(() => {
-    const d = new Date().getDay();
-    return d >= 2 && d <= 5;
-  });
+  const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(false);
 
-  // Estado de recolhimento inteligente do Mural de Recursos (recolhido por padrão quando em dia / 0 pendentes)
-  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(() => {
-    const all = getAnnouncements();
-    const read = getReadAnnouncementIds(normalizedEmail);
-    const pending = all.filter((a) => !a.is_archived && !read.includes(a.id)).length;
-    return pending === 0;
-  });
+  // Estado de recolhimento do Mural de Recursos
+  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(false);
 
   const handleMarkAnnouncementRead = (id: string) => {
     markAnnouncementAsRead(normalizedEmail, id);
@@ -1536,7 +1528,7 @@ href={nextAulaToday.google_meet_url}
                 </h4>
               </div>
               <p className="text-[11px] text-slate-400 mt-0.5">
-                {isClassDay ? 'Recolhido para foco nas aulas de hoje • Clique para assistir gravações anteriores.' : 'Assista às aulas ministradas em alta definição diretamente no seu dispositivo.'}
+                {activeLiveAula ? 'Recolhido para foco na aula ao vivo de hoje • Clique para assistir gravações anteriores.' : 'Assista às aulas ministradas em alta definição diretamente no seu dispositivo.'}
               </p>
             </div>
           </div>
@@ -2003,34 +1995,44 @@ href={nextAulaToday.google_meet_url}
         </div>
       )}
 
-      {/* 5. SEÇÕES PRINCIPAIS (ORDENAÇÃO INTELIGENTE CONFORME DIA LETIVO) */}
-      {isClassDay ? (
+      {/* 5. SEÇÕES PRINCIPAIS (REORDENAÇÃO INTELIGENTE CONFORME HORÁRIO DE AULA) */}
+      {activeLiveAula ? (
         <>
-          {/* NOS DIAS DE AULA (TERÇA A SEXTA): GRADE DE AULAS NO TOPO */}
+          {/* NOS 15 MIN ANTES DA AULA E DURANTE A AULA AO VIVO: FOCO NA AULA ATIVA E GRADE NO TOPO */}
+          {pendingAnnouncementsCount > 0 && (
+            <div className="animate-in fade-in slide-in-from-top-3 duration-300">
+              {renderMuralRecursos(true)}
+            </div>
+          )}
+
+          {/* GRADE DE AULAS NO TOPO DURANTE A AULA OU 15 MIN ANTES */}
           {renderGradeAulas()}
 
-          {/* QUANDO NÃO HÁ LEITURAS PENDENTES: MURAL VOLTA PARA SEU LUGAR PADRÃO ABAIXO DA GRADE (RECOLHIDO) */}
+          {/* MURAL, GRAVAÇÕES E LABORATÓRIOS FICAM DEPOIS DA GRADE */}
           {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
 
-          {/* AULAS GRAVADAS DISPONÍVEIS (RECOLHÍVEL, RECOLHIDO NO DIA DE AULA) */}
           {renderAulasGravadas()}
+
+          {renderCardsMetodologias(true)}
         </>
       ) : (
         <>
-          {/* NOS DIAS SEM AULA (SÁBADO, DOMINGO, SEGUNDA): FOCO EM RECURSOS, GRAVAÇÕES E ESTUDO */}
+          {/* FORA DA AULA AO VIVO (QUANDO AS AULAS TERMINAREM NO DIA, INTERVALOS OU DIAS SEM AULA):
+              OS CARDS VOLTAM A SER APRESENTADOS NO TOPO, ANTES DA GRADE DE AULAS! */}
+
+          {/* 1. MURAL DE RECURSOS & LEITURAS DE APOIO */}
+          {renderMuralRecursos(pendingAnnouncementsCount > 0)}
+
+          {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
           {renderAulasGravadas()}
 
-          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+          {/* 3. MODO DE ESTUDO ENTRE AS AULAS ONLINE (LABORATÓRIOS DE PRÁTICA PASTORAL, HOMILÉTICA & 3D) */}
+          {renderCardsMetodologias(false)}
 
+          {/* 4. GRADE DE AULAS & MEU CADERNO DE ESTUDOS */}
           {renderGradeAulas()}
         </>
       )}
-
-      {/* 5. RECURSOS PEDAGÓGICOS COMPLEMENTARES & LABORATÓRIOS (QUANDO NÃO EM AULA AO VIVO) */}
-      {!activeLiveAula && renderCardsMetodologias(false)}
-
-      {/* RECURSOS PEDAGÓGICOS COMPLEMENTARES (EXIBIDOS NO FINAL QUANDO EM AULA AO VIVO) */}
-      {activeLiveAula && renderCardsMetodologias(true)}
 
       {/* Modal Visualizador de Avaliação AV1 / AV2 */}
       {selectedAvaliacao && (

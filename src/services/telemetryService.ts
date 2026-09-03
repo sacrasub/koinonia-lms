@@ -106,13 +106,16 @@ export function startUserSession(
 
   const { deviceType, browser, os, screenResolution } = detectDeviceDetails();
   const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const safeAvatar = (avatarUrl && avatarUrl.length > 500)
+    ? (userEmail.toLowerCase().includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
+    : (avatarUrl || '');
 
   currentSession = {
     id: sessionId,
     user_email: userEmail.toLowerCase().trim(),
     user_name: userName || userEmail,
     user_role: userRole,
-    avatar_url: avatarUrl,
+    avatar_url: safeAvatar,
     device_type: deviceType,
     browser,
     os,
@@ -370,8 +373,13 @@ async function loadSessionsFromCloudFallback(): Promise<UserSessionLog[]> {
 /** Salva as sessões consolidadas na nuvem via fallback resiliente em materiais (máx 1000 registros para Zero-Waste Egress) */
 async function saveSessionsToCloudFallback(sessions: UserSessionLog[]) {
   try {
-    const trimmed = sessions.slice(0, 1000);
-    const payloadStr = JSON.stringify(trimmed);
+    const sanitized = sessions.slice(0, 1000).map((s) => ({
+      ...s,
+      avatar_url: s.avatar_url && s.avatar_url.length > 500
+        ? (s.user_email?.includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
+        : (s.avatar_url || ''),
+    }));
+    const payloadStr = JSON.stringify(sanitized);
     const { data: existing } = await supabase
       .from('materiais')
       .select('id')
@@ -546,13 +554,26 @@ async function flushEventsToCloud() {
 export async function uploadLocalSessionsToCloud(): Promise<UserSessionLog[]> {
   const local = getLocalSessions();
   const remoteFallback = await loadSessionsFromCloudFallback();
-  const merged = mergeSessionLists(remoteFallback, local);
+  const cleanLocal = local.map((s) => ({
+    ...s,
+    avatar_url: s.avatar_url && s.avatar_url.length > 500
+      ? (s.user_email?.includes('sacrasub') ? '/cristiano_sacramento.jpg' : '')
+      : (s.avatar_url || ''),
+  }));
+  const merged = mergeSessionLists(remoteFallback, cleanLocal);
 
   if (merged.length > 0) {
     await saveSessionsToCloudFallback(merged);
     if (typeof window !== 'undefined') {
-      localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
-      localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
+      try {
+        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
+      } catch (e) {
+        // Fallback se localStorage estiver cheio: reduz para as 150 mais recentes
+        try {
+          localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged.slice(0, 150)));
+        } catch (_) {}
+      }
     }
   }
 

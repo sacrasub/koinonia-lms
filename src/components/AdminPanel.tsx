@@ -85,6 +85,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     subject: string;
     body: string;
     mailtoUrl: string;
+    gmailUrl: string;
+    whatsappUrl: string;
     copied: boolean;
   } | null>(null);
 
@@ -145,6 +147,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       subject: emailInfo.subject,
       body: emailInfo.body,
       mailtoUrl: emailInfo.mailtoUrl,
+      gmailUrl: emailInfo.gmailUrl,
+      whatsappUrl: emailInfo.whatsappUrl,
       copied: false,
     });
     showNotify(`Solicitação de ${req.name} aprovada no perfil de ${role.toUpperCase()}!`);
@@ -973,16 +977,38 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
 
             <div className="space-y-2.5 pt-2">
+              {/* Opção 1: Enviar direto pelo Gmail Web (100% garantido em PC e Celular) */}
               <a
-                href={approvalModalData.mailtoUrl}
+                href={approvalModalData.gmailUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
               >
-                <Send className="w-4 h-4" /> Abrir no Meu Aplicativo de E-mail (Gmail / Outlook)
+                <Mail className="w-4 h-4" /> Abrir no Gmail (Web / Celular)
               </a>
 
-              <div className="flex gap-2">
+              {/* Opção 2: Enviar pelo WhatsApp */}
+              <a
+                href={approvalModalData.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+              >
+                <MessageCircle className="w-4 h-4" /> Enviar Mensagem no WhatsApp
+              </a>
+
+              {/* Opção 3: Outros apps de e-mail nativos sem abrir aba em branco */}
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = approvalModalData.mailtoUrl;
+                }}
+                className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> Abrir no App de E-mail Nativo (Outlook / Apple Mail)
+              </button>
+
+              <div className="flex gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => {
@@ -990,16 +1016,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     setApprovalModalData({ ...approvalModalData, copied: true });
                     setTimeout(() => setApprovalModalData((prev) => prev ? { ...prev, copied: false } : null), 2500);
                   }}
-                  className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-gray-800 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  {approvalModalData.copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  {approvalModalData.copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-gray-500" />}
                   <span>{approvalModalData.copied ? 'Copiado para Área de Transferência!' : 'Copiar Texto da Mensagem'}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setApprovalModalData(null)}
-                  className="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl transition cursor-pointer"
+                  className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl transition cursor-pointer"
                 >
                   Fechar
                 </button>

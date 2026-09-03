@@ -31,8 +31,8 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
     name: 'Cristiano Sacramento (Admin/Criador)',
     roles: ['admin', 'aluno', 'monitor', 'professor'],
     defaultRole: 'admin',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    whatsapp: '5582999999999',
+    avatarUrl: '/cristiano_sacramento.jpg',
+    whatsapp: '5521981125314',
   },
   'sacrasub03@gmail.com': {
     email: 'sacrasub03@gmail.com',
@@ -41,7 +41,84 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
     defaultRole: 'aluno',
     turmaIdx: 1,
     periodoNum: 7,
+    avatarUrl: '/cristiano_sacramento.jpg',
+  },
+  'prof.alexsandro.geografia@gmail.com': {
+    email: 'prof.alexsandro.geografia@gmail.com',
+    name: 'Alexsandro Silva',
+    roles: ['professor', 'aluno'],
+    defaultRole: 'professor',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  },
+  'carlosprata905@gmail.com': {
+    email: 'carlosprata905@gmail.com',
+    name: 'Pr. Carlos Prata',
+    roles: ['professor', 'aluno'],
+    defaultRole: 'professor',
+    avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+  },
+  'eliasamadorseminario@gmail.com': {
+    email: 'eliasamadorseminario@gmail.com',
+    name: 'Elias Amador',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
     avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+  },
+  'desbloquear854@gmail.com': {
+    email: 'desbloquear854@gmail.com',
+    name: 'Elizy Bessa',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+  },
+  'josiasrcosta@gmail.com': {
+    email: 'josiasrcosta@gmail.com',
+    name: 'Josias Ribeiro',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  },
+  'eudoxiobalbino@gmail.com': {
+    email: 'eudoxiobalbino@gmail.com',
+    name: 'Eudoxio Balbino',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+  },
+  'raphaelfgalvao@gmail.com': {
+    email: 'raphaelfgalvao@gmail.com',
+    name: 'Raphael Galvão',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  },
+  'thiagotecnote@gmail.com': {
+    email: 'thiagotecnote@gmail.com',
+    name: 'Thiago Tecnote',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+  },
+  'iagogarcia05@gmail.com': {
+    email: 'iagogarcia05@gmail.com',
+    name: 'Iago Garcia',
+    roles: ['aluno'],
+    defaultRole: 'aluno',
+    turmaIdx: 1,
+    periodoNum: 7,
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
   },
   'ead@uiecbead.com.br': {
     email: 'ead@uiecbead.com.br',
@@ -652,9 +729,15 @@ export async function rejectAccessRequest(requestId: string): Promise<void> {
 }
 
 /**
- * Gera os dados de e-mail de confirmação de aprovação de acesso (com mailto link)
+ * Gera os dados de e-mail de confirmação de aprovação de acesso (com links diretos para Gmail Web, WhatsApp e mailto)
  */
-export function formatApprovalEmail(name: string, email: string, role: UserRole): { subject: string; body: string; mailtoUrl: string } {
+export function formatApprovalEmail(name: string, email: string, role: UserRole): {
+  subject: string;
+  body: string;
+  mailtoUrl: string;
+  gmailUrl: string;
+  whatsappUrl: string;
+} {
   const roleName = role === 'admin' ? 'Administrador(a)' : role === 'professor' ? 'Professor(a)' : role === 'monitor' ? 'Monitor(a)' : 'Aluno(a)';
   const subject = `Acesso Aprovado ao Koinonia LMS — Bem-vindo(a)!`;
   const body = `Olá, ${name || 'Estudante'}!
@@ -676,5 +759,9 @@ Coordenação Acadêmica & EAD
 Koinonia LMS • Seminário Teológico`;
 
   const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  return { subject, body, mailtoUrl };
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const whatsappText = `Olá, ${name || 'Estudante'}! ✝️ Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\n🔗 *Link de Acesso:*\nhttps://koinonialms.vercel.app\n\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
+
+  return { subject, body, mailtoUrl, gmailUrl, whatsappUrl };
 }
