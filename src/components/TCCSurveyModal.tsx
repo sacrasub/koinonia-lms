@@ -152,18 +152,26 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
   const [answers, setAnswers] = useState<Record<string, { escala?: number; texto?: string }>>({});
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
 
-  useEffect(() => {
-    if (!userEmail) return;
+  const normalizedEmail = (userEmail || '').toLowerCase().trim();
 
-    const dismissedSession = sessionStorage.getItem(`lms_tcc_dismissed_${userEmail}`);
-    if (dismissedSession) return;
+  useEffect(() => {
+    if (!normalizedEmail) return;
+
+    try {
+      const isDismissedLocal = localStorage.getItem(`lms_tcc_dismissed_${normalizedEmail}`) === 'true';
+      const isOptOut = localStorage.getItem('lms_tcc_survey_optout') === 'true';
+      const isDismissedSession = sessionStorage.getItem(`lms_tcc_dismissed_${normalizedEmail}`) === 'true';
+      if (isDismissedLocal || isOptOut || isDismissedSession) {
+        return;
+      }
+    } catch (_) {}
 
     async function checkSurvey() {
       try {
-        const res = await getActiveSurveyForRole(currentRole, userEmail);
+        const res = await getActiveSurveyForRole(currentRole, normalizedEmail);
         if (res.survey && !res.alreadyAnswered) {
           setActiveSurvey(res.survey);
-          setTimeout(() => setIsBannerVisible(true), 2000);
+          setTimeout(() => setIsBannerVisible(true), 2500);
         }
       } catch (e) {
         console.warn('Erro ao verificar pesquisa TCC:', e);
@@ -171,7 +179,7 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
     }
 
     checkSurvey();
-  }, [currentRole, userEmail]);
+  }, [currentRole, normalizedEmail]);
 
   if (!activeSurvey || (!isBannerVisible && !isOpen)) return null;
 
@@ -202,7 +210,12 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
 
   const handleDismissBanner = () => {
     setIsBannerVisible(false);
-    sessionStorage.setItem(`lms_tcc_dismissed_${userEmail}`, 'true');
+    setIsOpen(false);
+    try {
+      localStorage.setItem(`lms_tcc_dismissed_${normalizedEmail}`, 'true');
+      localStorage.setItem('lms_tcc_survey_optout', 'true');
+      sessionStorage.setItem(`lms_tcc_dismissed_${normalizedEmail}`, 'true');
+    } catch (_) {}
   };
 
   const handleSubmit = async () => {
@@ -281,8 +294,9 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
             <button
               onClick={handleDismissBanner}
               className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 cursor-pointer"
+              title="Não exibir novamente este questionário"
             >
-              Depois
+              Depois / Não exibir mais
             </button>
             <button
               onClick={() => {

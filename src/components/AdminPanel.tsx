@@ -518,8 +518,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {filteredUsers.map((u) => {
-                    const cleanPhone = cleanPhoneNumber(u.whatsapp);
-                    const formattedPhone = formatPhone(u.whatsapp);
+                    const normEmail = (u.email || '').toLowerCase().trim();
+                    const initUser = INITIAL_AUTHORIZED_USERS[normEmail];
+                    const effectiveWhatsapp = u.whatsapp || initUser?.whatsapp;
+                    const cleanPhone = cleanPhoneNumber(effectiveWhatsapp);
+                    const formattedPhone = formatPhone(effectiveWhatsapp);
                     const mailtoUrl = `mailto:${encodeURIComponent(u.email)}?subject=${encodeURIComponent('LMS Seminário UIECB')}`;
 
                     return (
@@ -533,7 +536,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                           <div className="flex items-center gap-1.5">
                             {cleanPhone ? (
                               <a
-                                href={getWhatsAppUrl(u.whatsapp)}
+                                href={getWhatsAppUrl(effectiveWhatsapp)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition"

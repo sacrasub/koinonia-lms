@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserRole } from '@/types';
 import { Navbar } from '@/components/Navbar';
@@ -27,7 +27,7 @@ import { getAllDisciplinas } from '@/services/disciplinasService';
 import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity } from 'lucide-react';
 import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud } from '@/lib/authConfig';
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
-import { onSessionRestored } from '@/services/studentSyncService';
+import { onSessionRestored, cleanupBulkyLocalStorage } from '@/services/studentSyncService';
 import { startUserSession, endCurrentSession, trackEvent } from '@/services/telemetryService';
 import { AdminAnalyticsView } from '@/components/AdminAnalyticsView';
 import { TCCSurveyModal } from '@/components/TCCSurveyModal';
@@ -280,12 +280,24 @@ export default function Home() {
     };
   }, [router]);
 
-  const handleTabChange = (newTab: string) => {
+  // Limpeza preventiva de cota de armazenamento no mount
+  useEffect(() => {
+    cleanupBulkyLocalStorage();
+  }, []);
+
+  const handleTabChange = useCallback((newTab: string) => {
     setActiveTab(newTab);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('lms_active_tab', newTab);
+      try {
+        localStorage.setItem('lms_active_tab', newTab);
+      } catch (e) {
+        cleanupBulkyLocalStorage();
+        try {
+          localStorage.setItem('lms_active_tab', newTab);
+        } catch (_) {}
+      }
     }
-  };
+  }, []);
 
   const handleRoleChange = (newRole: UserRole) => {
     setCurrentRole(newRole);

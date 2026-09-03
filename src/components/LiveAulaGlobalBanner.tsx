@@ -203,7 +203,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
   };
 
   return (
-    <div className={`w-full mb-5 animate-in fade-in slide-in-from-top-3 duration-300 ${isInsideMainList ? 'mt-0' : ''}`}>
+    <div data-tour="live-banner" className={`w-full mb-5 animate-in fade-in slide-in-from-top-3 duration-300 ${isInsideMainList ? 'mt-0' : ''}`}>
       <div className={`p-4 sm:p-5 rounded-3xl border shadow-md transition-all duration-300 relative overflow-hidden ${
         is50PercentReached
           ? 'bg-gradient-to-br from-emerald-50/95 via-white to-teal-50/90 border-emerald-300 ring-2 ring-emerald-500/20'

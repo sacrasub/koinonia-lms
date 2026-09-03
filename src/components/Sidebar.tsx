@@ -194,6 +194,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
               ? 'nav-biblioteca'
               : (item.id === 'disciplina-detalhe' || item.id === 'aluno-disciplinas')
               ? 'nav-disciplinas'
+              : item.id === 'fluxo-estudos'
+              ? 'nav-fluxo-estudos'
+              : item.id === 'quatro-ds'
+              ? 'nav-quatro-ds'
+              : item.id === 'homiletica'
+              ? 'nav-homiletica'
+              : item.id === 'metaverso'
+              ? 'nav-metaverso'
+              : item.id === 'aluno-caderno'
+              ? 'nav-caderno'
+              : item.id === 'google-agenda'
+              ? 'nav-agenda'
               : undefined;
 
             return (

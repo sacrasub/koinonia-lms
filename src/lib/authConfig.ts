@@ -491,14 +491,35 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
     if (usersData && usersData.length > 0 && usersData[0].file_url) {
       try {
         const parsed: Record<string, UserRoleMapping> = JSON.parse(usersData[0].file_url);
-        // Merge bidirecional: preserva usuários locais que possam ter sido adicionados offline/em outro navegador
+        // Merge bidirecional inteligente: preserva números de WhatsApp, avatares e papéis de INITIAL_AUTHORIZED_USERS
         const local = getAuthorizedUsersList();
-        const mergedUsers: Record<string, UserRoleMapping> = {
-          ...INITIAL_AUTHORIZED_USERS,
-          ...local,
-          ...parsed,
-        };
-        localStorage.setItem('lms_authorized_users_db', JSON.stringify(mergedUsers));
+        const combinedPool = { ...local, ...parsed };
+        const mergedUsers: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
+
+        for (const [key, user] of Object.entries(combinedPool)) {
+          const init = INITIAL_AUTHORIZED_USERS[key];
+          if (init) {
+            mergedUsers[key] = {
+              ...user,
+              name: init.name || user.name,
+              whatsapp: user.whatsapp || init.whatsapp,
+              avatarUrl: user.avatarUrl || init.avatarUrl,
+              roles: Array.from(new Set([...(user.roles || []), ...(init.roles || [])])),
+            };
+          } else {
+            mergedUsers[key] = user;
+          }
+        }
+
+        try {
+          localStorage.setItem('lms_authorized_users_db', JSON.stringify(mergedUsers));
+        } catch (storageErr) {
+          try {
+            localStorage.removeItem('lms_telemetry_events_cache');
+            localStorage.removeItem('lms_events_history');
+            localStorage.setItem('lms_authorized_users_db', JSON.stringify(mergedUsers));
+          } catch (_) {}
+        }
 
         // Se o dispositivo local tinha usuários a mais que a nuvem, envia o merge consolidado para a nuvem
         if (Object.keys(mergedUsers).length > Object.keys(parsed).length) {
@@ -529,7 +550,9 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
           }
         });
         const mergedReqs = Array.from(reqMap.values());
-        localStorage.setItem('lms_pending_access_requests', JSON.stringify(mergedReqs));
+        try {
+          localStorage.setItem('lms_pending_access_requests', JSON.stringify(mergedReqs));
+        } catch (_) {}
       } catch (e) {}
     }
 
@@ -553,8 +576,25 @@ export function getAuthorizedUsersList(): Record<string, UserRoleMapping> {
   try {
     const stored = localStorage.getItem('lms_authorized_users_db');
     if (stored) {
-      const parsed = JSON.parse(stored);
-      return { ...INITIAL_AUTHORIZED_USERS, ...parsed };
+      const parsed: Record<string, UserRoleMapping> = JSON.parse(stored);
+      const merged: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
+
+      for (const [key, cachedUser] of Object.entries(parsed)) {
+        const initial = INITIAL_AUTHORIZED_USERS[key];
+        if (initial) {
+          merged[key] = {
+            ...cachedUser,
+            name: initial.name || cachedUser.name,
+            whatsapp: cachedUser.whatsapp || initial.whatsapp,
+            avatarUrl: cachedUser.avatarUrl || initial.avatarUrl,
+            roles: Array.from(new Set([...(cachedUser.roles || []), ...(initial.roles || [])])),
+          };
+        } else {
+          merged[key] = cachedUser;
+        }
+      }
+
+      return merged;
     }
   } catch (e) {
     console.error('Erro ao ler lista de e-mails do localStorage:', e);
@@ -568,7 +608,15 @@ export function getAuthorizedUsersList(): Record<string, UserRoleMapping> {
  */
 export function saveAuthorizedUsersList(users: Record<string, UserRoleMapping>) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('lms_authorized_users_db', JSON.stringify(users));
+    try {
+      localStorage.setItem('lms_authorized_users_db', JSON.stringify(users));
+    } catch (err) {
+      try {
+        localStorage.removeItem('lms_telemetry_events_cache');
+        localStorage.removeItem('lms_events_history');
+        localStorage.setItem('lms_authorized_users_db', JSON.stringify(users));
+      } catch (_) {}
+    }
 
     (async () => {
       try {

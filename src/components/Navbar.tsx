@@ -203,6 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Botão do Sininho de Atualizações do Sistema */}
           <button
+            data-tour="btn-atualizacoes"
             onClick={() => setIsUpdatesModalOpen(true)}
             className={`relative p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border flex items-center gap-1.5 cursor-pointer active:scale-95 ${
               unreadUpdatesCount > 0
@@ -243,6 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Botão de Sincronização em Nuvem (Compacto no Mobile) */}
           <button
+            data-tour="btn-sincronizar"
             onClick={handleManualSync}
             disabled={syncing}
             className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 ${
@@ -268,6 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Botão Alternar Modo Escuro / Dark Mode */}
           <button
+            data-tour="dark-mode-toggle"
             onClick={toggleDarkMode}
             className="p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 flex items-center gap-1.5"
             title={isDarkMode ? 'Mudar para Modo Claro (Light)' : 'Mudar para Modo Escuro (Dark Mode)'}

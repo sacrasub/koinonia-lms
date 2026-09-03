@@ -90,13 +90,8 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const [isGravacoesCollapsed, setIsGravacoesCollapsed] = useState<boolean>(true);
 
   // Estado de recolhimento do Mural de Recursos:
-  // Recolhido por padrão, a menos que tenha uma leitura pendente
-  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(() => {
-    const all = getAnnouncements();
-    const read = getReadAnnouncementIds(normalizedEmail);
-    const pending = all.filter((a) => !a.is_archived && !read.includes(a.id)).length;
-    return pending === 0;
-  });
+  // Recolhido por padrão (true) caso não tenha leituras pendentes
+  const [isMuralCollapsed, setIsMuralCollapsed] = useState<boolean>(true);
 
   const handleMarkAnnouncementRead = (id: string) => {
     markAnnouncementAsRead(normalizedEmail, id);
@@ -259,6 +254,15 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const readAnnouncementsCount = useMemo(() => {
     return studentTurmaAnnouncements.filter((a) => readAnnouncementIds.includes(a.id)).length;
   }, [studentTurmaAnnouncements, readAnnouncementIds]);
+
+  // Garante que o mural venha recolhido de default caso não haja leituras pendentes
+  const hasInitializedMuralRef = useRef(false);
+  useEffect(() => {
+    if (!hasInitializedMuralRef.current) {
+      hasInitializedMuralRef.current = true;
+      setIsMuralCollapsed(pendingAnnouncementsCount === 0);
+    }
+  }, [pendingAnnouncementsCount]);
 
   // Informações de Fuso Horário do Aluno
   const [tzInfo, setTzInfo] = useState<TimeZoneInfo>({
@@ -692,7 +696,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
       <div className="grid grid-cols-1 gap-4">
         {/* 0. CARD DESTAQUE PRINCIPAL: FLUXO DE ESTUDOS & ECOSSISTEMA TEOLÓGICO (6 FASES / 11 PASTAS) */}
-        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 p-5 sm:p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-indigo-500/30">
+        <div data-tour="card-fluxo-estudos" className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 p-5 sm:p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-indigo-500/30">
           <div className="space-y-2 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-500/30 text-blue-200 border border-blue-400/30 flex items-center gap-1.5 backdrop-blur-md">
@@ -718,7 +722,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         </div>
 
         {/* 1. CARD DESTAQUE: TRILHA DE ENSINAGEM SOCRÁTICA (OS QUATRO Ds DE JESUS) */}
-        <div className="bg-gradient-to-r from-orange-500 via-amber-600 to-orange-700 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+        <div data-tour="card-quatro-ds" className="bg-gradient-to-r from-orange-500 via-amber-600 to-orange-700 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
           <div className="space-y-2 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-white/20 text-white border border-white/30 flex items-center gap-1.5 backdrop-blur-md">
@@ -744,7 +748,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         </div>
 
         {/* 2. CARD DESTAQUE: ESTÚDIO DE PRÁTICA HOMILÉTICA & INSTRUÇÃO POR PARES */}
-        <div className="bg-gradient-to-r from-rose-800 via-stone-900 to-amber-900 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-rose-700/40">
+        <div data-tour="card-homiletica" className="bg-gradient-to-r from-rose-800 via-stone-900 to-amber-900 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-rose-700/40">
           <div className="space-y-2 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-500/30 text-rose-200 border border-rose-400/30 flex items-center gap-1.5 backdrop-blur-md">
@@ -770,7 +774,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         </div>
 
         {/* 3. CARD DESTAQUE: METAVERSO TEOLÓGICO & AMBIENTES IMERSIVOS 3D */}
-        <div className="bg-gradient-to-r from-cyan-950 via-slate-900 to-indigo-950 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-cyan-800/50">
+        <div data-tour="card-metaverso" className="bg-gradient-to-r from-cyan-950 via-slate-900 to-indigo-950 p-5 sm:p-6 rounded-3xl text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden border border-cyan-800/50">
           <div className="space-y-2 relative z-10">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-cyan-500/30 text-cyan-200 border border-cyan-400/30 flex items-center gap-1.5 backdrop-blur-md">

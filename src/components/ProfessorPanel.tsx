@@ -60,7 +60,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
   const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
   const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || normalizedEmail.includes('sacra') || normalizedEmail.includes('admin') || normalizedEmail.includes('tondedez') || normalizedEmail.includes('ead@');
-  const isAdmin = currentRole === 'admin' || isSuperAdmin;
+  const isAdmin = currentRole === 'admin';
 
   // Lista de todas as disciplinas carregadas do storage/serviço
   const [allDisciplinasList, setAllDisciplinasList] = useState<Disciplina[]>([]);
@@ -200,6 +200,12 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
   // Determina as disciplinas ativas sob responsabilidade do usuário
   const userDisciplinas = useMemo(() => {
+    // Se o usuário for um docente vinculado diretamente a matérias
+    const myDisciplinas = getDisciplinasForUser(normalizedEmail, 'professor');
+    if (myDisciplinas.length > 0) {
+      return myDisciplinas;
+    }
+
     if (isAdmin) {
       if (selectedProfessorKey === 'ALL' || !currentSelectedProfessor) {
         return allDisciplinasList;
@@ -211,8 +217,23 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
         return dKey === selectedProfessorKey || (currentSelectedProfessor.email && dEmail === currentSelectedProfessor.email);
       });
     }
-    return getDisciplinasForUser(normalizedEmail, currentRole);
-  }, [allDisciplinasList, normalizedEmail, currentRole, isAdmin, selectedProfessorKey, currentSelectedProfessor]);
+
+    // Se for admin na role professor simulando docente específico
+    if (currentSelectedProfessor) {
+      return allDisciplinasList.filter((d) => {
+        const dEmail = (d.professor_email || '').toLowerCase().trim();
+        const dKey = dEmail || d.professor_name.toLowerCase().trim();
+        return dKey === selectedProfessorKey || (currentSelectedProfessor.email && dEmail === currentSelectedProfessor.email);
+      });
+    }
+
+    // Fallback para admin sem matéria vinculada direta: restringe ao primeiro docente
+    if (availableProfessors.length > 0) {
+      return availableProfessors[0].disciplinas;
+    }
+
+    return [];
+  }, [allDisciplinasList, normalizedEmail, currentRole, isAdmin, selectedProfessorKey, currentSelectedProfessor, availableProfessors]);
 
   const activeDisciplinaIds = useMemo(() => {
     return userDisciplinas.map((d) => d.id);

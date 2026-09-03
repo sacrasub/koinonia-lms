@@ -122,10 +122,52 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     return allDisciplinasList;
   }, [allowedDisciplinas, disciplinaId, allDisciplinasList]);
 
-  // Lista Filtrada de Materiais
-  const filteredNotes = useMemo(() => {
+  // Restrição estrita de escopo (ex: painel do professor ou disciplina específica)
+  const isRestrictedScope = Boolean(disciplinaId || (allowedDisciplinas && allowedDisciplinas.length > 0));
+
+  // Base de materiais estritamente isolada pela(s) matéria(s) autorizada(s)
+  const scopedBaseNotes = useMemo(() => {
+    if (!isRestrictedScope) return allNotes;
+
+    const allowedIds = new Set(userDisciplinas.map((d) => d.id));
+    const allowedNames = new Set(
+      userDisciplinas.map((d) => (d.name || '').toLowerCase().trim()).filter(Boolean)
+    );
+    const allowedCodes = new Set(
+      userDisciplinas.map((d) => (d.code || '').toLowerCase().trim()).filter(Boolean)
+    );
+
     return allNotes.filter((note) => {
-      // Filtro de disciplina
+      if (disciplinaId) {
+        return note.disciplina_id === disciplinaId;
+      }
+      const noteDiscId = note.disciplina_id;
+      const noteDiscName = (note.disciplina_name || '').toLowerCase().trim();
+
+      // Correspondência por ID, código ou nome
+      return (
+        allowedIds.has(noteDiscId) ||
+        Array.from(allowedNames).some((name) => noteDiscName.includes(name) || name.includes(noteDiscName)) ||
+        Array.from(allowedCodes).some((code) => noteDiscName.includes(code))
+      );
+    });
+  }, [allNotes, isRestrictedScope, userDisciplinas, disciplinaId]);
+
+  // Garante seleção padrão da matéria autorizada se for professor ou matéria única
+  useEffect(() => {
+    if (disciplinaId) {
+      setSelectedDiscFilter(disciplinaId);
+      setFormDisciplinaId(disciplinaId);
+    } else if (allowedDisciplinas && allowedDisciplinas.length === 1) {
+      setSelectedDiscFilter(allowedDisciplinas[0].id);
+      setFormDisciplinaId(allowedDisciplinas[0].id);
+    }
+  }, [disciplinaId, allowedDisciplinas]);
+
+  // Lista Filtrada de Materiais (estritamente a partir da base com escopo do professor)
+  const filteredNotes = useMemo(() => {
+    return scopedBaseNotes.filter((note) => {
+      // Filtro de disciplina selecionada
       if (disciplinaId && note.disciplina_id !== disciplinaId) return false;
       if (!disciplinaId && selectedDiscFilter !== 'ALL' && note.disciplina_id !== selectedDiscFilter) return false;
 
@@ -149,16 +191,12 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
 
       return true;
     });
-  }, [allNotes, disciplinaId, selectedDiscFilter, selectedType, selectedAulaNum, searchQuery]);
+  }, [scopedBaseNotes, disciplinaId, selectedDiscFilter, selectedType, selectedAulaNum, searchQuery]);
 
-  // Contadores por Tipo para as Badges
+  // Contadores por Tipo para as Badges (calculados exclusivamente sobre os materiais do docente)
   const typeCounts = useMemo(() => {
-    const base = disciplinaId 
-      ? allNotes.filter(n => n.disciplina_id === disciplinaId)
-      : allNotes;
-
     const counts: Record<string, number> = {
-      ALL: base.length,
+      ALL: scopedBaseNotes.length,
       anotacao: 0,
       audio_podcast: 0,
       mapa_mental: 0,
@@ -167,13 +205,13 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
       guia_estudo: 0,
     };
 
-    base.forEach((n) => {
+    scopedBaseNotes.forEach((n) => {
       const t = n.tipo || 'anotacao';
       counts[t] = (counts[t] || 0) + 1;
     });
 
     return counts;
-  }, [allNotes, disciplinaId]);
+  }, [scopedBaseNotes]);
 
   // Controle de Áudio
   const handleTogglePlayAudio = (note: GeminiNoteItem) => {

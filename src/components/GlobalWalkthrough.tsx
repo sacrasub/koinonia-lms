@@ -37,22 +37,58 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
   const stepIndexKey = `koinonia_tour_step_index_${normalizedEmail}`;
   const completedTourKey = `koinonia_tour_completed_${normalizedEmail}`;
 
-  // Passos para Computador (Desktop)
+  // ── PASSOS ABRANGENTES PARA COMPUTADOR (DESKTOP) ──
   const desktopSteps: TourStepDefinition[] = [
     {
       element: '[data-tour="role-selector"]',
       fallbackElement: 'header',
-      title: '👑 Seletor de Perfil / Visão',
-      description: 'Alterne instantaneamente sua visão entre Aluno, Monitor, Professor ou Admin para acessar painéis e permissões dedicadas.',
+      title: '👑 Seletor de Perfis e Visões (RBAC)',
+      description: 'Alterne instantaneamente entre as visões de Aluno, Monitor, Professor e Administrador para acessar seus painéis de controle e permissões acadêmicas dedicadas.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'aluno-disciplinas',
     },
     {
+      element: '[data-tour="dark-mode-toggle"]',
+      fallbackElement: 'header',
+      title: '🌓 Modo Escuro Nativo (Dark Mode)',
+      description: 'Conforto visual absoluto para suas leituras noturnas! Alterne entre tema claro e escuro a qualquer momento com apenas 1 clique.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="btn-atualizacoes"]',
+      fallbackElement: 'header',
+      title: '🔔 Central de Novidades & Avisos',
+      description: 'Fique sempre informado sobre novos recursos, atualizações de sistema e comunicados oficiais da coordenação pedagógica do Seminário.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="btn-sincronizar"]',
+      fallbackElement: 'header',
+      title: '⚡ Sincronização em Nuvem (Zero-Egress)',
+      description: 'Suas notas, presenças e progresso ficam salvos localmente e são sincronizados com a Nuvem Supabase de forma instantânea e econômica.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="live-banner"]',
+      fallbackElement: 'main',
+      title: '🔴 Aulas Ao Vivo & Google Meet',
+      description: 'Em dias de aula síncrona, a sala oficial do Meet abre com 15 minutos de antecedência e a Lista de Presença é liberada automaticamente no horário.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
       element: '[data-tour="dashboard-mural"]',
       fallbackElement: 'main',
-      title: '📖 Mural de Recursos & Avisos',
-      description: 'Acesse comunicados acadêmicos, leituras pré-aula e links úteis compartilhados pelos seus professores e monitores.',
+      title: '📖 Mural de Recursos & Leituras Pré-Aula',
+      description: 'Consulte os artigos, textos complementares e links disponibilizados pelos professores. Marque como lidas e compartilhe facilmente no WhatsApp da turma.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -60,8 +96,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="aluno-gravacoes"]',
       fallbackElement: 'main',
-      title: '🎬 Aulas Gravadas em HD',
-      description: 'Assista às gravações oficiais de todas as 15 aulas transmitidas, organizadas por matéria com player rápido e seguro.',
+      title: '🎬 Hub de Aulas Gravadas em HD',
+      description: 'Perdeu uma aula ou deseja revisar? Assista a todas as transmissões passadas gravadas em alta definição diretamente no player seguro da plataforma.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -69,8 +105,44 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="disciplinas-grid"]',
       fallbackElement: 'main',
-      title: '📚 Grade Curricular da Semana',
-      description: 'Navegue pelo cronograma de matérias ativas, acompanhe as datas de cada aula e acesse seu Caderno de Estudos pessoal.',
+      title: '📚 Grade Curricular da Semana (2026.2)',
+      description: 'Acompanhe as 16 aulas de cada disciplina do semestre (de Terça a Sexta), registre sua presença, notas de estudo e gere relatórios de reposição.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-fluxo-estudos"]',
+      fallbackElement: 'main',
+      title: '🧭 Fluxo de Estudos & Ecossistema Teológico',
+      description: 'Conecte suas 11 pastas do Google Drive, Google Agenda, salas do Meet, Caderno Cornell, prompts do Gemini e cadernos do NotebookLM em 6 fases de estudo.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-quatro-ds"]',
+      fallbackElement: 'main',
+      title: '🔥 Trilha dos Quatro Ds (Método de Jesus)',
+      description: 'Metodologia andragógica inov-ativa: vivencie o ciclo de Desejo, Desestruturação, Desafio e Decisão para reflexão ministerial profunda.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-homiletica"]',
+      fallbackElement: 'main',
+      title: '🎙️ Estúdio de Prática Homilética & Pares',
+      description: 'Grave seus sermões com timer litúrgico integrado, pratique aconselhamento pastoral e troque feedbacks construtivos com os colegas.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-metaverso"]',
+      fallbackElement: 'main',
+      title: '🏛️ Metaverso Teológico & Exploração 3D',
+      description: 'Navegue tridimensionalmente por reconstituições históricas sagradas como o Tabernáculo e o Templo de Salomão, com hotspots arqueológicos exegéticos.',
       side: 'top',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -79,7 +151,7 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
       element: '[data-tour="nav-biblioteca"]',
       fallbackElement: 'aside',
       title: '🏛️ Biblioteca Digital Teológica',
-      description: 'Vamos agora conhecer o acervo com mais de 3.000 obras teológicas, comentários bíblicos e materiais didáticos.',
+      description: 'Vamos conhecer o acervo com mais de 3.000 livros teológicos, comentários bíblicos, leitor de PDF embutido e citação bibliográfica no padrão ABNT com 1 clique.',
       side: 'right',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -88,8 +160,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="biblioteca-search"]',
       fallbackElement: 'main',
-      title: '🔍 Busca Rápida no Acervo',
-      description: 'Pesquise obras instantaneamente por título, autor, assunto ou pelas matérias com leitura recomendada no semestre.',
+      title: '🔍 Busca Inteligente no Acervo',
+      description: 'Pesquise obras rapidamente por título, autor, assunto ou pelas matérias com leitura recomendada no semestre letivo.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'aluno-biblioteca',
@@ -97,8 +169,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="biblioteca-grid"]',
       fallbackElement: 'main',
-      title: '📖 Leitura Online e Citações ABNT',
-      description: 'Abra os livros e apostilas em PDF em alta resolução, copie referências bibliográficas no padrão ABNT e estude com praticidade.',
+      title: '📖 Leitura em PDF Embutida & Citações',
+      description: 'Abra os livros e apostilas diretamente na tela com zoom, modo noturno e cópia de referências bibliográficas com 1 clique!',
       side: 'top',
       align: 'center',
       requiredTab: 'aluno-biblioteca',
@@ -107,30 +179,48 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
-      title: '💡 Central de Ajuda & Tutoriais',
-      description: 'Precisa de suporte? Acesse vídeos curtos ensinando cada função do LMS ou reative este tour a qualquer momento. Bons estudos! 🎉',
+      title: '💡 Central de Ajuda & Tutoriais em Vídeo',
+      description: 'Precisa de orientação? Acesse tutoriais curtos em vídeo ensinando cada recurso da plataforma ou reinicie este tour quando quiser. Bons estudos e excelente semestre acadêmico! 🎉',
       side: 'bottom',
       align: 'end',
       requiredTab: 'aluno-disciplinas',
     },
   ];
 
-  // Passos para Smartphones e Tablets (Mobile-friendly)
+  // ── PASSOS ABRANGENTES PARA DISPOSITIVOS MÓVEIS (SMARTPHONES E TABLETS) ──
   const mobileSteps: TourStepDefinition[] = [
     {
       element: '[data-tour="btn-mobile-menu"]',
       fallbackElement: 'header',
       title: '📱 Menu Lateral Completo',
-      description: 'Toque neste botão a qualquer momento para abrir o menu com todas as 16 ferramentas, matérias e alternar sua visão acadêmica.',
+      description: 'Toque neste botão a qualquer momento para abrir todas as 16 ferramentas, matérias, laboratórios práticos e alternar perfis acadêmicos.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'aluno-disciplinas',
     },
     {
+      element: '[data-tour="dark-mode-toggle"]',
+      fallbackElement: 'header',
+      title: '🌓 Modo Escuro Nativo',
+      description: 'Toque para alternar para o tema escuro, perfeito para leituras e aulas ao vivo no celular sem cansar a visão.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="live-banner"]',
+      fallbackElement: 'main',
+      title: '🔴 Aula Ao Vivo & Frequência',
+      description: 'Acesse o Google Meet direto pelo smartphone e assine a lista de presença com 1 toque durante a transmissão.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
       element: '[data-tour="dashboard-mural"]',
       fallbackElement: 'main',
-      title: '📖 Mural & Comunicados',
-      description: 'Acompanhe as leituras pré-aula e comunicados acadêmicos da coordenação e dos seus professores.',
+      title: '📖 Mural de Leituras e Avisos',
+      description: 'Fique em dia com as leituras pré-aula indicadas pelos professores e envie links úteis para o WhatsApp.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -138,8 +228,35 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="aluno-gravacoes"]',
       fallbackElement: 'main',
-      title: '🎬 Aulas Gravadas em HD',
-      description: 'Assista às 15 gravações oficiais das aulas transmitidas direto pelo celular, com player em tela cheia.',
+      title: '🎬 Gravações das Aulas em HD',
+      description: 'Assista a todas as aulas ministradas no seu celular com player integrado em tela cheia e controle de velocidade.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="disciplinas-grid"]',
+      fallbackElement: 'main',
+      title: '📚 Grade Semanal & Caderno Cornell',
+      description: 'Acompanhe as 16 aulas do semestre, marque presença e faça anotações no seu Caderno Cornell estruturado com IA.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-fluxo-estudos"]',
+      fallbackElement: 'main',
+      title: '🧭 Fluxo de Estudos & Pastas Virtuais',
+      description: 'Acesse os links da Google Agenda, pastas do Drive 01 a 11 e os cadernos inteligentes do NotebookLM.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
+      element: '[data-tour="card-homiletica"]',
+      fallbackElement: 'main',
+      title: '🎙️ Estúdio de Pregação & RPG Pastoral',
+      description: 'Grave seus sermões, treine aconselhamento e explore o simulador de casos pastorais com metodologias ativas.',
       side: 'top',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -147,8 +264,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="nav-biblioteca"]',
       fallbackElement: '.fixed.bottom-0',
-      title: '🏛️ Biblioteca Digital Teológica',
-      description: 'Toque para acessar o acervo com mais de 3.000 livros teológicos e apostilas em PDF.',
+      title: '🏛️ Biblioteca Digital (3.000+ Livros)',
+      description: 'Toque para abrir o acervo com mais de 3.000 obras teológicas e leitor de PDF embutido otimizado para celulares.',
       side: 'top',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -157,8 +274,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     {
       element: '[data-tour="biblioteca-search"]',
       fallbackElement: 'main',
-      title: '🔍 Busca no Acervo',
-      description: 'Pesquise obras rapidamente por título ou autor direto do seu smartphone.',
+      title: '🔍 Busca Rápida no Smartphone',
+      description: 'Pesquise livros por autor ou matéria recomendada e abra os textos sem depender de aplicativos externos.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-biblioteca',
@@ -168,7 +285,7 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
       title: '💡 Central de Ajuda & Tutoriais',
-      description: 'Assista aos vídeos explicativos de cada recurso ou reinicie este tour quando quiser. Ótimos estudos! 🎉',
+      description: 'Assista a vídeos rápidos de demonstração ou reinicie este tour quando quiser. Tenha um excelente aprendizado no Koinonia LMS! 🎉',
       side: 'bottom',
       align: 'end',
       requiredTab: 'aluno-disciplinas',
@@ -225,10 +342,18 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     } catch (e) {}
   };
 
+  const isTourCompleted = (): boolean => {
+    try {
+      return localStorage.getItem(completedTourKey) === 'true';
+    } catch (e) {
+      return false;
+    }
+  };
+
   /**
    * Aguarda um elemento aparecer no DOM antes de executar o passo
    */
-  const waitForElement = (selector: string, fallback?: string, maxWaitMs = 2000): Promise<Element | null> => {
+  const waitForElement = (selector: string, fallback?: string, maxWaitMs = 1800): Promise<Element | null> => {
     return new Promise((resolve) => {
       const start = Date.now();
 
@@ -251,7 +376,7 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
           return;
         }
 
-        setTimeout(check, 60);
+        setTimeout(check, 50);
       };
 
       check();
@@ -269,8 +394,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
 
     const currentDef = tourSteps[currentIndex];
 
-    // Se o passo requer uma aba diferente da que está aberta, transiciona primeiro
-    if (currentDef.requiredTab && activeTab && activeTab !== currentDef.requiredTab) {
+    // Se o passo requer uma aba diferente e estamos em transição controlada
+    if (currentDef.requiredTab && activeTab && activeTab !== currentDef.requiredTab && isTransitioningRef.current) {
       navigateToTab(currentDef.requiredTab);
       setTimeout(() => {
         runTourFromCurrentStep();
@@ -279,9 +404,8 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
     }
 
     // Aguarda o elemento estar presente no DOM
-    const el = await waitForElement(currentDef.element, currentDef.fallbackElement, 2200);
+    const el = await waitForElement(currentDef.element, currentDef.fallbackElement, 1800);
     if (!el) {
-      // Se não encontrou o elemento nem o fallback, tenta avançar para o próximo passo sem quebrar
       if (currentIndex + 1 < tourSteps.length) {
         setStepIndex(currentIndex + 1);
         runTourFromCurrentStep();
@@ -332,8 +456,9 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
       steps: [driveStep],
       onDestroyed: () => {
         if (!isTransitioningRef.current) {
-          // Usuário fechou o tour intencionalmente
+          // Usuário fechou ou pulou o tour intencionalmente: finaliza permanentemente
           setTourActive(false);
+          markTourCompleted();
         }
       },
       onNextClick: () => {
@@ -353,19 +478,19 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
 
         const nextDef = tourSteps[nextIdx];
 
-        // Verifica se há transição de aba
+        // Verifica se há transição de aba necessária
         if (stepDef.nextTabAction || (nextDef.requiredTab && nextDef.requiredTab !== activeTab)) {
           const targetTab = stepDef.nextTabAction || nextDef.requiredTab || 'aluno-disciplinas';
           navigateToTab(targetTab);
           setTimeout(() => {
             isTransitioningRef.current = false;
             runTourFromCurrentStep();
-          }, 500);
+          }, 450);
         } else {
           setTimeout(() => {
             isTransitioningRef.current = false;
             runTourFromCurrentStep();
-          }, 150);
+          }, 100);
         }
       },
       onPrevClick: () => {
@@ -384,12 +509,12 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
           setTimeout(() => {
             isTransitioningRef.current = false;
             runTourFromCurrentStep();
-          }, 500);
+          }, 450);
         } else {
           setTimeout(() => {
             isTransitioningRef.current = false;
             runTourFromCurrentStep();
-          }, 150);
+          }, 100);
         }
       },
     });
@@ -401,28 +526,35 @@ export function GlobalWalkthrough({ userEmail, activeTab, onTabChange }: GlobalW
   const startTourFromBeginning = () => {
     setStepIndex(0);
     setTourActive(true);
+    isTransitioningRef.current = true;
     navigateToTab('aluno-disciplinas');
     setTimeout(() => {
+      isTransitioningRef.current = false;
       runTourFromCurrentStep();
-    }, 450);
+    }, 400);
   };
 
+  // Inicialização no Primeiro Acesso (se nunca tiver completado)
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Se houver tour ativo em andamento (ex: após transição de tela durante o tour)
-    if (isTourActive()) {
-      const timer = setTimeout(() => {
-        runTourFromCurrentStep();
-      }, 400);
-      return () => clearTimeout(timer);
-    }
-  }, [activeTab, normalizedEmail, isMobile]);
+    // Se já foi concluído, NÃO roda automaticamente
+    if (isTourCompleted()) return;
 
+    // Se é o primeiro acesso, aguarda a interface carregar e inicia o tour
+    const timer = setTimeout(() => {
+      if (!isTourCompleted() && !isTourActive()) {
+        startTourFromBeginning();
+      }
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, [normalizedEmail]);
+
+  // Listeners para disparo manual do Onboarding via Central de Ajuda
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Listeners para disparo manual do Onboarding
     const handleStartTour = () => {
       startTourFromBeginning();
     };
