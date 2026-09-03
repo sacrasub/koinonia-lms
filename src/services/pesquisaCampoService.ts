@@ -3,6 +3,9 @@
  * =========================================================================
  * MÓDULO DE PESQUISA DE CAMPO & DIAGNÓSTICO DO TCC
  *
+ * Seminário: SEMINÁRIO TEOLÓGICO CONGREGACIONAL
+ * Plataforma: KOINONIA LMS (Nome do Projeto LMS para Ensino Teológico Virtual)
+ *
  * Instituição: CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)
  * Curso: CURSO DE BACHARELADO EM TEOLOGIA
  * Contexto: Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no
@@ -10,27 +13,25 @@
  *
  * Pesquisador: Cristiano do Sacramento Soares
  * Orientador: Pastor Alexsandro Silva
+ * Metodologia: Profª Gabriela Leal
  *
- * Tema da Pesquisa:
- * "Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual:
- *  Distância Transacional, Preservação da Koinonia e a Transição
- *  do Internato Presencial para o Modelo Síncrono Remoto"
- *
- * Plataforma: Koinonia LMS (Concebida para modernização do ensino teológico
- *             no ambiente virtual, aplicável a qualquer instituição de ensino de teologia).
+ * Metodologia Científica:
+ * Estratificação de Atores & Triangulação Metodológica (Discentes, Docentes, Monitores, Pastores e Membros)
  * =========================================================================
  */
 
 import { supabase } from '@/lib/supabaseClient';
 import { cleanupBulkyLocalStorage } from './studentSyncService';
 
-export const INSTITUICAO_NOME = 'Centro Universitário do Maciço de Baturité - Baturité – CE (UNIMB)';
+export const SEMINARIO_NOME = 'Seminário Teológico Congregacional';
+export const INSTITUICAO_NOME = 'Centro Universitário do Maciço de Baturité - BaturITÉ – CE (UNIMB)';
 export const CURSO_NOME = 'Curso de Bacharelado em Teologia';
 export const PESQUISADOR_NOME = 'Cristiano do Sacramento Soares';
 export const ORIENTADOR_NOME = 'Pastor Alexsandro Silva';
+export const METODOLOGIA_PROF = 'Profª Gabriela Leal';
 export const TCC_TEMA = 'Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual: Distância Transacional, Preservação da Koinonia e a Transição do Internato Presencial para o Modelo Síncrono Remoto';
 export const PLATAFORMA_NOME = 'Koinonia LMS';
-export const PLATAFORMA_DESCRICAO = 'O Koinonia LMS é uma plataforma concebida para modernização do ensino teológico no ambiente virtual, aplicável a qualquer instituição e seminário de teologia.';
+export const PLATAFORMA_DESCRICAO = 'O Koinonia LMS é o projeto de plataforma integrada de aprendizagem desenvolvido para a modernização do ensino teológico no ambiente virtual, concebido para utilização em qualquer instituição de ensino e seminário de teologia.';
 
 export type TipoPublico = 
   | 'aluno_unimb' 
@@ -68,77 +69,95 @@ export interface TCCPesquisaCampoRecord {
   created_at?: string;
 }
 
-export const TIPO_PUBLICO_LABELS: Record<string, { label: string; emoji: string; grupo: 'interno' | 'externo'; badgeColor: string }> = {
+export const TIPO_PUBLICO_LABELS: Record<string, { label: string; emoji: string; grupo: 'interno' | 'externo'; badgeColor: string; papelAcademico: string }> = {
   aluno_unimb: {
     label: 'Aluno / Seminarista UNIMB (Teologia)',
     emoji: '🎓',
     grupo: 'interno',
     badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
+    papelAcademico: 'Visão Discente: Distância Afetiva e Cognitiva',
   },
   professor_unimb: {
     label: 'Professor / Docente do Curso de Teologia',
     emoji: '👨‍🏫',
     grupo: 'interno',
     badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+    papelAcademico: 'Visão Docente: Distância Pedagógica e Hermenêutica',
   },
   monitor_unimb: {
-    label: 'Monitor Acadêmico / Apoio Pedagógico',
+    label: 'Monitor Acadêmico / Equipe de Apoio e Tutoria',
     emoji: '👑',
     grupo: 'interno',
     badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
+    papelAcademico: 'Visão Tutorial: Distância Operacional e Comunicacional',
   },
   externo_pastor: {
     label: 'Pastor / Ministro Ordenado',
     emoji: '⛪',
     grupo: 'externo',
     badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+    papelAcademico: 'Visão Ministerial: Credibilidade e Caráter Pastoral',
   },
   externo_aluno: {
     label: 'Estudante de Teologia (Outra Instituição / EAD)',
     emoji: '📚',
     grupo: 'externo',
     badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+    papelAcademico: 'Visão Comparada: Formação Teológica em Outras Redes',
   },
   externo_lider: {
     label: 'Líder de Ministério / Diácono / Presbítero',
     emoji: '🤝',
     grupo: 'externo',
     badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
+    papelAcademico: 'Visão de Liderança: Impacto Prático na Igreja Local',
   },
   externo_membro: {
-    label: 'Membro de Igreja / Interessado no Tema',
+    label: 'Membro de Igreja / Comunidade Eclesial',
     emoji: '👥',
     grupo: 'externo',
     badgeColor: 'bg-slate-100 text-slate-800 border-slate-200',
+    papelAcademico: 'Visão da Membresia: Vivência da Koinonia e Ensino',
   },
-  // Retrocompatibilidade para registros anteriores
+  // Retrocompatibilidade
   aluno_unib: {
     label: 'Aluno / Seminarista UNIMB (Teologia)',
     emoji: '🎓',
     grupo: 'interno',
     badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
+    papelAcademico: 'Visão Discente: Distância Afetiva e Cognitiva',
   },
   professor_unib: {
     label: 'Professor / Docente do Curso de Teologia',
     emoji: '👨‍🏫',
     grupo: 'interno',
     badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+    papelAcademico: 'Visão Docente: Distância Pedagógica e Hermenêutica',
   },
   monitor_unib: {
     label: 'Monitor Acadêmico / Apoio Pedagógico',
     emoji: '👑',
     grupo: 'interno',
     badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
+    papelAcademico: 'Visão Tutorial: Distância Operacional e Comunicacional',
   },
 };
 
-export const DRAFT_STORAGE_KEY = 'lms_tcc_pesquisa_draft_v1';
+export const MULTI_PERFIL_STORAGE_KEY = 'lms_tcc_pesquisas_multi_perfil_v2';
 export const LOCAL_SUBMISSIONS_KEY = 'lms_tcc_pesquisa_all_local_submissions';
+
+export interface PerfilResponseState {
+  tipo_publico: TipoPublico;
+  respostas: Record<string, any>;
+  dados_identificacao?: DadosIdentificacao;
+  status: 'rascunho' | 'enviado';
+  submission_id?: string;
+  updated_at: string;
+}
 
 /**
  * =========================================================================
  * GLOSSÁRIO INTERATIVO DE INOVAÇÕES PEDAGÓGICAS E TERMOS DO TCC
- * Explicabilidade acessível para que qualquer participante entenda os conceitos
  * =========================================================================
  */
 export interface TermoExplicativo {
@@ -155,47 +174,47 @@ export const GLOSSARIO_PEDAGOGICO_TCC: Record<string, TermoExplicativo> = {
     id: 'distancia_transacional',
     titulo: 'Distância Transacional (Michael G. Moore)',
     subtitulo: 'Teoria educacional consagrada sobre o ensino à distância',
-    explicacaoSimples: 'A Distância Transacional NÃO é a distância em quilômetros físicos. É o espaço psicológico e comunicacional entre professor e aluno. Se o curso tem pouca conversa ou materiais confusos, a distância é grande e o aluno se sente sozinho. Se há aulas ao vivo com diálogo frequente e matérias bem organizadas, a distância quase desaparece.',
-    comoFuncionaNoLms: 'No Koinonia LMS, isso é reduzido por meio de aulas ao vivo com câmeras e microfones abertos (Google Meet), pastas no Google Drive estruturadas por semana e canais diretos de mentoria.',
+    explicacaoSimples: 'A Distância Transacional NÃO é a distância em quilômetros físicos. É o espaço psicológico e comunicacional entre professor e aluno. Se o curso tem pouco diálogo ou materiais confusos, a distância é grande e o estudante se sente desamparado. Com aulas ao vivo (diálogo frequente) e estrutura organizada, essa distância diminui drasticamente.',
+    comoFuncionaNoLms: 'No Koinonia LMS, é reduzida com Google Meet ao vivo síncrono, Google Drive semanal e murais colaborativos.',
     icone: '🌐',
   },
   koinonia: {
     id: 'koinonia',
     titulo: 'Preservação da Koinonia (Comunhão Bíblica)',
     subtitulo: 'A essência da comunhão cristã no ambiente digital',
-    explicacaoSimples: 'Koinonia é uma palavra bíblica grega (Atos 2:42) que significa comunhão fraterna, compartilhamento de vida, ajuda mútua e sentimento de família na fé em Cristo. O grande desafio de um curso de Teologia online é evitar que os estudantes sejam apenas espectadores isolados de vídeos.',
-    comoFuncionaNoLms: 'O Koinonia LMS implementa Murais de Oração onde alunos pedem e intercedem uns pelos outros, bate-papo de acolhimento antes do início das aulas e debates socráticos em grupo.',
+    explicacaoSimples: 'Koinonia é o termo neotestamentário grego (Atos 2:42) para comunhão profunda, mutualidade e compartilhamento de vida. Na educação teológica virtual, o desafio é evitar que o aluno seja um espectador solitário, promovendo vida comunitária real.',
+    comoFuncionaNoLms: 'Implementada através de murais de oração mútuos, acolhimento antes das aulas e debates socráticos em grupo.',
     icone: '❤️',
   },
   transicao_internato: {
     id: 'transicao_internato',
     titulo: 'Transição do Internato Presencial para o Remoto Síncrono',
-    subtitulo: 'A evolução histórica da formação de pastores e líderes',
-    explicacaoSimples: 'No modelo tradicional clássico, quem desejava estudar Teologia precisava abandonar seu trabalho, mudar de cidade e morar dentro do seminário (internato fechado). No modelo síncrono remoto atual, os alunos assistem aulas ao vivo de casa, o que democratiza o acesso e permite continuar servindo em sua igreja local.',
-    comoFuncionaNoLms: 'A plataforma equilibra a exigência acadêmica do internato com a aplicação pastoral imediata: o aluno aprende a doutrina na aula da noite e já a pratica na sua congregação no fim de semana.',
+    subtitulo: 'A evolução histórica da formação pastoral no Seminário Teológico Congregacional',
+    explicacaoSimples: 'No internato clássico, o seminarista residia integralmente no seminário. O modelo síncrono remoto atual permite que o aluno assista aulas ao vivo de casa, mantendo seu ministério ativo na igreja local, seu trabalho e o convívio com sua família.',
+    comoFuncionaNoLms: 'O estudante aprende a teologia na aula síncrona noturna e já aplica a prática pastoral na sua comunidade no fim de semana.',
     icone: '🏛️',
   },
   caderno_cornell: {
     id: 'caderno_cornell',
     titulo: 'Caderno Cornell Integrado à Inteligência Artificial',
     subtitulo: 'Método estruturado de síntese e estudo autodirigido',
-    explicacaoSimples: 'Criado na Universidade de Cornell, é um dos métodos de estudo mais eficientes do mundo. A folha é dividida em 3 partes: à esquerda ficam as palavras-chave e dúvidas; à direita ficam as anotações detalhadas da aula; e na parte inferior fica um resumo reflexivo com as próprias palavras do aluno.',
-    comoFuncionaNoLms: 'No Koinonia LMS, cada aula possui sua folha Cornell virtual, e a Inteligência Artificial do Google Gemini auxilia gerando resumos conceituais e mapas mentais a partir das anotações do aluno.',
+    explicacaoSimples: 'Método consagrado da Universidade Cornell: divide a página em pistas/dúvidas à esquerda, anotações detalhadas à direita e resumo de síntese na base.',
+    comoFuncionaNoLms: 'Cada aula do Koinonia LMS possui sua folha Cornell virtual, e a IA do Google Gemini auxilia na geração de sínteses e mapas mentais conceituais.',
     icone: '📝',
   },
   notebooklm: {
     id: 'notebooklm',
     titulo: 'Podcasts de Síntese Teológica (NotebookLM)',
     subtitulo: 'Áudios didáticos inteligentes a partir dos materiais da aula',
-    explicacaoSimples: 'O NotebookLM é uma tecnologia avançada do Google que analisa os livros, artigos e apostilas indicados pelo professor e cria automaticamente um podcast em áudio (como dois especialistas conversando, tirando dúvidas e explicando a matéria de forma leve e profunda).',
-    comoFuncionaNoLms: 'O estudante pode ouvir o podcast da matéria no trânsito, na academia ou antes de dormir, reforçando a fixação dos conceitos teológicos difíceis.',
+    explicacaoSimples: 'Tecnologia do Google que converte livros, apostilas e exegeses em conversas em áudio no formato podcast para fixação.',
+    comoFuncionaNoLms: 'O estudante escuta sínteses comentadas dos textos indicados pelo professor no trajeto diário ou momentos de devoção.',
     icone: '🎙️',
   },
   simulador_rpg: {
     id: 'simulador_rpg',
     titulo: 'Simulador Pastoral RPG (Metodologia Ativa)',
     subtitulo: 'Aprendizado baseado em dilemas e casos pastorais reais',
-    explicacaoSimples: 'RPG significa "Role-Playing Game" (jogo de interpretação de papéis). Em vez de só ouvir o professor falar, os alunos são colocados diante de situações reais do ministério (como aconselhamento de crises conjugais, dilemas éticos na igreja ou mediação de conflitos) e precisam tomar decisões em equipe fundamentadas na Bíblia.',
+    explicacaoSimples: 'Role-Playing Game pedagógico: os estudantes assumem papéis em equipes para resolver dilemas éticos, pastorais e de aconselhamento reais da igreja.',
     comoFuncionaNoLms: 'O professor lança o caso durante a aula síncrona e a turma debate em tempo real as implicações teológicas e pastorais de cada escolha.',
     icone: '🎭',
   },
@@ -203,32 +222,32 @@ export const GLOSSARIO_PEDAGOGICO_TCC: Record<string, TermoExplicativo> = {
     id: 'estudio_homiletica',
     titulo: 'Estúdio de Homilética (Pregação com Avaliação Fraterna)',
     subtitulo: 'Prática de oratória bíblica e feedback entre colegas',
-    explicacaoSimples: 'Homilética é a disciplina teológica que estuda a arte e técnica de preparar e pregar sermões bíblicos. O estúdio é um laboratório prático onde o seminarista grava ou apresenta sua mensagem com um cronômetro litúrgico de tempo.',
-    comoFuncionaNoLms: 'Os colegas da turma preenchem fichas com rubricas claras (clareza do texto bíblico, postura, aplicação pastoral), dando sugestões respeitosas para o crescimento do pregador.',
+    explicacaoSimples: 'Homilética é a arte da pregação bíblica. O estúdio é um laboratório prático onde o seminarista treina sermões com cronômetro litúrgico.',
+    comoFuncionaNoLms: 'Colegas avaliam a pregação com base em rubricas (fidelidade textual, clareza, apelo pastoral) promovendo crescimento fraterno.',
     icone: '🎤',
   },
   metaverso_3d: {
     id: 'metaverso_3d',
     titulo: 'Metaverso Bíblico 3D & Reconstruções Arqueológicas',
     subtitulo: 'Visitas virtuais imersivas aos cenários das Escrituras',
-    explicacaoSimples: 'São modelos tridimensionais interativos navegáveis no navegador que recriam os locais bíblicos (como o Tabernáculo de Moisés no deserto com suas peças de ouro, o Templo de Salomão e a Jerusalém do primeiro século).',
-    comoFuncionaNoLms: 'Em vez de apenas ler sobre o Santo dos Santos ou a Arca da Aliança, o aluno caminha virtualmente pelo Tabernáculo enquanto o professor explica o significado tipológico e cristológico de cada mobília.',
+    explicacaoSimples: 'Modelos tridimensionais interativos navegáveis no navegador do Tabernáculo de Moisés, Templo de Salomão e Jerusalém bíblica.',
+    comoFuncionaNoLms: 'O discente caminha pelas dependências do Tabernáculo enquanto o docente explica a tipologia de Cristo presente em cada mobília.',
     icone: '🕍',
   },
   quatro_ds: {
     id: 'quatro_ds',
     titulo: 'Trilha dos Quatro Ds (Pedagogia Socrática de Jesus)',
     subtitulo: 'Método de ensinagem baseado nas perguntas de Cristo',
-    explicacaoSimples: 'Jesus raramente dava respostas prontas; Ele fazia perguntas que tocavam o coração. A trilha percorre 4 etapas: 1) Desejo (uma pergunta que desperta curiosidade), 2) Desestruturação (um paradoxo que quebra pré-conceitos), 3) Desafio (uma tarefa prática para a vida) e 4) Decisão (um compromisso pessoal com Deus).',
-    comoFuncionaNoLms: 'Cada professor pode criar trilhas socráticas nas disciplinas para que o aluno não decore conteúdos para prova, mas seja transformado pela verdade bíblica.',
+    explicacaoSimples: 'Inspirado na pedagogia de Jesus: 1) Desejo (pergunta intrigante), 2) Desestruturação (quebra de pré-conceitos), 3) Desafio (tarefa prática) e 4) Decisão (compromisso vocacional).',
+    comoFuncionaNoLms: 'Conduz o aluno a não apenas memorizar tópicos para exames, mas a vivenciar a transformação do coração.',
     icone: '🔥',
   },
   biblioteca_digital: {
     id: 'biblioteca_digital',
     titulo: 'Biblioteca Digital Teológica (3.000 Obras em PDF)',
     subtitulo: 'Acesso democrático a clássicos teológicos e citação em 1 clique',
-    explicacaoSimples: 'Um dos maiores obstáculos no estudo de Teologia é o preço elevado dos livros acadêmicos e comentários bíblicos. A biblioteca digital reúne acervo selecionado de obras de teologia sistemática, história eclesiástica e exegese bíblica.',
-    comoFuncionaNoLms: 'Além da leitura em tela cheia, possui um gerador de citações automáticas no padrão ABNT com 1 clique para inclusão nos trabalhos acadêmicos e no TCC.',
+    explicacaoSimples: 'Acervo de clássicos de teologia sistemática, exegese e história eclesiástica acessível sem custos de aquisição de livros físicos.',
+    comoFuncionaNoLms: 'Possui gerador de citações prontas no padrão ABNT com 1 clique para inclusão nos trabalhos acadêmicos e no TCC.',
     icone: '📖',
   },
 };
@@ -242,201 +261,562 @@ export interface PerguntaDiagnostico {
   dimensaoTitulo: string;
   enunciado: string;
   descricao?: string;
-  termoExplicativoId?: string; // Vincula ao glossário
+  termoExplicativoId?: string;
   tipo: 'likert_5' | 'multipla_escolha' | 'texto';
   opcoes?: { valor: string; label: string }[];
   obrigatoria: boolean;
 }
 
-export const PERGUNTAS_PESQUISA_TCC: PerguntaDiagnostico[] = [
-  // ── DIMENSÃO 1: DISTÂNCIA TRANSACIONAL (MOORE) ──
+/**
+ * =========================================================================
+ * BANCO DE PERGUNTAS ESTRATIFICADAS POR ATOR (TRIANGULAÇÃO METODOLÓGICA)
+ * =========================================================================
+ */
+
+// 1. QUESTIONÁRIO DOS DISCENTES / SEMINARISTAS (ALUNOS)
+export const PERGUNTAS_DISCENTE: PerguntaDiagnostico[] = [
   {
-    id: 'dt_dialogo_sincrono',
+    id: 'disc_dt_dialogo',
     dimensao: 'distancia_transacional',
-    dimensaoTitulo: 'Dimensão 1: Distância Transacional de Michael G. Moore',
-    enunciado: 'A realização de aulas síncronas ao vivo (Google Meet com câmeras e microfones abertos) e o diálogo frequente reduzem a sensação de distância psicológica entre professor e aluno.',
-    descricao: 'Michael G. Moore define Distância Transacional como o espaço comunicacional e psicológico entre docentes e discentes, e não meramente a distância geográfica.',
+    dimensaoTitulo: 'Dimensão 1: Distância Afetiva e Cognitiva (Moore)',
+    enunciado: 'A realização de aulas síncronas ao vivo (Google Meet com microfones e câmeras abertos) reduz a sensação de isolamento e aproxima você dos professores.',
+    descricao: 'Michael G. Moore define a distância transacional como o espaço comunicacional e afetivo entre professor e aluno.',
     termoExplicativoId: 'distancia_transacional',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'dt_estrutura_autonomia',
+    id: 'disc_dt_autoregulacao',
     dimensao: 'distancia_transacional',
-    dimensaoTitulo: 'Dimensão 1: Distância Transacional de Michael G. Moore',
-    enunciado: 'A disponibilização antecipada de pastas de materiais (Google Drive, Hub de Estudos e Aulas Gravadas) favorece minha autonomia e organização semanal.',
+    dimensaoTitulo: 'Dimensão 1: Distância Afetiva e Cognitiva (Moore)',
+    enunciado: 'A rotina de conciliar trabalho secular, família e estudos teológicos à noite exige grande esforço de autorregulação e disciplina pessoal.',
     termoExplicativoId: 'distancia_transacional',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'dt_conciliacao_ministerio',
+    id: 'disc_dt_materiais_autonomia',
     dimensao: 'distancia_transacional',
-    dimensaoTitulo: 'Dimensão 1: Distância Transacional de Michael G. Moore',
-    enunciado: 'O modelo remoto síncrono permite conciliar de forma mais saudável os estudos teológicos com o ministério pastoral/eclesiástico e a convivência familiar.',
-    termoExplicativoId: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 1: Distância Afetiva e Cognitiva (Moore)',
+    enunciado: 'A disponibilização antecipada de pastas de materiais semanais e aulas gravadas favorece minha autonomia e organização nos estudos.',
+    termoExplicativoId: 'distancia_transacional',
     tipo: 'likert_5',
     obrigatoria: true,
   },
-
-  // ── DIMENSÃO 2: PRESERVAÇÃO DA KOINONIA (COMUNHÃO CRISTÃ) ──
   {
-    id: 'koi_comunhao_digital',
+    id: 'disc_koi_comunhao',
     dimensao: 'koinonia',
-    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão Comunitária)',
-    enunciado: 'É possível vivenciar verdadeira comunhão bíblica (koinonia), mutualidade e laços de amizade sinceros no ambiente virtual do Seminário / Faculdade Teológica.',
-    descricao: 'Refere-se ao compartilhamento de vida, suporte em oração e senso de irmandade no corpo de Cristo.',
+    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão dos Seminaristas)',
+    enunciado: 'É possível vivenciar verdadeira comunhão bíblica (koinonia), mutualidade e laços de amizade sinceros com os colegas de turma através do ambiente virtual.',
     termoExplicativoId: 'koinonia',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'koi_espacos_oracao_interacao',
+    id: 'disc_koi_oracao_acolhimento',
     dimensao: 'koinonia',
-    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão Comunitária)',
-    enunciado: 'Espaços colaborativos (momentos de oração antes da aula, fóruns e grupos de mentoria) fortalecem a identidade congregacional da turma.',
+    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão dos Seminaristas)',
+    enunciado: 'Espaços colaborativos (momentos de oração no início da aula e grupos de mentoria) fortalecem o sentimento de família na fé.',
     termoExplicativoId: 'koinonia',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'koi_cuidado_pastoral_remoto',
+    id: 'disc_koi_suporte_pastoral',
     dimensao: 'koinonia',
-    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão Comunitária)',
-    enunciado: 'Como você avalia a proximidade e o acolhimento pastoral dos professores e da liderança acadêmica no modelo virtual?',
+    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão dos Seminaristas)',
+    enunciado: 'Como discente, sinto-me acolhido pastoralmente pela coordenação acadêmica e pelos professores do Seminário Teológico Congregacional.',
     termoExplicativoId: 'koinonia',
     tipo: 'likert_5',
     obrigatoria: true,
   },
-
-  // ── DIMENSÃO 3: TRANSIÇÃO DO INTERNATO PRESENCIAL PARA O MODELO SÍNCRONO REMOTO ──
   {
-    id: 'tra_democratizacao_acesso',
+    id: 'disc_tra_democratizacao',
     dimensao: 'transicao_internato',
     dimensaoTitulo: 'Dimensão 3: Transição Histórica (Internato Clássico vs. Remoto Síncrono)',
-    enunciado: 'A superação do modelo exclusivo de internato presencial democratizou o acesso vocacional, permitindo que líderes e pastores permaneçam servindo suas comunidades locais.',
+    enunciado: 'A superação do modelo exclusivo de internato presencial permitiu que eu cursasse teologia sem abandonar minha igreja local, minha família e meu sustento.',
     termoExplicativoId: 'transicao_internato',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'tra_formacao_carater_pratica',
+    id: 'disc_tra_saudade_convivio',
     dimensao: 'transicao_internato',
     dimensaoTitulo: 'Dimensão 3: Transição Histórica (Internato Clássico vs. Remoto Síncrono)',
-    enunciado: 'A prática eclesiástica contínua na igreja local durante o curso compensa de forma positiva a ausência da convivência em tempo integral do internato.',
+    enunciado: 'A prática ministerial contínua na igreja local compensa a ausência da convivência presencial em tempo integral do internato tradicional.',
     termoExplicativoId: 'transicao_internato',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'tra_percepcao_formacao_integral',
+    id: 'disc_tra_percepcao_formacao',
     dimensao: 'transicao_internato',
     dimensaoTitulo: 'Dimensão 3: Transição Histórica (Internato Clássico vs. Remoto Síncrono)',
-    enunciado: 'Comparando os modelos, como você enxerga a solidez da formação ministerial no formato síncrono remoto atual?',
+    enunciado: 'Comparando os modelos, como você avalia a solidez da sua formação teológica e ministerial no formato síncrono remoto atual?',
     tipo: 'multipla_escolha',
     opcoes: [
-      { valor: 'superior_internato', label: 'Superior ao internato: conecta a teoria à prática imediata na igreja local' },
-      { valor: 'equivalente_alta_qualidade', label: 'Equivalente com alta qualidade: atende com rigor acadêmico e espiritual' },
-      { valor: 'complementar_desafios', label: 'Boa alternativa, mas com desafios na convivência e laços presenciais' },
-      { valor: 'preferencia_presencial', label: 'Prefiro o modelo clássico presencial de internato' },
+      { valor: 'superior_internato', label: 'Superior: conecta a teoria teológica à prática pastoral imediata na igreja local' },
+      { valor: 'equivalente_alta_qualidade', label: 'Equivalente com alta qualidade: atende com rigor espiritual e acadêmico' },
+      { valor: 'complementar_desafios', label: 'Boa alternativa, embora sinta falta da convivência presencial diária' },
+      { valor: 'preferencia_presencial', label: 'Ainda prefiro o modelo clássico de internato fechado' },
     ],
     termoExplicativoId: 'transicao_internato',
     obrigatoria: true,
   },
-
-  // ── DIMENSÃO 4: PRÁTICAS METODOLÓGICAS ATIVAS ──
   {
-    id: 'met_cornell_notebooklm',
+    id: 'disc_met_cornell_ia',
     dimensao: 'metodologias_ativas',
-    dimensaoTitulo: 'Dimensão 4: Inovações Pedagógicas & Metodologias Ativas',
-    enunciado: 'Ferramentas como Caderno Cornell estruturado com IA, podcasts de síntese do NotebookLM e resumos integrados aumentam minha assimilação teológica.',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas no Koinonia LMS',
+    enunciado: 'O Caderno Cornell integrado à Inteligência Artificial e os podcasts do NotebookLM auxiliam no aprofundamento e retenção dos temas bíblicos.',
     termoExplicativoId: 'caderno_cornell',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'met_laboratorios_praticos',
+    id: 'disc_met_pratica_laboratorios',
     dimensao: 'metodologias_ativas',
-    dimensaoTitulo: 'Dimensão 4: Inovações Pedagógicas & Metodologias Ativas',
-    enunciado: 'Recursos como Simulador Pastoral RPG, Estúdio de Homilética e Metaverso Bíblico 3D tornam o aprendizado mais aplicado e engajador.',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas no Koinonia LMS',
+    enunciado: 'Recursos como Simulador Pastoral RPG e Estúdio de Homilética tornam a aula mais prática, dinâmica e voltada aos desafios ministeriais reais.',
     termoExplicativoId: 'simulador_rpg',
     tipo: 'likert_5',
     obrigatoria: true,
   },
   {
-    id: 'met_recurso_destaque',
+    id: 'disc_met_recurso_favorito',
     dimensao: 'metodologias_ativas',
-    dimensaoTitulo: 'Dimensão 4: Inovações Pedagógicas & Metodologias Ativas',
-    enunciado: 'Qual das seguintes abordagens pedagógicas do Koinonia LMS você considera de maior impacto para diminuir a distância e gerar comunhão?',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas no Koinonia LMS',
+    enunciado: 'Qual inovação da plataforma Koinonia LMS mais contribui para aproximar você da turma e diminuir a sensação de distância?',
     tipo: 'multipla_escolha',
     opcoes: [
-      { valor: 'aulas_sincronas_meet', label: 'Aulas síncronas ao vivo no Google Meet com debates abertos' },
-      { valor: 'caderno_cornell_ia', label: 'Caderno Cornell & sínteses inteligentes com IA' },
-      { valor: 'rpg_pastoral_dilemas', label: 'Simulador Pastoral RPG para resolução de casos reais' },
-      { valor: 'estudio_homiletica', label: 'Estúdio de Homilética e avaliação fraterna entre pares' },
-      { valor: 'biblioteca_digital', label: 'Biblioteca Digital com 3.000 livros e citações ABNT' },
-      { valor: 'metaverso_3d', label: 'Metaverso Bíblico 3D com arqueologia do Tabernáculo e Templo' },
+      { valor: 'aulas_sincronas_meet', label: 'Aulas ao vivo síncronas no Google Meet com diálogo aberto' },
+      { valor: 'caderno_cornell_ia', label: 'Caderno Cornell com sínteses inteligentes de IA' },
+      { valor: 'simulador_rpg', label: 'Simulador Pastoral RPG de casos ministeriais' },
+      { valor: 'estudio_homiletica', label: 'Estúdio de Homilética e prática de pregação' },
+      { valor: 'biblioteca_digital', label: 'Biblioteca Digital com 3.000 livros em PDF e ABNT' },
+      { valor: 'metaverso_3d', label: 'Metaverso Bíblico 3D do Tabernáculo e Templo' },
     ],
-    termoExplicativoId: 'metaverso_3d',
+    termoExplicativoId: 'caderno_cornell',
     obrigatoria: true,
   },
-
-  // ── DIMENSÃO 5: QUALITATIVA & CONSIDERAÇÕES FINAIS ──
   {
-    id: 'obs_maiores_desafios',
+    id: 'disc_obs_desafio_pessoal',
     dimensao: 'qualitativa',
-    dimensaoTitulo: 'Dimensão 5: Considerações Finais & Avaliação Qualitativa',
-    enunciado: 'Em sua percepção, quais são os maiores desafios ou oportunidades no ensino teológico virtual síncrono?',
-    descricao: 'Sua resposta aberta será de fundamental importância para a análise qualitativa do TCC.',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas do Aluno',
+    enunciado: 'Qual é o maior desafio ou oportunidade que você vivencia na sua formação teológica no formato remoto síncrono?',
     tipo: 'texto',
     obrigatoria: false,
   },
   {
-    id: 'obs_sugestoes_livres',
+    id: 'disc_obs_depoimento_livre',
     dimensao: 'qualitativa',
-    dimensaoTitulo: 'Dimensão 5: Considerações Finais & Avaliação Qualitativa',
-    enunciado: 'Espaço aberto: registre observações críticas, sugestões ou depoimentos para a pesquisa de Cristiano do Sacramento Soares:',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas do Aluno',
+    enunciado: 'Espaço aberto: sugestões, críticas fraternas ou depoimento para a pesquisa do TCC de Cristiano do Sacramento Soares:',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+];
+
+// 2. QUESTIONÁRIO DOS DOCENTES / PROFESSORES
+export const PERGUNTAS_DOCENTE: PerguntaDiagnostico[] = [
+  {
+    id: 'doc_dt_profundidade_hermeneutica',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Distância Pedagógica e Hermenêutica (Moore)',
+    enunciado: 'Como docente, consigo manter nas aulas síncronas ao vivo o mesmo nível de rigor exegético e debate teológico que no formato presencial.',
+    descricao: 'Michael G. Moore: a distância transacional pedagógica decorre da intensidade do diálogo reflexivo entre professor e discentes.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_dt_frieza_telas',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Distância Pedagógica e Hermenêutica (Moore)',
+    enunciado: 'A presença de alunos com câmeras fechadas ou pouca verbalização representa um obstáculo à verificação da aprendizagem e ao calor pedagógico.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_dt_estrutura_plataforma',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Distância Pedagógica e Hermenêutica (Moore)',
+    enunciado: 'A estrutura do Koinonia LMS (cronograma de 16 aulas, Google Drive sincronizado e avisos pré-aula) facilita meu planejamento didático semanal.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_koi_avaliacao_carater',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Avaliação do Caráter Pastoral e Koinonia',
+    enunciado: 'É pedagogicamente viável perceber e acompanhar o crescimento espiritual e o caráter pastoral dos estudantes através das interações virtuais.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_koi_comunhao_turma',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Avaliação do Caráter Pastoral e Koinonia',
+    enunciado: 'Momentos de oração, acolhimento pastoral e debates no início da aula criam uma identidade congregacional sólida na turma.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_tra_democratizacao_docente',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Transição Histórica sob a Ótica Docente',
+    enunciado: 'A transição do internato presencial para o síncrono remoto democratizou o ensino teológico, incluindo vocacionados que antes seriam excluídos por razões geográficas ou financeiras.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_tra_comparacao_egressos',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Transição Histórica sob a Ótica Docente',
+    enunciado: 'Em sua experiência docente, o preparo teológico dos estudantes do modelo síncrono atual se equipara ao dos egressos do internato tradicional?',
+    tipo: 'multipla_escolha',
+    opcoes: [
+      { valor: 'equivalente_ou_superior', label: 'Equivalente ou superior: a aplicação pastoral imediata na igreja local amadurece o aluno mais rápido' },
+      { valor: 'equivalente_bom_nivel', label: 'Equivalente com bom nível: atende satisfatoriamente às exigências do ministério pastoral' },
+      { valor: 'inferior_convivencia', label: 'Com lacunas: a falta de convivência diária no internato enfraquece a disciplina comunitária' },
+      { valor: 'indeciso_em_transicao', label: 'Ainda em avaliação: os efeitos da transição precisam de mais tempo de análise' },
+    ],
+    termoExplicativoId: 'transicao_internato',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_met_estimulo_ativo',
+    dimensao: 'metodologias_ativas',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas na Docência Teológica',
+    enunciado: 'Ferramentas ativas (como o Caderno Cornell com IA e a Trilha dos Quatro Ds) estimulam a autonomia intelectual e o pensamento crítico do seminarista.',
+    termoExplicativoId: 'caderno_cornell',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_met_laboratorios_docencia',
+    dimensao: 'metodologias_ativas',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas na Docência Teológica',
+    enunciado: 'O uso de metodologias ativas como simulações de casos pastorais (RPG) e laboratórios de homilética com avaliação por pares agrega alto valor à docência.',
+    termoExplicativoId: 'simulador_rpg',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'doc_obs_desafios_professores',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas do Docente',
+    enunciado: 'Quais são os principais desafios pedagógicos e teológicos que os professores enfrentam na formação ministerial remota?',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+  {
+    id: 'doc_obs_sugestoes_tcc',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas do Docente',
+    enunciado: 'Recomendações, reflexões teológicas ou comentários para a pesquisa de Cristiano do Sacramento Soares:',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+];
+
+// 3. QUESTIONÁRIO DOS MONITORES / TUTORES
+export const PERGUNTAS_MONITOR: PerguntaDiagnostico[] = [
+  {
+    id: 'mon_dt_suporte_ao_vivo',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Distância Operacional e Comunicacional (Moore)',
+    enunciado: 'A mediação ágil da monitoria durante a aula síncrona (organizando dúvidas, chat e links de presença) é indispensável para encurtar a distância transacional.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_dt_sobrecarga_tecnica',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Distância Operacional e Comunicacional (Moore)',
+    enunciado: 'As falhas de conexão à internet e as dificuldades técnicas dos alunos exigem da monitoria uma postura contínua de paciência, empatia e acolhimento.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_koi_escuta_pastoral',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Mediação da Koinonia e Cuidado Preventivo',
+    enunciado: 'Na rotina da monitoria, é comum os alunos procurarem o monitor não apenas para dúvidas da matéria, mas para desabafos, pedidos de oração e conselhos.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_koi_engajamento_chat',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Mediação da Koinonia e Cuidado Preventivo',
+    enunciado: 'O chat durante a aula ao vivo funciona como um termômetro vital de comunhão, encorajamento e intercessão fraterna entre os seminaristas.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_tra_papel_humanizador',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Suporte ao Aluno Remoto vs. Internato',
+    enunciado: 'Na transição do internato para o modelo síncrono remoto, o monitor assume um papel de ponte humanizadora fundamental para combater a solidão acadêmica.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_met_ferramentas_painel',
+    dimensao: 'metodologias_ativas',
+    dimensaoTitulo: 'Dimensão 4: Painel do Koinonia LMS na Rotina da Monitoria',
+    enunciado: 'Os atalhos do painel (envio rápido de links de presença, registro de gravações e biblioteca com 3.000 livros) facilitam o suporte aos alunos.',
+    termoExplicativoId: 'biblioteca_digital',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mon_obs_vulnerabilidades',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas da Monitoria',
+    enunciado: 'Quais são as principais dificuldades emocionais, espirituais ou técnicas que os alunos relatam na monitoria?',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+  {
+    id: 'mon_obs_mensagem_tcc',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Considerações Discursivas da Monitoria',
+    enunciado: 'Sugestões e apontamentos da equipe de apoio para o TCC de Cristiano do Sacramento Soares:',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+];
+
+// 4. QUESTIONÁRIO DOS PASTORES / LÍDERES ECLESIÁSTICOS (EXTERNOS)
+export const PERGUNTAS_PASTOR_LIDER: PerguntaDiagnostico[] = [
+  {
+    id: 'pas_dt_presenca_local',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Percepção de Valor e Proximidade Eclesiástica',
+    enunciado: 'O fato de o estudante de teologia permanecer servindo ativamente na igreja local durante o curso é um benefício substancial para o ministério pastoral da congregação.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_dt_credibilidade_ensino',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Percepção de Valor e Proximidade Eclesiástica',
+    enunciado: 'A realização de aulas síncronas ao vivo e o rigor do Seminário Teológico Congregacional conferem credibilidade e segurança à formação dos novos obreiros.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_koi_comunhao_igreja',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia e Caráter Espiritual',
+    enunciado: 'O convívio cristão e a prática litúrgica na igreja local suprem de forma consistente a convivência comunitária que outrora existia dentro do internato presencial.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_koi_crescimento_visivel',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia e Caráter Espiritual',
+    enunciado: 'A liderança da igreja percebe sinais claros de amadurecimento espiritual, zelo doutrinário e amor pelas almas nos alunos que estudam no modelo virtual síncrono.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_tra_democratizacao_lideres',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Comparação Histórica (Internato vs. Modelo Atual)',
+    enunciado: 'A superação do internato presencial tradicional possibilitou a capacitação de obreiros vocacionados que não poderiam se mudar para a capital.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_tra_aptidao_pastoral',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Comparação Histórica (Internato vs. Modelo Atual)',
+    enunciado: 'Em sua avaliação pastoral, qual formato melhor prepara o pastor para os desafios complexos da igreja contemporânea?',
+    tipo: 'multipla_escolha',
+    opcoes: [
+      { valor: 'sincrono_remoto_igreja', label: 'Modelo Síncrono Remoto: une estudo profundo à vivência pastoral contínua no campo' },
+      { valor: 'internato_classico', label: 'Internato Presencial Tradicional: focado exclusivamente no ambiente fechado de convivência' },
+      { valor: 'hibrido_com_encontros', label: 'Modelo Híbrido: aulas síncronas remotas com encontros periódicos presenciais' },
+      { valor: 'ambos_com_excelencia', label: 'Ambos são eficazes, dependendo da dedicação pessoal do aluno e da mentoria pastoral' },
+    ],
+    termoExplicativoId: 'transicao_internato',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_met_pratica_homiletica',
+    dimensao: 'metodologias_ativas',
+    dimensaoTitulo: 'Dimensão 4: Metodologias Ativas e Aptidão Ministerial',
+    enunciado: 'Ferramentas práticas como laboratórios de oratória bíblica (Homilética) e simulação de dilemas de aconselhamento (RPG) qualificam a atuação do futuro pastor no púlpito.',
+    termoExplicativoId: 'simulador_rpg',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'pas_obs_alerta_fervor',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Contribuição Pastoral para a Pesquisa',
+    enunciado: 'Qual advertência ou recomendação pastoral você daria aos seminários teológicos virtuais para que não percam o fervor espiritual e a paixão evangelística?',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+  {
+    id: 'pas_obs_palavra_final',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 5: Contribuição Pastoral para a Pesquisa',
+    enunciado: 'Considerações pastorais e observações para a monografia do pesquisador Cristiano do Sacramento Soares:',
+    tipo: 'texto',
+    obrigatoria: false,
+  },
+];
+
+// 5. QUESTIONÁRIO DOS MEMBROS DE IGREJA / COMUNIDADE GERAL
+export const PERGUNTAS_MEMBRO_COMUNIDADE: PerguntaDiagnostico[] = [
+  {
+    id: 'mem_dt_presenca_estudante',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Presença do Obreiro e Ensino na Igreja Local',
+    enunciado: 'Ter membros da minha congregação estudando teologia enquanto continuam convivendo e servindo na igreja abençoa diretamente a nossa comunidade.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mem_dt_clareza_ensino',
+    dimensao: 'distancia_transacional',
+    dimensaoTitulo: 'Dimensão 1: Presença do Obreiro e Ensino na Igreja Local',
+    enunciado: 'Percebo que os estudantes de teologia que utilizam recursos modernos explicam a Bíblia com mais clareza, profundidade e amor nas pregações e na Escola Bíblica.',
+    termoExplicativoId: 'distancia_transacional',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mem_koi_testemunho_diario',
+    dimensao: 'koinonia',
+    dimensaoTitulo: 'Dimensão 2: Comunhão e Exemplo de Vida Cristã',
+    enunciado: 'A convivência fraterna e o testemunho diário na igreja local são a melhor maneira de comprovar a vocação pastoral de quem estuda teologia.',
+    termoExplicativoId: 'koinonia',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mem_tra_apoio_formacao',
+    dimensao: 'transicao_internato',
+    dimensaoTitulo: 'Dimensão 3: Visão Geral sobre o Ensino Teológico',
+    enunciado: 'Vejo de forma muito positiva que a liderança da minha igreja e novos obreiros possam se qualificar através de aulas virtuais sem precisarem se ausentar da congregação.',
+    termoExplicativoId: 'transicao_internato',
+    tipo: 'likert_5',
+    obrigatoria: true,
+  },
+  {
+    id: 'mem_obs_comentario_livre',
+    dimensao: 'qualitativa',
+    dimensaoTitulo: 'Dimensão 4: Considerações Finais da Membresia',
+    enunciado: 'Espaço aberto: registre seu depoimento ou mensagem para a pesquisa de Cristiano do Sacramento Soares:',
     tipo: 'texto',
     obrigatoria: false,
   },
 ];
 
 /**
- * Salva rascunho de preenchimento localmente para evitar perda de dados
+ * Retorna as perguntas personalizadas de acordo com o perfil do respondente
+ * Aplicação prática da Estratificação de Atores & Triangulação Metodológica
  */
-export function saveDraftToLocalStorage(draft: Partial<TCCPesquisaCampoRecord>): void {
+export function getPerguntasParaPublico(tipoPublico: TipoPublico): PerguntaDiagnostico[] {
+  if (tipoPublico === 'professor_unimb' || tipoPublico === 'professor_unib') {
+    return PERGUNTAS_DOCENTE;
+  }
+  if (tipoPublico === 'monitor_unimb' || tipoPublico === 'monitor_unib') {
+    return PERGUNTAS_MONITOR;
+  }
+  if (tipoPublico === 'externo_pastor' || tipoPublico === 'externo_lider') {
+    return PERGUNTAS_PASTOR_LIDER;
+  }
+  if (tipoPublico === 'externo_membro') {
+    return PERGUNTAS_MEMBRO_COMUNIDADE;
+  }
+  // Padrão: Aluno UNIMB / Aluno Externo
+  return PERGUNTAS_DISCENTE;
+}
+
+/**
+ * Compatibilidade legada para referências diretas
+ */
+export const PERGUNTAS_PESQUISA_TCC = PERGUNTAS_DISCENTE;
+
+/**
+ * =========================================================================
+ * GERENCIAMENTO DE RESPOSTAS E MÚLTIPLOS PERFIS NO DISPOSITIVO
+ * =========================================================================
+ */
+
+/**
+ * Salva o estado de respostas de um perfil específico, permitindo posterior edição
+ */
+export function saveProfileResponsesState(state: PerfilResponseState): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    const raw = localStorage.getItem(MULTI_PERFIL_STORAGE_KEY);
+    const map: Record<string, PerfilResponseState> = raw ? JSON.parse(raw) : {};
+    map[state.tipo_publico] = {
+      ...state,
+      updated_at: new Date().toISOString(),
+    };
+    localStorage.setItem(MULTI_PERFIL_STORAGE_KEY, JSON.stringify(map));
   } catch (e) {
     cleanupBulkyLocalStorage();
     try {
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+      const raw = localStorage.getItem(MULTI_PERFIL_STORAGE_KEY);
+      const map: Record<string, PerfilResponseState> = raw ? JSON.parse(raw) : {};
+      map[state.tipo_publico] = state;
+      localStorage.setItem(MULTI_PERFIL_STORAGE_KEY, JSON.stringify(map));
     } catch (_) {}
   }
 }
 
 /**
- * Recupera o rascunho salvo do localStorage
+ * Recupera o estado salvo de um perfil específico para edição ou continuação
  */
-export function getDraftFromLocalStorage(): Partial<TCCPesquisaCampoRecord> | null {
+export function getProfileResponseState(tipoPublico: TipoPublico): PerfilResponseState | null {
   if (typeof window === 'undefined') return null;
   try {
-    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const raw = localStorage.getItem(MULTI_PERFIL_STORAGE_KEY);
+    if (!raw) return null;
+    const map: Record<string, PerfilResponseState> = JSON.parse(raw);
+    return map[tipoPublico] || null;
   } catch (e) {
     return null;
   }
 }
 
 /**
- * Limpa o rascunho após submissão bem-sucedida
+ * Recupera todos os perfis já iniciados/respondidos neste dispositivo
  */
-export function clearDraftFromLocalStorage(): void {
-  if (typeof window === 'undefined') return;
+export function getAllProfileResponseStates(): Record<string, PerfilResponseState> {
+  if (typeof window === 'undefined') return {};
   try {
-    localStorage.removeItem(DRAFT_STORAGE_KEY);
-  } catch (_) {}
+    const raw = localStorage.getItem(MULTI_PERFIL_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
 }
 
 /**
@@ -447,9 +827,9 @@ export function saveLocalSubmission(record: TCCPesquisaCampoRecord): void {
   try {
     const raw = localStorage.getItem(LOCAL_SUBMISSIONS_KEY);
     const list: TCCPesquisaCampoRecord[] = raw ? JSON.parse(raw) : [];
-    // Adiciona ou substitui por ID
+    // Adiciona ou substitui pelo par (tipo_publico, email) ou id
     const next = [record, ...list.filter((item) => item.id !== record.id)];
-    localStorage.setItem(LOCAL_SUBMISSIONS_KEY, JSON.stringify(next.slice(0, 100)));
+    localStorage.setItem(LOCAL_SUBMISSIONS_KEY, JSON.stringify(next.slice(0, 150)));
   } catch (e) {
     console.warn('[PesquisaCampo] Alerta ao salvar submissão localmente:', e);
   }
@@ -488,11 +868,21 @@ export async function submitPesquisaCampo(
     created_at: new Date().toISOString(),
   };
 
-  // 1. Grava no cache local de submissões imediatamente (Garantia de que nenhum dado é perdido)
+  // 1. Grava no cache de perfil como 'enviado' (permite reabrir para edição se desejar)
+  saveProfileResponsesState({
+    tipo_publico: record.tipo_publico,
+    respostas: record.respostas,
+    dados_identificacao: record.dados_identificacao,
+    status: 'enviado',
+    submission_id: generatedId,
+    updated_at: new Date().toISOString(),
+  });
+
+  // 2. Grava no cache de submissões locais
   saveLocalSubmission(fullRecord);
 
   try {
-    // 2. Envia para a API especializada (que possui fallback no Supabase materiais)
+    // 3. Envia para a API especializada (com fallback no Supabase materiais)
     const res = await fetch('/api/tcc/pesquisa-campo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -501,24 +891,18 @@ export async function submitPesquisaCampo(
 
     const data = await res.json();
     if (res.ok && data.success) {
-      clearDraftFromLocalStorage();
       return { success: true, id: data.id || generatedId };
     }
 
-    // Mesmo se a rota devolver erro, como gravamos no local storage, limpamos o rascunho e confirmamos sucesso
-    clearDraftFromLocalStorage();
     return { success: true, id: generatedId };
   } catch (err: any) {
-    console.warn('[PesquisaCampo] Conexão com servidor offline. Gravado com sucesso no dispositivo local.', err);
-    clearDraftFromLocalStorage();
+    console.warn('[PesquisaCampo] Gravado com sucesso no dispositivo local.', err);
     return { success: true, id: generatedId };
   }
 }
 
 /**
  * Busca estatísticas agregadas e respostas para o Painel do Administrador
- * Projeção ultra-estrita para blindagem de egress
- * Faz merge dos registros remotos com os registros locais
  */
 export async function getPesquisaCampoAdminData(): Promise<{
   total: number;
@@ -551,7 +935,7 @@ export async function getPesquisaCampoAdminData(): Promise<{
       }
     }
   } catch (e) {
-    console.warn('[PesquisaCampo] Falha ao carregar API remota, usando cache local:', e);
+    console.warn('[PesquisaCampo] API remota offline, usando cache local:', e);
   }
 
   // Merge sem duplicatas
@@ -562,7 +946,7 @@ export async function getPesquisaCampoAdminData(): Promise<{
     if (r && r.id) mapById.set(r.id, r);
   });
 
-  // Adiciona locais (se não existirem nos remotos)
+  // Adiciona locais
   localList.forEach((r) => {
     if (r && r.id && !mapById.has(r.id)) {
       mapById.set(r.id, r);

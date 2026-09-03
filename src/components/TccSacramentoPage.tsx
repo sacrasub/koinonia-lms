@@ -499,7 +499,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             Painel do TCC - Cristiano do Sacramento Soares
           </h1>
           <p className="text-xs sm:text-base text-blue-200">
-            Curso de Bacharelado em Teologia • <strong>Centro Universitário do Maciço de Baturité (UNIMB)</strong> | Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Status:{' '}
+            Curso de Bacharelado em Teologia • <strong>Centro Universitário do Maciço de Baturité (UNIMB)</strong> & <strong>Seminário Teológico Congregacional</strong> | Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Status:{' '}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
               🟢 Em Desenvolvimento
             </span>
@@ -984,7 +984,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               </div>
             </div>
             <p className="text-xs text-gray-600 max-w-2xl leading-relaxed">
-              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Centro Universitário do Maciço de Baturité (UNIMB) com a plataforma <strong>Koinonia LMS</strong>.
+              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Seminário Teológico Congregacional & UNIMB com a plataforma <strong>Koinonia LMS</strong>.
             </p>
           </div>
 

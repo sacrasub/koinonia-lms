@@ -6,13 +6,14 @@
 --
 -- Pesquisador: Cristiano do Sacramento Soares
 -- Orientador: Pastor Alexsandro Silva
+-- Metodologia: Profª Gabriela Leal
+-- Seminário: Seminário Teológico Congregacional
 --
 -- Tema: Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual:
 --       Distância Transacional, Preservação da Koinonia e a Transição
 --       do Internato Presencial para o Modelo Síncrono Remoto
 --
--- Plataforma: Koinonia LMS (Concebida para modernização do ensino teológico
---             no ambiente virtual, aplicável a qualquer instituição de ensino de teologia)
+-- Plataforma: Koinonia LMS (Projeto de Plataforma Integrada de Ensino Teológico Virtual)
 -- =========================================================================
 
 CREATE TABLE IF NOT EXISTS public.tcc_pesquisa_respostas (

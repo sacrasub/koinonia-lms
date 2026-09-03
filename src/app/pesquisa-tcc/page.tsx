@@ -5,20 +5,24 @@ import {
   GraduationCap, CheckCircle2, ShieldCheck, Heart, 
   HelpCircle, ArrowRight, ArrowLeft, Share2, Copy, 
   Check, Sparkles, AlertCircle, BookOpen, Send, RefreshCw, 
-  MessageSquare, Lock, LogIn, ExternalLink, Info, X, Lightbulb
+  MessageSquare, Lock, LogIn, ExternalLink, Info, X, Lightbulb,
+  Edit3, CheckCircle, UserCheck
 } from 'lucide-react';
 import { 
   TipoPublico, 
   OrigemPesquisa,
   DadosIdentificacao,
   TIPO_PUBLICO_LABELS,
-  PERGUNTAS_PESQUISA_TCC,
   GLOSSARIO_PEDAGOGICO_TCC,
   TermoExplicativo,
-  saveDraftToLocalStorage,
-  getDraftFromLocalStorage,
-  clearDraftFromLocalStorage,
+  getPerguntasParaPublico,
+  PerguntaDiagnostico,
+  saveProfileResponsesState,
+  getProfileResponseState,
+  getAllProfileResponseStates,
   submitPesquisaCampo,
+  PerfilResponseState,
+  SEMINARIO_NOME,
   INSTITUICAO_NOME,
   CURSO_NOME,
   PESQUISADOR_NOME,
@@ -54,9 +58,12 @@ export default function PesquisaTCCPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [draftLoaded, setDraftLoaded] = useState<boolean>(false);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   
+  // Mapa de estados de todos os perfis já preenchidos neste navegador
+  const [allProfileStates, setAllProfileStates] = useState<Record<string, PerfilResponseState>>({});
+  const [isEditingExistingProfile, setIsEditingExistingProfile] = useState<boolean>(false);
+
   // Sessão e Autenticação
   const [userAuthEmail, setUserAuthEmail] = useState<string | null>(null);
   const [userAuthName, setUserAuthName] = useState<string | null>(null);
@@ -66,7 +73,7 @@ export default function PesquisaTCCPage() {
   const [termoAtivo, setTermoAtivo] = useState<TermoExplicativo | null>(null);
   const [isGlossarioGeralAberto, setIsGlossarioGeralAberto] = useState<boolean>(false);
 
-  // Verifica se o público atual pertence à comunidade interna
+  // Verifica se o público atual pertence à comunidade interna (exige login)
   const isComunidadeInterna = useMemo(() => {
     return (
       tipoPublico === 'aluno_unimb' ||
@@ -78,7 +85,12 @@ export default function PesquisaTCCPage() {
     );
   }, [tipoPublico]);
 
-  // Carrega parâmetros de URL, rascunho e sessão Supabase
+  // Perguntas dinâmicas e personalizadas para o perfil selecionado (Triangulação Metodológica)
+  const perguntasAtuais = useMemo(() => {
+    return getPerguntasParaPublico(tipoPublico);
+  }, [tipoPublico]);
+
+  // Carrega parâmetros de URL, estados multi-perfil e sessão Supabase
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -87,18 +99,21 @@ export default function PesquisaTCCPage() {
     if (origParam) setOrigem(origParam);
 
     const pubParam = params.get('publico') as TipoPublico;
-    if (pubParam && TIPO_PUBLICO_LABELS[pubParam]) {
-      setTipoPublico(pubParam);
-    }
+    const initialPub: TipoPublico = (pubParam && TIPO_PUBLICO_LABELS[pubParam]) ? pubParam : 'aluno_unimb';
+    setTipoPublico(initialPub);
 
-    // Carrega rascunho anterior se houver
-    const draft = getDraftFromLocalStorage();
-    if (draft) {
-      if (draft.autorizou_tcc) setAutorizouTcle(draft.autorizou_tcc);
-      if (draft.tipo_publico) setTipoPublico(draft.tipo_publico);
-      if (draft.dados_identificacao) setDadosIdentificacao(draft.dados_identificacao);
-      if (draft.respostas) setRespostas(draft.respostas);
-      setDraftLoaded(true);
+    // Carrega todos os perfis já iniciados/respondidos
+    const savedStates = getAllProfileResponseStates();
+    setAllProfileStates(savedStates);
+
+    // Se o perfil inicial já tiver estado salvo, carrega suas respostas
+    if (savedStates[initialPub]) {
+      const pState = savedStates[initialPub];
+      setRespostas(pState.respostas || {});
+      if (pState.dados_identificacao) {
+        setDadosIdentificacao(pState.dados_identificacao);
+      }
+      setIsEditingExistingProfile(pState.status === 'enviado');
     }
 
     // Checa sessão Supabase
@@ -118,7 +133,6 @@ export default function PesquisaTCCPage() {
       }
     });
 
-    // Escuta mudanças de auth (ex: após retorno do Google OAuth)
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         const email = session.user.email || '';
@@ -138,17 +152,54 @@ export default function PesquisaTCCPage() {
     };
   }, []);
 
-  // Salva rascunho automaticamente a cada alteração
+  // Transição de Perfil: Salva o anterior e carrega o novo de forma independente
+  const handleSelectTipoPublico = (novoPerfil: TipoPublico) => {
+    if (novoPerfil === tipoPublico) return;
+
+    // 1. Salva o rascunho do perfil atual antes de mudar
+    if (Object.keys(respostas).length > 0) {
+      saveProfileResponsesState({
+        tipo_publico: tipoPublico,
+        respostas: respostas,
+        dados_identificacao: dadosIdentificacao,
+        status: allProfileStates[tipoPublico]?.status || 'rascunho',
+        updated_at: new Date().toISOString(),
+      });
+    }
+
+    // 2. Atualiza o perfil ativo
+    setTipoPublico(novoPerfil);
+
+    // 3. Atualiza mapa local de perfis
+    const updatedMap = getAllProfileResponseStates();
+    setAllProfileStates(updatedMap);
+
+    // 4. Carrega respostas salvas do novo perfil (ou reinicia limpo)
+    if (updatedMap[novoPerfil]) {
+      const targetState = updatedMap[novoPerfil];
+      setRespostas(targetState.respostas || {});
+      if (targetState.dados_identificacao) {
+        setDadosIdentificacao(targetState.dados_identificacao);
+      }
+      setIsEditingExistingProfile(targetState.status === 'enviado');
+    } else {
+      // Inicia uma nova pesquisa para este perfil!
+      setRespostas({});
+      setIsEditingExistingProfile(false);
+    }
+  };
+
+  // Salva periodicamente o estado do perfil ativo
   useEffect(() => {
-    if (isSuccess) return;
-    saveDraftToLocalStorage({
+    if (isSuccess || Object.keys(respostas).length === 0) return;
+    saveProfileResponsesState({
       tipo_publico: tipoPublico,
-      autorizou_tcc: autorizouTcle,
-      dados_identificacao: dadosIdentificacao,
       respostas: respostas,
-      origem: origem,
+      dados_identificacao: dadosIdentificacao,
+      status: allProfileStates[tipoPublico]?.status || 'rascunho',
+      updated_at: new Date().toISOString(),
     });
-  }, [tipoPublico, autorizouTcle, dadosIdentificacao, respostas, origem, isSuccess]);
+  }, [tipoPublico, respostas, dadosIdentificacao, isSuccess]);
 
   const handleSelectLikert = (perguntaId: string, val: number) => {
     setRespostas((prev) => ({ ...prev, [perguntaId]: val }));
@@ -173,28 +224,25 @@ export default function PesquisaTCCPage() {
   // Login com Google OAuth para a Comunidade Interna
   const handleGoogleLogin = async () => {
     try {
-      // Salva o estado atual no draft antes de redirecionar para o OAuth
-      saveDraftToLocalStorage({
+      saveProfileResponsesState({
         tipo_publico: tipoPublico,
-        autorizou_tcc: autorizouTcle,
-        dados_identificacao: dadosIdentificacao,
         respostas: respostas,
-        origem: origem,
+        dados_identificacao: dadosIdentificacao,
+        status: 'rascunho',
+        updated_at: new Date().toISOString(),
       });
 
       const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
       await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          redirectTo: currentUrl,
-        },
+        options: { redirectTo: currentUrl },
       });
     } catch (err: any) {
       setErrorMessage('Erro ao iniciar login com Google: ' + (err.message || 'Tente novamente'));
     }
   };
 
-  // Submissão final do formulário
+  // Submissão final do questionário do perfil ativo
   const handleSubmit = async () => {
     if (!autorizouTcle) {
       setErrorMessage('É obrigatório aceitar o Termo de Consentimento Livre e Esclarecido (TCLE).');
@@ -203,7 +251,7 @@ export default function PesquisaTCCPage() {
     }
 
     if (isComunidadeInterna && !userAuthEmail) {
-      setErrorMessage('Para a comunidade interna, é obrigatório conectar-se com sua conta Google acadêmica.');
+      setErrorMessage('Para a comunidade interna do Seminário, é obrigatório conectar-se com sua conta Google acadêmica.');
       setCurrentStep(2);
       return;
     }
@@ -224,27 +272,28 @@ export default function PesquisaTCCPage() {
 
     if (res.success) {
       setIsSuccess(true);
-      clearDraftFromLocalStorage();
+      // Atualiza mapa de estados com o perfil marcado como enviado
+      const nextStates = getAllProfileResponseStates();
+      setAllProfileStates(nextStates);
     } else {
       setErrorMessage(res.error || 'Erro ao enviar respostas. Tente novamente.');
     }
   };
 
-  // Permite ao respondente preencher outro questionário ou trocar de perfil
-  const handlePreencherOutro = () => {
-    clearDraftFromLocalStorage();
-    setRespostas({});
+  // Preencher outro questionário ou editar outro perfil
+  const handlePreencherOutroPerfil = () => {
     setIsSuccess(false);
-    setCurrentStep(2); // Volta direto para a caracterização de perfil
+    setCurrentStep(2); // Retorna para a tela de perfis
   };
 
   const totalSteps = 6;
   const progressPercent = Math.round((currentStep / totalSteps) * 100);
 
-  const dim1Questions = useMemo(() => PERGUNTAS_PESQUISA_TCC.filter((p) => p.dimensao === 'distancia_transacional'), []);
-  const dim2Questions = useMemo(() => PERGUNTAS_PESQUISA_TCC.filter((p) => p.dimensao === 'koinonia'), []);
-  const dim3Questions = useMemo(() => PERGUNTAS_PESQUISA_TCC.filter((p) => p.dimensao === 'transicao_internato'), []);
-  const dim4And5Questions = useMemo(() => PERGUNTAS_PESQUISA_TCC.filter((p) => p.dimensao === 'metodologias_ativas' || p.dimensao === 'qualitativa'), []);
+  // Filtra perguntas personalizadas por dimensão para renderização por etapas
+  const dim1Questions = useMemo(() => perguntasAtuais.filter((p) => p.dimensao === 'distancia_transacional'), [perguntasAtuais]);
+  const dim2Questions = useMemo(() => perguntasAtuais.filter((p) => p.dimensao === 'koinonia'), [perguntasAtuais]);
+  const dim3Questions = useMemo(() => perguntasAtuais.filter((p) => p.dimensao === 'transicao_internato'), [perguntasAtuais]);
+  const dim4And5Questions = useMemo(() => perguntasAtuais.filter((p) => p.dimensao === 'metodologias_ativas' || p.dimensao === 'qualitativa'), [perguntasAtuais]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950 text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
@@ -258,16 +307,16 @@ export default function PesquisaTCCPage() {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-                  TCC Teologia • UNIMB (Baturité - CE)
+                  TCC Teologia • UNIMB & {SEMINARIO_NOME}
                 </span>
                 {userAuthEmail && (
                   <span className="text-[9px] font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Logado: {userAuthEmail}
                   </span>
                 )}
-                {draftLoaded && !isSuccess && (
-                  <span className="text-[9px] font-bold text-amber-400 flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> Rascunho salvo
+                {isEditingExistingProfile && !isSuccess && (
+                  <span className="text-[9px] font-bold text-amber-300 bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1">
+                    <Edit3 className="w-3 h-3" /> Modo Edição ({TIPO_PUBLICO_LABELS[tipoPublico]?.label.split('(')[0].trim()})
                   </span>
                 )}
               </div>
@@ -281,7 +330,7 @@ export default function PesquisaTCCPage() {
             <button
               onClick={() => setIsGlossarioGeralAberto(true)}
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition cursor-pointer"
-              title="Ver glossário de termos difíceis e inovações"
+              title="Ver glossário de inovações pedagógicas e termos do TCC"
             >
               <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden sm:inline">Explicar Termos</span>
@@ -327,27 +376,55 @@ export default function PesquisaTCCPage() {
 
             <div className="space-y-2">
               <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                Diagnóstico Registrado com Sucesso!
+                {isEditingExistingProfile ? 'Respostas Atualizadas com Sucesso!' : 'Diagnóstico Registrado com Sucesso!'}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white">Muito Obrigado por sua Contribuição!</h2>
               <p className="text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-                Suas respostas foram gravadas com segurança e servirão como fundamentação empírica para o Trabalho de Conclusão de Curso em Teologia de <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong>, no <strong>{INSTITUICAO_NOME}</strong>.
+                Suas respostas foram salvas com sucesso para o perfil <strong>{TIPO_PUBLICO_LABELS[tipoPublico]?.label}</strong> e fundamentarão a triangulação metodológica do TCC de <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong> ({INSTITUICAO_NOME} & {SEMINARIO_NOME}).
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/60 border border-indigo-950 text-left space-y-2 max-w-lg mx-auto">
-              <h4 className="text-xs font-black uppercase tracking-wider text-indigo-300 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-indigo-400" />
-                <span>Garantias Éticas (Resolução CNS 510/2016)</span>
-              </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Seus dados permanecem em estrito sigilo acadêmico e serão divulgados unicamente de forma agregada e estatística no artigo científico e monografia final do curso.
-              </p>
+            {/* Resumo de outros perfis disponíveis para responder */}
+            <div className="p-5 rounded-2xl bg-slate-950/60 border border-indigo-950 text-left space-y-3 max-w-lg mx-auto">
+              <div className="flex items-center justify-between gap-2">
+                <h4 className="text-xs font-black uppercase tracking-wider text-indigo-300 flex items-center gap-2">
+                  <UserCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Seus Questionários neste Dispositivo:</span>
+                </h4>
+                <span className="text-[10px] text-slate-400">Dados salvos independentemente</span>
+              </div>
+              
+              <div className="space-y-1.5">
+                {(Object.keys(TIPO_PUBLICO_LABELS) as TipoPublico[])
+                  .filter((k) => !k.includes('_unib'))
+                  .map((k) => {
+                    const st = allProfileStates[k];
+                    const isCurrent = k === tipoPublico;
+                    const hasSubmitted = st?.status === 'enviado';
+                    return (
+                      <div key={k} className="flex items-center justify-between text-xs py-1 px-2.5 rounded-lg bg-slate-900 border border-slate-800">
+                        <span className="text-slate-300 flex items-center gap-1.5">
+                          <span>{TIPO_PUBLICO_LABELS[k]?.emoji}</span>
+                          <span className="font-semibold">{TIPO_PUBLICO_LABELS[k]?.label.split('(')[0].trim()}</span>
+                          {isCurrent && <span className="text-[10px] text-emerald-400 font-bold">(Recém-enviado)</span>}
+                        </span>
+                        <span className="text-[10px] font-bold">
+                          {hasSubmitted ? (
+                            <span className="text-emerald-400 flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3" /> Registrado
+                            </span>
+                          ) : (
+                            <span className="text-slate-500">Pendente</span>
+                          )}
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
 
             {/* AÇÕES PÓS-RESPOSTA */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-              {/* Entrar na plataforma Koinonia LMS */}
               <a
                 href="/"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm shadow-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
@@ -356,16 +433,14 @@ export default function PesquisaTCCPage() {
                 <span>Entrar na Plataforma Koinonia LMS →</span>
               </a>
 
-              {/* Preencher outro questionário / outro perfil */}
               <button
-                onClick={handlePreencherOutro}
+                onClick={handlePreencherOutroPerfil}
                 className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 font-extrabold text-xs border border-indigo-500/40 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <RefreshCw className="w-4 h-4 text-indigo-400" />
-                <span>Preencher com Outro Perfil</span>
+                <span>Preencher / Editar Outro Perfil</span>
               </button>
 
-              {/* Convidar no WhatsApp */}
               <button
                 onClick={handleCopyShareLink}
                 className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
@@ -390,19 +465,19 @@ export default function PesquisaTCCPage() {
                     Termo de Consentimento Livre e Esclarecido (TCLE)
                   </h2>
                   <p className="text-xs text-indigo-300 font-medium leading-relaxed">
-                    Pesquisa Acadêmica em Teologia • <strong>CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)</strong> & <strong>Seminário Teológico Koinonia</strong>
+                    Pesquisa Acadêmica em Teologia • <strong>{INSTITUICAO_NOME}</strong> & <strong>{SEMINARIO_NOME}</strong>
                   </p>
                 </div>
 
                 <div className="prose prose-invert max-w-none text-xs text-slate-300 space-y-3 bg-slate-950/60 p-5 rounded-2xl border border-slate-800/80 max-h-72 overflow-y-auto leading-relaxed">
                   <p>
-                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no <strong>CENTRO UNIVERSITÁRIO DO MACIÇO DE BATURITÉ - BATURITÉ – CE (UNIMB)</strong>, pelo pesquisador <strong>Cristiano do Sacramento Soares</strong>, sob orientação do <strong>Pastor Alexsandro Silva</strong>, no âmbito do <strong>Seminário Teológico Koinonia</strong>.
+                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no <strong>{INSTITUICAO_NOME}</strong>, pelo pesquisador <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong>, no âmbito acadêmico do <strong>{SEMINARIO_NOME}</strong>.
                   </p>
                   <p>
                     <strong>Título do Trabalho:</strong> <em>"{TCC_TEMA}"</em>.
                   </p>
                   <p>
-                    <strong>Sobre a Plataforma {PLATAFORMA_NOME}:</strong> Trata-se de uma plataforma educacional aberta concebida para a modernização do ensino teológico no ambiente virtual, projetada para utilização em qualquer instituição de ensino e seminário de teologia.
+                    <strong>Sobre a Plataforma {PLATAFORMA_NOME}:</strong> Trata-se do projeto de plataforma educacional integrada concebido para a modernização do ensino teológico no ambiente virtual, projetada para utilização em qualquer seminário ou instituição de formação pastoral e teológica.
                   </p>
                   <p>
                     <strong>Objetivos:</strong> Identificar a percepção de seminaristas, docentes, monitores, pastores e líderes eclesiásticos sobre a eficácia pedagógica, o acolhimento comunitário e a formação integral do caráter pastoral proporcionada pelas metodologias ativas e aulas síncronas remotas.
@@ -421,7 +496,7 @@ export default function PesquisaTCCPage() {
                   />
                   <div className="text-xs text-slate-200">
                     <strong className="text-white block font-bold">Declaração de Concordância</strong>
-                    Li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o uso científico e estatístico das minhas respostas para o Trabalho de Conclusão de Curso em Teologia de {PESQUISADOR_NOME} ({INSTITUICAO_NOME} / Seminário Teológico Koinonia).
+                    Li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o uso científico e estatístico das minhas respostas para o Trabalho de Conclusão de Curso em Teologia de {PESQUISADOR_NOME} ({INSTITUICAO_NOME} / {SEMINARIO_NOME}).
                   </div>
                 </label>
 
@@ -438,52 +513,96 @@ export default function PesquisaTCCPage() {
               </div>
             )}
 
-            {/* ETAPA 2: CARACTERIZAÇÃO DO RESPONDENTE & AUTENTICAÇÃO INTERNA */}
+            {/* ETAPA 2: CARACTERIZAÇÃO DO RESPONDENTE & SELEÇÃO DE PERFIL */}
             {currentStep === 2 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-                    Etapa 2 de 6 • Caracterização do Público
-                  </span>
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+                      Etapa 2 de 6 • Caracterização do Público & Triangulação
+                    </span>
+                    <span className="text-[11px] text-amber-300 font-bold bg-amber-950/40 px-2.5 py-1 rounded-full border border-amber-500/30">
+                      Perguntas personalizadas por ator
+                    </span>
+                  </div>
                   <h2 className="text-xl sm:text-2xl font-black text-white">
                     Qual é o seu perfil de atuação?
                   </h2>
-                  <p className="text-xs text-slate-400">
-                    Selecione o grupo que melhor descreve sua relação com a instituição ou ministério eclesiástico:
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Ao alternar o perfil, uma nova pesquisa adaptada ao seu papel é iniciada. Suas respostas anteriores são salvas e podem ser editadas quando quiser:
                   </p>
                 </div>
 
-                {/* Seleção do Tipo de Público */}
+                {/* Seleção do Tipo de Público com indicador de status salvo */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(Object.keys(TIPO_PUBLICO_LABELS) as TipoPublico[])
-                    .filter((key) => !key.includes('_unib')) // Filtra chaves legadas
+                    .filter((key) => !key.includes('_unib'))
                     .map((key) => {
                       const cfg = TIPO_PUBLICO_LABELS[key];
                       const isSelected = tipoPublico === key;
+                      const savedProfile = allProfileStates[key];
+                      const isSubmitted = savedProfile?.status === 'enviado';
+                      const isDraft = savedProfile?.status === 'rascunho' && Object.keys(savedProfile.respostas || {}).length > 0;
+
                       return (
                         <button
                           key={key}
                           type="button"
-                          onClick={() => setTipoPublico(key)}
-                          className={`p-4 rounded-2xl border text-left transition flex items-start gap-3 cursor-pointer ${
+                          onClick={() => handleSelectTipoPublico(key)}
+                          className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between gap-2.5 cursor-pointer relative ${
                             isSelected
-                              ? 'bg-indigo-600/20 border-indigo-500 ring-2 ring-indigo-500/30 text-white'
+                              ? 'bg-indigo-600/25 border-indigo-500 ring-2 ring-indigo-500/40 text-white shadow-lg'
                               : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-950'
                           }`}
                         >
-                          <span className="text-2xl shrink-0">{cfg.emoji}</span>
-                          <div>
-                            <span className="font-extrabold text-xs block leading-tight text-white">{cfg.label}</span>
-                            <span className="text-[10px] text-slate-400 capitalize mt-1 inline-block">
-                              {cfg.grupo === 'interno' ? 'Comunidade Interna UNIMB (Exige Login)' : 'Público Externo / Eclesiástico'}
-                            </span>
+                          <div className="flex items-start gap-3">
+                            <span className="text-2xl shrink-0">{cfg.emoji}</span>
+                            <div className="flex-1">
+                              <span className="font-extrabold text-xs block leading-tight text-white">{cfg.label}</span>
+                              <span className="text-[10px] text-indigo-300 font-medium block mt-0.5">
+                                {cfg.papelAcademico}
+                              </span>
+                              <span className="text-[9px] text-slate-400 capitalize mt-1 inline-block">
+                                {cfg.grupo === 'interno' ? 'Comunidade Interna (Exige Login Google)' : 'Público Externo / Eclesiástico'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Badge de status das respostas deste perfil */}
+                          <div className="pt-1 border-t border-slate-800/80 flex items-center justify-between text-[9px] font-bold">
+                            {isSubmitted ? (
+                              <span className="text-emerald-400 flex items-center gap-1">
+                                <CheckCircle2 className="w-3 h-3" /> Resposta Registrada (Clique p/ editar)
+                              </span>
+                            ) : isDraft ? (
+                              <span className="text-amber-400 flex items-center gap-1">
+                                <Edit3 className="w-3 h-3" /> Rascunho Salvo
+                              </span>
+                            ) : (
+                              <span className="text-slate-500">Novo Questionário</span>
+                            )}
+                            {isSelected && (
+                              <span className="px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
+                                Ativo
+                              </span>
+                            )}
                           </div>
                         </button>
                       );
                     })}
                 </div>
 
-                {/* EXIGÊNCIA DE AUTENTICAÇÃO PARA COMUNIDADE INTERNA DA UNIMB */}
+                {/* Banner de perfil com respostas salvas */}
+                {isEditingExistingProfile && (
+                  <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-500/40 text-amber-200 text-xs flex items-center gap-3">
+                    <Edit3 className="w-5 h-5 shrink-0 text-amber-400" />
+                    <div>
+                      <strong>Modo de Edição Ativo:</strong> Você já possui respostas salvas para este perfil. Suas respostas anteriores foram carregadas nas próximas etapas para que você possa revisá-las e atualizá-las.
+                    </div>
+                  </div>
+                )}
+
+                {/* EXIGÊNCIA DE AUTENTICAÇÃO PARA COMUNIDADE INTERNA */}
                 {isComunidadeInterna && (
                   <div className="p-5 rounded-2xl bg-indigo-950/50 border border-indigo-500/40 space-y-3">
                     <div className="flex items-center gap-2">
@@ -508,7 +627,7 @@ export default function PesquisaTCCPage() {
                     ) : (
                       <div className="space-y-3">
                         <p className="text-xs text-slate-300 leading-relaxed">
-                          Para a <strong>Comunidade Interna da UNIMB</strong> (Alunos, Professores e Monitores), é necessária a autenticação com sua conta Google acadêmica para validar seu vínculo e liberar o acesso direto à plataforma pós-pesquisa.
+                          Para a <strong>Comunidade Interna</strong> (Alunos, Professores e Monitores), é necessária a autenticação com sua conta Google acadêmica para validar seu vínculo e liberar o acesso direto à plataforma pós-pesquisa.
                         </p>
                         <button
                           type="button"
@@ -523,7 +642,7 @@ export default function PesquisaTCCPage() {
                   </div>
                 )}
 
-                {/* Dados de Identificação (Opcionais ou de Contato) */}
+                {/* Dados de Identificação */}
                 <div className="border-t border-slate-800 pt-5 space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-wider text-indigo-300">
                     Dados Complementares (Identificação Opcional)
@@ -592,13 +711,13 @@ export default function PesquisaTCCPage() {
               </div>
             )}
 
-            {/* ETAPA 3: DIMENSÃO 1 — DISTÂNCIA TRANSACIONAL (MOORE) */}
+            {/* ETAPA 3: DIMENSÃO 1 — DISTÂNCIA TRANSACIONAL (MOORE) PERSONALIZADA */}
             {currentStep === 3 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-blue-500/20 text-blue-300 border border-blue-400/30">
-                      Etapa 3 de 6 • Dimensão 1: Distância Transacional (Moore)
+                      Etapa 3 de 6 • Dimensão 1 • {TIPO_PUBLICO_LABELS[tipoPublico]?.papelAcademico}
                     </span>
                     <button
                       type="button"
@@ -609,10 +728,10 @@ export default function PesquisaTCCPage() {
                     </button>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Diálogo, Estrutura e Autonomia no Ambiente Virtual
+                    Diálogo, Estrutura e Distância Transacional
                   </h2>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Avalie cada assertiva na escala de 1 a 5 (de Discordo Totalmente a Concordo Totalmente):
+                    Avalie cada assertiva personalizada para o seu papel na escala de 1 a 5:
                   </p>
                 </div>
 
@@ -641,7 +760,7 @@ export default function PesquisaTCCPage() {
                                 className="mt-1.5 text-[10px] font-bold text-indigo-300 hover:text-indigo-200 flex items-center gap-1 cursor-pointer"
                               >
                                 <Info className="w-3 h-3 text-amber-400" />
-                                <span>Entender este termo ({termo.titulo.split('(')[0].trim()})</span>
+                                <span>Entender este conceito ({termo.titulo.split('(')[0].trim()})</span>
                               </button>
                             )}
                           </div>
@@ -696,13 +815,13 @@ export default function PesquisaTCCPage() {
               </div>
             )}
 
-            {/* ETAPA 4: DIMENSÃO 2 — PRESERVAÇÃO DA KOINONIA */}
+            {/* ETAPA 4: DIMENSÃO 2 — PRESERVAÇÃO DA KOINONIA PERSONALIZADA */}
             {currentStep === 4 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-purple-500/20 text-purple-300 border border-purple-400/30">
-                      Etapa 4 de 6 • Dimensão 2: Preservação da Koinonia
+                      Etapa 4 de 6 • Dimensão 2 • Comunhão Bíblica (Koinonia)
                     </span>
                     <button
                       type="button"
@@ -716,7 +835,7 @@ export default function PesquisaTCCPage() {
                     Comunhão, Mutualidade e Vida Espiritual
                   </h2>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Avalie como o ambiente virtual acolhe ou desafia a dimensão espiritual comunitária:
+                    Avalie como o modelo virtual acolhe ou desafia a dimensão comunitária da formação pastoral:
                   </p>
                 </div>
 
@@ -800,13 +919,13 @@ export default function PesquisaTCCPage() {
               </div>
             )}
 
-            {/* ETAPA 5: DIMENSÃO 3 — TRANSIÇÃO DO INTERNATO */}
+            {/* ETAPA 5: DIMENSÃO 3 — TRANSIÇÃO DO INTERNATO PERSONALIZADA */}
             {currentStep === 5 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                      Etapa 5 de 6 • Dimensão 3: Transição Histórica
+                      Etapa 5 de 6 • Dimensão 3 • Transição Histórica
                     </span>
                     <button
                       type="button"
@@ -910,7 +1029,7 @@ export default function PesquisaTCCPage() {
               </div>
             )}
 
-            {/* ETAPA 6: METODOLOGIAS ATIVAS & CONSIDERAÇÕES FINAIS */}
+            {/* ETAPA 6: METODOLOGIAS ATIVAS & CONSIDERAÇÕES DISCURSIVAS */}
             {currentStep === 6 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
@@ -930,7 +1049,7 @@ export default function PesquisaTCCPage() {
                     Inovações Pedagógicas e Avaliação Aberta
                   </h2>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Últimas questões objetivas e espaço para suas considerações qualitativas:
+                    Últimas questões adaptadas ao seu perfil e espaço aberto para suas considerações discursivas:
                   </p>
                 </div>
 
@@ -1021,7 +1140,7 @@ export default function PesquisaTCCPage() {
                           <div className="pt-2">
                             <textarea
                               rows={4}
-                              placeholder="Sua resposta reflexiva com suas próprias palavras..."
+                              placeholder="Sua reflexão sincera com suas próprias palavras..."
                               value={respostas[q.id] || ''}
                               onChange={(e) => handleTextChange(q.id, e.target.value)}
                               className="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500 leading-relaxed"
@@ -1055,7 +1174,7 @@ export default function PesquisaTCCPage() {
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Concluir & Enviar Diagnóstico 🎉</span>
+                        <span>{isEditingExistingProfile ? 'Atualizar Diagnóstico ✨' : 'Concluir & Enviar Diagnóstico 🎉'}</span>
                       </>
                     )}
                   </button>
@@ -1066,9 +1185,7 @@ export default function PesquisaTCCPage() {
         )}
       </main>
 
-      {/* ========================================================================= */}
-      {/* MODAL EXPLICATIVO INDIVIDUAL DE TERMO / INOVAÇÃO PEDAGÓGICA               */}
-      {/* ========================================================================= */}
+      {/* MODAL EXPLICATIVO INDIVIDUAL DE TERMO */}
       {termoAtivo && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
           <div className="bg-slate-900 border border-indigo-500/40 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
@@ -1116,9 +1233,7 @@ export default function PesquisaTCCPage() {
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* MODAL GLOSSÁRIO GERAL DE TODAS AS INOVAÇÕES PEDAGÓGICAS                    */}
-      {/* ========================================================================= */}
+      {/* MODAL GLOSSÁRIO GERAL */}
       {isGlossarioGeralAberto && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
           <div className="bg-slate-900 border border-indigo-500/40 rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl animate-in zoom-in-95 duration-200">
@@ -1129,7 +1244,7 @@ export default function PesquisaTCCPage() {
                 </div>
                 <div>
                   <h3 className="text-base font-black text-white">Guia Rápido de Inovações Pedagógicas do TCC</h3>
-                  <p className="text-[11px] text-slate-400">Entenda os conceitos teóricos e práticos investigados na pesquisa</p>
+                  <p className="text-[11px] text-slate-400">Conceitos investigados na pesquisa de campo do Koinonia LMS</p>
                 </div>
               </div>
               <button
@@ -1170,7 +1285,7 @@ export default function PesquisaTCCPage() {
       {/* RODAPÉ INSTITUCIONAL */}
       <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 px-4 text-center text-xs text-slate-500 space-y-2">
         <p className="max-w-2xl mx-auto font-medium">
-          <strong>{INSTITUICAO_NOME}</strong> • {CURSO_NOME}
+          <strong>{INSTITUICAO_NOME}</strong> • {CURSO_NOME} • <strong>{SEMINARIO_NOME}</strong>
         </p>
         <p className="text-[11px] text-slate-400">
           Pesquisador: <strong>{PESQUISADOR_NOME}</strong> • Orientador: <strong>{ORIENTADOR_NOME}</strong>

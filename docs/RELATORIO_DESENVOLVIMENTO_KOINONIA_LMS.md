@@ -1,5 +1,5 @@
 # RELATÓRIO EXECUTIVO DE DESENVOLVIMENTO, ARQUITETURA E GUIA OPERACIONAL
-## Plataforma Koinonia LMS (Seminário Teológico Koinonia — Semestre Letivo 2026.2)
+## Plataforma Koinonia LMS (Seminário Teológico Congregacional — Semestre Letivo 2026.2)
 
 ---
 
@@ -19,7 +19,7 @@
 ## 1. IDENTIDADE DO PROJETO, PROPÓSITO E ESCOPO ACADÊMICO
 
 ### 1.1. Missão Pedagógica
-O **Koinonia LMS** é o Sistema Integrado de Gestão da Aprendizagem desenvolvido especificamente para atender às demandas acadêmicas, teológicas e ministeriais do **Seminário Teológico Koinonia** (vinculado à União das Igrejas Evangélicas Congregacionais do Brasil — UIECB).
+O **Koinonia LMS** é o Sistema Integrado de Gestão da Aprendizagem concebido como projeto inovador para atender às demandas acadêmicas, teológicas e ministeriais do **Seminário Teológico Congregacional** (vinculado à União das Igrejas Evangélicas Congregacionais do Brasil — UIECB) e aplicável a qualquer instituição e faculdade de ensino teológico.
 
 O sistema foi concebido para resolver os principais gargalos pedagógicos e operacionais do ecossistema legado (dispersão de links em planilhas, grupos de WhatsApp desordenados, pastas desorganizadas no Google Drive e formulários avulsos do Google Forms), integrando:
 - **Transmissões ao vivo sincronizadas**: Google Meet com contagem regressiva e liberação automática de links de presença.
@@ -151,6 +151,11 @@ Ambiente imersivo com modelos tridimensionais do Tabernáculo no Deserto, Templo
    - **Múltiplos Preenchimentos**: O sistema permite ao mesmo respondente preencher mais de um questionário com perfis distintos (ex: discente interno e depois pastor externo), com reinicialização rápida pós-envio.
    - **Blindagem de Egress & Persistência Indestrutível**: Rota `/api/tcc/pesquisa-campo` com retorno minimal HTTP 201 (`{ success: true, id }`), rascunho automático em `localStorage` e fallback transparente com gravação no banco sem falhas.
    - **Painel do Pesquisador (`TccSacramentoPage.tsx`)**: Totalizadores em tempo real por segmento, visualização individual de respostas e exportação de planilha CSV formatada para Excel e SPSS em 1 clique.
+
+8. **Estratificação de Atores & Triangulação Metodológica do TCC (Cristiano do Sacramento Soares)**:
+   - **Seminário Teológico Congregacional**: Distinção precisa entre a instituição de ensino formadora (**Seminário Teológico Congregacional**) e a plataforma tecnológica (**Koinonia LMS**).
+   - **Perguntas Personalizadas por Ator**: Instrumentos empíricos customizados que investigam: Discentes (distância afetiva e cognitiva), Docentes (distância pedagógica e hermenêutica), Monitores (distância operacional e comunicacional), Pastores/Líderes (credibilidade ministerial e aptidão pastoral) e Membros (impacto litúrgico na igreja local).
+   - **Gerenciador Multi-Perfil com Suporte a Edição**: O respondente pode alternar livremente entre múltiplos perfis; o sistema preserva os dados de cada um de forma independente e permite editar ou atualizar as respostas já submetidas a qualquer momento.
 
 ---
 
