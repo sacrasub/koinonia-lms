@@ -5,7 +5,8 @@ import {
   X, Video, Mic, MicOff, Play, Pause, Square, Download, 
   UploadCloud, CheckCircle2, AlertCircle, Sparkles, Clock, FolderOpen, 
   Layers, ExternalLink, ShieldCheck, Check, Copy, HelpCircle,
-  Minimize2, Maximize2, Lock, Smartphone, Loader2, RefreshCw, Trash2, Unlock
+  Minimize2, Maximize2, Lock, Smartphone, Loader2, RefreshCw, Trash2, Unlock,
+  Bot, Timer
 } from 'lucide-react';
 import { Disciplina, UserRole } from '@/types';
 import { getAllDisciplinas } from '@/services/disciplinasService';
@@ -41,6 +42,7 @@ interface AulaRecorderModalProps {
   onClose: () => void;
   defaultDisciplinaId?: string;
   defaultAulaNum?: number;
+  initialMode?: 'screen' | 'file' | 'link' | 'autopilot';
   userEmail?: string;
   currentRole?: UserRole;
   onRecordingSaved?: () => void;
@@ -51,6 +53,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   onClose,
   defaultDisciplinaId,
   defaultAulaNum = 1,
+  initialMode,
   userEmail = 'sacrasub@gmail.com',
   currentRole = 'monitor',
   onRecordingSaved
@@ -66,9 +69,19 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const [aulaNum, setAulaNum] = useState<number>(defaultAulaNum);
   const [dataAula, setDataAula] = useState<string>(new Date().toLocaleDateString('pt-BR'));
   const [includeMic, setIncludeMic] = useState<boolean>(true);
-  const [activeTabMode, setActiveTabMode] = useState<'screen' | 'file' | 'link'>('screen');
+  const [activeTabMode, setActiveTabMode] = useState<'screen' | 'file' | 'link' | 'autopilot'>(initialMode || 'screen');
   const [directDriveUrl, setDirectDriveUrl] = useState<string>('');
   const [directRecordingTitle, setDirectRecordingTitle] = useState<string>('');
+
+  // Estados do Piloto Automático & Auto-Stop (Cristiano / Monitoria / Admin)
+  const [isAutoPilot, setIsAutoPilot] = useState<boolean>(initialMode === 'autopilot');
+  const [autoStopDurationMinutes, setAutoStopDurationMinutes] = useState<number>(120); // 2h padrão
+  const [autoStopMode, setAutoStopMode] = useState<'duration' | 'fixed_time'>('duration');
+  const [autoStopFixedTime, setAutoStopFixedTime] = useState<string>('22:00');
+  const [autoUploadDrive, setAutoUploadDrive] = useState<boolean>(true);
+  const [autoDownloadBackup, setAutoDownloadBackup] = useState<boolean>(true);
+  const [autoStopRemainingSeconds, setAutoStopRemainingSeconds] = useState<number | null>(null);
+  const autoStopTargetTimeRef = useRef<number | null>(null);
 
   // Estados do Gravador
   const [recordingState, setRecordingState] = useState<'idle' | 'recording' | 'paused' | 'stopped'>('idle');
@@ -174,6 +187,37 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       }
     }
   }, [selectedDisciplinaId, aulaNum, disciplinas, recordingState]);
+
+  // Sincroniza modo inicial (ex: Piloto Automático acionado pelo monitor)
+  useEffect(() => {
+    if (initialMode && recordingState === 'idle') {
+      setActiveTabMode(initialMode);
+      if (initialMode === 'autopilot') {
+        setIsAutoPilot(true);
+      }
+    }
+  }, [initialMode, isOpen, recordingState]);
+
+  const calculateAutoStopTargetTimestamp = (): number => {
+    if (autoStopMode === 'fixed_time') {
+      const now = new Date();
+      const [hours, minutes] = autoStopFixedTime.split(':').map(Number);
+      const target = new Date();
+      target.setHours(hours || 22, minutes || 0, 0, 0);
+      if (target.getTime() <= now.getTime()) {
+        return now.getTime() + 120 * 60 * 1000;
+      }
+      return target.getTime();
+    } else {
+      return Date.now() + (autoStopDurationMinutes || 120) * 60 * 1000;
+    }
+  };
+
+  const getEstimatedEndTimeString = (): string => {
+    const ts = calculateAutoStopTargetTimestamp();
+    const date = new Date(ts);
+    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  };
 
   // Verifica gravações pendentes em IndexedDB
   const checkPendingRecoveries = async () => {
@@ -338,7 +382,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // =========================================================================
   // INICIAR GRAVAÇÃO COM PERSISTÊNCIA CONTÍNUA (INDEXEDDB)
   // =========================================================================
-  const startRecording = async () => {
+  const startRecording = async (isAutopilotRun = false) => {
     // Verifica concorrência
     if (selectedDisciplinaId) {
       const other = isAulaBeingRecordedByOther(selectedDisciplinaId, aulaNum, normalizedEmail);
@@ -353,6 +397,18 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     setIsSavedSuccess(false);
     chunksRef.current = [];
     chunkIndexRef.current = 0;
+
+    const activateAutopilot = isAutopilotRun || activeTabMode === 'autopilot' || isAutoPilot;
+    if (activateAutopilot) {
+      const targetTs = calculateAutoStopTargetTimestamp();
+      autoStopTargetTimeRef.current = targetTs;
+      const initialRemaining = Math.max(0, Math.round((targetTs - Date.now()) / 1000));
+      setAutoStopRemainingSeconds(initialRemaining);
+      setIsAutoPilot(true);
+    } else {
+      autoStopTargetTimeRef.current = null;
+      setAutoStopRemainingSeconds(null);
+    }
 
     try {
       // 1. Captura a tela/aba (Google Meet) com áudio do sistema
@@ -456,8 +512,25 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
           blobSize: blob.size,
         });
 
+        // Se contingência local estiver ativada, baixa o arquivo no computador
+        if (autoDownloadBackup && (isAutoPilot || activeTabMode === 'autopilot')) {
+          try {
+            const dlUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = dlUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } catch (dlErr) {
+            console.warn('Erro ao disparar download automático de contingência:', dlErr);
+          }
+        }
+
         // DISPARO AUTOMÁTICO IMEDIATO PARA O GOOGLE DRIVE
-        await executeAutoUploadPipeline(blob, fileName, finalDuration, sessionKey);
+        if (autoUploadDrive || !isAutoPilot) {
+          await executeAutoUploadPipeline(blob, fileName, finalDuration, sessionKey);
+        }
       };
 
       // SE O USUÁRIO FECHAR A ABA DO GOOGLE MEET OU PARAR COMPARTILHAMENTO
@@ -487,7 +560,23 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 
       timerIntervalRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
+
+        if (autoStopTargetTimeRef.current) {
+          const remaining = Math.max(0, Math.round((autoStopTargetTimeRef.current - Date.now()) / 1000));
+          setAutoStopRemainingSeconds(remaining);
+
+          if (remaining <= 0) {
+            console.log('🤖 [Piloto Automático] Auto-Stop atingido! Encerrando gravação autônoma...');
+            autoStopTargetTimeRef.current = null;
+            setAutoStopRemainingSeconds(0);
+            stopRecording();
+          }
+        }
       }, 1000);
+
+      if (activateAutopilot) {
+        setTimeout(() => setIsMinimized(true), 400);
+      }
     } catch (err: any) {
       console.error('Erro ao iniciar gravação:', err);
       if (err.name !== 'NotAllowedError') {
@@ -510,12 +599,25 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       setRecordingState('recording');
       timerIntervalRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
+
+        if (autoStopTargetTimeRef.current) {
+          const remaining = Math.max(0, Math.round((autoStopTargetTimeRef.current - Date.now()) / 1000));
+          setAutoStopRemainingSeconds(remaining);
+
+          if (remaining <= 0) {
+            autoStopTargetTimeRef.current = null;
+            setAutoStopRemainingSeconds(0);
+            stopRecording();
+          }
+        }
       }, 1000);
     }
   };
 
   const stopRecording = () => {
     setIsMinimized(false); // Auto-expande imediatamente para exibir a conclusão e opções
+    autoStopTargetTimeRef.current = null;
+    setAutoStopRemainingSeconds(null);
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop();
     }
@@ -699,7 +801,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // =========================================================================
   if (isMinimized) {
     return (
-      <div className="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-[60] bg-slate-950/95 text-white p-3.5 sm:p-4 rounded-3xl shadow-2xl border border-slate-700/80 backdrop-blur-xl flex items-center gap-3 sm:gap-4 animate-in slide-in-from-bottom-5 duration-300 max-w-lg border-l-4 border-l-red-500">
+      <div className={`fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-[60] bg-slate-950/95 text-white p-3.5 sm:p-4 rounded-3xl shadow-2xl border border-slate-700/80 backdrop-blur-xl flex items-center gap-3 sm:gap-4 animate-in slide-in-from-bottom-5 duration-300 max-w-lg border-l-4 ${isAutoPilot ? 'border-l-purple-500 shadow-purple-950/40' : 'border-l-red-500'}`}>
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center">
             {isUploadingToDrive ? (
@@ -708,20 +810,26 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             ) : (
               <>
-                <div className={`w-3.5 h-3.5 rounded-full ${recordingState === 'recording' ? 'bg-red-500 animate-ping' : 'bg-amber-400'}`} />
-                <div className={`w-3.5 h-3.5 rounded-full ${recordingState === 'recording' ? 'bg-red-600' : 'bg-amber-500'} absolute`} />
+                <div className={`w-3.5 h-3.5 rounded-full ${recordingState === 'recording' ? (isAutoPilot ? 'bg-purple-500 animate-ping' : 'bg-red-500 animate-ping') : 'bg-amber-400'}`} />
+                <div className={`w-3.5 h-3.5 rounded-full ${recordingState === 'recording' ? (isAutoPilot ? 'bg-purple-600' : 'bg-red-600') : 'bg-amber-500'} absolute`} />
               </>
             )}
           </div>
 
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="font-mono text-base font-black text-white tracking-wider">
                 {isUploadingToDrive ? 'Auto-Salvando...' : isSavedSuccess ? 'Salvo no Drive!' : formatDuration(recordingTime)}
               </span>
               <span className="text-[9px] bg-red-500/20 text-red-300 border border-red-500/30 px-2 py-0.2 rounded-full font-black uppercase tracking-wider hidden sm:inline">
                 {isUploadingToDrive ? '☁️ Upload Drive' : isSavedSuccess ? '✅ Concluído' : recordingState === 'recording' ? '🔴 Gravando Meet' : '⏸ Pausada'}
               </span>
+              {autoStopRemainingSeconds !== null && !isUploadingToDrive && !isSavedSuccess && (
+                <span className="text-[10px] bg-purple-500/25 text-purple-300 border border-purple-400/40 px-2 py-0.2 rounded-full font-mono font-bold flex items-center gap-1 animate-pulse">
+                  <Bot className="w-3 h-3 text-purple-400" />
+                  <span>Auto-Stop: {formatDuration(autoStopRemainingSeconds)}</span>
+                </span>
+              )}
             </div>
             <p className="text-[11px] text-slate-300 truncate max-w-[170px] sm:max-w-[220px] font-medium">
               {selectedDisciplina?.name} • Aula {aulaNum}
@@ -1037,13 +1145,27 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               <div className="flex items-center gap-1 bg-slate-200/70 p-1 rounded-xl">
                 <button
                   type="button"
+                  onClick={() => {
+                    setActiveTabMode('autopilot');
+                    setIsAutoPilot(true);
+                  }}
+                  className={`flex-1 py-2 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                    activeTabMode === 'autopilot' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs' : 'text-purple-700 hover:text-purple-950 hover:bg-purple-100/50'
+                  }`}
+                >
+                  <Bot className="w-3.5 h-3.5" />
+                  <span>🤖 Piloto Automático</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => setActiveTabMode('screen')}
                   className={`flex-1 py-2 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                     activeTabMode === 'screen' ? 'bg-white text-blue-950 shadow-xs' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   <Video className="w-3.5 h-3.5 text-red-600" />
-                  <span>Gravar Tela (Meet)</span>
+                  <span>Gravar Tela</span>
                 </button>
 
                 <button
@@ -1065,7 +1187,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                   }`}
                 >
                   <FolderOpen className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Link do Drive</span>
+                  <span>Link Drive</span>
                 </button>
               </div>
 
@@ -1114,7 +1236,136 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 </div>
               </div>
 
-              {activeTabMode === 'screen' ? (
+              {activeTabMode === 'autopilot' ? (
+                <div className="pt-3 border-t border-purple-200 space-y-3.5">
+                  {/* Banner Explicativo do Piloto Automático */}
+                  <div className="p-3.5 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 text-white rounded-2xl border border-purple-500/40 shadow-sm space-y-1.5">
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-purple-300">
+                      <Bot className="w-4 h-4 text-purple-400 shrink-0" />
+                      <span>Piloto Automático Sentinela • Gravação Programada</span>
+                    </div>
+                    <p className="text-[11px] text-slate-200 leading-relaxed">
+                      Planejado para você (Cristiano) colocar a aula para iniciar, entrar na sala e não precisar ficar na frente do computador até o fim. O gravador iniciará e encerrará sozinho com salvamento no Drive.
+                    </p>
+                  </div>
+
+                  {/* 1. Sala do Google Meet */}
+                  <div className="p-3 bg-blue-50/80 border border-blue-200 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className="text-xs font-bold text-blue-950 flex items-center gap-1.5">
+                        <Video className="w-3.5 h-3.5 text-blue-600" />
+                        <span>Passo 1: Entrar na Sala do Google Meet</span>
+                      </span>
+                      {selectedDisciplina?.google_meet_url && (
+                        <span className="text-[10px] text-blue-700 bg-blue-100/80 font-mono px-2 py-0.5 rounded-full truncate max-w-[180px]">
+                          {selectedDisciplina.google_meet_url}
+                        </span>
+                      )}
+                    </div>
+                    {selectedDisciplina?.google_meet_url ? (
+                      <button
+                        type="button"
+                        onClick={() => window.open(selectedDisciplina.google_meet_url, '_blank')}
+                        className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>🚀 1. Abrir Sala do Google Meet da Disciplina</span>
+                      </button>
+                    ) : (
+                      <p className="text-xs text-amber-800 bg-amber-50 p-2 rounded-xl border border-amber-200">
+                        Nenhum link de Meet vinculado a esta disciplina.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* 2. Temporizador de Auto-Stop */}
+                  <div className="p-3.5 bg-purple-50/80 border border-purple-200 rounded-2xl space-y-2.5">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                        <Timer className="w-3.5 h-3.5 text-purple-600" />
+                        <span>Passo 2: Programar Encerramento (Auto-Stop)</span>
+                      </span>
+                      <span className="text-[10px] font-mono font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-full">
+                        Término aprox: {getEstimatedEndTimeString()}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                      {[
+                        { label: '60 min (1h)', mins: 60 },
+                        { label: '90 min (1h30)', mins: 90 },
+                        { label: '120 min (2h)', mins: 120 },
+                        { label: '150 min (2h30)', mins: 150 },
+                      ].map((item) => (
+                        <button
+                          key={item.mins}
+                          type="button"
+                          onClick={() => {
+                            setAutoStopMode('duration');
+                            setAutoStopDurationMinutes(item.mins);
+                          }}
+                          className={`py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                            autoStopMode === 'duration' && autoStopDurationMinutes === item.mins
+                              ? 'bg-purple-600 text-white shadow-xs'
+                              : 'bg-white text-purple-900 border border-purple-200 hover:bg-purple-100'
+                          }`}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAutoStopMode('fixed_time');
+                        setAutoStopFixedTime('22:00');
+                      }}
+                      className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                        autoStopMode === 'fixed_time'
+                          ? 'bg-purple-700 text-white shadow-xs'
+                          : 'bg-white text-purple-900 border border-purple-200 hover:bg-purple-100'
+                      }`}
+                    >
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>Parar pontualmente às 22:00 (Término Oficial)</span>
+                    </button>
+                  </div>
+
+                  {/* 3. Checkboxes de Proteção e Automação */}
+                  <div className="p-3 bg-white rounded-2xl border border-gray-200 space-y-2 text-xs">
+                    <label className="flex items-center gap-2 font-bold text-gray-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={autoUploadDrive}
+                        onChange={(e) => setAutoUploadDrive(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 rounded"
+                      />
+                      <span>☁️ Salvar e Enviar para a Pasta Oficial do Google Drive</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 font-bold text-gray-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={autoDownloadBackup}
+                        onChange={(e) => setAutoDownloadBackup(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 rounded"
+                      />
+                      <span>💾 Baixar cópia de segurança local (.webm) no seu computador</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 font-bold text-gray-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={includeMic}
+                        onChange={(e) => setIncludeMic(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 rounded"
+                      />
+                      <span>🎙️ Incluir áudio do microfone na gravação (opcional)</span>
+                    </label>
+                  </div>
+                </div>
+              ) : activeTabMode === 'screen' ? (
                 <div className="pt-2 border-t border-gray-200 flex items-center justify-between">
                   <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
                     <input
@@ -1208,6 +1459,18 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               <p className="text-xs text-slate-400">
                 {selectedDisciplina?.name} • Aula {aulaNum}
               </p>
+
+              {autoStopRemainingSeconds !== null && (
+                <div className="p-3 bg-purple-950/80 border border-purple-500/50 rounded-xl text-xs text-purple-200 flex items-center justify-between gap-3 animate-in fade-in">
+                  <div className="flex items-center gap-2">
+                    <Bot className="w-4 h-4 text-purple-400 shrink-0 animate-pulse" />
+                    <span className="font-bold">Piloto Automático Ativo</span>
+                  </div>
+                  <div className="font-mono font-black text-purple-300 bg-purple-900/60 px-2.5 py-1 rounded-lg border border-purple-400/30">
+                    Auto-Stop em: {formatDuration(autoStopRemainingSeconds)}
+                  </div>
+                </div>
+              )}
 
               <div className="p-2.5 bg-slate-800/80 rounded-xl text-[11px] text-blue-300 flex items-center justify-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -1402,11 +1665,25 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 Cancelar
               </button>
 
-              {activeTabMode === 'screen' ? (
+              {activeTabMode === 'autopilot' ? (
                 <button
                   type="button"
                   disabled={Boolean(lockedByOther)}
-                  onClick={startRecording}
+                  onClick={() => startRecording(true)}
+                  className={`px-5 py-2.5 font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition flex items-center gap-2 ${
+                    lockedByOther
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white active:scale-95 cursor-pointer shadow-purple-900/20'
+                  }`}
+                >
+                  {lockedByOther ? <Lock className="w-4 h-4" /> : <Bot className="w-4 h-4 text-purple-200" />}
+                  <span>{lockedByOther ? 'Aula Sendo Gravada' : 'Armar Piloto Automático & Gravar'}</span>
+                </button>
+              ) : activeTabMode === 'screen' ? (
+                <button
+                  type="button"
+                  disabled={Boolean(lockedByOther)}
+                  onClick={() => startRecording(false)}
                   className={`px-5 py-2.5 font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition flex items-center gap-2 ${
                     lockedByOther
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'

@@ -342,6 +342,7 @@ export default function Home() {
     isOpen: boolean;
     disciplinaId?: string;
     aulaNum?: number;
+    initialMode?: 'screen' | 'file' | 'link' | 'autopilot';
   }>({ isOpen: false });
 
   useEffect(() => {
@@ -374,7 +375,7 @@ export default function Home() {
     const handleOpenRecorderEvent = (e: Event) => {
       if (currentRole === 'aluno') return; // Alunos não gravam aulas ou tutoriais
 
-      const customEvent = e as CustomEvent<{ disciplinaId?: string; disciplina?: string; aulaNum?: number; aulaNumero?: string } | undefined>;
+      const customEvent = e as CustomEvent<{ disciplinaId?: string; disciplina?: string; aulaNum?: number; aulaNumero?: string; initialMode?: 'screen' | 'file' | 'link' | 'autopilot' } | undefined>;
       const detail = customEvent.detail;
       let targetId = detail?.disciplinaId;
       if (!targetId && detail?.disciplina) {
@@ -391,6 +392,7 @@ export default function Home() {
         isOpen: true,
         disciplinaId: targetId,
         aulaNum: num,
+        initialMode: detail?.initialMode || 'autopilot',
       });
     };
 
@@ -767,6 +769,7 @@ export default function Home() {
         onClose={() => setGlobalRecorder((prev) => ({ ...prev, isOpen: false }))}
         defaultDisciplinaId={globalRecorder.disciplinaId}
         defaultAulaNum={globalRecorder.aulaNum}
+        initialMode={globalRecorder.initialMode}
         userEmail={userEmail}
         currentRole={currentRole}
         onRecordingSaved={() => {

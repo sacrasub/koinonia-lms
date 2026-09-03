@@ -8,7 +8,7 @@ import {
   HelpCircle, CheckSquare, PhoneCall, Mail, Award, Bell, Camera, Share2,
   Smartphone, Eye, Download, Image as ImageIcon, Upload, Loader2, GraduationCap,
   Volume2, VolumeX, Play, Archive, FolderOpen, Lock, Edit3, Link as LinkIcon,
-  Ban, AlertTriangle
+  Ban, AlertTriangle, Bot
 } from 'lucide-react';
 import { UserRole, AvisoLeituraPreAula } from '@/types';
 import { getAuthorizedUsersList, addOrUpdateAuthorizedUser, INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
@@ -356,6 +356,21 @@ export const DEFAULT_MONITORES_DATA: Record<string, MonitorInfo> = {
     color: 'from-indigo-600 to-sky-600',
     badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
     borderColor: 'border-indigo-500'
+  },
+  'Monitoria Turma B': {
+    name: 'Monitoria Turma B',
+    shortName: 'Turma B',
+    email: 'andreseminariouiecb@gmail.com',
+    turma: 'Turma B',
+    turmaLabel: 'Turma B (3º Período - Noturno)',
+    roleDescription: 'Equipe de Monitoria da Turma B (André, Daniel e Renata)',
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+    disciplinas: ['Disciplinas da Turma B'],
+    days: ['Terça a Sexta'],
+    totalWeeklyHours: '4h 15min',
+    color: 'from-amber-600 to-orange-500',
+    badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+    borderColor: 'border-amber-500'
   }
 };
 
@@ -1138,10 +1153,10 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       }
     }
     return {
-      Camila: DEFAULT_MONITORES_DATA.Camila.avatarUrl,
-      Cristiano: DEFAULT_MONITORES_DATA.Cristiano.avatarUrl,
-      Rosiane: DEFAULT_MONITORES_DATA.Rosiane.avatarUrl,
-      'Monitoria Turma B': DEFAULT_MONITORES_DATA['Monitoria Turma B'].avatarUrl,
+      Camila: DEFAULT_MONITORES_DATA.Camila?.avatarUrl || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
+      Cristiano: DEFAULT_MONITORES_DATA.Cristiano?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+      Rosiane: DEFAULT_MONITORES_DATA.Rosiane?.avatarUrl || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+      'Monitoria Turma B': DEFAULT_MONITORES_DATA['Monitoria Turma B']?.avatarUrl || DEFAULT_MONITORES_DATA.André?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
     };
   });
 
@@ -1381,7 +1396,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   // Obter foto ativa do monitor
   const getMonitorAvatar = (monitorName: string): string => {
     if (monitoresPhotos[monitorName]) return monitoresPhotos[monitorName];
-    if (DEFAULT_MONITORES_DATA[monitorName]) return DEFAULT_MONITORES_DATA[monitorName].avatarUrl;
+    if (DEFAULT_MONITORES_DATA[monitorName]?.avatarUrl) return DEFAULT_MONITORES_DATA[monitorName].avatarUrl;
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(monitorName)}&background=1e3a8a&color=fff&bold=true`;
   };
 
@@ -2191,18 +2206,37 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 <span>🔒 Gravando: {activeRecordings[0].recordedByName.split(' ')[0]}</span>
               </button>
             ) : (
-              <button
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.dispatchEvent(new CustomEvent('lms_open_recorder'));
-                  }
-                }}
-                className="w-full py-2.5 px-4 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-red-500/50 animate-pulse cursor-pointer"
-                title="Gravar a aba do Google Meet em 2º plano enquanto monitora e navega livremente no LMS"
-              >
-                <Video className="w-4 h-4 text-white" />
-                <span>🔴 Gravar Aula ao Vivo (HD)</span>
-              </button>
+              <div className="flex flex-col gap-2 w-full">
+                <button
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('lms_open_recorder', {
+                        detail: { initialMode: 'autopilot' }
+                      }));
+                    }
+                  }}
+                  className="w-full py-2.5 px-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-purple-400/40 cursor-pointer shadow-purple-950/30"
+                  title="Programar para colocar a aula para iniciar, entrar na sala e encerrar automaticamente (Auto-Stop)"
+                >
+                  <Bot className="w-4 h-4 text-purple-200" />
+                  <span>🤖 Piloto Automático (Auto-Stop)</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('lms_open_recorder', {
+                        detail: { initialMode: 'screen' }
+                      }));
+                    }
+                  }}
+                  className="w-full py-2 px-3 bg-red-600/80 hover:bg-red-600 active:scale-95 text-white font-bold text-xs rounded-2xl shadow transition flex items-center justify-center gap-2 border border-red-500/40 cursor-pointer"
+                  title="Gravar a aba do Google Meet manualmente"
+                >
+                  <Video className="w-3.5 h-3.5 text-white" />
+                  <span>🔴 Gravação Manual (HD)</span>
+                </button>
+              </div>
             )}
 
             <button
