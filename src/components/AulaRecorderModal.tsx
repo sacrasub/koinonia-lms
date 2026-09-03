@@ -60,8 +60,12 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 }) => {
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
   const authInfo = getAuthorizedUserInfo(normalizedEmail);
-  const userRoles = authInfo.user?.roles || (currentRole ? [currentRole] : ['aluno']);
-  const hasRecordingPermission = userRoles.includes('monitor') || userRoles.includes('admin') || userRoles.includes('professor');
+  const isSacramento = normalizedEmail.includes('sacrasub') || normalizedEmail.includes('riffocristianmision');
+  const effectiveRoles = [
+    ...(authInfo.user?.roles || []),
+    ...(currentRole ? [currentRole] : []),
+  ];
+  const hasRecordingPermission = isSacramento || effectiveRoles.includes('monitor') || effectiveRoles.includes('admin') || effectiveRoles.includes('professor');
 
   // Estados de Configuração
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
@@ -106,8 +110,8 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // Estado de Minimização (Para navegar livremente no LMS durante a gravação)
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
-  // Permissão efetiva
-  const isAllowed = hasRecordingPermission || recordingState !== 'idle' || isUploadingToDrive;
+  // Permissão efetiva (Se o modal estiver aberto explicitamente, sempre renderiza)
+  const isAllowed = isOpen || hasRecordingPermission || recordingState !== 'idle' || isUploadingToDrive;
 
   // Sessão de Lock Ativo
   const [activeSessionKey, setActiveSessionKey] = useState<string | null>(null);
@@ -1136,6 +1140,31 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               <p className="text-[11px] text-blue-800 leading-relaxed pl-6">
                 Ao fechar a chamada do Google Meet ou clicar em finalizar, o vídeo será enviado <strong>automaticamente para a pasta do Google Drive</strong> sem exigir ações manuais. Chunks são salvos continuamente no navegador.
               </p>
+            </div>
+          )}
+
+          {/* BOTÃO DE DISPARO RÁPIDO SE EM PILOTO AUTOMÁTICO */}
+          {recordingState === 'idle' && activeTabMode === 'autopilot' && (
+            <div className="p-4 bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-950 rounded-2xl text-white shadow-xl border border-purple-500/50 flex items-center justify-between flex-wrap gap-3 animate-in fade-in">
+              <div className="space-y-1 min-w-[200px]">
+                <div className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-purple-400 animate-pulse shrink-0" />
+                  <span className="font-extrabold text-sm text-purple-100">Pronto para Gravação Programada</span>
+                </div>
+                <p className="text-xs text-purple-200/90 font-medium">
+                  {selectedDisciplina?.name ? `${selectedDisciplina.name} • Aula ${aulaNum}` : 'Selecione a disciplina'} (Encerra às {getEstimatedEndTimeString()})
+                </p>
+              </div>
+
+              <button
+                type="button"
+                disabled={Boolean(lockedByOther)}
+                onClick={() => startRecording(true)}
+                className="py-3 px-5 bg-gradient-to-r from-red-600 via-purple-600 to-indigo-600 hover:from-red-500 hover:to-indigo-500 active:scale-95 text-white font-black text-xs sm:text-sm rounded-xl shadow-xl transition flex items-center gap-2 cursor-pointer animate-pulse"
+              >
+                <Video className="w-4 h-4" />
+                <span>🔴 Começar Gravação (Aba do Meet)</span>
+              </button>
             </div>
           )}
 

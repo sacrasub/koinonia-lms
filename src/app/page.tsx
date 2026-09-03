@@ -373,8 +373,6 @@ export default function Home() {
     };
 
     const handleOpenRecorderEvent = (e: Event) => {
-      if (currentRole === 'aluno') return; // Alunos não gravam aulas ou tutoriais
-
       const customEvent = e as CustomEvent<{ disciplinaId?: string; disciplina?: string; aulaNum?: number; aulaNumero?: string; initialMode?: 'screen' | 'file' | 'link' | 'autopilot' } | undefined>;
       const detail = customEvent.detail;
       let targetId = detail?.disciplinaId;
@@ -388,6 +386,17 @@ export default function Home() {
         if (found) targetId = found.id;
       }
       const num = detail?.aulaNum || (detail?.aulaNumero ? Number(detail.aulaNumero) : 1);
+
+      // Se o usuário estiver em perfil de aluno mas tiver permissão de monitor/admin, eleva para monitor
+      if (currentRole === 'aluno') {
+        const isSacramento = userEmail.includes('sacrasub') || userEmail.includes('riffocristianmision');
+        const auth = getAuthorizedUserInfo(userEmail);
+        const canElevate = isSacramento || auth.user?.roles.some(r => ['admin', 'monitor', 'professor'].includes(r));
+        if (canElevate) {
+          setCurrentRole('monitor');
+        }
+      }
+
       setGlobalRecorder({
         isOpen: true,
         disciplinaId: targetId,
@@ -405,7 +414,7 @@ export default function Home() {
       window.removeEventListener('lms_open_disciplina_detail', handleOpenDisciplinaEvent);
       window.removeEventListener('lms_open_recorder', handleOpenRecorderEvent);
     };
-  }, [handleTabChange]);
+  }, [handleTabChange, currentRole, userEmail]);
 
   const renderContent = () => {
     if (activeTab === 'disciplina-detalhe') {

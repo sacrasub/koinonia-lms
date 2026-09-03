@@ -36,12 +36,13 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
   },
   'sacrasub03@gmail.com': {
     email: 'sacrasub03@gmail.com',
-    name: 'Cristiano Sacramento (Aluno Turma A)',
-    roles: ['aluno'],
-    defaultRole: 'aluno',
+    name: 'Cristiano Sacramento (Aluno Turma A / Admin)',
+    roles: ['admin', 'aluno', 'monitor', 'professor'],
+    defaultRole: 'admin',
     turmaIdx: 1,
     periodoNum: 7,
     avatarUrl: '/cristiano_sacramento.jpg',
+    whatsapp: '5521981125314',
   },
   'prof.alexsandro.geografia@gmail.com': {
     email: 'prof.alexsandro.geografia@gmail.com',
@@ -310,7 +311,7 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
   // Alunos Matriculados e Participantes (Semestre 2026.2)
   'adrianaclaudia@gmail.com': { email: 'adrianaclaudia@gmail.com', name: 'Adriana Cláudia', roles: ['aluno'], defaultRole: 'aluno', turmaIdx: 0, periodoNum: 5 },
   'adriana.claudia@uiecbead.com.br': { email: 'adriana.claudia@uiecbead.com.br', name: 'Adriana Cláudia', roles: ['aluno'], defaultRole: 'aluno', turmaIdx: 0, periodoNum: 5 },
-  'riffocristianmision@gmail.com': { email: 'riffocristianmision@gmail.com', name: 'Cristian Riffo', roles: ['aluno'], defaultRole: 'aluno' },
+  'riffocristianmision@gmail.com': { email: 'riffocristianmision@gmail.com', name: 'Cristiano Sacramento (Monitor)', roles: ['admin', 'aluno', 'monitor', 'professor'], defaultRole: 'monitor', whatsapp: '5521981125314' },
   'adrielfofucho@gmail.com': { email: 'adrielfofucho@gmail.com', name: 'Adriel', roles: ['aluno'], defaultRole: 'aluno' },
   'alcimarluizdasilva3@gmail.com': { email: 'alcimarluizdasilva3@gmail.com', name: 'Alcimar Luiz da Silva', roles: ['aluno'], defaultRole: 'aluno' },
   'allemos01@gmail.com': { email: 'allemos01@gmail.com', name: 'Alex Lemos', roles: ['aluno'], defaultRole: 'aluno' },

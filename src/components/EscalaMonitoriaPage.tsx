@@ -47,6 +47,7 @@ import {
   TimeZoneInfo 
 } from '@/lib/timeUtils';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
+import { getAllDisciplinas } from '@/services/disciplinasService';
 import { 
   playRecordingAlarm, 
   playPresenceAlarm, 
@@ -1840,16 +1841,33 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               <button
                 onClick={() => {
                   if (typeof window !== 'undefined') {
+                    // 1. Abre a sala do Google Meet em nova janela para o monitor entrar na aula
+                    if (monitorAlarm.aula.meetUrl) {
+                      window.open(monitorAlarm.aula.meetUrl, '_blank');
+                    }
+
+                    // 2. Busca disciplina correspondente para vincular
+                    const allDiscs = getAllDisciplinas();
+                    const aNorm = monitorAlarm.aula.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const found = allDiscs.find((d) => {
+                      const dNorm = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                      return dNorm.includes(aNorm) || aNorm.includes(dNorm);
+                    });
+
+                    // 3. Dispara o gravador pré-configurado com Piloto Automático ativado
                     window.dispatchEvent(new CustomEvent('lms_open_recorder', {
                       detail: {
+                        disciplinaId: found?.id,
                         disciplina: monitorAlarm.aula.title,
                         aulaNumero: '1',
                         professor: monitorAlarm.aula.professor,
+                        initialMode: 'autopilot',
                       }
                     }));
+                    showToast('🚀 Sala do Google Meet aberta! Gravador preparado no Piloto Automático.');
                   }
                 }}
-                className="w-full sm:w-auto px-4 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-red-400 cursor-pointer"
+                className="w-full sm:w-auto px-4 py-3 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-red-400 cursor-pointer animate-pulse"
               >
                 <Video className="w-4 h-4 text-white" />
                 <span>🔴 Iniciar Gravação Pré-Configurada</span>
