@@ -128,7 +128,9 @@ export function startUserSession(
     events_count: 0,
   };
 
-  localStorage.setItem(CURRENT_SESSION_ID_KEY, sessionId);
+  try {
+    localStorage.setItem(CURRENT_SESSION_ID_KEY, sessionId);
+  } catch (_) {}
   saveSessionToLocalCache(currentSession);
   syncSessionToCloud(currentSession);
 
@@ -673,8 +675,14 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
 
   if (merged.length > 0) {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
-      localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
+      try {
+        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(SESSIONS_LAST_FETCH_KEY, String(Date.now()));
+      } catch (_) {
+        try {
+          localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(merged.slice(0, 100)));
+        } catch (_) {}
+      }
     }
     // Se a nuvem estava com menos sessões que o local, envia o merge consolidado para a nuvem
     if (merged.length > remoteSessions.length) {
@@ -742,8 +750,14 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
 
   if (merged.length > 0) {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged));
-      localStorage.setItem(EVENTS_LAST_FETCH_KEY, String(Date.now()));
+      try {
+        localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged));
+        localStorage.setItem(EVENTS_LAST_FETCH_KEY, String(Date.now()));
+      } catch (_) {
+        try {
+          localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(merged.slice(0, 100)));
+        } catch (_) {}
+      }
     }
     if (merged.length > remoteEvents.length) {
       saveEventsToCloudFallback(merged).catch(() => {});
