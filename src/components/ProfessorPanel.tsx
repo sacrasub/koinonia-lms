@@ -59,13 +59,18 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 }) => {
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
   const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
-  const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || normalizedEmail.includes('sacra') || normalizedEmail.includes('admin') || normalizedEmail.includes('tondedez') || normalizedEmail.includes('ead@');
-  const isAdmin = currentRole === 'admin';
+  const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || 
+                       normalizedEmail.includes('sacra') || 
+                       normalizedEmail.includes('admin') || 
+                       normalizedEmail.includes('tondedez') || 
+                       normalizedEmail.includes('ead@');
+  // O usuário possui privilégios administrativos tanto na role 'admin' quanto como administrador navegando no perfil professor
+  const isAdmin = currentRole === 'admin' || isSuperAdmin;
 
   // Lista de todas as disciplinas carregadas do storage/serviço
   const [allDisciplinasList, setAllDisciplinasList] = useState<Disciplina[]>([]);
-  // Seleção de Professor Ativo para Administrador ('ALL' ou chave de e-mail/nome do professor)
-  const [selectedProfessorKey, setSelectedProfessorKey] = useState<string>('ALL');
+  // Seleção de Professor Ativo para Administrador ('ME' = Meu Perfil Docente, 'ALL' = Todas as Matérias, ou chave do professor)
+  const [selectedProfessorKey, setSelectedProfessorKey] = useState<string>('ME');
 
   // Estado de dados gerenciados
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -195,45 +200,64 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   // Professor atualmente selecionado pelo Admin (se houver)
   const currentSelectedProfessor = useMemo(() => {
     if (!isAdmin || selectedProfessorKey === 'ALL') return null;
+    if (selectedProfessorKey === 'ME') {
+      return availableProfessors.find((p) => 
+        (p.email && p.email === normalizedEmail) || 
+        (p.key === normalizedEmail) ||
+        (authUser && p.name.toLowerCase().includes(authUser.name.toLowerCase()))
+      ) || null;
+    }
     return availableProfessors.find((p) => p.key === selectedProfessorKey) || null;
-  }, [isAdmin, selectedProfessorKey, availableProfessors]);
+  }, [isAdmin, selectedProfessorKey, availableProfessors, normalizedEmail, authUser]);
 
   // Determina as disciplinas ativas sob responsabilidade do usuário
   const userDisciplinas = useMemo(() => {
-    // Se o usuário for um docente vinculado diretamente a matérias
-    const myDisciplinas = getDisciplinasForUser(normalizedEmail, 'professor');
-    if (myDisciplinas.length > 0) {
-      return myDisciplinas;
+    // 1. PROFESSOR COMUM (não admin):
+    // Gerencia EXCLUSIVAMENTE suas próprias matérias atribuídas!
+    if (!isAdmin) {
+      return getDisciplinasForUser(normalizedEmail, 'professor');
     }
 
-    if (isAdmin) {
-      if (selectedProfessorKey === 'ALL' || !currentSelectedProfessor) {
-        return allDisciplinasList;
-      }
-      // Filtra apenas as matérias do professor selecionado
-      return allDisciplinasList.filter((d) => {
-        const dEmail = (d.professor_email || '').toLowerCase().trim();
-        const dKey = dEmail || d.professor_name.toLowerCase().trim();
-        return dKey === selectedProfessorKey || (currentSelectedProfessor.email && dEmail === currentSelectedProfessor.email);
-      });
+    // 2. ADMINISTRADOR:
+    // A) Se selecionou "Todas as Matérias"
+    if (selectedProfessorKey === 'ALL') {
+      return allDisciplinasList;
     }
 
-    // Se for admin na role professor simulando docente específico
+    // B) Se selecionou "Meu Perfil Docente" ('ME')
+    if (selectedProfessorKey === 'ME') {
+      const myDisc = getDisciplinasForUser(normalizedEmail, 'professor');
+      if (myDisc.length > 0) return myDisc;
+      return allDisciplinasList;
+    }
+
+    // C) Se selecionou um professor específico:
+    // Filtra EXCLUSIVAMENTE as disciplinas daquele professor!
     if (currentSelectedProfessor) {
-      return allDisciplinasList.filter((d) => {
+      const filtered = allDisciplinasList.filter((d) => {
         const dEmail = (d.professor_email || '').toLowerCase().trim();
-        const dKey = dEmail || d.professor_name.toLowerCase().trim();
-        return dKey === selectedProfessorKey || (currentSelectedProfessor.email && dEmail === currentSelectedProfessor.email);
+        const dName = (d.professor_name || '').toLowerCase().trim();
+        const targetKey = currentSelectedProfessor.key;
+        const targetEmail = (currentSelectedProfessor.email || '').toLowerCase().trim();
+        const targetName = currentSelectedProfessor.name.toLowerCase().trim();
+
+        return (
+          dEmail === targetKey ||
+          dName === targetKey ||
+          (targetEmail !== '' && dEmail === targetEmail) ||
+          dName === targetName ||
+          targetName.includes(dName) ||
+          dName.includes(targetName)
+        );
       });
+      if (filtered.length > 0) return filtered;
+      return currentSelectedProfessor.disciplinas;
     }
 
-    // Fallback para admin sem matéria vinculada direta: restringe ao primeiro docente
-    if (availableProfessors.length > 0) {
-      return availableProfessors[0].disciplinas;
-    }
-
-    return [];
-  }, [allDisciplinasList, normalizedEmail, currentRole, isAdmin, selectedProfessorKey, currentSelectedProfessor, availableProfessors]);
+    // Fallback padrão do Admin: se tiver matérias próprias, exibe as próprias; se não, todas
+    const myDisc = getDisciplinasForUser(normalizedEmail, 'professor');
+    return myDisc.length > 0 ? myDisc : allDisciplinasList;
+  }, [allDisciplinasList, normalizedEmail, isAdmin, selectedProfessorKey, currentSelectedProfessor]);
 
   const activeDisciplinaIds = useMemo(() => {
     return userDisciplinas.map((d) => d.id);
@@ -618,8 +642,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                 </span>
               )}
 
-              {currentSelectedProfessor ? (
-                <span className="text-xs font-bold text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+              {currentSelectedProfessor && selectedProfessorKey !== 'ME' ? (
+                <span className="text-xs font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                   👤 Atuando como: {currentSelectedProfessor.name}
                 </span>
               ) : (
@@ -630,18 +654,18 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
             </div>
 
             <h2 className="text-2xl font-black text-slate-900">
-              {currentSelectedProfessor
-                ? `Painel de ${currentSelectedProfessor.name}`
-                : isAdmin
-                ? 'Gestão Acadêmica de Professores & Matérias'
+              {currentSelectedProfessor && selectedProfessorKey !== 'ME'
+                ? `Painel do Docente • ${currentSelectedProfessor.name}`
+                : selectedProfessorKey === 'ALL'
+                ? 'Gestão Acadêmica de Professores & Matérias (Visão Geral)'
                 : `Painel do Docente • ${authorName || 'Professor'}`}
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-500">
-              {currentSelectedProfessor
-                ? `Visualizando e configurando o LMS sob a perspectiva exclusiva de ${currentSelectedProfessor.name} (${currentSelectedProfessor.email || 'Sem e-mail cadastrado'}).`
+              {currentSelectedProfessor && selectedProfessorKey !== 'ME'
+                ? `Visualizando e gerenciando o LMS com o escopo exclusivo de ${currentSelectedProfessor.name} (${currentSelectedProfessor.email || 'Docente Cadastrado'}). Ajuste links, publique materiais e crie avaliações em nome deste professor.`
                 : isAdmin
-                ? 'Selecione abaixo como qual professor você deseja visualizar a navegação, links do Meet, Drive e avaliações.'
+                ? 'Como administrador, você pode gerenciar suas matérias ou selecionar qualquer professor abaixo para atuar e enxergar o LMS em nome dele.'
                 : 'Gerencie exclusivamente suas matérias: configure links do Meet e Drive, publique leituras pré-aula, materiais e avaliações.'}
             </p>
           </div>
@@ -652,14 +676,14 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               <div className="flex items-center justify-between gap-2">
                 <label className="text-xs font-extrabold text-purple-950 flex items-center gap-1.5">
                   <UserCheck className="w-4 h-4 text-purple-700" />
-                  <span>Visualizar LMS como o Professor:</span>
+                  <span>Atuar e Enxergar como o Professor:</span>
                 </label>
-                {selectedProfessorKey !== 'ALL' && (
+                {selectedProfessorKey !== 'ME' && (
                   <button
-                    onClick={() => setSelectedProfessorKey('ALL')}
-                    className="text-[11px] font-bold text-purple-700 hover:text-purple-900 underline"
+                    onClick={() => setSelectedProfessorKey('ME')}
+                    className="text-[11px] font-bold text-purple-700 hover:text-purple-900 underline cursor-pointer"
                   >
-                    Ver Todos
+                    Meu Perfil
                   </button>
                 )}
               </div>
@@ -667,14 +691,17 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               <select
                 value={selectedProfessorKey}
                 onChange={(e) => setSelectedProfessorKey(e.target.value)}
-                className="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold text-purple-950 focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-xs"
+                className="w-full bg-white border border-purple-300 rounded-xl px-3 py-2 text-xs font-bold text-purple-950 focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-xs cursor-pointer"
               >
+                <option value="ME">👤 Meu Perfil Docente ({authUser?.name?.split('(')[0].trim() || 'Admin'})</option>
                 <option value="ALL">🌐 Todos os Professores (Visão Geral de Admin)</option>
-                {availableProfessors.map((p) => (
-                  <option key={p.key} value={p.key}>
-                    👨‍🏫 {p.name} {p.email ? `(${p.email})` : ''} • {p.count} {p.count === 1 ? 'matéria' : 'matérias'}
-                  </option>
-                ))}
+                <optgroup label="Professores do Seminário:">
+                  {availableProfessors.map((p) => (
+                    <option key={p.key} value={p.key}>
+                      👨‍🏫 {p.name} • {p.count} {p.count === 1 ? 'matéria' : 'matérias'}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
             </div>
           )}
@@ -683,25 +710,39 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
         {/* Atalhos Rápidos de Professores (Pílulas) quando for Admin */}
         {isAdmin && (
           <div className="pt-2 border-t border-gray-100">
-            <div className="text-[11px] font-bold text-gray-500 mb-2">Troca Rápida de Docente:</div>
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+            <div className="text-[11px] font-bold text-gray-500 mb-2 flex items-center gap-1.5">
+              <span>Selecione o Professor para Gerenciar:</span>
+            </div>
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
               <button
-                onClick={() => setSelectedProfessorKey('ALL')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                  selectedProfessorKey === 'ALL'
-                    ? 'bg-purple-700 text-white shadow-xs'
+                onClick={() => setSelectedProfessorKey('ME')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+                  selectedProfessorKey === 'ME'
+                    ? 'bg-purple-700 text-white shadow-xs scale-102'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                🌐 Todos ({allDisciplinasList.length})
+                <span>👤 Meu Perfil</span>
               </button>
+
+              <button
+                onClick={() => setSelectedProfessorKey('ALL')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+                  selectedProfessorKey === 'ALL'
+                    ? 'bg-purple-700 text-white shadow-xs scale-102'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span>🌐 Todos ({allDisciplinasList.length})</span>
+              </button>
+
               {availableProfessors.map((p) => {
                 const isSelected = selectedProfessorKey === p.key;
                 return (
                   <button
                     key={p.key}
                     onClick={() => setSelectedProfessorKey(p.key)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                       isSelected
                         ? 'bg-purple-700 text-white shadow-xs scale-102'
                         : 'bg-purple-50/70 text-purple-900 hover:bg-purple-100 border border-purple-100'
@@ -720,29 +761,42 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
           </div>
         )}
 
-        {/* Banner de Aviso quando Simulação de Docente estiver Ativa */}
-        {isAdmin && currentSelectedProfessor && (
-          <div className="p-3.5 bg-amber-50 border border-amber-200/90 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-950">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-black text-sm shrink-0">
+        {/* Banner de Aviso quando Atuando em Nome de Outro Docente */}
+        {isAdmin && currentSelectedProfessor && selectedProfessorKey !== 'ME' && (
+          <div className="p-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-amber-50 border border-purple-300 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-purple-950 shadow-xs animate-in fade-in">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-purple-600 text-white flex items-center justify-center font-black text-base shrink-0 shadow-xs">
                 {currentSelectedProfessor.name.charAt(0)}
               </div>
               <div className="text-xs">
-                <span className="font-extrabold block text-sm">
-                  Atuando como: {currentSelectedProfessor.name}
-                </span>
-                <span className="text-amber-800 font-medium">
-                  {currentSelectedProfessor.email || 'Sem e-mail'} • {userDisciplinas.length} matéria(s) sob sua responsabilidade
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-black text-sm text-purple-950">
+                    👑 Modo Administrador: Atuando e Gerenciando como {currentSelectedProfessor.name}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-purple-200 text-purple-900">
+                    Docente Selecionado
+                  </span>
+                </div>
+                <span className="text-purple-800 font-medium block mt-0.5">
+                  {currentSelectedProfessor.email || 'Sem e-mail cadastrado'} • {userDisciplinas.length} matéria(s) atribuída(s). Todas as leituras, links do Meet, materiais e avaliações inseridos serão salvos em nome deste professor.
                 </span>
               </div>
             </div>
 
-            <button
-              onClick={() => setSelectedProfessorKey('ALL')}
-              className="px-3 py-1.5 bg-white hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold shadow-2xs transition"
-            >
-              ✕ Restaurar Visão Global
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setSelectedProfessorKey('ME')}
+                className="px-3.5 py-2 bg-white hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-2xs transition cursor-pointer active:scale-95"
+              >
+                👤 Meu Perfil Docente
+              </button>
+              <button
+                onClick={() => setSelectedProfessorKey('ALL')}
+                className="px-3 py-2 bg-purple-100/80 hover:bg-purple-200 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer"
+              >
+                🌐 Ver Todos
+              </button>
+            </div>
           </div>
         )}
       </div>
