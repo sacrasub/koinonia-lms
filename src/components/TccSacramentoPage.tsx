@@ -9,7 +9,8 @@ import {
   ExternalLink, UserCheck, BarChart3, Save, Compass,
   Plus, Calendar, Trash2, Edit3, X, Download, Tag,
   Search, Eye, Layers, Check, Share2, Bookmark,
-  Send, RefreshCw, Users, Filter, CheckCircle2, ShieldCheck
+  Send, RefreshCw, Users, Filter, CheckCircle2, ShieldCheck,
+  ListChecks, AlignLeft, HelpCircle, FolderPlus, Copy
 } from 'lucide-react';
 import { getSurveyResponses } from '@/services/tccResearchService';
 import { 
@@ -23,6 +24,9 @@ import {
   toggleEnqueteStatus,
   deleteEnquetePersonalizada,
   EnquetePersonalizada,
+  SecaoEnqueteCustom,
+  TipoRespostaEnquete,
+  normalizeEnqueteSecoes,
   TCC_TITULO_PRINCIPAL,
   TCC_SUBTITULO,
   ORIENTADOR_NOME,
@@ -205,24 +209,48 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
   const [copiedPesquisaLink, setCopiedPesquisaLink] = useState<boolean>(false);
   const [selectedPublicoFilter, setSelectedPublicoFilter] = useState<string>('ALL');
 
-  // Enquetes Dinâmicas e Customizadas
+  // Enquetes Dinâmicas e Customizadas com Seções e Múltiplos Tipos
   const [enquetesList, setEnquetesList] = useState<EnquetePersonalizada[]>([]);
   const [isNewEnqueteModalOpen, setIsNewEnqueteModalOpen] = useState<boolean>(false);
   const [newEnqueteTitulo, setNewEnqueteTitulo] = useState<string>('');
   const [newEnqueteDescricao, setNewEnqueteDescricao] = useState<string>('');
   const [newEnquetePublico, setNewEnquetePublico] = useState<string>('todos');
-  const [newEnquetePerguntas, setNewEnquetePerguntas] = useState<Array<{
-    id: string;
-    enunciado: string;
-    tipo: 'likert_5' | 'texto' | 'multipla_escolha';
-    opcoes?: string[];
-    obrigatoria: boolean;
-  }>>([
+  
+  const [newEnqueteSecoes, setNewEnqueteSecoes] = useState<SecaoEnqueteCustom[]>([
     {
-      id: 'q1',
-      enunciado: 'Qual é a sua avaliação sobre a metodologia pedagógica das aulas síncronas remotas?',
-      tipo: 'likert_5',
-      obrigatoria: true,
+      id: 'sec_1',
+      badge: 'Dimensão 1 • Comunhão & Metodologia',
+      titulo: 'Comunhão, Mutualidade e Vida Espiritual',
+      descricao: 'Avalie como o modelo virtual acolhe ou desafia a dimensão comunitária da formação pastoral:',
+      dicaAjuda: 'O que é Koinonia no LMS?',
+      dicaConteudo: 'Koinonia no grego bíblico denota participação conjunta, partilha de vida e comunhão espiritual ativa mediada pelas tecnologias.',
+      perguntas: [
+        {
+          id: 'q1',
+          enunciado: 'É possível vivenciar verdadeira comunhão bíblica (koinonia), mutualidade e laços de amizade sinceros através do ambiente virtual?',
+          tipo: 'likert_5',
+          obrigatoria: true,
+          dica: 'Entender este termo (Preservação da Koinonia)',
+        },
+        {
+          id: 'q2',
+          enunciado: 'Comparando os modelos, como você avalia a solidez da sua formação teológica e ministerial no formato síncrono remoto atual?',
+          tipo: 'multipla_escolha',
+          opcoes: [
+            'Superior: conecta a teoria teológica à prática pastoral imediata na igreja local',
+            'Equivalente com alta qualidade: atende com rigor espiritual e acadêmico',
+            'Boa alternativa, embora sinta falta da convivência presencial diária',
+            'Ainda prefiro o modelo clássico de internato fechado',
+          ],
+          obrigatoria: true,
+        },
+        {
+          id: 'q3',
+          enunciado: 'Qual é o maior desafio ou oportunidade que você vivencia na sua formação teológica no formato remoto síncrono?',
+          tipo: 'texto_longo',
+          obrigatoria: false,
+        }
+      ]
     }
   ]);
 
@@ -258,17 +286,234 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     return () => window.removeEventListener('lms_enquetes_updated', handleEnquetesUpdate);
   }, []);
 
-  const handleAddQuestionToNewEnquete = () => {
-    const nextIdx = newEnquetePerguntas.length + 1;
-    setNewEnquetePerguntas([
-      ...newEnquetePerguntas,
+  // Gestão de Seções
+  const handleAddSecao = () => {
+    const nextIdx = newEnqueteSecoes.length + 1;
+    setNewEnqueteSecoes([
+      ...newEnqueteSecoes,
       {
-        id: `q${nextIdx}`,
-        enunciado: '',
-        tipo: 'likert_5',
-        obrigatoria: true,
+        id: `sec_${Date.now()}`,
+        badge: `Dimensão ${nextIdx} • Nova Dimensão`,
+        titulo: `Dimensão ${nextIdx}`,
+        descricao: 'Instruções e orientação para esta dimensão de perguntas:',
+        dicaAjuda: '',
+        dicaConteudo: '',
+        perguntas: [
+          {
+            id: `q_${Date.now()}_1`,
+            enunciado: 'Nova pergunta desta dimensão...',
+            tipo: 'likert_5',
+            obrigatoria: true,
+          }
+        ]
       }
     ]);
+  };
+
+  const handleRemoveSecao = (secId: string) => {
+    if (newEnqueteSecoes.length <= 1) {
+      showToast('A enquete deve ter pelo menos uma seção.');
+      return;
+    }
+    setNewEnqueteSecoes(newEnqueteSecoes.filter((s) => s.id !== secId));
+  };
+
+  const handleUpdateSecao = (secId: string, patch: Partial<SecaoEnqueteCustom>) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((s) => s.id === secId ? { ...s, ...patch } : s));
+  };
+
+  // Gestão de Perguntas dentro de uma Seção
+  const handleAddPerguntaToSecao = (secId: string) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      const nextQIdx = sec.perguntas.length + 1;
+      return {
+        ...sec,
+        perguntas: [
+          ...sec.perguntas,
+          {
+            id: `q_${Date.now()}_${nextQIdx}`,
+            enunciado: '',
+            tipo: 'likert_5',
+            obrigatoria: true,
+          }
+        ]
+      };
+    }));
+  };
+
+  const handleRemovePerguntaFromSecao = (secId: string, qId: string) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      if (sec.perguntas.length <= 1) {
+        showToast('Cada seção deve conter pelo menos uma pergunta.');
+        return sec;
+      }
+      return {
+        ...sec,
+        perguntas: sec.perguntas.filter((q) => q.id !== qId)
+      };
+    }));
+  };
+
+  const handleUpdatePergunta = (secId: string, qId: string, patch: Partial<PerguntaEnqueteCustom>) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      return {
+        ...sec,
+        perguntas: sec.perguntas.map((q) => {
+          if (q.id !== qId) return q;
+          const updated = { ...q, ...patch };
+          // Se mudou para múltipla escolha ou caixa de seleção e não tem opções, inicializa com 2 opções
+          if ((updated.tipo === 'multipla_escolha' || updated.tipo === 'caixas_selecao') && (!updated.opcoes || updated.opcoes.length === 0)) {
+            updated.opcoes = ['Opção 1', 'Opção 2'];
+          }
+          return updated;
+        })
+      };
+    }));
+  };
+
+  // Gestão de Opções / Alternativas (Google Forms style)
+  const handleAddOpcaoToPergunta = (secId: string, qId: string) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      return {
+        ...sec,
+        perguntas: sec.perguntas.map((q) => {
+          if (q.id !== qId) return q;
+          const opts = q.opcoes ? [...q.opcoes] : [];
+          opts.push(`Opção ${opts.length + 1}`);
+          return { ...q, opcoes: opts };
+        })
+      };
+    }));
+  };
+
+  const handleRemoveOpcaoFromPergunta = (secId: string, qId: string, optIdx: number) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      return {
+        ...sec,
+        perguntas: sec.perguntas.map((q) => {
+          if (q.id !== qId) return q;
+          const opts = (q.opcoes || []).filter((_, i) => i !== optIdx);
+          return { ...q, opcoes: opts.length > 0 ? opts : ['Opção 1'] };
+        })
+      };
+    }));
+  };
+
+  const handleUpdateOpcaoText = (secId: string, qId: string, optIdx: number, val: string) => {
+    setNewEnqueteSecoes(newEnqueteSecoes.map((sec) => {
+      if (sec.id !== secId) return sec;
+      return {
+        ...sec,
+        perguntas: sec.perguntas.map((q) => {
+          if (q.id !== qId) return q;
+          const opts = [...(q.opcoes || [])];
+          opts[optIdx] = val;
+          return { ...q, opcoes: opts };
+        })
+      };
+    }));
+  };
+
+  // Carregar Template Canônico das Dimensões do TCC (1 clique)
+  const handleCarregarTemplateTcc = () => {
+    setNewEnqueteTitulo('Diagnóstico Estratégico • Ensino Teológico Síncrono e Koinonia');
+    setNewEnqueteDescricao('Instrumento empírico do TCC sobre a transição do internato para o modelo síncrono remoto e mitigação da distância transacional.');
+    setNewEnquetePublico('todos');
+    setNewEnqueteSecoes([
+      {
+        id: 'sec_dim1',
+        badge: 'Etapa 3 • Dimensão 1 • Distância Transacional e Proximidade',
+        titulo: 'Tele-Proximidade e Diálogo Síncrono',
+        descricao: 'Avalie como a interação em tempo real, suporte de monitores e presença de ensino aproximam você do seminário:',
+        dicaAjuda: 'O que é Distância Transacional?',
+        dicaConteudo: 'Espaço psicopedagógico e relacional entre discentes e docentes que precisa ser mitigado pelo diálogo síncrono e clareza da estrutura.',
+        perguntas: [
+          {
+            id: 'dim1_q1',
+            enunciado: 'As aulas ao vivo no Google Meet transmitem a mesma proximidade afetiva e atenção do professor que você esperaria em uma sala de aula física?',
+            tipo: 'likert_5',
+            obrigatoria: true,
+            dica: 'Entender este termo (Tele-proximidade pedagógica)',
+          },
+          {
+            id: 'dim1_q2',
+            enunciado: 'A presença do monitor moderando o chat, organizando links e links de presença reduz o estresse da aula?',
+            tipo: 'likert_5',
+            obrigatoria: true,
+          }
+        ]
+      },
+      {
+        id: 'sec_dim2',
+        badge: 'Etapa 4 • Dimensão 2 • Comunhão Bíblica (Koinonia)',
+        titulo: 'Comunhão, Mutualidade e Vida Espiritual',
+        descricao: 'Avalie como o modelo virtual acolhe ou desafia a dimensão comunitária da formação pastoral:',
+        dicaAjuda: 'O que é Koinonia no LMS?',
+        dicaConteudo: 'Compartilhamento sincero de orações, aconselhamento mútuo e mutualidade apostólica através de espaços dedicados.',
+        perguntas: [
+          {
+            id: 'dim2_q1',
+            enunciado: 'É possível vivenciar verdadeira comunhão bíblica (koinonia), mutualidade e laços de amizade sinceros com os colegas de turma através do ambiente virtual?',
+            tipo: 'likert_5',
+            obrigatoria: true,
+            dica: 'Entender este termo (Preservação da Koinonia)',
+          },
+          {
+            id: 'dim2_q2',
+            enunciado: 'Espaços colaborativos (Mural de Oração, acolhimento antes da aula e grupos de mentoria) fortalecem o sentimento de família na fé e a presença social?',
+            tipo: 'likert_5',
+            obrigatoria: true,
+            dica: 'Entender este termo (Mural Interativo de Oração e Partilha)',
+          },
+          {
+            id: 'dim2_q3',
+            enunciado: 'Comparando os modelos, como você avalia a solidez da sua formação teológica e ministerial no formato síncrono remoto atual?',
+            tipo: 'multipla_escolha',
+            opcoes: [
+              'Superior: conecta a teoria teológica à prática pastoral imediata na igreja local',
+              'Equivalente com alta qualidade: atende com rigor espiritual e acadêmico',
+              'Boa alternativa, embora sinta falta da convivência presencial diária',
+              'Ainda prefiro o modelo clássico de internato fechado',
+            ],
+            obrigatoria: true,
+          }
+        ]
+      },
+      {
+        id: 'sec_dim3',
+        badge: 'Etapa 5 • Dimensão 3 • Recursos do LMS & Aprendizagem Ativa',
+        titulo: 'Ferramentas de Estudo, IA e Reflexões Finais',
+        descricao: 'Avalie as inovações pedagógicas desenvolvidas no Koinonia LMS para o seu aprendizado:',
+        dicaAjuda: 'O que é Andragogia de Jesus?',
+        dicaConteudo: 'Método andragógico ativo baseado em parábolas, resolução de dilemas reais e estudos de caso ministeriais.',
+        perguntas: [
+          {
+            id: 'dim3_q1',
+            enunciado: 'O método Cornell e o resumo assistido por IA ajudam a fixar o conteúdo bíblico de forma ativa?',
+            tipo: 'likert_5',
+            obrigatoria: true,
+          },
+          {
+            id: 'dim3_q2',
+            enunciado: 'Qual é o maior desafio ou oportunidade que você vivencia na sua formação teológica no formato remoto síncrono?',
+            tipo: 'texto_longo',
+            obrigatoria: true,
+          },
+          {
+            id: 'dim3_q3',
+            enunciado: 'Espaço aberto: sugestões, críticas fraternas ou depoimento para a pesquisa do TCC de Cristiano do Sacramento Soares:',
+            tipo: 'texto_longo',
+            obrigatoria: false,
+          }
+        ]
+      }
+    ]);
+    showToast('✨ Modelo completo das Dimensões do TCC carregado com sucesso!');
   };
 
   const handleCreateEnquete = async () => {
@@ -276,11 +521,34 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
       showToast('Por favor, digite o título da nova enquete.');
       return;
     }
-    const validQuestions = newEnquetePerguntas.filter((q) => q.enunciado.trim() !== '');
-    if (validQuestions.length === 0) {
-      showToast('Adicione pelo menos uma pergunta à enquete.');
+
+    // Valida e limpa seções e perguntas
+    const validSecoes: SecaoEnqueteCustom[] = newEnqueteSecoes.map((sec, sIdx) => ({
+      ...sec,
+      id: sec.id || `sec_${sIdx + 1}`,
+      titulo: sec.titulo.trim() || `Seção ${sIdx + 1}`,
+      descricao: sec.descricao.trim(),
+      badge: sec.badge?.trim() || `Seção ${sIdx + 1}`,
+      dicaAjuda: sec.dicaAjuda?.trim(),
+      dicaConteudo: sec.dicaConteudo?.trim(),
+      perguntas: sec.perguntas
+        .filter((q) => q.enunciado.trim() !== '')
+        .map((q, qIdx) => ({
+          ...q,
+          id: q.id || `q_${sIdx + 1}_${qIdx + 1}`,
+          enunciado: q.enunciado.trim(),
+          opcoes: (q.tipo === 'multipla_escolha' || q.tipo === 'caixas_selecao')
+            ? (q.opcoes && q.opcoes.length > 0 ? q.opcoes.filter((o) => o.trim() !== '') : ['Opção 1', 'Opção 2'])
+            : undefined,
+        }))
+    })).filter((sec) => sec.perguntas.length > 0);
+
+    if (validSecoes.length === 0) {
+      showToast('Adicione pelo menos uma pergunta preenchida à enquete.');
       return;
     }
+
+    const allQuestionsFlat: PerguntaEnqueteCustom[] = validSecoes.flatMap((s) => s.perguntas);
 
     const id = `enq_${Date.now()}`;
     const newEnq: EnquetePersonalizada = {
@@ -292,7 +560,8 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
       permiteEdicao: true,
       created_at: new Date().toISOString(),
       created_by: 'Cristiano do Sacramento Soares',
-      perguntas: validQuestions,
+      secoes: validSecoes,
+      perguntas: allQuestionsFlat,
     };
 
     await saveEnquetePersonalizada(newEnq);
@@ -300,15 +569,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
     setIsNewEnqueteModalOpen(false);
     setNewEnqueteTitulo('');
     setNewEnqueteDescricao('');
-    setNewEnquetePerguntas([
-      {
-        id: 'q1',
-        enunciado: 'Qual é a sua avaliação sobre a metodologia pedagógica das aulas síncronas remotas?',
-        tipo: 'likert_5',
-        obrigatoria: true,
-      }
-    ]);
-    showToast('✨ Nova enquete criada com sucesso e já disponível online!');
+    showToast('✨ Nova enquete estruturada com sucesso e já disponível online!');
   };
 
   const handleToggleEnqueteStatus = async (enq: EnquetePersonalizada) => {
@@ -1724,150 +1985,489 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
         </div>
       )}
       {/* ========================================================================= */}
-      {/* MODAL DE CRIAÇÃO DE NOVA ENQUETE / PESQUISA DINÂMICA                      */}
+      {/* MODAL CONSTRUTOR AVANÇADO DE ENQUETES / FORMULÁRIO ESTILO GOOGLE FORMS    */}
       {/* ========================================================================= */}
       {isNewEnqueteModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-4xl w-full max-h-[94vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Header */}
             <div className="p-4 sm:p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 text-white flex items-center justify-between border-b border-indigo-900/40 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-black shadow-md">
-                  <Plus className="w-5 h-5" />
+                  <ListChecks className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">
-                    Formulário Dinâmico • TCC & LMS
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">
+                      Construtor de Formulários • Dimensões & Google Forms Style
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500/20 text-purple-200 border border-purple-400/30">
+                      {newEnqueteSecoes.length} {newEnqueteSecoes.length === 1 ? 'seção' : 'seções'} • {newEnqueteSecoes.reduce((acc, s) => acc + s.perguntas.length, 0)} perguntas
+                    </span>
+                  </div>
                   <h3 className="text-lg sm:text-xl font-black text-white">Criar Nova Enquete de Campo</h3>
                 </div>
               </div>
-              <button
-                onClick={() => setIsNewEnqueteModalOpen(false)}
-                className="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleCarregarTemplateTcc}
+                  variant="outline"
+                  className="hidden sm:flex items-center gap-1.5 bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border-purple-400/40 text-xs font-bold cursor-pointer"
+                  title="Carregar modelo pré-configurado com as Dimensões do TCC (Koinonia, Distância Transacional e Recursos)"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Modelo Dimensões do TCC</span>
+                </Button>
+
+                <button
+                  onClick={() => setIsNewEnqueteModalOpen(false)}
+                  className="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
-            {/* Conteúdo */}
-            <div className="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1 bg-slate-50/50">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Título da Enquete / Pesquisa: *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Ex: Avaliação do Módulo 1 • Metodologias Ativas na Teologia"
-                  value={newEnqueteTitulo}
-                  onChange={(e) => setNewEnqueteTitulo(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Descrição / Objetivo Científico:</label>
-                <textarea
-                  rows={2}
-                  placeholder="Explicação para os participantes sobre a importância desta coleta empírica..."
-                  value={newEnqueteDescricao}
-                  onChange={(e) => setNewEnqueteDescricao(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Público-Alvo Prioritário:</label>
-                <select
-                  value={newEnquetePublico}
-                  onChange={(e) => setNewEnquetePublico(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                >
-                  <option value="todos">Todos os Públicos (Geral)</option>
-                  <option value="aluno_unimb">Seminaristas / Alunos</option>
-                  <option value="professor_unimb">Professores / Docentes</option>
-                  <option value="monitor_unimb">Monitores</option>
-                  <option value="externo_pastor">Pastores & Líderes Eclesiásticos</option>
-                </select>
-              </div>
-
-              {/* Lista de Perguntas */}
-              <div className="space-y-3 pt-2">
+            {/* Conteúdo com Scroll */}
+            <div className="p-4 sm:p-6 space-y-6 overflow-y-auto flex-1 bg-slate-50/60">
+              {/* Card de Configurações Gerais da Enquete */}
+              <div className="p-5 bg-white rounded-2xl border border-gray-200 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-slate-700">Perguntas da Enquete ({newEnquetePerguntas.length})</h4>
-                  <button
+                  <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700 flex items-center gap-1.5">
+                    <Target className="w-4 h-4 text-indigo-600" />
+                    <span>Identificação & Escopo da Enquete</span>
+                  </span>
+                  <Button
                     type="button"
-                    onClick={handleAddQuestionToNewEnquete}
-                    className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+                    size="sm"
+                    onClick={handleCarregarTemplateTcc}
+                    variant="ghost"
+                    className="sm:hidden text-purple-600 font-bold text-xs p-1 cursor-pointer flex items-center gap-1"
                   >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Adicionar Pergunta</span>
-                  </button>
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Carregar Modelo</span>
+                  </Button>
                 </div>
 
-                {newEnquetePerguntas.map((q, idx) => (
-                  <div key={q.id} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-2.5 shadow-2xs">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-black uppercase text-indigo-700">Pergunta {idx + 1}</span>
-                      {newEnquetePerguntas.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => setNewEnquetePerguntas(newEnquetePerguntas.filter((_, i) => i !== idx))}
-                          className="text-rose-500 hover:text-rose-700 text-xs font-bold cursor-pointer"
-                        >
-                          Remover
-                        </button>
-                      )}
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Título da Enquete / Pesquisa: *
+                    </label>
                     <input
                       type="text"
-                      placeholder="Digite o enunciado da pergunta..."
-                      value={q.enunciado}
-                      onChange={(e) => {
-                        const updated = [...newEnquetePerguntas];
-                        updated[idx].enunciado = e.target.value;
-                        setNewEnquetePerguntas(updated);
-                      }}
-                      className="w-full p-2 bg-slate-50 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none focus:bg-white"
+                      required
+                      placeholder="Ex: Diagnóstico Estratégico • Ensino Teológico Síncrono e Koinonia"
+                      value={newEnqueteTitulo}
+                      onChange={(e) => setNewEnqueteTitulo(e.target.value)}
+                      className="w-full p-2.5 bg-slate-50 border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:outline-none"
                     />
-                    <div className="flex items-center gap-3">
-                      <label className="text-[11px] font-bold text-gray-500">Tipo de Resposta:</label>
-                      <select
-                        value={q.tipo}
-                        onChange={(e) => {
-                          const updated = [...newEnquetePerguntas];
-                          updated[idx].tipo = e.target.value as any;
-                          setNewEnquetePerguntas(updated);
-                        }}
-                        className="p-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-medium focus:outline-none"
-                      >
-                        <option value="likert_5">Escala Likert (1 a 5 estrelas)</option>
-                        <option value="texto">Texto Discursivo Aberto</option>
-                      </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Público-Alvo Prioritário:
+                    </label>
+                    <select
+                      value={newEnquetePublico}
+                      onChange={(e) => setNewEnquetePublico(e.target.value)}
+                      className="w-full p-2.5 bg-slate-50 border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:outline-none"
+                    >
+                      <option value="todos">Todos os Públicos (Geral)</option>
+                      <option value="aluno_unimb">Seminaristas / Alunos UNIMB</option>
+                      <option value="professor_unimb">Professores / Docentes</option>
+                      <option value="monitor_unimb">Monitores Acadêmicos</option>
+                      <option value="externo_pastor">Pastores & Ministros</option>
+                      <option value="externo_lider">Líderes & Presbíteros</option>
+                      <option value="externo_membro">Membros de Comunidade Eclesial</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Descrição Geral / Objetivo Científico:
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Instruções para os participantes, contexto metodológico e objetivo desta coleta empírica..."
+                    value={newEnqueteDescricao}
+                    onChange={(e) => setNewEnqueteDescricao(e.target.value)}
+                    className="w-full p-2.5 bg-slate-50 border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:outline-none resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* LISTA DE SEÇÕES / DIMENSÕES */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-purple-600" />
+                      <span>Seções & Dimensões do Questionário ({newEnqueteSecoes.length})</span>
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                      Organize perguntas por dimensões temáticas (ex: Comunhão Bíblica, Tele-proximidade, Ferramentas).
+                    </p>
+                  </div>
+
+                  <Button
+                    type="button"
+                    onClick={handleAddSecao}
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2 px-3 rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  >
+                    <FolderPlus className="w-4 h-4" />
+                    <span>+ Adicionar Seção / Dimensão</span>
+                  </Button>
+                </div>
+
+                {newEnqueteSecoes.map((secao, sIdx) => (
+                  <div
+                    key={secao.id}
+                    className="bg-white rounded-3xl border-2 border-indigo-100 shadow-sm overflow-hidden transition hover:border-indigo-300"
+                  >
+                    {/* Cabeçalho da Seção */}
+                    <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-900/50">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-7 h-7 rounded-xl bg-purple-600 text-white font-black text-xs flex items-center justify-center shrink-0">
+                          {sIdx + 1}
+                        </span>
+                        <div>
+                          <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">
+                            {secao.badge || `Dimensão ${sIdx + 1}`}
+                          </span>
+                          <h5 className="text-base font-black text-white leading-tight">
+                            {secao.titulo || `Seção ${sIdx + 1}`}
+                          </h5>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-auto">
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => handleAddPerguntaToSecao(secao.id)}
+                          className="bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>+ Pergunta nesta Seção</span>
+                        </Button>
+
+                        {newEnqueteSecoes.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSecao(secao.id)}
+                            className="p-1.5 text-rose-300 hover:text-rose-100 hover:bg-rose-900/40 rounded-lg transition cursor-pointer"
+                            title="Remover Seção Inteira"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Configurações da Seção */}
+                    <div className="p-4 sm:p-5 bg-indigo-50/30 border-b border-indigo-100/80 space-y-3 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                            Badge da Etapa / Dimensão (Topo):
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Ex: ETAPA 4 DE 6 • DIMENSÃO 2 • COMUNHÃO BÍBLICA (KOINONIA)"
+                            value={secao.badge || ''}
+                            onChange={(e) => handleUpdateSecao(secao.id, { badge: e.target.value })}
+                            className="w-full p-2 bg-white border border-indigo-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                            Título Principal da Dimensão: *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="Ex: Comunhão, Mutualidade e Vida Espiritual"
+                            value={secao.titulo}
+                            onChange={(e) => handleUpdateSecao(secao.id, { titulo: e.target.value })}
+                            className="w-full p-2 bg-white border border-indigo-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          Subtítulo / Orientação da Dimensão:
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Ex: Avalie como o modelo virtual acolhe ou desafia a dimensão comunitária da formação pastoral:"
+                          value={secao.descricao || ''}
+                          onChange={(e) => handleUpdateSecao(secao.id, { descricao: e.target.value })}
+                          className="w-full p-2 bg-white border border-indigo-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-indigo-100">
+                        <div>
+                          <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+                            <Lightbulb className="w-3 h-3 text-amber-500" />
+                            <span>Link Explicativo / Dica de Glossário (Opcional):</span>
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Ex: 💡 O que é Koinonia no LMS?"
+                            value={secao.dicaAjuda || ''}
+                            onChange={(e) => handleUpdateSecao(secao.id, { dicaAjuda: e.target.value })}
+                            className="w-full p-2 bg-white border border-indigo-200 rounded-xl text-xs focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                            Texto Explicativo da Dica (Exibido ao clicar):
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Ex: Koinonia denota compartilhamento espiritual e participação ativa..."
+                            value={secao.dicaConteudo || ''}
+                            onChange={(e) => handleUpdateSecao(secao.id, { dicaConteudo: e.target.value })}
+                            className="w-full p-2 bg-white border border-indigo-200 rounded-xl text-xs focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Perguntas desta Seção */}
+                    <div className="p-4 sm:p-5 space-y-4 bg-slate-50/40">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-600">
+                          Perguntas desta Seção ({secao.perguntas.length})
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleAddPerguntaToSecao(secao.id)}
+                          className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Adicionar Pergunta</span>
+                        </button>
+                      </div>
+
+                      {secao.perguntas.map((q, qIdx) => (
+                        <div
+                          key={q.id}
+                          className="p-4 sm:p-5 bg-white rounded-2xl border border-gray-200 shadow-2xs space-y-3.5 transition hover:border-indigo-300"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                            <div className="flex items-center gap-2">
+                              <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-900 font-extrabold text-xs flex items-center justify-center">
+                                {qIdx + 1}
+                              </span>
+                              <span className="text-xs font-extrabold text-slate-800">
+                                Pergunta {sIdx + 1}.{qIdx + 1}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-600 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={q.obrigatoria}
+                                  onChange={(e) => handleUpdatePergunta(secao.id, q.id, { obrigatoria: e.target.checked })}
+                                  className="w-4 h-4 rounded text-indigo-600 cursor-pointer"
+                                />
+                                <span>Obrigatória</span>
+                              </label>
+
+                              {secao.perguntas.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemovePerguntaFromSecao(secao.id, q.id)}
+                                  className="text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center gap-1 cursor-pointer p-1"
+                                  title="Remover Pergunta"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <span className="hidden sm:inline">Remover</span>
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Enunciado */}
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                              Enunciado da Pergunta: *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Digite a pergunta que o participante responderá..."
+                              value={q.enunciado}
+                              onChange={(e) => handleUpdatePergunta(secao.id, q.id, { enunciado: e.target.value })}
+                              className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                          </div>
+
+                          {/* Seleção de Tipo de Resposta Estilo Google Forms */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-500 mb-1">
+                                Formato / Tipo de Resposta (Google Forms Style):
+                              </label>
+                              <select
+                                value={q.tipo}
+                                onChange={(e) => handleUpdatePergunta(secao.id, q.id, { tipo: e.target.value as TipoRespostaEnquete })}
+                                className="w-full p-2 bg-slate-50 border border-gray-200 rounded-xl text-xs font-bold text-indigo-950 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                              >
+                                <option value="likert_5">⭐ Escala Likert (1 a 5 - Discordo a Concordo)</option>
+                                <option value="multipla_escolha">🔘 Múltipla Escolha (Opção Única / Radio)</option>
+                                <option value="caixas_selecao">☑️ Caixas de Seleção (Múltiplas opções)</option>
+                                <option value="texto_longo">📝 Parágrafo / Texto Discursivo Aberto</option>
+                                <option value="texto_curto">✏️ Resposta Curta (Linha Única)</option>
+                                <option value="escala_10">🔢 Escala Linear (0 a 10 - NPS)</option>
+                                <option value="sim_nao">⚖️ Sim / Não / Parcialmente</option>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-[11px] font-bold text-gray-500 mb-1">
+                                Texto de Apoio / Termo Explicativo (Opcional):
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Ex: Entender este termo (Preservação da Koinonia)"
+                                value={q.dica || ''}
+                                onChange={(e) => handleUpdatePergunta(secao.id, q.id, { dica: e.target.value })}
+                                className="w-full p-2 bg-slate-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:outline-none"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Bloco de Alternativas Customizadas (Para Múltipla Escolha ou Caixas de Seleção) */}
+                          {(q.tipo === 'multipla_escolha' || q.tipo === 'caixas_selecao') && (
+                            <div className="p-3.5 bg-purple-50/50 border border-purple-200 rounded-2xl space-y-2.5">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[11px] font-black uppercase tracking-wider text-purple-900 flex items-center gap-1.5">
+                                  <ListChecks className="w-3.5 h-3.5 text-purple-600" />
+                                  <span>Alternativas de Resposta ({q.opcoes?.length || 0}):</span>
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAddOpcaoToPergunta(secao.id, q.id)}
+                                  className="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                  <span>+ Adicionar Opção</span>
+                                </button>
+                              </div>
+
+                              <div className="space-y-2">
+                                {(q.opcoes || ['Opção 1', 'Opção 2']).map((opt, oIdx) => (
+                                  <div key={oIdx} className="flex items-center gap-2">
+                                    <span className="text-xs text-purple-400 font-bold w-4 text-center">
+                                      {q.tipo === 'multipla_escolha' ? '○' : '□'}
+                                    </span>
+                                    <input
+                                      type="text"
+                                      value={opt}
+                                      onChange={(e) => handleUpdateOpcaoText(secao.id, q.id, oIdx, e.target.value)}
+                                      placeholder={`Opção ${oIdx + 1}...`}
+                                      className="flex-1 p-2 bg-white border border-purple-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    />
+                                    {(q.opcoes && q.opcoes.length > 1) && (
+                                      <button
+                                        type="button"
+                                        onClick={() => handleRemoveOpcaoFromPergunta(secao.id, q.id, oIdx)}
+                                        className="p-1.5 text-gray-400 hover:text-rose-600 rounded-lg transition cursor-pointer"
+                                        title="Remover opção"
+                                      >
+                                        <X className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Prévia Informativa do Tipo Selecionado */}
+                          {q.tipo === 'likert_5' && (
+                            <div className="p-2.5 bg-slate-100 rounded-xl flex items-center justify-between text-[11px] text-slate-600">
+                              <span>🔴 1: Discordo Totalmente</span>
+                              <span>🟠 2: Discordo Parcialmente</span>
+                              <span>⚪ 3: Neutro</span>
+                              <span>🟢 4: Concordo Parcialmente</span>
+                              <span>🌟 5: Concordo Totalmente</span>
+                            </div>
+                          )}
+
+                          {q.tipo === 'sim_nao' && (
+                            <div className="p-2.5 bg-slate-100 rounded-xl flex items-center gap-4 text-[11px] text-slate-600">
+                              <span>✅ Sim</span>
+                              <span>❌ Não</span>
+                              <span>⚖️ Parcialmente / Em partes</span>
+                            </div>
+                          )}
+
+                          {q.tipo === 'escala_10' && (
+                            <div className="p-2.5 bg-slate-100 rounded-xl flex items-center justify-between text-[11px] text-slate-600">
+                              <span>0 (Mínimo / Ruim)</span>
+                              <span>... Escala de 1 a 9 ...</span>
+                              <span>10 (Máximo / Excelente)</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
               </div>
+
+              {/* Botão Inferior para Adicionar Mais Seção */}
+              <div className="pt-2 flex justify-center">
+                <Button
+                  type="button"
+                  onClick={handleAddSecao}
+                  variant="outline"
+                  className="border-dashed border-2 border-indigo-300 hover:border-indigo-500 bg-white hover:bg-indigo-50 text-indigo-900 font-bold text-xs py-3 px-6 rounded-2xl flex items-center gap-2 cursor-pointer shadow-xs transition"
+                >
+                  <FolderPlus className="w-4 h-4 text-indigo-600" />
+                  <span>+ Adicionar Outra Seção / Dimensão à Enquete</span>
+                </Button>
+              </div>
             </div>
 
-            {/* Footer */}
-            <div className="p-4 bg-white border-t border-gray-100 flex items-center justify-end gap-2 shrink-0">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setIsNewEnqueteModalOpen(false)}
-                className="font-bold cursor-pointer"
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                onClick={handleCreateEnquete}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold shadow-md cursor-pointer"
-              >
-                Criar e Publicar Enquete
-              </Button>
+            {/* Footer do Modal */}
+            <div className="p-4 sm:p-5 bg-white border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+              <div className="text-xs text-gray-500 font-medium text-center sm:text-left">
+                Total consolidado: <strong className="text-slate-900">{newEnqueteSecoes.length} seções</strong> e <strong className="text-slate-900">{newEnqueteSecoes.reduce((acc, s) => acc + s.perguntas.length, 0)} perguntas</strong> prontas para publicação.
+              </div>
+
+              <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsNewEnqueteModalOpen(false)}
+                  className="font-bold cursor-pointer"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleCreateEnquete}
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-extrabold shadow-md cursor-pointer px-5"
+                >
+                  Criar e Publicar Enquete
+                </Button>
+              </div>
             </div>
           </div>
         </div>

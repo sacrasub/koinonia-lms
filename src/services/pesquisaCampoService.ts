@@ -1097,12 +1097,33 @@ export async function getPesquisaCampoAdminData(): Promise<{
 // SISTEMA DE ENQUETES DINÂMICAS E CUSTOMIZADAS DO TCC & LMS
 // =========================================================================
 
+export type TipoRespostaEnquete = 
+  | 'likert_5'           // Escala Likert de 1 a 5 estrelas/esferas
+  | 'multipla_escolha'   // Opção única (radio buttons) com alternativas customizadas
+  | 'caixas_selecao'     // Seleção múltipla (checkboxes) com alternativas customizadas
+  | 'texto_longo'        // Parágrafo / Reflexão discursiva aberta
+  | 'texto_curto'        // Resposta curta em linha única
+  | 'escala_10'          // Escala linear de 0 a 10 (NPS / Avaliação numérica)
+  | 'sim_nao'            // Sim / Não / Parcialmente
+  | 'texto';             // Alias retrocompatível para texto_longo
+
 export interface PerguntaEnqueteCustom {
   id: string;
   enunciado: string;
-  tipo: 'likert_5' | 'texto' | 'multipla_escolha';
+  tipo: TipoRespostaEnquete;
   opcoes?: string[];
   obrigatoria: boolean;
+  dica?: string;
+}
+
+export interface SecaoEnqueteCustom {
+  id: string;
+  badge?: string;         // Ex: "Dimensão 2 • Comunhão Bíblica (Koinonia)"
+  titulo: string;         // Ex: "Comunhão, Mutualidade e Vida Espiritual"
+  descricao?: string;     // Ex: "Avalie como o modelo virtual acolhe ou desafia a dimensão comunitária..."
+  dicaAjuda?: string;     // Ex: "O que é Koinonia no LMS?"
+  dicaConteudo?: string;  // Explicação conceitual de apoio
+  perguntas: PerguntaEnqueteCustom[];
 }
 
 export interface EnquetePersonalizada {
@@ -1114,7 +1135,44 @@ export interface EnquetePersonalizada {
   permiteEdicao: boolean;
   created_at: string;
   created_by: string;
-  perguntas: PerguntaEnqueteCustom[];
+  secoes?: SecaoEnqueteCustom[];
+  perguntas?: PerguntaEnqueteCustom[]; // Suporte a enquetes criadas na v1
+}
+
+/**
+ * Normaliza uma enquete garantindo que ela sempre forneça um array consistente de seções,
+ * convertendo perguntas soltas de versões anteriores em uma seção padrão.
+ */
+export function normalizeEnqueteSecoes(enquete: EnquetePersonalizada): SecaoEnqueteCustom[] {
+  if (enquete.secoes && Array.isArray(enquete.secoes) && enquete.secoes.length > 0) {
+    return enquete.secoes.map((sec, idx) => ({
+      ...sec,
+      id: sec.id || `sec_${idx + 1}`,
+      titulo: sec.titulo || `Seção ${idx + 1}`,
+      perguntas: Array.isArray(sec.perguntas) ? sec.perguntas : [],
+    }));
+  }
+
+  // Fallback para enquetes da v1 que tinham apenas a lista plana de perguntas
+  if (enquete.perguntas && Array.isArray(enquete.perguntas) && enquete.perguntas.length > 0) {
+    return [
+      {
+        id: 'sec_principal',
+        badge: 'Questionário Geral',
+        titulo: enquete.titulo,
+        descricao: enquete.descricao,
+        perguntas: enquete.perguntas,
+      }
+    ];
+  }
+
+  return [];
+}
+
+export async function getEnqueteById(id: string): Promise<EnquetePersonalizada | null> {
+  if (!id) return null;
+  const all = await getEnquetesPersonalizadas();
+  return all.find((e) => e.id === id) || null;
 }
 
 const ENQUETES_CUSTOM_STORAGE_KEY = 'lms_enquetes_personalizadas_v1';
