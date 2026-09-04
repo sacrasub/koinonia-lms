@@ -76,10 +76,59 @@ export function detectDeviceDetails(): {
 }
 
 // ============================================================================
-// 2. REGISTRO E GESTÃO DE SESSÃO ATIVA (AUDITORIA DE ACESSOS)
-// ============================================================================
 // 2. REGISTRO E GESTÃO DE SESSÃO ATIVA (AUDITORIA DE ACESSOS - SESSION COALESCING)
 // ============================================================================
+
+export const MAX_SESSION_DURATION_SECONDS = 4 * 3600; // 4 horas: teto máximo plausível para sessão única de estudo/aula
+export const SESSION_INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutos: limite de inatividade para expiração da sessão
+
+/**
+ * Sanitiza valores de duração de sessão para impedir números anômalos (ex: bugs de data, abas deixadas abertas por dias).
+ */
+export function sanitizeSessionDuration(
+  durationSeconds: number | undefined | null,
+  sessionId?: string,
+  startedAt?: string,
+  lastHeartbeatAt?: string
+): number {
+  const dur = Math.max(0, Number(durationSeconds) || 0);
+
+  // Sessões geradas via sincronização de dados (student_sync_%)
+  if (sessionId && sessionId.startsWith('sess_sync_')) {
+    // Se o valor estiver corrompido com a idade do acesso (> 45 minutos)
+    if (dur > 45 * 60) {
+      return 25 * 60; // Duração padrão estimada de 25 minutos de estudo
+    }
+    return Math.max(60, dur);
+  }
+
+  // Teto máximo para qualquer sessão de usuário no LMS
+  if (dur > MAX_SESSION_DURATION_SECONDS) {
+    if (startedAt && lastHeartbeatAt) {
+      const diff = Math.floor((new Date(lastHeartbeatAt).getTime() - new Date(startedAt).getTime()) / 1000);
+      if (diff > 0 && diff <= MAX_SESSION_DURATION_SECONDS) {
+        return diff;
+      }
+    }
+    return MAX_SESSION_DURATION_SECONDS;
+  }
+
+  return dur;
+}
+
+/** Formata segundos em texto legível: ex: "45 min", "1h 15m (75 min)" */
+export function formatDurationLabel(durationSeconds: number): string {
+  const totalMin = Math.round((durationSeconds || 0) / 60);
+  if (totalMin < 60) {
+    return `${totalMin} min`;
+  }
+  const hours = Math.floor(totalMin / 60);
+  const remainingMin = totalMin % 60;
+  if (remainingMin === 0) {
+    return `${hours}h (${totalMin} min)`;
+  }
+  return `${hours}h ${remainingMin}m (${totalMin} min)`;
+}
 
 let exitListenersAttached = false;
 
@@ -91,7 +140,8 @@ function setupExitAndDurationListeners() {
     if (currentSession && currentSession.started_at) {
       const now = new Date();
       const startTime = new Date(currentSession.started_at).getTime();
-      const durationSeconds = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+      const elapsed = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+      const durationSeconds = Math.min(MAX_SESSION_DURATION_SECONDS, elapsed);
       currentSession.last_heartbeat_at = now.toISOString();
       currentSession.duration_seconds = durationSeconds;
       saveSessionToLocalCache(currentSession);
@@ -140,13 +190,20 @@ export function startUserSession(
 
   // 1. Reutilização de Sessão em Memória (Evita duplicações na mesma execução)
   if (currentSession && currentSession.user_email === normalizedEmail && currentSession.is_active) {
-    currentSession.page_views_count = (currentSession.page_views_count || 1) + 1;
-    currentSession.last_heartbeat_at = new Date().toISOString();
-    const startTime = new Date(currentSession.started_at).getTime();
-    currentSession.duration_seconds = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
-    if (safeAvatar) currentSession.avatar_url = safeAvatar;
-    saveSessionToLocalCache(currentSession);
-    return currentSession;
+    const lastHb = new Date(currentSession.last_heartbeat_at || currentSession.started_at).getTime();
+    if (Date.now() - lastHb < SESSION_INACTIVITY_TIMEOUT_MS) {
+      currentSession.page_views_count = (currentSession.page_views_count || 1) + 1;
+      currentSession.last_heartbeat_at = new Date().toISOString();
+      const startTime = new Date(currentSession.started_at).getTime();
+      const elapsed = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+      currentSession.duration_seconds = Math.min(MAX_SESSION_DURATION_SECONDS, elapsed);
+      if (safeAvatar) currentSession.avatar_url = safeAvatar;
+      saveSessionToLocalCache(currentSession);
+      return currentSession;
+    } else {
+      // Sessão anterior expirou por inatividade
+      endCurrentSession();
+    }
   }
 
   // 2. Session Coalescing: Verifica token na sessionStorage (mesma aba recarregada)
@@ -156,7 +213,18 @@ export function startUserSession(
   const localSessions = getLocalSessions();
 
   if (sessionTokenInTab) {
-    existingSession = localSessions.find((s) => s.id === sessionTokenInTab && s.user_email === normalizedEmail);
+    const found = localSessions.find((s) => s.id === sessionTokenInTab && s.user_email === normalizedEmail);
+    if (found) {
+      const lastHb = new Date(found.last_heartbeat_at || found.started_at).getTime();
+      if (Date.now() - lastHb < SESSION_INACTIVITY_TIMEOUT_MS) {
+        existingSession = found;
+      } else {
+        // Token da aba é de sessão expirada (> 30 min)
+        try {
+          sessionStorage.removeItem('lms_active_session_token');
+        } catch (_) {}
+      }
+    }
   }
 
   if (!existingSession) {
@@ -164,7 +232,7 @@ export function startUserSession(
     if (recentCandidate && recentCandidate.last_heartbeat_at) {
       const diffMs = Date.now() - new Date(recentCandidate.last_heartbeat_at).getTime();
       // Se a última atividade foi há menos de 30 minutos, continua a mesma sessão
-      if (diffMs < 30 * 60 * 1000) {
+      if (diffMs < SESSION_INACTIVITY_TIMEOUT_MS) {
         existingSession = recentCandidate;
       }
     }
@@ -176,7 +244,8 @@ export function startUserSession(
     existingSession.last_heartbeat_at = new Date().toISOString();
     existingSession.page_views_count = (existingSession.page_views_count || 1) + 1;
     const startTime = new Date(existingSession.started_at).getTime();
-    existingSession.duration_seconds = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    const elapsed = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    existingSession.duration_seconds = Math.min(MAX_SESSION_DURATION_SECONDS, elapsed);
     existingSession.device_type = deviceType;
     existingSession.browser = browser;
     existingSession.os = os;
@@ -241,7 +310,8 @@ function startHeartbeatTimer() {
     if (currentSession && typeof document !== 'undefined' && document.visibilityState === 'visible') {
       const now = new Date();
       const startTime = new Date(currentSession.started_at).getTime();
-      const durationSeconds = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+      const elapsed = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+      const durationSeconds = Math.min(MAX_SESSION_DURATION_SECONDS, elapsed);
       
       currentSession.last_heartbeat_at = now.toISOString();
       currentSession.duration_seconds = durationSeconds;
@@ -258,7 +328,8 @@ export function endCurrentSession() {
   
   const now = new Date();
   const startTime = new Date(currentSession.started_at).getTime();
-  currentSession.duration_seconds = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+  const elapsed = Math.max(0, Math.floor((now.getTime() - startTime) / 1000));
+  currentSession.duration_seconds = Math.min(MAX_SESSION_DURATION_SECONDS, elapsed);
   currentSession.last_heartbeat_at = now.toISOString();
   currentSession.is_active = false;
 
@@ -362,8 +433,26 @@ function getLocalSessions(): UserSessionLog[] {
     const raw = localStorage.getItem(SESSIONS_STORAGE_KEY);
     if (!raw) return [];
     const parsed: UserSessionLog[] = JSON.parse(raw);
-    // Descarta qualquer seed/mock fictício legado
-    return parsed.filter((s) => s && s.id && !s.id.startsWith('sess_seed_'));
+    let hasChanges = false;
+    // Descarta qualquer seed/mock fictício legado e higieniza durações anômalas
+    const cleaned = parsed
+      .filter((s) => s && s.id && !s.id.startsWith('sess_seed_'))
+      .map((s) => {
+        const sanitized = sanitizeSessionDuration(s.duration_seconds, s.id, s.started_at, s.last_heartbeat_at);
+        if (sanitized !== s.duration_seconds) {
+          hasChanges = true;
+          return { ...s, duration_seconds: sanitized };
+        }
+        return s;
+      });
+
+    if (hasChanges) {
+      try {
+        localStorage.setItem(SESSIONS_STORAGE_KEY, JSON.stringify(cleaned));
+      } catch (_) {}
+    }
+
+    return cleaned;
   } catch (e) {
     return [];
   }
@@ -424,7 +513,7 @@ function saveEventToLocalCache(event: AnalyticsEvent) {
 // 5. SINCRONIZAÇÃO EM NUVEM ZERO-WASTE (SEM CONSUMO DE EGRESS)
 // ============================================================================
 
-/** Mescla duas listas de sessões eliminando duplicatas por ID e preservando os dados mais recentes */
+/** Mescla duas listas de sessões eliminando duplicatas por ID e preservando os dados mais recentes com durações sanitizadas */
 export function mergeSessionLists(
   listA: UserSessionLog[],
   listB: UserSessionLog[]
@@ -434,10 +523,14 @@ export function mergeSessionLists(
   const processItem = (s: UserSessionLog) => {
     if (!s || !s.id) return;
     const existing = map.get(s.id);
+    const sanitizedDuration = sanitizeSessionDuration(s.duration_seconds, s.id, s.started_at, s.last_heartbeat_at);
+    const item: UserSessionLog = { ...s, duration_seconds: sanitizedDuration };
+
     if (!existing) {
-      map.set(s.id, { ...s });
+      map.set(s.id, item);
     } else {
-      const dur = Math.max(existing.duration_seconds || 0, s.duration_seconds || 0);
+      const existingDur = sanitizeSessionDuration(existing.duration_seconds, existing.id, existing.started_at, existing.last_heartbeat_at);
+      const dur = Math.max(existingDur, sanitizedDuration);
       const isAct = existing.is_active || s.is_active;
       const hb = (new Date(s.last_heartbeat_at || 0).getTime() > new Date(existing.last_heartbeat_at || 0).getTime())
         ? s.last_heartbeat_at
@@ -447,7 +540,7 @@ export function mergeSessionLists(
 
       map.set(s.id, {
         ...existing,
-        ...s,
+        ...item,
         duration_seconds: dur,
         is_active: isAct,
         last_heartbeat_at: hb,
@@ -690,6 +783,28 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
           const lastActivityTime = new Date(lastActivityIso).getTime();
           const isRecentlyOnline = (now - lastActivityTime) < 15 * 60 * 1000;
 
+          // Métricas de atividades reais realizadas pelo aluno no portal
+          const notesCount = Object.keys(parsed.cornellNotes || {}).length + Object.keys(parsed.studentNotes || {}).length;
+          const lessonsCount = Object.keys(parsed.completedLessons || {}).length;
+          const tasksCount = Array.isArray(parsed.checklistTasks) ? parsed.checklistTasks.length : 0;
+          const totalActivities = notesCount + lessonsCount + tasksCount;
+
+          // Cálculo correto e realista de duração:
+          // Se o aluno está ativo agora: tempo decorrido no LMS nesta sessão (1 a 15 min)
+          // Se for sessão passada: estimativa pedagógica coerente (base 15 min + tempo por atividade, máx 40 min)
+          let sessionDurationSeconds: number;
+          if (isRecentlyOnline) {
+            sessionDurationSeconds = Math.max(60, Math.min(15 * 60, Math.floor((now - lastActivityTime) / 1000)));
+          } else {
+            sessionDurationSeconds = Math.min(40 * 60, Math.max(12 * 60, (15 * 60) + (totalActivities * 120)));
+          }
+
+          const pageViewsCount = Math.max(2, Math.min(25, 3 + totalActivities));
+          const eventsCount = Math.max(1, totalActivities || 3);
+          const sessionStartIso = isRecentlyOnline
+            ? lastActivityIso
+            : new Date(lastActivityTime - sessionDurationSeconds * 1000).toISOString();
+
           studentSessions.push({
             id: `sess_sync_${rawEmail.replace(/[^a-z0-9]/g, '_')}_${lastActivityTime}`,
             user_email: rawEmail,
@@ -700,12 +815,12 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
             browser: 'Google Chrome',
             os: 'Windows 10/11',
             screen_resolution: '1280x720',
-            started_at: lastActivityIso,
+            started_at: sessionStartIso,
             last_heartbeat_at: lastActivityIso,
-            duration_seconds: Math.max(60, Math.floor((now - lastActivityTime) / 1000)),
+            duration_seconds: sessionDurationSeconds,
             is_active: isRecentlyOnline,
-            page_views_count: 5,
-            events_count: 3,
+            page_views_count: pageViewsCount,
+            events_count: eventsCount,
           });
         } catch (_) {}
       });

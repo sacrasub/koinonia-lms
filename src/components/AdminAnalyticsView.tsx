@@ -27,7 +27,8 @@ import {
   downloadFile,
   getUserDetailedHistory,
   UserDossierHistory,
-  uploadLocalSessionsToCloud
+  uploadLocalSessionsToCloud,
+  formatDurationLabel
 } from '@/services/telemetryService';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { TeleProximidadeDashboard } from '@/components/TeleProximidadeDashboard';
@@ -1183,7 +1184,7 @@ export const AdminAnalyticsView: React.FC = () => {
 
                             <td className="p-4 text-right">
                               <div className="font-bold text-purple-900">
-                                {Math.round(group.total_duration_seconds / 60)} min total
+                                {formatDurationLabel(group.total_duration_seconds)} total
                               </div>
                               <div className="text-[10px] text-gray-500 font-medium">
                                 {group.total_sessions_count} {group.total_sessions_count === 1 ? 'sessão' : 'sessões'} • {group.total_page_views} telas
@@ -1265,7 +1266,7 @@ export const AdminAnalyticsView: React.FC = () => {
                                                 })}
                                               </td>
                                               <td className="py-2.5 font-semibold text-purple-800">
-                                                {Math.round((sess.duration_seconds || 0) / 60)} min ({sess.duration_seconds || 0}s)
+                                                {formatDurationLabel(sess.duration_seconds || 0)}
                                               </td>
                                               <td className="py-2.5 text-gray-600">
                                                 {sess.device_type} • {sess.os}
@@ -2048,9 +2049,9 @@ export const AdminAnalyticsView: React.FC = () => {
 
                 <div className="p-3.5 bg-white rounded-2xl border border-gray-200 shadow-xs space-y-0.5">
                   <span className="text-[10px] uppercase font-bold text-gray-400">Tempo Total</span>
-                  <div className="text-xl font-black text-purple-900">{Math.round(userDossierData.total_duration_seconds / 60)} min</div>
+                  <div className="text-xl font-black text-purple-900">{formatDurationLabel(userDossierData.total_duration_seconds)}</div>
                   <span className="text-[10px] text-gray-500 font-medium">
-                    média de {userDossierData.total_sessions_count > 0 ? Math.round(userDossierData.total_duration_seconds / userDossierData.total_sessions_count / 60) : 0} min / sessão
+                    média de {userDossierData.total_sessions_count > 0 ? formatDurationLabel(Math.round(userDossierData.total_duration_seconds / userDossierData.total_sessions_count)) : '0 min'} / sessão
                   </span>
                 </div>
 
@@ -2145,7 +2146,7 @@ export const AdminAnalyticsView: React.FC = () => {
                               <span className="text-xs font-black text-gray-800 capitalize">{dayLabel}</span>
                             </div>
                             <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
-                              {daySessions.length} {daySessions.length === 1 ? 'acesso' : 'acessos'} • {Math.round(daySec / 60)} min total
+                              {daySessions.length} {daySessions.length === 1 ? 'acesso' : 'acessos'} • {formatDurationLabel(daySec)} total
                             </span>
                           </div>
 
@@ -2171,7 +2172,7 @@ export const AdminAnalyticsView: React.FC = () => {
                                         {new Date(sess.started_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                                       </td>
                                       <td className="py-2 font-semibold text-purple-800">
-                                        {Math.round((sess.duration_seconds || 0) / 60)} min ({sess.duration_seconds || 0}s)
+                                        {formatDurationLabel(sess.duration_seconds || 0)}
                                       </td>
                                       <td className="py-2 text-gray-600">
                                         {sess.device_type} • {sess.os}

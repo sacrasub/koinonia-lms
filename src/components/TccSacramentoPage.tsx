@@ -22,7 +22,14 @@ import {
   saveEnquetePersonalizada,
   toggleEnqueteStatus,
   deleteEnquetePersonalizada,
-  EnquetePersonalizada
+  EnquetePersonalizada,
+  TCC_TITULO_PRINCIPAL,
+  TCC_SUBTITULO,
+  ORIENTADOR_NOME,
+  COORDENADORA_TCC_NOME,
+  TCC_PROBLEMA_PESQUISA,
+  TCC_OBJETIVO_GERAL,
+  TCC_OBJETIVOS_ESPECIFICOS
 } from '@/services/pesquisaCampoService';
 
 export interface TccCornellEntry {
@@ -514,9 +521,11 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
 
   // Exportar todas as anotações compiladas para a redação do TCC (Markdown / TXT)
   const handleExportAllNotes = () => {
-    let content = `# DIÁRIO DE BORDO & COMPILADO DO TCC - CRISTIANO SACRAMENTO\n`;
-    content += `Tema: Koinonia e a Redução da Distância Transacional no Ensino Teológico Online\n`;
-    content += `Orientador: Pastor Alexsandro Silva | Metodologia: Profª Gabriela Leal\n`;
+    let content = `# DIÁRIO DE BORDO & COMPILADO DO TCC - CRISTIANO DO SACRAMENTO SOARES\n`;
+    content += `Título: ${TCC_TITULO_PRINCIPAL}\n`;
+    content += `Subtítulo: ${TCC_SUBTITULO}\n`;
+    content += `Instituição: Centro Universitário do Maciço de Baturité (UNIMB) & Seminário Teológico Congregacional (UIECB)\n`;
+    content += `Orientador: ${ORIENTADOR_NOME} | Coordenadora de TCC I: ${COORDENADORA_TCC_NOME}\n`;
     content += `Data da Exportação: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}\n\n`;
     content += `================================================================================\n\n`;
 
@@ -617,21 +626,37 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             <Sparkles className="w-3.5 h-3.5 text-blue-300" />
             <span>Área de Pesquisa Exclusiva • Cristiano do Sacramento Soares</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Painel do TCC - Cristiano do Sacramento Soares
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            {TCC_TITULO_PRINCIPAL}
           </h1>
-          <p className="text-xs sm:text-base text-blue-200">
-            Curso de Bacharelado em Teologia • <strong>Centro Universitário do Maciço de Baturité (UNIMB)</strong> & <strong>Seminário Teológico Congregacional</strong> | Orientador: <strong className="text-white">Pastor Alexsandro Silva</strong> | Status:{' '}
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              🟢 Em Desenvolvimento
-            </span>
+          <p className="text-xs sm:text-sm text-blue-200 font-medium leading-relaxed max-w-4xl">
+            {TCC_SUBTITULO}
           </p>
+          <div className="pt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-blue-200">
+            <span>UNIMB & Seminário Teológico Congregacional (UIECB)</span>
+            <span>•</span>
+            <span>Orientador: <strong className="text-white">{ORIENTADOR_NOME}</strong></span>
+            <span>•</span>
+            <span>Coord. TCC I: <strong className="text-white">{COORDENADORA_TCC_NOME}</strong></span>
+            <span>•</span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              🟢 Pré-Projeto Aprovado / Em Pesquisa de Campo
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <Button
+            onClick={() => window.open('/pesquisa-tcc', '_blank')}
+            variant="outline"
+            className="bg-white/10 hover:bg-white/20 text-white border-white/20 font-bold text-xs cursor-pointer flex items-center gap-1.5"
+          >
+            <ExternalLink className="w-4 h-4 text-blue-300" />
+            <span>Ficha & Diagnóstico do TCC</span>
+          </Button>
           <Button
             onClick={handleOpenNewCornell}
-            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black shadow-lg flex items-center gap-2 transition hover:scale-105 active:scale-95 cursor-pointer"
+            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black shadow-lg flex items-center gap-2 transition hover:scale-105 active:scale-95 cursor-pointer text-xs"
           >
             <Plus className="w-4 h-4 text-slate-950" />
             <span>Novo Resumo (Método Cornell)</span>
@@ -640,7 +665,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
             <Button
               variant="outline"
               onClick={() => onTabChange('quatro-ds')}
-              className="bg-white/10 hover:bg-white/20 text-white border-white/20 font-bold cursor-pointer"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/20 font-bold cursor-pointer text-xs"
             >
               <Flame className="w-4 h-4 text-orange-400" />
               <span>Ver Trilha dos 4 Ds</span>
@@ -831,29 +856,30 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
 
       {/* Grid Secundário: O Grande Objetivo & Trilha dos 4 Ds */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Card 1: O Grande Objetivo */}
+        {/* Card 1: Objetivo Geral & Problema de Pesquisa */}
         <Card className="border-l-4 border-l-blue-600 shadow-sm hover:shadow-md transition">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-900">
               <Target className="w-5 h-5 text-blue-600" />
-              <span>O Grande Objetivo da Pesquisa</span>
+              <span>Objetivo Geral & Problema de Pesquisa</span>
             </CardTitle>
-            <CardDescription>Tema central e hipótese de pesquisa teológica-educacional</CardDescription>
+            <CardDescription>Fundamentação canônica aprovada na UNIMB</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <p className="text-gray-700 leading-relaxed font-medium text-sm sm:text-base">
-              Desenvolver estratégias eficazes para o ensino teológico no ambiente virtual, atenuando a{' '}
-              <strong>Distância Transacional (Michael G. Moore)</strong> e promovendo a verdadeira{' '}
-              <strong className="text-blue-900 bg-blue-50 px-1.5 py-0.5 rounded">Koinonia</strong>, para formar pastores e obreiros com a mesma excelência do seminário presencial.
-            </p>
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider block">Objetivo Geral:</span>
+              <p className="text-gray-800 leading-relaxed font-semibold text-xs sm:text-sm">
+                {TCC_OBJETIVO_GERAL}
+              </p>
+            </div>
 
             <div className="p-3 bg-blue-50/70 border border-blue-200/80 rounded-xl space-y-1 text-xs text-blue-950">
               <span className="font-extrabold flex items-center gap-1.5">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
-                <span>Pergunta-Problema Científica:</span>
+                <span>Problema de Pesquisa:</span>
               </span>
               <p className="italic text-blue-900">
-                "De que maneira recursos pedagógicos síncronos e assíncronos de tele-proximidade no LMS Koinonia reduzem a sensação de isolamento e potencializam a formação ministerial?"
+                "{TCC_PROBLEMA_PESQUISA}"
               </p>
             </div>
           </CardContent>
@@ -1004,7 +1030,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
             <span className={`text-sm font-medium ${checklist.finalizar_pre_projeto ? 'line-through text-gray-400 font-normal' : 'text-gray-800'}`}>
-              Finalizar e protocolar Pré-Projeto completo (Prazo: 2 semanas)
+              Pré-Projeto completo aprovado e protocolado na UNIMB (Orientador: {ORIENTADOR_NOME} / Coordenadora: {COORDENADORA_TCC_NOME})
             </span>
           </label>
         </CardContent>
@@ -1106,7 +1132,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
               </div>
             </div>
             <p className="text-xs text-gray-600 max-w-2xl leading-relaxed">
-              Investigação científica sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Seminário Teológico Congregacional & UNIMB com a plataforma <strong>Koinonia LMS</strong>.
+              Investigação empírica com triangulação metodológica (Lakatos & Marconi, 2017) sobre <em>Distância Transacional</em>, <em>Preservação da Koinonia</em> e a <em>Transição do Internato Presencial para o Modelo Síncrono Remoto</em> no Seminário Teológico Congregacional (UIECB) & UNIMB com a plataforma <strong>Koinonia LMS</strong>.
             </p>
           </div>
 

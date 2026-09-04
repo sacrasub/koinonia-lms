@@ -23,15 +23,57 @@
 import { supabase } from '@/lib/supabaseClient';
 import { cleanupBulkyLocalStorage } from './studentSyncService';
 
-export const SEMINARIO_NOME = 'Seminário Teológico Congregacional';
-export const INSTITUICAO_NOME = 'Centro Universitário do Maciço de Baturité - BaturITÉ – CE (UNIMB)';
-export const CURSO_NOME = 'Curso de Bacharelado em Teologia';
+export const SEMINARIO_NOME = 'Seminário Teológico Congregacional – UIECB';
+export const INSTITUICAO_NOME = 'Centro Universitário do Maciço de Baturité – UNIMB';
+export const CURSO_NOME = 'Bacharelado em Teologia';
 export const PESQUISADOR_NOME = 'Cristiano do Sacramento Soares';
-export const ORIENTADOR_NOME = 'Pastor Alexsandro Silva';
-export const METODOLOGIA_PROF = 'Profª Gabriela Leal';
-export const TCC_TEMA = 'Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual: Distância Transacional, Preservação da Koinonia e a Transição do Internato Presencial para o Modelo Síncrono Remoto';
+export const ORIENTADOR_NOME = 'Pr. Alexsandro Silva';
+export const COORDENADORA_TCC_NOME = 'Profª. Gabriela Leal';
+export const METODOLOGIA_PROF = 'Profª. Gabriela Leal';
+export const CIDADE_ESTADO = 'Baturité – CE, 2026';
+
+export const TCC_TITULO_PRINCIPAL = 'O ENSINO TEOLÓGICO NO BRASIL: DO INTERNATO AO ENSINO MEDIADO POR TECNOLOGIAS';
+export const TCC_SUBTITULO = 'Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual: Distância Transacional, Preservação da Koinonia e a Transição do Internato Presencial para o Modelo Síncrono Remoto';
+export const TCC_TEMA = `${TCC_TITULO_PRINCIPAL} — ${TCC_SUBTITULO}`;
+
+export const TCC_PROBLEMA_PESQUISA = 'Como atenuar a distância transacional psicopedagógica e preservar a vivência da koinonia comunitária e espiritual durante o processo de transição do modelo histórico de internato residencial presencial para o modelo de ensino teológico superior síncrono remoto mediado por tecnologias virtuais?';
+
+export const TCC_HIPOTESE = 'A superação dos desafios associados ao distanciamento geográfico e o sucesso do ensino teológico online de alta densidade formativa não dependem da mera transposição de conteúdos textuais ou do acúmulo passivo de informações no ambiente virtual. Postula-se que a mitigação da distância transacional psicopedagógica e a preservação da koinonia residem na implementação intencional de metodologias ativas de aprendizagem (como a aprendizagem baseada em problemas gamificada e simulações ministeriais), associadas à mediação tutorial proativa e contínua e à criação de espaços digitais de suporte e partilha de caráter comunitário (mural de orações e encontros síncronos). Essas dinâmicas são capazes de criar a sensação de "estar junto virtual" (presença social), transformando o ciberespaço em um autêntico laboratório relacional e eclesiológico.';
+
+export const TCC_OBJETIVO_GERAL = 'Identificar e analisar estratégias didático-pedagógicas e tecnológicas eficazes para mitigar a distância transacional e preservar a koinonia na transição histórica do modelo teológico de internato presencial para o ambiente virtual de aprendizagem síncrono remoto, validando-as por meio de estudo de caso instrumental no Koinonia LMS.';
+
+export const TCC_OBJETIVOS_ESPECIFICOS: string[] = [
+  'Mapear a trajetória histórica do ensino teológico no Brasil, contrapondo o tradicional modelo de internato residencial às demandas socioeducacionais contemporâneas pela modalidade à distância;',
+  'Investigar as implicações teóricas da distância transacional (Michael Moore) e da presença social no ambiente acadêmico teológico, articulando-as com o conceito confessional de koinonia;',
+  'Explorar a aplicabilidade de metodologias inov-ativas de aprendizagem (aprendizagem baseada em problemas, caderno metacognitivo Cornell assistido por IA e gamificação) no desenvolvimento de competências prático-pastorais;',
+  'Demonstrar as funcionalidades pedagógicas do Koinonia LMS como ferramenta instrumental de validação empírica e sandbox pedagógico, delineando sua arquitetura a serviço do combate ao isolamento discente.'
+];
+
+export const TCC_CAPITULOS_ESTRUTURA = [
+  {
+    capitulo: 'Capítulo I',
+    titulo: 'Do Internato à Educação a Distância (Histórico e Confessionalidade)',
+    descricao: 'A trajetória histórica desde os internatos católicos e protestantes do séc. XVIII e XIX, o modelo de imersão residencial fechada, as crises de viabilidade socioeconômica, até a virada com o Parecer CNE/CES nº 241/1999 (MEC) e a expansão da EaD confessional.'
+  },
+  {
+    capitulo: 'Capítulo II',
+    titulo: 'Distância Transacional e Koinonia (Análise Teológica e Teórica)',
+    descricao: 'A Teoria da Distância Transacional de Michael Moore (diálogo, estrutura e autonomia do estudante) e o constructo de Presença Social ("estar junto virtual") de Garrison, Anderson & Archer, articulados com a eclesiologia bíblica de koinonia e mutualidade pastoral.'
+  },
+  {
+    capitulo: 'Capítulo III',
+    titulo: 'Metodologias Ativas e Mediação Pedagógica (Andragogia e Autonomia)',
+    descricao: 'Superação da pedagogia bancária através da Andragogia de Jesus (perguntas socráticas e dilemas práticos), Aprendizagem Baseada em Problemas (PBL/ABP), Método Cornell de tomada de notas, Inteligência Artificial como andaime cognitivo e mediação tutorial proativa.'
+  },
+  {
+    capitulo: 'Capítulo IV',
+    titulo: 'Laboratório Instrumental: O Koinonia LMS (RPG, Cornell e Validação)',
+    descricao: 'Apresentação do Koinonia LMS como sandbox andragógico: Simulador Pastoral RPG com instruções secretas confidenciais de bastidores, Mural Interativo de Oração e Partilha (Mural Koinonia) e módulo nativo de pesquisa com TCLE (Resoluções CNS 466/2012 e 510/2016).'
+  }
+];
+
 export const PLATAFORMA_NOME = 'Koinonia LMS';
-export const PLATAFORMA_DESCRICAO = 'O Koinonia LMS é o projeto de plataforma integrada de aprendizagem desenvolvido para a modernização do ensino teológico no ambiente virtual, concebido para utilização em qualquer instituição de ensino e seminário de teologia.';
+export const PLATAFORMA_DESCRICAO = 'O Koinonia LMS é o projeto de plataforma integrada de aprendizagem e sandbox pedagógico desenvolvido para a modernização do ensino teológico no ambiente virtual, concebido para atender o Seminário Teológico Congregacional (UIECB) e instituições congêneres.';
 
 export type TipoPublico = 
   | 'aluno_unimb' 
@@ -158,14 +200,17 @@ export interface PerfilResponseState {
 /**
  * =========================================================================
  * GLOSSÁRIO INTERATIVO DE INOVAÇÕES PEDAGÓGICAS E TERMOS DO TCC
+ * (Extraído rigorosamente dos Capítulos I, II, III e IV do Pré-Projeto)
  * =========================================================================
  */
 export interface TermoExplicativo {
   id: string;
   titulo: string;
   subtitulo: string;
+  capituloRef: string;
   explicacaoSimples: string;
   comoFuncionaNoLms: string;
+  fundamentacaoTeorica: string;
   icone: string;
 }
 
@@ -173,81 +218,131 @@ export const GLOSSARIO_PEDAGOGICO_TCC: Record<string, TermoExplicativo> = {
   distancia_transacional: {
     id: 'distancia_transacional',
     titulo: 'Distância Transacional (Michael G. Moore)',
-    subtitulo: 'Teoria educacional consagrada sobre o ensino à distância',
-    explicacaoSimples: 'A Distância Transacional NÃO é a distância em quilômetros físicos. É o espaço psicológico e comunicacional entre professor e aluno. Se o curso tem pouco diálogo ou materiais confusos, a distância é grande e o estudante se sente desamparado. Com aulas ao vivo (diálogo frequente) e estrutura organizada, essa distância diminui drasticamente.',
-    comoFuncionaNoLms: 'No Koinonia LMS, é reduzida com Google Meet ao vivo síncrono, Google Drive semanal e murais colaborativos.',
+    subtitulo: 'A tríade: Diálogo, Estrutura e Autonomia do Estudante',
+    capituloRef: 'Capítulo II do TCC',
+    explicacaoSimples: 'A Distância Transacional NÃO é a distância em quilômetros físicos, mas sim um espaço psicológico e de comunicação entre docentes e discentes. Quando o ambiente virtual é excessivamente rígido e possui baixo diálogo, a distância se expande, gerando sensação de isolamento e abandono.',
+    comoFuncionaNoLms: 'No Koinonia LMS, é mitigada com aulas síncronas ao vivo no Google Meet (diálogo contínuo), planejamento transparente com Google Drive semanal e ferramentas de autorregulação discente.',
+    fundamentacaoTeorica: 'Teoria da Distância Transacional formulada por Michael G. Moore (1993, 2011).',
     icone: '🌐',
   },
   koinonia: {
     id: 'koinonia',
     titulo: 'Preservação da Koinonia (Comunhão Bíblica)',
-    subtitulo: 'A essência da comunhão cristã no ambiente digital',
-    explicacaoSimples: 'Koinonia é o termo neotestamentário grego (Atos 2:42) para comunhão profunda, mutualidade e compartilhamento de vida. Na educação teológica virtual, o desafio é evitar que o aluno seja um espectador solitário, promovendo vida comunitária real.',
-    comoFuncionaNoLms: 'Implementada através de murais de oração mútuos, acolhimento antes das aulas e debates socráticos em grupo.',
+    subtitulo: 'A mutualidade eclesiástica no ciberespaço',
+    capituloRef: 'Capítulo II do TCC',
+    explicacaoSimples: 'Koinonia é o vocábulo neotestamentário grego (Atos 2:42) que descreve a comunhão profunda, o compartilhamento mútuo de bens materiais e espirituais, o acolhimento fraterno e a intercessão mútua sob a guia do Espírito Santo. O ciberespaço é ressignificado como um "lugar teológico" de conexão autêntica.',
+    comoFuncionaNoLms: 'Implementada através do Mural Interativo de Oração e Partilha (Mural Koinonia), salas abertas para oração antes das aulas e debates socráticos em grupo.',
+    fundamentacaoTeorica: 'Eclesiologia neotestamentária e estudos confessionais de Lidiane Souza (2016) e Eliseu Roque do Espírito Santo (2009).',
     icone: '❤️',
+  },
+  presenca_social: {
+    id: 'presenca_social',
+    titulo: 'Presença Social e o "Estar Junto Virtual"',
+    subtitulo: 'Projeção de afeto, identidade e calor humano no meio digital',
+    capituloRef: 'Capítulo II do TCC',
+    explicacaoSimples: 'Constructo que define a capacidade de projetar a subjetividade, a intimidade emocional e a identidade autêntica de cada indivíduo através de texto, áudio e vídeo, gerando clima de confiança mútua e sentimento de pertencer a um corpo real de irmãos.',
+    comoFuncionaNoLms: 'Aconchego digital nas aulas síncronas com câmeras/microfones abertos, murais reativos e acompanhamento tutorial contínuo.',
+    fundamentacaoTeorica: 'Modelo da Comunidade de Inquirição (CoI) de Garrison, Anderson & Archer (2000).',
+    icone: '🤝',
   },
   transicao_internato: {
     id: 'transicao_internato',
     titulo: 'Transição do Internato Presencial para o Remoto Síncrono',
-    subtitulo: 'A evolução histórica da formação pastoral no Seminário Teológico Congregacional',
-    explicacaoSimples: 'No internato clássico, o seminarista residia integralmente no seminário. O modelo síncrono remoto atual permite que o aluno assista aulas ao vivo de casa, mantendo seu ministério ativo na igreja local, seu trabalho e o convívio com sua família.',
-    comoFuncionaNoLms: 'O estudante aprende a teologia na aula síncrona noturna e já aplica a prática pastoral na sua comunidade no fim de semana.',
+    subtitulo: 'Superação do modelo clássico e democratização da vocação',
+    capituloRef: 'Capítulo I do TCC',
+    explicacaoSimples: 'Historicamente, os seminários operavam em internatos fechados e custosos, exigindo o afastamento total da família e da igreja local. O modelo síncrono remoto atual permite ao vocacionado permanecer atuando pastoralmente no seu campo de trabalho enquanto recebe formação teológica de alta densidade acadêmica e espiritual.',
+    comoFuncionaNoLms: 'Permite que estudantes de regiões interioranas e de fronteira (como a Amazônia/Tabatinga) acessem os melhores professores sem desvincular-se de suas igrejas locais.',
+    fundamentacaoTeorica: 'Historiografia do ensino teológico no Brasil e Parecer CNE/CES nº 241/1999 (Modes, 2020; Reblin, 2014).',
     icone: '🏛️',
+  },
+  andragogia_jesus: {
+    id: 'andragogia_jesus',
+    titulo: 'A Andragogia de Jesus & Metodologias Ativas',
+    subtitulo: 'Superação da pedagogia bancária conteudista',
+    capituloRef: 'Capítulo III do TCC',
+    explicacaoSimples: 'Jesus de Nazaré ensinava adultos utilizando parábolas provocativas, perguntas de desestruturação, dilemas éticos reais e resolução colaborativa, promovendo o protagonismo dos discípulos em vez da memorização mecânica de dogmas.',
+    comoFuncionaNoLms: 'Aulas estruturadas na Trilha dos Quatro Ds (Desejo, Desestruturação, Desafio e Decisão) e simulações com casos reais da vida cristã.',
+    fundamentacaoTeorica: 'Andragogia (Malcolm Knowles), Pedagogia da Autonomia (Paulo Freire, 1996) e metodologia de discipulado de Jesus.',
+    icone: '🔥',
   },
   caderno_cornell: {
     id: 'caderno_cornell',
-    titulo: 'Caderno Cornell Integrado à Inteligência Artificial',
-    subtitulo: 'Método estruturado de síntese e estudo autodirigido',
-    explicacaoSimples: 'Método consagrado da Universidade Cornell: divide a página em pistas/dúvidas à esquerda, anotações detalhadas à direita e resumo de síntese na base.',
-    comoFuncionaNoLms: 'Cada aula do Koinonia LMS possui sua folha Cornell virtual, e a IA do Google Gemini auxilia na geração de sínteses e mapas mentais conceituais.',
+    titulo: 'Caderno Metacognitivo Cornell Assistido por IA',
+    subtitulo: 'Tomada de notas estruturada e andaime cognitivo inteligente',
+    capituloRef: 'Capítulos III e IV do TCC',
+    explicacaoSimples: 'Método que divide as anotações da aula em 3 seções: Pistas/Perguntas à esquerda, Anotações detalhadas à direita e Sumário de síntese na base. A Inteligência Artificial atua como andaime cognitivo ético para simular o contraditório hermenêutico e aprofundar a exegese.',
+    comoFuncionaNoLms: 'Cada disciplina e aula possui sua folha Cornell digital com sincronização em nuvem e suporte do Google Gemini para sínteses conceituais.',
+    fundamentacaoTeorica: 'Metacognição estruturada de Walter Pauk (Cornell University) e andaimes cognitivos de Lev Vygotsky.',
     icone: '📝',
+  },
+  simulador_rpg: {
+    id: 'simulador_rpg',
+    titulo: 'Simulador Pastoral RPG (PBL com Instruções Secretas)',
+    subtitulo: 'Ambiente seguro e tolerante ao erro para simulações ministeriais',
+    capituloRef: 'Capítulo IV do TCC',
+    explicacaoSimples: 'Gamificação pedagógica baseada em problemas (PBL). O professor cadastra cenários pastorais complexos (aconselhamento conjugal, liturgia, dilemas éticos) com instruções secretas confidenciais visíveis apenas aos alunos designados, que interpretam os papéis na aula ao vivo.',
+    comoFuncionaNoLms: 'Desenvolve oratória pastoral, alteridade hermenêutica e empatia em tempo real durante a reunião do Google Meet.',
+    fundamentacaoTeorica: 'Aprendizagem Baseada em Problemas (PBL/ABP) aplicada à teologia e simulações socioemocionais.',
+    icone: '🎭',
+  },
+  mural_koinonia: {
+    id: 'mural_koinonia',
+    titulo: 'Mural Interativo de Oração e Partilha (Mural Koinonia)',
+    subtitulo: 'Parede virtual de apoio fraterno e mutualidade espiritual',
+    capituloRef: 'Capítulo IV do TCC',
+    explicacaoSimples: 'Painel colaborativo no estilo "post-its" reativos onde discentes e docentes compartilham pedidos de oração, motivos de gratidão e desafios ministeriais da semana, permitindo que colegas cliquem em "Apoiar em Oração" e orem uns pelos outros.',
+    comoFuncionaNoLms: 'Mantém viva a mutualidade cristã entre as aulas síncronas e combate a solidão acadêmica típica da EaD tradicional.',
+    fundamentacaoTeorica: 'Princípio eclesiológico de mutualidade e cuidado pastoral preventivo (Garrison et al., 2000; Souza, 2016).',
+    icone: '🙏',
   },
   notebooklm: {
     id: 'notebooklm',
     titulo: 'Podcasts de Síntese Teológica (NotebookLM)',
     subtitulo: 'Áudios didáticos inteligentes a partir dos materiais da aula',
+    capituloRef: 'Capítulo III do TCC',
     explicacaoSimples: 'Tecnologia do Google que converte livros, apostilas e exegeses em conversas em áudio no formato podcast para fixação.',
     comoFuncionaNoLms: 'O estudante escuta sínteses comentadas dos textos indicados pelo professor no trajeto diário ou momentos de devoção.',
+    fundamentacaoTeorica: 'Mídias andragógicas multimodais e aprendizagem em mobilidade (MALL - Chryssa Themelis, 2021).',
     icone: '🎙️',
-  },
-  simulador_rpg: {
-    id: 'simulador_rpg',
-    titulo: 'Simulador Pastoral RPG (Metodologia Ativa)',
-    subtitulo: 'Aprendizado baseado em dilemas e casos pastorais reais',
-    explicacaoSimples: 'Role-Playing Game pedagógico: os estudantes assumem papéis em equipes para resolver dilemas éticos, pastorais e de aconselhamento reais da igreja.',
-    comoFuncionaNoLms: 'O professor lança o caso durante a aula síncrona e a turma debate em tempo real as implicações teológicas e pastorais de cada escolha.',
-    icone: '🎭',
   },
   estudio_homiletica: {
     id: 'estudio_homiletica',
     titulo: 'Estúdio de Homilética (Pregação com Avaliação Fraterna)',
     subtitulo: 'Prática de oratória bíblica e feedback entre colegas',
+    capituloRef: 'Capítulo IV do TCC',
     explicacaoSimples: 'Homilética é a arte da pregação bíblica. O estúdio é um laboratório prático onde o seminarista treina sermões com cronômetro litúrgico.',
     comoFuncionaNoLms: 'Colegas avaliam a pregação com base em rubricas (fidelidade textual, clareza, apelo pastoral) promovendo crescimento fraterno.',
+    fundamentacaoTeorica: 'Prática pastoral supervisionada e avaliação por pares.',
     icone: '🎤',
   },
   metaverso_3d: {
     id: 'metaverso_3d',
     titulo: 'Metaverso Bíblico 3D & Reconstruções Arqueológicas',
     subtitulo: 'Visitas virtuais imersivas aos cenários das Escrituras',
+    capituloRef: 'Capítulo IV do TCC',
     explicacaoSimples: 'Modelos tridimensionais interativos navegáveis no navegador do Tabernáculo de Moisés, Templo de Salomão e Jerusalém bíblica.',
     comoFuncionaNoLms: 'O discente caminha pelas dependências do Tabernáculo enquanto o docente explica a tipologia de Cristo presente em cada mobília.',
+    fundamentacaoTeorica: 'Realidade imersiva contextualizada na arqueologia bíblica.',
     icone: '🕍',
   },
   quatro_ds: {
     id: 'quatro_ds',
     titulo: 'Trilha dos Quatro Ds (Pedagogia Socrática de Jesus)',
     subtitulo: 'Método de ensinagem baseado nas perguntas de Cristo',
+    capituloRef: 'Capítulo III do TCC',
     explicacaoSimples: 'Inspirado na pedagogia de Jesus: 1) Desejo (pergunta intrigante), 2) Desestruturação (quebra de pré-conceitos), 3) Desafio (tarefa prática) e 4) Decisão (compromisso vocacional).',
     comoFuncionaNoLms: 'Conduz o aluno a não apenas memorizar tópicos para exames, mas a vivenciar a transformação do coração.',
+    fundamentacaoTeorica: 'A Andragogia de Jesus e pedagogia da autonomia (Paulo Freire, 1996; Souza, 2016).',
     icone: '🔥',
   },
   biblioteca_digital: {
     id: 'biblioteca_digital',
     titulo: 'Biblioteca Digital Teológica (3.000 Obras em PDF)',
     subtitulo: 'Acesso democrático a clássicos teológicos e citação em 1 clique',
+    capituloRef: 'Capítulo IV do TCC',
     explicacaoSimples: 'Acervo de clássicos de teologia sistemática, exegese e história eclesiástica acessível sem custos de aquisição de livros físicos.',
     comoFuncionaNoLms: 'Possui gerador de citações prontas no padrão ABNT com 1 clique para inclusão nos trabalhos acadêmicos e no TCC.',
+    fundamentacaoTeorica: 'Democratização do conhecimento acadêmico confessional e superação de barreiras geográficas.',
     icone: '📖',
   },
 };
@@ -316,8 +411,8 @@ export const PERGUNTAS_DISCENTE: PerguntaDiagnostico[] = [
     id: 'disc_koi_oracao_acolhimento',
     dimensao: 'koinonia',
     dimensaoTitulo: 'Dimensão 2: Preservação da Koinonia (Comunhão dos Seminaristas)',
-    enunciado: 'Espaços colaborativos (momentos de oração no início da aula e grupos de mentoria) fortalecem o sentimento de família na fé.',
-    termoExplicativoId: 'koinonia',
+    enunciado: 'Espaços colaborativos (Mural de Oração, acolhimento antes da aula e grupos de mentoria) fortalecem o sentimento de família na fé e a presença social.',
+    termoExplicativoId: 'mural_koinonia',
     tipo: 'likert_5',
     obrigatoria: true,
   },
@@ -432,8 +527,8 @@ export const PERGUNTAS_DOCENTE: PerguntaDiagnostico[] = [
     id: 'doc_dt_frieza_telas',
     dimensao: 'distancia_transacional',
     dimensaoTitulo: 'Dimensão 1: Distância Pedagógica e Hermenêutica (Moore)',
-    enunciado: 'A presença de alunos com câmeras fechadas ou pouca verbalização representa um obstáculo à verificação da aprendizagem e ao calor pedagógico.',
-    termoExplicativoId: 'distancia_transacional',
+    enunciado: 'A presença de alunos com câmeras fechadas ou pouca verbalização representa um obstáculo à verificação da aprendizagem e à criação de presença social.',
+    termoExplicativoId: 'presenca_social',
     tipo: 'likert_5',
     obrigatoria: true,
   },
@@ -459,8 +554,8 @@ export const PERGUNTAS_DOCENTE: PerguntaDiagnostico[] = [
     id: 'doc_koi_comunhao_turma',
     dimensao: 'koinonia',
     dimensaoTitulo: 'Dimensão 2: Avaliação do Caráter Pastoral e Koinonia',
-    enunciado: 'Momentos de oração, acolhimento pastoral e debates no início da aula criam uma identidade congregacional sólida na turma.',
-    termoExplicativoId: 'koinonia',
+    enunciado: 'Momentos de oração, acolhimento pastoral no Mural Koinonia e debates no início da aula criam uma identidade congregacional sólida na turma.',
+    termoExplicativoId: 'mural_koinonia',
     tipo: 'likert_5',
     obrigatoria: true,
   },

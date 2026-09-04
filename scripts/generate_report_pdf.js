@@ -35,7 +35,7 @@ async function generatePdf() {
       color: #1e293b;
       background-color: #ffffff;
       line-height: 1.6;
-      font-size: 11pt;
+      font-size: 10.5pt;
     }
 
     /* PÁGINA DE CAPA */
@@ -45,7 +45,7 @@ async function generatePdf() {
       flex-direction: column;
       justify-content: space-between;
       page-break-after: always;
-      padding: 25mm 10mm 15mm 10mm;
+      padding: 20mm 10mm 15mm 10mm;
       border-bottom: 2px solid #e2e8f0;
     }
 
@@ -60,7 +60,7 @@ async function generatePdf() {
       background-color: #e0e7ff;
       color: #3730a3;
       border-radius: 9999px;
-      font-size: 10pt;
+      font-size: 9.5pt;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -69,50 +69,50 @@ async function generatePdf() {
 
     .cover-title {
       font-family: 'Cinzel', serif;
-      font-size: 32pt;
+      font-size: 30pt;
       font-weight: 800;
       color: #1e1b4b;
       line-height: 1.15;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .cover-subtitle {
-      font-size: 14pt;
+      font-size: 13.5pt;
       font-weight: 600;
       color: #4338ca;
       line-height: 1.4;
     }
 
     .cover-description {
-      font-size: 11.5pt;
+      font-size: 10.5pt;
       color: #475569;
-      margin-top: 25px;
-      max-width: 90%;
-      line-height: 1.7;
+      margin-top: 20px;
+      max-width: 95%;
+      line-height: 1.65;
     }
 
     .cover-meta-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 40px;
+      gap: 16px;
+      margin-top: 30px;
       background: #f8fafc;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
       border: 1px solid #e2e8f0;
     }
 
     .meta-item strong {
       display: block;
-      font-size: 9pt;
+      font-size: 8.5pt;
       text-transform: uppercase;
       color: #64748b;
       letter-spacing: 0.5px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .meta-item span {
-      font-size: 11pt;
+      font-size: 10pt;
       font-weight: 700;
       color: #0f172a;
     }
@@ -123,36 +123,36 @@ async function generatePdf() {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 9.5pt;
+      font-size: 9pt;
       color: #64748b;
     }
 
     /* CONTEÚDO GERAL */
     h1 {
-      font-size: 20pt;
+      font-size: 18pt;
       font-weight: 800;
       color: #1e1b4b;
-      margin-top: 30px;
+      margin-top: 26px;
       margin-bottom: 12px;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       border-bottom: 2px solid #e2e8f0;
       page-break-after: avoid;
     }
 
     h2 {
-      font-size: 14pt;
+      font-size: 13pt;
       font-weight: 700;
       color: #312e81;
-      margin-top: 22px;
+      margin-top: 18px;
       margin-bottom: 8px;
       page-break-after: avoid;
     }
 
     h3 {
-      font-size: 11.5pt;
+      font-size: 11pt;
       font-weight: 700;
       color: #0f172a;
-      margin-top: 16px;
+      margin-top: 14px;
       margin-bottom: 6px;
       page-break-after: avoid;
     }
@@ -175,9 +175,9 @@ async function generatePdf() {
 
     /* CAIXAS DE DESTAQUE (CALLOUTS) */
     .callout {
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-radius: 8px;
-      margin: 15px 0;
+      margin: 14px 0;
       border-left: 4px solid #4f46e5;
       background-color: #f5f3ff;
       page-break-inside: avoid;
@@ -185,7 +185,7 @@ async function generatePdf() {
 
     .callout-title {
       font-weight: 800;
-      font-size: 10.5pt;
+      font-size: 10pt;
       color: #312e81;
       margin-bottom: 5px;
       display: flex;
@@ -211,17 +211,26 @@ async function generatePdf() {
       color: #065f46;
     }
 
+    .callout.info {
+      border-left-color: #0284c7;
+      background-color: #f0f9ff;
+    }
+
+    .callout.info .callout-title {
+      color: #0369a1;
+    }
+
     /* TABELAS */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 15px 0;
-      font-size: 9.5pt;
+      margin: 14px 0;
+      font-size: 9pt;
       page-break-inside: avoid;
     }
 
     th, td {
-      padding: 9px 12px;
+      padding: 8px 10px;
       text-align: left;
       border: 1px solid #cbd5e1;
     }
@@ -231,7 +240,7 @@ async function generatePdf() {
       color: #ffffff;
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 8.5pt;
+      font-size: 8pt;
       letter-spacing: 0.5px;
     }
 
@@ -242,21 +251,21 @@ async function generatePdf() {
     /* BLOCOS DE CÓDIGO */
     pre, code {
       font-family: 'Courier New', Courier, monospace;
-      font-size: 9pt;
+      font-size: 8.5pt;
       background: #0f172a;
       color: #f1f5f9;
       border-radius: 6px;
     }
 
     pre {
-      padding: 12px;
+      padding: 10px 14px;
       overflow-x: auto;
       margin: 12px 0;
       line-height: 1.4;
       page-break-inside: avoid;
     }
 
-    p code {
+    p code, li code {
       background: #e2e8f0;
       color: #0f172a;
       padding: 2px 5px;
@@ -267,7 +276,7 @@ async function generatePdf() {
       display: inline-block;
       padding: 2px 8px;
       border-radius: 9999px;
-      font-size: 8pt;
+      font-size: 7.5pt;
       font-weight: 700;
       text-transform: uppercase;
     }
@@ -276,6 +285,7 @@ async function generatePdf() {
     .badge-green { background: #d1fae5; color: #065f46; }
     .badge-purple { background: #ede9fe; color: #5b21b6; }
     .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-rose { background: #ffe4e6; color: #9f1239; }
 
     .page-break {
       page-break-before: always;
@@ -291,15 +301,18 @@ async function generatePdf() {
       <h1 class="cover-title">KOINONIA LMS</h1>
       <div class="cover-subtitle">Relatório Executivo de Desenvolvimento, Arquitetura e Guia Integrado</div>
       <p class="cover-description">
-        Consolidação abrangente da plataforma acadêmica do Seminário Teológico Koinonia (UIECB).
-        Apresenta a visão geral de arquitetura, blindagem de egress, controle de acesso RBAC, módulos pedagógicos inov-ativos, changelog detalhado de melhorias e guia operacional para alunos, docentes e administradores.
+        Consolidação abrangente da plataforma acadêmica do <strong>Seminário Teológico Congregacional</strong> (UIECB), operando como ambiente de formação teológica e instrumento empírico do Trabalho de Conclusão de Curso (TCC) apresentado no <strong>Centro Universitário do Maciço de Baturité (UNIMB)</strong>. Apresenta arquitetura dual-layer, blindagem estrita de egress, controle de acesso RBAC, módulos pedagógicos inov-ativos, módulo de pesquisa de campo empírico, piloto automático de gravação para monitoria, social sharing seguro e changelog consolidado até a versão atual em produção.
       </p>
     </div>
 
     <div class="cover-meta-grid">
       <div class="meta-item">
-        <strong>Instituição</strong>
-        <span>Seminário Teológico Koinonia (UIECB)</span>
+        <strong>Instituição & Seminário</strong>
+        <span>Seminário Teológico Congregacional (UIECB) & UNIMB</span>
+      </div>
+      <div class="meta-item">
+        <strong>Pesquisador & Orientação</strong>
+        <span>Cristiano do Sacramento Soares • Pr. Alexsandro Silva</span>
       </div>
       <div class="meta-item">
         <strong>Semestre Letivo</strong>
@@ -311,11 +324,15 @@ async function generatePdf() {
       </div>
       <div class="meta-item">
         <strong>Repositório GitHub</strong>
-        <span>github.com/sacrasub/koinonia-lms</span>
+        <span>github.com/sacrasub/koinonia-lms (Branch main)</span>
       </div>
       <div class="meta-item">
         <strong>Status de Compilação</strong>
-        <span>Produção Ativa (Next.js 15 App Router)</span>
+        <span>Produção Estável (Next.js 15 App Router • React 19)</span>
+      </div>
+      <div class="meta-item">
+        <strong>Último Commit Mapeado</strong>
+        <span>c807892 (fix: eliminação de duplicação no mural)</span>
       </div>
       <div class="meta-item">
         <strong>Data de Emissão</strong>
@@ -325,37 +342,37 @@ async function generatePdf() {
 
     <div class="cover-footer">
       <span>Coordenação Acadêmica & Tecnologia Educacional</span>
-      <span>Koinonia LMS • Documento Oficial</span>
+      <span>Koinonia LMS • Documento Oficial de Engenharia & Pedagogia</span>
     </div>
   </div>
 
-  <!-- SEÇÃO 1: VISÃO GERAL -->
+  <!-- SEÇÃO 1: IDENTIDADE -->
   <h1>1. Identidade do Projeto, Propósito e Escopo Acadêmico</h1>
   <p>
-    O <strong>Koinonia LMS</strong> é a plataforma de aprendizagem digital sob medida desenvolvida para a formação teológica e ministerial do <strong>Seminário Teológico Koinonia</strong>, instituição vinculada à União das Igrejas Evangélicas Congregacionais do Brasil (UIECB).
+    O <strong>Koinonia LMS</strong> é a plataforma de aprendizagem digital desenvolvida para a formação teológica e ministerial do <strong>Seminário Teológico Congregacional</strong>, instituição vinculada à União das Igrejas Evangélicas Congregacionais do Brasil (UIECB). Simultaneamente, o sistema opera como objeto de intervenção empírica e instrumento científico do Trabalho de Conclusão de Curso (TCC) em Teologia do pesquisador <strong>Cristiano do Sacramento Soares</strong>, sob orientação do <strong>Pastor Alexsandro Silva</strong>, pelo <strong>Centro Universitário do Maciço de Baturité (UNIMB - Baturité – CE)</strong>.
   </p>
   <p>
-    A iniciativa surgiu para superar as limitações dos sistemas legados baseados na dispersão de links em planilhas, pastas soltas do Google Drive e mensagens em aplicativos, integrando todo o ciclo acadêmico sob uma experiência moderna, fluida e de alto rigor teológico.
+    A iniciativa visa superar a dispersão operacional dos métodos legados (planilhas descentralizadas, pastas desorganizadas de Google Drive e formulários avulsos), integrando todo o ciclo formativo sob uma experiência moderna, fluida e de alto rigor teológico e metodológico.
   </p>
 
   <div class="callout success">
-    <div class="callout-title">🎯 Pilares da Plataforma</div>
-    O sistema une transmissão síncrona com pré-cache e registro de frequência em tempo real, acervo em alta definição de gravações passadas, Caderno Cornell impulsionado por Inteligência Artificial (Gemini Pro e NotebookLM), biblioteca teológica com mais de 3.000 livros em PDF e metodologias ativas imersivas.
+    <div class="callout-title">🎯 Pilares Centrais do Sistema</div>
+    O ecossistema integra transmissão síncrona com pré-cache e registro de frequência em tempo real, acervo em alta definição com gravação automatizada via Piloto Automático, Caderno Cornell com Inteligência Artificial (Gemini Pro e NotebookLM), acervo teológico digital de mais de 3.000 livros em PDF, metodologias ativas imersivas (Quatro Ds, RPG e Homilética) e um módulo nativo de pesquisa de campo empírica com TCLE.
   </div>
 
   <h2>1.1. Comunidade Acadêmica e Turmas Atendidas</h2>
   <ul>
-    <li><strong>Turma A (Semanal Noturno)</strong>: Terças e Quintas-feiras, abrangendo disciplinas de História do Congregacionalismo, Pensamento Cristão II, Aconselhamento Bíblico II e Ética Cristã.</li>
+    <li><strong>Turma A (Semanal Noturno)</strong>: Terças e Quintas-feiras, abrangendo História do Congregacionalismo, Pensamento Cristão II, Aconselhamento Bíblico II e Ética Cristã.</li>
     <li><strong>Turma B (Semanal Noturno)</strong>: Terça a Sexta-feira, com Teontologia e Hamartologia, Hermenêutica Bíblica, História da Igreja I, Antigo Testamento II, Plantação e Revitalização de Igrejas II, Homilética II e Liderança Cristã II.</li>
     <li><strong>Turma Básico de Teologia</strong>: Segundas e Quartas-feiras, com Panorama do Antigo Testamento e Liderança Espiritual.</li>
-    <li><strong>Módulos Especiais de Graduação</strong>: TCC I, Portfólio Reflexivo e Projetos de Pesquisa Sacramento.</li>
+    <li><strong>Módulos Especiais de Graduação</strong>: TCC I, Portfólio Reflexivo e Pesquisa de Campo Sacramento (UNIMB).</li>
   </ul>
 
-  <!-- SEÇÃO 2: ARQUITETURA -->
+  <!-- SEÇÃO 2: ARQUITETURA TECNOLÓGICA -->
   <div class="page-break"></div>
   <h1>2. Arquitetura Tecnológica e Infraestrutura Dual-Layer</h1>
   <p>
-    A solução adota uma stack moderna, performática e modular, priorizando tempos de resposta imediatos (TTFB &lt; 50ms) e transições instantâneas entre abas:
+    O Koinonia LMS foi concebido sobre uma arquitetura moderna baseada em Next.js App Router hospedada na infraestrutura de borda da Vercel, combinada com banco de dados PostgreSQL serverless via Supabase e autenticação corporativa/acadêmica via Google OAuth.
   </p>
 
   <table>
@@ -370,22 +387,22 @@ async function generatePdf() {
       <tr>
         <td><strong>Frontend</strong></td>
         <td>Next.js 15 (App Router), React 19, TypeScript</td>
-        <td>Renderização híbrida, rotas seguras e UI ultra-rápida.</td>
+        <td>Renderização de alta performance, rotas seguras e UI instantânea.</td>
       </tr>
       <tr>
         <td><strong>Estilização</strong></td>
         <td>TailwindCSS, Shadcn UI, Lucide Icons</td>
-        <td>Design responsivo, modo escuro nativo e estética premium.</td>
+        <td>Design responsivo, modo escuro nativo e microinterações fluidas.</td>
       </tr>
       <tr>
         <td><strong>Autenticação</strong></td>
-        <td>Supabase Auth + Google Identity (OAuth)</td>
-        <td>Login seguro corporativo/acadêmico sem necessidade de senha.</td>
+        <td>Supabase Auth + Google Identity Services (OAuth)</td>
+        <td>Login seguro acadêmico sem senha para comunidade interna.</td>
       </tr>
       <tr>
         <td><strong>Banco de Dados</strong></td>
         <td>PostgreSQL via Supabase</td>
-        <td>Persistência relacional de presenças, notas, turmas e sessões.</td>
+        <td>Persistência relacional de presenças, notas, turmas, enquetes e sessões.</td>
       </tr>
       <tr>
         <td><strong>Dual-Layer Storage</strong></td>
@@ -393,43 +410,45 @@ async function generatePdf() {
         <td>Sincronização backend na pasta restrita (ID: <code>1jQ0co8yOr0shnKxVX_lv2JTAM8AQNCMO</code>).</td>
       </tr>
       <tr>
-        <td><strong>Onboarding</strong></td>
+        <td><strong>Onboarding Guiado</strong></td>
         <td>Driver.js</td>
-        <td>Tour guiado interativo de 14 etapas em desktop e celulares.</td>
+        <td>Tours interativos dinâmicos com roteiros específicos por perfil de usuário.</td>
+      </tr>
+      <tr>
+        <td><strong>Relatórios PDF</strong></td>
+        <td>Puppeteer Headless</td>
+        <td>Geração automatizada de relatórios executivos com paginação e design editorial A4.</td>
       </tr>
     </tbody>
   </table>
 
-  <h2>2.1. Arquitetura Dual-Layer do Google Drive</h2>
-  <p>
-    A gestão de arquivos opera em duas camadas de segurança complementares:
-  </p>
+  <h2>2.1. Arquitetura de Segurança Dual-Layer</h2>
   <ul>
-    <li><strong>Camada 1 (Autenticação do Aluno)</strong>: O login é autenticado pelo Google Workspace. As credenciais do aluno garantem autorização imediata nos arquivos compartilhados institucionalmente.</li>
-    <li><strong>Camada 2 (Service Account Server-Side)</strong>: Um Cron Job no backend (<code>/api/cron/sync-drive</code>) autentica-se com chave criptográfica privada protegida e mapeia os metadados dos arquivos para a tabela <code>Drive_Materials</code> do Supabase, sem nunca expor chaves ao frontend.</li>
+    <li><strong>Camada 1 (Frontend & Middleware Next.js)</strong>: Assegura proteção estrita das rotas sob <code>/dashboard</code> e painéis por perfil. Sessões não autenticadas são barradas pelo <code>middleware.ts</code>. A lista oficial em <code>authConfig.ts</code> valida os perfis institucionais.</li>
+    <li><strong>Camada 2 (Backend & Google Service Account)</strong>: Credenciais de alta confidencialidade operam estritamente no servidor (<code>/api/cron/sync-drive</code>). O frontend recebe apenas metadados indexados na tabela <code>Drive_Materials</code>. O download do arquivo redireciona para a URL oficial do Google Drive, delegando a autenticação ao Google Workspace.</li>
   </ul>
 
   <!-- SEÇÃO 3: BLINDAGEM DE EGRESS -->
-  <h1>3. Blindagem Suprema de Egress (Supabase Free Tier)</h1>
+  <h1>3. Blindagem Mandatória de Egress (Supabase Free Tier)</h1>
   <div class="callout danger">
     <div class="callout-title">⚠️ Diretriz Arquitetural Crítica: Cota Gratuita do Supabase</div>
-    O sistema não conta com patrocínio financeiro e opera obrigatoriamente dentro do plano gratuito do Supabase (limite de 5 GB/mês). O consumo real de egress é mantido estritamente abaixo de 200 MB a 500 MB/mês através de técnicas avançadas de Zero-Waste Egress.
+    O sistema não conta com patrocínio financeiro comercial e opera obrigatoriamente dentro do plano gratuito do Supabase (limite de 5 GB/mês). O consumo real de egress é mantido estritamente abaixo de 200 MB a 500 MB/mês através de técnicas avançadas de Zero-Waste Egress.
   </div>
 
-  <h3>Mandamentos de Economia de Tráfego:</h3>
+  <h3>Mandamentos Anti-Egress (Zero-Waste Egress Architecture):</h3>
   <ol>
-    <li><strong>Local-First & Delta-Sync</strong>: O histórico e dados do aluno são lidos imediatamente do <code>localStorage</code>. Consultas ao banco filtram exclusivamente registros novos posteriores ao último sync (<code>timestamp > lastSync</code>).</li>
-    <li><strong>Projeção Estrita de Colunas</strong>: Fica expressamente proibido o uso de <code>SELECT *</code> em tabelas de alto volume. Buscam-se apenas as colunas vitais para a renderização.</li>
-    <li><strong>Heartbeat Ultra-Leve de 180 Segundos</strong>: O pulso de presença da sessão do aluno atualiza unicamente os campos de tempo (<code>last_heartbeat_at</code>, <code>duration_seconds</code>) na sua própria linha, sem baixar nada da nuvem (0 bytes de download). Pausa quando a aba perde o foco.</li>
-    <li><strong>Batching de Telemetria com 204 No Content</strong>: Eventos analíticos são acumulados em memória e despachados em pacotes a cada 25 segundos, recebendo resposta minimal sem payload de retorno.</li>
-    <li><strong>Poda Preventiva de Cache</strong>: Rotina inteligente no boot limpa dados secundários obsoletos para impedir bloqueios por <code>QuotaExceededError</code> no navegador.</li>
+    <li><strong>Local-First & Delta-Sync</strong>: O histórico e dados do aluno são carregados instantaneamente do <code>localStorage</code>. Consultas ao banco filtram unicamente registros novos posteriores ao último sync (<code>timestamp > lastSync</code>).</li>
+    <li><strong>Projeção Estrita de Colunas</strong>: Fica vedado o uso de <code>SELECT *</code> em tabelas de tráfego contínuo. Selecionam-se estritamente os campos essenciais.</li>
+    <li><strong>Heartbeat Ultra-Leve de 180 Segundos</strong>: O pulso de presença atualiza exclusivamente os campos de tempo (<code>last_heartbeat_at</code>, <code>duration_seconds</code>) na linha da própria sessão (0 bytes de download). Pausa quando a aba do navegador perde o foco.</li>
+    <li><strong>Batching de Telemetria com 204 No Content</strong>: Eventos analíticos são acumulados em memória e despachados em pacotes a cada 25 segundos, recebendo resposta minimalista sem payload de retorno.</li>
+    <li><strong>Poda Preventiva de Cache & Sanitização Pré-Hidratação</strong>: Script inline no cabeçalho HTML executa limpeza preventiva de itens maiores que 50 KB no <code>localStorage</code> antes da hidratação do React, eliminando o erro de cota (<code>QuotaExceededError</code>) em celulares.</li>
   </ol>
 
   <!-- SEÇÃO 4: RBAC -->
   <div class="page-break"></div>
   <h1>4. Controle de Acesso Baseado em Funções (RBAC)</h1>
   <p>
-    O sistema divide o acesso em 4 perfis distintos com visões e ações exclusivas:
+    O sistema possui 4 perfis operacionais com menus, ações e permissões segregadas, complementado pelo perfil de Pesquisa Acadêmica:
   </p>
 
   <table>
@@ -443,7 +462,7 @@ async function generatePdf() {
     <tbody>
       <tr>
         <td><span class="badge badge-blue">Aluno</span></td>
-        <td>Grade de aulas, Caderno Cornell com IA, Salas Meet, Gravações HD, Simulador RPG, Estúdio de Homilética e Acervo de 3.000 livros.</td>
+        <td>Grade curricular semanal (16 aulas), Caderno Cornell com IA, Salas Meet, Gravações HD, Simulador RPG, Estúdio de Homilética e Acervo de 3.000 livros.</td>
         <td>Foco no aprendizado, anotações e cumprimento da frequência e leituras da sua turma.</td>
       </tr>
       <tr>
@@ -453,13 +472,18 @@ async function generatePdf() {
       </tr>
       <tr>
         <td><span class="badge badge-purple">Monitor</span></td>
-        <td>Escala de monitoria semanal, publicação de links de gravações em HD, disparo de formulários de frequência via chat.</td>
+        <td>Escala de monitoria semanal, Piloto Automático de gravações em HD, disparo de formulários de frequência via chat com 1 clique.</td>
         <td>Suporte logístico e pedagógico em tempo real às transmissões ao vivo.</td>
       </tr>
       <tr>
         <td><span class="badge badge-green">Admin</span></td>
         <td>Controle de 106 usuários autorizados, telefones de WhatsApp, Radar de Tele-Proximidade, métricas globais e permissões RBAC.</td>
         <td>Supervisão institucional e gestão técnica integral da plataforma.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-rose">Pesquisador</span></td>
+        <td>Painel do Pesquisador Sacramento, métricas em tempo real por segmento, respostas docentes, criação de novas enquetes e exportação CSV para SPSS/Excel.</td>
+        <td>Investigação empírica da superação da distância transacional (TCC UNIMB).</td>
       </tr>
     </tbody>
   </table>
@@ -468,9 +492,6 @@ async function generatePdf() {
   <h1>5. Módulos Pedagógicos Inov-Ativos e Recursos Especiais</h1>
 
   <h2>5.1. Fluxo de Estudos em 6 Fases (11 Pastas do Google Drive)</h2>
-  <p>
-    Estrutura metodológica semanal que conecta o aluno desde a preparação prévia até a consolidação:
-  </p>
   <ul>
     <li><strong>Fase 1 • Preparação</strong>: Consulta de leituras pré-aula no Mural e horários na Google Agenda.</li>
     <li><strong>Fase 2 • Aula Síncrona</strong>: Sala do Google Meet com contagem regressiva e assinatura da lista de presença.</li>
@@ -491,141 +512,286 @@ async function generatePdf() {
 
   <h2>5.3. Estúdio de Homilética & Instrução por Pares</h2>
   <p>
-    Ambiente dedicado para gravação de sermões expositivos e simulações de aconselhamento cristão, equipado com temporizador litúrgico (15, 25 e 40 minutos), envio de links e formulário de avaliação mútua entre pares baseado em rubricas pedagógicas.
+    Ambiente dedicado para ensaio de sermões expositivos com cronômetro litúrgico (15, 25 e 40 minutos), gravação de vídeo/áudio e matriz de avaliação mútua entre pares baseada em rubricas de fidelidade textual, exegese e aplicação pastoral.
   </p>
 
-  <h2>5.4. Metaverso Teológico 3D (Arqueologia Bíblica)</h2>
+  <h2>5.4. Metaverso Teológico 3D & Biblioteca Digital (3.000+ Títulos)</h2>
   <p>
-    Módulo imersivo tridimensional contendo reconstruções históricas do Tabernáculo no Deserto, Templo de Salomão e Jerusalém do Século I, permitindo que o aluno explore hotspots arqueológicos e bíblicos interativos.
+    Reconstruções históricas do Tabernáculo no Deserto, Templo de Salomão e Jerusalém do Século I com hotspots explicativos, articuladas a um acervo de mais de 3.000 livros em PDF com leitor embutido e citação ABNT com 1 clique.
   </p>
 
-  <h2>5.5. Biblioteca Digital Teológica (3.000+ Livros)</h2>
-  <p>
-    Acervo digital com mais de 3.000 títulos clássicos e comentários bíblicos organizados por assunto, autor e disciplina, com visualizador de PDF embutido de alta performance e gerador de citação bibliográfica no padrão ABNT com um clique.
-  </p>
-
-  <!-- SEÇÃO 6: CHANGELOG RECENTE -->
+  <!-- SEÇÃO 6: PESQUISA TCC UNIMB -->
   <div class="page-break"></div>
-  <h1>6. Histórico de Mudanças e Melhorias Recém-Implementadas</h1>
-
-  <div class="callout success">
-    <div class="callout-title">🚀 Último Pacote de Atualizações em Produção (Commit 157ac6d)</div>
-    Todas as correções relatadas foram solucionadas, testadas com build de produção e publicadas oficialmente na Vercel:
+  <h1>6. Módulo Nativo de Pesquisa de Campo & Diagnóstico do TCC</h1>
+  <div class="callout info">
+    <div class="callout-title">🎓 Vínculo Acadêmico & Rigor Metodológico</div>
+    Trabalho de Conclusão do Curso de Bacharelado em Teologia no <strong>Centro Universitário do Maciço de Baturité (UNIMB - Baturité – CE)</strong>, sob autoria do discente e pesquisador <strong>Cristiano do Sacramento Soares</strong> e orientação do <strong>Pastor Alexsandro Silva</strong>.
   </div>
 
+  <h2>6.1. Instrumento Empírico & Termo de Consentimento Livre e Esclarecido (TCLE)</h2>
+  <p>
+    O instrumento de coleta de dados foi concebido em estrita conformidade com as diretrizes éticas (Resoluções CNS 466/2012 e 510/2016):
+  </p>
   <ul>
-    <li>
-      <strong>Isolamento e Visão Padrão do Professor no SupportMaterialsHub</strong>:
-      Implementado o escopo <code>scopedBaseNotes</code> e configurado o filtro padrão para <code>Minhas Matérias - Todas</code>. Quando o professor possui disciplinas atribuídas (como a Profª Betânia Barbosa com <em>Antigo Testamento II</em> e <em>Panorama do Antigo Testamento</em>), o hub lista instantaneamente todos os seus materiais e podcasts, eliminando o erro de lista vazia.
-    </li>
-    <li>
-      <strong>Mural de Recursos Recolhido por Padrão</strong>:
-      No painel do aluno, sempre que a contagem de leituras pendentes for zero (<code>pendingAnnouncementsCount === 0</code>), o mural inicia recolhido em barra compacta (<em>"✨ Todas as leituras em dia"</em>), liberando espaço visual para as aulas.
-    </li>
-    <li>
-      <strong>Eliminação do Bug de Redirecionamento ("Abre e Volta")</strong>:
-      Removido o timer em segundo plano do <code>GlobalWalkthrough.tsx</code> que forçava retorno para a grade ao clicar em "Fluxo de Estudos". A navegação entre telas agora obedece unicamente à vontade do usuário.
-    </li>
-    <li>
-      <strong>Poda Preventiva de Cache de Armazenamento</strong>:
-      Introduzida a função <code>cleanupBulkyLocalStorage()</code> no boot e proteção com <code>try/catch</code> no <code>handleTabChange</code> para evitar estouro da cota de 5 MB do navegador (<code>QuotaExceededError</code>).
-    </li>
-    <li>
-      <strong>Silenciamento Permanente da Avaliação Pedagógica do TCC</strong>:
-      A dispensa do modal foi migrada para <code>localStorage</code> com opção <em>"Depois / Não exibir mais"</em>, garantindo que o aviso não reapareça após ser fechado.
-    </li>
-    <li>
-      <strong>Tour Guiado Abrangente de 14 Etapas</strong>:
-      Novo roteiro interativo com Driver.js cobrindo Seletor de Perfis, Modo Escuro, Central de Avisos, Sincronização Nuvem, Aulas Ao Vivo, Gravações HD, Grade Curricular, Fluxo de Estudos, Quatro Ds, Homilética, Metaverso 3D, Biblioteca Digital e Ajuda.
-    </li>
-    <li>
-      <strong>Correção dos Números de WhatsApp no Painel Admin</strong>:
-      Merge bidirecional em <code>getAuthorizedUsersList()</code> preservando os números formatados dos 11 novos alunos e docentes.
-    </li>
+    <li><strong>TCLE Integrado</strong>: Informações completas sobre finalidade acadêmica, garantia de sigilo, liberdade de participação ou desistência sem prejuízo e contatos do pesquisador e da coordenação da UNIMB.</li>
+    <li><strong>Validação Institucional para Comunidade Interna</strong>: Seminaristas, docentes e monitores da UNIMB autenticam-se com a Conta Google institucional para conferência acadêmica, liberando acesso imediato à plataforma Koinonia LMS pós-resposta.</li>
+    <li><strong>Acesso Livre e Anônimo para Comunidade Externa</strong>: Pastores ordenados, líderes, membros de congregações e discentes de outros seminários participam de forma anônima e desimpedida via link público.</li>
   </ul>
 
-  <!-- SEÇÃO 7: GUIA OPERACIONAL -->
-  <h1>7. Guia Operacional de Uso por Perfil</h1>
+  <h2>6.2. Triangulação Metodológica de 5 Atores Eclesiais</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Ator Investigado</th>
+        <th>Dimensões Teóricas e Pedagógicas Analisadas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Discentes Internos</strong></td>
+        <td>Distância transacional afetiva e cognitiva; eficácia das sínteses com IA no Caderno Cornell; frequência em aulas ao vivo e acesso a gravações.</td>
+      </tr>
+      <tr>
+        <td><strong>Docentes</strong></td>
+        <td>Distância pedagógica e hermenêutica; isolamento por disciplina; facilidade no upload de materiais e utilização do NotebookLM.</td>
+      </tr>
+      <tr>
+        <td><strong>Monitores</strong></td>
+        <td>Mediação técnica e operacional; pontualidade na liberação de gravações; fluxo de chat no Google Meet e disparo de presenças.</td>
+      </tr>
+      <tr>
+        <td><strong>Pastores e Líderes</strong></td>
+        <td>Avaliação da maturidade espiritual, firmeza bíblica e aptidão pastoral dos seminaristas formados online em contraste ao ensino presencial.</td>
+      </tr>
+      <tr>
+        <td><strong>Membros da Igreja</strong></td>
+        <td>Percepção prática sobre o impacto das pregações, clareza expositiva e acolhimento pastoral desempenhado pelos alunos em suas igrejas locais.</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <h2>7.1. Guia do Aluno</h2>
-  <ol>
-    <li>Acesse <code>https://koinonialms.vercel.app</code> e clique em <em>Entrar com Google</em> com o e-mail autorizado.</li>
-    <li>No banner superior, acompanhe a contagem regressiva para a aula ao vivo. Clique em <em>Entrar no Google Meet</em>.</li>
-    <li>Durante a aula, clique em <em>Assinar Presença</em> para registrar sua frequência no formulário oficial.</li>
-    <li>Use o <em>Caderno Cornell</em> para registrar as anotações da matéria e gerar sínteses com IA Gemini.</li>
-    <li>Acesse a <em>Biblioteca Digital</em> para ler os livros da bibliografia em PDF e copiar citações ABNT.</li>
-  </ol>
+  <h2>6.3. Gerenciador Multi-Perfil com Edição e Painel do Pesquisador</h2>
+  <ul>
+    <li><strong>Edição de Respostas Submetidas</strong>: O respondente pode alterar e atualizar suas respostas anteriores a qualquer momento, sem corromper ou duplicar registros.</li>
+    <li><strong>Visualização de Respostas Docentes</strong>: O painel (<code>TccSacramentoPage.tsx</code>) permite filtrar respostas detalhadas dos professores (com destaque para contribuições docentes como a do Prof. Cleiton).</li>
+    <li><strong>Criação Dinâmica de Novas Enquetes</strong>: O pesquisador pode cadastrar novas enquetes rápidas diretamente pela interface para aprofundar tópicos em tempo real.</li>
+    <li><strong>Exportação em 1 Clique</strong>: Geração de arquivo CSV formatado para análise estatística descritiva e inferencial em Microsoft Excel, IBM SPSS e R.</li>
+  </ul>
 
-  <h2>7.2. Guia do Professor</h2>
-  <ol>
-    <li>Selecione a visão <em>👨‍🏫 Professor</em> no topo da tela.</li>
-    <li>Selecione sua matéria no painel docente para acompanhar os materiais e avisos vinculados.</li>
-    <li>No botão <em>+ Cadastrar Material de Apoio</em>, inclua anotações do Google Docs, podcasts do NotebookLM ou mapas mentais.</li>
-    <li>Crie avaliações nativas ou vincule formulários do Google Forms com a flag de incorporação em iframe.</li>
-  </ol>
+  <!-- SEÇÃO 7: MONITORIA & GRAVADOR -->
+  <h1>7. Piloto Automático do Gravador de Aulas & Central de Monitoria</h1>
+  <p>
+    Para garantir excelência operacional e a disponibilização imediata do acervo aos alunos, a central de monitoria (coordenada pelo <strong>Monitor Cristiano</strong>) foi modernizada com gravação automatizada:
+  </p>
+  <ul>
+    <li><strong>Piloto Automático de Gravação</strong>: Agendamento da gravação sincronizado com o horário oficial da aula, ativando contagem regressiva sonora e visual.</li>
+    <li><strong>Auto-Stop Inteligente</strong>: O encerramento da captura é efetuado automaticamente no término da aula, prevenindo arquivos ociosos ou sobrecarga de memória.</li>
+    <li><strong>Disparo Rápido de Presença</strong>: Botão de cópia instantânea do formulário oficial do Google Forms diretamente para a área de transferência do monitor.</li>
+    <li><strong>Resolução Resiliente de Perfis</strong>: Proteção contra inconsistências de <code>avatarUrl</code> e sincronização estável entre papéis de monitor, discente e professor.</li>
+  </ul>
 
-  <h2>7.3. Guia do Monitor</h2>
-  <ol>
-    <li>Na visão <em>👑 Monitor</em>, consulte a escala semanal de turmas e horários.</li>
-    <li>Após o término da aula síncrona, cadastre o link oficial da gravação em HD para disponibilização aos alunos.</li>
-    <li>Durante as transmissões, copie o link da lista de presença com 1 clique e envie no chat do Meet.</li>
-  </ol>
-
-  <h2>7.4. Guia do Administrador</h2>
-  <ol>
-    <li>Acesse a aba <em>🛡️ Admin</em> para gerenciar a base de 106 usuários autorizados.</li>
-    <li>Edite números de WhatsApp, atribua papéis múltiplos (Aluno, Professor, Monitor) e force o sync em nuvem.</li>
-    <li>Analise o <em>Radar de Tele-Proximidade</em> para identificar alunos com frequência baixa e prestar assistência pastoral preventiva.</li>
-  </ol>
-
-  <!-- SEÇÃO 8: GUIA TÉCNICO -->
+  <!-- SEÇÃO 8: IDENTIDADE VISUAL & MOBILE -->
   <div class="page-break"></div>
-  <h1>8. Guia Técnico de Desenvolvimento, Manutenção e Deploy</h1>
+  <h1>8. Identidade Visual Oficial, Social Sharing & Blindagem Mobile</h1>
 
-  <h2>8.1. Configuração do Ambiente Local</h2>
-  <p>Clone o repositório e configure as variáveis de ambiente:</p>
-  <pre><code># 1. Clonar repositório
+  <h2>8.1. Logotipo Oficial e Pacote de Favicons</h2>
+  <p>
+    Desenvolvimento da marca oficial Koinonia LMS com símbolo litúrgico em alta definição (azul royal, dourado e grafite), acompanhado do conjunto completo de ativos para navegadores: <code>favicon.ico</code>, <code>favicon-16x16.png</code>, <code>favicon-32x32.png</code>, <code>apple-touch-icon.png</code> e manifesto PWA.
+  </p>
+
+  <h2>8.2. OpenGraph Rico e Convites Seguros via WhatsApp</h2>
+  <div class="callout success">
+    <div class="callout-title">📱 Compartilhamento Institucional Padronizado</div>
+    Metatags OpenGraph e Twitter Cards configuradas no <code>layout.tsx</code> garantem cartões visuais ricos ao compartilhar a plataforma em grupos de WhatsApp. O modal de convite adota codificação 100% BMP segura via <code>api.whatsapp.com</code>, prevenindo truncamento de texto e caracteres ilegíveis em qualquer dispositivo móvel.
+  </div>
+
+  <h2>8.3. Blindagem Pré-Hidratação contra QuotaExceededError</h2>
+  <p>
+    Foi introduzido um script de auto-sanitização executado no <code>&lt;head&gt;</code> do documento antes da hidratação do React. A rotina varre o <code>localStorage</code> e elimina preventivamente chaves que excedam 50 KB, protegendo celulares com memória reduzida e assegurando carregamento estável em conexões móveis.
+  </p>
+
+  <!-- SEÇÃO 9: CHANGELOG COMPLETO -->
+  <h1>9. Histórico Completo de Mudanças Recém-Implementadas (Changelog)</h1>
+  <p>
+    Consolidação de todas as atualizações de produção registradas no repositório oficial:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Commit</th>
+        <th>Tipo</th>
+        <th>Módulo</th>
+        <th>Descrição Técnica e Pedagógica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>c807892</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>Aluno / Mural</td>
+        <td>Eliminação definitiva de duplicação no mural de leituras e links recomendados no painel do estudante.</td>
+      </tr>
+      <tr>
+        <td><code>abbac3d</code></td>
+        <td><span class="badge badge-purple">Feat/Fix</span></td>
+        <td>TCC / Monitor</td>
+        <td>Exibição de respostas docentes do Prof. Cleiton; alteração e edição de respostas; criação de enquetes dinâmicas; ajuste do gravador para Monitor Cristiano.</td>
+      </tr>
+      <tr>
+        <td><code>6dcfeeb</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>Recorder</td>
+        <td>Correção no disparo de gravação pré-configurada, permissões de monitor e sincronização de roles de usuário.</td>
+      </tr>
+      <tr>
+        <td><code>9ef0e42</code></td>
+        <td><span class="badge badge-purple">Feat/Fix</span></td>
+        <td>Monitor</td>
+        <td>Resolução de crash de <code>avatarUrl</code> e implementação do Piloto Automático de gravação programada com Auto-Stop.</td>
+      </tr>
+      <tr>
+        <td><code>84c8d2d</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>TCC / UX</td>
+        <td>Garantia de persistência cloud em Supabase; atalhos no dashboard de resultados e ativação de tours guiados baseados no perfil do usuário (*role-based tours*).</td>
+      </tr>
+      <tr>
+        <td><code>a530078</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>WhatsApp</td>
+        <td>Padronização 100% BMP em convites de WhatsApp eliminando caracteres truncados e migração definitiva para <code>api.whatsapp.com</code>.</td>
+      </tr>
+      <tr>
+        <td><code>35b757a</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>WhatsApp</td>
+        <td>Substituição de emojis conflitantes por caracteres universais compatíveis com WhatsApp e padronização de nomes institucionais.</td>
+      </tr>
+      <tr>
+        <td><code>3eb65dc</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>Identidade</td>
+        <td>Logotipo oficial Koinonia LMS, conjunto de favicons, preview rico de OpenGraph para WhatsApp e modal de convite institucional.</td>
+      </tr>
+      <tr>
+        <td><code>e7062ae</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>TCC</td>
+        <td>Atualização do nome Seminário Teológico Congregacional, instrumentos empíricos com perguntas personalizadas por ator e edição multiperfil.</td>
+      </tr>
+      <tr>
+        <td><code>961e046</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>TCC / Core</td>
+        <td>Correção de erro <code>useRef is not defined</code>; atualização de dados do TCLE da UNIMB e Koinonia LMS.</td>
+      </tr>
+      <tr>
+        <td><code>fbc7faf</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>TCC</td>
+        <td>Atualização de dados da UNIMB, vinculação ao autor Cristiano do Sacramento Soares, autenticação institucional interna e explicabilidade pedagógica (glossário).</td>
+      </tr>
+      <tr>
+        <td><code>f75b9d8</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>TCC</td>
+        <td>Implementação do módulo nativo de pesquisa de campo e diagnóstico com TCLE, rascunhos em tempo real e blindagem de egress.</td>
+      </tr>
+      <tr>
+        <td><code>157ac6d</code></td>
+        <td><span class="badge badge-rose">Fix</span></td>
+        <td>Docente</td>
+        <td>Visão padrão de matérias do professor (<code>Minhas Matérias - Todas</code>) e carga de sementes para a Profª Betânia Barbosa.</td>
+      </tr>
+      <tr>
+        <td><code>2bdef17</code></td>
+        <td><span class="badge badge-blue">Feat</span></td>
+        <td>UX / Admin</td>
+        <td>Isolamento docente de materiais; mural recolhido por padrão quando sem pendências; tour guiado de 14 etapas; correção de WhatsApp no Admin.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SEÇÃO 10: GUIA OPERACIONAL -->
+  <div class="page-break"></div>
+  <h1>10. Guia Operacional de Uso por Perfil</h1>
+
+  <h2>10.1. Guia do Aluno</h2>
+  <ol>
+    <li>Acesse <code>https://koinonialms.vercel.app</code> e clique em <em>Entrar com Conta Google</em> com seu e-mail autorizado.</li>
+    <li>No card superior, acompanhe a contagem regressiva da aula ao vivo. Clique em <em>Entrar no Google Meet</em> e assine a lista de presença.</li>
+    <li>Utilize o <em>Caderno Cornell</em> para sintetizar as anotações e acione o Gemini Pro para resumos automáticos.</li>
+    <li>Acesse a <em>Biblioteca Digital</em> para consultar as obras em PDF e copiar citações em ABNT com 1 clique.</li>
+    <li>Responda ao questionário no banner de pesquisa do TCC para registrar sua avaliação acadêmica.</li>
+  </ol>
+
+  <h2>10.2. Guia do Professor</h2>
+  <ol>
+    <li>Selecione a visão <em>👨‍🏫 Professor</em> no cabeçalho.</li>
+    <li>Suas disciplinas são selecionadas automaticamente. Clique em <em>+ Cadastrar Material de Apoio</em> para anexar links do Google Docs ou podcasts do NotebookLM.</li>
+    <li>Cadastre provas nativas ou integre formulários do Google Forms ativando a renderização em iframe.</li>
+    <li>Responda ao instrumento docente de pesquisa do TCC na aba correspondente.</li>
+  </ol>
+
+  <h2>10.3. Guia do Monitor</h2>
+  <ol>
+    <li>Na visão <em>👑 Monitor</em>, consulte a escala de aulas e selecione a disciplina do dia.</li>
+    <li>Configure o tempo de encerramento e ative o <em>Piloto Automático</em> de gravação com Auto-Stop inteligente.</li>
+    <li>Copie com 1 clique o link de presença oficial e envie no chat do Google Meet durante a transmissão.</li>
+  </ol>
+
+  <h2>10.4. Guia do Administrador</h2>
+  <ol>
+    <li>Acesse a aba <em>🛡️ Admin</em> -> <em>Usuários Autorizados</em> para gerenciar a base de 106 usuários.</li>
+    <li>Atualize telefones de WhatsApp, sincronize dados com a nuvem Supabase e monitore o <em>Radar de Tele-Proximidade</em>.</li>
+  </ol>
+
+  <h2>10.5. Guia do Pesquisador (TCC Sacramento)</h2>
+  <ol>
+    <li>Acesse o menu do TCC para inspecionar os gráficos e totalizadores por segmento eclesiástico/acadêmico.</li>
+    <li>Examine as respostas docentes detalhadas (como as contribuições do Prof. Cleiton).</li>
+    <li>Crie novas perguntas dinâmicas e exporte os dados consolidados em CSV para análise no SPSS e Excel.</li>
+  </ol>
+
+  <!-- SEÇÃO 11: GUIA TÉCNICO -->
+  <h1>11. Guia Técnico de Desenvolvimento, Manutenção e Deploy</h1>
+
+  <h2>11.1. Configuração do Ambiente Local</h2>
+  <pre><code># 1. Clonar o repositório
 git clone https://github.com/sacrasub/koinonia-lms.git
 cd koinonia-lms
 
 # 2. Instalar dependências
 npm install
 
-# 3. Criar arquivo de configuração (.env.local)
-NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+# 3. Executar o ambiente de desenvolvimento local
+npm run dev
+
+# 4. Validar compilação e tipagem para produção
+npm run build
+
+# 5. Gerar o Relatório Oficial em PDF
+node scripts/generate_report_pdf.js</code></pre>
+
+  <h2>11.2. Variáveis de Ambiente Necessárias (.env.local)</h2>
+  <pre><code>NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anonima
 GOOGLE_SERVICE_ACCOUNT_EMAIL=koinonia@projeto.iam.gserviceaccount.com
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----"
 GOOGLE_DRIVE_RESTRICTED_FOLDER_ID=1jQ0co8yOr0shnKxVX_lv2JTAM8AQNCMO</code></pre>
 
-  <h2>8.2. Comandos Operacionais</h2>
-  <ul>
-    <li><code>npm run dev</code>: Inicia o servidor local de desenvolvimento em <code>http://localhost:3000</code>.</li>
-    <li><code>npm run build</code>: Executa a compilação completa, checagem de tipos e geração estática para produção.</li>
-    <li><code>npm run lint</code>: Executa as regras de validação e qualidade de código do ESLint.</li>
-  </ul>
-
-  <h2>8.3. Pipeline de Deploy Contínuo (Vercel CI/CD)</h2>
+  <h2>11.3. Pipeline de Deploy Contínuo (Vercel CI/CD)</h2>
   <p>
-    O projeto está integrado à esteira de entrega contínua da Vercel. Cada envio para o branch <code>main</code> dispara a compilação e publicação automática:
+    Toda alteração enviada para o branch <code>main</code> no GitHub dispara automaticamente a compilação e publicação em produção pela esteira da Vercel:
   </p>
   <pre><code>git add .
-git commit -m "feat: nova funcionalidade pedagógica"
+git commit -m "feat/fix: descricao da melhoria"
 git push origin main</code></pre>
 
-  <h2>8.4. Políticas de Manutenção e Auditoria Anti-Egress</h2>
-  <p>
-    Antes de introduzir qualquer nova funcionalidade de banco de dados, certifique-se de cumprir as regras do documento <code>AGENTS.md</code>:
-  </p>
-  <ul>
-    <li>Nunca utilize <code>setInterval</code> com intervalo inferior a 3 minutos para chamadas à API do Supabase.</li>
-    <li>Priorize gravação Local-First com sincronização assíncrona delta.</li>
-    <li>Monitore o painel de consumo do Supabase mantendo o tráfego mensal em folga total abaixo de 500 MB.</li>
-  </ul>
-
-  <div class="callout success" style="margin-top: 30px;">
-    <div class="callout-title">✅ Conclusão da Auditoria</div>
-    A plataforma Koinonia LMS atinge índice máximo de conformidade arquitetural, estabilidade e usabilidade pedagógica, preparada para o suporte a todas as atividades do semestre 2026.2 e expansões futuras.
+  <div class="callout success" style="margin-top: 25px;">
+    <div class="callout-title">✅ Conclusão da Auditoria de Engenharia e Pedagogia</div>
+    A plataforma <strong>Koinonia LMS</strong> alcança o patamar máximo de estabilidade operacional, maturidade arquitetural e aderência aos objetivos pedagógicos e de pesquisa acadêmica, operando em total conformidade com as diretrizes do Seminário Teológico Congregacional (UIECB) e do Centro Universitário do Maciço de Baturité (UNIMB).
   </div>
 
 </body>
@@ -655,7 +821,7 @@ git push origin main</code></pre>
     displayHeaderFooter: true,
     headerTemplate: `
       <div style="font-size: 8pt; color: #94a3b8; width: 100%; text-align: right; padding-right: 15mm; font-family: sans-serif;">
-        Koinonia LMS • Seminário Teológico Koinonia (2026.2)
+        Koinonia LMS • Seminário Teológico Congregacional (2026.2)
       </div>
     `,
     footerTemplate: `

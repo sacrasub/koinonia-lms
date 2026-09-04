@@ -27,7 +27,17 @@ import {
   CURSO_NOME,
   PESQUISADOR_NOME,
   ORIENTADOR_NOME,
+  COORDENADORA_TCC_NOME,
+  METODOLOGIA_PROF,
+  CIDADE_ESTADO,
+  TCC_TITULO_PRINCIPAL,
+  TCC_SUBTITULO,
   TCC_TEMA,
+  TCC_PROBLEMA_PESQUISA,
+  TCC_HIPOTESE,
+  TCC_OBJETIVO_GERAL,
+  TCC_OBJETIVOS_ESPECIFICOS,
+  TCC_CAPITULOS_ESTRUTURA,
   PLATAFORMA_NOME,
   PLATAFORMA_DESCRICAO
 } from '@/services/pesquisaCampoService';
@@ -73,9 +83,11 @@ export default function PesquisaTCCPage() {
   const [userAuthName, setUserAuthName] = useState<string | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   
-  // Modal de Explicação de Termos
+  // Modal de Explicação de Termos & Ficha do Pré-Projeto
   const [termoAtivo, setTermoAtivo] = useState<TermoExplicativo | null>(null);
   const [isGlossarioGeralAberto, setIsGlossarioGeralAberto] = useState<boolean>(false);
+  const [isPreProjetoModalOpen, setIsPreProjetoModalOpen] = useState<boolean>(false);
+  const [preProjetoActiveTab, setPreProjetoActiveTab] = useState<'apresentacao' | 'objetivos' | 'capitulos' | 'metodologia'>('apresentacao');
 
   // Verifica se o público atual pertence à comunidade interna (exige login)
   const isComunidadeInterna = useMemo(() => {
@@ -259,18 +271,20 @@ export default function PesquisaTCCPage() {
 
   const getFormattedWhatsappMessage = () => {
     return (
-      `🎓 *Pesquisa de Campo • TCC em Teologia (UNIMB)*\n` +
-      `🏛️ *Seminário Teológico Congregacional & Plataforma Koinonia LMS*\n\n` +
-      `Prezado(a) irmão(ã), pastor, professor ou seminarista,\n\n` +
-      `Gostaria de convidá-lo(a) a participar da pesquisa de campo do Trabalho de Conclusão do Curso de Bacharelado em Teologia no *Centro Universitário do Maciço de Baturité (UNIMB)*:\n\n` +
-      `📖 *Tema:* "Estratégias Eficazes para o Ensino Teológico no Ambiente Virtual: Distância Transacional, Preservação da Koinonia e a Transição do Internato Presencial para o Modelo Síncrono Remoto"\n\n` +
-      `👤 *Pesquisador:* Cristiano do Sacramento Soares\n` +
-      `✝️ *Orientador:* Pastor Alexsandro Silva\n` +
-      `📐 *Metodologia:* Profª Gabriela Leal\n\n` +
-      `O questionário é rápido, intuitivo e conta com *perguntas personalizadas para o seu perfil* (alunos, professores, monitores, pastores ordenados ou membros de congregação).\n\n` +
+      `🎓 *Pesquisa de Campo • TCC em Teologia (UNIMB & UIECB)*\n` +
+      `🏛️ *${SEMINARIO_NOME} & Plataforma ${PLATAFORMA_NOME}*\n\n` +
+      `Prezado(a) irmão(ã), pastor, docente ou seminarista,\n\n` +
+      `Gostaria de convidá-lo(a) a participar da pesquisa de campo do Trabalho de Conclusão de Curso (TCC) em Teologia no *${INSTITUICAO_NOME}*:\n\n` +
+      `📖 *Título:* "${TCC_TITULO_PRINCIPAL}"\n` +
+      `📜 *Subtítulo:* "${TCC_SUBTITULO}"\n\n` +
+      `👤 *Pesquisador:* ${PESQUISADOR_NOME}\n` +
+      `✝️ *Orientador:* ${ORIENTADOR_NOME}\n` +
+      `📐 *Coordenadora de TCC I:* ${COORDENADORA_TCC_NOME}\n` +
+      `📍 *Local:* ${CIDADE_ESTADO}\n\n` +
+      `O questionário é rápido, intuitivo e conta com *perguntas personalizadas para o seu perfil* (alunos, professores, monitores, pastores e membros de igrejas locais).\n\n` +
       `👉 *Acesse e participe pelo link:*\n` +
       `https://koinonialms.vercel.app/pesquisa-tcc?origem=whatsapp_externo\n\n` +
-      `Sua colaboração é fundamental para o fortalecimento da educação teológica! Deus abençoe!`
+      `Sua contribuição científica e pastoral é fundamental para a formação teológica no Brasil! Deus abençoe!`
     );
   };
 
@@ -374,7 +388,7 @@ export default function PesquisaTCCPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950 text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
       {/* CABEÇALHO SUPERIOR */}
-      <header className="border-b border-indigo-900/40 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-indigo-900/40 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-md shrink-0 border border-indigo-400/30 bg-slate-900 flex items-center justify-center">
@@ -383,7 +397,7 @@ export default function PesquisaTCCPage() {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-                  TCC Teologia • UNIMB & {SEMINARIO_NOME}
+                  TCC Teologia • {INSTITUICAO_NOME} & {SEMINARIO_NOME}
                 </span>
                 {userAuthEmail && (
                   <span className="text-[9px] font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
@@ -396,21 +410,33 @@ export default function PesquisaTCCPage() {
                   </span>
                 )}
               </div>
-              <h1 className="text-sm sm:text-base font-extrabold text-white">
+              <h1 className="text-sm sm:text-base font-extrabold text-white leading-tight">
                 Pesquisa de Campo & Diagnóstico do TCC
               </h1>
+              <p className="text-[11px] text-slate-400 truncate max-w-md hidden sm:block">
+                {TCC_TITULO_PRINCIPAL}
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsPreProjetoModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 transition cursor-pointer shadow-xs active:scale-95"
+              title="Ver Ficha Técnica do Pré-Projeto Aprovado (Problema, Hipótese, Objetivos e Capítulos)"
+            >
+              <GraduationCap className="w-4 h-4 text-amber-400" />
+              <span className="hidden sm:inline">Pré-Projeto Aprovado</span>
+              <span className="sm:hidden">Pré-Projeto</span>
+            </button>
+
             <a
               href="/dashboard/tcc-sacramento"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 transition cursor-pointer shadow-xs active:scale-95"
               title="Acessar o Painel de Resultados, Estatísticas e Exportação SPSS do TCC"
             >
               <BarChart3 className="w-3.5 h-3.5 text-blue-400" />
-              <span className="hidden sm:inline">Ver Resultados</span>
-              <span className="sm:hidden">Resultados</span>
+              <span className="hidden sm:inline">Resultados</span>
             </a>
 
             <button
@@ -419,7 +445,7 @@ export default function PesquisaTCCPage() {
               title="Ver glossário de inovações pedagógicas e termos do TCC"
             >
               <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Explicar Termos</span>
+              <span className="hidden sm:inline">Glossário</span>
             </button>
 
             <button
@@ -428,7 +454,7 @@ export default function PesquisaTCCPage() {
               title="Compartilhar pesquisa com convite completo no WhatsApp"
             >
               <Share2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Convidar no WhatsApp</span>
+              <span className="hidden sm:inline">Convidar</span>
             </button>
           </div>
         </div>
@@ -550,34 +576,74 @@ export default function PesquisaTCCPage() {
             {currentStep === 1 && (
               <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 animate-in fade-in">
                 <div className="space-y-2 border-b border-slate-800 pb-5">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-                      Etapa 1 de 6 • Consentimento Livre e Esclarecido
+                      Etapa 1 de 6 • Apresentação do TCC & Consentimento Livre (TCLE)
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsPreProjetoModalOpen(true)}
+                      className="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 transition flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <GraduationCap className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Ver Ficha Técnica do Pré-Projeto</span>
+                    </button>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Termo de Consentimento Livre e Esclarecido (TCLE)
+                  <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                    {TCC_TITULO_PRINCIPAL}
                   </h2>
-                  <p className="text-xs text-indigo-300 font-medium leading-relaxed">
-                    Pesquisa Acadêmica em Teologia • <strong>{INSTITUICAO_NOME}</strong> & <strong>{SEMINARIO_NOME}</strong>
+                  <p className="text-xs text-indigo-300 font-medium leading-relaxed italic">
+                    {TCC_SUBTITULO}
                   </p>
                 </div>
 
+                {/* Card de Ficha Acadêmica Institucional */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 p-4 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs">
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Instituição & Seminário</span>
+                    <span className="font-extrabold text-white block">{INSTITUICAO_NOME}</span>
+                    <span className="text-[11px] text-indigo-300">{SEMINARIO_NOME}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Pesquisador / Autor</span>
+                    <span className="font-extrabold text-white block">{PESQUISADOR_NOME}</span>
+                    <span className="text-[11px] text-slate-300">{CURSO_NOME}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Orientação Acadêmica</span>
+                    <span className="font-extrabold text-white block">{ORIENTADOR_NOME}</span>
+                    <span className="text-[11px] text-slate-300">Coord. TCC I: {COORDENADORA_TCC_NOME}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Local & Ano</span>
+                    <span className="font-extrabold text-white block">{CIDADE_ESTADO}</span>
+                    <span className="text-[11px] text-emerald-400 font-semibold">Bacharelado em Teologia</span>
+                  </div>
+                </div>
+
+                {/* Texto Formal do TCLE e Ética Científica */}
                 <div className="prose prose-invert max-w-none text-xs text-slate-300 space-y-3 bg-slate-950/60 p-5 rounded-2xl border border-slate-800/80 max-h-72 overflow-y-auto leading-relaxed">
                   <p>
-                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no <strong>{INSTITUICAO_NOME}</strong>, pelo pesquisador <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong>, no âmbito acadêmico do <strong>{SEMINARIO_NOME}</strong>.
+                    Você está sendo convidado(a) a participar como voluntário(a) da pesquisa de campo do Trabalho de Conclusão do Curso Bacharel em Teologia, apresentado no <strong>{INSTITUICAO_NOME}</strong>, pelo pesquisador <strong>{PESQUISADOR_NOME}</strong>, sob orientação do <strong>{ORIENTADOR_NOME}</strong> e coordenação metodológica da <strong>{COORDENADORA_TCC_NOME}</strong>, no âmbito acadêmico do <strong>{SEMINARIO_NOME}</strong>.
                   </p>
+                  
+                  <div className="p-3 bg-indigo-950/40 rounded-xl border border-indigo-900/50 space-y-1">
+                    <strong className="text-white block font-bold text-[11px] uppercase tracking-wider text-indigo-300">
+                      Problema de Pesquisa & Hipótese Investigada:
+                    </strong>
+                    <p className="italic text-slate-200">"{TCC_PROBLEMA_PESQUISA}"</p>
+                  </div>
+
                   <p>
-                    <strong>Título do Trabalho:</strong> <em>"{TCC_TEMA}"</em>.
+                    <strong>Objetivo Geral da Investigação:</strong> {TCC_OBJETIVO_GERAL}
                   </p>
+
                   <p>
-                    <strong>Sobre a Plataforma {PLATAFORMA_NOME}:</strong> Trata-se do projeto de plataforma educacional integrada concebido para a modernização do ensino teológico no ambiente virtual, projetada para utilização em qualquer seminário ou instituição de formação pastoral e teológica.
+                    <strong>Sobre o Laboratório Instrumental ({PLATAFORMA_NOME}):</strong> {PLATAFORMA_DESCRICAO} A ferramenta atua como sandbox pedagógico andragógico, integrando o Simulador Pastoral RPG, Mural Interativo de Oração (Mural Koinonia) e Caderno Metacognitivo Cornell assistido por IA.
                   </p>
+
                   <p>
-                    <strong>Objetivos:</strong> Identificar a percepção de seminaristas, docentes, monitores, pastores e líderes eclesiásticos sobre a eficácia pedagógica, o acolhimento comunitário e a formação integral do caráter pastoral proporcionada pelas metodologias ativas e aulas síncronas remotas.
-                  </p>
-                  <p>
-                    <strong>Garantias Éticas:</strong> A participação é inteiramente voluntária, sem quaisquer custos ou riscos aos respondentes. Seus dados e percepções serão processados estatisticamente com garantia absoluta de anonimato e sigilo profissional.
+                    <strong>Garantias Éticas e Legais (Resoluções CNS 466/2012 e 510/2016):</strong> A participação nesta pesquisa é estritamente voluntária e anônima para fins de tabulação estatística (IBM SPSS e Excel). Não há nenhum ônus financeiro, comercial ou risco de qualquer natureza aos participantes. As respostas serão tratadas com absoluto sigilo acadêmico.
                   </p>
                 </div>
 
@@ -589,12 +655,21 @@ export default function PesquisaTCCPage() {
                     className="mt-0.5 w-5 h-5 rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 shrink-0 cursor-pointer"
                   />
                   <div className="text-xs text-slate-200">
-                    <strong className="text-white block font-bold">Declaração de Concordância</strong>
-                    Li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o uso científico e estatístico das minhas respostas para o Trabalho de Conclusão de Curso em Teologia de {PESQUISADOR_NOME} ({INSTITUICAO_NOME} / {SEMINARIO_NOME}).
+                    <strong className="text-white block font-bold">Declaração de Concordância e Consentimento (TCLE)</strong>
+                    Li e concordo voluntariamente em participar desta pesquisa acadêmica, autorizando o tratamento científico e estatístico das minhas respostas para o Trabalho de Conclusão de Curso em Teologia de {PESQUISADOR_NOME} ({INSTITUICAO_NOME} / {SEMINARIO_NOME}).
                   </div>
                 </label>
 
-                <div className="flex justify-end pt-4">
+                <div className="flex justify-between items-center pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsPreProjetoModalOpen(true)}
+                    className="text-xs font-bold text-indigo-300 hover:text-white flex items-center gap-1.5 underline cursor-pointer"
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Conhecer a estrutura dos 4 capítulos do TCC</span>
+                  </button>
+
                   <button
                     disabled={!autorizouTcle}
                     onClick={() => setCurrentStep(2)}
@@ -1334,6 +1409,261 @@ export default function PesquisaTCCPage() {
         )}
       </main>
 
+      {/* MODAL DA FICHA COMPLETA DO PRÉ-PROJETO DE TCC (APROVADO) */}
+      {isPreProjetoModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-amber-500/40 rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl animate-in zoom-in-95 duration-200">
+            {/* Header do Modal */}
+            <div className="p-5 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-950/80 rounded-t-3xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-amber-400/20 text-amber-400 border border-amber-400/30">
+                  <GraduationCap className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                      Pré-Projeto de TCC Aprovado • UNIMB & UIECB
+                    </span>
+                    <span className="text-[10px] text-emerald-400 font-bold">2026</span>
+                  </div>
+                  <h3 className="text-sm sm:text-base font-black text-white leading-tight mt-0.5">
+                    {TCC_TITULO_PRINCIPAL}
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPreProjetoModalOpen(false)}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Abas Internas do Pré-Projeto */}
+            <div className="flex items-center gap-1.5 px-5 py-2.5 bg-slate-950/50 border-b border-slate-800 overflow-x-auto shrink-0 text-xs font-bold">
+              <button
+                onClick={() => setPreProjetoActiveTab('apresentacao')}
+                className={`px-3 py-1.5 rounded-xl transition cursor-pointer shrink-0 ${
+                  preProjetoActiveTab === 'apresentacao'
+                    ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                1. Identificação & Tema
+              </button>
+              <button
+                onClick={() => setPreProjetoActiveTab('objetivos')}
+                className={`px-3 py-1.5 rounded-xl transition cursor-pointer shrink-0 ${
+                  preProjetoActiveTab === 'objetivos'
+                    ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                2. Problema, Hipótese & Objetivos
+              </button>
+              <button
+                onClick={() => setPreProjetoActiveTab('capitulos')}
+                className={`px-3 py-1.5 rounded-xl transition cursor-pointer shrink-0 ${
+                  preProjetoActiveTab === 'capitulos'
+                    ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                3. Estrutura dos 4 Capítulos
+              </button>
+              <button
+                onClick={() => setPreProjetoActiveTab('metodologia')}
+                className={`px-3 py-1.5 rounded-xl transition cursor-pointer shrink-0 ${
+                  preProjetoActiveTab === 'metodologia'
+                    ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                4. Procedimentos Metodológicos
+              </button>
+            </div>
+
+            {/* Conteúdo com Scroll */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs text-slate-300 flex-1 leading-relaxed">
+              {preProjetoActiveTab === 'apresentacao' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-amber-400">Instituição Acadêmica</span>
+                      <p className="font-extrabold text-white text-sm">{INSTITUICAO_NOME}</p>
+                      <p className="text-slate-400 text-[11px]">{CURSO_NOME}</p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-amber-400">Seminário Vinculado</span>
+                      <p className="font-extrabold text-white text-sm">{SEMINARIO_NOME}</p>
+                      <p className="text-slate-400 text-[11px]">União das Igrejas Evangélicas Congregacionais do Brasil</p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-amber-400">Pesquisador / Autor</span>
+                      <p className="font-extrabold text-white text-sm">{PESQUISADOR_NOME}</p>
+                      <p className="text-slate-400 text-[11px]">Bacharelando em Teologia</p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-[10px] uppercase font-bold text-amber-400">Corpo Docente Orientador</span>
+                      <p className="font-extrabold text-white text-sm">Orientador: {ORIENTADOR_NOME}</p>
+                      <p className="text-slate-400 text-[11px]">Coord. TCC I: {COORDENADORA_TCC_NOME}</p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-indigo-400 block">
+                      Título & Subtítulo Oficiais Registrados
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black text-white">{TCC_TITULO_PRINCIPAL}</h4>
+                    <p className="text-xs text-indigo-300 italic">{TCC_SUBTITULO}</p>
+                  </div>
+
+                  <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-amber-400 block">
+                      Justificativa & Relevância da Investigação
+                    </span>
+                    <p className="text-slate-300 leading-relaxed">
+                      A pesquisa justifica-se pela superação de uma dicotomia histórica que polariza a educação teológica no Brasil: de um lado, a crença nostálgica de que apenas o internato presencial residencial fechado molda o caráter pastoral; de outro, a instrumentalização massificada da EaD tecnicista sem comunhão. O estudo demonstra a viabilidade de uma formação teológica síncrona que preserva a <strong>koinonia</strong> e capacita o obreiro sem desvinculá-lo de sua congregação local e de sua família.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {preProjetoActiveTab === 'objetivos' && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-indigo-950/40 border border-indigo-500/40 rounded-2xl space-y-1.5">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-indigo-300 block flex items-center gap-1.5">
+                      <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
+                      Problema de Pesquisa
+                    </span>
+                    <p className="text-sm font-bold text-white italic">
+                      "{TCC_PROBLEMA_PESQUISA}"
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl space-y-1.5">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-emerald-300 block flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                      Hipótese de Trabalho
+                    </span>
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      {TCC_HIPOTESE}
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-amber-400 block flex items-center gap-1.5">
+                      <Target className="w-3.5 h-3.5 text-amber-400" />
+                      Objetivo Geral
+                    </span>
+                    <p className="text-xs font-bold text-white leading-relaxed">
+                      {TCC_OBJETIVO_GERAL}
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2.5">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-indigo-400 block">
+                      Objetivos Específicos
+                    </span>
+                    <ul className="space-y-2 text-xs">
+                      {TCC_OBJETIVOS_ESPECIFICOS.map((obj, i) => (
+                        <li key={i} className="flex items-start gap-2 text-slate-300">
+                          <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center shrink-0 text-[10px] font-bold border border-indigo-400/30">
+                            {i + 1}
+                          </span>
+                          <span>{obj}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {preProjetoActiveTab === 'capitulos' && (
+                <div className="space-y-3">
+                  <p className="text-xs text-slate-400">
+                    Estrutura teórico-metodológica dos 4 capítulos que compõem o corpo da monografia:
+                  </p>
+                  {TCC_CAPITULOS_ESTRUTURA.map((cap, i) => (
+                    <div key={i} className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                          {cap.capitulo}
+                        </span>
+                        <h4 className="text-xs font-black text-white">{cap.titulo}</h4>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed pl-1">
+                        {cap.descricao}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {preProjetoActiveTab === 'metodologia' && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2">
+                    <span className="text-[10px] uppercase font-black tracking-wider text-amber-400 block">
+                      Abordagem Metodológica & Triangulação Científica
+                    </span>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      A consecução dos objetivos pauta-se em uma abordagem metodológica qualitativa de cunho teórico, bibliográfico, documental e estudo de caso instrumental (LAKATOS; MARCONI, 2017). A investigação estrutura-se em 3 etapas integradas:
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-indigo-400 font-bold text-xs block">1. Pesquisa Bibliográfica</span>
+                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                        Teóricos clássicos da EaD (Moore, Garrison, Rovai) e autores da educação teológica virtual (Modes, Gandra & Baade, Souza, Reblin, Eliseu Roque).
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-indigo-400 font-bold text-xs block">2. Pesquisa Documental</span>
+                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                        Análise de PPCs (ex: FABAPAR), planos históricos do seminário UIECB e diretrizes curriculares do MEC (Parecer CNE/CES nº 241/1999).
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-2xl space-y-1">
+                      <span className="text-indigo-400 font-bold text-xs block">3. Estudo Instrumental LMS</span>
+                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                        Apresentação das decisões técnicas de engenharia pedagógica do Koinonia LMS (RPG Pastoral, Mural de Oração, Cornell com IA).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 bg-emerald-950/30 border border-emerald-500/30 rounded-2xl text-[11px] text-slate-300 leading-relaxed flex items-start gap-2.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-emerald-300 block font-bold">Conformidade Ética:</strong>
+                      Pesquisa com dados agregados e desidentificados, em conformidade com as Resoluções CNS 466/2012 e 510/2016, com exportação para tabulação estatística no IBM SPSS e Microsoft Excel.
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer do Modal */}
+            <div className="p-4 border-t border-slate-800 flex justify-between items-center bg-slate-950/80 rounded-b-3xl">
+              <span className="text-[11px] text-slate-500 hidden sm:inline">
+                {CURSO_NOME} • {INSTITUICAO_NOME} ({CIDADE_ESTADO})
+              </span>
+              <button
+                onClick={() => setIsPreProjetoModalOpen(false)}
+                className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition cursor-pointer"
+              >
+                Fechar Ficha do Pré-Projeto
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* MODAL EXPLICATIVO INDIVIDUAL DE TERMO */}
       {termoAtivo && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
@@ -1342,7 +1672,14 @@ export default function PesquisaTCCPage() {
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{termoAtivo.icone}</span>
                 <div>
-                  <h3 className="text-sm sm:text-base font-black text-white">{termoAtivo.titulo}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm sm:text-base font-black text-white">{termoAtivo.titulo}</h3>
+                    {termoAtivo.capituloRef && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+                        {termoAtivo.capituloRef}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[11px] text-indigo-300 font-medium">{termoAtivo.subtitulo}</p>
                 </div>
               </div>
@@ -1368,6 +1705,13 @@ export default function PesquisaTCCPage() {
                 </strong>
                 <p>{termoAtivo.comoFuncionaNoLms}</p>
               </div>
+
+              {termoAtivo.fundamentacaoTeorica && (
+                <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 text-[11px] text-slate-400">
+                  <strong className="text-slate-300 block mb-0.5 font-semibold">Fundamentação Teórica:</strong>
+                  <p className="italic">{termoAtivo.fundamentacaoTeorica}</p>
+                </div>
+              )}
             </div>
 
             <div className="pt-2 flex justify-end">
@@ -1393,7 +1737,7 @@ export default function PesquisaTCCPage() {
                 </div>
                 <div>
                   <h3 className="text-base font-black text-white">Guia Rápido de Inovações Pedagógicas do TCC</h3>
-                  <p className="text-[11px] text-slate-400">Conceitos investigados na pesquisa de campo do Koinonia LMS</p>
+                  <p className="text-[11px] text-slate-400">Conceitos fundamentados nos Capítulos I a IV do Pré-Projeto de TCC</p>
                 </div>
               </div>
               <button
@@ -1407,14 +1751,26 @@ export default function PesquisaTCCPage() {
             <div className="p-5 overflow-y-auto space-y-4 text-xs text-slate-300">
               {Object.values(GLOSSARIO_PEDAGOGICO_TCC).map((item) => (
                 <div key={item.id} className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2">
-                  <div className="flex items-center gap-2 text-white font-extrabold text-sm">
-                    <span className="text-xl">{item.icone}</span>
-                    <span>{item.titulo}</span>
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-2 text-white font-extrabold text-sm">
+                      <span className="text-xl">{item.icone}</span>
+                      <span>{item.titulo}</span>
+                    </div>
+                    {item.capituloRef && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+                        {item.capituloRef}
+                      </span>
+                    )}
                   </div>
                   <p className="text-slate-300 leading-relaxed">{item.explicacaoSimples}</p>
                   <p className="text-indigo-300 text-[11px] bg-indigo-950/30 p-2 rounded-lg border border-indigo-900/40 leading-relaxed">
                     <strong>Na prática do LMS:</strong> {item.comoFuncionaNoLms}
                   </p>
+                  {item.fundamentacaoTeorica && (
+                    <p className="text-[10px] text-slate-500 italic pl-1">
+                      Referência: {item.fundamentacaoTeorica}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
