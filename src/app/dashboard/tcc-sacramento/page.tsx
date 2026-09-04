@@ -1,4 +1,4 @@
-import { TccSacramentoPage } from "@/components/TccSacramentoPage";
+import { TccAuthGuard } from "./TccAuthGuard";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <TccSacramentoPage />;
+  return <TccAuthGuard />;
 }

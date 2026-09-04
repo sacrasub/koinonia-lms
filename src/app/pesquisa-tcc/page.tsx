@@ -430,14 +430,6 @@ export default function PesquisaTCCPage() {
               <span className="sm:hidden">Pré-Projeto</span>
             </button>
 
-            <a
-              href="/dashboard/tcc-sacramento"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/40 transition cursor-pointer shadow-xs active:scale-95"
-              title="Acessar o Painel de Resultados, Estatísticas e Exportação SPSS do TCC"
-            >
-              <BarChart3 className="w-3.5 h-3.5 text-blue-400" />
-              <span className="hidden sm:inline">Resultados</span>
-            </a>
 
             <button
               onClick={() => setIsGlossarioGeralAberto(true)}
@@ -545,13 +537,6 @@ export default function PesquisaTCCPage() {
                 <span>Entrar na Plataforma Koinonia LMS →</span>
               </a>
 
-              <a
-                href="/dashboard/tcc-sacramento"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-950/80 hover:bg-blue-900 text-blue-200 font-extrabold text-xs border border-blue-500/40 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-              >
-                <BarChart3 className="w-4 h-4 text-blue-400" />
-                <span>Painel de Resultados do TCC</span>
-              </a>
 
               <button
                 onClick={handlePreencherOutroPerfil}
