@@ -2008,17 +2008,10 @@ href={nextAulaToday.google_meet_url}
       {/* 5. SEÇÕES PRINCIPAIS (REORDENAÇÃO INTELIGENTE CONFORME HORÁRIO DE AULA) */}
       {activeLiveAula ? (
         <>
-          {/* NOS 15 MIN ANTES DA AULA E DURANTE A AULA AO VIVO: FOCO NA AULA ATIVA E GRADE NO TOPO */}
-          {pendingAnnouncementsCount > 0 && (
-            <div className="animate-in fade-in slide-in-from-top-3 duration-300">
-              {renderMuralRecursos(true)}
-            </div>
-          )}
-
           {/* GRADE DE AULAS NO TOPO DURANTE A AULA OU 15 MIN ANTES */}
           {renderGradeAulas()}
 
-          {/* MURAL, GRAVAÇÕES E LABORATÓRIOS FICAM DEPOIS DA GRADE */}
+          {/* MURAL QUANDO TODAS ESTIVEREM LIDAS FICA APÓS A GRADE */}
           {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
 
           {renderAulasGravadas()}
@@ -2030,8 +2023,8 @@ href={nextAulaToday.google_meet_url}
           {/* FORA DA AULA AO VIVO (QUANDO AS AULAS TERMINAREM NO DIA, INTERVALOS OU DIAS SEM AULA):
               OS CARDS VOLTAM A SER APRESENTADOS NO TOPO, ANTES DA GRADE DE AULAS! */}
 
-          {/* 1. MURAL DE RECURSOS & LEITURAS DE APOIO */}
-          {renderMuralRecursos(pendingAnnouncementsCount > 0)}
+          {/* MURAL DE RECURSOS (SOMENTE QUANDO TODAS ESTIVEREM LIDAS OU RECOLHIDO, POIS SE HOUVER PENDENTES JÁ ESTÁ NO TOPO NO ITEM 4) */}
+          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
 
           {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
           {renderAulasGravadas()}
