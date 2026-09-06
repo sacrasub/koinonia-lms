@@ -6,7 +6,8 @@ import {
   Sparkles, ExternalLink, Download, Plus, Trash2, CheckCircle2, Copy, Check, 
   FileText, Link as LinkIcon, AlertCircle, Quote, ShieldCheck, GraduationCap,
   Layers, MessageSquare, PhoneCall, Globe, Compass, Edit3, Library,
-  Presentation, Maximize2, Minimize2, PenTool, ChevronLeft, ChevronRight, Settings, Play
+  Presentation, Maximize2, Minimize2, PenTool, ChevronLeft, ChevronRight, Settings, Play,
+  Mic
 } from 'lucide-react';
 import { Disciplina, Aula, LivroRecomendadoDisciplina, GeminiNoteItem, GravacaoAulaItem, Material, AvisoLeituraPreAula, UserRole } from '@/types';
 import { getAllDisciplinas, updateDisciplina, getDisciplinasForUser } from '@/services/disciplinasService';
@@ -994,6 +995,29 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
           ) : (
             <span className="text-xs text-gray-400 bg-white/10 px-3 py-2 rounded-xl">Sem link Meet</span>
           )}
+
+          {/* Botão Transcrever ao Vivo */}
+          <button
+            onClick={() => {
+              if (onTabChange) onTabChange('aluno-caderno');
+              setTimeout(() => {
+                if (typeof window !== 'undefined') {
+                  window.dispatchEvent(new CustomEvent('lms_open_transcriber', {
+                    detail: {
+                      disciplina_name: disciplina.name,
+                      disciplina_code: disciplina.code,
+                      date: new Date().toISOString().split('T')[0],
+                    }
+                  }));
+                }
+              }, 150);
+            }}
+            className="py-2.5 px-4 bg-red-500/20 hover:bg-red-500/30 text-red-100 hover:text-white font-bold text-xs rounded-xl border border-red-400/30 transition flex items-center gap-2 active:scale-95 cursor-pointer shadow-xs"
+            title="Abrir transcritor em tempo real para captar o áudio desta matéria"
+          >
+            <Mic className="w-4 h-4 text-red-400 animate-pulse" />
+            <span>Transcrever ao Vivo</span>
+          </button>
 
           {disciplina.google_drive_url && (
             <a

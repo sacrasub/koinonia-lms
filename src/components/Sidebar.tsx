@@ -6,7 +6,7 @@ import {
   LayoutDashboard, GraduationCap, BookOpen, UserCheck, 
   ShieldCheck, Library, CheckSquare, FolderOpen, Compass, 
   Calendar, Layers, HelpCircle, Drama, Archive, SlidersHorizontal, 
-  Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target
+  Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target, Bookmark
 } from 'lucide-react';
 
 
@@ -57,6 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
           ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
+          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
           { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
@@ -81,6 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
           ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
+          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
           { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
@@ -104,6 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
           ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
+          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
           { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
@@ -124,6 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
           ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
+          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
           { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },

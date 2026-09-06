@@ -17,6 +17,7 @@ import {
   cancelarAula, 
   reativarAula, 
   getAulaCanceladaStatus, 
+  isAulaCanceladaHoje,
   getAllAulasCanceladas,
   fetchAulasCanceladasFromCloud, 
   AulaCanceladaItem 
@@ -928,6 +929,19 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [activeRecordings, setActiveRecordings] = useState<ActiveRecordingSession[]>(() => getActiveRecordings());
   const [allGravacoes, setAllGravacoes] = useState(() => getAllGravacoes());
 
+  // AULAS CANCELADAS / SUSPENSAS (Disponível antes dos alarmes)
+  const [aulasCanceladasList, setAulasCanceladasList] = useState<AulaCanceladaItem[]>(() => getAllAulasCanceladas());
+
+  useEffect(() => {
+    const handleCanceladasUpdate = () => {
+      setAulasCanceladasList(getAllAulasCanceladas());
+    };
+    fetchAulasCanceladasFromCloud().then(handleCanceladasUpdate);
+
+    window.addEventListener('lms_aula_cancelada_updated', handleCanceladasUpdate);
+    return () => window.removeEventListener('lms_aula_cancelada_updated', handleCanceladasUpdate);
+  }, []);
+
   useEffect(() => {
     const handleActiveUpdate = () => {
       setActiveRecordings(getActiveRecordings());
@@ -1012,6 +1026,15 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           g.data_aula === todayFormatted
       );
 
+      // Verifica se a aula foi cancelada hoje pelo monitor/docência ou perfil acadêmico
+      const canceladaHoje =
+        isAulaCanceladaHoje(aula.id, aula.title, userEmail) ||
+        getAulaCanceladaStatus(aula.id, aula.title, todayFormatted) ||
+        getAulaCanceladaStatus(aula.id, aula.title, getDateForDayOfWeek(currentDayName));
+      if (canceladaHoje) {
+        continue;
+      }
+
       // 0. Alarme Prévio de Preparação (15 min antes do início da aula)
       if (currentMinutes >= (startMin - 15) && currentMinutes < startMin) {
         if (!activeSession && !isAlreadyRecordedToday) {
@@ -1074,7 +1097,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
 
     return null;
-  }, [currentMinutesTick, selectedTurma, activeRecordings, allGravacoes]);
+  }, [currentMinutesTick, selectedTurma, activeRecordings, allGravacoes, aulasCanceladasList]);
 
   // Cálculo da Aula Ativa em Andamento e Barra de Progresso/Contagem (com 15 min de antecedência)
   const activeLiveAulaMonitor = useMemo(() => {
@@ -1096,7 +1119,18 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       (a) => (selectedTurma === 'Todos' ? true : a.turma === selectedTurma) && a.dayOfWeek === currentDayName && a.startBRT && a.endBRT
     );
 
+    const todayFormatted = now.toLocaleDateString('pt-BR');
+
     for (const aula of aulasToday) {
+      // Ignora se a aula foi cancelada hoje pelo monitor/docência ou perfil acadêmico
+      const canceladaHoje =
+        isAulaCanceladaHoje(aula.id, aula.title, userEmail) ||
+        getAulaCanceladaStatus(aula.id, aula.title, todayFormatted) ||
+        getAulaCanceladaStatus(aula.id, aula.title, getDateForDayOfWeek(currentDayName));
+      if (canceladaHoje) {
+        continue;
+      }
+
       const [startH, startM] = aula.startBRT.split(':').map(Number);
       const [endH, endM] = aula.endBRT.split(':').map(Number);
       const startMin = startH * 60 + startM;
@@ -1125,7 +1159,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
 
     return null;
-  }, [currentMinutesTick, selectedTurma]);
+  }, [currentMinutesTick, selectedTurma, aulasCanceladasList]);
 
   // Efeito para tocar som de alarme quando acionado
   useEffect(() => {
@@ -1210,8 +1244,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [formDataAula, setFormDataAula] = useState<string>('');
   const [formMotivo, setFormMotivo] = useState<string>('');
 
-  // 0. AULAS CANCELADAS / SUSPENSAS
-  const [aulasCanceladasList, setAulasCanceladasList] = useState<AulaCanceladaItem[]>([]);
+  // MODAL DE CANCELAMENTO / REATIVAÇÃO DE AULA
   const [modalCancelamento, setModalCancelamento] = useState<{
     isOpen: boolean;
     aula: EscalaItem | null;
@@ -1224,18 +1257,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     existingCancelada: null,
   });
   const [motivoCancelamentoInput, setMotivoCancelamentoInput] = useState<string>('');
-
-  // Sincronização em tempo real de aulas canceladas
-  useEffect(() => {
-    const carregarCanceladas = () => {
-      setAulasCanceladasList(getAllAulasCanceladas());
-    };
-    carregarCanceladas();
-    fetchAulasCanceladasFromCloud().then(carregarCanceladas);
-
-    window.addEventListener('lms_aula_cancelada_updated', carregarCanceladas);
-    return () => window.removeEventListener('lms_aula_cancelada_updated', carregarCanceladas);
-  }, []);
 
   // 1. CARREGAMENTO DAS FOTOS REAIS DOS CADASTROS DOS USUÁRIOS
   useEffect(() => {
@@ -1701,11 +1722,25 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   // Helper para obter status de cancelamento de um item da escala
   const getCanceladaStatusForItem = (item: EscalaItem) => {
     const dateForDay = getDateForDayOfWeek(item.dayOfWeek);
+    const todayDate = new Date().toLocaleDateString('pt-BR');
+    const isToday = item.dayOfWeek === currentDayOfWeekName;
+
+    // 1. Consulta com a data calculada do dia da semana
+    const statusForDay = getAulaCanceladaStatus(item.id, item.title, dateForDay);
+    if (statusForDay) return statusForDay;
+
+    // 2. Se for a aula de hoje, consulta também com a data de hoje formatada
+    if (isToday) {
+      const statusToday = getAulaCanceladaStatus(item.id, item.title, todayDate);
+      if (statusToday) return statusToday;
+    }
+
+    // 3. Fallback na lista de aulas canceladas em memória
     return (
       aulasCanceladasList.find(
         (c) =>
           c.ativo &&
-          c.data_aula === dateForDay &&
+          (c.data_aula === dateForDay || (isToday && c.data_aula === todayDate)) &&
           (c.disciplina_id === item.id ||
             c.disciplina_name.toLowerCase().trim() === item.title.toLowerCase().trim())
       ) || null
@@ -1754,6 +1789,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       autorRole: currentRole,
     });
 
+    // Se a data do dia da semana for diferente da data local de hoje, garante também na data de hoje
+    const todayStr = new Date().toLocaleDateString('pt-BR');
+    if (modalCancelamento.currentDataAula !== todayStr) {
+      await cancelarAula({
+        disciplinaId: modalCancelamento.aula.id,
+        disciplinaName: modalCancelamento.aula.title,
+        dataAula: todayStr,
+        motivo: motivoFinal,
+        autorNome: monitorLogadoName,
+        autorEmail: userEmail || 'monitor@uiecbead.com.br',
+        autorRole: currentRole,
+      });
+    }
+
     setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
     setMotivoCancelamentoInput('');
     showToast(`🚫 Aviso registrado: Não haverá aula de "${modalCancelamento.aula.title}" em ${modalCancelamento.currentDataAula}.`);
@@ -1799,7 +1848,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       {/* ========================================================================= */}
       {/* BANNER DE ALARME INTELIGENTE DA MONITORIA AO VIVO                         */}
       {/* ========================================================================= */}
-      {monitorAlarm && (
+      {monitorAlarm && !isAulaCanceladaHoje(monitorAlarm.aula.id, monitorAlarm.aula.title, userEmail) && (
         <div className={`p-4 sm:p-5 rounded-3xl border shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in zoom-in-95 duration-300 ${
           monitorAlarm.type === 'recording'
             ? 'bg-gradient-to-r from-red-950 via-slate-900 to-rose-950 border-red-500/60 text-white'
@@ -2007,7 +2056,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       {/* ========================================================================= */}
       {/* CARD DE AULA ATIVA COM BARRA DE CONTAGEM / PROGRESSO DE DURAÇÃO (MONITOR) */}
       {/* ========================================================================= */}
-      {activeLiveAulaMonitor && (
+      {activeLiveAulaMonitor && !isAulaCanceladaHoje(activeLiveAulaMonitor.aula.id, activeLiveAulaMonitor.aula.title, userEmail) && (
         <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-xl space-y-4 animate-in fade-in duration-300">
           {/* Topo do Card de Aula Ativa */}
           <div>
@@ -2901,46 +2950,54 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                             {/* Ações Rápidas (Meet, Presença e Cancelamento) */}
                             <div className="space-y-2.5 pt-3 border-t border-gray-100">
                               {item.meetUrl ? (
-                                <div className="flex items-center gap-2">
-                                  <a
-                                    href={item.meetUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 ${
-                                      canceladaStatus
-                                        ? 'bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200'
-                                        : 'bg-red-600 hover:bg-red-700 text-white'
-                                    }`}
-                                  >
-                                    <Video className="w-3.5 h-3.5" />
-                                    <span>{canceladaStatus ? 'Meet (Aula Cancelada)' : 'Entrar no Meet'}</span>
-                                  </a>
+                                canceladaStatus ? (
+                                  <div className="w-full py-2.5 px-3 bg-gray-100 text-gray-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-gray-200 select-none cursor-not-allowed">
+                                    <Ban className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                                    <span>Meet Suspenso (Aula Cancelada)</span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2">
+                                    <a
+                                      href={item.meetUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 bg-red-600 hover:bg-red-700 text-white"
+                                    >
+                                      <Video className="w-3.5 h-3.5" />
+                                      <span>Entrar no Meet</span>
+                                    </a>
 
-                                  <button
-                                    onClick={() => handleCopyMeet(item.meetUrl!, item.id, item.title, item.professor)}
-                                    title="Copiar link do Google Meet formatado"
-                                    className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
-                                  >
-                                    {isCopiedMeet ? (
-                                      <>
-                                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                        <span>Copiado!</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="w-3.5 h-3.5" />
-                                        <span>Copiar Meet</span>
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
+                                    <button
+                                      onClick={() => handleCopyMeet(item.meetUrl!, item.id, item.title, item.professor)}
+                                      title="Copiar link do Google Meet formatado"
+                                      className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
+                                    >
+                                      {isCopiedMeet ? (
+                                        <>
+                                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                          <span>Copiado!</span>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Copy className="w-3.5 h-3.5" />
+                                          <span>Copiar Meet</span>
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
+                                )
                               ) : (
                                 <div className="w-full py-2.5 px-3 bg-slate-100 text-slate-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
                                   <span>📹 Módulo Gravado / Assíncrono</span>
                                 </div>
                               )}
 
-                              {item.presencaUrl ? (
+                              {canceladaStatus ? (
+                                <div className="w-full py-2.5 px-3 bg-red-50/80 text-red-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-red-200/80 select-none">
+                                  <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                                  <span>Lista de Presença Suspensa (Aula Cancelada)</span>
+                                </div>
+                              ) : item.presencaUrl ? (
                                 <div className="flex items-center gap-2">
                                   <button
                                     onClick={() => handleCopyPresenca(item.presencaUrl, item.id, item.title)}

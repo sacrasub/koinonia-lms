@@ -14,6 +14,8 @@ import {
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
   getAulaCanceladaStatus, 
+  isAulaCanceladaHoje,
+  cancelarAula,
   getAllAulasCanceladas, 
   fetchAulasCanceladasFromCloud, 
   AulaCanceladaItem 
@@ -441,7 +443,19 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         return false;
       });
 
+      // Se houver aula ativa no horário, verifica primeiro se não foi configurado que 'não haverá aula'
       if (liveNow && liveNow.start_time && liveNow.end_time) {
+        const canceladaHoje = isAulaCanceladaHoje(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, normalizedEmail);
+        if (canceladaHoje) {
+          // AULA CANCELADA HOJE: Suprime completamente o card de aula ativa, Meet e lista de presença
+          setActiveLiveAula(null);
+          setNextAulaToday(null);
+          setClassesFinishedToday(false);
+          setIsPreLive(false);
+          setMinutesToStart(0);
+          return;
+        }
+
         setActiveLiveAula(liveNow);
         setNextAulaToday(null);
         setClassesFinishedToday(false);
@@ -482,10 +496,13 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
       });
 
       if (upcoming) {
-        setActiveLiveAula(null);
-        setNextAulaToday(upcoming);
-        setClassesFinishedToday(false);
-        return;
+        const isUpcomingCancelada = isAulaCanceladaHoje(upcoming.disciplina_id || upcoming.id, upcoming.disciplina_name, normalizedEmail);
+        if (!isUpcomingCancelada) {
+          setActiveLiveAula(null);
+          setNextAulaToday(upcoming);
+          setClassesFinishedToday(false);
+          return;
+        }
       }
 
       setActiveLiveAula(null);
@@ -537,6 +554,23 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
       const compUpdated = { ...completedLessons, [itemKey]: false };
       setCompletedLessons(compUpdated);
       saveCompletedLessons(normalizedEmail, compUpdated);
+    }
+
+    if (status === 'nao_houve') {
+      const datePart = itemKey.split('_')[1] || new Date().toLocaleDateString('pt-BR');
+      const aulaMatch = studentAulas.find(a => itemKey.startsWith(a.code || a.id));
+      if (aulaMatch) {
+        const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
+        cancelarAula({
+          disciplinaId: aulaMatch.disciplina_id || aulaMatch.id,
+          disciplinaName: aulaMatch.disciplina_name,
+          dataAula: datePart,
+          motivo: 'Registrado que não houve aula nesta data.',
+          autorNome: authUser?.name || 'Aluno',
+          autorEmail: normalizedEmail,
+          autorRole: 'aluno',
+        });
+      }
     }
   };
 
@@ -658,18 +692,10 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   ];
 
   const aulasCanceladasHoje = useMemo(() => {
-    const dataHoje = new Date().toLocaleDateString('pt-BR');
-    return aulasCanceladasList.filter((c) => {
-      if (!c.ativo) return false;
-      if (c.data_aula !== dataHoje) return false;
-      return studentAulas.some(
-        (a) =>
-          a.disciplina_name.toLowerCase().trim() === c.disciplina_name.toLowerCase().trim() ||
-          a.id === c.disciplina_id ||
-          a.code === c.disciplina_id
-      );
-    });
-  }, [aulasCanceladasList, studentAulas]);
+    return studentAulas
+      .map((a) => isAulaCanceladaHoje(a.disciplina_id || a.id, a.disciplina_name, normalizedEmail))
+      .filter((c): c is AulaCanceladaItem => c !== null);
+  }, [aulasCanceladasList, studentAulas, normalizedEmail]);
 
   // Renderizador dos Cartões de Metodologias & Laboratórios de Prática Pastoral
   const renderCardsMetodologias = (isModoAula: boolean) => (
@@ -932,6 +958,12 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
   const renderAulaAoVivoOuProxima = () => {
     if (activeLiveAula) {
+      // Bloqueio rigoroso: se a aula ativa estiver cancelada hoje, não exibe Google Meet nem Presença
+      const isCanc = isAulaCanceladaHoje(activeLiveAula.disciplina_id || activeLiveAula.id, activeLiveAula.disciplina_name, normalizedEmail);
+      if (isCanc) {
+        return null;
+      }
+
       return (
         <div className={`p-4 sm:p-6 rounded-3xl border transition-all duration-300 shadow-md max-w-full overflow-hidden animate-in fade-in slide-in-from-top-3 ${
           is50PercentReached 
@@ -1093,6 +1125,11 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
       );
     }
     if (nextAulaToday) {
+      const isCancNext = isAulaCanceladaHoje(nextAulaToday.disciplina_id || nextAulaToday.id, nextAulaToday.disciplina_name, normalizedEmail);
+      if (isCancNext) {
+        return null;
+      }
+
       return (
         <div className="p-5 bg-blue-50/90 border border-blue-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-blue-900 text-xs shadow-sm">
           <div className="flex items-center gap-3">

@@ -8,7 +8,8 @@ import {
   Filter, Lightbulb, Bookmark, Tag, X, Download, PenTool,
   Maximize2, Minimize2, PanelLeftClose, PanelLeftOpen, ArrowLeft, ArrowRight,
   ExternalLink, FileCode, Check, Copy, Edit3, Wand2, RefreshCw, Zap, AlertTriangle,
-  KeyRound, Settings, Bot, Cpu, Star, ShieldCheck, Video, CheckCircle, Flame, CheckSquare
+  KeyRound, Settings, Bot, Cpu, Star, ShieldCheck, Video, CheckCircle, Flame, CheckSquare,
+  Mic
 } from 'lucide-react';
 import { CornellNote } from '@/types';
 import { 
@@ -20,9 +21,10 @@ import {
 import { transformToCornell, CornellTransformResult, AIProvider, OpenAIModel } from '@/services/aiCornellService';
 import { trackEvent } from '@/services/telemetryService';
 import { getDateForLesson, getSemester2026Weeks } from '@/lib/semesterUtils';
+import { LiveAudioTranscriber } from '@/components/LiveAudioTranscriber';
+import { getAulaCanceladaStatus } from '@/services/aulaCanceladaService';
 
 interface CadernoCornellPageProps {
-
   userEmail?: string;
   initialDisciplina?: string;
   initialDate?: string;
@@ -395,6 +397,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
   // Modais e Estados do Transformador de IA (Google Meet / Docs ➡️ Método Cornell)
   const [isAiSummaryModalOpen, setIsAiSummaryModalOpen] = useState<boolean>(false);
   const [isEditAiModalOpen, setIsEditAiModalOpen] = useState<boolean>(false);
+  const [isLiveTranscriberOpen, setIsLiveTranscriberOpen] = useState<boolean>(false);
   const [tempAiUrl, setTempAiUrl] = useState<string>('');
   const [tempAiText, setTempAiText] = useState<string>('');
   const [isAiTransforming, setIsAiTransforming] = useState<boolean>(false);
@@ -445,6 +448,14 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
   // Modal e Estado de Exclusão de Caderno (por data / duplicatas)
   const [noteToDelete, setNoteToDelete] = useState<CornellNote | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [canceladasUpdateCount, setCanceladasUpdateCount] = useState<number>(0);
+
+  // Escuta atualizações de aulas canceladas pelo monitor/docência
+  useEffect(() => {
+    const handleUpd = () => setCanceladasUpdateCount((prev) => prev + 1);
+    window.addEventListener('lms_aula_cancelada_updated', handleUpd);
+    return () => window.removeEventListener('lms_aula_cancelada_updated', handleUpd);
+  }, []);
 
   // Carregar e sincronizar anotações via Supabase DB + LocalStorage
   useEffect(() => {
@@ -587,8 +598,28 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       }
     };
 
+    const handleOpenLiveTranscriber = (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        disciplina_name?: string;
+        disciplina_code?: string;
+        date?: string;
+      }>;
+      if (customEvent.detail && customEvent.detail.disciplina_name) {
+        handleProcessOpenDetail({
+          disciplina_name: customEvent.detail.disciplina_name,
+          disciplina_code: customEvent.detail.disciplina_code,
+          date: customEvent.detail.date || new Date().toISOString().split('T')[0],
+        });
+      }
+      setIsLiveTranscriberOpen(true);
+    };
+
     window.addEventListener('lms_open_cornell_note', handleOpenCornellEvent);
-    return () => window.removeEventListener('lms_open_cornell_note', handleOpenCornellEvent);
+    window.addEventListener('lms_open_transcriber', handleOpenLiveTranscriber);
+    return () => {
+      window.removeEventListener('lms_open_cornell_note', handleOpenCornellEvent);
+      window.removeEventListener('lms_open_transcriber', handleOpenLiveTranscriber);
+    };
   }, [allNotes, normalizedEmail]);
 
   // Se parâmetros iniciais foram passados por props
@@ -1101,6 +1132,15 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
     return list;
   }, [activeDiscObj, allNotes]);
 
+  // Número da aula calculada para a folha ativa
+  const currentLessonNum = useMemo(() => {
+    if (!currentNote) return 1;
+    const found = scheduledLessonsForDisc.find(
+      (l) => l.noteId === currentNote.id || l.dateIso === currentNote.date || l.dateBr === currentNote.date
+    );
+    return found ? found.aulaNum : 1;
+  }, [currentNote, scheduledLessonsForDisc]);
+
   // Ação ao clicar em um dia de aula no cronograma
   const handleSelectOrInitLesson = (lesson: {
     aulaNum: number;
@@ -1480,6 +1520,13 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                   (normalizeToIso(currentNote.date) === lesson.dateIso ||
                    normalizeToBr(currentNote.date) === lesson.dateBr);
 
+                const canceladaStatus =
+                  getAulaCanceladaStatus(activeDiscObj.code, activeDiscObj.name, lesson.dateBr) ||
+                  getAulaCanceladaStatus(activeDiscObj.code, activeDiscObj.name, lesson.dateIso) ||
+                  getAulaCanceladaStatus(activeDiscObj.shortName, activeDiscObj.name, lesson.dateBr);
+
+                const isCanceladaSemNota = Boolean(canceladaStatus && !lesson.hasNote);
+
                 return (
                   <button
                     key={`lesson-${lesson.aulaNum}-${lesson.dateIso}`}
@@ -1489,9 +1536,17 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                         ? 'bg-blue-600 text-white border-blue-700 shadow-md ring-2 ring-blue-400/40 scale-[1.03]'
                         : lesson.hasNote
                         ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950 hover:bg-emerald-100/80 shadow-2xs'
+                        : isCanceladaSemNota
+                        ? 'bg-red-50/70 border-red-300 text-red-950 hover:bg-red-100 shadow-2xs'
                         : 'bg-gray-50 border-gray-200/80 text-gray-600 hover:bg-white hover:border-blue-300'
                     }`}
-                    title={lesson.hasNote ? `Abrir anotações da Aula ${lesson.aulaNum} (${lesson.dateBr})` : `Criar nova folha Cornell para a Aula ${lesson.aulaNum} (${lesson.dateBr})`}
+                    title={
+                      isCanceladaSemNota
+                        ? `Aula ${lesson.aulaNum} suspensa: "${canceladaStatus?.motivo}"`
+                        : lesson.hasNote
+                        ? `Abrir anotações da Aula ${lesson.aulaNum} (${lesson.dateBr})`
+                        : `Criar nova folha Cornell para a Aula ${lesson.aulaNum} (${lesson.dateBr})`
+                    }
                   >
                     {/* Número da Aula */}
                     <div className="flex items-center justify-between w-full">
@@ -1500,6 +1555,8 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                           ? 'bg-white/20 text-white'
                           : lesson.hasNote
                           ? 'bg-emerald-200/70 text-emerald-900 font-extrabold'
+                          : isCanceladaSemNota
+                          ? 'bg-red-200/70 text-red-900 font-extrabold'
                           : 'bg-gray-200 text-gray-600'
                       }`}>
                         Aula {lesson.aulaNum}
@@ -1514,7 +1571,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
 
                     {/* Data formatada */}
                     <div className={`text-xs font-black ${
-                      isCurrentlyActiveNote ? 'text-white' : 'text-gray-900'
+                      isCurrentlyActiveNote ? 'text-white' : isCanceladaSemNota ? 'text-red-950' : 'text-gray-900'
                     }`}>
                       {lesson.dateBr.substring(0, 5)}
                     </div>
@@ -1528,6 +1585,10 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                       ) : lesson.hasNote ? (
                         <span className="text-emerald-700 font-extrabold">
                           {lesson.noteCount > 1 ? `📑 ${lesson.noteCount} folhas` : '✓ Anotada'}
+                        </span>
+                      ) : isCanceladaSemNota ? (
+                        <span className="text-red-700 font-black">
+                          🚫 Cancelada
                         </span>
                       ) : (
                         <span className="text-gray-400">+ Iniciar</span>
@@ -2007,6 +2068,16 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
               )}
 
               <button
+                type="button"
+                onClick={() => setIsLiveTranscriberOpen(true)}
+                className="px-2.5 py-1.5 bg-red-600/90 hover:bg-red-600 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                title="Transcrever a fala do professor ao vivo em tempo real"
+              >
+                <Mic className="w-3.5 h-3.5 animate-pulse" />
+                <span>Transcrever ao Vivo</span>
+              </button>
+
+              <button
                 onClick={() => {
                   setTempAiUrl(currentNote.ai_summary_url || '');
                   setTempAiText(currentNote.ai_summary_text || '');
@@ -2297,6 +2368,30 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
             </div>
 
             <div className="space-y-4 overflow-y-auto pr-1 flex-1">
+              {/* ATALHO PARA TRANSCRIÇÃO AO VIVO (SPEECH-TO-TEXT) */}
+              <div className="p-3.5 bg-gradient-to-r from-red-50 via-rose-50 to-amber-50 border border-red-200 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-red-100 text-red-700 rounded-xl shadow-2xs">
+                    <Mic className="w-4 h-4 animate-pulse" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-red-950">Acompanhando a aula agora?</h4>
+                    <p className="text-[11px] text-red-800">Capture a fala do professor ao vivo em tempo real sem precisar de extensões.</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditAiModalOpen(false);
+                    setIsLiveTranscriberOpen(true);
+                  }}
+                  className="px-3.5 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0"
+                >
+                  <Mic className="w-3.5 h-3.5" />
+                  <span>Abrir Transcritor ao Vivo</span>
+                </button>
+              </div>
+
               {/* 1. Entrada de Link do Google Docs */}
               <div>
                 <div className="flex justify-between items-center mb-1">
@@ -3093,6 +3188,22 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
           </div>
         </div>
       )}
+
+      {/* TRANSCRITOR AO VIVO EM TEMPO REAL (WEB SPEECH NATIVE) */}
+      <LiveAudioTranscriber
+        isOpen={isLiveTranscriberOpen}
+        onClose={() => setIsLiveTranscriberOpen(false)}
+        disciplinaName={currentNote.disciplina_name}
+        disciplinaCode={currentNote.disciplina_code}
+        aulaNum={currentLessonNum}
+        date={currentNote.date}
+        onSendToCornell={(transcriptText) => {
+          setIsLiveTranscriberOpen(false);
+          setTempAiText(transcriptText);
+          setTempAiUrl('');
+          setIsEditAiModalOpen(true);
+        }}
+      />
     </div>
   );
 };

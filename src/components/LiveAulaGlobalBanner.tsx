@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Video, Clock, FileText, Sparkles, FolderOpen, ChevronDown, 
-  ChevronUp, Check, Copy, ExternalLink, CheckCircle2, AlertCircle
+  ChevronUp, Check, Copy, ExternalLink, CheckCircle2, AlertCircle,
+  Mic, Ban
 } from 'lucide-react';
 import { Aula } from '@/types';
 import { 
@@ -15,6 +16,7 @@ import {
 import { getAulasByTurma } from '@/lib/mockData';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { trackEvent } from '@/services/telemetryService';
+import { getAulaCanceladaStatus, isAulaCanceladaHoje, AulaCanceladaItem } from '@/services/aulaCanceladaService';
 
 interface LiveAulaGlobalBannerProps {
   userEmail: string;
@@ -46,6 +48,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
   });
 
   const [activeLiveAula, setActiveLiveAula] = useState<Aula | null>(null);
+  const [canceladaInfo, setCanceladaInfo] = useState<AulaCanceladaItem | null>(null);
   const [isPreLive, setIsPreLive] = useState<boolean>(false);
   const [minutesToStart, setMinutesToStart] = useState<number>(0);
   const [progressPercent, setProgressPercent] = useState<number>(0);
@@ -81,6 +84,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       const daysMap = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
       const currentDay = daysMap[now.getDay()];
       const currentBrtMinutes = getCurrentBrasiliaMinutes();
+      const todayFormatted = now.toLocaleDateString('pt-BR');
 
       const currentTurmaAulas = getAulasByTurma(studentTurmaIdx ?? 1);
       const todayClasses = currentTurmaAulas.filter(
@@ -89,9 +93,24 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
 
       if (todayClasses.length === 0) {
         setActiveLiveAula(null);
+        setCanceladaInfo(null);
         setIsPreLive(false);
         setMinutesToStart(0);
         return;
+      }
+
+      // 1. Verifica primeiro se QUALQUER aula de hoje da turma está com status de cancelamento
+      for (const todayAula of todayClasses) {
+        const cancelStatus =
+          isAulaCanceladaHoje(todayAula.disciplina_id || todayAula.id, todayAula.disciplina_name, userEmail) ||
+          getAulaCanceladaStatus(todayAula.disciplina_id || todayAula.id, todayAula.disciplina_name, todayFormatted);
+        if (cancelStatus) {
+          setActiveLiveAula(todayAula);
+          setCanceladaInfo(cancelStatus);
+          setIsPreLive(false);
+          setMinutesToStart(0);
+          return;
+        }
       }
 
       // Identifica aula ativa (incluindo janela de 15 minutos de antecedência)
@@ -107,7 +126,21 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       });
 
       if (liveNow && liveNow.start_time && liveNow.end_time) {
+        // Checa se a aula atual está cancelada
+        const cancelStatus =
+          isAulaCanceladaHoje(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, userEmail) ||
+          getAulaCanceladaStatus(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, todayFormatted);
+
+        if (cancelStatus) {
+          setActiveLiveAula(liveNow);
+          setCanceladaInfo(cancelStatus);
+          setIsPreLive(false);
+          setMinutesToStart(0);
+          return;
+        }
+
         setActiveLiveAula(liveNow);
+        setCanceladaInfo(null);
 
         const [sh, sm] = liveNow.start_time.split(':').map(Number);
         const [eh, em] = liveNow.end_time.split(':').map(Number);
@@ -163,13 +196,18 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       }
 
       setActiveLiveAula(null);
+      setCanceladaInfo(null);
       setIsPreLive(false);
       setMinutesToStart(0);
     };
 
     checkLiveStatus();
     const interval = setInterval(checkLiveStatus, 10000); // 10 segundos matemática local
-    return () => clearInterval(interval);
+    window.addEventListener('lms_aula_cancelada_updated', checkLiveStatus);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('lms_aula_cancelada_updated', checkLiveStatus);
+    };
   }, [studentTurmaIdx]);
 
   if (!activeLiveAula) return null;
@@ -201,6 +239,80 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       }));
     }, 150);
   };
+
+  const handleOpenLiveTranscriber = () => {
+    if (!activeLiveAula) return;
+    trackEvent('cornell_notes', 'open_live_transcriber_from_banner', activeLiveAula.disciplina_name, {}, normalizedEmail, 'aluno');
+    if (onTabChange) {
+      onTabChange('aluno-caderno');
+    }
+    setTimeout(() => {
+      const todayIso = new Date().toISOString().split('T')[0];
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lms_open_transcriber', {
+          detail: {
+            disciplina_name: activeLiveAula.disciplina_name,
+            disciplina_code: activeLiveAula.code || 'TEO-2026',
+            date: todayIso,
+          }
+        }));
+      }
+    }, 150);
+  };
+
+  if (canceladaInfo) {
+    return (
+      <div data-tour="live-banner" className={`w-full mb-5 animate-in fade-in slide-in-from-top-3 duration-300 ${isInsideMainList ? 'mt-0' : ''}`}>
+        <div className="p-4 sm:p-5 rounded-3xl border-2 border-red-300 bg-gradient-to-br from-red-50 via-white to-rose-50/80 shadow-md text-slate-900 space-y-3">
+          {/* Cabeçalho do Card Cancelada */}
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-3 py-1 rounded-full font-black text-xs uppercase bg-red-600 text-white flex items-center gap-1.5 shadow-xs">
+                <Ban className="w-3.5 h-3.5" />
+                <span>🚫 AULA CANCELADA HOJE</span>
+              </span>
+              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-900 border border-red-200">
+                {canceladaInfo.data_aula}
+              </span>
+            </div>
+
+            <span className="text-[11px] font-mono font-bold text-red-700 bg-red-50/90 px-2.5 py-1 rounded-lg border border-red-200">
+              Registrado por: {canceladaInfo.autor_nome}
+            </span>
+          </div>
+
+          {/* Nome da Disciplina e Motivo */}
+          <div className="space-y-1.5">
+            <h3 className="font-black text-base sm:text-lg text-red-950">
+              {canceladaInfo.disciplina_name}
+            </h3>
+            <div className="p-3 bg-white/90 rounded-2xl border border-red-200 shadow-2xs">
+              <span className="text-xs font-bold text-red-900 block mb-0.5">Motivo informado pela monitoria / docência:</span>
+              <p className="text-xs text-red-950 font-medium leading-relaxed italic">
+                "{canceladaInfo.motivo}"
+              </p>
+            </div>
+            <p className="text-[11px] text-red-700 flex items-center gap-1.5 pt-0.5">
+              <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
+              <span>A transmissão ao vivo no Google Meet e o formulário de presença estão suspensos nesta data.</span>
+            </p>
+          </div>
+
+          {/* Ações de Estudo Alternativo */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-red-100">
+            <button
+              type="button"
+              onClick={handleOpenCornell}
+              className="px-3.5 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Acessar Caderno de Estudos Cornell</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div data-tour="live-banner" className={`w-full mb-5 animate-in fade-in slide-in-from-top-3 duration-300 ${isInsideMainList ? 'mt-0' : ''}`}>
@@ -304,7 +416,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
             </div>
 
             {/* Ações e Links Principais */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 pt-1">
               {/* Botão Entrar no Google Meet */}
               {activeLiveAula.google_meet_url && (
                 <a
@@ -340,6 +452,17 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
                   <span>{is50PercentReached ? 'Assinar Lista de Presença' : 'Lista de Presença (Forms)'}</span>
                 </a>
               ) : null}
+
+              {/* Botão Transcrever ao Vivo */}
+              <button
+                type="button"
+                onClick={handleOpenLiveTranscriber}
+                className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-900 border border-red-200 font-extrabold text-xs rounded-xl transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer shadow-2xs"
+                title="Abrir transcrição em tempo real da aula"
+              >
+                <Mic className="w-3.5 h-3.5 text-red-600 shrink-0 animate-pulse" />
+                <span>Transcrever ao Vivo</span>
+              </button>
 
               {/* Botão Caderno Cornell IA */}
               <button

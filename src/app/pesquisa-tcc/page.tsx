@@ -6,7 +6,7 @@ import {
   HelpCircle, ArrowRight, ArrowLeft, Share2, Copy, 
   Check, Sparkles, AlertCircle, BookOpen, Send, RefreshCw, 
   MessageSquare, Lock, LogIn, ExternalLink, Info, X, Lightbulb,
-  Edit3, CheckCircle, UserCheck, BarChart3, Square, CheckSquare
+  Edit3, CheckCircle, UserCheck, BarChart3, Square, CheckSquare, Target
 } from 'lucide-react';
 import { 
   TipoPublico, 

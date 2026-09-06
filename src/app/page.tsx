@@ -45,6 +45,7 @@ import { PlanoEstudosPage } from '@/components/PlanoEstudosPage';
 import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
 import { AttendanceAlarmModal } from '@/components/AttendanceAlarmModal';
 import PesquisaTCCPage from '@/app/pesquisa-tcc/page';
+import { OficinaEstudosHub } from '@/components/oficina-estudos/OficinaEstudosHub';
 
 export default function Home() {
   const router = useRouter();
@@ -565,6 +566,10 @@ export default function Home() {
 
     if (activeTab === 'tcc-sacramento' || activeTab === 'tcc-painel') {
       return <TccSacramentoPage onTabChange={handleTabChange} />;
+    }
+
+    if (activeTab === 'oficina-estudos' || activeTab === 'laboratorio-tcc' || activeTab === 'trilha-estudos' || activeTab === 'oficina-tcc' || activeTab === 'imersao-tcc') {
+      return <OficinaEstudosHub userEmail={userEmail} onTabChange={handleTabChange} />;
     }
 
     if (activeTab === 'pesquisa-tcc') {

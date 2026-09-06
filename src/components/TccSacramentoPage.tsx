@@ -25,6 +25,7 @@ import {
   deleteEnquetePersonalizada,
   EnquetePersonalizada,
   SecaoEnqueteCustom,
+  PerguntaEnqueteCustom,
   TipoRespostaEnquete,
   normalizeEnqueteSecoes,
   TCC_TITULO_PRINCIPAL,
@@ -527,7 +528,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
       ...sec,
       id: sec.id || `sec_${sIdx + 1}`,
       titulo: sec.titulo.trim() || `Seção ${sIdx + 1}`,
-      descricao: sec.descricao.trim(),
+      descricao: sec.descricao?.trim() || '',
       badge: sec.badge?.trim() || `Seção ${sIdx + 1}`,
       dicaAjuda: sec.dicaAjuda?.trim(),
       dicaConteudo: sec.dicaConteudo?.trim(),
@@ -934,6 +935,34 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
           )}
         </div>
       </header>
+
+      {/* BANNER / ATALHO DIRETO: OFICINA DE ESTUDOS & IMERSÃO NO TCC */}
+      <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 border border-amber-400/50 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-1.5 max-w-3xl">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+              Novo Módulo Acadêmico
+            </span>
+            <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              Trilha de Estudos: Laboratório de Imersão e Metacognição do TCC
+            </h3>
+          </div>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Acesse os 4 Sprints Semanais com timer Pomodoro de 2-3h, o Caderno Digital Cornell com exportação Markdown/PDF, o Hub de Citações ABNT em 1 clique, a Matriz Dialética de Autores e o Simulador de Defesa Oral com gravação de voz.
+          </p>
+        </div>
+        <Button
+          onClick={() => {
+            if (onTabChange) onTabChange('oficina-estudos');
+            else window.location.href = '/estudos';
+          }}
+          className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-5 py-3 rounded-2xl shadow-xl shrink-0 flex items-center gap-2 cursor-pointer transition hover:scale-105 active:scale-95"
+        >
+          <span>Entrar na Oficina de Estudos</span>
+          <ArrowRight className="w-4 h-4" />
+        </Button>
+      </div>
 
       {/* SEÇÃO PRINCIPAL: DIÁRIO DE BORDO DO TCC COM MÉTODO CORNELL */}
       <section className="space-y-4">
@@ -1485,7 +1514,7 @@ export const TccSacramentoPage: React.FC<TccSacramentoPageProps> = ({ onTabChang
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-200">
-                    <span>{enq.perguntas.length} {enq.perguntas.length === 1 ? 'pergunta' : 'perguntas'}</span>
+                    <span>{(enq.perguntas || []).length} {(enq.perguntas || []).length === 1 ? 'pergunta' : 'perguntas'}</span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleCopyEnqueteLink(enq)}

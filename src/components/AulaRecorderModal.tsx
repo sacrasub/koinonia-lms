@@ -6,7 +6,7 @@ import {
   UploadCloud, CheckCircle2, AlertCircle, Sparkles, Clock, FolderOpen, 
   Layers, ExternalLink, ShieldCheck, Check, Copy, HelpCircle,
   Minimize2, Maximize2, Lock, Smartphone, Loader2, RefreshCw, Trash2, Unlock,
-  Bot, Timer
+  Bot, Timer, Infinity as InfinityIcon
 } from 'lucide-react';
 import { Disciplina, UserRole } from '@/types';
 import { getAllDisciplinas } from '@/services/disciplinasService';
@@ -36,6 +36,12 @@ import {
   deleteLocalRecording,
   LocalRecordingSession
 } from '@/services/recordingStorageService';
+import {
+  saveVideoToLocalDriveFolder,
+  getSavedFolderDisplay,
+  isFileSystemAccessSupported,
+  pickGoogleDriveLocalFolder,
+} from '@/services/localDriveFolderService';
 
 interface AulaRecorderModalProps {
   isOpen: boolean;
@@ -117,6 +123,11 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const [activeSessionKey, setActiveSessionKey] = useState<string | null>(null);
   const [lockedByOther, setLockedByOther] = useState<ActiveRecordingSession | null>(null);
   const [activeCloudSession, setActiveCloudSession] = useState<ActiveRecordingSession | null>(null);
+
+  // Estados de Sincronização Local com Google Drive Desktop (ex: D:\Meu Drive\...)
+  const [isSavingToLocalFolder, setIsSavingToLocalFolder] = useState<boolean>(false);
+  const [localFolderSuccess, setLocalFolderSuccess] = useState<string | null>(null);
+  const [localFolderError, setLocalFolderError] = useState<string | null>(null);
 
   // Refs de Mídia e Estado Estável
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -644,6 +655,31 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     }
   };
 
+  // Estende o tempo restante do Auto-Stop do Piloto Automático
+  const extendAutoStopMinutes = (additionalMinutes: number) => {
+    const additionalMs = additionalMinutes * 60 * 1000;
+    const now = Date.now();
+    const currentTarget = autoStopTargetTimeRef.current || now;
+    const baseTime = currentTarget > now ? currentTarget : now;
+    const newTarget = baseTime + additionalMs;
+    autoStopTargetTimeRef.current = newTarget;
+    const remaining = Math.max(0, Math.round((newTarget - now) / 1000));
+    setAutoStopRemainingSeconds(remaining);
+  };
+
+  // Cancela o Auto-Stop para que a gravação continue sem limite de tempo
+  const cancelAutoStop = () => {
+    autoStopTargetTimeRef.current = null;
+    setAutoStopRemainingSeconds(null);
+  };
+
+  // Reativa ou define um Auto-Stop rápido a partir de agora
+  const setQuickAutoStop = (minutes: number) => {
+    const newTarget = Date.now() + minutes * 60 * 1000;
+    autoStopTargetTimeRef.current = newTarget;
+    setAutoStopRemainingSeconds(minutes * 60);
+  };
+
   const stopRecording = () => {
     setIsMinimized(false); // Auto-expande imediatamente para exibir a conclusão e opções
     autoStopTargetTimeRef.current = null;
@@ -672,6 +708,59 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     if (!fileToUpload || !selectedDisciplina) return;
     const fileName = customFile?.name || videoFileName || `LMS_Aula_${aulaNum}_${selectedDisciplina.name}.webm`;
     executeAutoUploadPipeline(fileToUpload, fileName, recordingTime, activeSessionKey);
+  };
+
+  // Salvar vídeo diretamente na pasta local do Google Drive Desktop (ex: D:\Meu Drive\01 - Teologia\11 - Gravações das aulas)
+  const handleSaveToGoogleDriveDesktop = async () => {
+    const blobToSave = customFile || recordedBlob;
+    if (!blobToSave || !selectedDisciplina) return;
+
+    setIsSavingToLocalFolder(true);
+    setLocalFolderError(null);
+    setLocalFolderSuccess(null);
+
+    const safeDisc = selectedDisciplina.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+    const fileName = customFile?.name || videoFileName || `LMS_UIECB_Aula_${String(aulaNum).padStart(2, '0')}_${safeDisc}.webm`;
+
+    try {
+      const result = await saveVideoToLocalDriveFolder(blobToSave, fileName);
+      if (result.success) {
+        setLocalFolderSuccess(`✅ Vídeo salvo com sucesso na pasta "${result.folderName}"! O aplicativo Google Drive Desktop já está sincronizando.`);
+        setIsSavedSuccess(true);
+
+        // Registra a gravação no LMS para os alunos visualizarem
+        addGravacao({
+          disciplina_id: selectedDisciplina.id,
+          disciplina_name: selectedDisciplina.name,
+          aula_num: aulaNum,
+          data_aula: dataAula.trim() || new Date().toLocaleDateString('pt-BR'),
+          title: `Aula ${aulaNum} • ${selectedDisciplina.name} (Gravação HD)`,
+          video_url: OFFICIAL_DRIVE_RECORDINGS_FOLDER,
+          duration_formatted: formatDuration(recordingTime),
+          duration_seconds: recordingTime,
+          recorded_by_name: getMonitorDisplayName(),
+          recorded_by_email: normalizedEmail,
+          recorded_by_role: currentRole === 'admin' ? 'admin' : currentRole === 'professor' ? 'professor' : 'monitor',
+          is_restricted_lms: true,
+        });
+
+        // Limpa lock e IndexedDB
+        if (activeSessionKey) {
+          await updateLocalRecordingStatus(activeSessionKey, 'uploaded');
+          await stopActiveRecording(activeSessionKey);
+        }
+        await forceClearActiveRecordingForAula(selectedDisciplina.id, aulaNum);
+        setActiveSessionKey(null);
+
+        if (onRecordingSaved) onRecordingSaved();
+      } else {
+        setLocalFolderError(result.error || 'Não foi possível salvar na pasta do Google Drive.');
+      }
+    } catch (err: any) {
+      setLocalFolderError(err.message || 'Erro ao gravar na pasta local do Google Drive.');
+    } finally {
+      setIsSavingToLocalFolder(false);
+    }
   };
 
   // Enviar gravação recuperada de sessão interrompida
@@ -855,10 +944,34 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 {isUploadingToDrive ? '☁️ Upload Drive' : isSavedSuccess ? '✅ Concluído' : recordingState === 'recording' ? '🔴 Gravando Meet' : '⏸ Pausada'}
               </span>
               {autoStopRemainingSeconds !== null && !isUploadingToDrive && !isSavedSuccess && (
-                <span className="text-[10px] bg-purple-500/25 text-purple-300 border border-purple-400/40 px-2 py-0.2 rounded-full font-mono font-bold flex items-center gap-1 animate-pulse">
-                  <Bot className="w-3 h-3 text-purple-400" />
-                  <span>Auto-Stop: {formatDuration(autoStopRemainingSeconds)}</span>
-                </span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] bg-purple-500/25 text-purple-300 border border-purple-400/40 px-2 py-0.5 rounded-full font-mono font-bold flex items-center gap-1 animate-pulse">
+                    <Bot className="w-3 h-3 text-purple-400" />
+                    <span>Auto-Stop: {formatDuration(autoStopRemainingSeconds)}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      extendAutoStopMinutes(15);
+                    }}
+                    className="px-1.5 py-0.5 bg-purple-800 hover:bg-purple-700 text-[10px] font-black text-white rounded-md border border-purple-500 transition cursor-pointer"
+                    title="Adicionar +15 minutos ao Auto-Stop"
+                  >
+                    +15m
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cancelAutoStop();
+                    }}
+                    className="px-1.5 py-0.5 bg-red-900/80 hover:bg-red-800 text-[10px] font-bold text-red-200 rounded-md border border-red-500/40 transition cursor-pointer"
+                    title="Desativar Auto-Stop e gravar sem interrupção"
+                  >
+                    Sem Limite
+                  </button>
+                </div>
               )}
             </div>
             <p className="text-[11px] text-slate-300 truncate max-w-[170px] sm:max-w-[220px] font-medium">
@@ -1246,6 +1359,41 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 </button>
               </div>
 
+              {/* OPÇÃO DE TRANSCRIÇÃO DE VOZ AO VIVO */}
+              <div className="p-3.5 bg-gradient-to-r from-red-50 via-rose-50 to-amber-50 border border-red-200 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-red-100 text-red-600 rounded-xl shadow-2xs">
+                    <Mic className="w-4 h-4 animate-pulse" />
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-black text-red-950">Quer transcrever a aula ao vivo por voz?</h5>
+                    <p className="text-[11px] text-red-800 leading-tight">Gere texto em tempo real via Web Speech sem custo e envie para o Caderno Cornell.</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCloseModal();
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: { tab: 'aluno-caderno' } }));
+                      setTimeout(() => {
+                        window.dispatchEvent(new CustomEvent('lms_open_transcriber', {
+                          detail: {
+                            disciplina_name: selectedDisciplina?.name,
+                            disciplina_code: selectedDisciplina?.code,
+                            aulaNum,
+                          }
+                        }));
+                      }, 200);
+                    }
+                  }}
+                  className="px-3.5 py-2 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0"
+                >
+                  <Mic className="w-3.5 h-3.5" />
+                  <span>Transcrever ao Vivo</span>
+                </button>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-700 mb-1">
@@ -1515,14 +1663,101 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 {selectedDisciplina?.name} • Aula {aulaNum}
               </p>
 
-              {autoStopRemainingSeconds !== null && (
-                <div className="p-3 bg-purple-950/80 border border-purple-500/50 rounded-xl text-xs text-purple-200 flex items-center justify-between gap-3 animate-in fade-in">
-                  <div className="flex items-center gap-2">
-                    <Bot className="w-4 h-4 text-purple-400 shrink-0 animate-pulse" />
-                    <span className="font-bold">Piloto Automático Ativo</span>
+              {/* STATUS E CONTROLE DE TEMPO DO PILOTO AUTOMÁTICO */}
+              {autoStopRemainingSeconds !== null ? (
+                <div className="p-3.5 bg-gradient-to-r from-purple-950/90 via-slate-900 to-indigo-950/90 border border-purple-500/60 rounded-2xl text-xs text-purple-200 space-y-2.5 shadow-lg animate-in fade-in">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <Bot className="w-4 h-4 text-purple-400 shrink-0 animate-pulse" />
+                      <span className="font-extrabold text-white">Piloto Automático Ativo</span>
+                      {autoStopRemainingSeconds <= 300 && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-400/30 animate-pulse">
+                          ⚠️ Encerrando em breve!
+                        </span>
+                      )}
+                    </div>
+                    <div className="font-mono font-black text-purple-200 bg-purple-900/80 px-3 py-1 rounded-xl border border-purple-400/40 text-sm shadow-inner">
+                      Auto-Stop em: {formatDuration(autoStopRemainingSeconds)}
+                    </div>
                   </div>
-                  <div className="font-mono font-black text-purple-300 bg-purple-900/60 px-2.5 py-1 rounded-lg border border-purple-400/30">
-                    Auto-Stop em: {formatDuration(autoStopRemainingSeconds)}
+
+                  {/* CONTROLES DE EXTENSÃO DA GRAVAÇÃO */}
+                  <div className="pt-2 border-t border-purple-800/40 flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-[11px] text-purple-300 font-semibold flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-purple-400" />
+                      <span>A aula atrasou ou vai continuar?</span>
+                    </span>
+
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => extendAutoStopMinutes(15)}
+                        className="px-2.5 py-1 bg-purple-800/60 hover:bg-purple-700 text-purple-100 hover:text-white font-bold text-[11px] rounded-lg border border-purple-500/40 transition active:scale-95 cursor-pointer flex items-center gap-1 shadow-2xs"
+                        title="Adicionar mais 15 minutos ao tempo restante"
+                      >
+                        <span>+15 min</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => extendAutoStopMinutes(30)}
+                        className="px-2.5 py-1 bg-purple-800/60 hover:bg-purple-700 text-purple-100 hover:text-white font-bold text-[11px] rounded-lg border border-purple-500/40 transition active:scale-95 cursor-pointer flex items-center gap-1 shadow-2xs"
+                        title="Adicionar mais 30 minutos ao tempo restante"
+                      >
+                        <span>+30 min</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => extendAutoStopMinutes(60)}
+                        className="px-2.5 py-1 bg-purple-800/60 hover:bg-purple-700 text-purple-100 hover:text-white font-bold text-[11px] rounded-lg border border-purple-500/40 transition active:scale-95 cursor-pointer flex items-center gap-1 shadow-2xs"
+                        title="Adicionar mais 1 hora ao tempo restante"
+                      >
+                        <span>+1 hora</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={cancelAutoStop}
+                        className="px-2.5 py-1 bg-red-950/80 hover:bg-red-900/90 text-red-200 hover:text-white font-bold text-[11px] rounded-lg border border-red-500/50 transition active:scale-95 cursor-pointer flex items-center gap-1 shadow-2xs"
+                        title="Cancelar o auto-stop e continuar gravando sem interrupção"
+                      >
+                        <InfinityIcon className="w-3.5 h-3.5 text-red-300" />
+                        <span>Gravar sem Limite</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Quando o Auto-Stop foi cancelado pelo usuário */
+                <div className="p-3 bg-emerald-950/50 border border-emerald-500/40 rounded-2xl text-xs text-emerald-200 flex items-center justify-between flex-wrap gap-2 animate-in fade-in">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span className="font-extrabold text-emerald-200">Gravação Contínua Sem Limite de Tempo</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] text-emerald-300/80">Reativar Auto-Stop:</span>
+                    <button
+                      type="button"
+                      onClick={() => setQuickAutoStop(15)}
+                      className="px-2 py-0.5 bg-emerald-800/60 hover:bg-emerald-700 text-emerald-100 font-bold text-[10px] rounded-lg border border-emerald-500/40 transition cursor-pointer"
+                    >
+                      +15 min
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setQuickAutoStop(30)}
+                      className="px-2 py-0.5 bg-emerald-800/60 hover:bg-emerald-700 text-emerald-100 font-bold text-[10px] rounded-lg border border-emerald-500/40 transition cursor-pointer"
+                    >
+                      +30 min
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setQuickAutoStop(60)}
+                      className="px-2 py-0.5 bg-emerald-800/60 hover:bg-emerald-700 text-emerald-100 font-bold text-[10px] rounded-lg border border-emerald-500/40 transition cursor-pointer"
+                    >
+                      +1 hora
+                    </button>
                   </div>
                 </div>
               )}
@@ -1681,6 +1916,56 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                     <span>Reenviar para a Pasta do Google Drive</span>
                   </button>
                 )}
+              </div>
+
+              {/* Opção em Destaque: Salvar na Pasta Sincronizada do Google Drive Desktop */}
+              <div className="p-3.5 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-2xl space-y-2">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-xs font-black text-indigo-950 flex items-center gap-1.5">
+                    <FolderOpen className="w-4 h-4 text-indigo-600" />
+                    <span>Google Drive Desktop Local (Recomendado)</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded-full border border-indigo-200">
+                    Sem erro de cota • Sincronização 100% direta
+                  </span>
+                </div>
+
+                <p className="text-[11px] text-indigo-900 leading-relaxed">
+                  Grava o vídeo pronto direto na pasta do seu computador (<strong>D:\Meu Drive\01 - Teologia\11 - Gravações das aulas</strong>). O Google Drive para Desktop sincronizará automaticamente com a nuvem.
+                </p>
+
+                {localFolderSuccess && (
+                  <div className="p-2.5 bg-emerald-100 text-emerald-950 text-xs font-bold rounded-xl border border-emerald-300 flex items-center gap-1.5 animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>{localFolderSuccess}</span>
+                  </div>
+                )}
+
+                {localFolderError && (
+                  <div className="p-2.5 bg-red-100 text-red-950 text-xs font-bold rounded-xl border border-red-300 flex items-center gap-1.5 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span>{localFolderError}</span>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  disabled={isSavingToLocalFolder}
+                  onClick={handleSaveToGoogleDriveDesktop}
+                  className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-98 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer border border-indigo-400"
+                >
+                  {isSavingToLocalFolder ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>Gravando na Pasta do Google Drive...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FolderOpen className="w-4 h-4 text-amber-300" />
+                      <span>📁 Salvar na Pasta do Google Drive Desktop (1 Clique)</span>
+                    </>
+                  )}
+                </button>
               </div>
 
               {/* Opções de Download Local e Acesso ao Drive */}

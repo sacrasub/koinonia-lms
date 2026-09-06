@@ -10,6 +10,7 @@ import { getCurrentBrasiliaMinutes } from '@/lib/timeUtils';
 import { getAulasByTurma } from '@/lib/mockData';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { trackEvent } from '@/services/telemetryService';
+import { getAulaCanceladaStatus, isAulaCanceladaHoje } from '@/services/aulaCanceladaService';
 
 interface AttendanceAlarmModalProps {
   userEmail: string;
@@ -86,6 +87,7 @@ export const AttendanceAlarmModal: React.FC<AttendanceAlarmModalProps> = ({
       const currentDay = daysMap[now.getDay()];
       const currentBrtMinutes = getCurrentBrasiliaMinutes();
       const todayDateStr = now.toISOString().split('T')[0];
+      const todayFormatted = now.toLocaleDateString('pt-BR');
 
       const currentTurmaAulas = getAulasByTurma(turmaIdx);
       const todayClasses = currentTurmaAulas.filter(
@@ -107,6 +109,19 @@ export const AttendanceAlarmModal: React.FC<AttendanceAlarmModalProps> = ({
       });
 
       if (liveNow) {
+        // Bloqueia disparo se a aula estiver cancelada hoje
+        const isCancelada =
+          isAulaCanceladaHoje(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, userEmail) ||
+          getAulaCanceladaStatus(
+            liveNow.disciplina_id || liveNow.id,
+            liveNow.disciplina_name,
+            todayFormatted
+          );
+        if (isCancelada) {
+          setIsOpen(false);
+          return;
+        }
+
         const alarmKey = `${liveNow.id}_${todayDateStr}`;
         const alreadyDismissed = typeof window !== 'undefined' && 
           sessionStorage.getItem(`lms_attendance_alarm_dismissed_${alarmKey}`) === 'true';
@@ -120,11 +135,11 @@ export const AttendanceAlarmModal: React.FC<AttendanceAlarmModalProps> = ({
           // Notificação nativa do navegador (se autorizada)
           if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
             try {
-              new Notification('⏰ Hora da Presença • Koinonia LMS', {
-                body: `A lista de presença da aula de ${liveNow.disciplina_name} foi liberada! Clique para assinar.`,
-                icon: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
+              new Notification(`📋 Lista de Presença: ${liveNow.disciplina_name}`, {
+                body: 'Metade da aula atingida! Não se esqueça de assinar a chamada oficial.',
+                icon: '/favicon.ico',
               });
-            } catch (err) {}
+            } catch (_) {}
           }
         }
       }
@@ -132,7 +147,17 @@ export const AttendanceAlarmModal: React.FC<AttendanceAlarmModalProps> = ({
 
     checkAttendanceSchedule();
     const interval = setInterval(checkAttendanceSchedule, 15000); // Checa a cada 15s
-    return () => clearInterval(interval);
+
+    const handleCanceladaEvent = () => {
+      setIsOpen(false);
+      checkAttendanceSchedule();
+    };
+    window.addEventListener('lms_aula_cancelada_updated', handleCanceladaEvent);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('lms_aula_cancelada_updated', handleCanceladaEvent);
+    };
   }, [normalizedEmail, currentRole]);
 
   if (!isOpen || !activeAula) return null;
