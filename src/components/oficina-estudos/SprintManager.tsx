@@ -312,24 +312,39 @@ export const SprintManager: React.FC<SprintManagerProps> = ({
                       </div>
                     </div>
 
-                    {/* Ação para Fichar no Cornell */}
-                    {onOpenCornellWithBook && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() =>
-                          onOpenCornellWithBook(
-                            item.autor_referencia,
-                            item.titulo,
-                            activeSprint.eixo
-                          )
-                        }
-                        className="shrink-0 border-slate-700 bg-slate-800/60 hover:bg-slate-800 text-slate-200 text-xs rounded-xl flex items-center gap-1.5"
-                      >
-                        <FileText className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Fichar no Cornell</span>
-                      </Button>
-                    )}
+                    {/* Ações: Ler no Drive & Fichar no Cornell */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      {item.link_leitura && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => window.open(item.link_leitura, '_blank')}
+                          className="border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 text-xs rounded-xl flex items-center gap-1.5 cursor-pointer"
+                          title="Abrir arquivo PDF original no Google Drive"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+                          <span>Ler no Drive</span>
+                        </Button>
+                      )}
+
+                      {onOpenCornellWithBook && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            onOpenCornellWithBook(
+                              item.autor_referencia,
+                              item.titulo,
+                              activeSprint.eixo
+                            )
+                          }
+                          className="border-slate-700 bg-slate-800/60 hover:bg-slate-800 text-slate-200 text-xs rounded-xl flex items-center gap-1.5"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Fichar</span>
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

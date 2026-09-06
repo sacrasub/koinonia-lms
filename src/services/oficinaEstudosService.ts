@@ -55,6 +55,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Gandra & Baade (2018) — O Seminário Clássico',
         descricao: 'Leitura sobre o modelo de enclausuramento espiritual e os custos insustentáveis de manutenção dos internatos teológicos no Brasil.',
         autor_referencia: 'GANDRA, E. A.; BAADE, J. H.',
+        link_leitura: 'https://drive.google.com/file/d/1uLERidrciF2DFbAFL2EgfEbYa8malQU8/view',
         paginas_recomendadas: 'p. 15-38',
         lido: true,
       },
@@ -63,6 +64,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Josemar Modes (2020) — A Virada Paradigmática da EaD',
         descricao: 'Análise do perfil do estudante adulto trabalhador e a desterritorialização da formação ministerial.',
         autor_referencia: 'MODES, Josemar',
+        link_leitura: 'https://drive.google.com/file/d/1fhP4H2bNJTmxhkHxt0LwymoES6ij1fWT/view',
         paginas_recomendadas: 'p. 45-72',
         lido: true,
       },
@@ -98,6 +100,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Michael Moore (1993) — Teoria da Distância Transacional',
         descricao: 'Compreender a equação fundamental: quanto maior o diálogo orientado, menor a distância transacional percebida pelo discente.',
         autor_referencia: 'MOORE, Michael G.',
+        link_leitura: 'https://drive.google.com/file/d/1jbbPKFxfq38pPBDl2h4DD4PnCmpDKAJE/view',
         paginas_recomendadas: 'p. 22-39',
         lido: true,
       },
@@ -106,6 +109,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Randy Garrison (2000) — Comunidade de Inquirição (CoI)',
         descricao: 'Estudo dos três pilares da presença educativa: presença docente, presença social e presença cognitiva.',
         autor_referencia: 'GARRISON, D. R.',
+        link_leitura: 'https://drive.google.com/file/d/1zqqHku9T0IpOpYz9gBcWkOLVme4szvAs/view',
         paginas_recomendadas: 'p. 87-105',
         lido: true,
       },
@@ -114,6 +118,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Lidiane Souza (2016) — Mediação Pedagógica na Teologia',
         descricao: 'Investigação empírica sobre mediação humana e papel do monitor síncrono no acolhimento teológico.',
         autor_referencia: 'SOUZA, Lidiane',
+        link_leitura: 'https://drive.google.com/file/d/1eqIXo6iR033ZF0E_IiCM5C_bXqdnOVTT/view',
         paginas_recomendadas: 'p. 50-84',
         lido: false,
       },
@@ -142,6 +147,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Eliseu Roque do Espírito Santo (2009) — Comunhão e Cibercultura',
         descricao: 'A comunhão cristã mediada por computadores: superação do preconceito de inautenticidade no ambiente digital.',
         autor_referencia: 'ESPÍRITO SANTO, Eliseu Roque do',
+        link_leitura: 'https://drive.google.com/file/d/1cSCI2Dq70Vwx-3dHkgBlf51c9CqkVocF/view',
         paginas_recomendadas: 'p. 112-145',
         lido: true,
       },
@@ -150,6 +156,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Gleyds Domingues (2016) — Igreja em Rede e Afetividade',
         descricao: 'Mutualidade pastoral, grupos de oração síncronos e o vínculo espiritual na cultura conectada.',
         autor_referencia: 'DOMINGUES, Gleyds',
+        link_leitura: 'https://drive.google.com/file/d/1dKBUlbl2R0UNSzv_L9tAJIvBjvmN1kvm/view',
         paginas_recomendadas: 'p. 33-68',
         lido: false,
       },
@@ -165,6 +172,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Formulação do Debate Hermenêutico',
         descricao: 'Inserir contraponto com críticos da virtualidade na Matriz Dialética.',
         autor_referencia: 'Matriz Crítica',
+        link_leitura: 'https://drive.google.com/file/d/1PsMtb6VS8hJ_6bIQWRYxVVoiWi75FflE/view',
         lido: false,
       },
     ],
@@ -185,6 +193,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Chryssa Themelis (2021) — Tele-proximidade e Presença Visual',
         descricao: 'Conceito de tele-proximity: como o vídeo síncrono e a escuta afetiva eliminam o sentimento de abandono na EaD.',
         autor_referencia: 'THEMELIS, Chryssa',
+        link_leitura: 'https://drive.google.com/file/d/1b2UITCK6GzRqGrCplN1yCk185naw115m/view',
         paginas_recomendadas: 'p. 90-118',
         lido: false,
       },
@@ -193,6 +202,7 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Filatro & Cavalcanti (2019) — Metodologias Ativas no Ensino Superior',
         descricao: 'Design instrucional para andragogia: estudos de caso, gamificação reflexiva e tomada de decisão pastoral.',
         autor_referencia: 'FILATRO, Andrea; CAVALCANTI, Carolina',
+        link_leitura: 'https://drive.google.com/file/d/12ZxaSfs1gQcZMOeRKb2cGTWsfeD95Rzl/view',
         paginas_recomendadas: 'p. 104-135',
         lido: false,
       },
@@ -201,6 +211,8 @@ export const INITIAL_SPRINTS: SprintSemanal[] = [
         titulo: 'Relatório Empírico Koinonia LMS (2026)',
         descricao: 'Tabulação dos dados da pesquisa de campo: impacto da monitoria, uso do Meet e engajamento no Caderno Cornell.',
         autor_referencia: 'Koinonia LMS Research',
+        link_leitura: 'https://drive.google.com/file/d/1Y9pMiWqulIngTTcz0TVm6bH9qKAndCXI/view',
+        paginas_recomendadas: 'p. 1-45',
         lido: false,
       },
       {
@@ -222,6 +234,7 @@ export const INITIAL_CORNELL_NOTES: CornellAnotacao[] = [
     autor_nome: 'Michael G. Moore (1993)',
     pagina_referencia: 'p. 22-25',
     eixo_tematico: 'teorico',
+    drive_url: 'https://drive.google.com/file/d/1jbbPKFxfq38pPBDl2h4DD4PnCmpDKAJE/view',
     cues: `• Definição de Distância Transacional
 • A tríade: Diálogo, Estrutura e Autonomia
 • Por que a distância geográfica não determina a qualidade da aprendizagem?
@@ -250,6 +263,7 @@ c) Autonomia do Estudante: O aluno adulto (andragógico) necessita de disciplina
     autor_nome: 'Eliseu Roque do Espírito Santo (2009)',
     pagina_referencia: 'p. 112-118',
     eixo_tematico: 'eclesiologico',
+    drive_url: 'https://drive.google.com/file/d/1cSCI2Dq70Vwx-3dHkgBlf51c9CqkVocF/view',
     cues: `• Raiz etimológica de Koinonia (grego neotestamentário)
 • Diferença entre conexão técnica e comunhão moral
 • O ciberespaço como locus de oração e edificação mútua
@@ -276,6 +290,7 @@ export const INITIAL_CITACOES: CitacaoABNT[] = [
     ano: 1993,
     pagina: '22',
     referencia_abnt_completa: 'MOORE, Michael G. Theory of transactional distance. In: KEEGAN, Desmond (org.). Theoretical principles of distance education. London: Routledge, 1993. p. 22-38.',
+    drive_url: 'https://drive.google.com/file/d/1jbbPKFxfq38pPBDl2h4DD4PnCmpDKAJE/view',
     capitulo_tcc: 'cap_2',
     eixo_tematico: 'teorico',
     tags: ['Distância Transacional', 'Epistemologia', 'Michael Moore'],
@@ -288,6 +303,7 @@ export const INITIAL_CITACOES: CitacaoABNT[] = [
     ano: 2018,
     pagina: '27',
     referencia_abnt_completa: 'GANDRA, Edgar Ávila; BAADE, Joel Haroldo. A formação pastoral teológica entre o claustro e a rede: desafios contemporâneos da educação confessional. Reflexão & Práxis, v. 14, n. 2, p. 15-38, 2018.',
+    drive_url: 'https://drive.google.com/file/d/1uLERidrciF2DFbAFL2EgfEbYa8malQU8/view',
     capitulo_tcc: 'cap_1',
     eixo_tematico: 'historico',
     tags: ['Crise do Internato', 'História da Teologia', 'Gandra & Baade'],
@@ -300,6 +316,7 @@ export const INITIAL_CITACOES: CitacaoABNT[] = [
     ano: 2009,
     pagina: '115',
     referencia_abnt_completa: 'ESPÍRITO SANTO, Eliseu Roque do. Koinonia e Cibercultura: a comunhão cristã nos novos territórios da comunicação digital. São Paulo: Fonte Editorial, 2009.',
+    drive_url: 'https://drive.google.com/file/d/1cSCI2Dq70Vwx-3dHkgBlf51c9CqkVocF/view',
     capitulo_tcc: 'cap_3',
     eixo_tematico: 'eclesiologico',
     tags: ['Koinonia', 'Eclesiologia', 'Mutualidade'],
@@ -312,6 +329,7 @@ export const INITIAL_CITACOES: CitacaoABNT[] = [
     ano: 2021,
     pagina: '94',
     referencia_abnt_completa: 'THEMELIS, Chryssa. Tele-proximity: human touch and visual presence in remote learning environments. International Journal of Educational Technology, v. 18, n. 3, p. 89-114, 2021.',
+    drive_url: 'https://drive.google.com/file/d/1b2UITCK6GzRqGrCplN1yCk185naw115m/view',
     capitulo_tcc: 'cap_4',
     eixo_tematico: 'inovacao',
     tags: ['Tele-proximidade', 'Metodologia Ativa', 'Presença Visual'],
@@ -324,6 +342,7 @@ export const INITIAL_CITACOES: CitacaoABNT[] = [
     ano: 2016,
     pagina: '58',
     referencia_abnt_completa: 'SOUZA, Lidiane. Mediação pedagógica e diálogo síncrono na educação teológica a distância. Rio de Janeiro: CPAD, 2016.',
+    drive_url: 'https://drive.google.com/file/d/1eqIXo6iR033ZF0E_IiCM5C_bXqdnOVTT/view',
     capitulo_tcc: 'cap_2',
     eixo_tematico: 'teorico',
     tags: ['Diálogo Síncrono', 'Mediação', 'Lidiane Souza'],
@@ -336,6 +355,8 @@ export const INITIAL_DIALETICA: MatrizDialeticaItem[] = [
     id: 'dialetica-semente-1',
     autor_a: 'Thomas Giulliano (Crítica Tradicionalista)',
     autor_b: 'Eliseu Roque do Espírito Santo (Teologia da Comunhão Digital)',
+    autor_a_drive_url: 'https://drive.google.com/file/d/1PsMtb6VS8hJ_6bIQWRYxVVoiWi75FflE/view',
+    autor_b_drive_url: 'https://drive.google.com/file/d/1cSCI2Dq70Vwx-3dHkgBlf51c9CqkVocF/view',
     tema_debate: 'A presencialidade física é ontologicamente indispensável para a formação pastoral e ordenação ao ministério sagrado?',
     ponto_convergencia: 'Ambos concordam que a mera transmissão passiva de informações em telas sem pastoreio direto descaracteriza a vocação e esvazia o propósito espiritual da Igreja.',
     ponto_tensao: 'Giulliano defende que sem a convivência física diária (mesa, altar e convivência comunitária contínua) é impossível forjar virtudes de caráter; enquanto Espírito Santo sustenta que o Espírito Santo não está preso ao espaço geográfico e que a comunicação mediada replica o padrão das epístolas do Novo Testamento.',
@@ -435,7 +456,23 @@ export const oficinaEstudosService = {
       const stored = localStorage.getItem(STORAGE_KEYS.SPRINTS);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Mescla URLs do Google Drive caso os itens salvos anteriormente estejam sem os links
+          return parsed.map((sprint: SprintSemanal) => {
+            const seedSprint = INITIAL_SPRINTS.find((s) => s.id === sprint.id);
+            if (!seedSprint) return sprint;
+            return {
+              ...sprint,
+              checklist: sprint.checklist.map((item) => {
+                const seedItem = seedSprint.checklist.find((ci) => ci.id === item.id);
+                if (seedItem && seedItem.link_leitura && !item.link_leitura) {
+                  return { ...item, link_leitura: seedItem.link_leitura };
+                }
+                return item;
+              }),
+            };
+          });
+        }
       }
     } catch (e) {
       console.warn('Falha ao ler sprints do localStorage:', e);
@@ -487,7 +524,15 @@ export const oficinaEstudosService = {
       const stored = localStorage.getItem(STORAGE_KEYS.CORNELL);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: CornellAnotacao) => {
+            const seed = INITIAL_CORNELL_NOTES.find((c) => c.id === item.id);
+            if (seed && seed.drive_url && !item.drive_url) {
+              return { ...item, drive_url: seed.drive_url };
+            }
+            return item;
+          });
+        }
       }
     } catch (e) {
       console.warn('Falha ao ler Cornell do localStorage:', e);
@@ -512,6 +557,7 @@ export const oficinaEstudosService = {
         autor_nome: note.autor_nome || 'Autor',
         pagina_referencia: note.pagina_referencia || '',
         eixo_tematico: note.eixo_tematico || 'teorico',
+        drive_url: note.drive_url,
         cues: note.cues || '',
         notes: note.notes || '',
         summary: note.summary || '',
@@ -541,7 +587,7 @@ export const oficinaEstudosService = {
     return `# CADERNO CORNELL — METADADOS DO TCC
 **Obra:** ${note.obra_titulo}
 **Autor(es):** ${note.autor_nome} (${note.pagina_referencia || 'Sem página indicada'})
-**Eixo Temático:** ${note.eixo_tematico.toUpperCase()}
+**Eixo Temático:** ${note.eixo_tematico.toUpperCase()}${note.drive_url ? `\n**PDF no Google Drive:** [Acessar Arquivo](${note.drive_url})` : ''}
 **Data de Registro:** ${new Date(note.created_at).toLocaleDateString('pt-BR')}
 **Tags:** ${note.tags.join(', ')}
 
@@ -572,7 +618,15 @@ ${note.summary}
       const stored = localStorage.getItem(STORAGE_KEYS.CITACOES);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: CitacaoABNT) => {
+            const seed = INITIAL_CITACOES.find((c) => c.id === item.id);
+            if (seed && seed.drive_url && !item.drive_url) {
+              return { ...item, drive_url: seed.drive_url };
+            }
+            return item;
+          });
+        }
       }
     } catch (e) {
       console.warn('Falha ao ler citações do localStorage:', e);
@@ -596,6 +650,7 @@ ${note.summary}
         ano: citacao.ano || new Date().getFullYear(),
         pagina: citacao.pagina || '',
         referencia_abnt_completa: citacao.referencia_abnt_completa || '',
+        drive_url: citacao.drive_url,
         capitulo_tcc: citacao.capitulo_tcc || 'cap_1',
         eixo_tematico: citacao.eixo_tematico || 'teorico',
         tags: citacao.tags || [],
@@ -633,7 +688,19 @@ ${note.summary}
       const stored = localStorage.getItem(STORAGE_KEYS.DIALETICA);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: MatrizDialeticaItem) => {
+            const seed = INITIAL_DIALETICA.find((d) => d.id === item.id);
+            if (seed) {
+              return {
+                ...item,
+                autor_a_drive_url: item.autor_a_drive_url || seed.autor_a_drive_url,
+                autor_b_drive_url: item.autor_b_drive_url || seed.autor_b_drive_url,
+              };
+            }
+            return item;
+          });
+        }
       }
     } catch (e) {
       console.warn('Falha ao ler dialética do localStorage:', e);
@@ -652,6 +719,8 @@ ${note.summary}
         id: `dialetica_${Date.now()}`,
         autor_a: item.autor_a || '',
         autor_b: item.autor_b || '',
+        autor_a_drive_url: item.autor_a_drive_url,
+        autor_b_drive_url: item.autor_b_drive_url,
         tema_debate: item.tema_debate || '',
         ponto_convergencia: item.ponto_convergencia || '',
         ponto_tensao: item.ponto_tensao || '',

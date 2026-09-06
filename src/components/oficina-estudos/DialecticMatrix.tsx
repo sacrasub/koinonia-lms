@@ -17,7 +17,8 @@ import {
   BookOpen,
   CheckCircle2,
   AlertTriangle,
-  FileText
+  FileText,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -123,14 +124,42 @@ export const DialecticMatrix: React.FC<DialecticMatrixProps> = ({ onShowToast })
             {/* TOPO: AUTORES EM CONFRONTO */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
               <div className="flex items-center gap-3 flex-wrap">
-                <div className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-300 font-black text-xs shadow-inner">
-                  {item.autor_a}
+                <div className="flex items-center gap-1.5">
+                  <div className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-300 font-black text-xs shadow-inner">
+                    {item.autor_a}
+                  </div>
+                  {item.autor_a_drive_url && (
+                    <a
+                      href={item.autor_a_drive_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 text-amber-400/80 hover:text-amber-300 hover:bg-amber-500/10 rounded-lg border border-amber-500/20 text-xs transition-colors"
+                      title={`Abrir obra de ${item.autor_a} no Google Drive`}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
+
                 <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-black text-xs shrink-0">
                   <ArrowRightLeft className="w-4 h-4" />
                 </div>
-                <div className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-blue-300 font-black text-xs shadow-inner">
-                  {item.autor_b}
+
+                <div className="flex items-center gap-1.5">
+                  <div className="px-3.5 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-blue-300 font-black text-xs shadow-inner">
+                    {item.autor_b}
+                  </div>
+                  {item.autor_b_drive_url && (
+                    <a
+                      href={item.autor_b_drive_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 text-blue-400/80 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg border border-blue-500/20 text-xs transition-colors"
+                      title={`Abrir obra de ${item.autor_b} no Google Drive`}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
               </div>
 

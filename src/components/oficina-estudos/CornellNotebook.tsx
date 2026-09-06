@@ -21,7 +21,8 @@ import {
   Check,
   HelpCircle,
   FileText,
-  ChevronDown
+  ChevronDown,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -32,18 +33,104 @@ interface CornellNotebookProps {
   onShowToast: (msg: string) => void;
 }
 
-// Obras canônicas sugeridas para vínculo imediato
+// Obras canônicas sugeridas para vínculo imediato com os PDFs do Google Drive
 const SUGESTOES_OBRAS = [
-  { autor: 'GANDRA, E. A.; BAADE, J. H.', obra: 'A formação pastoral teológica entre o claustro e a rede (2018)', eixo: 'historico' as EixoTematicoId },
-  { autor: 'MODES, Josemar', obra: 'A virada paradigmática da EaD no ensino teológico brasileiro (2020)', eixo: 'historico' as EixoTematicoId },
-  { autor: 'MOORE, Michael G.', obra: 'Theory of transactional distance (1993)', eixo: 'teorico' as EixoTematicoId },
-  { autor: 'GARRISON, D. R.', obra: 'Community of inquiry in adult and higher education (2000)', eixo: 'teorico' as EixoTematicoId },
-  { autor: 'SOUZA, Lidiane', obra: 'Mediação pedagógica e diálogo síncrono na educação teológica (2016)', eixo: 'teorico' as EixoTematicoId },
-  { autor: 'ESPÍRITO SANTO, Eliseu Roque do', obra: 'Koinonia e Cibercultura: a comunhão cristã digital (2009)', eixo: 'eclesiologico' as EixoTematicoId },
-  { autor: 'DOMINGUES, Gleyds', obra: 'Igreja em rede: afetividade e mutualidade conectada (2016)', eixo: 'eclesiologico' as EixoTematicoId },
-  { autor: 'THEMELIS, Chryssa', obra: 'Tele-proximity: human touch and visual presence in remote learning (2021)', eixo: 'inovacao' as EixoTematicoId },
-  { autor: 'FILATRO, A.; CAVALCANTI, C.', obra: 'Metodologias ativas para uma educação inovadora (2019)', eixo: 'inovacao' as EixoTematicoId },
-  { autor: 'KOINONIA LMS', obra: 'Relatório Empírico da Pesquisa de Campo (2026)', eixo: 'inovacao' as EixoTematicoId },
+  {
+    autor: 'GANDRA, E. A.; BAADE, J. H.',
+    obra: 'A formação pastoral teológica entre o claustro e a rede (2018)',
+    eixo: 'historico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1uLERidrciF2DFbAFL2EgfEbYa8malQU8/view'
+  },
+  {
+    autor: 'MODES, Josemar',
+    obra: 'A virada paradigmática da EaD no ensino teológico brasileiro (2020)',
+    eixo: 'historico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1fhP4H2bNJTmxhkHxt0LwymoES6ij1fWT/view'
+  },
+  {
+    autor: 'MODES, Josemar et al.',
+    obra: 'Educação Teológica e Tecnologias Contemporâneas (2022)',
+    eixo: 'historico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1o226uHDYvMY7yuNzIsPiBlWkZeOldN8o/view'
+  },
+  {
+    autor: 'REBLIN, Iuri A.',
+    obra: 'Educação Teológica Virtual: mapeamento didático e novos desafios (2014)',
+    eixo: 'historico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1JdOEBkZghB0uzVS8nwYqWQ8CbFBsTSpj/view'
+  },
+  {
+    autor: 'MOORE, Michael G.',
+    obra: 'Theory of transactional distance (1993)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1jbbPKFxfq38pPBDl2h4DD4PnCmpDKAJE/view'
+  },
+  {
+    autor: 'GARRISON, D. R. / ANDERSON, T.',
+    obra: 'Community of inquiry in adult and higher education (2000/2009)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1zqqHku9T0IpOpYz9gBcWkOLVme4szvAs/view'
+  },
+  {
+    autor: 'SOUZA, Lidiane',
+    obra: 'Mediação pedagógica e diálogo síncrono na educação teológica (2016)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1eqIXo6iR033ZF0E_IiCM5C_bXqdnOVTT/view'
+  },
+  {
+    autor: 'OLIVEIRA, David Mesquiati',
+    obra: 'Ensino a distância e avaliação online na formação teológica (2012)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/165NvsUcdrYe1oX3Eff8V8GrpTPvOu8HZ/view'
+  },
+  {
+    autor: 'ESPÍRITO SANTO, Eliseu Roque do',
+    obra: 'Koinonia e Cibercultura: a comunhão cristã digital (2009)',
+    eixo: 'eclesiologico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1cSCI2Dq70Vwx-3dHkgBlf51c9CqkVocF/view'
+  },
+  {
+    autor: 'DOMINGUES, Gleyds',
+    obra: 'Igreja em rede: afetividade e mutualidade conectada (2016)',
+    eixo: 'eclesiologico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1dKBUlbl2R0UNSzv_L9tAJIvBjvmN1kvm/view'
+  },
+  {
+    autor: 'GIULLIANO, Thomas',
+    obra: 'Desconstruindo Paulo Freire: reflexão pedagógica (2017)',
+    eixo: 'eclesiologico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1PsMtb6VS8hJ_6bIQWRYxVVoiWi75FflE/view'
+  },
+  {
+    autor: 'THEMELIS, Chryssa',
+    obra: 'Tele-proximity: human touch and visual presence in remote learning (2021)',
+    eixo: 'inovacao' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1b2UITCK6GzRqGrCplN1yCk185naw115m/view'
+  },
+  {
+    autor: 'FILATRO, A.; CAVALCANTI, C.',
+    obra: 'Metodologias ativas para uma educação inovadora (2019)',
+    eixo: 'inovacao' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/12ZxaSfs1gQcZMOeRKb2cGTWsfeD95Rzl/view'
+  },
+  {
+    autor: 'LAKATOS, E. M.; MARCONI, M. A.',
+    obra: 'Fundamentos de Metodologia Científica (2017)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1zIeI_DD-6l8ZFsC5yqjISBwam9DTaWaS/view'
+  },
+  {
+    autor: 'MINAYO, M. Cecília',
+    obra: 'Pesquisa Social: Teoria, Método e Criatividade (2014)',
+    eixo: 'teorico' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1Sz8tqNk0f84bbNT4E9K2lfIRNDXOPWGf/view'
+  },
+  {
+    autor: 'KOINONIA LMS',
+    obra: 'Relatório Empírico da Pesquisa de Campo (2026)',
+    eixo: 'inovacao' as EixoTematicoId,
+    driveUrl: 'https://drive.google.com/file/d/1Y9pMiWqulIngTTcz0TVm6bH9qKAndCXI/view'
+  },
 ];
 
 export const CornellNotebook: React.FC<CornellNotebookProps> = ({
@@ -65,6 +152,7 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
   const [autorNome, setAutorNome] = useState<string>(initialAutor || '');
   const [paginaReferencia, setPaginaReferencia] = useState<string>('');
   const [eixoTematico, setEixoTematico] = useState<EixoTematicoId>(initialEixo || 'teorico');
+  const [driveUrl, setDriveUrl] = useState<string>('');
   const [cuesText, setCuesText] = useState<string>('');
   const [notesText, setNotesText] = useState<string>('');
   const [summaryText, setSummaryText] = useState<string>('');
@@ -80,6 +168,16 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
       setAutorNome(initialAutor || '');
       if (initialEixo) setEixoTematico(initialEixo);
       setActiveNoteId(null); // Modo de nova anotação
+
+      // Tenta achar link correspondente
+      const foundMatch = SUGESTOES_OBRAS.find(
+        (s) =>
+          (initialAutor && s.autor.toLowerCase().includes(initialAutor.toLowerCase())) ||
+          (initialObra && s.obra.toLowerCase().includes(initialObra.toLowerCase()))
+      );
+      if (foundMatch && foundMatch.driveUrl) {
+        setDriveUrl(foundMatch.driveUrl);
+      }
     }
   }, [initialObra, initialAutor, initialEixo]);
 
@@ -92,6 +190,7 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
         setAutorNome(found.autor_nome);
         setPaginaReferencia(found.pagina_referencia);
         setEixoTematico(found.eixo_tematico);
+        setDriveUrl(found.drive_url || '');
         setCuesText(found.cues);
         setNotesText(found.notes);
         setSummaryText(found.summary);
@@ -106,6 +205,9 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
       setAutorNome(b.autor);
       setObraTitulo(b.obra);
       setEixoTematico(b.eixo);
+      if (b.driveUrl) {
+        setDriveUrl(b.driveUrl);
+      }
       onShowToast(`Texto selecionado: "${b.obra}"`);
     }
   };
@@ -127,6 +229,7 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
       autor_nome: autorNome,
       pagina_referencia: paginaReferencia,
       eixo_tematico: eixoTematico,
+      drive_url: driveUrl.trim() || undefined,
       cues: cuesText,
       notes: notesText,
       summary: summaryText,
@@ -145,6 +248,7 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
     setObraTitulo('');
     setAutorNome('');
     setPaginaReferencia('');
+    setDriveUrl('');
     setCuesText('');
     setNotesText('');
     setSummaryText('');
@@ -330,6 +434,38 @@ export const CornellNotebook: React.FC<CornellNotebookProps> = ({
             </select>
           </div>
         </div>
+
+        {/* VÍNCULO DIRETO COM O PDF NO GOOGLE DRIVE */}
+        {driveUrl && (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-slate-800/80 bg-blue-950/20 -mx-5 -mb-5 p-4 rounded-b-3xl border-b border-blue-500/20">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0">
+                <FileText className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-blue-100 flex items-center gap-1.5">
+                  <span>Livro / Documento Sincronizado no Google Drive</span>
+                  <span className="text-[9px] uppercase px-1.5 py-0.5 rounded-full bg-blue-500/30 text-blue-300 font-black">Nuvem TCC</span>
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  Consulte a obra original enquanto redige suas pistas socráticas e notas de estudo.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <a
+                href={driveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md active:scale-95"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Abrir Livro no Google Drive</span>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 2. LAYOUT RIGOROSO DO CADERNO CORNELL (30% PISTAS | 70% NOTAS | 100% SUMÁRIO) */}

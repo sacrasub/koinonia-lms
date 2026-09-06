@@ -64,6 +64,7 @@ export const QuotesDatabase: React.FC<QuotesDatabaseProps> = ({ onShowToast }) =
   const [ano, setAno] = useState<number>(new Date().getFullYear());
   const [pagina, setPagina] = useState<string>('');
   const [referenciaCompleta, setReferenciaCompleta] = useState<string>('');
+  const [driveUrl, setDriveUrl] = useState<string>('');
   const [capituloTcc, setCapituloTcc] = useState<CapituloTcc>('cap_2');
   const [eixoTematico, setEixoTematico] = useState<EixoTematicoId>('teorico');
   const [tagsInput, setTagsInput] = useState<string>('');
@@ -121,6 +122,7 @@ export const QuotesDatabase: React.FC<QuotesDatabaseProps> = ({ onShowToast }) =
       ano: Number(ano) || new Date().getFullYear(),
       pagina,
       referencia_abnt_completa: referenciaCompleta,
+      drive_url: driveUrl.trim() || undefined,
       capitulo_tcc: capituloTcc,
       eixo_tematico: eixoTematico,
       tags: tagsArray,
@@ -133,6 +135,7 @@ export const QuotesDatabase: React.FC<QuotesDatabaseProps> = ({ onShowToast }) =
     setAutores('');
     setPagina('');
     setReferenciaCompleta('');
+    setDriveUrl('');
     setTagsInput('');
     onShowToast('✓ Citação ABNT catalogada com sucesso!');
   };
@@ -293,7 +296,21 @@ export const QuotesDatabase: React.FC<QuotesDatabaseProps> = ({ onShowToast }) =
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {/* BOTÃO LINK PARA O PDF NO GOOGLE DRIVE */}
+                    {cit.drive_url && (
+                      <a
+                        href={cit.drive_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold transition-all shadow-sm active:scale-95"
+                        title="Abrir livro/artigo original no Google Drive"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+                        <span>Ver no Drive</span>
+                      </a>
+                    )}
+
                     {/* BOTÃO COPIAR FORMATO NO TEXTO */}
                     <Button
                       size="sm"
@@ -488,6 +505,19 @@ export const QuotesDatabase: React.FC<QuotesDatabaseProps> = ({ onShowToast }) =
                     <option value="inovacao">Eixo Inovação</option>
                   </select>
                 </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Link do PDF no Google Drive (Opcional)
+                </label>
+                <input
+                  type="url"
+                  value={driveUrl}
+                  onChange={(e) => setDriveUrl(e.target.value)}
+                  placeholder="https://drive.google.com/file/d/..."
+                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-amber-400 focus:outline-none"
+                />
               </div>
 
               <div>

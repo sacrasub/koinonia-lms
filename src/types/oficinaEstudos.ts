@@ -39,6 +39,7 @@ export interface CornellAnotacao {
   autor_nome: string;
   pagina_referencia: string;
   eixo_tematico: EixoTematicoId;
+  drive_url?: string; // Link direto para o PDF da obra no Google Drive
   cues: string; // Coluna Esquerda (~30%): Palavras-chave, perguntas socráticas e pistas
   notes: string; // Coluna Direita (~70%): Notas de leitura, tópicos e citações diretas
   summary: string; // Rodapé: Sumário executivo / takeaway para o TCC (3-4 linhas)
@@ -54,6 +55,7 @@ export interface CitacaoABNT {
   ano: number;
   pagina: string;
   referencia_abnt_completa: string;
+  drive_url?: string; // Link direto para o PDF da fonte no Google Drive
   capitulo_tcc: CapituloTcc;
   eixo_tematico: EixoTematicoId;
   tags: string[];
@@ -64,6 +66,8 @@ export interface MatrizDialeticaItem {
   id: string;
   autor_a: string;
   autor_b: string;
+  autor_a_drive_url?: string;
+  autor_b_drive_url?: string;
   tema_debate: string;
   ponto_convergencia: string;
   ponto_tensao: string;
