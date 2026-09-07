@@ -1,14 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const DEFAULT_SUPABASE_URL = 'https://wgfbsbakmfhenxciktvs.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_hIlWLsEIIJT4-pKHr_6vvA_mefAwrBI';
+const DEFAULT_SUPABASE_URL = 'https://lbljtnbyhruubnsqzabt.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ptEmz7I2XJGnhFwhekrobA_oXiPKVrZ';
 
 const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const envKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Garante que a chave completa seja sempre usada, evitando truncamento em builds da Vercel
 export const supabaseUrl = (envUrl && envUrl.includes('supabase.co')) ? envUrl : DEFAULT_SUPABASE_URL;
-export const supabaseAnonKey = (envKey && envKey.length > 40) ? envKey : DEFAULT_SUPABASE_ANON_KEY;
+export const supabaseAnonKey = (envKey && envKey.length > 30) ? envKey : DEFAULT_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 

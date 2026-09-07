@@ -53,7 +53,7 @@ const DEFAULT_TOPICS: ForumTopico[] = [
 
 const DEFAULT_PRAYERS: PedidoOracaoCard[] = [
   {
-    id: 'm1111111-1111-4111-8111-111111111111',
+    id: 'e1111111-1111-4111-8111-111111111111',
     autor_email: 'sacrasub@gmail.com',
     autor_nome: 'Cristiano da Silva',
     autor_cargo: 'Coordenador Acadêmico',
@@ -63,7 +63,7 @@ const DEFAULT_PRAYERS: PedidoOracaoCard[] = [
     criado_em: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString()
   },
   {
-    id: 'm2222222-2222-4222-8222-222222222222',
+    id: 'e2222222-2222-4222-8222-222222222222',
     autor_email: 'rosiane@seminario.com',
     autor_nome: 'Rosiane (Monitora)',
     autor_cargo: 'Monitora de Turma',

@@ -89,7 +89,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO tcc_mural_oracoes (id, autor_email, autor_nome, autor_cargo, categoria, pedido_oracao, intercessores)
 VALUES
     (
-        'm1111111-1111-4111-8111-111111111111',
+        'e1111111-1111-4111-8111-111111111111',
         'sacrasub@gmail.com',
         'Cristiano da Silva',
         'Coordenador Acadêmico',
@@ -98,7 +98,7 @@ VALUES
         '["aluno1@uiecbead.com.br", "hilario@seminario.com"]'::jsonb
     ),
     (
-        'm2222222-2222-4222-8222-222222222222',
+        'e2222222-2222-4222-8222-222222222222',
         'rosiane@seminario.com',
         'Rosiane (Monitora)',
         'Monitora de Turma',
