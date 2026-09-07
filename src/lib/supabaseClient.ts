@@ -6,9 +6,14 @@ const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ptEmz7I2XJGnhFwhekrobA_oXiPKVr
 const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const envKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Garante que a chave completa seja sempre usada, evitando truncamento em builds da Vercel
-export const supabaseUrl = (envUrl && envUrl.includes('supabase.co')) ? envUrl : DEFAULT_SUPABASE_URL;
-export const supabaseAnonKey = (envKey && envKey.length > 30) ? envKey : DEFAULT_SUPABASE_ANON_KEY;
+// Garante que a nova instância do Supabase seja sempre usada, ignorando credenciais legadas bloqueadas
+export const supabaseUrl = (envUrl && envUrl.includes('supabase.co') && !envUrl.includes('wgfbsbakmfhenxciktvs')) 
+  ? envUrl 
+  : DEFAULT_SUPABASE_URL;
+
+export const supabaseAnonKey = (envKey && envKey.length > 30 && !envKey.includes('hIlWLsEIIJT4')) 
+  ? envKey 
+  : DEFAULT_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
