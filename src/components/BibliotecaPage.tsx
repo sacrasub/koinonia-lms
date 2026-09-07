@@ -5,7 +5,7 @@ import {
   Search, Library, Download, ExternalLink, Send, CheckCircle2, 
   Filter, LayoutGrid, List, Quote, BookOpen, ChevronLeft, ChevronRight,
   FileText, Sparkles, X, Plus, Trash2, UserCheck, ShieldCheck, Copy, Check, Pencil,
-  FolderOpen, Image as ImageIcon
+  FolderOpen, Image as ImageIcon, ArrowUpDown, ArrowDownAZ, ArrowUpAZ, CheckSquare, Square
 } from 'lucide-react';
 import { BibliotecaBook, UserRole } from '@/types';
 import { 
@@ -90,8 +90,55 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [copiedBookId, setCopiedBookId] = useState<string | null>(null);
 
-  const [sortColumn, setSortColumn] = useState<'title' | 'author' | 'category' | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortOption, setSortOption] = useState<
+    'title_asc' | 'title_desc' | 'author_asc' | 'author_desc' | 'year_desc' | 'pages_desc' | 'category_asc'
+  >(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lms_biblioteca_sort_option');
+      if (saved) return saved as any;
+    }
+    return 'title_asc'; // Padrão: Ordem Alfabética (A → Z)
+  });
+
+  // Filtro de disponibilidade: por padrão, exibe apenas obras que estão disponíveis no acervo com arquivo PDF
+  const [onlyAvailableInAcervo, setOnlyAvailableInAcervo] = useState<boolean>(true);
+
+  const handleSortChange = (newSort: 'title_asc' | 'title_desc' | 'author_asc' | 'author_desc' | 'year_desc' | 'pages_desc' | 'category_asc') => {
+    setSortOption(newSort);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lms_biblioteca_sort_option', newSort);
+    }
+  };
+
+  const handleSort = (col: 'title' | 'author' | 'category') => {
+    if (col === 'title') {
+      handleSortChange(sortOption === 'title_asc' ? 'title_desc' : 'title_asc');
+    } else if (col === 'author') {
+      handleSortChange(sortOption === 'author_asc' ? 'author_desc' : 'author_asc');
+    } else if (col === 'category') {
+      handleSortChange('category_asc');
+    }
+  };
+
+  // Verifica se o livro possui um arquivo PDF individual no acervo do Google Drive
+  const isBookFileAvailable = (book: BibliotecaBook): boolean => {
+    if (book.is_available === false) return false;
+    if (!book.drive_url) return false;
+    if (book.drive_url.includes('/folders/')) return false;
+    const folderIds = [
+      '19Y8Nv2Yvx1V-m4E5y5fUWOo5e8DZzeji', 
+      '1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me', 
+      '1BUr0R4pLQjTt01ID8XjYKIBlZhAtaWcx', 
+      '1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7', 
+      '1xuOm61ul94H3kdU5psFtbl-I2KZ41QJC', 
+      '1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P', 
+      '1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8', 
+      '1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj', 
+      '13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa'
+    ];
+    if (folderIds.some(fid => book.drive_url?.includes(fid))) return false;
+    return true;
+  };
 
   // Modal de Adição de Novo Livro (Professores, Monitores e Admin)
   const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
@@ -347,15 +394,6 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
     }
   };
 
-  const handleSort = (column: 'title' | 'author' | 'category') => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortColumn(column);
-      setSortDirection('asc');
-    }
-  };
-
   const openEditFullBookModal = (book: BibliotecaBook) => {
     setEditingFullBook(book);
     setEditBookTitle(book.title || '');
@@ -470,10 +508,15 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
     return getBibliotecaCategories();
   }, [allBooks]);
 
-  // Filtra livros baseado na busca e categoria selecionada
+  // Filtra livros baseado na busca, categoria selecionada e disponibilidade no acervo
   const filteredBooks = useMemo(() => {
     const query = searchTerm.toLowerCase().trim();
     return allBooks.filter((book) => {
+      // Regra de Integridade: livros que ainda não estão no acervo não aparecem como disponíveis
+      if (onlyAvailableInAcervo && !isBookFileAvailable(book)) {
+        return false;
+      }
+
       const rec = getBookRecommendation(book);
       if (selectedCategory === 'recommended') {
         if (!rec) return false;
@@ -488,36 +531,44 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
       const matchesDisc = rec?.disciplina.toLowerCase().includes(query);
       return matchesTitle || matchesAuthor || matchesCat || matchesDisc;
     });
-  }, [allBooks, searchTerm, selectedCategory, recommendedMap]);
+  }, [allBooks, searchTerm, selectedCategory, recommendedMap, onlyAvailableInAcervo]);
 
-  // Reseta página ao mudar busca ou categoria
+  // Reseta página ao mudar busca, categoria, ordenação ou filtro de disponibilidade
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCategory, itemsPerPage]);
+  }, [searchTerm, selectedCategory, itemsPerPage, sortOption, onlyAvailableInAcervo]);
 
-  // Paginação e Ordenação
+  // Paginação e Ordenação Dinâmica (Padrão: Ordem Alfabética A-Z)
   const sortedBooks = useMemo(() => {
-    if (!sortColumn) return filteredBooks;
     return [...filteredBooks].sort((a, b) => {
-      let valA = '';
-      let valB = '';
-      
-      if (sortColumn === 'title') {
-        valA = (a.title || '').toLowerCase();
-        valB = (b.title || '').toLowerCase();
-      } else if (sortColumn === 'author') {
-        valA = (a.author || '').toLowerCase();
-        valB = (b.author || '').toLowerCase();
-      } else if (sortColumn === 'category') {
-        valA = (a.category || '').toLowerCase();
-        valB = (b.category || '').toLowerCase();
+      if (sortOption === 'title_asc' || sortOption === 'title_desc') {
+        const cleanA = (a.title || '').replace(/^[^a-zA-Z0-9áéíóúÁÉÍÓÚãõÃÕâêîôûÂÊÎÔÛçÇ]+/, '').toLowerCase();
+        const cleanB = (b.title || '').replace(/^[^a-zA-Z0-9áéíóúÁÉÍÓÚãõÃÕâêîôûÂÊÎÔÛçÇ]+/, '').toLowerCase();
+        const cmp = cleanA.localeCompare(cleanB, 'pt-BR', { sensitivity: 'base' });
+        return sortOption === 'title_asc' ? cmp : -cmp;
       }
-      
-      if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
-      if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+      if (sortOption === 'author_asc' || sortOption === 'author_desc') {
+        const cleanA = (a.author || '').replace(/^[^a-zA-Z0-9áéíóúÁÉÍÓÚãõÃÕâêîôûÂÊÎÔÛçÇ]+/, '').toLowerCase();
+        const cleanB = (b.author || '').replace(/^[^a-zA-Z0-9áéíóúÁÉÍÓÚãõÃÕâêîôûÂÊÎÔÛçÇ]+/, '').toLowerCase();
+        const cmp = cleanA.localeCompare(cleanB, 'pt-BR', { sensitivity: 'base' });
+        return sortOption === 'author_asc' ? cmp : -cmp;
+      }
+      if (sortOption === 'year_desc') {
+        const yA = parseInt(a.year || '0', 10);
+        const yB = parseInt(b.year || '0', 10);
+        return yB - yA;
+      }
+      if (sortOption === 'pages_desc') {
+        const pA = a.pages || 0;
+        const pB = b.pages || 0;
+        return pB - pA;
+      }
+      if (sortOption === 'category_asc') {
+        return (a.category || '').localeCompare(b.category || '', 'pt-BR', { sensitivity: 'base' });
+      }
       return 0;
     });
-  }, [filteredBooks, sortColumn, sortDirection]);
+  }, [filteredBooks, sortOption]);
 
   const totalPages = Math.ceil(sortedBooks.length / itemsPerPage) || 1;
   const paginatedBooks = useMemo(() => {
@@ -744,16 +795,17 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
             )}
           </div>
 
-          {/* Seletor de Categoria Dropdown (Para mobile/compacto) */}
-          <div className="flex items-center gap-2">
+          {/* Controles de Categoria, Ordenação e Visualização */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Seletor de Categoria Dropdown */}
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="p-2.5 bg-gray-50 border border-gray-200 rounded-2xl text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none max-w-[260px] truncate"
+              className="p-2.5 bg-gray-50 border border-gray-200 rounded-2xl text-xs sm:text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none max-w-[200px] sm:max-w-[240px] truncate"
             >
               <option value="all">Todas as Categorias ({allBooks.length})</option>
               {recommendedCount > 0 && (
-                <option value="recommended">⭐ Recomendados nas Matérias ({recommendedCount})</option>
+                <option value="recommended">⭐ Recomendados ({recommendedCount})</option>
               )}
               {categoriesList.map((cat) => {
                 const count = allBooks.filter((b) => b.category === cat).length;
@@ -764,6 +816,25 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                 );
               })}
             </select>
+
+            {/* Seletor de Ordenação Dinâmica */}
+            <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-2xl px-2.5 py-1">
+              <ArrowUpDown className="w-3.5 h-3.5 text-blue-900 shrink-0" />
+              <select
+                value={sortOption}
+                onChange={(e) => handleSortChange(e.target.value as any)}
+                className="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer py-1.5"
+                title="Mudar ordenação dos livros"
+              >
+                <option value="title_asc">🔤 Título (A → Z)</option>
+                <option value="title_desc">🔤 Título (Z → A)</option>
+                <option value="author_asc">👤 Autor (A → Z)</option>
+                <option value="author_desc">👤 Autor (Z → A)</option>
+                <option value="year_desc">📅 Ano (Mais Recentes)</option>
+                <option value="pages_desc">📄 Páginas (Mais Extensos)</option>
+                <option value="category_asc">📁 Categoria Temática</option>
+              </select>
+            </div>
 
             {/* Alternador de Grade / Tabela */}
             <div className="bg-gray-100 p-1 rounded-2xl flex items-center gap-1 border border-gray-200/60">
@@ -839,13 +910,34 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
           })}
         </div>
 
-        {/* Resumo da busca e contagem */}
-        <div className="flex flex-wrap items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
-          <div>
-            Exibindo <strong>{filteredBooks.length.toLocaleString('pt-BR')}</strong> obras encontradas
-            {selectedCategory === 'recommended' && <span> em <strong>⭐ Leituras e Obras Recomendadas do Semestre</strong></span>}
-            {selectedCategory !== 'all' && selectedCategory !== 'recommended' && <span> na categoria <strong>{cleanCategoryName(selectedCategory)}</strong></span>}
-            {searchTerm && <span> para a busca "<strong>{searchTerm}</strong>"</span>}
+        {/* Resumo da busca, contagem e filtro de integridade do acervo */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500 pt-2 border-t border-gray-100">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div>
+              Exibindo <strong>{filteredBooks.length.toLocaleString('pt-BR')}</strong> obras
+              {onlyAvailableInAcervo && <span className="text-emerald-700 font-bold"> no acervo</span>}
+              {selectedCategory === 'recommended' && <span> em <strong>⭐ Recomendadas nas Matérias</strong></span>}
+              {selectedCategory !== 'all' && selectedCategory !== 'recommended' && <span> na categoria <strong>{cleanCategoryName(selectedCategory)}</strong></span>}
+              {searchTerm && <span> para "<strong>{searchTerm}</strong>"</span>}
+            </div>
+
+            {/* Toggle de Apenas Disponíveis com PDF no Acervo */}
+            <button
+              onClick={() => setOnlyAvailableInAcervo(!onlyAvailableInAcervo)}
+              className={`px-2.5 py-1 rounded-xl text-[11px] font-extrabold transition flex items-center gap-1.5 border cursor-pointer ${
+                onlyAvailableInAcervo
+                  ? 'bg-emerald-50 text-emerald-900 border-emerald-300 shadow-2xs'
+                  : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200'
+              }`}
+              title={onlyAvailableInAcervo ? 'Exibindo apenas livros com arquivo digital disponível para leitura/download' : 'Exibindo todas as referências bibliográficas recomendadas'}
+            >
+              {onlyAvailableInAcervo ? (
+                <CheckSquare className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              ) : (
+                <Square className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+              )}
+              <span>Apenas disponíveis no acervo</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -871,6 +963,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
             const driveUrl = book.drive_url || `https://drive.google.com/file/d/${book.id}/view`;
             const color = getCategoryColor(book.category);
             const rec = getBookRecommendation(book);
+            const isAvailable = isBookFileAvailable(book);
 
             return (
               <div
@@ -895,13 +988,17 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                         <span className="px-2 py-0.5 bg-black/40 backdrop-blur-md rounded-lg text-[9px] font-bold uppercase tracking-wider text-white truncate max-w-[150px]">
                           {cleanCategoryName(book.category)}
                         </span>
-                        {rec && (
+                        {rec ? (
                           <span className={`text-[9px] font-black px-2 py-0.5 rounded-md shadow-xs ${
                             rec.isMandatory ? 'bg-rose-500 text-white animate-pulse' : 'bg-amber-300 text-amber-950'
                           }`}>
                             ⭐ {rec.isMandatory ? 'Obrigatória' : 'Recomendada'}
                           </span>
-                        )}
+                        ) : !isAvailable ? (
+                          <span className="text-[9px] font-black text-amber-950 bg-amber-300 px-2 py-0.5 rounded-md shadow-xs">
+                            📦 Sem PDF
+                          </span>
+                        ) : null}
                       </div>
                       <div className="text-white">
                         <h3 className="font-bold text-xs sm:text-sm line-clamp-2 drop-shadow-md">{book.title}</h3>
@@ -923,6 +1020,10 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                           rec.isMandatory ? 'bg-rose-500 text-white animate-pulse' : 'bg-amber-300 text-amber-950'
                         }`}>
                           ⭐ {rec.isMandatory ? 'Obrigatória' : 'Recomendada'}
+                        </span>
+                      ) : !isAvailable ? (
+                        <span className="text-[9px] font-black text-amber-950 bg-amber-300 px-2 py-0.5 rounded-md shadow-xs flex items-center gap-1">
+                          📦 Sem PDF
                         </span>
                       ) : book.is_custom ? (
                         <span className="text-[9px] font-black text-amber-950 bg-amber-300 px-2 py-0.5 rounded-md shadow-xs flex items-center gap-1">
@@ -1023,14 +1124,30 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                       )}
                     </div>
 
-                    <a
-                      href={driveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
-                    >
-                      <Download className="w-3.5 h-3.5" /> Abrir / Baixar
-                    </a>
+                    {isAvailable ? (
+                      <a
+                        href={driveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Abrir / Baixar
+                      </a>
+                    ) : (
+                      <div className="space-y-1">
+                        <div className="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 p-1 rounded-lg text-center font-bold">
+                          📦 Indicação sem PDF no acervo
+                        </div>
+                        <a
+                          href={`https://books.google.com.br/books?q=${encodeURIComponent(`${book.title} ${book.author || ''}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-1.5 px-2.5 bg-gray-100 hover:bg-gray-200 text-slate-800 text-[11px] font-bold rounded-xl flex items-center justify-center gap-1.5 border border-gray-200 shadow-2xs transition cursor-pointer"
+                        >
+                          <ExternalLink className="w-3 h-3 text-gray-600" /> Google Livros
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1050,19 +1167,30 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                     className="p-3.5 cursor-pointer hover:bg-gray-100 transition-colors select-none"
                     onClick={() => handleSort('title')}
                   >
-                    Obra / Título {sortColumn === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
+                    <div className="flex items-center gap-1">
+                      <span>Obra / Título</span>
+                      {sortOption === 'title_asc' && <span className="text-blue-700 font-black">↑ A-Z</span>}
+                      {sortOption === 'title_desc' && <span className="text-blue-700 font-black">↓ Z-A</span>}
+                    </div>
                   </th>
                   <th 
                     className="p-3.5 cursor-pointer hover:bg-gray-100 transition-colors select-none"
                     onClick={() => handleSort('author')}
                   >
-                    Autor {sortColumn === 'author' && (sortDirection === 'asc' ? '↑' : '↓')}
+                    <div className="flex items-center gap-1">
+                      <span>Autor</span>
+                      {sortOption === 'author_asc' && <span className="text-blue-700 font-black">↑ A-Z</span>}
+                      {sortOption === 'author_desc' && <span className="text-blue-700 font-black">↓ Z-A</span>}
+                    </div>
                   </th>
                   <th 
                     className="p-3.5 cursor-pointer hover:bg-gray-100 transition-colors select-none"
                     onClick={() => handleSort('category')}
                   >
-                    Categoria {sortColumn === 'category' && (sortDirection === 'asc' ? '↑' : '↓')}
+                    <div className="flex items-center gap-1">
+                      <span>Categoria</span>
+                      {sortOption === 'category_asc' && <span className="text-blue-700 font-black">↑</span>}
+                    </div>
                   </th>
                   <th className="p-3.5">Status no Semestre</th>
                   <th className="p-3.5 text-right">Ações</th>
@@ -1072,6 +1200,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                 {paginatedBooks.map((book) => {
                   const driveUrl = book.drive_url || `https://drive.google.com/file/d/${book.id}/view`;
                   const rec = getBookRecommendation(book);
+                  const isAvailable = isBookFileAvailable(book);
 
                   return (
                     <tr key={book.id} className="hover:bg-blue-50/40 transition group">
@@ -1108,6 +1237,10 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                           }`}>
                             ⭐ {rec.disciplina}
                           </span>
+                        ) : !isAvailable ? (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                            📦 Sem PDF (Indicação Externa)
+                          </span>
                         ) : (
                           <span className="text-gray-400 text-[11px]">Acervo Geral</span>
                         )}
@@ -1124,14 +1257,26 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                             </button>
                           )}
 
-                          <a
-                            href={driveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1 shadow-xs transition"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Abrir
-                          </a>
+                          {isAvailable ? (
+                            <a
+                              href={driveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1 shadow-xs transition"
+                            >
+                              <Download className="w-3.5 h-3.5" /> Abrir
+                            </a>
+                          ) : (
+                            <a
+                              href={`https://books.google.com.br/books?q=${encodeURIComponent(`${book.title} ${book.author || ''}`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1 border border-gray-200 shadow-2xs transition"
+                              title="Buscar livro no Google Livros"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5 text-gray-500" /> Google Livros
+                            </a>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -1243,7 +1388,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                       </div>
                     )}
 
-                    {previewUrl && (
+                    {previewUrl && isBookFileAvailable(viewingBook) && (
                       <button
                         onClick={() => setViewModalTab('reader')}
                         className="mt-4 w-full max-w-[280px] py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
@@ -1267,7 +1412,12 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                             ⭐ {rec.isMandatory ? 'Leitura Obrigatória' : 'Recomendado'}
                           </span>
                         )}
-                        {viewingBook.size && (
+                        {!isBookFileAvailable(viewingBook) && (
+                          <span className="px-3 py-1 rounded-lg text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-1">
+                            📦 Sem PDF no Acervo Digital
+                          </span>
+                        )}
+                        {viewingBook.size && isBookFileAvailable(viewingBook) && (
                           <span className="px-3 py-1 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg text-xs font-bold">
                             {formatBytes(viewingBook.size)}
                           </span>
@@ -1321,15 +1471,27 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
 
                     {/* Ações */}
                     <div className="pt-4 border-t border-gray-100 flex flex-wrap gap-2.5 mt-auto">
-                      <a
-                        href={driveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 md:flex-none px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
-                      >
-                        <Download className="w-4 h-4" /> 
-                        <span className="whitespace-nowrap">Abrir / Baixar</span>
-                      </a>
+                      {isBookFileAvailable(viewingBook) ? (
+                        <a
+                          href={driveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 md:flex-none px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                        >
+                          <Download className="w-4 h-4" /> 
+                          <span className="whitespace-nowrap">Abrir / Baixar</span>
+                        </a>
+                      ) : (
+                        <a
+                          href={`https://books.google.com.br/books?q=${encodeURIComponent(`${viewingBook.title} ${viewingBook.author || ''}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 md:flex-none px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                        >
+                          <ExternalLink className="w-4 h-4" /> 
+                          <span className="whitespace-nowrap">Pesquisar no Google Livros</span>
+                        </a>
+                      )}
                       
                       <button
                         onClick={() => copyCitation(viewingBook)}
@@ -1373,19 +1535,37 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                       <span className="text-xs font-bold text-gray-500 uppercase">Leitor Interno:</span>{' '}
                       <span className="text-xs sm:text-sm font-extrabold text-slate-800 truncate">{viewingBook.title}</span>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <a
-                        href={driveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold rounded-lg border border-gray-200 shadow-2xs flex items-center gap-1.5 transition"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" /> Abrir no Google Drive
-                      </a>
-                    </div>
+                    {isBookFileAvailable(viewingBook) && (
+                      <div className="flex items-center gap-2 shrink-0">
+                        <a
+                          href={driveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold rounded-lg border border-gray-200 shadow-2xs flex items-center gap-1.5 transition"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" /> Abrir no Google Drive
+                        </a>
+                      </div>
+                    )}
                   </div>
 
-                  {previewUrl ? (
+                  {!isBookFileAvailable(viewingBook) ? (
+                    <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white rounded-2xl border border-gray-200">
+                      <BookOpen className="w-16 h-16 text-amber-500 mb-4" />
+                      <h4 className="text-lg font-bold text-gray-900 mb-1">Cópia digital não catalogada no acervo</h4>
+                      <p className="text-sm text-gray-600 max-w-md mb-6">
+                        Esta obra é uma recomendação bibliográfica do corpo docente para os estudos da matéria, mas ainda não possui arquivo PDF digitalizado no Google Drive da Biblioteca. Você pode consultar o exemplar físico no seminário ou pesquisar no Google Livros.
+                      </p>
+                      <a
+                        href={`https://books.google.com.br/books?q=${encodeURIComponent(`${viewingBook.title} ${viewingBook.author || ''}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm flex items-center gap-2 shadow-sm transition"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Pesquisar no Google Livros
+                      </a>
+                    </div>
+                  ) : previewUrl ? (
                     <div className="flex-1 w-full h-full min-h-[55vh] sm:min-h-[68vh] rounded-2xl overflow-hidden shadow-inner border border-gray-200 bg-slate-950 relative">
                       <iframe
                         src={previewUrl}

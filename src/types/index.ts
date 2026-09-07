@@ -155,6 +155,13 @@ export interface BibliotecaBook {
   added_by_role?: 'professor' | 'monitor' | 'admin';
   added_by_email?: string;
   created_at?: string;
+  in_library?: boolean;
+  is_available?: boolean;
+  pages?: number;
+  year?: string;
+  isbn?: string;
+  publisher?: string;
+  subcategoria?: string;
 }
 
 export interface LivroRecomendadoDisciplina {
@@ -172,6 +179,8 @@ export interface LivroRecomendadoDisciplina {
   added_by_role: UserRole;
   added_by_email?: string;
   created_at: string;
+  in_library?: boolean; // True se existe no acervo de PDFs
+  is_available?: boolean; // True se disponível para download
 }
 
 export type SupportMaterialType = 

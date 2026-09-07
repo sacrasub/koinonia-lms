@@ -374,36 +374,58 @@ export const PROFESSOR_RECOMMENDED_LIBRARY_BOOKS: BibliotecaBook[] = [
   },
 ];
 
-// Livros padrão carregados do JSON estático
+// Livros padrão carregados do JSON estático (acervo real indexado da pasta FMB no Google Drive)
 const rawBaseBooks: BibliotecaBook[] = (rawBooksData as BibliotecaBook[]).map((b) => ({
   ...b,
   is_custom: false,
+  in_library: true,
+  is_available: true,
 }));
 
-// Montagem inicial unificada combinando livros recomendados e acervo base com deduplicação
+// Montagem inicial unificada: a verdade absoluta do acervo é estritamente os livros reais com PDF
 const baseBooksMap = new Map<string, BibliotecaBook>();
 
-// 1. Inserir livros recomendados primeiro para manter os dados mais ricos e atualizados
-PROFESSOR_RECOMMENDED_LIBRARY_BOOKS.forEach((book) => {
-  baseBooksMap.set(book.id, book);
-  const normTitle = book.title.toLowerCase().trim();
-  baseBooksMap.set(normTitle, book);
-});
-
-// 2. Inserir baseBooks que ainda não foram inseridos
+// 1. Inserir todos os livros reais do acervo
 rawBaseBooks.forEach((book) => {
-  const normTitle = (book.title || '').toLowerCase().trim();
-  if (!baseBooksMap.has(book.id) && !baseBooksMap.has(normTitle)) {
-    baseBooksMap.set(book.id, book);
-  }
+  baseBooksMap.set(book.id, book);
 });
 
-// Extrair lista sem chaves duplicadas
-const baseBooks: BibliotecaBook[] = Array.from(
-  new Map(
-    Array.from(baseBooksMap.values()).map((b) => [b.id, b])
-  ).values()
-);
+// 2. Cruzar com recomendações dos professores:
+// Se a obra recomendada EXISTE no acervo real, enriquece a descrição e autoria sem sobrescrever o link do PDF!
+// Se a obra recomendada NÃO existe no acervo real, NÃO é inserida no acervo da biblioteca (evita falsos positivos).
+PROFESSOR_RECOMMENDED_LIBRARY_BOOKS.forEach((rec) => {
+  const normRecTitle = (rec.title || '').toLowerCase().trim();
+  
+  // Procura no acervo real por ID ou Título aproximado
+  let matchedBook: BibliotecaBook | undefined;
+  for (const book of baseBooksMap.values()) {
+    if (book.id === rec.id || book.id === rec.drive_url) {
+      matchedBook = book;
+      break;
+    }
+    const normBookTitle = (book.title || '').toLowerCase().trim();
+    if (normBookTitle === normRecTitle || (normRecTitle.length > 8 && normBookTitle.includes(normRecTitle))) {
+      matchedBook = book;
+      break;
+    }
+  }
+
+  if (matchedBook) {
+    // Atualiza o livro real com as anotações do professor, preservando o drive_url real do PDF
+    baseBooksMap.set(matchedBook.id, {
+      ...matchedBook,
+      description: rec.description || matchedBook.description,
+      added_by_name: rec.added_by_name || matchedBook.added_by_name,
+      added_by_role: rec.added_by_role || matchedBook.added_by_role,
+      in_library: true,
+      is_available: true,
+    });
+  }
+  // Se não encontrou no acervo, NÃO insere na biblioteca digital!
+});
+
+// Extrair lista final dos livros efetivamente disponíveis no acervo
+const baseBooks: BibliotecaBook[] = Array.from(baseBooksMap.values());
 
 /**
  * Retorna URLs sobrescritas para livros padrão
