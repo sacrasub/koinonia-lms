@@ -750,6 +750,28 @@ const DEFAULT_CHECKLIST = [
   { id: 'chk-8', text: 'Registrar ocorrências no grupo oficial da monitoria no WhatsApp', done: false },
 ];
 
+// Helper para calcular a data aproximada do dia da semana atual (nível de módulo para evitar TDZ)
+export const getDateForDayOfWeek = (dayName: string): string => {
+  const dayMap: Record<string, number> = {
+    'Domingo': 0,
+    'Segunda-feira': 1,
+    'Terça-feira': 2,
+    'Quarta-feira': 3,
+    'Quinta-feira': 4,
+    'Sexta-feira': 5,
+    'Sábado': 6,
+  };
+  const targetDay = dayMap[dayName];
+  if (targetDay === undefined) return new Date().toLocaleDateString('pt-BR');
+
+  const now = new Date();
+  const currentDay = now.getDay();
+  const diff = targetDay - currentDay;
+  const targetDate = new Date(now);
+  targetDate.setDate(now.getDate() + diff);
+  return targetDate.toLocaleDateString('pt-BR');
+};
+
 interface EscalaMonitoriaPageProps {
   userEmail?: string;
   currentRole?: UserRole;
@@ -784,6 +806,55 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [copiedLinkMap, setCopiedLinkMap] = useState<Record<string, boolean>>({});
   const [copiedMeetMap, setCopiedMeetMap] = useState<Record<string, boolean>>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (text: string) => {
+    setToastMessage(text);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 2800);
+  };
+
+  const fallbackCopy = (text: string, onSuccess: () => void) => {
+    if (typeof document === 'undefined') return;
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      onSuccess();
+    } catch {
+      showToast('Texto copiado!');
+    }
+    document.body.removeChild(textArea);
+  };
+
+  // Armazenamento das fotos reais cadastradas dos monitores (declarado antes dos handlers e avisos)
+  const [monitoresPhotos, setMonitoresPhotos] = useState<Record<string, string>>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lms_monitores_custom_photos');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (e) {}
+      }
+    }
+    return {
+      Camila: DEFAULT_MONITORES_DATA.Camila?.avatarUrl || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
+      Cristiano: DEFAULT_MONITORES_DATA.Cristiano?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+      Rosiane: DEFAULT_MONITORES_DATA.Rosiane?.avatarUrl || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+      'Monitoria Turma B': DEFAULT_MONITORES_DATA['Monitoria Turma B']?.avatarUrl || DEFAULT_MONITORES_DATA.André?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+    };
+  });
+
+  // Obter foto ativa do monitor (declarado antes de handleAddAvisoMonitor)
+  const getMonitorAvatar = (monitorName: string): string => {
+    if (monitoresPhotos[monitorName]) return monitoresPhotos[monitorName];
+    if (DEFAULT_MONITORES_DATA[monitorName]?.avatarUrl) return DEFAULT_MONITORES_DATA[monitorName].avatarUrl;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(monitorName)}&background=1e3a8a&color=fff&bold=true`;
+  };
+
   const [isRecorderOpen, setIsRecorderOpen] = useState<boolean>(false);
 
   // Leituras Pré-Aula e Avisos com Links
@@ -1180,22 +1251,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     setTzInfo(getLocalTimeZoneInfo());
   }, []);
 
-  // Armazenamento das fotos reais cadastradas dos monitores
-  const [monitoresPhotos, setMonitoresPhotos] = useState<Record<string, string>>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('lms_monitores_custom_photos');
-      if (saved) {
-        try { return JSON.parse(saved); } catch (e) {}
-      }
-    }
-    return {
-      Camila: DEFAULT_MONITORES_DATA.Camila?.avatarUrl || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
-      Cristiano: DEFAULT_MONITORES_DATA.Cristiano?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
-      Rosiane: DEFAULT_MONITORES_DATA.Rosiane?.avatarUrl || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
-      'Monitoria Turma B': DEFAULT_MONITORES_DATA['Monitoria Turma B']?.avatarUrl || DEFAULT_MONITORES_DATA.André?.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
-    };
-  });
-
   // Modal para trocar foto com upload ou link
   const [modalFotoMonitor, setModalFotoMonitor] = useState<string | null>(null);
   const [inputUrlFoto, setInputUrlFoto] = useState<string>('');
@@ -1409,20 +1464,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
   }, [trocas]);
 
-  const showToast = (text: string) => {
-    setToastMessage(text);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 2800);
-  };
-
-  // Obter foto ativa do monitor
-  const getMonitorAvatar = (monitorName: string): string => {
-    if (monitoresPhotos[monitorName]) return monitoresPhotos[monitorName];
-    if (DEFAULT_MONITORES_DATA[monitorName]?.avatarUrl) return DEFAULT_MONITORES_DATA[monitorName].avatarUrl;
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(monitorName)}&background=1e3a8a&color=fff&bold=true`;
-  };
-
   // Upload direto de arquivo da galeria / câmera
   const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1587,23 +1628,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
   };
 
-  const fallbackCopy = (text: string, onSuccess: () => void) => {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand('copy');
-      onSuccess();
-    } catch {
-      showToast('Texto copiado!');
-    }
-    document.body.removeChild(textArea);
-  };
-
   const toggleChecklistItem = (id: string) => {
     setChecklist(prev => prev.map(item => item.id === id ? { ...item, done: !item.done } : item));
   };
@@ -1696,28 +1720,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
     return baseDaysOrder;
   }, [currentDayOfWeekName]);
-
-  // Helper para calcular a data aproximada do dia da semana atual
-  const getDateForDayOfWeek = (dayName: string): string => {
-    const dayMap: Record<string, number> = {
-      'Domingo': 0,
-      'Segunda-feira': 1,
-      'Terça-feira': 2,
-      'Quarta-feira': 3,
-      'Quinta-feira': 4,
-      'Sexta-feira': 5,
-      'Sábado': 6,
-    };
-    const targetDay = dayMap[dayName];
-    if (targetDay === undefined) return new Date().toLocaleDateString('pt-BR');
-
-    const now = new Date();
-    const currentDay = now.getDay();
-    const diff = targetDay - currentDay;
-    const targetDate = new Date(now);
-    targetDate.setDate(now.getDate() + diff);
-    return targetDate.toLocaleDateString('pt-BR');
-  };
 
   // Helper para obter status de cancelamento de um item da escala
   const getCanceladaStatusForItem = (item: EscalaItem) => {
