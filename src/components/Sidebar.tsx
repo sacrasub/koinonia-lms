@@ -157,7 +157,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       data-tour="sidebar-nav"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`bg-white/95 backdrop-blur-md border-r border-gray-200/80 p-3 flex flex-col justify-between hidden md:flex transition-all duration-300 ease-in-out min-h-[calc(100vh-65px)] z-30 select-none ${
+      className={`bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-r border-gray-200/80 dark:border-slate-800/80 p-3 flex flex-col justify-between hidden md:flex transition-all duration-300 ease-in-out min-h-[calc(100vh-65px)] z-30 select-none ${
         isExpanded 
           ? 'w-64 shadow-xl md:shadow-none' 
           : 'w-20'
@@ -168,20 +168,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         <div className="flex items-center justify-between px-1.5 h-7">
           {isExpanded ? (
             <>
-              <h2 className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider truncate">
+              <h2 className="text-[11px] font-extrabold text-gray-400 dark:text-slate-500 uppercase tracking-wider truncate">
                 NAVEGAÇÃO ({currentRole.toUpperCase()})
               </h2>
               <button
                 onClick={togglePin}
                 className={`p-1.5 rounded-xl transition-all flex items-center justify-center cursor-pointer ${
                   isPinned 
-                    ? 'bg-blue-100 text-blue-700 hover:bg-blue-200 shadow-2xs' 
-                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 shadow-2xs' 
+                    : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-700 dark:hover:text-slate-200'
                 }`}
                 title={isPinned ? 'Barra lateral fixada. Clique para ativar auto-contração no mouse.' : 'Clique para fixar a barra lateral aberta'}
               >
                 {isPinned ? (
-                  <Pin className="w-3.5 h-3.5 fill-blue-600 rotate-45" />
+                  <Pin className="w-3.5 h-3.5 fill-blue-600 dark:fill-blue-400 text-blue-600 dark:text-blue-400 rotate-45" />
                 ) : (
                   <Pin className="w-3.5 h-3.5" />
                 )}
@@ -191,7 +191,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
             <div className="w-full flex justify-center">
               <button
                 onClick={togglePin}
-                className="p-1.5 rounded-xl text-gray-400 hover:bg-gray-100 hover:text-blue-600 transition cursor-pointer"
+                className="p-1.5 rounded-xl text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition cursor-pointer"
                 title="Fixar barra lateral aberta"
               >
                 <Pin className="w-3.5 h-3.5" />
@@ -255,11 +255,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
                   !isExpanded ? 'justify-center' : 'justify-start'
                 } ${
                   isActive
-                    ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200/80 shadow-xs'
-                    : 'text-gray-600 hover:bg-gray-100/80 hover:text-gray-900'
+                    ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold border border-blue-200/80 dark:border-blue-900/50 shadow-xs'
+                    : 'text-gray-600 dark:text-slate-300 hover:bg-gray-100/80 dark:hover:bg-slate-800/80 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
-                <Icon className={`w-4 h-4 flex-shrink-0 transition-transform group-hover:scale-110 ${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                <Icon className={`w-4 h-4 flex-shrink-0 transition-transform group-hover:scale-110 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500 group-hover:text-gray-600 dark:group-hover:text-slate-300'}`} />
                 {isExpanded && (
                   <span className="truncate text-left whitespace-nowrap animate-in fade-in duration-200">
                     {item.label}
@@ -271,7 +271,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         </nav>
       </div>
 
-      <div className={`pt-3 border-t border-gray-100 text-[11px] text-gray-400 text-center transition-all ${!isExpanded ? 'px-0' : 'px-2'}`}>
+      <div className={`pt-3 border-t border-gray-100 dark:border-slate-800 text-[11px] text-gray-400 dark:text-slate-500 text-center transition-all ${!isExpanded ? 'px-0' : 'px-2'}`}>
         {isExpanded ? 'Koinonia-LMS • Seminário Teológico' : 'v1.0'}
       </div>
     </aside>

@@ -621,7 +621,7 @@ export default function Home() {
 
   if (loadingSession) {
     return (
-      <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#090d16] flex items-center justify-center">
         <div className="text-center space-y-3">
           <div className="w-12 h-12 rounded-xl bg-blue-600 animate-pulse flex items-center justify-center text-white text-2xl font-bold mx-auto">
             ✝
@@ -645,7 +645,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] flex flex-col pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#090d16] text-gray-900 dark:text-slate-100 flex flex-col pb-20 md:pb-0 transition-colors duration-200">
       <Navbar 
         currentRole={currentRole} 
         userEmail={userEmail}

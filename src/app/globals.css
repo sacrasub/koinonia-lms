@@ -49,6 +49,110 @@ body {
   border-bottom: 1px solid rgba(210, 210, 215, 0.6);
 }
 
+.dark .glass-header {
+  background: rgba(15, 23, 42, 0.94) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.8) !important;
+}
+
+/* Modo Escuro Abrangente & Coerente para Todos os Componentes */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Transforma containers brancos em cartões dark elegantes */
+.dark .bg-white:not([data-preserve-light]) {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f1f5f9;
+}
+
+.dark .text-gray-900:not([data-preserve-color]),
+.dark .text-slate-900:not([data-preserve-color]),
+.dark .text-gray-800:not([data-preserve-color]),
+.dark .text-slate-800:not([data-preserve-color]) {
+  color: #f8fafc !important;
+}
+
+.dark .text-gray-700:not([data-preserve-color]),
+.dark .text-slate-700:not([data-preserve-color]) {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-600:not([data-preserve-color]),
+.dark .text-slate-600:not([data-preserve-color]) {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-gray-500:not([data-preserve-color]),
+.dark .text-slate-500:not([data-preserve-color]) {
+  color: #94a3b8 !important;
+}
+
+.dark .border-gray-200:not([data-preserve-border]),
+.dark .border-gray-300:not([data-preserve-border]),
+.dark .border-slate-200:not([data-preserve-border]),
+.dark .border-gray-100:not([data-preserve-border]),
+.dark .border-slate-100:not([data-preserve-border]) {
+  border-color: #1e293b !important;
+}
+
+.dark .bg-gray-50:not([data-preserve-bg]),
+.dark .bg-slate-50:not([data-preserve-bg]) {
+  background-color: #162032 !important;
+}
+
+.dark .bg-gray-100:not([data-preserve-bg]),
+.dark .bg-slate-100:not([data-preserve-bg]) {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-slate-50:hover {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-slate-100:hover {
+  background-color: #334155 !important;
+}
+
+/* Preserva textos brancos em botões e badges coloridos */
+.dark .text-white,
+.dark .bg-blue-600,
+.dark .bg-blue-700,
+.dark .bg-emerald-600,
+.dark .bg-emerald-700,
+.dark .bg-red-600,
+.dark .bg-red-700,
+.dark .bg-amber-500,
+.dark .bg-amber-600,
+.dark .bg-purple-600,
+.dark .bg-indigo-600 {
+  color: #ffffff !important;
+}
+
+/* Estilos de controles de formulário em Dark Mode */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark select,
+.dark textarea {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+
 /* Touch Card Animation para Smartphones */
 .card-hover {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);

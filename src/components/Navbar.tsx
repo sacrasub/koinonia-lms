@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-50 glass-header px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border-b border-gray-200/80">
+      <header className="sticky top-0 z-50 glass-header px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border-b border-gray-200/80 dark:border-slate-800/80 transition-colors">
         
         {/* LADO ESQUERDO: Botão Menu (Mobile) + Logotipo */}
         <div className="flex items-center gap-2 sm:gap-3">
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             data-tour="btn-mobile-menu"
             onClick={() => setIsDrawerOpen(true)}
-            className="p-2 -ml-1 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 md:hidden transition cursor-pointer"
+            className="p-2 -ml-1 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 md:hidden transition cursor-pointer"
             title="Abrir Menu Lateral de Navegação"
           >
             <Menu className="w-5 h-5" />
@@ -187,15 +187,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div>
-            <h1 className="text-sm sm:text-lg font-extrabold text-gray-900 leading-tight flex items-center gap-1.5">
+            <h1 className="text-sm sm:text-lg font-extrabold text-gray-900 dark:text-white leading-tight flex items-center gap-1.5">
               <span>Koinonia LMS</span>
               {isMobile && (
-                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 md:hidden">
+                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 md:hidden">
                   {currentRole}
                 </span>
               )}
             </h1>
-            <p className="text-[11px] text-gray-500 font-medium hidden sm:block">Seminário Teológico Congregacional • Semestre 2026.2</p>
+            <p className="text-[11px] text-gray-500 dark:text-slate-400 font-medium hidden sm:block">Seminário Teológico Congregacional • Semestre 2026.2</p>
           </div>
         </div>
 
@@ -207,13 +207,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setIsUpdatesModalOpen(true)}
             className={`relative p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border flex items-center gap-1.5 cursor-pointer active:scale-95 ${
               unreadUpdatesCount > 0
-                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 border-blue-300 ring-2 ring-blue-400/20'
-                : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 hover:border-gray-300'
+                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 dark:from-blue-950/40 dark:to-indigo-950/40 dark:text-blue-200 border-blue-300 dark:border-blue-800 ring-2 ring-blue-400/20'
+                : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:border-gray-300'
             }`}
             title={unreadUpdatesCount > 0 ? `${unreadUpdatesCount} novas atualizações do LMS!` : 'Atualizações e Novidades do LMS'}
           >
             <div className="relative flex items-center justify-center">
-              <Bell className={`w-4 h-4 ${unreadUpdatesCount > 0 ? 'text-blue-600 animate-bounce' : 'text-gray-500'}`} />
+              <Bell className={`w-4 h-4 ${unreadUpdatesCount > 0 ? 'text-blue-600 animate-bounce' : 'text-gray-500 dark:text-slate-400'}`} />
               {unreadUpdatesCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-black shadow-xs animate-pulse">
                   {unreadUpdatesCount}
@@ -235,10 +235,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'central-ajuda' }));
               }
             }}
-            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-purple-50 hover:bg-purple-100 text-purple-900 border-purple-200 hover:border-purple-300 cursor-pointer"
+            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/60 text-purple-900 dark:text-purple-300 border-purple-200 dark:border-purple-800/50 hover:border-purple-300 cursor-pointer"
             title="Central de Ajuda & Tutoriais em Vídeo"
           >
-            <HelpCircle className="w-4 h-4 text-purple-700 shrink-0" />
+            <HelpCircle className="w-4 h-4 text-purple-700 dark:text-purple-400 shrink-0" />
             <span className="hidden md:inline">Ajuda & Vídeos</span>
           </button>
 
@@ -249,19 +249,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             disabled={syncing}
             className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 ${
               syncing
-                ? 'bg-blue-50/90 text-blue-900 border-blue-300 ring-2 ring-blue-200 animate-pulse'
+                ? 'bg-blue-50/90 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 border-blue-300 dark:border-blue-700 ring-2 ring-blue-200 animate-pulse'
                 : showSyncSuccess
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-300 ring-2 ring-emerald-200'
-                : 'bg-white hover:bg-gray-50 text-blue-700 border-blue-200 hover:border-blue-300'
+                ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700 ring-2 ring-emerald-200'
+                : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-slate-700 hover:border-blue-300'
             }`}
             title={syncing ? 'Sincronizando dados com a nuvem (Supabase)...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar Dados'}
           >
             {syncing ? (
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600 shrink-0" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600 dark:text-blue-400 shrink-0" />
             ) : showSyncSuccess ? (
-              <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 stroke-[2.5]" />
+              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 stroke-[2.5]" />
             ) : (
-              <RefreshCw className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <RefreshCw className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
             )}
             <span className="hidden md:inline">
               {syncing ? 'Sincronizando...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar'}
@@ -283,8 +283,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Seletor de Perfil do Usuário Autenticado (Visível apenas em Desktop) */}
           {availableRoles.length > 1 && (
-            <div data-tour="role-selector" className="hidden md:flex items-center gap-1 bg-slate-100/90 p-1 rounded-2xl border border-gray-200 shadow-2xs">
-              <span className="text-[10px] font-extrabold uppercase text-gray-400 px-1.5 hidden lg:inline">Visão:</span>
+            <div data-tour="role-selector" className="hidden md:flex items-center gap-1 bg-slate-100/90 dark:bg-slate-800/90 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-2xs">
+              <span className="text-[10px] font-extrabold uppercase text-gray-400 dark:text-slate-400 px-1.5 hidden lg:inline">Visão:</span>
               {availableRoles.map((r: UserRole) => {
                 const isSelected = currentRole === r;
                 const getRoleLabel = () => {
@@ -301,8 +301,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onClick={() => onRoleChange(r)}
                     className={`px-2.5 sm:px-3 py-1 text-[11px] font-extrabold rounded-xl transition-all flex items-center gap-1 cursor-pointer ${
                       isSelected
-                        ? 'bg-blue-900 text-white shadow-xs border border-blue-900'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200/70'
+                        ? 'bg-blue-900 text-white shadow-xs border border-blue-900 dark:bg-blue-600 dark:border-blue-600'
+                        : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/70 dark:hover:bg-slate-700'
                     }`}
                     title={`Alternar para visão de ${r}`}
                   >
@@ -314,10 +314,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
 
           {/* Informações do Usuário Ativo - Clique na Foto/Nome para Editar Perfil */}
-          <div className="flex items-center gap-2 sm:gap-3 border-l border-gray-200 pl-1.5 sm:pl-3">
+          <div className="flex items-center gap-2 sm:gap-3 border-l border-gray-200 dark:border-slate-800 pl-1.5 sm:pl-3">
             <div 
               onClick={() => setIsProfileModalOpen(true)}
-              className="flex items-center gap-2 cursor-pointer group p-1 rounded-xl hover:bg-blue-50/80 transition-all border border-transparent hover:border-blue-200"
+              className="flex items-center gap-2 cursor-pointer group p-1 rounded-xl hover:bg-blue-50/80 dark:hover:bg-slate-800/80 transition-all border border-transparent hover:border-blue-200 dark:hover:border-slate-700"
               title="Clique para editar seu cadastro e foto de perfil"
             >
               <div className="relative">
@@ -332,7 +332,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
 
               <div className="hidden lg:block text-left">
-                <div className="text-xs font-bold text-gray-900 group-hover:text-blue-700 transition truncate max-w-[150px] flex items-center gap-1">
+                <div className="text-xs font-bold text-gray-900 dark:text-slate-100 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition truncate max-w-[150px] flex items-center gap-1">
                   <span>{displayName}</span>
                   <Edit3 className="w-3 h-3 text-gray-400 group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition" />
                 </div>
@@ -345,7 +345,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {onLogout && (
               <button
                 onClick={onLogout}
-                className="p-1.5 sm:p-2 rounded-xl text-gray-500 hover:text-red-600 hover:bg-red-50 transition"
+                className="p-1.5 sm:p-2 rounded-xl text-gray-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition"
                 title="Encerrar Sessão / Logout"
               >
                 <LogOut className="w-4 h-4" />

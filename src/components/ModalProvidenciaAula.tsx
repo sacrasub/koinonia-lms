@@ -50,26 +50,50 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
   const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
   const autorNome = authUser?.name || (currentRole === 'professor' ? 'Docência' : 'Monitoria Acadêmica');
 
-  // Identifica o dia da semana atual em Brasília
-  const todayBRT = useMemo(() => {
-    const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-    const now = new Date();
+  // Obtém a data de hoje no fuso de Brasília em formato ISO (YYYY-MM-DD)
+  const getTodayISO = () => {
     try {
-      const brtStr = now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });
-      return days[new Date(brtStr).getDay()];
+      const now = new Date();
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(now);
     } catch (e) {
-      return days[now.getDay()];
+      return new Date().toISOString().split('T')[0];
     }
-  }, []);
+  };
 
-  const todayDateFormatted = useMemo(() => {
-    const now = new Date();
-    try {
-      return new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo' }).format(now);
-    } catch (e) {
-      return now.toLocaleDateString('pt-BR');
+  // Data selecionada para o imprevisto (padrão: data de hoje)
+  const [selectedDate, setSelectedDate] = useState<string>(getTodayISO);
+
+  // Deriva o dia da semana e formato DD/MM/YYYY a partir da data escolhida
+  const { dateFormatted, dayOfWeekName, isToday, isYesterday, isTomorrow } = useMemo(() => {
+    const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    if (!selectedDate) {
+      return { dateFormatted: '', dayOfWeekName: '', isToday: false, isYesterday: false, isTomorrow: false };
     }
-  }, []);
+    const [y, m, d] = selectedDate.split('-').map(Number);
+    const dateObj = new Date(y, m - 1, d);
+    const dayOfWeek = days[dateObj.getDay()];
+    const formatted = `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+
+    const todayISO = getTodayISO();
+    const [ty, tm, td] = todayISO.split('-').map(Number);
+    const baseToday = new Date(ty, tm - 1, td);
+
+    const yestDate = new Date(baseToday);
+    yestDate.setDate(baseToday.getDate() - 1);
+    const yestISO = `${yestDate.getFullYear()}-${String(yestDate.getMonth() + 1).padStart(2, '0')}-${String(yestDate.getDate()).padStart(2, '0')}`;
+
+    const tomDate = new Date(baseToday);
+    tomDate.setDate(baseToday.getDate() + 1);
+    const tomISO = `${tomDate.getFullYear()}-${String(tomDate.getMonth() + 1).padStart(2, '0')}-${String(tomDate.getDate()).padStart(2, '0')}`;
+
+    return {
+      dateFormatted: formatted,
+      dayOfWeekName: dayOfWeek,
+      isToday: selectedDate === todayISO,
+      isYesterday: selectedDate === yestISO,
+      isTomorrow: selectedDate === tomISO,
+    };
+  }, [selectedDate]);
 
   // Aula selecionada
   const [selectedAulaId, setSelectedAulaId] = useState<string>('');
@@ -91,12 +115,40 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
     return ESCALA_DATA.find(e => e.id === selectedAulaId) || null;
   }, [selectedAulaId]);
 
-  // Checa se já existe providência / cancelamento ativo para essa aula hoje
+  // Checa se já existe providência / cancelamento ativo para essa aula na data selecionada
   const existingProvidencia = useMemo<AulaCanceladaItem | null>(() => {
-    if (!selectedAula) return null;
-    return isAulaCanceladaHoje(selectedAula.id, selectedAula.title, userEmail) ||
-      getAulaCanceladaStatus(selectedAula.id, selectedAula.title, todayDateFormatted);
-  }, [selectedAula, userEmail, todayDateFormatted]);
+    if (!selectedAula || !dateFormatted) return null;
+    return getAulaCanceladaStatus(selectedAula.id, selectedAula.title, dateFormatted) ||
+      (isToday ? isAulaCanceladaHoje(selectedAula.id, selectedAula.title, userEmail) : null);
+  }, [selectedAula, userEmail, dateFormatted, isToday]);
+
+  // Altera a data selecionada e auto-adapta a aula selecionada para o dia correspondente
+  const handleDateChange = (newDateISO: string) => {
+    setSelectedDate(newDateISO);
+    if (!newDateISO) return;
+    const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    const [y, m, d] = newDateISO.split('-').map(Number);
+    const newDayOfWeek = days[new Date(y, m - 1, d).getDay()];
+    
+    // Sugere a primeira aula daquele dia caso a atual não seja do mesmo dia
+    const matchingClasses = ESCALA_DATA.filter(e => e.dayOfWeek === newDayOfWeek);
+    if (matchingClasses.length > 0) {
+      const currentStillValid = matchingClasses.some(e => e.id === selectedAulaId);
+      if (!currentStillValid) {
+        setSelectedAulaId(matchingClasses[0].id);
+      }
+    }
+  };
+
+  // Botões rápidos de preset de data (-1: Ontem, 0: Hoje, 1: Amanhã)
+  const handleSetPresetDate = (offsetDays: number) => {
+    const todayISO = getTodayISO();
+    const [ty, tm, td] = todayISO.split('-').map(Number);
+    const target = new Date(ty, tm - 1, td);
+    target.setDate(target.getDate() + offsetDays);
+    const iso = `${target.getFullYear()}-${String(target.getMonth() + 1).padStart(2, '0')}-${String(target.getDate()).padStart(2, '0')}`;
+    handleDateChange(iso);
+  };
 
   // Inicializa quando abre o modal
   useEffect(() => {
@@ -105,15 +157,15 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
     if (initialAula) {
       setSelectedAulaId(initialAula.id);
     } else {
-      // Tenta sugerir a primeira aula de hoje na escala
-      const todayClasses = ESCALA_DATA.filter(e => e.dayOfWeek === todayBRT);
-      if (todayClasses.length > 0) {
-        setSelectedAulaId(todayClasses[0].id);
+      // Sugere aula de acordo com a data selecionada
+      const matchingClasses = ESCALA_DATA.filter(e => e.dayOfWeek === dayOfWeekName);
+      if (matchingClasses.length > 0) {
+        setSelectedAulaId(matchingClasses[0].id);
       } else if (ESCALA_DATA.length > 0) {
         setSelectedAulaId(ESCALA_DATA[0].id);
       }
     }
-  }, [isOpen, initialAula, todayBRT]);
+  }, [isOpen, initialAula, dayOfWeekName]);
 
   // Quando seleciona uma aula ou se já existir providência, sincroniza os campos
   useEffect(() => {
@@ -187,7 +239,7 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
 
     let corpo = `${emoji} ${tituloAviso}\n` +
       `🏛️ *Seminário Teológico Koinonia*\n` +
-      `📅 Data: *${todayDateFormatted} (${selectedAula.dayOfWeek})*\n\n` +
+      `📅 Data: *${dateFormatted} (${dayOfWeekName})*\n\n` +
       `Prezados alunos da *${selectedAula.turma}*,\n\n`;
 
     if (tipoProvidencia === 'aula_dupla') {
@@ -208,7 +260,7 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
     }
 
     return corpo;
-  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, substitutoPresencaUrl, motivoTexto, todayDateFormatted]);
+  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, substitutoPresencaUrl, motivoTexto, dateFormatted, dayOfWeekName]);
 
   // Mensagem curta para colar no Chat do Google Meet
   const mensagemChatMeet = useMemo(() => {
@@ -244,7 +296,7 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
       await registrarProvidenciaAula({
         disciplinaId: selectedAula.id,
         disciplinaName: selectedAula.title,
-        dataAula: todayDateFormatted,
+        dataAula: dateFormatted,
         tipoProvidencia,
         motivo: motivoTexto.trim() || 'Imprevisto com o corpo docente.',
         autorNome,
@@ -259,10 +311,10 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
       });
 
       const msg = tipoProvidencia === 'aula_dupla'
-        ? `⚡ Aula Dupla registrada com sucesso! O Profº ${substitutoProfName} assumiu os 2 tempos.`
+        ? `⚡ Aula Dupla registrada para ${dateFormatted}! O Profº ${substitutoProfName} assumiu os 2 tempos.`
         : tipoProvidencia === 'substituicao'
-        ? `🔄 Substituição registrada com sucesso com o Profº ${substitutoProfName}.`
-        : `🚫 Suspensão de aula registrada. Alunos notificados.`;
+        ? `🔄 Substituição registrada para ${dateFormatted} com o Profº ${substitutoProfName}.`
+        : `🚫 Suspensão de aula registrada para ${dateFormatted}. Alunos notificados.`;
 
       if (onSuccess) onSuccess(msg);
       onClose();
@@ -278,9 +330,9 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
     if (!selectedAula) return;
     setIsSubmitting(true);
     try {
-      await reativarAula(selectedAula.id, todayDateFormatted);
-      await reativarAula(selectedAula.title, todayDateFormatted);
-      if (onSuccess) onSuccess(`✅ Providência desfeita! A aula de "${selectedAula.title}" voltou à normalidade.`);
+      await reativarAula(selectedAula.id, dateFormatted);
+      await reativarAula(selectedAula.title, dateFormatted);
+      if (onSuccess) onSuccess(`✅ Providência desfeita! A aula de "${selectedAula.title}" em ${dateFormatted} voltou à normalidade.`);
       onClose();
     } catch (err) {
       console.error('Erro ao desfazer providência:', err);
@@ -321,34 +373,97 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
 
         <form onSubmit={handleSalvar} className="space-y-4">
           
-          {/* Passo 1: Seleção da Aula Afetada */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center justify-between">
-              <span>1. Qual aula sofreu o imprevisto?</span>
-              <span className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold">
-                Data: {todayDateFormatted} ({todayBRT})
-              </span>
-            </label>
-            <select
-              value={selectedAulaId}
-              onChange={(e) => setSelectedAulaId(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none"
-            >
-              <optgroup label={`Aulas de Hoje (${todayBRT})`}>
-                {ESCALA_DATA.filter(e => e.dayOfWeek === todayBRT).map(item => (
-                  <option key={item.id} value={item.id}>
-                    {item.title} — {item.professor} ({item.startBRT} - {item.endBRT})
-                  </option>
-                ))}
-              </optgroup>
-              <optgroup label="Outras Aulas da Grade Semanal">
-                {ESCALA_DATA.filter(e => e.dayOfWeek !== todayBRT).map(item => (
-                  <option key={item.id} value={item.id}>
-                    {item.dayOfWeek}: {item.title} — {item.professor}
-                  </option>
-                ))}
-              </optgroup>
-            </select>
+          {/* Passo 1: Seleção de Data e Aula Afetada */}
+          <div className="space-y-3 bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-2xl border border-gray-200 dark:border-slate-700/80">
+            {/* Seletor de Data */}
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <label className="text-xs font-extrabold text-gray-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>Data da Aula com Imprevisto:</span>
+                </label>
+                
+                {/* Presets Rápidos: Ontem / Hoje / Amanhã */}
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handleSetPresetDate(-1)}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer active:scale-95 ${
+                      isYesterday
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                        : 'bg-white dark:bg-slate-700 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    Ontem
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSetPresetDate(0)}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer active:scale-95 ${
+                      isToday
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                        : 'bg-white dark:bg-slate-700 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    Hoje
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSetPresetDate(1)}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer active:scale-95 ${
+                      isTomorrow
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                        : 'bg-white dark:bg-slate-700 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    Amanhã
+                  </button>
+                </div>
+              </div>
+
+              {/* Input Date Nativo + Badge do Dia da Semana */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => handleDateChange(e.target.value)}
+                  className="flex-1 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none cursor-pointer"
+                />
+                <span className="px-3 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/50 text-xs font-black whitespace-nowrap">
+                  📅 {dayOfWeekName}
+                </span>
+              </div>
+            </div>
+
+            {/* Dropdown da Aula Afetada */}
+            <div className="space-y-1.5 pt-2 border-t border-gray-200/70 dark:border-slate-700/60">
+              <label className="text-xs font-bold text-gray-700 dark:text-slate-300 flex items-center justify-between">
+                <span>Qual aula sofreu o imprevisto?</span>
+                <span className="text-[11px] text-amber-600 dark:text-amber-400 font-bold">
+                  {dateFormatted} ({dayOfWeekName})
+                </span>
+              </label>
+              <select
+                value={selectedAulaId}
+                onChange={(e) => setSelectedAulaId(e.target.value)}
+                className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none"
+              >
+                <optgroup label={`Aulas de ${dayOfWeekName}`}>
+                  {ESCALA_DATA.filter(e => e.dayOfWeek === dayOfWeekName).map(item => (
+                    <option key={item.id} value={item.id}>
+                      {item.title} — {item.professor} ({item.startBRT} - {item.endBRT})
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Outras Aulas da Grade Semanal">
+                  {ESCALA_DATA.filter(e => e.dayOfWeek !== dayOfWeekName).map(item => (
+                    <option key={item.id} value={item.id}>
+                      {item.dayOfWeek}: {item.title} — {item.professor}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
           </div>
 
           {/* Passo 2: Escolha do Tipo de Providência */}
