@@ -33,6 +33,12 @@ export function GlobalWalkthrough({
   const { isMobile } = useDeviceMode();
   const driverInstanceRef = useRef<Driver | null>(null);
   const isTransitioningRef = useRef(false);
+  const activeTabRef = useRef<string>(activeTab || '');
+
+  // Mantém a referência da aba atual sempre atualizada para callbacks assíncronos
+  useEffect(() => {
+    activeTabRef.current = activeTab || '';
+  }, [activeTab]);
 
   // Normalização do e-mail para chave única no localStorage
   const normalizedEmail = (userEmail || 'aluno')
@@ -69,9 +75,9 @@ export function GlobalWalkthrough({
     },
     {
       element: '[data-tour="live-banner"]',
-      fallbackElement: 'main',
+      fallbackElement: '[data-tour="disciplinas-grid"]',
       title: '🔴 Aulas Ao Vivo & Google Meet',
-      description: 'Em noites de aula síncrona (Terça a Sexta), a sala oficial do Meet abre em destaque e a Lista de Presença é liberada pontualmente para você assinar com 1 clique.',
+      description: 'Em noites de aula síncrona (Terça a Sexta às 19:30 BRT), o banner da aula abre em destaque no topo com link oficial do Meet e lista de presença liberada com 1 clique aos 50% do horário.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -131,6 +137,15 @@ export function GlobalWalkthrough({
       requiredTab: 'aluno-disciplinas',
     },
     {
+      element: '[data-tour="card-metaverso"]',
+      fallbackElement: 'main',
+      title: '🏛️ Metaverso Teológico 3D',
+      description: 'Explore reconstituições históricas sagradas em 3D (Tabernáculo no Deserto, Templo de Salomão, Jerusalém Bíblica) conectando arqueologia à teologia.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'aluno-disciplinas',
+    },
+    {
       element: '[data-tour="nav-biblioteca"]',
       fallbackElement: 'aside',
       title: '🏛️ Biblioteca Digital Teológica',
@@ -166,7 +181,7 @@ export function GlobalWalkthrough({
       element: '[data-tour="btn-mobile-menu"]',
       fallbackElement: 'header',
       title: '📱 Menu Lateral Completo',
-      description: 'Toque neste botão a qualquer momento para abrir todas as ferramentas, matérias, laboratórios práticos e sua biblioteca.',
+      description: 'Toque neste botão a qualquer momento para abrir todas as matérias, fóruns, laboratórios práticos, pastas e sua biblioteca.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'aluno-disciplinas',
@@ -182,9 +197,9 @@ export function GlobalWalkthrough({
     },
     {
       element: '[data-tour="live-banner"]',
-      fallbackElement: 'main',
+      fallbackElement: '[data-tour="disciplinas-grid"]',
       title: '🔴 Aula Ao Vivo & Frequência',
-      description: 'Acesse o Google Meet direto pelo smartphone e assine a lista de presença com 1 toque durante a transmissão.',
+      description: 'Acesse o Google Meet direto pelo smartphone e assine a lista de presença com 1 toque durante a transmissão síncrona.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'aluno-disciplinas',
@@ -199,24 +214,22 @@ export function GlobalWalkthrough({
       requiredTab: 'aluno-disciplinas',
     },
     {
-      element: '[data-tour="nav-biblioteca"]',
+      element: '[data-tour="btn-mobile-menu"]',
       fallbackElement: 'header',
       title: '🏛️ Biblioteca Digital (3.000+ Livros)',
-      description: 'Toque para abrir o acervo com mais de 3.000 obras teológicas e leitor de PDF embutido otimizado para celulares.',
-      side: 'top',
-      align: 'center',
+      description: 'Abra o menu para acessar o acervo com mais de 3.000 obras teológicas e leitor de PDF embutido otimizado para celular.',
+      side: 'bottom',
+      align: 'start',
       requiredTab: 'aluno-disciplinas',
-      nextTabAction: 'aluno-biblioteca',
     },
     {
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
       title: '💡 Central de Ajuda & Tutoriais',
-      description: 'Assista a vídeos rápidos de demonstração ou reinicie este tour quando quiser. Tenha um excelente aprendizado no Koinonia LMS! 🎉',
+      description: 'Assista a vídeos rápidos de demonstração ou reinicie este tour quando quiser pelo menu. Tenha um excelente aprendizado! 🎉',
       side: 'bottom',
       align: 'end',
-      requiredTab: 'aluno-biblioteca',
-      nextTabAction: 'aluno-disciplinas',
+      requiredTab: 'aluno-disciplinas',
     },
   ];
 
@@ -234,11 +247,11 @@ export function GlobalWalkthrough({
       requiredTab: 'prof-disciplinas',
     },
     {
-      element: '[data-tour="nav-prof-disciplinas"]',
-      fallbackElement: 'aside',
-      title: '📚 Gerenciar Minhas Matérias',
-      description: 'Acesse as disciplinas sob sua regência docente no semestre: consulte horários, personalize os links das salas do Google Meet e configure as pastas restritas do Google Drive.',
-      side: 'right',
+      element: '[data-tour="prof-materias-salas"]',
+      fallbackElement: '[data-tour="nav-prof-disciplinas"]',
+      title: '🎥 Salas Virtuais do Meet & Manejo de Disciplinas',
+      description: 'Visualize as disciplinas sob sua regência docente: acesse a sala oficial do Meet, inicie gravação da aula, insira slides e use "Manejar Matéria" para personalizar links da sala e pasta do Google Drive.',
+      side: 'top',
       align: 'center',
       requiredTab: 'prof-disciplinas',
     },
@@ -252,14 +265,13 @@ export function GlobalWalkthrough({
       requiredTab: 'prof-disciplinas',
     },
     {
-      element: '[data-tour="nav-prof-avaliacoes"]',
-      fallbackElement: 'aside',
-      title: '📝 Gestão de Avaliações & Google Forms',
-      description: 'Crie avaliações formativas e provas do semestre. Utilize formulários nativos ou incorpore links do Google Forms com rubricas diagnósticas e feedback contínuo.',
-      side: 'right',
+      element: '[data-tour="prof-materiais-avaliacoes"]',
+      fallbackElement: 'main',
+      title: '📝 Materiais Didáticos & Avaliações (Google Forms)',
+      description: 'Publique apostilas em PDF ou links do Google Drive e crie avaliações formativas. É possível incorporar questionários do Google Forms com rubricas diagnósticas e feedback contínuo.',
+      side: 'top',
       align: 'center',
       requiredTab: 'prof-disciplinas',
-      nextTabAction: 'prof-avaliacoes',
     },
     {
       element: '[data-tour="nav-tele-proximidade"]',
@@ -268,7 +280,7 @@ export function GlobalWalkthrough({
       description: 'Monitore em tempo real a distância transacional dos alunos: frequência síncrona, ritmo de estudo autônomo e alertas de desengajamento para intervenção pedagógica preventiva.',
       side: 'right',
       align: 'center',
-      requiredTab: 'prof-avaliacoes',
+      requiredTab: 'prof-disciplinas',
       nextTabAction: 'tele-proximidade',
     },
     {
@@ -284,7 +296,7 @@ export function GlobalWalkthrough({
     {
       element: '[data-tour="nav-biblioteca"]',
       fallbackElement: 'aside',
-      title: '🏛️ Curadoria Bibliográfica',
+      title: '🏛️ Curadoria Bibliográfica Teológica',
       description: 'Indique capítulos e obras do acervo digital institucional (3.000+ títulos) diretamente como bibliografia recomendada para suas matérias.',
       side: 'right',
       align: 'center',
@@ -308,17 +320,35 @@ export function GlobalWalkthrough({
       element: '[data-tour="btn-mobile-menu"]',
       fallbackElement: 'header',
       title: '📱 Menu de Ferramentas Docentes',
-      description: 'Toque para acessar suas disciplinas, radar de tele-proximidade, avaliações e a biblioteca institucional.',
+      description: 'Toque para acessar suas disciplinas, radar de tele-proximidade, avaliações, portfólios e a biblioteca institucional.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'prof-disciplinas',
     },
     {
+      element: '[data-tour="dark-mode-toggle"]',
+      fallbackElement: 'header',
+      title: '🌓 Modo Escuro Nativo',
+      description: 'Alternância rápida para visual noturno confortável durante o planejamento pedagógico no celular.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'prof-disciplinas',
+    },
+    {
       element: '[data-tour="prof-publicar-leituras"]',
       fallbackElement: 'main',
-      title: '📢 Publicar Avisos Rápidos',
-      description: 'Envie links e avisos para a turma direto do celular com formatação pronta para o WhatsApp.',
+      title: '📢 Publicar Avisos Rápidos (WhatsApp)',
+      description: 'Envie links e avisos para a turma direto do celular com formatação pronta para o grupo de WhatsApp.',
       side: 'bottom',
+      align: 'center',
+      requiredTab: 'prof-disciplinas',
+    },
+    {
+      element: '[data-tour="prof-materias-salas"]',
+      fallbackElement: 'main',
+      title: '🎥 Salas do Meet & Disciplinas',
+      description: 'Abra a sala do Meet da aula ou ajuste links de materiais e presenças com facilidade.',
+      side: 'top',
       align: 'center',
       requiredTab: 'prof-disciplinas',
     },
@@ -326,7 +356,7 @@ export function GlobalWalkthrough({
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
       title: '💡 Central de Ajuda & Tutoriais',
-      description: 'Acesse tutoriais e orientações pedagógicas para a condução das aulas síncronas no Seminário.',
+      description: 'Acesse tutoriais em vídeo e orientações pedagógicas para condução das aulas síncronas.',
       side: 'bottom',
       align: 'end',
       requiredTab: 'prof-disciplinas',
@@ -340,43 +370,61 @@ export function GlobalWalkthrough({
     {
       element: '[data-tour="role-selector"]',
       fallbackElement: 'header',
-      title: '🤝 Bem-vindo, Monitor • Painel de Monitoria',
+      title: '🤝 Bem-vindo, Monitor • Central de Monitoria',
       description: 'Você é o ponto de apoio fundamental da comunidade e das aulas síncronas! Seu painel organiza a escala semanal, formulários de presença e gravações de aulas.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'monitor-escala',
     },
     {
-      element: '[data-tour="nav-monitor-escala"]',
-      fallbackElement: 'aside',
-      title: '📋 Grade Semanal & Links de Presença',
+      element: '[data-tour="monitor-header"]',
+      fallbackElement: '[data-tour="nav-monitor-escala"]',
+      title: '⚡ Painel Central do Monitor & Sincronização',
+      description: 'Dashboard unificado com status da monitoria, contagem de tarefas e botão de sincronização em nuvem leve para manter todos os dados atualizados.',
+      side: 'bottom',
+      align: 'start',
+      requiredTab: 'monitor-escala',
+    },
+    {
+      element: '[data-tour="monitor-grade-dia"]',
+      fallbackElement: 'main',
+      title: '📋 Grade do Dia & Links de Presença',
       description: 'Acompanhe as aulas síncronas de Terça a Sexta e utilize os botões rápidos para copiar o link da lista de presença (Google Forms) e colar no chat do Meet aos 50% da aula.',
-      side: 'right',
-      align: 'center',
-      requiredTab: 'monitor-escala',
-    },
-    {
-      element: '[data-tour="live-banner"]',
-      fallbackElement: 'main',
-      title: '🔴 Aulas Ao Vivo & Google Meet',
-      description: 'Acesse a sala virtual oficial com antecedência para recepcionar professores e seminaristas, verificando microfones e gravação.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'monitor-escala',
     },
     {
-      element: '[data-tour="aluno-gravacoes"]',
+      element: '[data-tour="monitor-acoes-rapidas"]',
       fallbackElement: 'main',
-      title: '🎬 Registro de Gravações das Aulas',
-      description: 'Após cada aula, insira o link da transmissão gravada para disponibilizar instantaneamente aos alunos que precisam repor conteúdos.',
-      side: 'bottom',
+      title: '🚀 Ações Rápidas da Monitoria',
+      description: 'Atalhos diretos para abrir a Escala Completa, ativar o Gravador em Piloto Automático, moderar os Fóruns Koinonia, acessar as Pastas Virtuais e a Grade Semanal.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'monitor-escala',
+    },
+    {
+      element: '[data-tour="monitor-gravacoes-card"]',
+      fallbackElement: 'main',
+      title: '🎬 Hub de Gravações das Aulas',
+      description: 'Consulte e registre os links das transmissões passadas gravadas em HD para atender prontamente seminaristas que necessitam de reposição.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'monitor-escala',
+    },
+    {
+      element: '[data-tour="monitor-avisos-card"]',
+      fallbackElement: 'main',
+      title: '📢 Mural de Avisos & Recursos Recentes',
+      description: 'Acompanhe os avisos e textos postados pelos docentes para reforçar as orientações pedagógicas nos grupos de WhatsApp dos alunos.',
+      side: 'top',
       align: 'center',
       requiredTab: 'monitor-escala',
     },
     {
       element: '[data-tour="nav-tele-proximidade"]',
       fallbackElement: 'aside',
-      title: '📡 Radar de Acolhimento & Koinonia',
+      title: '📡 Radar de Acolhimento & Tele-Proximidade',
       description: 'Localize alunos ausentes ou com dificuldades de conexão para envio de mensagem pastoral de suporte e encorajamento no WhatsApp.',
       side: 'right',
       align: 'center',
@@ -396,8 +444,8 @@ export function GlobalWalkthrough({
     {
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
-      title: '💡 Manual de Monitoria & Suporte',
-      description: 'Consulte diretrizes operacionais, checklist de aula e tutoriais sempre que necessário. Bom trabalho de monitoria! 🎉',
+      title: '💡 Manual de Monitoria & Checklist',
+      description: 'Consulte diretrizes operacionais, checklist da transmissão e tutoriais sempre que necessário. Bom trabalho de monitoria! 🎉',
       side: 'bottom',
       align: 'end',
       requiredTab: 'comunidade-forum',
@@ -410,24 +458,42 @@ export function GlobalWalkthrough({
       element: '[data-tour="btn-mobile-menu"]',
       fallbackElement: 'header',
       title: '📱 Menu de Monitoria',
-      description: 'Toque para acessar a escala semanal, controle de presenças, gravações e fóruns comunitários.',
+      description: 'Toque para acessar a escala semanal, controle de presenças, fóruns e tele-proximidade.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'monitor-escala',
     },
     {
-      element: '[data-tour="live-banner"]',
+      element: '[data-tour="monitor-grade-dia"]',
       fallbackElement: 'main',
-      title: '🔴 Link Rápido do Google Meet',
-      description: 'Abra a sala do Meet pelo celular ou copie o link da lista de presença com 1 toque para enviar no chat.',
+      title: '📋 Grade do Dia & Links de Presença',
+      description: 'Abra o Google Meet pelo celular ou copie o link da lista de presença com 1 toque para enviar no chat da aula.',
       side: 'bottom',
+      align: 'center',
+      requiredTab: 'monitor-escala',
+    },
+    {
+      element: '[data-tour="monitor-acoes-rapidas"]',
+      fallbackElement: 'main',
+      title: '🚀 Ações Rápidas (Meet & Gravação)',
+      description: 'Atalhos de 1 toque para gerenciar a monitoria e acionar o gravador de transmissão.',
+      side: 'top',
+      align: 'center',
+      requiredTab: 'monitor-escala',
+    },
+    {
+      element: '[data-tour="monitor-gravacoes-card"]',
+      fallbackElement: 'main',
+      title: '🎬 Registro de Gravações',
+      description: 'Consulte os links das aulas passadas para apoiar os seminaristas em reposição.',
+      side: 'top',
       align: 'center',
       requiredTab: 'monitor-escala',
     },
     {
       element: '[data-tour="btn-ajuda"]',
       fallbackElement: 'header',
-      title: '💡 Orientações de Monitoria',
+      title: '💡 Orientações & Checklist',
       description: 'Acesse manuais rápidos e tutoriais em vídeo para o suporte às aulas síncronas.',
       side: 'bottom',
       align: 'end',
@@ -449,11 +515,11 @@ export function GlobalWalkthrough({
       requiredTab: 'admin-dashboard',
     },
     {
-      element: '[data-tour="nav-admin-dashboard"]',
-      fallbackElement: 'aside',
-      title: '👥 Gestão de Usuários & Papéis (RBAC)',
-      description: 'Cadastre e autorize novos seminaristas, professores e monitores com Google OAuth. Edite turmas, períodos e dispare mensagens institucionais via WhatsApp.',
-      side: 'right',
+      element: '[data-tour="admin-metrics"]',
+      fallbackElement: '[data-tour="nav-admin-dashboard"]',
+      title: '📈 Métricas Consolidadas em Tempo Real',
+      description: 'Acompanhe em tempo real o total de usuários autorizados, solicitações de acesso aguardando resposta, número de professores cadastrados e matérias oficiais ativas.',
+      side: 'bottom',
       align: 'center',
       requiredTab: 'admin-dashboard',
     },
@@ -462,6 +528,33 @@ export function GlobalWalkthrough({
       fallbackElement: 'main',
       title: '📊 Auditoria de Acessos & Telemetria em Tempo Real',
       description: 'Monitore em tempo real quem está conectado, tempo ativo de estudos, dispositivos utilizados (computador/celular) e exporte datasets em CSV ou JSON.',
+      side: 'bottom',
+      align: 'start',
+      requiredTab: 'admin-dashboard',
+    },
+    {
+      element: '[data-tour="admin-requests"]',
+      fallbackElement: 'main',
+      title: '📋 Fila de Solicitações Pendentes de Acesso',
+      description: 'Analise novos cadastros solicitados por alunos e aprove com 1 clique, disparando instantaneamente as credenciais com mensagem de boas-vindas pelo WhatsApp e Gmail.',
+      side: 'bottom',
+      align: 'start',
+      requiredTab: 'admin-dashboard',
+    },
+    {
+      element: '[data-tour="admin-usuarios"]',
+      fallbackElement: 'main',
+      title: '👥 Gestão de Usuários & Papéis (RBAC)',
+      description: 'Gerencie permissões (Aluno, Professor, Monitor, Admin), aloque seminaristas em turmas, altere senhas e dispare mensagens institucionais em lote.',
+      side: 'bottom',
+      align: 'start',
+      requiredTab: 'admin-dashboard',
+    },
+    {
+      element: '[data-tour="admin-disciplinas-tab"]',
+      fallbackElement: 'main',
+      title: '📚 Gestão Curricular de Disciplinas & Docentes',
+      description: 'Cadastre novas disciplinas, vincule professores titulares, defina dias da semana, horários das aulas síncronas e pastas oficiais do Google Drive.',
       side: 'bottom',
       align: 'start',
       requiredTab: 'admin-dashboard',
@@ -517,10 +610,28 @@ export function GlobalWalkthrough({
       requiredTab: 'admin-dashboard',
     },
     {
+      element: '[data-tour="admin-metrics"]',
+      fallbackElement: 'main',
+      title: '📈 Métricas Consolidadas',
+      description: 'Verifique contagem de usuários cadastrados, pendências e matérias oficiais pelo celular.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'admin-dashboard',
+    },
+    {
       element: '[data-tour="admin-analytics"]',
       fallbackElement: 'main',
       title: '📊 Telemetria & Acessos em Tempo Real',
       description: 'Verifique quantos alunos e professores estão online e audite as sessões ativas diretamente pelo smartphone.',
+      side: 'bottom',
+      align: 'center',
+      requiredTab: 'admin-dashboard',
+    },
+    {
+      element: '[data-tour="btn-sincronizar"]',
+      fallbackElement: 'header',
+      title: '⚡ Blindagem de Egress & Sync',
+      description: 'Sincronização em nuvem ultra-leve delta-sync para economizar dados móveis.',
       side: 'bottom',
       align: 'center',
       requiredTab: 'admin-dashboard',
@@ -554,6 +665,7 @@ export function GlobalWalkthrough({
   }, [effectiveRole, isMobile]);
 
   const navigateToTab = (tabId: string) => {
+    activeTabRef.current = tabId;
     if (onTabChange) {
       onTabChange(tabId);
     }
@@ -610,7 +722,7 @@ export function GlobalWalkthrough({
   };
 
   /**
-   * Aguarda um elemento aparecer no DOM antes de executar o passo
+   * Aguarda um elemento aparecer no DOM e rola suavemente até ele
    */
   const waitForElement = (selector: string, fallback?: string, maxWaitMs = 1800): Promise<Element | null> => {
     return new Promise((resolve) => {
@@ -619,6 +731,9 @@ export function GlobalWalkthrough({
       const check = () => {
         const el = document.querySelector(selector);
         if (el) {
+          try {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+          } catch (e) {}
           resolve(el);
           return;
         }
@@ -627,6 +742,9 @@ export function GlobalWalkthrough({
           if (fallback) {
             const fbEl = document.querySelector(fallback);
             if (fbEl) {
+              try {
+                fbEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+              } catch (e) {}
               resolve(fbEl);
               return;
             }
@@ -653,8 +771,8 @@ export function GlobalWalkthrough({
 
     const currentDef = tourSteps[currentIndex];
 
-    // Se o passo requer uma aba diferente e estamos em transição controlada
-    if (currentDef.requiredTab && activeTab && activeTab !== currentDef.requiredTab && isTransitioningRef.current) {
+    // Se o passo requer uma aba diferente da aba ativa, muda primeiro
+    if (currentDef.requiredTab && activeTabRef.current && activeTabRef.current !== currentDef.requiredTab) {
       navigateToTab(currentDef.requiredTab);
       setTimeout(() => {
         runTourFromCurrentStep();
@@ -707,7 +825,7 @@ export function GlobalWalkthrough({
       showProgress: true,
       animate: true,
       allowClose: true,
-      overlayColor: 'rgba(15, 23, 42, 0.85)',
+      overlayColor: 'rgba(15, 23, 42, 0.82)',
       nextBtnText: isLastStep ? 'Concluir 🎉' : 'Próximo →',
       prevBtnText: '← Anterior',
       doneBtnText: 'Concluir 🎉',
@@ -738,7 +856,7 @@ export function GlobalWalkthrough({
         const nextDef = tourSteps[nextIdx];
 
         // Verifica se há transição de aba necessária
-        if (stepDef.nextTabAction || (nextDef.requiredTab && nextDef.requiredTab !== activeTab)) {
+        if (stepDef.nextTabAction || (nextDef.requiredTab && nextDef.requiredTab !== activeTabRef.current)) {
           const targetTab = stepDef.nextTabAction || nextDef.requiredTab || 'aluno-disciplinas';
           navigateToTab(targetTab);
           setTimeout(() => {
@@ -763,7 +881,7 @@ export function GlobalWalkthrough({
         setStepIndex(prevIdx);
         const prevDef = tourSteps[prevIdx];
 
-        if (prevDef.requiredTab && prevDef.requiredTab !== activeTab) {
+        if (prevDef.requiredTab && prevDef.requiredTab !== activeTabRef.current) {
           navigateToTab(prevDef.requiredTab);
           setTimeout(() => {
             isTransitioningRef.current = false;
@@ -779,7 +897,13 @@ export function GlobalWalkthrough({
     });
 
     driverInstanceRef.current = d;
-    d.drive();
+
+    // Aguarda rolagem suave estabilizar antes de exibir o popover
+    setTimeout(() => {
+      try {
+        d.drive();
+      } catch (e) {}
+    }, 120);
   };
 
   const startTourFromBeginning = (targetRole?: UserRole) => {
@@ -818,7 +942,7 @@ export function GlobalWalkthrough({
     return () => clearTimeout(timer);
   }, [normalizedEmail, effectiveRole]);
 
-  // Listeners para disparo manual do Onboarding via Central de Ajuda
+  // Listeners para disparo manual do Onboarding via Central de Ajuda ou Mobile Drawer
   useEffect(() => {
     if (typeof window === 'undefined') return;
 

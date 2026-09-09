@@ -321,7 +321,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       </div>
 
       {/* Cards de Métricas */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div data-tour="admin-metrics" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="p-4 bg-purple-50 rounded-2xl border border-purple-200">
           <span className="text-2xl font-black text-purple-900">{Object.keys(usersList).length}</span>
           <span className="block text-xs font-bold text-purple-700 mt-0.5">Total Autorizados</span>
@@ -363,6 +363,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </button>
 
         <button
+          data-tour="admin-requests"
           onClick={() => handleSubTabChange('requests')}
           className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap ${
             activeSubTab === 'requests'
@@ -393,6 +394,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </button>
 
         <button
+          data-tour="admin-disciplinas-tab"
           onClick={() => handleSubTabChange('disciplinas')}
           className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap ${
             activeSubTab === 'disciplinas'
@@ -405,6 +407,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </button>
 
         <button
+          data-tour="admin-tcc-tab"
           onClick={() => handleSubTabChange('tcc')}
           className={`pb-3 text-xs font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap ${
             activeSubTab === 'tcc'

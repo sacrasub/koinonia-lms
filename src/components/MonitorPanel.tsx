@@ -122,7 +122,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
   return (
     <div className="space-y-4">
       {/* Cabeçalho */}
-      <div className="bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-900 dark:to-indigo-900 rounded-2xl p-4 sm:p-5 text-white shadow-lg">
+      <div data-tour="monitor-header" className="bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-900 dark:to-indigo-900 rounded-2xl p-4 sm:p-5 text-white shadow-lg">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -146,7 +146,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
 
       {/* AULA EM ANDAMENTO AGORA */}
       {aulaAgora && (
-        <div className="bg-green-50 dark:bg-green-950/40 border border-green-300 dark:border-green-700 rounded-2xl p-4">
+        <div data-tour="monitor-aula-agora" className="bg-green-50 dark:bg-green-950/40 border border-green-300 dark:border-green-700 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-green-500 opacity-75"></span>
@@ -196,7 +196,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
 
       {/* GRADE RÁPIDA DO DIA */}
       {todayEscala.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
+        <div data-tour="monitor-grade-dia" className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <h2 className="text-xs font-extrabold text-gray-700 dark:text-slate-200 uppercase tracking-wide">
@@ -249,7 +249,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
       )}
 
       {/* AÇÕES RÁPIDAS */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div data-tour="monitor-acoes-rapidas" className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <button
           onClick={() => setActiveSubView('escala')}
           className="flex flex-col items-center gap-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 hover:bg-blue-50 dark:hover:bg-slate-800 hover:border-blue-300 dark:hover:border-slate-600 transition group cursor-pointer"
@@ -295,7 +295,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
       </div>
 
       {/* ÚLTIMAS GRAVAÇÕES */}
-      <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
+      <div data-tour="monitor-gravacoes-card" className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Video className="w-4 h-4 text-rose-600 dark:text-rose-400" />
@@ -338,7 +338,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
       </div>
 
       {/* AVISOS & LEITURAS RECENTES */}
-      <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
+      <div data-tour="monitor-avisos-card" className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Bell className="w-4 h-4 text-amber-600 dark:text-amber-400" />
@@ -384,6 +384,7 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
 
       {/* Link para Escala Completa */}
       <button
+        data-tour="monitor-btn-escala"
         onClick={() => setActiveSubView('escala')}
         className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-bold text-sm py-3 rounded-2xl transition shadow-md cursor-pointer"
       >

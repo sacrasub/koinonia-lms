@@ -7,7 +7,7 @@ import {
   BookOpen, CheckSquare, Compass, Drama, MessageSquare, 
   Heart, Archive, SlidersHorizontal, Library, HelpCircle, 
   UserCheck, ShieldCheck, Calendar, LayoutDashboard, Radio, 
-  LogOut, RefreshCw, Edit3, Camera, Target, Moon, Sun
+  LogOut, RefreshCw, Edit3, Camera, Target, Moon, Sun, Sparkles
 } from 'lucide-react';
 
 interface MobileDrawerMenuProps {
@@ -258,6 +258,20 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
 
         {/* Rodapé: Tema, Sincronização e Logout */}
         <div className="p-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 space-y-2">
+          {/* Botão de Iniciar Tour Guiado no Celular */}
+          <button
+            onClick={() => {
+              onClose();
+              setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('koinonia_start_tour', { detail: { force: true, role: currentRole } }));
+              }, 250);
+            }}
+            className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs transition active:scale-98 shadow-md border border-amber-300"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+            <span>✨ Iniciar Tour Guiado</span>
+          </button>
+
           {/* Alternador Modo Escuro (Mobile) */}
           <button
             onClick={() => {

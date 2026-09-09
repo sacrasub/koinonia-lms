@@ -95,3 +95,157 @@ body {
   background: rgba(0, 0, 0, 0.15);
   border-radius: 99px;
 }
+
+/* =========================================================================
+   DRIVER.JS CUSTOM STYLING (MODERNO & DARK MODE AWARE)
+   ========================================================================= */
+
+.driver-popover {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  padding: 18px 20px !important;
+  max-width: 390px !important;
+  font-family: inherit !important;
+  z-index: 100000 !important;
+}
+
+.dark .driver-popover {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+.driver-popover-title {
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  margin-bottom: 8px !important;
+  color: #0f172a !important;
+}
+
+.dark .driver-popover-title {
+  color: #f8fafc !important;
+}
+
+.driver-popover-description {
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  line-height: 1.55 !important;
+  color: #475569 !important;
+  margin-bottom: 14px !important;
+}
+
+.dark .driver-popover-description {
+  color: #94a3b8 !important;
+}
+
+.driver-popover-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding-top: 10px !important;
+  border-top: 1px solid #f1f5f9 !important;
+  margin-top: 4px !important;
+}
+
+.dark .driver-popover-footer {
+  border-top-color: #1e293b !important;
+}
+
+.driver-popover-progress-text {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+  background: #f1f5f9 !important;
+  padding: 2.5px 8.5px !important;
+  border-radius: 99px !important;
+}
+
+.dark .driver-popover-progress-text {
+  color: #94a3b8 !important;
+  background: #1e293b !important;
+}
+
+.driver-popover-navigation-btns {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.driver-popover-prev-btn {
+  background: #f8fafc !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 6px 12px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.driver-popover-prev-btn:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.dark .driver-popover-prev-btn {
+  background: #1e293b !important;
+  color: #cbd5e1 !important;
+  border-color: #334155 !important;
+}
+
+.dark .driver-popover-prev-btn:hover {
+  background: #334155 !important;
+  color: #ffffff !important;
+}
+
+.driver-popover-next-btn {
+  background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 6px 14px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+  transition: all 0.15s ease !important;
+}
+
+.driver-popover-next-btn:hover {
+  opacity: 0.94 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
+}
+
+.driver-popover-close-btn {
+  color: #94a3b8 !important;
+  font-size: 18px !important;
+  transition: color 0.15s ease !important;
+  cursor: pointer !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: #ef4444 !important;
+}
+
+.driver-popover-arrow {
+  border-color: #ffffff transparent transparent transparent !important;
+}
+
+.dark .driver-popover-arrow {
+  border-color: #0f172a transparent transparent transparent !important;
+}
+
+.driver-active-element {
+  outline: 2.5px solid #3b82f6 !important;
+  outline-offset: 3px !important;
+  border-radius: 16px !important;
+  transition: outline 0.2s ease !important;
+}

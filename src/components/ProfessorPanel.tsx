@@ -1202,7 +1202,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
       </div>
 
       {/* SEÇÃO 2: SALAS VIRTUAIS & MANEJO DAS SUAS MATÉRIAS */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm space-y-4">
+      <div data-tour="prof-materias-salas" className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
           <div className="flex items-center gap-2">
             <Video className="w-5 h-5 text-red-600" />
@@ -1365,7 +1365,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
       </div>
 
       {/* SEÇÃO 3: MATERIAIS DE ESTUDO & AVALIAÇÕES */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div data-tour="prof-materiais-avaliacoes" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Formulário e Lista de Materiais de Estudo */}
         <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm space-y-4">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
