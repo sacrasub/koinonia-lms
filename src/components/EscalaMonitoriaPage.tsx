@@ -2351,22 +2351,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               <Bell className="w-3.5 h-3.5 text-amber-300 animate-bounce" />
               <span>🔊 Testar Bipe Sonoro (Alto)</span>
             </button>
-
-            <button
-              onClick={() => handleCopyEscalaWhatsApp(selectedTurma === 'Todos' ? 'Turma A' : selectedTurma)}
-              className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-emerald-500/50"
-            >
-              <Share2 className="w-4 h-4" />
-              <span>Copiar Texto p/ WhatsApp</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab(activeTab === 'compacto' ? 'grade' : 'compacto')}
-              className="w-full py-2.5 px-4 bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold text-xs rounded-2xl backdrop-blur-md transition flex items-center justify-center gap-2 border border-white/20"
-            >
-              <Smartphone className="w-4 h-4 text-amber-300" />
-              <span>{activeTab === 'compacto' ? 'Ver Grade Expandida' : '📸 Modo Print (WhatsApp)'}</span>
-            </button>
           </div>
         </div>
       </div>
