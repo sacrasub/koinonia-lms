@@ -59,6 +59,17 @@ export const INITIAL_SLIDES: SlideItem[] = [
     author_name: 'Profº Cleiton Barbirato',
     created_at: '2026-08-26T20:00:00Z',
   },
+  {
+    id: 'slide-disc9-modular',
+    disciplina_id: 'disc-9',
+    aula_num: 1,
+    data_aula: '07/09/2026',
+    title: 'SLIDES • História e Cultura Afro-Brasileira e Indígena (UIECB)',
+    slide_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    notes: 'Apresentação visual completa em PDF (1,3 MB) elaborada pelo Profº Alexsandro para o módulo de 4 aulas (Áfricas, Diáspora, Povos Indígenas e Análise Confessional).',
+    author_name: 'Profº Alexsandro',
+    created_at: '2026-09-07T10:00:00Z',
+  },
 ];
 
 export function getAllSlides(): SlideItem[] {

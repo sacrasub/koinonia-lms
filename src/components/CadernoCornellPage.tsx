@@ -190,6 +190,35 @@ Apresentação da ementa e introdução à transição teológica da Escolástic
     summary: 'A Epístola aos Hebreus estabelece a supremacia absoluta de Jesus Cristo como o Sumo Sacerdote eterno da Nova Aliança, cujo sacrifício perfeito e definitivo concede livre acesso ao trono da graça de Deus.',
     tags: ['Cristologia', 'Epístolas Gerais', 'Exegese de Hebreus'],
   },
+  'note-cab201-modular': {
+    id: 'note-cab201-modular',
+    date: '2026-09-07',
+    disciplina_name: '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro',
+    disciplina_code: 'CAB-201',
+    theme: 'Módulo de Videoaulas: Etnia, Fé Bíblica, Diáspora e Cosmovisão Indígena (Aulas 1 a 4)',
+    professor_name: 'Profº Alexsandro',
+    biblical_references: 'Gênesis 1:26-27; Gálatas 3:28; Apocalipse 7:9',
+    cues: `• Por que esta matéria é indispensável à formação teológica?
+• O conceito de Imago Dei e a dignidade de todas as etnias
+• Diáspora africana e matriz cultural brasileira
+• Cosmovisão dos povos originários e missão integral
+• Requisitos da atividade avaliativa explicada na Aula 4`,
+    notes: `1. ESTRUTURA DO MÓDULO GRAVADO (4 VIDEOAULAS EM HD)
+- Aula 01: Por Que Esta Disciplina é Necessária à Teologia? (636 MB)
+- Aula 02: Áfricas, Diáspora e Cultura Afro-Brasileira (595 MB)
+- Aula 03: Povos Indígenas: Histórias, Culturas, Missão e Direitos (526 MB)
+- Aula 04: Religiões, Análise Cristã Confessional e Prática da Igreja (532 MB)
+
+2. ATIVIDADE AVALIATIVA FINAL (ENVIO POR E-MAIL)
+- O Profº Alexsandro detalha os critérios de elaboração e entrega da atividade na Aula 04.
+- Produção textual individual com envio para o e-mail do professor até o final do período letivo (28 de novembro de 2026).
+
+3. TEXTOS DE APOIO E ACERVO DA MATÉRIA
+- Silvio Almeida (Racismo Estrutural); John Piper (O Racismo, a Cruz e o Cristão); Esau McCaulley (Uma Leitura Negra); Ailton Krenak (Ideias para Adiar o Fim do Mundo); FUNAI (O Índio Brasileiro); Marco Davi de Oliveira (A Religião Mais Negra do Brasil).`,
+    summary: 'A disciplina modular de História e Cultura Afro-Brasileira e Indígena aborda a constituição étnica e cultural brasileira à luz da revelação bíblica, capacitando o seminarista para uma teologia contextualizada e antirracista, com avaliação a ser entregue até 28 de novembro de 2026.',
+    ai_summary_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    tags: ['Cultura Afro', 'Povos Indígenas', 'Teologia Contextual', 'Avaliação Modular', 'Prof Alexsandro'],
+  },
 };
 
 export interface DisciplinaConfigItem {
