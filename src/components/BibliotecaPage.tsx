@@ -134,7 +134,8 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
       '1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P', 
       '1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8', 
       '1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj', 
-      '13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa'
+      '13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa',
+      '1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty'
     ];
     if (folderIds.some(fid => book.drive_url?.includes(fid))) return false;
     return true;

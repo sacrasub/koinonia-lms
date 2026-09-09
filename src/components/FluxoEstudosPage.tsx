@@ -260,16 +260,16 @@ Suas diretrizes:
     id: 'persona-09',
     num: '09',
     disciplina: 'História da Cultura Afro Brasileira e Indígena',
-    professor: 'Profº Emerson Silva',
+    professor: 'Profº Alexsandro',
     personaTitle: 'Historiador Sociocultural & Missiólogo Étnico',
     badgeColor: 'bg-cyan-100 text-cyan-800 border-cyan-300',
     accentBg: 'from-cyan-500/10 to-cyan-600/5',
-    sourcesCount: 2,
-    notebookLmTitle: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva',
+    sourcesCount: 4,
+    notebookLmTitle: '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro',
     shortDesc: 'Especialista em formação étnica brasileira, cosmovisão indígena, diáspora africana e prática pastoral inclusiva e contextualizada.',
     specialties: ['Formação Étnica Brasileira', 'Povos Indígenas & Cosmovisão', 'Diáspora Africana no Brasil', 'Contextualização Missiológica', 'Combate ao Preconceito Religioso'],
     systemPrompt: `Você é o Tutor Acadêmico em História da Cultura Afro-Brasileira e Indígena para o Seminário Teológico Koinonia LMS.
-Docente da Cadeira: Profº Emerson Silva.
+Docente da Cadeira: Profº Alexsandro.
 Suas diretrizes:
 1. Ofereça reflexões históricas e antropológicas sólidas sobre a matriz formadora da identidade brasileira.
 2. Trate com respeito, sensibilidade bíblica e profundidade a herança dos povos originários e das populações afrodescendentes.
@@ -279,8 +279,8 @@ Suas diretrizes:
       'Como a história da escravidão no Brasil desafia a reflexão ética e missiológica da igreja contemporânea?',
       'Quais os princípios bíblicos para uma contextualização sadia do Evangelho entre etnias originárias?'
     ],
-    meetTime: 'Sexta-feira • 21:00 – 22:00 (Módulo Gravado/Online)',
-    driveFolderUrl: 'https://drive.google.com/open?id=13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa&usp=drive_copy',
+    meetTime: 'Módulo Gravado (4 Aulas) • Envio da Atividade por E-mail até 28/11/2026',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
   }
 ];
 
@@ -388,14 +388,14 @@ const DRIVE_FOLDERS_11: DriveFolderItem[] = [
   },
   {
     num: '09',
-    name: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva',
+    name: '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro',
     category: 'materia',
-    desc: 'Textos de contextualização histórica e sociológica para o módulo online.',
-    linkDrive: 'https://drive.google.com/open?id=13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa&usp=drive_copy',
+    desc: 'Pasta oficial com as 4 aulas gravadas e materiais do módulo online. Avaliação por e-mail até 28/11.',
+    linkDrive: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
     personaId: 'persona-09',
-    notebookLmTitle: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva',
+    notebookLmTitle: '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro',
     iconType: 'folder',
-    sources: 2
+    sources: 4
   },
   {
     num: '10',

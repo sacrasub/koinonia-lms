@@ -60,7 +60,7 @@ export function normalizeDiscName(n: string): string {
 }
 
 /**
- * Extrai o núcleo semântico do nome da disciplina removendo prefixos ("09 - ") e sufixos de professores (" - Emerson Silva")
+ * Extrai o núcleo semântico do nome da disciplina removendo prefixos ("09 - ") e sufixos de professores (" - Alexsandro" / " - Emerson Silva")
  */
 export function cleanDiscName(name: string): string {
   if (!name) return '';

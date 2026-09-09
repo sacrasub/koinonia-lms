@@ -321,12 +321,12 @@ const disciplinasList: DisciplinaConfigItem[] = [
     tagColor: 'bg-orange-600'
   },
   { 
-    name: '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva', 
+    name: '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro', 
     shortName: 'Cultura Afro & Indígena', 
     code: 'CAB-201', 
-    prof: 'Profº Emerson Silva',
+    prof: 'Profº Alexsandro',
     dayOfWeek: 'Sexta-feira',
-    time: '21:00 – 22:00 (EAD)',
+    time: 'Modular (4 Aulas Gravadas)',
     num: '09',
     colorName: 'yellow',
     badgeBg: 'bg-yellow-100',

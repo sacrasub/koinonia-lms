@@ -507,7 +507,7 @@ export const ESCALA_DATA: EscalaItem[] = [
     dayOfWeek: 'Sexta-feira',
     dayIndex: 5,
     title: 'História da Cultura Afro Brasileira e Indígena',
-    professor: 'Profº Emerson Silva',
+    professor: 'Profº Alexsandro',
     startBRT: '21:00',
     endBRT: '22:00',
     monitor: 'Cristiano',
@@ -515,7 +515,7 @@ export const ESCALA_DATA: EscalaItem[] = [
     turma: 'Turma A',
     presencaUrl: 'https://forms.gle/vULryGYArnJZgBF28',
     meetUrl: 'https://meet.google.com/jnz-hkqd-edc',
-    description: 'História e contexto sociocultural afro-brasileiro e indígena no contexto cristão.'
+    description: 'Matéria modular (4 aulas gravadas no Drive oficial). Atividade avaliativa explicada na 4ª aula e enviada por e-mail até 28/11/2026.'
   },
 
   // ==========================================

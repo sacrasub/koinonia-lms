@@ -253,6 +253,22 @@ const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-015-3', text: 'Entrega do artigo completo e anexos de pesquisa de campo', done: false },
     ],
   },
+  {
+    id: 'LMS-016',
+    title: 'Produção e Envio da Atividade Modular (4ª Aula)',
+    subject: 'História da Cultura Afro Brasileira e Indígena',
+    professor: 'Profº Alexsandro',
+    dueDate: '2026-11-28',
+    priority: 'Máxima',
+    type: 'Atividade Modular',
+    status: 'todo',
+    strategyNote: 'Matéria modular com 4 aulas gravadas na pasta oficial do Google Drive. Na 4ª aula, o Profº Alexsandro apresenta e explica a atividade que deve ser produzida e enviada para o seu e-mail até o final do período (28/11/2026).',
+    subtasks: [
+      { id: 'st-016-1', text: 'Assistir às 4 aulas gravadas na pasta oficial do Google Drive', done: false },
+      { id: 'st-016-2', text: 'Anotar as orientações da atividade avaliativa explicadas na 4ª aula', done: false },
+      { id: 'st-016-3', text: 'Produzir a atividade e enviar para o e-mail do Profº Alexsandro até 28/11/2026', done: false },
+    ],
+  },
 ];
 
 interface ChecklistAV2PageProps {
@@ -387,7 +403,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     'TCC I': 'Profª Gabriela Leal',
     'Trabalho de Conclusão de Curso I (TCC I)': 'Profª Gabriela Leal',
     'Estágio Básico I e II (Bacharelado)': 'Prof. Antônio Carlos',
-    'História da Cultura Afro Brasileira e Indígena': 'Profº Emerson Silva',
+    'História da Cultura Afro Brasileira e Indígena': 'Profº Alexsandro',
     'Geral / Vida Comunitária': 'Pr. Uilian Santos / Pr. Márcio Leal',
     'Geral / Viagem Docente': 'Profº Marcio Leal',
     'Outra Disciplina / Atividade': 'Corpo Docente',

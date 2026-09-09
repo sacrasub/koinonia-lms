@@ -185,7 +185,7 @@ const portalData = {
           { dia: "Quinta-feira", horario: "20:35-22:00", materia: "Novo Testamento III - Epístolas Gerais", professor: "Prof. Marcio Leal", meetUrl: "https://meet.google.com/nyn-xjqk-vky" },
           { dia: "Sexta-feira", horario: "19:00-20:25", materia: "Plantação e Revitalização de Igrejas II", professor: "Profº Thácyto Lessa", meetUrl: "https://meet.google.com/jwb-wpvc-pzm" },
           { dia: "Sexta-feira", horario: "19:00-20:00", materia: "TCC I", professor: "Profª Gabriela Leal", meetUrl: "https://meet.google.com/jnz-hkqd-edc" },
-          { dia: "Sexta-feira", horario: "20:00-21:00 / 20:35-22:00", materia: "História da Cultura Afro Brasileira e Indígena", professor: "Prof. Emerson Silva", formato: "módulo gravado" }
+          { dia: "Sexta-feira", horario: "20:00-21:00 / 20:35-22:00", materia: "História da Cultura Afro Brasileira e Indígena", professor: "Prof. Alexsandro", formato: "módulo gravado (4 aulas • entrega até 28/11)" }
         ]
       },
       {

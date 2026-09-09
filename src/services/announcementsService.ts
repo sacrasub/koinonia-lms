@@ -7,6 +7,23 @@ const CLOUD_TITLE_KEY = 'lms_leituras_preaula_cloud';
 
 export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
   {
+    id: 'aviso-diretoria-afro-1',
+    disciplina_id: 'disc-9',
+    disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
+    author_name: 'STC Diretora Karla (Direção)',
+    author_role: 'admin',
+    author_email: 'diretoria@koinonia.edu.br',
+    avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    title: 'Aulas e Materiais: Matéria Modular de Cultura Afro-brasileira e Indígena',
+    message: 'Queridos, segue a pasta com as aulas e demais materiais da matéria História da Cultura Afro-brasileira e Indígena. Conforme combinamos, a matéria será modular, contendo quatro aulas. Na quarta aula, o Prof. Alexsandro apresenta e explica a atividade que deve ser produzida e enviada para o seu e-mail, como forma de avaliação. Vocês terão até o final do período (28 de novembro) para assistir às aulas, produzir e enviar a atividade.',
+    link_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    created_at: '2026-09-09T13:29:00Z',
+    target_date: 'Entrega da Atividade até 28/11/2026',
+    is_pinned: true,
+    is_archived: false,
+    category: 'complementar',
+  },
+  {
     id: 'aviso-ary-1',
     disciplina_id: 'disc-1',
     disciplina_name: 'História do Congregacionalismo',

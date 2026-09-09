@@ -379,6 +379,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     'Plantação e Revitalização de Igrejas II': 7,
     '08 - TCC I - Gabriela Leal': 7,
     'TCC I': 7,
+    '09 - História da Cultura Afro Brasileira e Indígena - Alexsandro': 7,
     '09 - História da Cultura Afro Brasileira e Indígena - Emerson Silva': 7,
     'História da Cultura Afro Brasileira e Indígena': 7,
     // 8º Período

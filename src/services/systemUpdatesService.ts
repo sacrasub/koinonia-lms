@@ -5,6 +5,23 @@ const READ_STORAGE_PREFIX = 'lms_read_system_updates_';
 
 export const INITIAL_SYSTEM_UPDATES: SystemUpdate[] = [
   {
+    id: 'upd-2026-09-09-diretoria-afro',
+    version: 'Aviso Oficial',
+    title: '📢 Matéria Modular: História da Cultura Afro-brasileira e Indígena',
+    description: 'A Diretoria do STC disponibilizou a pasta oficial no Google Drive com as 4 aulas gravadas, materiais e diretrizes da avaliação com o Prof. Alexsandro.',
+    date: '09/09/2026',
+    category: 'comunicado',
+    badge: 'Diretoria STC',
+    highlights: [
+      '📂 Pasta do Google Drive com as 4 aulas e materiais: https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+      '🎓 Formato Modular: Contém 4 aulas gravadas ministradas pelo Profº Alexsandro.',
+      '📝 Avaliação Oficial: Na 4ª aula, o Profº Alexsandro apresenta e explica a atividade que deve ser produzida e enviada para o seu e-mail.',
+      '⏰ Prazo de Entrega: Alunos têm até o final do período (28 de novembro de 2026) para assistir às aulas, produzir e enviar a atividade.',
+      '🤝 Dúvidas ou suporte: Procurar diretamente a Diretoria do Seminário (Diretora Karla).'
+    ],
+    author: 'STC Diretora Karla • Direção'
+  },
+  {
     id: 'upd-2026-09-01-v2',
     version: 'v2.8.0',
     title: '🚀 Novas Ferramentas: Alarme de Presença, Múltiplas Folhas e Hub Global',
