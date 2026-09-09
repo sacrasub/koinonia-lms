@@ -5,9 +5,10 @@ import {
   Video, Copy, Check, ExternalLink, Calendar, UserCheck, Bell, 
   RefreshCw, Mic, Clock, AlertCircle, CheckCircle2, FolderOpen,
   ArrowRight, Play, Layers, Send, PhoneCall, ChevronDown, ChevronUp,
-  MessageSquare, Shield
+  MessageSquare, Shield, Zap
 } from 'lucide-react';
 import { EscalaMonitoriaPage, ESCALA_DATA, EscalaItem } from '@/components/EscalaMonitoriaPage';
+import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { getAuthorizedUserInfo } from '@/lib/authConfig';
 import { getAllGravacoes, fetchGravacoesFromCloud, getActiveRecordings } from '@/services/gravacoesService';
 import { getAnnouncements, fetchAnnouncementsFromCloud } from '@/services/announcementsService';
@@ -33,6 +34,16 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
   const [isSyncing, setIsSyncing] = useState(false);
   const [showAllGrav, setShowAllGrav] = useState(false);
   const [showAllAvisos, setShowAllAvisos] = useState(false);
+  const [modalProvidencia, setModalProvidencia] = useState<{
+    isOpen: boolean;
+    aula: EscalaItem | null;
+  }>({ isOpen: false, aula: null });
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   // Determina as aulas de hoje na escala (baseado no dia da semana BRT)
   const todayEscala = useMemo<EscalaItem[]>(() => {
@@ -133,14 +144,24 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
               Olá, <strong className="text-white">{monitorName.split(' ')[0]}</strong> — suas ferramentas de monitoria em um só lugar
             </p>
           </div>
-          <button
-            onClick={handleSync}
-            disabled={isSyncing}
-            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition cursor-pointer"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            {isSyncing ? 'Sincronizando...' : 'Atualizar'}
-          </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => setModalProvidencia({ isOpen: true, aula: aulaAgora || (todayEscala.length > 0 ? todayEscala[0] : null) })}
+              className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl transition cursor-pointer shadow-md active:scale-95"
+              title="Registrar imprevisto, aula dupla ou substituição docente"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>⚡ Registrar Imprevisto / Aula Dupla</span>
+            </button>
+            <button
+              onClick={handleSync}
+              disabled={isSyncing}
+              className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+              {isSyncing ? 'Sincronizando...' : 'Atualizar'}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -182,6 +203,14 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
               </button>
             )}
             <button
+              onClick={() => setModalProvidencia({ isOpen: true, aula: aulaAgora })}
+              className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition cursor-pointer shadow-xs active:scale-95"
+              title="Tomar providência / Registrar aula dupla ou substituição nesta aula"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              Providência / Aula Dupla
+            </button>
+            <button
               onClick={() => window.dispatchEvent(new CustomEvent('lms_open_recorder', { 
                 detail: { disciplinaId: aulaAgora.id, initialMode: 'autopilot' }
               }))}
@@ -218,13 +247,20 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
                   <p className="text-[11px] text-gray-500 dark:text-slate-400">{item.startBRT}–{item.endBRT} BRT · {item.turma}</p>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setModalProvidencia({ isOpen: true, aula: item })}
+                    title="Tomar providência / Registrar aula dupla ou imprevisto nesta disciplina"
+                    className="p-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/40 hover:bg-amber-200 dark:hover:bg-amber-800 text-amber-800 dark:text-amber-300 transition cursor-pointer"
+                  >
+                    <Zap className="w-3.5 h-3.5" />
+                  </button>
                   {item.presencaUrl && (
                     <button
                       onClick={() => handleCopy(item.presencaUrl, `p-${item.id}`)}
                       title="Copiar link de presença"
                       className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/40 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 transition cursor-pointer"
                     >
-                      {copied === `p-${item.id}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copied === `p-${item.id}` ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   )}
                   {item.meetUrl && (
@@ -392,6 +428,24 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
         Abrir Escala Completa & Links de Presença
         <ArrowRight className="w-4 h-4" />
       </button>
+
+      {/* Toast Feedback */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold border border-slate-700 animate-in fade-in slide-in-from-bottom-3">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Modal de Gestão de Imprevistos & Providências de Aula */}
+      <ModalProvidenciaAula
+        isOpen={modalProvidencia.isOpen}
+        onClose={() => setModalProvidencia({ isOpen: false, aula: null })}
+        userEmail={userEmail}
+        currentRole="monitor"
+        initialAula={modalProvidencia.aula}
+        onSuccess={showToast}
+      />
     </div>
   );
 };

@@ -10,8 +10,9 @@ import {
   ToggleLeft, ToggleRight, Sparkles, Video, FolderOpen, Copy, ExternalLink, 
   Clock, Calendar, BookOpen, Settings, Edit3, Trash2, ShieldCheck, UserCheck, RefreshCw,
   Archive, ArchiveRestore, Layers, Presentation, UploadCloud, Activity, Flame, Mic, Box,
-  BookMarked, Library
+  BookMarked, Library, Zap
 } from 'lucide-react';
+import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { Disciplina, Material, Avaliacao, AvisoLeituraPreAula, UserRole, LivroRecomendadoDisciplina } from '@/types';
 import { 
   getAllDisciplinas, 
@@ -144,6 +145,10 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   // Gravador de Aulas
   const [isRecorderOpen, setIsRecorderOpen] = useState(false);
   const [recorderDisciplinaId, setRecorderDisciplinaId] = useState<string>('');
+
+  // Modal de Providência de Aula (Aula Dupla / Substituição)
+  const [isModalProvidenciaOpen, setIsModalProvidenciaOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Carrega e recarrega disciplinas
   const loadDisciplinas = () => {
@@ -655,6 +660,16 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   {userDisciplinas.length} {userDisciplinas.length === 1 ? 'Matéria Atribuída' : 'Matérias Atribuídas'}
                 </span>
               )}
+
+              <button
+                type="button"
+                onClick={() => setIsModalProvidenciaOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500 hover:bg-amber-600 text-white shadow-xs transition active:scale-95 cursor-pointer ml-auto"
+                title="Registrar imprevisto, aula dupla ou substituição docente"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                <span>⚡ Registrar Imprevisto / Aula Dupla</span>
+              </button>
             </div>
 
             <h2 className="text-2xl font-black text-slate-900">
@@ -2348,6 +2363,26 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
           </div>
         </div>
       )}
+
+      {/* Toast Feedback */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold border border-slate-700 animate-in fade-in slide-in-from-bottom-3">
+          <Check className="w-4 h-4 text-emerald-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Modal de Gestão de Imprevistos & Providências de Aula */}
+      <ModalProvidenciaAula
+        isOpen={isModalProvidenciaOpen}
+        onClose={() => setIsModalProvidenciaOpen(false)}
+        userEmail={userEmail}
+        currentRole={currentRole}
+        onSuccess={(msg) => {
+          setToastMessage(msg);
+          setTimeout(() => setToastMessage(null), 3500);
+        }}
+      />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabaseClient';
 import { UserRole } from '@/types';
 
+export type TipoProvidencia = 'cancelamento' | 'aula_dupla' | 'substituicao';
+
 export interface AulaCanceladaItem {
   id: string; // Ex: "canc_disc-1_28-08-2026"
   disciplina_id: string;
@@ -13,6 +15,14 @@ export interface AulaCanceladaItem {
   autor_role: UserRole;
   criado_em: string;
   ativo: boolean;
+  // Campos de Providência Docente (Aula Dupla / Substituição)
+  tipo_providencia?: TipoProvidencia;
+  substituto_disciplina_id?: string;
+  substituto_disciplina_name?: string;
+  substituto_professor_name?: string;
+  substituto_meet_url?: string;
+  substituto_presenca_url?: string;
+  substituto_observacoes?: string;
 }
 
 const STORAGE_KEY = 'lms_aulas_canceladas_v1';
@@ -342,11 +352,201 @@ export async function reativarAula(disciplinaId: string, dataAula: string): Prom
   } catch (e) {}
 }
 
+/**
+ * Serializa dados de providência dentro do campo motivo para compatibilidade absoluta com o Supabase
+ */
+export function formatProvidenciaMotivo(params: {
+  tipoProvidencia: TipoProvidencia;
+  motivoTexto: string;
+  substitutoDisciplinaId?: string;
+  substitutoDisciplinaName?: string;
+  substitutoProfessorName?: string;
+  substitutoMeetUrl?: string;
+  substitutoPresencaUrl?: string;
+  substitutoObservacoes?: string;
+}): string {
+  if (params.tipoProvidencia === 'cancelamento') {
+    return params.motivoTexto.trim() || 'Imprevisto com o corpo docente. Aula suspensa nesta data.';
+  }
+
+  const meta = {
+    tipo: params.tipoProvidencia,
+    sub_disc_id: params.substitutoDisciplinaId || '',
+    sub_disc_name: params.substitutoDisciplinaName || '',
+    sub_prof_name: params.substitutoProfessorName || '',
+    sub_meet_url: params.substitutoMeetUrl || '',
+    sub_presenca_url: params.substitutoPresencaUrl || '',
+    sub_obs: params.substitutoObservacoes || '',
+  };
+
+  return `[PROVIDENCIA_JSON]:${JSON.stringify(meta)}[FIM] ${params.motivoTexto.trim()}`;
+}
+
+/**
+ * Deserializa o campo motivo caso contenha metadados de providência
+ */
+export function parseProvidenciaMotivo(motivoRaw: string): {
+  motivoLimpo: string;
+  tipoProvidencia: TipoProvidencia;
+  substitutoDisciplinaId?: string;
+  substitutoDisciplinaName?: string;
+  substitutoProfessorName?: string;
+  substitutoMeetUrl?: string;
+  substitutoPresencaUrl?: string;
+  substitutoObservacoes?: string;
+} {
+  if (!motivoRaw) {
+    return { motivoLimpo: '', tipoProvidencia: 'cancelamento' };
+  }
+
+  if (motivoRaw.startsWith('[PROVIDENCIA_JSON]:')) {
+    try {
+      const fimIdx = motivoRaw.indexOf('[FIM]');
+      if (fimIdx > -1) {
+        const jsonStr = motivoRaw.substring('[PROVIDENCIA_JSON]:'.length, fimIdx);
+        const meta = JSON.parse(jsonStr);
+        const motivoLimpo = motivoRaw.substring(fimIdx + 5).trim();
+        return {
+          motivoLimpo,
+          tipoProvidencia: (meta.tipo as TipoProvidencia) || 'aula_dupla',
+          substitutoDisciplinaId: meta.sub_disc_id,
+          substitutoDisciplinaName: meta.sub_disc_name,
+          substitutoProfessorName: meta.sub_prof_name,
+          substitutoMeetUrl: meta.sub_meet_url,
+          substitutoPresencaUrl: meta.sub_presenca_url,
+          substitutoObservacoes: meta.sub_obs,
+        };
+      }
+    } catch (e) {}
+  }
+
+  return {
+    motivoLimpo: motivoRaw,
+    tipoProvidencia: 'cancelamento',
+  };
+}
+
+/**
+ * Registra uma providência de aula (aula dupla, substituição ou suspensão)
+ */
+export async function registrarProvidenciaAula(params: {
+  disciplinaId: string;
+  disciplinaName: string;
+  aulaNum?: number;
+  dataAula: string;
+  tipoProvidencia: TipoProvidencia;
+  motivo: string;
+  autorNome: string;
+  autorEmail: string;
+  autorRole: UserRole;
+  substitutoDisciplinaId?: string;
+  substitutoDisciplinaName?: string;
+  substitutoProfessorName?: string;
+  substitutoMeetUrl?: string;
+  substitutoPresencaUrl?: string;
+  substitutoObservacoes?: string;
+}): Promise<AulaCanceladaItem> {
+  const key = buildCanceladaKey(params.disciplinaId, params.dataAula);
+  const motivoFormatado = formatProvidenciaMotivo({
+    tipoProvidencia: params.tipoProvidencia,
+    motivoTexto: params.motivo,
+    substitutoDisciplinaId: params.substitutoDisciplinaId,
+    substitutoDisciplinaName: params.substitutoDisciplinaName,
+    substitutoProfessorName: params.substitutoProfessorName,
+    substitutoMeetUrl: params.substitutoMeetUrl,
+    substitutoPresencaUrl: params.substitutoPresencaUrl,
+    substitutoObservacoes: params.substitutoObservacoes,
+  });
+
+  const item: AulaCanceladaItem = {
+    id: key,
+    disciplina_id: params.disciplinaId,
+    disciplina_name: params.disciplinaName,
+    aula_num: params.aulaNum,
+    data_aula: params.dataAula,
+    motivo: motivoFormatado,
+    autor_nome: params.autorNome,
+    autor_email: params.autorEmail,
+    autor_role: params.autorRole,
+    criado_em: new Date().toISOString(),
+    ativo: true,
+    tipo_providencia: params.tipoProvidencia,
+    substituto_disciplina_id: params.substitutoDisciplinaId,
+    substituto_disciplina_name: params.substitutoDisciplinaName,
+    substituto_professor_name: params.substitutoProfessorName,
+    substituto_meet_url: params.substitutoMeetUrl,
+    substituto_presenca_url: params.substitutoPresencaUrl,
+    substituto_observacoes: params.substitutoObservacoes,
+  };
+
+  const map = getLocalCanceladas();
+  map[key] = item;
+  saveLocalCanceladas(map);
+
+  // Sincroniza com Supabase
+  try {
+    await supabase.from('lms_aulas_canceladas').upsert({
+      id: key,
+      disciplina_id: params.disciplinaId,
+      disciplina_name: params.disciplinaName,
+      aula_num: params.aulaNum,
+      data_aula: params.dataAula,
+      motivo: motivoFormatado,
+      autor_nome: params.autorNome,
+      autor_email: params.autorEmail,
+      autor_role: params.autorRole,
+      ativo: true,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'id' });
+
+    // Dispara broadcast Realtime para todos os outros clientes conectados
+    const channel = supabase.channel('lms_aulas_realtime');
+    await channel.send({
+      type: 'broadcast',
+      event: 'aula_cancelada_sync',
+      payload: { 
+        key, 
+        disciplinaName: params.disciplinaName, 
+        dataAula: params.dataAula,
+        tipoProvidencia: params.tipoProvidencia,
+        substitutoDisciplinaName: params.substitutoDisciplinaName,
+      }
+    });
+  } catch (e) {}
+
+  return item;
+}
+
+/**
+ * Consulta se uma aula possui uma providência ativa hoje (aula dupla ou substituição)
+ */
+export function getProvidenciaAtivaHoje(disciplinaId: string, disciplinaName: string): AulaCanceladaItem | null {
+  const cancelStatus = isAulaCanceladaHoje(disciplinaId, disciplinaName);
+  if (cancelStatus && cancelStatus.tipo_providencia && cancelStatus.tipo_providencia !== 'cancelamento') {
+    return cancelStatus;
+  }
+  // Se veio do Supabase sem os campos desempacotados, desempacota
+  if (cancelStatus && cancelStatus.motivo && cancelStatus.motivo.startsWith('[PROVIDENCIA_JSON]:')) {
+    const parsed = parseProvidenciaMotivo(cancelStatus.motivo);
+    return {
+      ...cancelStatus,
+      tipo_providencia: parsed.tipoProvidencia,
+      substituto_disciplina_id: parsed.substitutoDisciplinaId,
+      substituto_disciplina_name: parsed.substitutoDisciplinaName,
+      substituto_professor_name: parsed.substitutoProfessorName,
+      substituto_meet_url: parsed.substitutoMeetUrl,
+      substituto_presenca_url: parsed.substitutoPresencaUrl,
+      substituto_observacoes: parsed.substitutoObservacoes,
+    };
+  }
+  return null;
+}
+
 let lastCanceladasFetchTime = 0;
 const CANCELADAS_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutos de cache
 
 /**
- * Sincroniza do Supabase
+ * Sincroniza do Supabase com decodificação automática de providências
  */
 export async function fetchAulasCanceladasFromCloud(force: boolean = false): Promise<void> {
   const now = Date.now();
@@ -365,6 +565,7 @@ export async function fetchAulasCanceladasFromCloud(force: boolean = false): Pro
     if (!error && data) {
       const map = getLocalCanceladas();
       data.forEach((row: any) => {
+        const parsed = parseProvidenciaMotivo(row.motivo || '');
         map[row.id] = {
           id: row.id,
           disciplina_id: row.disciplina_id,
@@ -377,6 +578,13 @@ export async function fetchAulasCanceladasFromCloud(force: boolean = false): Pro
           autor_role: row.autor_role,
           criado_em: row.created_at || row.updated_at,
           ativo: row.ativo,
+          tipo_providencia: parsed.tipoProvidencia,
+          substituto_disciplina_id: parsed.substitutoDisciplinaId,
+          substituto_disciplina_name: parsed.substitutoDisciplinaName,
+          substituto_professor_name: parsed.substitutoProfessorName,
+          substituto_meet_url: parsed.substitutoMeetUrl,
+          substituto_presenca_url: parsed.substitutoPresencaUrl,
+          substituto_observacoes: parsed.substitutoObservacoes,
         };
       });
       saveLocalCanceladas(map);

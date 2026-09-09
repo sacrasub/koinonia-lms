@@ -9,7 +9,7 @@ import {
   BookOpen, Calendar, Globe, Info, CheckSquare, Edit3, Save, ChevronLeft, ChevronRight,
   Cloud, Settings, GraduationCap, X, Compass, PhoneCall, Archive, ArchiveRestore, CheckCircle,
   Layers, Flame, ArrowRight, Mic, Box, Ban, RefreshCw, ChevronDown, ChevronUp,
-  AlertTriangle, ExternalLink, Link as LinkIcon, Mail
+  AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap
 } from 'lucide-react';
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
@@ -18,7 +18,8 @@ import {
   cancelarAula,
   getAllAulasCanceladas, 
   fetchAulasCanceladasFromCloud, 
-  AulaCanceladaItem 
+  AulaCanceladaItem,
+  parseProvidenciaMotivo
 } from '@/services/aulaCanceladaService';
 import { 
   getLocalTimeZoneInfo, 
@@ -443,22 +444,40 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         return false;
       });
 
-      // Se houver aula ativa no horário, verifica primeiro se não foi configurado que 'não haverá aula'
+      // Se houver aula ativa no horário, verifica primeiro se não foi configurado cancelamento ou providência
       if (liveNow && liveNow.start_time && liveNow.end_time) {
         const canceladaHoje = isAulaCanceladaHoje(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, normalizedEmail);
         if (canceladaHoje) {
-          // AULA CANCELADA HOJE: Suprime completamente o card de aula ativa, Meet e lista de presença
-          setActiveLiveAula(null);
+          const parsed = parseProvidenciaMotivo(canceladaHoje.motivo || '');
+          const tipo = canceladaHoje.tipo_providencia || parsed.tipoProvidencia || 'cancelamento';
+
+          if (tipo === 'aula_dupla' || tipo === 'substituicao') {
+            // PROVIÊNCIA ATIVA (AULA DUPLA / SUBSTITUIÇÃO):
+            // Não suprime a aula! Adapta o professor, disciplina, meetUrl e forms
+            const aulaAdaptada: Aula = {
+              ...liveNow,
+              disciplina_name: parsed.substitutoDisciplinaName || canceladaHoje.substituto_disciplina_name || liveNow.disciplina_name,
+              professor_name: parsed.substitutoProfessorName || canceladaHoje.substituto_professor_name || liveNow.professor_name,
+              google_meet_url: parsed.substitutoMeetUrl || canceladaHoje.substituto_meet_url || liveNow.google_meet_url,
+              attendance_form_url: parsed.substitutoPresencaUrl || canceladaHoje.substituto_presenca_url || (liveNow as any).attendance_form_url,
+            };
+            setActiveLiveAula(aulaAdaptada);
+            setNextAulaToday(null);
+            setClassesFinishedToday(false);
+          } else {
+            // AULA CANCELADA HOJE (Suspensão pura): Suprime o card
+            setActiveLiveAula(null);
+            setNextAulaToday(null);
+            setClassesFinishedToday(false);
+            setIsPreLive(false);
+            setMinutesToStart(0);
+            return;
+          }
+        } else {
+          setActiveLiveAula(liveNow);
           setNextAulaToday(null);
           setClassesFinishedToday(false);
-          setIsPreLive(false);
-          setMinutesToStart(0);
-          return;
         }
-
-        setActiveLiveAula(liveNow);
-        setNextAulaToday(null);
-        setClassesFinishedToday(false);
 
         const [sh, sm] = liveNow.start_time.split(':').map(Number);
         const [eh, em] = liveNow.end_time.split(':').map(Number);
@@ -958,15 +977,25 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
   const renderAulaAoVivoOuProxima = () => {
     if (activeLiveAula) {
-      // Bloqueio rigoroso: se a aula ativa estiver cancelada hoje, não exibe Google Meet nem Presença
+      // Bloqueio rigoroso: se a aula ativa estiver com cancelamento puro (suspensão), não exibe Google Meet nem Presença
       const isCanc = isAulaCanceladaHoje(activeLiveAula.disciplina_id || activeLiveAula.id, activeLiveAula.disciplina_name, normalizedEmail);
+      let providenciaAtiva = false;
+      let providenciaTipo = '';
       if (isCanc) {
-        return null;
+        const parsed = parseProvidenciaMotivo(isCanc.motivo || '');
+        const tipo = isCanc.tipo_providencia || parsed.tipoProvidencia || 'cancelamento';
+        if (tipo === 'cancelamento') {
+          return null;
+        }
+        providenciaAtiva = true;
+        providenciaTipo = tipo;
       }
 
       return (
         <div className={`p-4 sm:p-6 rounded-3xl border transition-all duration-300 shadow-md max-w-full overflow-hidden animate-in fade-in slide-in-from-top-3 ${
-          is50PercentReached 
+          providenciaAtiva
+            ? 'bg-gradient-to-br from-amber-50/95 via-white to-blue-50/90 border-amber-400 ring-2 ring-amber-500/20 shadow-lg'
+            : is50PercentReached 
             ? 'bg-gradient-to-br from-emerald-50/95 via-white to-teal-50/90 border-emerald-300 ring-2 ring-emerald-500/20' 
             : isPreLive
             ? 'bg-gradient-to-br from-blue-50/95 via-white to-indigo-50/90 border-blue-300 ring-2 ring-blue-500/20'
@@ -976,17 +1005,24 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
             <div className="flex items-center gap-2 flex-wrap">
               <span className="flex h-3 w-3 relative">
                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'
+                  providenciaAtiva ? 'bg-amber-400' : is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'
                 }`}></span>
                 <span className={`relative inline-flex rounded-full h-3 w-3 ${
-                  is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'
+                  providenciaAtiva ? 'bg-amber-500' : is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'
                 }`}></span>
               </span>
-              <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-xs ${
-                isPreLive ? 'bg-red-600 animate-pulse' : 'bg-red-600 animate-pulse'
-              }`}>
-                {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
-              </span>
+              {providenciaAtiva ? (
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white bg-amber-500 shadow-xs flex items-center gap-1 animate-pulse">
+                  <Zap className="w-3 h-3" />
+                  {providenciaTipo === 'aula_dupla' ? '⚡ Aula Dupla • 2 Tempos' : '🔄 Substituição Docente'}
+                </span>
+              ) : (
+                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-xs ${
+                  isPreLive ? 'bg-red-600 animate-pulse' : 'bg-red-600 animate-pulse'
+                }`}>
+                  {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
+                </span>
+              )}
               <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
                 Aula Ativa: <span className="text-blue-700 font-black">{activeLiveAula.disciplina_name}</span>
               </h3>

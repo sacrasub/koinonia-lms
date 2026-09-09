@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Video, Clock, FileText, Sparkles, FolderOpen, ChevronDown, 
   ChevronUp, Check, Copy, ExternalLink, CheckCircle2, AlertCircle,
-  Mic, Ban
+  Mic, Ban, Zap
 } from 'lucide-react';
 import { Aula } from '@/types';
 import { 
@@ -16,7 +16,12 @@ import {
 import { getAulasByTurma } from '@/lib/mockData';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { trackEvent } from '@/services/telemetryService';
-import { getAulaCanceladaStatus, isAulaCanceladaHoje, AulaCanceladaItem } from '@/services/aulaCanceladaService';
+import { 
+  getAulaCanceladaStatus, 
+  isAulaCanceladaHoje, 
+  AulaCanceladaItem,
+  parseProvidenciaMotivo 
+} from '@/services/aulaCanceladaService';
 
 interface LiveAulaGlobalBannerProps {
   userEmail: string;
@@ -49,6 +54,7 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
 
   const [activeLiveAula, setActiveLiveAula] = useState<Aula | null>(null);
   const [canceladaInfo, setCanceladaInfo] = useState<AulaCanceladaItem | null>(null);
+  const [providenciaInfo, setProvidenciaInfo] = useState<AulaCanceladaItem | null>(null);
   const [isPreLive, setIsPreLive] = useState<boolean>(false);
   const [minutesToStart, setMinutesToStart] = useState<number>(0);
   const [progressPercent, setProgressPercent] = useState<number>(0);
@@ -94,23 +100,10 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       if (todayClasses.length === 0) {
         setActiveLiveAula(null);
         setCanceladaInfo(null);
+        setProvidenciaInfo(null);
         setIsPreLive(false);
         setMinutesToStart(0);
         return;
-      }
-
-      // 1. Verifica primeiro se QUALQUER aula de hoje da turma está com status de cancelamento
-      for (const todayAula of todayClasses) {
-        const cancelStatus =
-          isAulaCanceladaHoje(todayAula.disciplina_id || todayAula.id, todayAula.disciplina_name, userEmail) ||
-          getAulaCanceladaStatus(todayAula.disciplina_id || todayAula.id, todayAula.disciplina_name, todayFormatted);
-        if (cancelStatus) {
-          setActiveLiveAula(todayAula);
-          setCanceladaInfo(cancelStatus);
-          setIsPreLive(false);
-          setMinutesToStart(0);
-          return;
-        }
       }
 
       // Identifica aula ativa (incluindo janela de 15 minutos de antecedência)
@@ -126,21 +119,50 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
       });
 
       if (liveNow && liveNow.start_time && liveNow.end_time) {
-        // Checa se a aula atual está cancelada
+        // Checa se a aula atual tem status de cancelamento ou providência
         const cancelStatus =
           isAulaCanceladaHoje(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, userEmail) ||
           getAulaCanceladaStatus(liveNow.disciplina_id || liveNow.id, liveNow.disciplina_name, todayFormatted);
 
         if (cancelStatus) {
-          setActiveLiveAula(liveNow);
-          setCanceladaInfo(cancelStatus);
-          setIsPreLive(false);
-          setMinutesToStart(0);
-          return;
-        }
+          const parsed = parseProvidenciaMotivo(cancelStatus.motivo || '');
+          const tipo = cancelStatus.tipo_providencia || parsed.tipoProvidencia || 'cancelamento';
 
-        setActiveLiveAula(liveNow);
-        setCanceladaInfo(null);
+          if (tipo === 'aula_dupla' || tipo === 'substituicao') {
+            // PROVIÊNCIA ATIVA (AULA DUPLA / SUBSTITUIÇÃO):
+            // Não cancela a aula! Atualiza a aula ativa com a sala e forms do professor que assumiu!
+            const aulaAdaptada: Aula = {
+              ...liveNow,
+              disciplina_name: parsed.substitutoDisciplinaName || cancelStatus.substituto_disciplina_name || liveNow.disciplina_name,
+              professor_name: parsed.substitutoProfessorName || cancelStatus.substituto_professor_name || liveNow.professor_name,
+              google_meet_url: parsed.substitutoMeetUrl || cancelStatus.substituto_meet_url || liveNow.google_meet_url,
+              attendance_form_url: parsed.substitutoPresencaUrl || cancelStatus.substituto_presenca_url || (liveNow as any).attendance_form_url,
+            };
+
+            setActiveLiveAula(aulaAdaptada);
+            setCanceladaInfo(null);
+            setProvidenciaInfo({
+              ...cancelStatus,
+              tipo_providencia: tipo,
+              substituto_disciplina_name: parsed.substitutoDisciplinaName || cancelStatus.substituto_disciplina_name,
+              substituto_professor_name: parsed.substitutoProfessorName || cancelStatus.substituto_professor_name,
+              substituto_meet_url: parsed.substitutoMeetUrl || cancelStatus.substituto_meet_url,
+              substituto_presenca_url: parsed.substitutoPresencaUrl || cancelStatus.substituto_presenca_url,
+            });
+          } else {
+            // SUSPENSÃO PURA (NÃO HAVERÁ AULA)
+            setActiveLiveAula(liveNow);
+            setCanceladaInfo(cancelStatus);
+            setProvidenciaInfo(null);
+            setIsPreLive(false);
+            setMinutesToStart(0);
+            return;
+          }
+        } else {
+          setActiveLiveAula(liveNow);
+          setCanceladaInfo(null);
+          setProvidenciaInfo(null);
+        }
 
         const [sh, sm] = liveNow.start_time.split(':').map(Number);
         const [eh, em] = liveNow.end_time.split(':').map(Number);
@@ -195,8 +217,25 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
         return;
       }
 
+      // Se não há aula ativa agora, checa se alguma aula de hoje foi suspensa (apenas suspensão pura)
+      const algumaSuspensa = todayClasses.map(a => 
+        isAulaCanceladaHoje(a.disciplina_id || a.id, a.disciplina_name, userEmail) ||
+        getAulaCanceladaStatus(a.disciplina_id || a.id, a.disciplina_name, todayFormatted)
+      ).find(s => s && s.ativo && (!s.tipo_providencia || s.tipo_providencia === 'cancelamento') && !s.motivo?.startsWith('[PROVIDENCIA_JSON]:'));
+
+      if (algumaSuspensa) {
+        const aulaAfetada = todayClasses.find(a => (a.disciplina_id || a.id) === algumaSuspensa.disciplina_id) || todayClasses[0];
+        setActiveLiveAula(aulaAfetada);
+        setCanceladaInfo(algumaSuspensa);
+        setProvidenciaInfo(null);
+        setIsPreLive(false);
+        setMinutesToStart(0);
+        return;
+      }
+
       setActiveLiveAula(null);
       setCanceladaInfo(null);
+      setProvidenciaInfo(null);
       setIsPreLive(false);
       setMinutesToStart(0);
     };
@@ -317,7 +356,9 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
   return (
     <div data-tour="live-banner" className={`w-full mb-5 animate-in fade-in slide-in-from-top-3 duration-300 ${isInsideMainList ? 'mt-0' : ''}`}>
       <div className={`p-4 sm:p-5 rounded-3xl border shadow-md transition-all duration-300 relative overflow-hidden ${
-        is50PercentReached
+        providenciaInfo
+          ? 'bg-gradient-to-br from-amber-50/95 via-white to-blue-50/90 border-amber-400 ring-2 ring-amber-500/20 shadow-lg'
+          : is50PercentReached
           ? 'bg-gradient-to-br from-emerald-50/95 via-white to-teal-50/90 border-emerald-300 ring-2 ring-emerald-500/20'
           : isPreLive
           ? 'bg-gradient-to-br from-blue-50/95 via-white to-indigo-50/90 border-blue-300 ring-2 ring-blue-500/20'
@@ -329,23 +370,34 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
           <div className="flex items-center gap-2.5 flex-wrap min-w-0">
             <span className="flex h-3 w-3 relative">
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'
+                providenciaInfo ? 'bg-amber-400' : is50PercentReached ? 'bg-emerald-400' : 'bg-red-400'
               }`}></span>
               <span className={`relative inline-flex rounded-full h-3 w-3 ${
-                is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'
+                providenciaInfo ? 'bg-amber-500' : is50PercentReached ? 'bg-emerald-500' : 'bg-red-500'
               }`}></span>
             </span>
 
             <span className="flex items-center gap-1.5 flex-wrap">
-              <span className={`px-2.5 py-0.5 rounded-full font-black text-[10px] tracking-wider uppercase inline-flex items-center gap-1 shadow-xs ${
-                isPreLive 
-                  ? 'bg-blue-600 text-white animate-pulse' 
-                  : 'bg-red-600 text-white animate-pulse'
-              }`}>
-                {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
-              </span>
+              {providenciaInfo ? (
+                <span className={`px-2.5 py-0.5 rounded-full font-black text-[10px] tracking-wider uppercase inline-flex items-center gap-1 shadow-xs ${
+                  providenciaInfo.tipo_providencia === 'aula_dupla'
+                    ? 'bg-amber-500 text-white animate-pulse'
+                    : 'bg-blue-600 text-white animate-pulse'
+                }`}>
+                  <Zap className="w-3 h-3" />
+                  {providenciaInfo.tipo_providencia === 'aula_dupla' ? '⚡ Aula Dupla (2 Tempos)' : '🔄 Substituição Docente'}
+                </span>
+              ) : (
+                <span className={`px-2.5 py-0.5 rounded-full font-black text-[10px] tracking-wider uppercase inline-flex items-center gap-1 shadow-xs ${
+                  isPreLive 
+                    ? 'bg-blue-600 text-white animate-pulse' 
+                    : 'bg-red-600 text-white animate-pulse'
+                }`}>
+                  {isPreLive ? `🔴 Sala Aberta • Inicia em ${minutesToStart} min` : '🔴 Aula Ao Vivo em Andamento'}
+                </span>
+              )}
               <span className="px-2 py-0.5 rounded-full font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1 shadow-2xs">
-                ⚡ Links Prontos (Pré-carregados)
+                ⚡ Links Oficiais Prontos
               </span>
             </span>
 
@@ -377,6 +429,30 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
             (Base Brasília: {activeLiveAula.start_time} – {activeLiveAula.end_time} BRT)
           </span>
         </div>
+
+        {/* Alerta Destacado de Aula Dupla / Substituição Docente */}
+        {providenciaInfo && (
+          <div className="mt-3 p-3 bg-amber-100/80 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-2xl flex items-start gap-2.5 text-amber-950 dark:text-amber-200 shadow-2xs animate-in fade-in duration-200">
+            <div className="p-1.5 bg-amber-500 text-white rounded-xl shrink-0 mt-0.5 shadow-2xs">
+              <Zap className="w-3.5 h-3.5" />
+            </div>
+            <div className="text-xs space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <strong className="font-extrabold text-amber-900 dark:text-amber-100">
+                  {providenciaInfo.tipo_providencia === 'aula_dupla'
+                    ? 'Atenção Turma: Aula Dupla Ministrada pelo Docente Substituto'
+                    : 'Atenção Turma: Substituição Docente Emergencial'}
+                </strong>
+                <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-md">
+                  Sala do Meet Oficial Abaixo
+                </span>
+              </div>
+              <p className="font-medium text-amber-950 dark:text-amber-200 leading-relaxed">
+                {parseProvidenciaMotivo(providenciaInfo.motivo || '').motivoLimpo || providenciaInfo.motivo}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Conteúdo Expansível */}
         {!isCollapsed && (

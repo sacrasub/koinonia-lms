@@ -8,8 +8,9 @@ import {
   HelpCircle, CheckSquare, PhoneCall, Mail, Award, Bell, Camera, Share2,
   Smartphone, Eye, Download, Image as ImageIcon, Upload, Loader2, GraduationCap,
   Volume2, VolumeX, Play, Archive, FolderOpen, Lock, Edit3, Link as LinkIcon,
-  Ban, AlertTriangle, Bot
+  Ban, AlertTriangle, Bot, Zap
 } from 'lucide-react';
+import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { UserRole, AvisoLeituraPreAula } from '@/types';
 import { getAuthorizedUsersList, addOrUpdateAuthorizedUser, INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { fetchStudentData, savePortalProfile } from '@/services/studentSyncService';
@@ -1299,7 +1300,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [formDataAula, setFormDataAula] = useState<string>('');
   const [formMotivo, setFormMotivo] = useState<string>('');
 
-  // MODAL DE CANCELAMENTO / REATIVAÇÃO DE AULA
   const [modalCancelamento, setModalCancelamento] = useState<{
     isOpen: boolean;
     aula: EscalaItem | null;
@@ -1312,6 +1312,15 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     existingCancelada: null,
   });
   const [motivoCancelamentoInput, setMotivoCancelamentoInput] = useState<string>('');
+
+  // MODAL DE PROVIDÊNCIA DOCENTE (AULA DUPLA / SUBSTITUIÇÃO)
+  const [modalProvidencia, setModalProvidencia] = useState<{
+    isOpen: boolean;
+    aula: EscalaItem | null;
+  }>({
+    isOpen: false,
+    aula: null,
+  });
 
   // 1. CARREGAMENTO DAS FOTOS REAIS DOS CADASTROS DOS USUÁRIOS
   useEffect(() => {
@@ -2475,7 +2484,16 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           </button>
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+          <button
+            onClick={() => setModalProvidencia({ isOpen: true, aula: ESCALA_DATA[0] })}
+            title="Registrar imprevisto docente, aula dupla ou substituição"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-xl shadow-xs transition active:scale-95 cursor-pointer"
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>⚡ Imprevisto / Aula Dupla</span>
+          </button>
+
           <button
             onClick={() => handleCopyEscalaWhatsApp(turmaPrintTab)}
             title="Copiar texto formatado da escala para colar direto no WhatsApp"
@@ -4649,6 +4667,30 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               </div>
             </div>
 
+            {/* Atalho inteligente para Aula Dupla / Dobradinha */}
+            <div className="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+              <div className="text-xs text-amber-950 dark:text-amber-200">
+                <strong className="block font-black text-amber-900 dark:text-amber-100 flex items-center gap-1">
+                  <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  Outro professor assumirá ministrando dois tempos?
+                </strong>
+                <span className="text-[11px] text-amber-800 dark:text-amber-300">
+                  Registre uma <strong>Aula Dupla</strong> para que a sala do Meet e o forms fiquem corretos.
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const aulaAlvo = modalCancelamento.aula;
+                  setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
+                  setModalProvidencia({ isOpen: true, aula: aulaAlvo });
+                }}
+                className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-xs shrink-0 cursor-pointer active:scale-95"
+              >
+                ⚡ Registrar Aula Dupla
+              </button>
+            </div>
+
             {/* Formulário de Motivo */}
             <form onSubmit={handleSalvarCancelamento} className="space-y-4">
               <div className="space-y-2">
@@ -4725,6 +4767,16 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           </div>
         </div>
       )}
+
+      {/* Modal de Gestão de Imprevistos & Providências de Aula */}
+      <ModalProvidenciaAula
+        isOpen={modalProvidencia.isOpen}
+        onClose={() => setModalProvidencia({ isOpen: false, aula: null })}
+        userEmail={userEmail}
+        currentRole={currentRole}
+        initialAula={modalProvidencia.aula}
+        onSuccess={showToast}
+      />
     </div>
   );
 };
