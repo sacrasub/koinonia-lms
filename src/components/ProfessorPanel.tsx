@@ -48,15 +48,19 @@ import {
 } from '@/services/livrosRecomendadosService';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
 
+
 interface ProfessorPanelProps {
   userEmail?: string;
   currentRole?: UserRole;
+  onTabChange?: (tab: string) => void;
 }
 
 export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({ 
   userEmail = 'sacrasub@gmail.com',
-  currentRole = 'professor'
+  currentRole = 'professor',
+  onTabChange
 }) => {
+
   const normalizedEmail = (userEmail || '').toLowerCase().trim();
   const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
   const isSuperAdmin = (authUser && authUser.roles && authUser.roles.includes('admin')) || 

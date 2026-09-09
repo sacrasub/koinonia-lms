@@ -98,18 +98,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         ];
       case 'monitor':
         return [
-          { id: 'monitor-escala', label: 'Grade & Links de Presença', icon: UserCheck },
+          { id: 'monitor-escala', label: '⚡ Central do Monitor', icon: UserCheck },
+          { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
-          ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
+          { id: 'tcc-sacramento', label: 'Painel do TCC', icon: Target },
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
           { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
           { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
-          { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
           { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare },
           { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart },
           { id: 'portfolios', label: 'Portfólios (Avaliar)', icon: Archive },
@@ -119,13 +119,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         ];
       case 'admin':
         return [
-          { id: 'admin-dashboard', label: 'Painel do Administrador', icon: ShieldCheck },
+          // --- GESTÃO DO SISTEMA (ADMIN) ---
+          { id: 'admin-dashboard', label: '🛡 Painel do Administrador (Analytics)', icon: ShieldCheck },
+          { id: 'admin-usuarios', label: '👥 Gerenciar Usuários & Perfis', icon: UserCheck },
+          { id: 'admin-disciplinas', label: '📚 Gerenciar Disciplinas', icon: GraduationCap },
+          { id: 'admin-solicitacoes', label: '📋 Solicitações de Acesso', icon: CheckSquare },
+          { id: 'monitor-escala', label: '📅 Escala de Monitores 2026.2', icon: Calendar },
+          { id: 'tele-proximidade', label: '📡 Radar de Tele-Proximidade', icon: Radio },
+          // --- RECURSOS PEDAGÓGICOS ---
           { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
-          ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
+          { id: 'tcc-sacramento', label: 'Painel do TCC (Coordenação)', icon: Target },
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
           { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
           { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
@@ -133,11 +140,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
           { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare },
           { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart },
-          { id: 'monitor-escala', label: 'Escala de Monitores 2026.2', icon: Calendar },
           { id: 'aluno-caderno', label: 'Caderno Cornell (Notas)', icon: BookOpen },
           { id: 'aluno-checklist', label: 'Checklist & Dashboard AV', icon: CheckSquare },
           { id: 'aluno-portal-2026', label: 'Portal Acadêmico (Consulta)', icon: Calendar },
           { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library },
+          { id: 'portfolios', label: 'Portfólios (Avaliar)', icon: Archive },
           { id: 'central-ajuda', label: 'Central de Ajuda (Vídeos)', icon: HelpCircle },
         ];
     }

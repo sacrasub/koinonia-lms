@@ -599,9 +599,9 @@ export default function Home() {
       case 'aluno':
         return <AlunoPanel userEmail={userEmail} onTabChange={handleTabChange} />;
       case 'professor':
-        return <ProfessorPanel userEmail={userEmail} currentRole={currentRole} />;
+        return <ProfessorPanel userEmail={userEmail} currentRole={currentRole} onTabChange={handleTabChange} />;
       case 'monitor':
-        return <EscalaMonitoriaPage userEmail={userEmail} currentRole={currentRole} onTabChange={handleTabChange} />;
+        return <MonitorPanel userEmail={userEmail} onTabChange={handleTabChange} />;
       case 'admin':
         return (
           <AdminPanel 
@@ -677,80 +677,224 @@ export default function Home() {
         <Sidebar currentRole={currentRole} activeTab={activeTab} onTabChange={handleTabChange} userEmail={userEmail} />
         
         <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full overflow-x-hidden">
-          {/* Card de Aula Ao Vivo Global exibido em todas as páginas para o Aluno */}
-          {currentRole === 'aluno' && activeTab !== 'aluno-disciplinas' && (
+          {/* Card de Aula Ao Vivo Global — visível para Alunos, Monitores e Professores (exceto na tela principal de cada perfil) */}
+          {(currentRole === 'aluno' && activeTab !== 'aluno-disciplinas') ||
+           (currentRole === 'monitor' && activeTab !== 'monitor-escala') ||
+           (currentRole === 'professor' && activeTab !== 'prof-disciplinas') ? (
             <LiveAulaGlobalBanner 
               userEmail={userEmail} 
               onTabChange={handleTabChange} 
             />
-          )}
+          ) : null}
           {renderContent()}
         </main>
       </div>
 
-      {/* Barra de Navegação Inferior Nativa para Smartphones (Mobile Bottom Bar) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200/80 px-2 py-1.5 flex justify-around items-center shadow-lg">
-        <button
-          data-tour="nav-disciplinas"
-          onClick={() => setActiveTab('aluno-disciplinas')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-disciplinas' ? 'text-blue-600 bg-blue-50/80' : 'text-gray-500'
-          }`}
-        >
-          <GraduationCap className="w-5 h-5" />
-          <span>Disciplinas</span>
-        </button>
+      {/* Barra de Navegação Inferior Nativa — Role-Aware para Smartphones */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200/80 dark:border-slate-700/80 px-1 py-1.5 flex justify-around items-center shadow-lg">
+        {/* === TABS DO ALUNO === */}
+        {currentRole === 'aluno' && (
+          <>
+            <button
+              data-tour="nav-disciplinas"
+              onClick={() => handleTabChange('aluno-disciplinas')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-disciplinas' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <GraduationCap className="w-5 h-5" />
+              <span>Disciplinas</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('aluno-caderno')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-caderno' ? 'text-amber-600 bg-amber-50/80 dark:text-amber-400 dark:bg-amber-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span>Caderno</span>
+            </button>
+            <button
+              data-tour="nav-biblioteca"
+              onClick={() => handleTabChange('aluno-biblioteca')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-biblioteca' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Library className="w-5 h-5" />
+              <span>Biblioteca</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('aluno-checklist')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-checklist' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <CheckSquare className="w-5 h-5" />
+              <span>Checklist</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('aluno-materiais')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-materiais' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <FolderOpen className="w-5 h-5" />
+              <span>Pastas</span>
+            </button>
+          </>
+        )}
 
-        <button
-          onClick={() => setActiveTab('aluno-portal-2026')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-portal-2026' ? 'text-blue-600 bg-blue-50/80' : 'text-gray-500'
-          }`}
-        >
-          <Compass className="w-5 h-5" />
-          <span>Portal</span>
-        </button>
+        {/* === TABS DO PROFESSOR === */}
+        {currentRole === 'professor' && (
+          <>
+            <button
+              onClick={() => handleTabChange('prof-disciplinas')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'prof-disciplinas' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span>Matérias</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('disciplina-detalhe')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'disciplina-detalhe' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <GraduationCap className="w-5 h-5" />
+              <span>Hub Disc.</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('aluno-materiais')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-materiais' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <FolderOpen className="w-5 h-5" />
+              <span>Pastas</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('google-agenda')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'google-agenda' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Compass className="w-5 h-5" />
+              <span>Agenda</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('central-ajuda')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'central-ajuda' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Activity className="w-5 h-5" />
+              <span>Ajuda</span>
+            </button>
+          </>
+        )}
 
-        <button
-          onClick={() => setActiveTab('aluno-caderno')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-caderno' ? 'text-amber-600 bg-amber-50/80' : 'text-gray-500'
-          }`}
-        >
-          <BookOpen className="w-5 h-5" />
-          <span>Caderno</span>
-        </button>
+        {/* === TABS DO MONITOR === */}
+        {currentRole === 'monitor' && (
+          <>
+            <button
+              onClick={() => handleTabChange('monitor-escala')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'monitor-escala' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <GraduationCap className="w-5 h-5" />
+              <span>Escala</span>
+            </button>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('lms_open_recorder', { detail: { initialMode: 'autopilot' } }))}
+              className="flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer text-gray-500 dark:text-slate-400 hover:text-red-600 hover:bg-red-50/80"
+            >
+              <RefreshCw className="w-5 h-5" />
+              <span>Gravar</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('aluno-materiais')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'aluno-materiais' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <FolderOpen className="w-5 h-5" />
+              <span>Pastas</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('comunidade-forum')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'comunidade-forum' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <CheckSquare className="w-5 h-5" />
+              <span>Fórum</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('google-agenda')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'google-agenda' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Compass className="w-5 h-5" />
+              <span>Agenda</span>
+            </button>
+          </>
+        )}
 
-        <button
-          data-tour="nav-biblioteca"
-          onClick={() => setActiveTab('aluno-biblioteca')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-biblioteca' ? 'text-blue-600 bg-blue-50/80' : 'text-gray-500'
-          }`}
-        >
-          <Library className="w-5 h-5" />
-          <span>Biblioteca</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('aluno-checklist')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-checklist' ? 'text-blue-600 bg-blue-50/80' : 'text-gray-500'
-          }`}
-        >
-          <CheckSquare className="w-5 h-5" />
-          <span>Checklist AV</span>
-        </button>
-
-        <button
-          onClick={() => handleTabChange('aluno-materiais')}
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold transition-all ${
-            activeTab === 'aluno-materiais' ? 'text-blue-600 bg-blue-50/80 font-black' : 'text-gray-500'
-          }`}
-        >
-          <FolderOpen className="w-5 h-5" />
-          <span>Pastas & Aulas</span>
-        </button>
+        {/* === TABS DO ADMIN === */}
+        {currentRole === 'admin' && (
+          <>
+            <button
+              onClick={() => handleTabChange('admin-dashboard')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab.startsWith('admin-') ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <GraduationCap className="w-5 h-5" />
+              <span>Dashboard</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('admin-usuarios')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'admin-usuarios' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span>Usuários</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('admin-disciplinas')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'admin-disciplinas' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Compass className="w-5 h-5" />
+              <span>Matérias</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('admin-solicitacoes')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'admin-solicitacoes' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <CheckSquare className="w-5 h-5" />
+              <span>Pedidos</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('monitor-escala')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'monitor-escala' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Activity className="w-5 h-5" />
+              <span>Monitoria</span>
+            </button>
+          </>
+        )}
       </div>
 
       {/* COORDENADOR GLOBAL DE ONBOARDING MULTI-PÁGINAS COM DRIVER.JS */}
