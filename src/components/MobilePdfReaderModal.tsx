@@ -62,12 +62,52 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     text: string;
   } | null>(null);
 
+  const [isExtractingPages, setIsExtractingPages] = useState<boolean>(false);
+  const [isScannedPdf, setIsScannedPdf] = useState<boolean>(false);
+
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   // Chave de persistência local para páginas deste livro
   const storageKey = `lms_book_pages_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
   const progressKey = `lms_book_progress_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
+
+  // Extrai o texto de todas as páginas do PDF do Drive via backend
+  const extractPagesFromPdfBackend = async (force = false) => {
+    if (!pdfUrl) return;
+
+    setIsExtractingPages(true);
+
+    try {
+      const res = await fetch('/api/pdf/extract-pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdfUrl, title }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Não foi possível extrair o texto deste PDF.');
+      }
+
+      if (data.isScanned) {
+        setIsScannedPdf(true);
+      } else if (Array.isArray(data.pages) && data.pages.length > 0) {
+        setPages(data.pages);
+        setIsScannedPdf(false);
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(data.pages));
+          } catch {}
+        }
+        showToast(`✨ ${data.pages.length} páginas carregadas para leitura e áudio contínuo!`);
+      }
+    } catch (err: any) {
+      console.warn('Falha na extração de texto do PDF:', err);
+    } finally {
+      setIsExtractingPages(false);
+    }
+  };
 
   // Inicializa o conteúdo das páginas a partir do cache local ou metadados
   useEffect(() => {
@@ -99,9 +139,13 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
       ].filter(Boolean).join('\n\n');
 
       loadedPages = [defaultIntroPage];
-    }
+      setPages(loadedPages);
 
-    setPages(loadedPages);
+      // Dispara extração automática do PDF em segundo plano
+      extractPagesFromPdfBackend(false);
+    } else {
+      setPages(loadedPages);
+    }
 
     // Carrega o progresso de página anterior
     if (typeof window !== 'undefined') {
@@ -650,6 +694,26 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                   </button>
                 </div>
 
+                {/* Extrair Páginas Automaticamente do PDF */}
+                <button
+                  onClick={() => extractPagesFromPdfBackend(true)}
+                  disabled={isExtractingPages}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-700/60 hover:bg-emerald-600 text-white text-xs font-bold transition flex items-center gap-1 border border-emerald-500/40 disabled:opacity-50 cursor-pointer"
+                  title="Extrair e dividir todas as páginas deste PDF para leitura e narração em áudio"
+                >
+                  {isExtractingPages ? (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 animate-spin text-amber-300" />
+                      <span className="hidden md:inline">Extraindo...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                      <span className="hidden md:inline">Extrair do PDF</span>
+                    </>
+                  )}
+                </button>
+
                 {/* Importar / Adicionar Páginas do Livro */}
                 <button
                   onClick={() => setIsAddPagesModalOpen(true)}
@@ -673,6 +737,28 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
               style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
             >
               <div className="max-w-3xl mx-auto space-y-5 font-serif">
+                {/* Alerta de Carregamento / Extração em Segundo Plano */}
+                {isExtractingPages && (
+                  <div className="mb-4 px-4 py-3 rounded-2xl bg-blue-950/70 border border-blue-500/30 text-blue-200 text-xs flex items-center gap-2.5 animate-pulse shadow-sm">
+                    <Sparkles className="w-4 h-4 text-blue-400 animate-spin shrink-0" />
+                    <span>Baixando e extraindo as páginas do arquivo PDF para leitura contínua e áudio...</span>
+                  </div>
+                )}
+
+                {/* Alerta de PDF Escaneado (Imagens sem Camada de Texto) */}
+                {isScannedPdf && (
+                  <div className="mb-5 p-4 rounded-2xl bg-amber-950/50 border border-amber-500/40 text-amber-200 text-xs flex items-start gap-3 shadow-md">
+                    <span className="text-xl shrink-0">📷</span>
+                    <div>
+                      <p className="font-bold text-amber-300 text-sm">Livro Digitalizado por Scanner (Fac-símile em Imagens)</p>
+                      <p className="text-xs text-amber-200/90 mt-1 leading-relaxed">
+                        Este arquivo PDF original é composto por páginas digitalizadas em scanner físico (sem camada de texto digital embutida). 
+                        Você pode folhear a obra completa com nitidez e zoom no modo <strong>[📄 PDF Original]</strong> no topo. 
+                        Para narrar trechos ou capítulos com o sintetizador de voz, utilize o botão <strong>[📋 Colar Páginas]</strong>.
+                      </p>
+                    </div>
+                  </div>
+                )}
                 {currentPageText.split('\n\n').map((paragraph, pIdx) => {
                   if (!paragraph.trim()) return null;
                   return (
