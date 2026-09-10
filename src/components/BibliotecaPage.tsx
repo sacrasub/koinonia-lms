@@ -1572,6 +1572,16 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                     </div>
                     {isBookFileAvailable(viewingBook) && (
                       <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          onClick={() => {
+                            setViewingBook(null);
+                            setReadingBook(viewingBook);
+                          }}
+                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-2xs flex items-center gap-1.5 transition cursor-pointer"
+                          title="Abrir no leitor completo com modo noturno e áudio text-to-speech"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" /> Leitor Completo & Áudio
+                        </button>
                         <a
                           href={driveUrl}
                           target="_blank"
@@ -2213,7 +2223,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
           isOpen={!!readingBook}
           onClose={() => setReadingBook(null)}
           title={readingBook.title}
-          pdfUrl={readingBook.drive_url || ''}
+          pdfUrl={getBookPreviewUrl(readingBook) || readingBook.drive_url || ''}
           disciplinaName={cleanCategoryName(readingBook.category)}
           author={readingBook.author}
           description={readingBook.description}

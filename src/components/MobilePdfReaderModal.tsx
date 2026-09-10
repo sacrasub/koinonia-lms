@@ -189,13 +189,16 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
 
   if (!isOpen || !pdfUrl) return null;
 
-  // Transforma links do Google Drive para modo preview embeddable
-  let embedUrl = pdfUrl;
-  if (pdfUrl.includes('drive.google.com')) {
-    const fileIdMatch = pdfUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (fileIdMatch && fileIdMatch[1]) {
-      embedUrl = `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+  // Transforma qualquer formato de link do Google Drive para o modo preview embutido
+  let embedUrl = pdfUrl.trim();
+  if (embedUrl.includes('drive.google.com') || embedUrl.includes('docs.google.com')) {
+    const match = embedUrl.match(/\/(?:file\/)?d\/([a-zA-Z0-9_-]+)/) ||
+                  embedUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      embedUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
     }
+  } else if (/^[a-zA-Z0-9_-]{25,}$/.test(embedUrl) && !embedUrl.startsWith('http')) {
+    embedUrl = `https://drive.google.com/file/d/${embedUrl}/preview`;
   }
 
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(prev + 25, 200));
