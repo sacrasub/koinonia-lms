@@ -870,6 +870,8 @@ _Disponível no Portal do Aluno do Seminário UIECB_`;
                           ? 'Ver Slides'
                           : noteTipo === 'video'
                           ? 'Assistir'
+                          : (note.gemini_url && note.gemini_url.toLowerCase().endsWith('.pdf'))
+                          ? 'Abrir PDF'
                           : 'Abrir Docs'}
                       </span>
                     </a>

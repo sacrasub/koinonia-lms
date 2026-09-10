@@ -221,6 +221,7 @@ export interface GravacaoAulaItem {
   title: string; // Ex: "Gravação HD • Aula 2: Introdução à Hermenêutica"
   video_url: string; // URL do Google Drive ou link de streaming
   drive_file_id?: string;
+  folder_url?: string;
   duration_seconds?: number;
   duration_formatted?: string; // Ex: "01:45:20"
   recorded_by_name: string;

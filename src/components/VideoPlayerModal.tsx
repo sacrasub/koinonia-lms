@@ -1,13 +1,26 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, ShieldCheck, Video, Lock, ExternalLink, Smartphone, AlertCircle, RefreshCw } from 'lucide-react';
 import { 
-  extractDriveFileId, 
+  X, 
+  ShieldCheck, 
+  Video, 
+  Lock, 
+  ExternalLink, 
+  Smartphone, 
+  AlertCircle, 
+  RefreshCw,
+  FolderOpen,
+  PlayCircle
+} from 'lucide-react';
+import { 
   getEmbedVideoUrl, 
   getNativeAppOrDirectLink, 
-  getVideoSourceType, 
-  isDirectVideoUrl 
+  isDirectVideoUrl,
+  resolveVideoForAula,
+  AFRO_BRASILEIRA_AULAS,
+  AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
+  ModularAulaVideoItem
 } from '@/lib/videoUtils';
 
 interface VideoPlayerModalProps {
@@ -18,6 +31,7 @@ interface VideoPlayerModalProps {
   aulaNum?: number;
   videoUrl: string;
   allAulas?: { aulaNum?: number; title: string; videoUrl: string }[];
+  folderUrl?: string;
 }
 
 export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
@@ -27,7 +41,8 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
   disciplinaName,
   aulaNum: initialAulaNum,
   videoUrl: initialVideoUrl,
-  allAulas,
+  allAulas: initialAllAulas,
+  folderUrl: initialFolderUrl,
 }) => {
   const [activeUrl, setActiveUrl] = useState<string>(initialVideoUrl);
   const [activeTitle, setActiveTitle] = useState<string>(initialTitle);
@@ -44,14 +59,53 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
 
   if (!isOpen || !activeUrl) return null;
 
-  const sourceType = getVideoSourceType(activeUrl);
-  const isDirect = isDirectVideoUrl(activeUrl);
-  const embedUrl = getEmbedVideoUrl(activeUrl);
-  const directLink = getNativeAppOrDirectLink(activeUrl);
-  const isGoogleDrive = sourceType === 'drive';
+  // Resolve inteligentemente a URL caso seja uma pasta ou disciplina modular
+  const resolved = resolveVideoForAula(activeUrl, activeAulaNum, disciplinaName);
+  const effectiveUrl = resolved.resolvedUrl;
+  const isAfro = 
+    (disciplinaName && (
+      disciplinaName.toLowerCase().includes('afro') || 
+      disciplinaName.toLowerCase().includes('indígena')
+    )) ||
+    activeUrl.includes('1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty');
+
+  const effectiveFolderUrl = initialFolderUrl || resolved.folderUrl || (isAfro ? AFRO_BRASILEIRA_DRIVE_FOLDER_URL : undefined);
+
+  // Lista de aulas a exibir na barra superior: se for Afro-Brasileira e não tiver allAulas, gera as 4
+  const computedAllAulas = (initialAllAulas && initialAllAulas.length > 1) 
+    ? initialAllAulas 
+    : isAfro 
+      ? Object.values(AFRO_BRASILEIRA_AULAS).map((a: ModularAulaVideoItem) => ({
+          aulaNum: a.aulaNum,
+          title: a.title,
+          videoUrl: a.videoUrl
+        }))
+      : undefined;
+
+  const sourceType = resolved.sourceType;
+  const isDirect = isDirectVideoUrl(effectiveUrl);
+  const isFolder = resolved.isFolder || sourceType === 'drive_folder';
+  const embedUrl = !isFolder ? getEmbedVideoUrl(effectiveUrl, activeAulaNum) : '';
+  const directLink = getNativeAppOrDirectLink(effectiveUrl, activeAulaNum);
+  const isGoogleDrive = sourceType === 'drive' || (!isDirect && effectiveUrl.includes('drive.google.com'));
   const isYouTube = sourceType === 'youtube';
 
   const handleReloadIframe = () => {
+    setHasIframeLoaded(false);
+    setIframeKey((prev) => prev + 1);
+  };
+
+  const handleSelectAula = (aulaNumTarget?: number, titleTarget?: string, urlTarget?: string) => {
+    if (aulaNumTarget && isAfro && AFRO_BRASILEIRA_AULAS[aulaNumTarget]) {
+      const item = AFRO_BRASILEIRA_AULAS[aulaNumTarget];
+      setActiveUrl(item.videoUrl);
+      setActiveTitle(item.title);
+      setActiveAulaNum(item.aulaNum);
+    } else if (urlTarget) {
+      setActiveUrl(urlTarget);
+      if (titleTarget) setActiveTitle(titleTarget);
+      if (aulaNumTarget) setActiveAulaNum(aulaNumTarget);
+    }
     setHasIframeLoaded(false);
     setIframeKey((prev) => prev + 1);
   };
@@ -86,6 +140,21 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
+            {/* Botão de Atalho para a Pasta da Disciplina */}
+            {effectiveFolderUrl && (
+              <a
+                href={effectiveFolderUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:flex px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-[11px] sm:text-xs items-center gap-1.5 border border-slate-700 shadow-sm transition active:scale-95 cursor-pointer"
+                title="Abrir Pasta Completa no Google Drive"
+              >
+                <FolderOpen className="w-3.5 h-3.5 text-amber-400" />
+                <span>Pasta Oficial</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+
             {/* Botão de Abertura Direta no App do Celular / Nova Guia */}
             {directLink && (
               <a
@@ -115,21 +184,15 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
         </div>
 
         {/* Barra de seleção rápida de Aulas do Módulo */}
-        {allAulas && allAulas.length > 1 && (
+        {computedAllAulas && computedAllAulas.length > 1 && (
           <div className="flex items-center gap-2 px-3.5 sm:px-5 py-2 bg-slate-900/90 border-b border-slate-800 overflow-x-auto">
             <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap">Aulas do Módulo:</span>
             <div className="flex items-center gap-1.5">
-              {allAulas.map((aula) => (
+              {computedAllAulas.map((aula) => (
                 <button
                   key={aula.aulaNum}
                   type="button"
-                  onClick={() => {
-                    setActiveUrl(aula.videoUrl);
-                    setActiveTitle(aula.title);
-                    setActiveAulaNum(aula.aulaNum);
-                    setHasIframeLoaded(false);
-                    setIframeKey((prev) => prev + 1);
-                  }}
+                  onClick={() => handleSelectAula(aula.aulaNum, aula.title, aula.videoUrl)}
                   className={`px-3 py-1 rounded-xl text-xs font-black transition cursor-pointer flex items-center gap-1 whitespace-nowrap active:scale-95 ${
                     activeAulaNum === aula.aulaNum
                       ? 'bg-amber-400 text-slate-950 shadow-xs ring-1 ring-amber-300'
@@ -146,9 +209,53 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
 
         {/* Área Central de Reprodução do Vídeo Otimizada para Celular & Desktop */}
         <div className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden select-none">
-          {isDirect ? (
+          {isFolder ? (
+            /* HUB INSTITUCIONAL PARA PASTA DO GOOGLE DRIVE */
+            <div className="p-6 text-center max-w-lg mx-auto flex flex-col items-center justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center mb-4">
+                <FolderOpen className="w-8 h-8 text-amber-400" />
+              </div>
+              <h4 className="text-white font-extrabold text-base sm:text-lg mb-2">
+                Pasta de Videoaulas e Materiais
+              </h4>
+              <p className="text-slate-300 text-xs sm:text-sm mb-5 leading-relaxed">
+                As aulas gravadas e materiais desta disciplina foram organizados pelo professor em uma pasta do Google Drive.
+              </p>
+
+              {/* Botões das Aulas Rápidas se for Afro-Brasileira */}
+              {isAfro && (
+                <div className="w-full grid grid-cols-2 gap-2 mb-5">
+                  {Object.values(AFRO_BRASILEIRA_AULAS).map((item: ModularAulaVideoItem) => (
+                    <button
+                      key={item.aulaNum}
+                      type="button"
+                      onClick={() => handleSelectAula(item.aulaNum, item.title, item.videoUrl)}
+                      className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition cursor-pointer group"
+                    >
+                      <div className="flex items-center justify-between text-xs font-extrabold text-amber-400 mb-0.5">
+                        <span>Aula {item.aulaNum}</span>
+                        <PlayCircle className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400 transition" />
+                      </div>
+                      <div className="text-[11px] text-slate-300 font-semibold truncate">{item.sizeFormatted}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <a
+                href={effectiveFolderUrl || directLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-md transition active:scale-95 cursor-pointer"
+              >
+                <FolderOpen className="w-4 h-4" />
+                <span>Abrir Pasta Completa no Google Drive</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          ) : isDirect ? (
             <video
-              src={activeUrl}
+              src={effectiveUrl}
               controls
               playsInline
               webkit-playsinline="true"
@@ -180,7 +287,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
             </span>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
             <button
               onClick={handleReloadIframe}
               className="text-[11px] text-slate-400 hover:text-slate-200 flex items-center gap-1 transition cursor-pointer"
@@ -189,6 +296,19 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
               <RefreshCw className="w-3 h-3" />
               <span>Recarregar</span>
             </button>
+
+            {effectiveFolderUrl && (
+              <a
+                href={effectiveFolderUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sm:hidden text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 transition underline underline-offset-2"
+              >
+                <FolderOpen className="w-3 h-3" />
+                <span>Pasta Oficial</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
 
             {directLink && (
               <a
@@ -204,13 +324,24 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
           </div>
         </div>
 
-        {/* Dica para Navegadores Móveis com Bloqueio de Cookies */}
-        {isGoogleDrive && (
-          <div className="px-3.5 py-1.5 sm:px-5 sm:py-2 bg-blue-950/40 border-t border-blue-900/30 flex items-center gap-2 text-[10px] sm:text-[11px] text-blue-300/90">
-            <AlertCircle className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-            <span>
-              <strong>Dica no Celular:</strong> Se a tela ficar preta ou solicitar login devido à segurança do navegador, clique em <strong>"Abrir no Drive"</strong> para reproduzir no aplicativo.
-            </span>
+        {/* Dica para Navegadores Móveis com Bloqueio de Cookies e Fallback Rápido */}
+        {isGoogleDrive && !isFolder && (
+          <div className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-blue-950/60 border-t border-blue-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[10px] sm:text-[11px] text-blue-200">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <span>
+                <strong>Apareceu &quot;Nenhuma visualização disponível&quot;?</strong> O navegador pode bloquear cookies em players embutidos.
+              </span>
+            </div>
+            <a
+              href={directLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="self-start sm:self-auto px-2.5 py-1 rounded-lg bg-blue-500 hover:bg-blue-400 text-slate-950 font-black flex items-center gap-1 shadow-xs transition active:scale-95 shrink-0 cursor-pointer"
+            >
+              <span>Assistir no Google Drive</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
         )}
       </div>

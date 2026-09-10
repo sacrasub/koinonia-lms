@@ -4213,6 +4213,7 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
         aulaNum={activeVideoModal.aulaNum}
         videoUrl={activeVideoModal.videoUrl}
         allAulas={gravacoes.length > 1 ? gravacoes.map((g) => ({ aulaNum: g.aula_num, title: g.title, videoUrl: g.video_url })) : undefined}
+        folderUrl={disciplina.google_drive_url || gravacoes.find((g) => g.folder_url)?.folder_url}
       />
 
       {/* MODAL DO LEITOR DE PDF EMBUTIDO (MOBILE & DESKTOP) */}

@@ -63,6 +63,11 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   } | null>(null);
 
   const [isExtractingPages, setIsExtractingPages] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
   const [isScannedPdf, setIsScannedPdf] = useState<boolean>(false);
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);

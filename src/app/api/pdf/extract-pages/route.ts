@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 
     // Instancia o parser de PDF
     const parser = new PDFParse({ data: buffer });
-    await parser.load();
+    await (parser as any).load?.();
     const textData = await parser.getText();
 
     const totalPages = textData.total || (textData.pages ? textData.pages.length : 0);

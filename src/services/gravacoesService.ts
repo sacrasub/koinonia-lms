@@ -1,6 +1,12 @@
 import { GravacaoAulaItem } from '@/types';
 import { supabase } from '@/lib/supabaseClient';
-import { extractDriveFileId as extractDriveFileIdUtil } from '@/lib/videoUtils';
+import { 
+  extractDriveFileId as extractDriveFileIdUtil,
+  resolveVideoForAula,
+  isDriveFolderUrl,
+  AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
+  AFRO_BRASILEIRA_AULAS
+} from '@/lib/videoUtils';
 
 const STORAGE_KEY = 'lms_gravacoes_v1';
 const CLOUD_TITLE_KEY = 'lms_gravacoes_cloud_v1';
@@ -169,6 +175,7 @@ export const INITIAL_GRAVACOES_SEED: GravacaoAulaItem[] = [
     title: '01 • Por Que Esta Disciplina é Necessária à Teologia? (Videoaula HD • 636 MB)',
     video_url: 'https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link',
     drive_file_id: '1ypH0nSMA6E02c2enTzeLSacRhY8q9n05',
+    folder_url: AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
     recorded_by_name: 'Profº Alexsandro',
     recorded_by_role: 'professor',
     recorded_by_email: 'alexsandro@stc.edu.br',
@@ -186,6 +193,7 @@ export const INITIAL_GRAVACOES_SEED: GravacaoAulaItem[] = [
     title: '02 • Áfricas, Diáspora e Cultura Afro-Brasileira (Videoaula HD • 595 MB)',
     video_url: 'https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link',
     drive_file_id: '1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq',
+    folder_url: AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
     recorded_by_name: 'Profº Alexsandro',
     recorded_by_role: 'professor',
     recorded_by_email: 'alexsandro@stc.edu.br',
@@ -203,6 +211,7 @@ export const INITIAL_GRAVACOES_SEED: GravacaoAulaItem[] = [
     title: '03 • Povos Indígenas: Histórias, Culturas, Missão e Direitos (Videoaula HD • 526 MB)',
     video_url: 'https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link',
     drive_file_id: '1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK',
+    folder_url: AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
     recorded_by_name: 'Profº Alexsandro',
     recorded_by_role: 'professor',
     recorded_by_email: 'alexsandro@stc.edu.br',
@@ -220,6 +229,7 @@ export const INITIAL_GRAVACOES_SEED: GravacaoAulaItem[] = [
     title: '04 • Religiões, Análise Cristã Confessional e Prática da Igreja [Atividade Avaliativa] (Videoaula HD • 532 MB)',
     video_url: 'https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link',
     drive_file_id: '1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw',
+    folder_url: AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
     recorded_by_name: 'Profº Alexsandro',
     recorded_by_role: 'professor',
     recorded_by_email: 'alexsandro@stc.edu.br',
@@ -456,9 +466,10 @@ function mergeGravacoesLists(primary: GravacaoAulaItem[], fallback: GravacaoAula
     }
   });
 
-  // Retorna itens únicos
+  // Retorna itens únicos com sanitização de aulas modulares
   const uniqueItems = Array.from(new Map(Array.from(map.values()).map((g) => [g.id, g])).values())
-    .filter((g) => !deletedIds.has(g.id));
+    .filter((g) => !deletedIds.has(g.id))
+    .map(sanitizeGravacoesItem);
 
   const cleaned = uniqueItems.map((item) => ({
     ...item,
@@ -472,33 +483,64 @@ function mergeGravacoesLists(primary: GravacaoAulaItem[], fallback: GravacaoAula
   return sortGravacoesChronologicalDesc(cleaned);
 }
 
+function sanitizeGravacoesItem(item: GravacaoAulaItem): GravacaoAulaItem {
+  if (!item) return item;
+  const isAfro =
+    (item.id && item.id.includes('rec-afro-aula')) ||
+    item.disciplina_id === 'disc-9' ||
+    (item.disciplina_name && (
+      item.disciplina_name.toLowerCase().includes('afro') ||
+      item.disciplina_name.toLowerCase().includes('indígena')
+    ));
+
+  if (isAfro && item.aula_num && AFRO_BRASILEIRA_AULAS[item.aula_num]) {
+    const canonical = AFRO_BRASILEIRA_AULAS[item.aula_num];
+    const hasFolderOrBadUrl =
+      !item.video_url ||
+      isDriveFolderUrl(item.video_url) ||
+      item.video_url.includes('/folders/') ||
+      item.drive_file_id === AFRO_BRASILEIRA_DRIVE_FOLDER_URL ||
+      item.drive_file_id?.includes('1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty');
+
+    return {
+      ...item,
+      video_url: hasFolderOrBadUrl ? canonical.videoUrl : item.video_url,
+      drive_file_id: hasFolderOrBadUrl ? canonical.driveFileId : (item.drive_file_id || canonical.driveFileId),
+      folder_url: item.folder_url || AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
+      title: item.title && !item.title.startsWith('0') && item.title.includes('Modular') ? canonical.title : (item.title || canonical.title),
+    };
+  }
+
+  return item;
+}
+
 export function getAllGravacoes(): GravacaoAulaItem[] {
   const deletedIds = new Set(getDeletedGravacoesIds());
   if (typeof window === 'undefined') {
-    return sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)));
+    return sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem));
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      const filteredSeed = INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id));
+      const filteredSeed = INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem);
       const sortedSeed = sortGravacoesChronologicalDesc(filteredSeed);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(sortedSeed));
       return sortedSeed;
     }
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
-      const filteredParsed = parsed.filter((g) => !deletedIds.has(g.id));
-      const filteredSeed = INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id));
+      const filteredParsed = parsed.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem);
+      const filteredSeed = INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem);
       const merged = mergeGravacoesLists(filteredParsed, filteredSeed);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
       return merged;
     }
-    const sortedSeed = sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)));
+    const sortedSeed = sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sortedSeed));
     return sortedSeed;
   } catch (e) {
     console.error('Erro ao ler gravações salvas:', e);
-    return sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)));
+    return sortGravacoesChronologicalDesc(INITIAL_GRAVACOES_SEED.filter((g) => !deletedIds.has(g.id)).map(sanitizeGravacoesItem));
   }
 }
 
@@ -534,12 +576,19 @@ export function getGravacaoForAula(disciplinaId: string, aulaNum: number, discip
 
 export function addGravacao(item: Omit<GravacaoAulaItem, 'id' | 'created_at'>): GravacaoAulaItem {
   const all = getAllGravacoes();
-  const driveId = extractDriveFileId(item.video_url);
+  
+  // Resolve inteligentemente caso o usuário cole link de pasta para uma aula numerada
+  const resolved = resolveVideoForAula(item.video_url, item.aula_num, item.disciplina_name);
+  const finalVideoUrl = resolved.resolvedUrl;
+  const driveId = resolved.driveFileId || extractDriveFileIdUtil(finalVideoUrl);
+  const folderUrl = item.folder_url || resolved.folderUrl;
 
   const newItem: GravacaoAulaItem = {
     ...item,
     id: `rec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    video_url: finalVideoUrl,
     drive_file_id: driveId || item.drive_file_id,
+    folder_url: folderUrl,
     is_restricted_lms: true,
     created_at: new Date().toLocaleDateString('pt-BR'),
   };
@@ -575,12 +624,23 @@ export function updateGravacao(id: string, patch: Partial<GravacaoAulaItem>): Gr
   const index = all.findIndex((g) => g.id === id);
   if (index < 0) return null;
 
-  const driveId = patch.video_url ? extractDriveFileId(patch.video_url) : all[index].drive_file_id;
+  const rawUrl = patch.video_url || all[index].video_url;
+  const targetAulaNum = patch.aula_num ?? all[index].aula_num;
+  const targetDiscName = patch.disciplina_name ?? all[index].disciplina_name;
+  const resolved = resolveVideoForAula(rawUrl, targetAulaNum, targetDiscName);
+
+  const finalVideoUrl = patch.video_url ? resolved.resolvedUrl : all[index].video_url;
+  const driveId = patch.video_url 
+    ? (resolved.driveFileId || extractDriveFileIdUtil(finalVideoUrl)) 
+    : all[index].drive_file_id;
+  const folderUrl = patch.folder_url || resolved.folderUrl || all[index].folder_url;
 
   const updated: GravacaoAulaItem = {
     ...all[index],
     ...patch,
-    drive_file_id: (driveId || all[index].drive_file_id) || undefined,
+    video_url: finalVideoUrl,
+    drive_file_id: driveId || undefined,
+    folder_url: folderUrl,
   };
 
   const updatedList = [...all];
