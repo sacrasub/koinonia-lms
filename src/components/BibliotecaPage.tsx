@@ -215,9 +215,26 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
   // Extrai o ID do Google Drive de uma URL ou string
   const extractDriveFileId = (driveUrlOrId: string): string | null => {
     if (!driveUrlOrId) return null;
-    const match = driveUrlOrId.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || driveUrlOrId.match(/id=([a-zA-Z0-9_-]+)/);
+    const match = driveUrlOrId.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                  driveUrlOrId.match(/id=([a-zA-Z0-9_-]+)/) ||
+                  driveUrlOrId.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (match && match[1]) return match[1];
-    if (!driveUrlOrId.startsWith('http') && !driveUrlOrId.startsWith('custom-')) return driveUrlOrId;
+    if (!driveUrlOrId.startsWith('http') && !driveUrlOrId.startsWith('custom-') && !driveUrlOrId.startsWith('18-whatsapp') && !driveUrlOrId.startsWith('rec-book-')) {
+      return driveUrlOrId;
+    }
+    return null;
+  };
+
+  // Retorna a URL de capa do livro (prioriza cover_url cadastrada; se não houver, extrai a 1ª página do PDF via Google Drive)
+  const getBookCoverUrl = (book: BibliotecaBook, size: 'card' | 'hd' = 'card'): string | null => {
+    if (book.cover_url && book.cover_url.trim()) {
+      return book.cover_url.trim();
+    }
+    const fileId = extractDriveFileId(book.drive_url || book.id);
+    if (fileId && !fileId.startsWith('custom-') && !fileId.startsWith('18-whatsapp') && !fileId.startsWith('rec-book-')) {
+      const sz = size === 'hd' ? 'w800' : 'w600';
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=${sz}`;
+    }
     return null;
   };
 
@@ -395,6 +412,37 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
     } finally {
       setIsFetchingFromGoogle(false);
     }
+  };
+
+  // Rotina Inteligente: Extrai a 1ª página do PDF do Drive para capa e pesquisa a sinopse e metadados no Google Books
+  const handleAutoEnrichCoverAndSynopsis = async (
+    driveUrl: string,
+    title: string,
+    author: string,
+    category: string,
+    setCoverUrl: (url: string) => void,
+    setDescription: (desc: string) => void,
+    setTitleCallback?: (title: string) => void,
+    setAuthorCallback?: (author: string) => void
+  ) => {
+    // 1. Extrai a 1ª página do PDF se houver Drive URL
+    const fileId = extractDriveFileId(driveUrl);
+    if (fileId) {
+      const thumbUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+      setCoverUrl(thumbUrl);
+      showToast('📄 Capa da 1ª página do PDF vinculada!');
+    }
+
+    // 2. Limpa o título para facilitar a busca no Google Books
+    const cleanT = title.replace(/\.pdf$/i, '').replace(/\.epub$/i, '').replace(/\[.*?\]/g, '').trim();
+    if (setTitleCallback && cleanT !== title) {
+      setTitleCallback(cleanT);
+    }
+
+    // 3. Dispara busca no Google Books
+    await fetchGoogleBooksMetadata(cleanT || title, author, (googleCover) => {
+      if (!fileId && googleCover) setCoverUrl(googleCover);
+    }, setDescription, setAuthorCallback);
   };
 
   const openEditFullBookModal = (book: BibliotecaBook) => {
@@ -967,6 +1015,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
             const color = getCategoryColor(book.category);
             const rec = getBookRecommendation(book);
             const isAvailable = isBookFileAvailable(book);
+            const coverUrl = getBookCoverUrl(book);
 
             return (
               <div
@@ -975,20 +1024,24 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                   rec ? 'border-amber-300 bg-amber-50/20 ring-1 ring-amber-200/60' : book.is_custom ? 'border-blue-300 bg-blue-50/20' : 'bg-white border-gray-200/80'
                 }`}
               >
-                {/* Capa do Livro (Se tiver imagem ou gradiente temático) */}
-                {book.cover_url ? (
+                {/* Capa do Livro (Se tiver imagem de capa ou miniatura da 1ª página do PDF) */}
+                {coverUrl ? (
                   <div 
                     onClick={() => setViewingBook(book)}
-                    className="relative h-48 bg-slate-900 overflow-hidden flex items-center justify-center cursor-pointer"
+                    className={`relative h-48 bg-gradient-to-tr ${color.gradient} overflow-hidden flex items-center justify-center cursor-pointer`}
                   >
                     <img
-                      src={book.cover_url}
+                      src={coverUrl}
                       alt={book.title}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-between p-3.5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-between p-3.5 pointer-events-none">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="px-2 py-0.5 bg-black/40 backdrop-blur-md rounded-lg text-[9px] font-bold uppercase tracking-wider text-white truncate max-w-[150px]">
+                        <span className="px-2 py-0.5 bg-black/50 backdrop-blur-md rounded-lg text-[9px] font-bold uppercase tracking-wider text-white truncate max-w-[150px]">
                           {cleanCategoryName(book.category)}
                         </span>
                         {rec ? (
@@ -1216,6 +1269,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                   const driveUrl = book.drive_url || `https://drive.google.com/file/d/${book.id}/view`;
                   const rec = getBookRecommendation(book);
                   const isAvailable = isBookFileAvailable(book);
+                  const tableCoverUrl = getBookCoverUrl(book);
 
                   return (
                     <tr key={book.id} className="hover:bg-blue-50/40 transition group">
@@ -1224,8 +1278,14 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                         onClick={() => setViewingBook(book)}
                       >
                         <div className="flex items-center gap-2.5">
-                          {book.cover_url ? (
-                            <img src={book.cover_url} alt="" className="w-8 h-10 object-cover rounded shadow-xs" />
+                          {tableCoverUrl ? (
+                            <img 
+                              src={tableCoverUrl} 
+                              alt="" 
+                              loading="lazy"
+                              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                              className="w-8 h-10 object-cover rounded shadow-xs bg-slate-200 shrink-0" 
+                            />
                           ) : (
                             <div className="w-8 h-10 rounded bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-[10px] shrink-0">
                               PDF
@@ -1399,19 +1459,23 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                 <div className="flex-1 overflow-y-auto flex flex-col md:flex-row">
                   {/* Lado Esquerdo: Capa */}
                   <div className="w-full md:w-2/5 bg-slate-100 flex flex-col items-center justify-center relative p-6 shrink-0 border-b md:border-b-0 md:border-r border-gray-100">
-                    {viewingBook.cover_url ? (
-                      <img 
-                        src={viewingBook.cover_url} 
-                        alt={viewingBook.title} 
-                        className="w-full max-w-[280px] h-auto max-h-[50vh] object-contain rounded-xl shadow-lg border border-slate-200/50" 
-                      />
-                    ) : (
-                      <div className={`w-full max-w-[280px] aspect-[2/3] max-h-[50vh] rounded-xl shadow-lg border border-slate-200/50 bg-gradient-to-tr ${getCategoryColor(viewingBook.category).gradient} flex flex-col items-center justify-center p-6 text-center`}>
-                        <BookOpen className="w-16 h-16 text-white/50 mb-4" />
-                        <h3 className="font-bold text-white text-lg line-clamp-3 mb-2">{viewingBook.title}</h3>
-                        <p className="text-white/80 font-medium text-xs">{viewingBook.author}</p>
-                      </div>
-                    )}
+                    {(() => {
+                      const modalCoverUrl = getBookCoverUrl(viewingBook, 'hd');
+                      return modalCoverUrl ? (
+                        <img 
+                          src={modalCoverUrl} 
+                          alt={viewingBook.title} 
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                          className="w-full max-w-[280px] h-auto max-h-[50vh] object-contain rounded-xl shadow-lg border border-slate-200/50" 
+                        />
+                      ) : (
+                        <div className={`w-full max-w-[280px] aspect-[2/3] max-h-[50vh] rounded-xl shadow-lg border border-slate-200/50 bg-gradient-to-tr ${getCategoryColor(viewingBook.category).gradient} flex flex-col items-center justify-center p-6 text-center`}>
+                          <BookOpen className="w-16 h-16 text-white/50 mb-4" />
+                          <h3 className="font-bold text-white text-lg line-clamp-3 mb-2">{viewingBook.title}</h3>
+                          <p className="text-white/80 font-medium text-xs">{viewingBook.author}</p>
+                        </div>
+                      );
+                    })()}
 
                     {previewUrl && isBookFileAvailable(viewingBook) && (
                       <button
@@ -1956,20 +2020,40 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                 <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => fetchGoogleBooksMetadata(editBookTitle, editBookAuthor, setEditBookCoverUrl, setEditBookDescription, setEditBookAuthor)}
-                    disabled={isFetchingFromGoogle || !editBookTitle.trim()}
-                    className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs disabled:opacity-50 cursor-pointer"
+                    onClick={() => handleAutoEnrichCoverAndSynopsis(
+                      editBookDriveUrl,
+                      editBookTitle,
+                      editBookAuthor,
+                      editBookCategory,
+                      setEditBookCoverUrl,
+                      setEditBookDescription,
+                      setEditBookTitle,
+                      setEditBookAuthor
+                    )}
+                    disabled={isFetchingFromGoogle || (!editBookTitle.trim() && !editBookDriveUrl.trim())}
+                    className="px-3.5 py-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-700 hover:from-emerald-700 hover:to-blue-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95 disabled:opacity-50 cursor-pointer"
+                    title="Puxa a 1ª página do PDF como capa e consulta a sinopse e metadados no Google Books de forma automática"
                   >
                     {isFetchingFromGoogle ? (
                       <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 animate-spin" /> Buscando dados...
+                        <Sparkles className="w-3.5 h-3.5 animate-spin text-amber-300" /> Identificando dados...
                       </span>
                     ) : (
                       <>
                         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                        Buscar no Google Books
+                        <span>🪄 1ª Página do PDF & Google Books</span>
                       </>
                     )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => fetchGoogleBooksMetadata(editBookTitle, editBookAuthor, setEditBookCoverUrl, setEditBookDescription, setEditBookAuthor)}
+                    disabled={isFetchingFromGoogle || !editBookTitle.trim()}
+                    className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs disabled:opacity-50 cursor-pointer"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 text-blue-200" />
+                    Apenas Google Books
                   </button>
 
                   {editBookDriveUrl && (
@@ -1980,7 +2064,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                       title="Usa a primeira página do arquivo PDF original do Google Drive como capa oficial"
                     >
                       <FileText className="w-3.5 h-3.5 text-blue-600" />
-                      Usar 1ª Página do PDF
+                      Apenas 1ª Pág do PDF
                     </button>
                   )}
 
