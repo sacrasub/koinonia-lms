@@ -67,15 +67,6 @@ export const INITIAL_AUTHORIZED_USERS: Record<string, UserRoleMapping> = {
     periodoNum: 7,
     avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
   },
-  'desbloquear854@gmail.com': {
-    email: 'desbloquear854@gmail.com',
-    name: 'Elizy Bessa',
-    roles: ['aluno'],
-    defaultRole: 'aluno',
-    turmaIdx: 1,
-    periodoNum: 7,
-    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-  },
   'josiasrcosta@gmail.com': {
     email: 'josiasrcosta@gmail.com',
     name: 'Profº Josias Ribeiro (Filosofia)',
@@ -482,6 +473,26 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
   try {
     localStorage.setItem(RBAC_LAST_FETCH_KEY, String(Date.now()));
 
+    // 0. Sincroniza lista de usuários revogados/excluídos na nuvem
+    try {
+      const { data: revData } = await supabase
+        .from('materiais')
+        .select('file_url')
+        .eq('title', 'system_rbac_revoked_users')
+        .limit(1);
+
+      if (revData && revData.length > 0 && revData[0].file_url) {
+        const cloudRevoked: string[] = JSON.parse(revData[0].file_url);
+        if (Array.isArray(cloudRevoked)) {
+          const localRevoked = getRevokedUsersList();
+          const mergedRevoked = Array.from(new Set([...localRevoked, ...cloudRevoked.map((e) => String(e).toLowerCase().trim())]));
+          localStorage.setItem(REVOKED_USERS_KEY, JSON.stringify(mergedRevoked));
+        }
+      }
+    } catch (_) {}
+
+    const activeRevokedSet = new Set(getRevokedUsersList());
+
     // 1. Busca lista de usuários autorizados na nuvem
     const { data: usersData } = await supabase
       .from('materiais')
@@ -498,6 +509,7 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
         const mergedUsers: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
 
         for (const [key, user] of Object.entries(combinedPool)) {
+          if (activeRevokedSet.has(key.toLowerCase().trim())) continue;
           const init = INITIAL_AUTHORIZED_USERS[key];
           if (init) {
             mergedUsers[key] = {
@@ -510,6 +522,12 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
           } else {
             mergedUsers[key] = user;
           }
+        }
+
+        // Expurgar qualquer revogado
+        for (const rev of activeRevokedSet) {
+          delete mergedUsers[rev];
+          delete INITIAL_AUTHORIZED_USERS[rev];
         }
 
         try {
@@ -566,12 +584,62 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
   }
 }
 
+const REVOKED_USERS_KEY = 'lms_revoked_users_db';
+
+/**
+ * Obtém a lista de e-mails revogados/excluídos permanentemente
+ */
+export function getRevokedUsersList(): string[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(REVOKED_USERS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed.map((e) => String(e).toLowerCase().trim());
+    }
+  } catch (e) {}
+  return [];
+}
+
+/**
+ * Salva a lista de e-mails revogados no localStorage e na nuvem
+ */
+export function saveRevokedUsersList(revoked: string[]) {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(REVOKED_USERS_KEY, JSON.stringify(revoked));
+    } catch (_) {}
+    (async () => {
+      try {
+        const payloadStr = JSON.stringify(revoked);
+        const { data: existing } = await supabase
+          .from('materiais')
+          .select('id')
+          .eq('title', 'system_rbac_revoked_users')
+          .limit(1);
+
+        if (existing && existing.length > 0) {
+          await supabase.from('materiais').update({ file_url: payloadStr }).eq('title', 'system_rbac_revoked_users');
+        } else {
+          await supabase.from('materiais').insert({ title: 'system_rbac_revoked_users', file_url: payloadStr, is_native_upload: false });
+        }
+      } catch (_) {}
+    })();
+  }
+}
+
 /**
  * Obtém a lista dinâmica de e-mails autorizados (sincronizado com localStorage)
  */
 export function getAuthorizedUsersList(): Record<string, UserRoleMapping> {
+  const revokedSet = new Set(getRevokedUsersList());
+
   if (typeof window === 'undefined') {
-    return INITIAL_AUTHORIZED_USERS;
+    const cleanInitial: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
+    for (const rev of revokedSet) {
+      delete cleanInitial[rev];
+    }
+    return cleanInitial;
   }
 
   try {
@@ -581,6 +649,7 @@ export function getAuthorizedUsersList(): Record<string, UserRoleMapping> {
       const merged: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
 
       for (const [key, cachedUser] of Object.entries(parsed)) {
+        if (revokedSet.has(key)) continue;
         const initial = INITIAL_AUTHORIZED_USERS[key];
         if (initial) {
           merged[key] = {
@@ -595,13 +664,22 @@ export function getAuthorizedUsersList(): Record<string, UserRoleMapping> {
         }
       }
 
+      for (const revEmail of revokedSet) {
+        delete merged[revEmail];
+        delete INITIAL_AUTHORIZED_USERS[revEmail];
+      }
+
       return merged;
     }
   } catch (e) {
     console.error('Erro ao ler lista de e-mails do localStorage:', e);
   }
 
-  return INITIAL_AUTHORIZED_USERS;
+  const fallback: Record<string, UserRoleMapping> = { ...INITIAL_AUTHORIZED_USERS };
+  for (const revEmail of revokedSet) {
+    delete fallback[revEmail];
+  }
+  return fallback;
 }
 
 /**
@@ -663,6 +741,14 @@ export function getAuthorizedUserInfo(email: string): { isAuthorized: boolean; u
  */
 export function addOrUpdateAuthorizedUser(user: UserRoleMapping) {
   const normalized = user.email.toLowerCase().trim();
+
+  // Remove da lista de revogados caso estivesse revogado
+  const currentRevoked = getRevokedUsersList();
+  if (currentRevoked.includes(normalized)) {
+    const nextRevoked = currentRevoked.filter((e) => e !== normalized);
+    saveRevokedUsersList(nextRevoked);
+  }
+
   const current = getAuthorizedUsersList();
   const updatedUser: UserRoleMapping = {
     ...(current[normalized] || {}),
@@ -688,13 +774,34 @@ export function addOrUpdateAuthorizedUser(user: UserRoleMapping) {
 }
 
 /**
- * Revoga autorização de um e-mail
+ * Revoga autorização de um e-mail permanentemente
  */
 export function removeAuthorizedUser(email: string) {
   const normalized = email.toLowerCase().trim();
+
+  // 1. Marca como revogado no storage persistente local e na nuvem
+  const currentRevoked = getRevokedUsersList();
+  if (!currentRevoked.includes(normalized)) {
+    const nextRevoked = [...currentRevoked, normalized];
+    saveRevokedUsersList(nextRevoked);
+  }
+
+  // 2. Remove de INITIAL_AUTHORIZED_USERS em memória
+  delete INITIAL_AUTHORIZED_USERS[normalized];
+
+  // 3. Remove de authorized_users_db
   const current = getAuthorizedUsersList();
   delete current[normalized];
   saveAuthorizedUsersList(current);
+
+  // 4. Remove da tabela 'users' no Supabase
+  (async () => {
+    try {
+      await supabase.from('users').delete().eq('email', normalized);
+    } catch (e) {
+      console.warn('Erro ao deletar usuário do Supabase:', e);
+    }
+  })();
 }
 
 // ==========================================

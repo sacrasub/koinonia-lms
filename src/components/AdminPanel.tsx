@@ -236,11 +236,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   };
 
-  const handleRemoveUser = (email: string) => {
+  const handleRemoveUser = async (email: string) => {
+    const normalized = email.toLowerCase().trim();
     if (confirm(`Tem certeza que deseja revogar o acesso do e-mail ${email}?`)) {
-      removeAuthorizedUser(email);
-      reloadData();
-      showNotify(`Acesso do e-mail ${email} revogado.`);
+      // 1. Remoção otimista instantânea na UI para sumir imediatamente da tela
+      setUsersList((prev) => {
+        const next = { ...prev };
+        delete next[normalized];
+        return next;
+      });
+      // 2. Persistir revogação definitiva no storage, na nuvem e tabela users
+      removeAuthorizedUser(normalized);
+      await reloadData();
+      showNotify(`Acesso do e-mail ${email} revogado com sucesso.`);
     }
   };
 

@@ -1316,11 +1316,26 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                           <Library className="w-3.5 h-3.5 text-indigo-600" />
                           <span>Biblioteca Digital</span>
                         </button>
+                        {livro.book_url && (livro.book_url.includes('drive.google.com') || livro.book_url.includes('/file/d/') || livro.book_url.endsWith('.pdf')) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
+                              setMobilePdfModal({ isOpen: true, title: livro.book_title, pdfUrl: livro.book_url });
+                            }}
+                            className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                            title="Ler PDF diretamente no App (Leitor Embutido)"
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>Ler no App</span>
+                          </button>
+                        )}
                         <a
                           href={livro.book_url && !livro.book_url.includes('1Xl2x4f-default-book') ? livro.book_url : (disciplina.google_drive_url || 'https://drive.google.com')}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                          title="Abrir arquivo diretamente no Google Drive"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                           <span>Acessar Obra</span>
@@ -1547,11 +1562,26 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                         <Library className="w-3.5 h-3.5 text-indigo-600" />
                         <span>Biblioteca Digital</span>
                       </button>
+                      {livro.book_url && (livro.book_url.includes('drive.google.com') || livro.book_url.includes('/file/d/') || livro.book_url.endsWith('.pdf')) && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
+                            setMobilePdfModal({ isOpen: true, title: livro.book_title, pdfUrl: livro.book_url });
+                          }}
+                          className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                          title="Ler PDF diretamente no App (Leitor Embutido)"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>Ler no App</span>
+                        </button>
+                      )}
                       <a
                         href={livro.book_url && !livro.book_url.includes('1Xl2x4f-default-book') ? livro.book_url : (disciplina.google_drive_url || 'https://drive.google.com')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                        title="Abrir arquivo diretamente no Google Drive"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         <span>Acessar Obra</span>
@@ -4164,6 +4194,7 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
         disciplinaName={disciplina.name}
         aulaNum={activeVideoModal.aulaNum}
         videoUrl={activeVideoModal.videoUrl}
+        allAulas={gravacoes.length > 1 ? gravacoes.map((g) => ({ aulaNum: g.aula_num, title: g.title, videoUrl: g.video_url })) : undefined}
       />
 
       {/* MODAL DO LEITOR DE PDF EMBUTIDO (MOBILE & DESKTOP) */}

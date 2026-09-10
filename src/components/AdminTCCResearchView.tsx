@@ -773,9 +773,9 @@ export const AdminTCCResearchView: React.FC = () => {
 
       {/* MODAL PARA CRIAR NOVA PESQUISA / PERGUNTAS */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 w-full max-w-2xl p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-5 text-left my-8">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+          <div className="bg-slate-900 w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl border border-slate-800 shadow-2xl text-left overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-900">
               <div>
                 <h3 className="text-lg font-black text-white">Criar Nova Pesquisa Científica</h3>
                 <p className="text-xs text-slate-400">Configure o questionário e as perguntas com escala Likert para o TCC</p>
@@ -788,7 +788,7 @@ export const AdminTCCResearchView: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleCreateSurveySubmit} className="space-y-4">
+            <form onSubmit={handleCreateSurveySubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">Título da Pesquisa *</label>
                 <input
@@ -916,7 +916,7 @@ export const AdminTCCResearchView: React.FC = () => {
                 ))}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800 sticky bottom-0 bg-slate-900/95 backdrop-blur-xs -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 p-4 sm:p-5 rounded-b-3xl">
                 <button
                   type="button"
                   onClick={() => setIsCreateModalOpen(false)}
@@ -938,9 +938,9 @@ export const AdminTCCResearchView: React.FC = () => {
 
       {/* MODAL PARA EDITAR PESQUISA EXISTENTE */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 w-full max-w-2xl p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-5 text-left my-8">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+          <div className="bg-slate-900 w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl border border-slate-800 shadow-2xl text-left overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-900">
               <div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Edit3 className="w-5 h-5 text-violet-400" />
@@ -956,7 +956,7 @@ export const AdminTCCResearchView: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleUpdateSurveySubmit} className="space-y-4">
+            <form onSubmit={handleUpdateSurveySubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
               <div>
                 <label className="text-xs font-bold text-slate-300 block mb-1">Título da Pesquisa *</label>
                 <input
@@ -1083,7 +1083,7 @@ export const AdminTCCResearchView: React.FC = () => {
                 ))}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800 sticky bottom-0 bg-slate-900/95 backdrop-blur-xs -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 p-4 sm:p-5 rounded-b-3xl">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}

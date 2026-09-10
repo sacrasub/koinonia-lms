@@ -26,6 +26,29 @@ export function getAllDisciplinas(): Disciplina[] {
       localStorage.setItem(DISCIPLINAS_STORAGE_KEY, JSON.stringify(mockDisciplinas));
       return mockDisciplinas;
     }
+    
+    // Auto-correção para disciplina 09 caso o cache do navegador contenha dados legados
+    const seedDisc9 = mockDisciplinas.find(d => d.id === 'disc-9');
+    let hasLegacyData = false;
+    const synced = parsed.map(item => {
+      if (item.id === 'disc-9' && seedDisc9 && (item.professor_name?.includes('Emerson') || item.name?.includes('Emerson'))) {
+        hasLegacyData = true;
+        return {
+          ...item,
+          name: seedDisc9.name,
+          professor_name: seedDisc9.professor_name,
+          google_drive_url: seedDisc9.google_drive_url,
+          code: seedDisc9.code,
+        };
+      }
+      return item;
+    });
+
+    if (hasLegacyData) {
+      localStorage.setItem(DISCIPLINAS_STORAGE_KEY, JSON.stringify(synced));
+      return synced;
+    }
+
     return parsed;
   } catch (e) {
     console.error('Erro ao carregar disciplinas do storage:', e);

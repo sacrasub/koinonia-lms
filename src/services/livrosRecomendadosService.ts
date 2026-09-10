@@ -365,7 +365,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Racismo Estrutural',
     book_author: 'Silvio Luiz de Almeida',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/16rdpImaEpz6DXn1C8kh0zkZ6URDg1eur/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-almeida',
     is_mandatory: true,
     category: '14 - Sociologia e Ciências Afins',
@@ -380,7 +380,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'O Racismo, a Cruz e o Cristão',
     book_author: 'John Piper',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1WNjboeBQAMNNtPXaNhbqJgqwoXREGibK/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-piper',
     is_mandatory: true,
     category: '06 - Teologia Prática e Pastoral',
@@ -395,7 +395,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Uma Leitura Negra: Teologia Bíblica e Esperança',
     book_author: 'Esau McCaulley',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1J1uA14oG1VhEi8yKA5_kRO6yBO66zwo4/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-mccaulley',
     is_mandatory: false,
     category: '02 - Exegese e Hermenêutica',
@@ -410,7 +410,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'A Religião Mais Negra do Brasil',
     book_author: 'Marco Davi de Oliveira',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1ZtmufFidRJ6jPD6fSlKMLk9Nyl-qYzgd/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-davi',
     is_mandatory: false,
     category: '08 - História da Igreja',
@@ -425,7 +425,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Ideias Para Adiar o Fim do Mundo',
     book_author: 'Ailton Krenak',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1fSt47y2ia1JKjx3F1NAJvuBPotVUVfPM/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-krenak',
     is_mandatory: false,
     category: '14 - Sociologia e Ciências Afins',
@@ -440,7 +440,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Conversando Sobre o Racismo',
     book_author: 'Coletânea Teológica e Pastoral',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/16BQg9NqMWBa_EkPzfx-TDdkp3FCx1gqj/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-conversando',
     is_mandatory: false,
     category: '14 - Sociologia e Ciências Afins',
@@ -455,7 +455,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Movimento Negro Educador: Saberes Construídos nas Lutas por Emancipação',
     book_author: 'Nilma Lino Gomes',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1tcN9qxToyDwmH926LTI6lqNgoNuEg_kO/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-nilma',
     is_mandatory: false,
     category: '14 - Sociologia e Ciências Afins',
@@ -470,7 +470,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'O Índio Brasileiro: O Que Você Precisa Saber Sobre os Povos Indígenas',
     book_author: 'FUNAI / Ministério da Justiça',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/14EJi7_sbCY3SrV-jw8DDg-Ua1IMoKAFg/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-indio',
     is_mandatory: false,
     category: '14 - Sociologia e Ciências Afins',
@@ -485,7 +485,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Resolução CNE/CP Nº 4/2016 — Obrigatoriedade e Diretrizes Étnico-Raciais',
     book_author: 'Conselho Nacional de Educação / MEC',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1fxdFMBZCGFhPFRTYp9jUnsC2oqdAXG86/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-mec',
     is_mandatory: false,
     category: '14 - Sociologia e Ciências Afins',
@@ -500,7 +500,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Plano de Curso Oficial (UIECB) — Ementa, Metodologia e Avaliação',
     book_author: 'Profº Alexsandro / UIECB',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1SRp2jrhskT_7UGdYNHHjFr-0MZieEAts/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-plano',
     is_mandatory: true,
     category: '01 - Bíblia e Referência',
@@ -515,7 +515,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
     book_title: 'Slides Oficiais das Aulas (UIECB) — Apresentação Completa (1,3 MB)',
     book_author: 'Profº Alexsandro',
-    book_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    book_url: 'https://drive.google.com/file/d/1YxNvCVH0uksr63Ct-dZJ3Xcd1Zyd523S/view?usp=drive_link',
     biblioteca_book_id: 'rec-book-cab-slides',
     is_mandatory: true,
     category: '01 - Bíblia e Referência',
@@ -575,10 +575,16 @@ export function getAllLivrosRecomendados(): LivroRecomendadoDisciplina[] {
         updatedList.push(...missingSeeds);
       }
 
-      if (hasChanges) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+      // Expurgar livro-cab-1 antigo (legado do professor anterior)
+      const finalList = updatedList.filter((item) => item.id !== 'livro-cab-1');
+      if (finalList.length !== updatedList.length) {
+        hasChanges = true;
       }
-      return updatedList;
+
+      if (hasChanges) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(finalList));
+      }
+      return finalList;
     }
     return INITIAL_LIVROS_RECOMENDADOS;
   } catch (e) {

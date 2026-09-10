@@ -65,7 +65,7 @@ export const INITIAL_SLIDES: SlideItem[] = [
     aula_num: 1,
     data_aula: '07/09/2026',
     title: 'SLIDES • História e Cultura Afro-Brasileira e Indígena (UIECB)',
-    slide_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+    slide_url: 'https://drive.google.com/file/d/1YxNvCVH0uksr63Ct-dZJ3Xcd1Zyd523S/view?usp=drive_link',
     notes: 'Apresentação visual completa em PDF (1,3 MB) elaborada pelo Profº Alexsandro para o módulo de 4 aulas (Áfricas, Diáspora, Povos Indígenas e Análise Confessional).',
     author_name: 'Profº Alexsandro',
     created_at: '2026-09-07T10:00:00Z',
@@ -82,12 +82,27 @@ export function getAllSlides(): SlideItem[] {
     }
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return INITIAL_SLIDES;
-    const existingIds = new Set(parsed.map((s: any) => s.id));
+
+    let hasChanges = false;
+    const seedMap = new Map(INITIAL_SLIDES.map((s) => [s.id, s]));
+    const updated = parsed.map((item: SlideItem) => {
+      const seed = seedMap.get(item.id);
+      if (seed && seed.slide_url !== item.slide_url) {
+        hasChanges = true;
+        return { ...item, slide_url: seed.slide_url };
+      }
+      return item;
+    });
+
+    const existingIds = new Set(updated.map((s: any) => s.id));
     const missing = INITIAL_SLIDES.filter((s) => !existingIds.has(s.id));
     if (missing.length > 0) {
-      const merged = [...parsed, ...missing];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-      return merged;
+      hasChanges = true;
+      updated.push(...missing);
+    }
+    if (hasChanges) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
     }
     return parsed;
   } catch (e) {

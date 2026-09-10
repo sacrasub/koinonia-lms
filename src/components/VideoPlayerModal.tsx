@@ -17,25 +17,37 @@ interface VideoPlayerModalProps {
   disciplinaName?: string;
   aulaNum?: number;
   videoUrl: string;
+  allAulas?: { aulaNum?: number; title: string; videoUrl: string }[];
 }
 
 export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
   isOpen,
   onClose,
-  title,
+  title: initialTitle,
   disciplinaName,
-  aulaNum,
-  videoUrl,
+  aulaNum: initialAulaNum,
+  videoUrl: initialVideoUrl,
+  allAulas,
 }) => {
+  const [activeUrl, setActiveUrl] = useState<string>(initialVideoUrl);
+  const [activeTitle, setActiveTitle] = useState<string>(initialTitle);
+  const [activeAulaNum, setActiveAulaNum] = useState<number | undefined>(initialAulaNum);
   const [iframeKey, setIframeKey] = useState<number>(0);
   const [hasIframeLoaded, setHasIframeLoaded] = useState<boolean>(false);
 
-  if (!isOpen || !videoUrl) return null;
+  React.useEffect(() => {
+    setActiveUrl(initialVideoUrl);
+    setActiveTitle(initialTitle);
+    setActiveAulaNum(initialAulaNum);
+    setIframeKey((prev) => prev + 1);
+  }, [initialVideoUrl, initialTitle, initialAulaNum]);
 
-  const sourceType = getVideoSourceType(videoUrl);
-  const isDirect = isDirectVideoUrl(videoUrl);
-  const embedUrl = getEmbedVideoUrl(videoUrl);
-  const directLink = getNativeAppOrDirectLink(videoUrl);
+  if (!isOpen || !activeUrl) return null;
+
+  const sourceType = getVideoSourceType(activeUrl);
+  const isDirect = isDirectVideoUrl(activeUrl);
+  const embedUrl = getEmbedVideoUrl(activeUrl);
+  const directLink = getNativeAppOrDirectLink(activeUrl);
   const isGoogleDrive = sourceType === 'drive';
   const isYouTube = sourceType === 'youtube';
 
@@ -58,9 +70,9 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
                   <span className="truncate max-w-[150px] sm:max-w-none">{disciplinaName}</span>
                 </span>
               )}
-              {aulaNum !== undefined && aulaNum > 0 && (
+              {activeAulaNum !== undefined && activeAulaNum > 0 && (
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black bg-amber-400/20 text-amber-300 border border-amber-400/30 shrink-0">
-                  Aula {aulaNum}
+                  Aula {activeAulaNum}
                 </span>
               )}
               <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shrink-0">
@@ -69,7 +81,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
             </div>
             
             <h3 className="text-white font-extrabold text-xs sm:text-sm md:text-base line-clamp-1 pt-0.5">
-              {title}
+              {activeTitle}
             </h3>
           </div>
 
@@ -102,11 +114,41 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
           </div>
         </div>
 
+        {/* Barra de seleção rápida de Aulas do Módulo */}
+        {allAulas && allAulas.length > 1 && (
+          <div className="flex items-center gap-2 px-3.5 sm:px-5 py-2 bg-slate-900/90 border-b border-slate-800 overflow-x-auto">
+            <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap">Aulas do Módulo:</span>
+            <div className="flex items-center gap-1.5">
+              {allAulas.map((aula) => (
+                <button
+                  key={aula.aulaNum}
+                  type="button"
+                  onClick={() => {
+                    setActiveUrl(aula.videoUrl);
+                    setActiveTitle(aula.title);
+                    setActiveAulaNum(aula.aulaNum);
+                    setHasIframeLoaded(false);
+                    setIframeKey((prev) => prev + 1);
+                  }}
+                  className={`px-3 py-1 rounded-xl text-xs font-black transition cursor-pointer flex items-center gap-1 whitespace-nowrap active:scale-95 ${
+                    activeAulaNum === aula.aulaNum
+                      ? 'bg-amber-400 text-slate-950 shadow-xs ring-1 ring-amber-300'
+                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white'
+                  }`}
+                >
+                  <Video className="w-3 h-3" />
+                  <span>Aula {aula.aulaNum}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Área Central de Reprodução do Vídeo Otimizada para Celular & Desktop */}
         <div className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden select-none">
           {isDirect ? (
             <video
-              src={videoUrl}
+              src={activeUrl}
               controls
               playsInline
               webkit-playsinline="true"
@@ -119,7 +161,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
             <iframe
               key={iframeKey}
               src={embedUrl}
-              title={title}
+              title={activeTitle}
               className="w-full h-full border-0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
               allowFullScreen

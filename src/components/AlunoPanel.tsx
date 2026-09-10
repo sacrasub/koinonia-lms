@@ -116,6 +116,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     videoUrl: string;
     disciplinaName: string;
     aulaNum?: number;
+    allAulas?: { aulaNum?: number; title: string; videoUrl: string }[];
   }>({
     isOpen: false,
     title: '',
@@ -1953,13 +1954,36 @@ href={nextAulaToday.google_meet_url}
 
                         {/* 2. Gravação de Aula se disponível */}
                         {(() => {
-                          const matchingGravacao = gravacoes.find(
+                          const cleanTarget = (aula.disciplina_name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                          const isDisc9 = aula.disciplina_id === 'disc-9' || cleanTarget.includes('afro') || cleanTarget.includes('culturaafro');
+
+                          // Gravações da disciplina
+                          const discGravacoes = gravacoes.filter(
                             (g) =>
-                              g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim() &&
-                              g.data_aula === dateForDay
-                          ) || gravacoes.find(
-                            (g) => g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim()
+                              (g.disciplina_id && aula.disciplina_id && g.disciplina_id === aula.disciplina_id) ||
+                              g.disciplina_name.toLowerCase().trim() === aula.disciplina_name.toLowerCase().trim() ||
+                              (cleanTarget && g.disciplina_name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTarget)) ||
+                              (isDisc9 && (g.disciplina_id === 'disc-9' || g.disciplina_name.toLowerCase().includes('afro')))
                           );
+
+                          // Busca por data exata
+                          let matchingGravacao = discGravacoes.find((g) => g.data_aula === dateForDay);
+
+                          // Lógica especial modular para História Afro (4 aulas distribuídas nas sextas do semestre)
+                          if (!matchingGravacao && isDisc9 && discGravacoes.length > 0) {
+                            if (dateForDay === '14/08/2026') matchingGravacao = discGravacoes.find((g) => g.aula_num === 1);
+                            else if (dateForDay === '21/08/2026') matchingGravacao = discGravacoes.find((g) => g.aula_num === 2);
+                            else if (dateForDay === '28/08/2026') matchingGravacao = discGravacoes.find((g) => g.aula_num === 3);
+                            else if (dateForDay === '04/09/2026') matchingGravacao = discGravacoes.find((g) => g.aula_num === 4);
+                            else {
+                              // Semana 5 (11/09/2026) em diante: módulo completo disponível (mostra Aula 4 com avaliação)
+                              matchingGravacao = discGravacoes.find((g) => g.aula_num === 4) || discGravacoes[discGravacoes.length - 1];
+                            }
+                          }
+
+                          if (!matchingGravacao && discGravacoes.length > 0) {
+                            matchingGravacao = discGravacoes[0];
+                          }
 
                           if (!matchingGravacao) {
                             return (
@@ -1975,6 +1999,10 @@ href={nextAulaToday.google_meet_url}
                             );
                           }
 
+                          const buttonLabel = matchingGravacao.aula_num
+                            ? `Aula ${matchingGravacao.aula_num} (HD)`
+                            : 'Aula Gravada (HD)';
+
                           return (
                             <button
                               type="button"
@@ -1985,13 +2013,20 @@ href={nextAulaToday.google_meet_url}
                                   videoUrl: matchingGravacao.video_url,
                                   disciplinaName: aula.disciplina_name,
                                   aulaNum: matchingGravacao.aula_num,
+                                  allAulas: discGravacoes.length > 1
+                                    ? discGravacoes.map((g) => ({
+                                        aulaNum: g.aula_num,
+                                        title: g.title,
+                                        videoUrl: g.video_url,
+                                      }))
+                                    : undefined,
                                 });
                               }}
                               className="py-2 px-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1 shadow-2xs transition active:scale-95 cursor-pointer"
                               title={`Assistir ${matchingGravacao.title} no Player Seguro do LMS`}
                             >
                               <Video className="w-3.5 h-3.5" />
-                              <span>Aula Gravada (HD)</span>
+                              <span>{buttonLabel}</span>
                             </button>
                           );
                         })()}
@@ -2298,6 +2333,7 @@ href={nextAulaToday.google_meet_url}
         disciplinaName={activeVideoModal.disciplinaName}
         aulaNum={activeVideoModal.aulaNum}
         videoUrl={activeVideoModal.videoUrl}
+        allAulas={activeVideoModal.allAulas}
       />
 
       {/* MODAL DE CADASTRO, EDIÇÃO DE PERFIL E CONFIGURAÇÃO ACADÊMICA OFICIAL DO ALUNO */}
