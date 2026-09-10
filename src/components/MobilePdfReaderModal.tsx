@@ -5,7 +5,9 @@ import {
   X, ZoomIn, ZoomOut, RotateCcw, Moon, Sun, Download, 
   ExternalLink, Maximize2, Minimize2, FileText, Sparkles,
   Headphones, Play, Pause, Square, Volume2, FastForward,
-  Settings2, Copy, Check, BookOpen, AlertCircle, RefreshCw
+  Settings2, Copy, Check, BookOpen, AlertCircle, RefreshCw,
+  ChevronLeft, ChevronRight, RotateCw, PlusCircle, Bookmark,
+  Type, AlignLeft, VolumeX
 } from 'lucide-react';
 
 interface MobilePdfReaderModalProps {
@@ -27,26 +29,110 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   author,
   description,
 }) => {
+  // Modos de Exibição: 'pdf' (Visualizador original) ou 'ebook' (Leitura contínua & Áudio)
+  const [readerMode, setReaderMode] = useState<'pdf' | 'ebook'>('ebook');
+
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isNightMode, setIsNightMode] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [fontSize, setFontSize] = useState<number>(16); // px
 
   // Estados do Audioleitor (TTS - Text-to-Speech)
-  const [isAudioPanelOpen, setIsAudioPanelOpen] = useState<boolean>(false);
+  const [isAudioPanelOpen, setIsAudioPanelOpen] = useState<boolean>(true);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [playbackRate, setPlaybackRate] = useState<number>(1.0);
   const [pitch, setPitch] = useState<number>(1.0);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
-  const [audioTab, setAudioTab] = useState<'synopsis' | 'custom'>('synopsis');
-  const [customText, setCustomText] = useState<string>('');
-  const [copiedNotification, setCopiedNotification] = useState<boolean>(false);
-  const [pasteError, setPasteError] = useState<string | null>(null);
   const [ttsSupported, setTtsSupported] = useState<boolean>(true);
 
+  // Estados de Leitura Contínua & Páginas
+  const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
+  const [autoAdvancePages, setAutoAdvancePages] = useState<boolean>(true);
+  const [pages, setPages] = useState<string[]>([]);
+  const [isAddPagesModalOpen, setIsAddPagesModalOpen] = useState<boolean>(false);
+  const [importTextContent, setImportTextContent] = useState<string>('');
+
+  // Seleção Direta de Trecho na Tela ("Ouvir a partir daqui")
+  const [selectionPopup, setSelectionPopup] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    text: string;
+  } | null>(null);
+
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const customTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
+  // Chave de persistência local para páginas deste livro
+  const storageKey = `lms_book_pages_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
+  const progressKey = `lms_book_progress_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
+
+  // Inicializa o conteúdo das páginas a partir do cache local ou metadados
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let loadedPages: string[] = [];
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            loadedPages = parsed;
+          }
+        }
+      } catch {
+        // Fallback silencioso
+      }
+    }
+
+    // Se não tiver páginas salvas, monta a página 1 com os metadados acadêmicos da obra
+    if (loadedPages.length === 0) {
+      const defaultIntroPage = [
+        `Capítulo Introdutório e Fundamentação Acadêmica: ${title}`,
+        author ? `Autor(a): ${author}` : '',
+        disciplinaName ? `Contexto da Matéria: ${disciplinaName}` : '',
+        description ? `Descrição da Obra:\n${description}` : 'Obra de referência do acervo teológico.',
+        '\n[Dica do Leitor]: Você pode avançar páginas, ouvir com virada automática ou selecionar qualquer parágrafo do livro para começar a escutar exatamente dali em diante!'
+      ].filter(Boolean).join('\n\n');
+
+      loadedPages = [defaultIntroPage];
+    }
+
+    setPages(loadedPages);
+
+    // Carrega o progresso de página anterior
+    if (typeof window !== 'undefined') {
+      try {
+        const savedPage = localStorage.getItem(progressKey);
+        if (savedPage) {
+          const pageNum = parseInt(savedPage, 10);
+          if (!isNaN(pageNum) && pageNum >= 0 && pageNum < loadedPages.length) {
+            setCurrentPageIndex(pageNum);
+          }
+        }
+      } catch {
+        // Ignora
+      }
+    }
+  }, [isOpen, storageKey, progressKey, title, author, disciplinaName, description]);
+
+  // Salva o progresso da página atual
+  const handleSetPage = (index: number) => {
+    const validIndex = Math.max(0, Math.min(index, pages.length - 1));
+    setCurrentPageIndex(validIndex);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(progressKey, String(validIndex));
+      } catch {}
+    }
+    // Se estava tocando, para o áudio para tocar a nova página
+    if (isPlaying) {
+      stopAudio();
+    }
+  };
 
   // Carrega as vozes disponíveis no navegador
   useEffect(() => {
@@ -58,11 +144,9 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     const updateVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
       if (allVoices.length > 0) {
-        // Prioriza vozes em português (pt-BR ou pt-PT)
         const ptVoices = allVoices.filter(v => v.lang.toLowerCase().startsWith('pt'));
         setVoices(ptVoices.length > 0 ? ptVoices : allVoices);
 
-        // Se ainda não escolheu uma voz, prioriza uma de pt-BR natural
         if (!selectedVoiceURI) {
           const defaultPt = ptVoices.find(v => v.lang === 'pt-BR') || ptVoices[0] || allVoices[0];
           if (defaultPt) setSelectedVoiceURI(defaultPt.voiceURI);
@@ -84,34 +168,22 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
       setIsFullscreen(false);
     } else {
       stopAudio();
-      setIsAudioPanelOpen(false);
     }
     return () => {
       stopAudio();
     };
   }, [isOpen]);
 
-  // Texto montado para leitura da sinopse e apresentação acadêmica
-  const getSynopsisText = (): string => {
-    const parts = [
-      `Título da obra: ${title}.`,
-      author ? `Autor: ${author}.` : '',
-      disciplinaName ? `Contexto acadêmico: ${disciplinaName}.` : '',
-      description ? `Descrição e fundamentação teórica: ${description}` : 'Nenhuma descrição complementar cadastrada para esta obra no acervo.'
-    ];
-    return parts.filter(Boolean).join(' ');
-  };
-
-  // Executa a reprodução com a Web Speech API
-  const playAudio = (textToRead?: string) => {
+  // Executa a síntese de voz (TTS)
+  const playAudio = (textOverride?: string, nextPageIndexOnEnd?: number) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
 
-    const targetText = (textToRead || (audioTab === 'synopsis' ? getSynopsisText() : customText)).trim();
-    if (!targetText) return;
+    const textToRead = (textOverride || pages[currentPageIndex] || '').trim();
+    if (!textToRead) return;
 
-    const utterance = new SpeechSynthesisUtterance(targetText);
+    const utterance = new SpeechSynthesisUtterance(textToRead);
     utteranceRef.current = utterance;
 
     utterance.rate = playbackRate;
@@ -128,9 +200,22 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
       setIsPaused(false);
     };
 
+    // QUANDO A PÁGINA ACABA: Leitura Contínua Automática!
     utterance.onend = () => {
       setIsPlaying(false);
       setIsPaused(false);
+
+      // Se a leitura contínua estiver ativada e houver próxima página:
+      if (autoAdvancePages) {
+        const nextIdx = nextPageIndexOnEnd !== undefined ? nextPageIndexOnEnd : currentPageIndex + 1;
+        if (nextIdx < pages.length) {
+          handleSetPage(nextIdx);
+          // Inicia a próxima página com um breve respiro natural
+          setTimeout(() => {
+            playAudio(pages[nextIdx], nextIdx + 1);
+          }, 600);
+        }
+      }
     };
 
     utterance.onerror = () => {
@@ -162,6 +247,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     window.speechSynthesis.cancel();
     setIsPlaying(false);
     setIsPaused(false);
+    setSelectionPopup(null);
   };
 
   // Altera a velocidade dinamicamente durante a leitura
@@ -172,26 +258,89 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     }
   };
 
-  // Colar texto da área de transferência com fallback inteligente
-  const handlePasteClipboard = async () => {
-    setPasteError(null);
-    try {
-      if (navigator.clipboard && navigator.clipboard.readText) {
-        const text = await navigator.clipboard.readText();
-        if (text && text.trim()) {
-          setCustomText(text.trim());
-          setAudioTab('custom');
-          setCopiedNotification(true);
-          setTimeout(() => setCopiedNotification(false), 2500);
-          return;
-        }
-      }
-      setPasteError('Nenhum texto detectado na memória. Copie o trecho do PDF e use Ctrl + V na caixa abaixo.');
-      customTextareaRef.current?.focus();
-    } catch {
-      setPasteError('O navegador exigiu permissão para colar automaticamente. Clique na caixa abaixo e pressione Ctrl + V (ou segure o dedo e toque em Colar).');
-      customTextareaRef.current?.focus();
+  // Avançar / Retroceder Página
+  const handlePrevPage = () => {
+    if (currentPageIndex > 0) {
+      handleSetPage(currentPageIndex - 1);
     }
+  };
+
+  const handleNextPage = () => {
+    if (currentPageIndex < pages.length - 1) {
+      handleSetPage(currentPageIndex + 1);
+    }
+  };
+
+  // Detecta seleção direta de texto do aluno ("Ouvir a partir daqui")
+  const handleTextSelection = () => {
+    if (typeof window === 'undefined') return;
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+      setSelectionPopup(null);
+      return;
+    }
+
+    const selectedText = selection.toString().trim();
+    if (selectedText.length >= 3) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      
+      setSelectionPopup({
+        visible: true,
+        x: Math.min(Math.max(rect.left + rect.width / 2, 80), window.innerWidth - 80),
+        y: Math.max(rect.top - 48, 70),
+        text: selectedText,
+      });
+    } else {
+      setSelectionPopup(null);
+    }
+  };
+
+  // Inicia o áudio exatamente a partir do trecho selecionado
+  const handlePlayFromSelection = () => {
+    if (!selectionPopup) return;
+    const pageText = pages[currentPageIndex] || '';
+    const startIndex = pageText.indexOf(selectionPopup.text);
+
+    let textToSpeak = selectionPopup.text;
+    if (startIndex !== -1) {
+      // Fala a partir do ponto selecionado até o final da página
+      textToSpeak = pageText.slice(startIndex);
+    }
+
+    playAudio(textToSpeak);
+    setSelectionPopup(null);
+
+    // Limpa a seleção visual
+    if (typeof window !== 'undefined' && window.getSelection) {
+      window.getSelection()?.removeAllRanges();
+    }
+  };
+
+  // Salva páginas importadas manualmente (divididas por quebras de linha ou '---')
+  const handleSaveImportedPages = () => {
+    if (!importTextContent.trim()) return;
+
+    // Divide por marcadores de página ou parágrafos longos
+    let splitPages = importTextContent
+      .split(/\n\s*---\s*\n|\f|\[P[aá]gina\s*\d+\]/gi)
+      .map(p => p.trim())
+      .filter(p => p.length > 10);
+
+    if (splitPages.length === 0) {
+      splitPages = [importTextContent.trim()];
+    }
+
+    setPages(splitPages);
+    setCurrentPageIndex(0);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(splitPages));
+        localStorage.setItem(progressKey, '0');
+      } catch {}
+    }
+    setIsAddPagesModalOpen(false);
+    setImportTextContent('');
   };
 
   if (!isOpen || !pdfUrl) return null;
@@ -216,19 +365,21 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     setIsFullscreen(!isFullscreen);
   };
 
+  const currentPageText = pages[currentPageIndex] || '';
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-0 sm:p-3 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-0 sm:p-2 animate-in fade-in duration-200">
       <div 
         className={`w-full flex flex-col bg-slate-900 border border-slate-700 shadow-2xl transition-all duration-200 ${
           isFullscreen 
             ? 'h-full rounded-none' 
-            : 'h-full sm:h-[94vh] sm:max-w-5xl sm:rounded-2xl overflow-hidden'
+            : 'h-full sm:h-[95vh] sm:max-w-5xl sm:rounded-2xl overflow-hidden'
         }`}
       >
-        {/* Cabeçalho do Leitor com Controles Rápidos */}
+        {/* BARRA SUPERIOR DO LEITOR COM SELETOR DE MODO & CONTROLES */}
         <div className="px-3 sm:px-5 py-2.5 bg-slate-950/95 border-b border-slate-800 flex items-center justify-between shrink-0 gap-2">
           
-          {/* Título e Identificação */}
+          {/* Título da Obra */}
           <div className="flex items-center gap-2.5 truncate flex-1 min-w-0">
             <div className="p-1.5 rounded-lg bg-blue-900/60 text-blue-400 shrink-0">
               <FileText className="w-4 h-4" />
@@ -241,102 +392,98 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                     • {author}
                   </span>
                 )}
-                {disciplinaName && (
-                  <span className="hidden md:inline text-[10px] font-black uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300">
-                    {disciplinaName}
-                  </span>
-                )}
               </div>
-              <p className="text-[10px] text-slate-400 truncate">Leitor Integrado • Modo Noturno & Áudio Text-to-Speech</p>
+              <p className="text-[10px] text-slate-400 truncate">
+                {readerMode === 'ebook' 
+                  ? `Modo Leitura Contínua • Página ${currentPageIndex + 1} de ${pages.length}`
+                  : 'Modo Visual (Google Drive Preview)'}
+              </p>
             </div>
           </div>
 
-          {/* Barra de Ferramentas: Audioleitor + Zoom + Modo Noturno + Download + Fechar */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-            
-            {/* Botão de Destaque: Audioleitor (Ouvir) */}
+          {/* ALTERNADOR DE MODO: PDF VISUAL vs. LEITURA CONTÍNUA & ÁUDIO */}
+          <div className="flex items-center bg-slate-900 p-0.5 rounded-xl border border-slate-800 shrink-0">
+            <button
+              onClick={() => setReaderMode('ebook')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                readerMode === 'ebook'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="Modo Leitura Contínua com narração ininterrupta e seleção direta"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Leitura Contínua</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/20 font-mono">
+                {currentPageIndex + 1}/{pages.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setReaderMode('pdf')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                readerMode === 'pdf'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+              title="Modo Visual com o PDF original do Google Drive"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">PDF Original</span>
+            </button>
+          </div>
+
+          {/* BOTÕES DE CONFIGURAÇÃO & FECHAR */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Botão de Painel de Áudio */}
             {ttsSupported && (
               <button
                 onClick={() => setIsAudioPanelOpen(!isAudioPanelOpen)}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer ${
+                className={`p-1.5 sm:px-2 sm:py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
                   isPlaying
-                    ? 'bg-emerald-500 text-slate-950 animate-pulse ring-2 ring-emerald-400/50'
+                    ? 'bg-emerald-500 text-slate-950 animate-pulse'
                     : isAudioPanelOpen
                     ? 'bg-amber-500 text-slate-950'
-                    : 'bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-300 border border-emerald-500/30'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                 }`}
-                title={isAudioPanelOpen ? 'Ocultar Painel de Áudio' : 'Ouvir Livro com Controle de Voz'}
+                title="Controles de Áudio e Velocidade"
               >
                 <Headphones className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">
-                  {isPlaying ? `Ouvindo (${playbackRate}x)` : 'Ouvir Livro'}
-                </span>
+                <span className="hidden md:inline">{playbackRate}x</span>
               </button>
             )}
 
-            {/* Separador */}
-            <div className="hidden sm:block h-4 w-px bg-slate-800 mx-0.5" />
-
-            {/* Zoom Out */}
-            <button
-              onClick={handleZoomOut}
-              className="p-1.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1 cursor-pointer"
-              title="Diminuir Zoom"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Zoom Percentual / Reset */}
-            <button
-              onClick={handleZoomReset}
-              className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-[11px] font-bold transition hidden sm:inline cursor-pointer"
-              title="Restaurar Zoom (100%)"
-            >
-              {zoomLevel}%
-            </button>
-
-            {/* Zoom In */}
-            <button
-              onClick={handleZoomIn}
-              className="p-1.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1 cursor-pointer"
-              title="Aumentar Zoom"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-
-            {/* Modo Leitura Noturna */}
+            {/* Modo Noturno */}
             <button
               onClick={() => setIsNightMode(!isNightMode)}
-              className={`p-1.5 sm:p-2 rounded-lg transition text-xs flex items-center gap-1 cursor-pointer ${
+              className={`p-1.5 rounded-lg transition text-xs cursor-pointer ${
                 isNightMode 
                   ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40' 
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
-              title={isNightMode ? 'Desativar Leitura Noturna' : 'Ativar Leitura Noturna (Conforto Visual)'}
+              title="Alternar Modo Noturno"
             >
-              {isNightMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5" />}
-              <span className="hidden xl:inline text-[10px] font-bold">Noturno</span>
+              {isNightMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
             </button>
 
             {/* Tela Cheia */}
             <button
               onClick={toggleFullscreen}
-              className="p-1.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition hidden sm:flex items-center cursor-pointer"
-              title={isFullscreen ? 'Sair da Tela Cheia' : 'Tela Cheia'}
+              className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition hidden sm:flex cursor-pointer"
+              title="Tela Cheia"
             >
               {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
             </button>
 
-            {/* Baixar / Abrir Externo */}
+            {/* Baixar */}
             <a
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center gap-1 shadow-sm shrink-0"
-              title="Abrir no Google Drive ou Baixar Arquivo"
+              className="p-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition hidden md:flex items-center gap-1 shadow-sm"
+              title="Baixar Arquivo Original"
             >
               <Download className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Baixar</span>
             </a>
 
             {/* Fechar */}
@@ -345,7 +492,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                 stopAudio();
                 onClose();
               }}
-              className="p-1.5 sm:p-2 rounded-lg bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white transition ml-1 cursor-pointer"
+              className="p-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white transition ml-1 cursor-pointer"
               title="Fechar Leitor"
             >
               <X className="w-4 h-4" />
@@ -353,286 +500,309 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
           </div>
         </div>
 
-        {/* PAINEL RETRÁTIL DO AUDIOLEITOR COM CONTROLES DE VELOCIDADE E VOZ */}
+        {/* PAINEL FLUTUANTE DE ÁUDIO & VELOCIDADE (EXPANSÍVEL) */}
         {isAudioPanelOpen && (
-          <div className="bg-slate-950 border-b border-slate-800 p-3 sm:p-4 text-slate-200 transition-all duration-200 shadow-inner shrink-0">
-            <div className="max-w-4xl mx-auto space-y-3">
+          <div className="bg-slate-950 border-b border-slate-800 p-2.5 sm:p-3 text-slate-200 shadow-md shrink-0">
+            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
               
-              {/* Barra de Status e Controles Principais de Áudio */}
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    <Headphones className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-                      Audioleitor Koinonia LMS
-                      {isPlaying && (
-                        <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-normal">
-                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-                          Narrando em voz alta
-                        </span>
-                      )}
-                    </h4>
-                    <p className="text-[10px] sm:text-xs text-slate-400">
-                      Síntese de voz nativa • Zero consumo de dados • Controle de velocidade dinâmico
-                    </p>
-                  </div>
-                </div>
-
-                {/* Botões de Reprodução (Play, Pause, Stop) */}
-                <div className="flex items-center gap-1.5">
-                  {!isPlaying && !isPaused ? (
-                    <button
-                      onClick={() => playAudio()}
-                      className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md transition active:scale-95 cursor-pointer"
-                    >
-                      <Play className="w-3.5 h-3.5 fill-current" /> Ouvir Agora
-                    </button>
-                  ) : isPaused ? (
-                    <button
-                      onClick={resumeAudio}
-                      className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md transition active:scale-95 cursor-pointer"
-                    >
-                      <Play className="w-3.5 h-3.5 fill-current" /> Retomar
-                    </button>
-                  ) : (
-                    <button
-                      onClick={pauseAudio}
-                      className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md transition active:scale-95 cursor-pointer"
-                    >
-                      <Pause className="w-3.5 h-3.5 fill-current" /> Pausar
-                    </button>
-                  )}
-
-                  {(isPlaying || isPaused) && (
-                    <button
-                      onClick={stopAudio}
-                      className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 text-xs font-bold transition flex items-center gap-1 cursor-pointer"
-                      title="Parar Reprodução"
-                    >
-                      <Square className="w-3.5 h-3.5 fill-current" />
-                      <span className="hidden sm:inline">Parar</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Controles de Configuração: Velocidade + Vozes + Pitch */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 pt-1 border-t border-slate-800/80">
-                
-                {/* 1. Controle de Velocidade da Leitura */}
-                <div className="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
-                      <FastForward className="w-3 h-3 text-amber-400" /> Velocidade: {playbackRate}x
-                    </span>
-                    <span className="text-[10px] text-slate-500">Normal: 1.0x</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {[0.5, 0.75, 1.0, 1.25, 1.5, 2.0].map((rate) => (
-                      <button
-                        key={rate}
-                        onClick={() => handleRateChange(rate)}
-                        className={`flex-1 py-1 rounded-lg text-[11px] font-mono font-bold transition cursor-pointer ${
-                          playbackRate === rate
-                            ? 'bg-amber-500 text-slate-950 shadow-sm'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
-                        }`}
-                      >
-                        {rate}x
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 2. Seleção de Vozes em Português */}
-                <div className="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
-                      <Volume2 className="w-3 h-3 text-blue-400" /> Voz do Dispositivo
-                    </span>
-                    <span className="text-[10px] text-slate-500">{voices.length} vozes</span>
-                  </div>
-                  <select
-                    value={selectedVoiceURI}
-                    onChange={(e) => setSelectedVoiceURI(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-200 focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                  >
-                    {voices.map((v) => (
-                      <option key={v.voiceURI} value={v.voiceURI}>
-                        {v.name} ({v.lang})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 3. Ajuste de Tom (Pitch) */}
-                <div className="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800 sm:col-span-2 md:col-span-1">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1">
-                      <Settings2 className="w-3 h-3 text-emerald-400" /> Tom da Voz (Pitch): {pitch}
-                    </span>
-                    <button 
-                      onClick={() => setPitch(1.0)} 
-                      className="text-[10px] text-slate-400 hover:text-white cursor-pointer"
-                    >
-                      Restaurar
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-slate-500">Grave</span>
-                    <input
-                      type="range"
-                      min="0.6"
-                      max="1.4"
-                      step="0.1"
-                      value={pitch}
-                      onChange={(e) => setPitch(parseFloat(e.target.value))}
-                      className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-700 rounded-lg"
-                    />
-                    <span className="text-[10px] text-slate-500">Agudo</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Seletor de Conteúdo: Sinopse vs. Trecho Copiado */}
-              <div className="pt-1">
-                <div className="flex items-center gap-2 mb-2">
+              {/* Controles de Reprodução Primários */}
+              <div className="flex items-center gap-2">
+                {!isPlaying && !isPaused ? (
                   <button
-                    onClick={() => setAudioTab('synopsis')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                      audioTab === 'synopsis'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
-                    }`}
+                    onClick={() => playAudio()}
+                    className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
                   >
-                    <BookOpen className="w-3 h-3" /> Sinopse & Apresentação
+                    <Play className="w-3.5 h-3.5 fill-current" /> Ouvir Página Atual
                   </button>
-
+                ) : isPaused ? (
                   <button
-                    onClick={() => setAudioTab('custom')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-                      audioTab === 'custom'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
-                    }`}
+                    onClick={resumeAudio}
+                    className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
                   >
-                    <FileText className="w-3 h-3" /> Ouvir Trechos da Página
+                    <Play className="w-3.5 h-3.5 fill-current" /> Retomar
                   </button>
-                </div>
-
-                {audioTab === 'synopsis' ? (
-                  <div className="bg-slate-900/60 rounded-xl p-2.5 border border-slate-800/80 text-xs text-slate-300 space-y-1">
-                    <p className="font-semibold text-white">Texto da Apresentação que será narrado:</p>
-                    <p className="text-[11px] text-slate-400 italic line-clamp-3">
-                      "{getSynopsisText()}"
-                    </p>
-                  </div>
                 ) : (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] text-slate-300 font-medium">
-                        Copie qualquer parágrafo do PDF abaixo e cole aqui para ouvir:
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={handlePasteClipboard}
-                          className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-bold flex items-center gap-1.5 transition cursor-pointer border border-slate-700"
-                          title="Tentar colar da área de transferência"
-                        >
-                          <Copy className="w-3 h-3 text-amber-400" /> Colar Trecho
-                        </button>
-                        {customText && (
-                          <button
-                            onClick={() => {
-                              setCustomText('');
-                              setPasteError(null);
-                            }}
-                            className="text-[11px] text-rose-400 hover:text-rose-300 cursor-pointer font-semibold"
-                          >
-                            Limpar
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  <button
+                    onClick={pauseAudio}
+                    className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                  >
+                    <Pause className="w-3.5 h-3.5 fill-current" /> Pausar
+                  </button>
+                )}
 
-                    <div className="relative">
-                      <textarea
-                        ref={customTextareaRef}
-                        value={customText}
-                        onChange={(e) => {
-                          setCustomText(e.target.value);
-                          if (pasteError) setPasteError(null);
-                        }}
-                        placeholder="Clique aqui e pressione Ctrl + V para colar o trecho copiado do livro..."
-                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none h-20 shadow-inner"
-                      />
-                    </div>
-
-                    {pasteError && (
-                      <div className="p-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
-                        <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-bold text-white">Dica para colar:</p>
-                          <p>{pasteError}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {copiedNotification && (
-                      <p className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
-                        <Check className="w-3.5 h-3.5" /> Trecho colado com sucesso!
-                      </p>
-                    )}
-
-                    {customText && (
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] text-slate-400">
-                          {customText.length} caracteres prontos para leitura
-                        </span>
-                        <button
-                          onClick={() => playAudio(customText)}
-                          className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition active:scale-95 cursor-pointer"
-                        >
-                          <Play className="w-3.5 h-3.5 fill-current" /> Narrar Este Trecho Agora
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                {(isPlaying || isPaused) && (
+                  <button
+                    onClick={stopAudio}
+                    className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                    title="Parar Narração"
+                  >
+                    <Square className="w-3 h-3 fill-current" /> Parar
+                  </button>
                 )}
               </div>
 
+              {/* Seletor de Velocidades Rápidas */}
+              <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <span className="text-[10px] font-bold text-slate-400 px-1 flex items-center gap-0.5">
+                  <FastForward className="w-3 h-3 text-amber-400" /> Vel:
+                </span>
+                {[0.5, 0.75, 1.0, 1.25, 1.5, 2.0].map((rate) => (
+                  <button
+                    key={rate}
+                    onClick={() => handleRateChange(rate)}
+                    className={`px-1.5 py-0.5 rounded text-[11px] font-mono font-bold transition cursor-pointer ${
+                      playbackRate === rate
+                        ? 'bg-amber-500 text-slate-950 font-black'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {rate}x
+                  </button>
+                ))}
+              </div>
+
+              {/* Seletor de Vozes em Português */}
+              <div className="hidden lg:flex items-center gap-1 text-xs">
+                <span className="text-[10px] text-slate-400">Voz:</span>
+                <select
+                  value={selectedVoiceURI}
+                  onChange={(e) => setSelectedVoiceURI(e.target.value)}
+                  className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-200 max-w-[200px] truncate cursor-pointer"
+                >
+                  {voices.map((v) => (
+                    <option key={v.voiceURI} value={v.voiceURI}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Toggle de Virar Página Automaticamente */}
+              <button
+                onClick={() => setAutoAdvancePages(!autoAdvancePages)}
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border ${
+                  autoAdvancePages
+                    ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40'
+                    : 'bg-slate-900 text-slate-400 border-slate-800'
+                }`}
+                title="Avança para a próxima página e continua narrando automaticamente"
+              >
+                <RotateCw className={`w-3 h-3 ${autoAdvancePages ? 'text-emerald-400 animate-spin' : ''}`} style={{ animationDuration: '6s' }} />
+                <span>Leitura Contínua {autoAdvancePages ? 'ON' : 'OFF'}</span>
+              </button>
             </div>
           </div>
         )}
 
-        {/* Área do Documento com Zoom e Filtro Noturno */}
-        <div className="flex-1 w-full bg-slate-950 relative overflow-hidden flex items-center justify-center">
-          <div 
-            className="w-full h-full transition-transform duration-150 origin-top flex items-center justify-center"
-            style={{
-              transform: `scale(${zoomLevel / 100})`,
-              filter: isNightMode ? 'invert(90%) hue-rotate(180deg)' : 'none',
-            }}
-          >
-            <iframe
-              src={embedUrl}
-              className="w-full h-full border-0 bg-white"
-              title={title}
-              allow="autoplay"
-            />
-          </div>
-        </div>
+        {/* ÁREA PRINCIPAL DO LEITOR */}
+        {readerMode === 'ebook' ? (
+          /* MODO E-BOOK & LEITURA CONTÍNUA COM PÁGINAS E SELEÇÃO DE TEXTO */
+          <div className="flex-1 flex flex-col min-h-0 bg-slate-900 relative">
+            
+            {/* Barra de Navegação de Páginas e Tipografia */}
+            <div className="px-4 py-2 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between gap-2 shrink-0">
+              
+              {/* Controles de Página: Anterior, Indicador e Próxima */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={currentPageIndex === 0}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                  title="Página Anterior"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Anterior</span>
+                </button>
 
-        {/* Barra de Rodapé Mobile com Dica */}
-        <div className="px-4 py-1.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400 shrink-0">
-          <span className="flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            <span>Dica: clique em <strong>Ouvir Livro</strong> para escutar com velocidade ajustável (0.5x a 2.0x)</span>
-          </span>
-          <span className="font-mono text-slate-500 hidden sm:inline">Koinonia LMS Reader • TTS Integrado</span>
-        </div>
+                <div className="px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-slate-200">
+                  Folha <span className="text-emerald-400">{currentPageIndex + 1}</span> de {pages.length}
+                </div>
+
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPageIndex >= pages.length - 1}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                  title="Próxima Página"
+                >
+                  <span className="hidden sm:inline">Próxima</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Botões de Ação: Ajuste de Fonte + Importar Páginas */}
+              <div className="flex items-center gap-1.5">
+                {/* Tamanho da Fonte */}
+                <div className="hidden sm:flex items-center gap-1 bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-800 text-xs">
+                  <button
+                    onClick={() => setFontSize((s) => Math.max(s - 2, 12))}
+                    className="text-slate-400 hover:text-white px-1 font-bold"
+                    title="Diminuir Fonte"
+                  >
+                    A-
+                  </button>
+                  <span className="text-[10px] text-slate-500 font-mono">{fontSize}px</span>
+                  <button
+                    onClick={() => setFontSize((s) => Math.min(s + 2, 28))}
+                    className="text-slate-400 hover:text-white px-1 font-bold"
+                    title="Aumentar Fonte"
+                  >
+                    A+
+                  </button>
+                </div>
+
+                {/* Importar / Adicionar Páginas do Livro */}
+                <button
+                  onClick={() => setIsAddPagesModalOpen(true)}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 border border-slate-700 cursor-pointer"
+                  title="Colar texto de capítulos ou páginas adicionais deste livro"
+                >
+                  <PlusCircle className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="hidden md:inline">Colar Páginas</span>
+                </button>
+              </div>
+            </div>
+
+            {/* CORPO DO TEXTO DA PÁGINA COM SELEÇÃO DIRETA */}
+            <div 
+              ref={textContainerRef}
+              onMouseUp={handleTextSelection}
+              onTouchEnd={handleTextSelection}
+              className={`flex-1 overflow-y-auto p-5 sm:p-8 lg:p-12 transition-colors select-text ${
+                isNightMode ? 'bg-slate-950 text-slate-200' : 'bg-slate-900 text-slate-100'
+              }`}
+              style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
+            >
+              <div className="max-w-3xl mx-auto space-y-5 font-serif">
+                {currentPageText.split('\n\n').map((paragraph, pIdx) => {
+                  if (!paragraph.trim()) return null;
+                  return (
+                    <div 
+                      key={pIdx}
+                      className="group relative rounded-xl p-2 transition hover:bg-slate-800/40"
+                    >
+                      <p className="whitespace-pre-wrap leading-relaxed">
+                        {paragraph}
+                      </p>
+                      {/* Botão de Play Rápido ao lado do Parágrafo */}
+                      <button
+                        onClick={() => playAudio(paragraph)}
+                        className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition p-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white text-[10px] font-sans flex items-center gap-1 shadow-sm cursor-pointer"
+                        title="Ouvir apenas este parágrafo"
+                      >
+                        <Play className="w-2.5 h-2.5 fill-current" /> Ouvir
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* BALÃO FLUTUANTE DE SELEÇÃO DIRETA: "OUVIR A PARTIR DAQUI" */}
+            {selectionPopup?.visible && (
+              <div 
+                className="fixed z-50 animate-in fade-in zoom-in-95 duration-150"
+                style={{ 
+                  left: `${selectionPopup.x}px`, 
+                  top: `${selectionPopup.y}px`,
+                  transform: 'translateX(-50%)'
+                }}
+              >
+                <button
+                  onClick={handlePlayFromSelection}
+                  className="px-3.5 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 shadow-2xl ring-4 ring-black/40 transition active:scale-95 cursor-pointer"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>Ouvir a partir daqui</span>
+                </button>
+              </div>
+            )}
+
+            {/* Rodapé do Modo E-Book */}
+            <div className="px-4 py-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 shrink-0">
+              <span className="flex items-center gap-1.5 text-[11px]">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Selecione qualquer frase com o mouse/dedo para ver o botão <strong>"Ouvir a partir daqui"</strong></span>
+              </span>
+
+              <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
+                <span>{currentPageText.length} caracteres</span>
+                <span>•</span>
+                <span>Folha {currentPageIndex + 1}/{pages.length}</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* MODO VISUAL CLÁSSICO: GOOGLE DRIVE PREVIEW COM ZOOM E FILTRO NOTURNO */
+          <div className="flex-1 w-full bg-slate-950 relative overflow-hidden flex items-center justify-center">
+            <div 
+              className="w-full h-full transition-transform duration-150 origin-top flex items-center justify-center"
+              style={{
+                transform: `scale(${zoomLevel / 100})`,
+                filter: isNightMode ? 'invert(90%) hue-rotate(180deg)' : 'none',
+              }}
+            >
+              <iframe
+                src={embedUrl}
+                className="w-full h-full border-0 bg-white"
+                title={title}
+                allow="autoplay"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* MODAL DE IMPORTAÇÃO / ADIÇÃO DE PÁGINAS DO LIVRO */}
+        {isAddPagesModalOpen && (
+          <div className="fixed inset-0 z-60 bg-black/80 flex items-center justify-center p-3 animate-in fade-in duration-150">
+            <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl p-5 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-emerald-400" />
+                  <h4 className="text-sm font-bold text-white">Importar / Colar Páginas deste Livro</h4>
+                </div>
+                <button
+                  onClick={() => setIsAddPagesModalOpen(false)}
+                  className="p-1 rounded-lg text-slate-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs text-slate-300">
+                  Cole abaixo o texto do livro (de uma folha, de um capítulo inteiro ou da obra). 
+                  O LMS fatiará automaticamente o conteúdo em páginas navegáveis com leitura contínua:
+                </p>
+                <textarea
+                  rows={9}
+                  value={importTextContent}
+                  onChange={(e) => setImportTextContent(e.target.value)}
+                  placeholder="Cole aqui o texto copiado do PDF (para separar páginas manualmente, use três traços '---' entre elas)..."
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-serif"
+                />
+                <p className="text-[11px] text-slate-400">
+                  💡 Dica: Você pode usar <code>---</code> entre os parágrafos para forçar uma nova página de leitura.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                <button
+                  onClick={() => setIsAddPagesModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleSaveImportedPages}
+                  disabled={!importTextContent.trim()}
+                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white text-xs font-bold shadow-md transition"
+                >
+                  Salvar e Iniciar Leitura
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
