@@ -21,6 +21,7 @@ import {
 } from '@/services/bibliotecaService';
 import { getAllLivrosRecomendados } from '@/services/livrosRecomendadosService';
 import { trackEvent } from '@/services/telemetryService';
+import { MobilePdfReaderModal } from '@/components/MobilePdfReaderModal';
 
 interface BibliotecaPageProps {
 
@@ -89,6 +90,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
   const [itemsPerPage, setItemsPerPage] = useState(24);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [copiedBookId, setCopiedBookId] = useState<string | null>(null);
+  const [readingBook, setReadingBook] = useState<BibliotecaBook | null>(null);
 
   const [sortOption, setSortOption] = useState<
     'title_asc' | 'title_desc' | 'author_asc' | 'author_desc' | 'year_desc' | 'pages_desc' | 'category_asc'
@@ -1126,14 +1128,26 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                     </div>
 
                     {isAvailable ? (
-                      <a
-                        href={driveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
-                      >
-                        <Download className="w-3.5 h-3.5" /> Abrir / Baixar
-                      </a>
+                      <div className="grid grid-cols-2 gap-1.5 w-full">
+                        <button
+                          onClick={() => setReadingBook(book)}
+                          className="py-2 px-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                          title="Ler no aplicativo com suporte a áudio e modo noturno"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span className="truncate">Ler no App</span>
+                        </button>
+                        <a
+                          href={driveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2 px-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                          title="Abrir no Google Drive ou Baixar"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span className="truncate">Abrir / Baixar</span>
+                        </a>
+                      </div>
                     ) : (
                       <div className="space-y-1">
                         <div className="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 p-1 rounded-lg text-center font-bold">
@@ -1259,14 +1273,24 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                           )}
 
                           {isAvailable ? (
-                            <a
-                              href={driveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1 shadow-xs transition"
-                            >
-                              <Download className="w-3.5 h-3.5" /> Abrir
-                            </a>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => setReadingBook(book)}
+                                className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-1 shadow-xs transition cursor-pointer"
+                                title="Ler no aplicativo com suporte a áudio"
+                              >
+                                <BookOpen className="w-3.5 h-3.5" /> Ler
+                              </button>
+                              <a
+                                href={driveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl flex items-center gap-1 shadow-xs transition cursor-pointer"
+                                title="Abrir no Google Drive ou Baixar"
+                              >
+                                <Download className="w-3.5 h-3.5" /> Abrir
+                              </a>
+                            </div>
                           ) : (
                             <a
                               href={`https://books.google.com.br/books?q=${encodeURIComponent(`${book.title} ${book.author || ''}`)}`}
@@ -1472,6 +1496,16 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
 
                     {/* Ações */}
                     <div className="pt-4 border-t border-gray-100 flex flex-wrap gap-2.5 mt-auto">
+                      {isBookFileAvailable(viewingBook) && (
+                        <button
+                          onClick={() => setReadingBook(viewingBook)}
+                          className="flex-1 md:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+                          title="Ler no aplicativo com suporte a áudio e modo noturno"
+                        >
+                          <BookOpen className="w-4 h-4" />
+                          <span className="whitespace-nowrap">Ler no App</span>
+                        </button>
+                      )}
                       {isBookFileAvailable(viewingBook) ? (
                         <a
                           href={driveUrl}
@@ -2172,6 +2206,18 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
             </form>
           </div>
         </div>
+      )}
+      {/* MODAL DO LEITOR DE PDF EMBUTIDO COM AUDIOLEITOR */}
+      {readingBook && (
+        <MobilePdfReaderModal
+          isOpen={!!readingBook}
+          onClose={() => setReadingBook(null)}
+          title={readingBook.title}
+          pdfUrl={readingBook.drive_url || ''}
+          disciplinaName={cleanCategoryName(readingBook.category)}
+          author={readingBook.author}
+          description={readingBook.description}
+        />
       )}
     </div>
   );

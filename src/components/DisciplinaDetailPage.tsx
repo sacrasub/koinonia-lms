@@ -277,7 +277,13 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   const [editMaterialType, setEditMaterialType] = useState('pdf');
 
   // Modal do Leitor de PDF Embutido (Mobile & Desktop)
-  const [mobilePdfModal, setMobilePdfModal] = useState<{ isOpen: boolean; title: string; pdfUrl: string } | null>(null);
+  const [mobilePdfModal, setMobilePdfModal] = useState<{ 
+    isOpen: boolean; 
+    title: string; 
+    pdfUrl: string; 
+    author?: string; 
+    description?: string; 
+  } | null>(null);
 
   // Carregar dados da disciplina
   const refreshData = () => {
@@ -1321,7 +1327,13 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                             type="button"
                             onClick={() => {
                               trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
-                              setMobilePdfModal({ isOpen: true, title: livro.book_title, pdfUrl: livro.book_url });
+                              setMobilePdfModal({ 
+                                isOpen: true, 
+                                title: livro.book_title, 
+                                pdfUrl: livro.book_url,
+                                author: livro.book_author,
+                                description: livro.notes
+                              });
                             }}
                             className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
                             title="Ler PDF diretamente no App (Leitor Embutido)"
@@ -1567,7 +1579,13 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                           type="button"
                           onClick={() => {
                             trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
-                            setMobilePdfModal({ isOpen: true, title: livro.book_title, pdfUrl: livro.book_url });
+                            setMobilePdfModal({ 
+                              isOpen: true, 
+                              title: livro.book_title, 
+                              pdfUrl: livro.book_url,
+                              author: livro.book_author,
+                              description: livro.notes
+                            });
                           }}
                           className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
                           title="Ler PDF diretamente no App (Leitor Embutido)"
@@ -4205,6 +4223,8 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
           title={mobilePdfModal.title}
           pdfUrl={mobilePdfModal.pdfUrl}
           disciplinaName={disciplina.name}
+          author={mobilePdfModal.author}
+          description={mobilePdfModal.description}
         />
       )}
     </div>
