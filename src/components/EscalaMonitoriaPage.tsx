@@ -8,7 +8,7 @@ import {
   HelpCircle, CheckSquare, PhoneCall, Mail, Award, Bell, Camera, Share2,
   Smartphone, Eye, Download, Image as ImageIcon, Upload, Loader2, GraduationCap,
   Volume2, VolumeX, Play, Archive, FolderOpen, Lock, Edit3, Link as LinkIcon,
-  Ban, AlertTriangle, Bot, Zap
+  Ban, AlertTriangle, Bot, Zap, FileText, ClipboardList
 } from 'lucide-react';
 import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { UserRole, AvisoLeituraPreAula } from '@/types';
@@ -21,7 +21,8 @@ import {
   isAulaCanceladaHoje,
   getAllAulasCanceladas,
   fetchAulasCanceladasFromCloud, 
-  AulaCanceladaItem 
+  AulaCanceladaItem,
+  parseProvidenciaMotivo
 } from '@/services/aulaCanceladaService';
 import { 
   getAnnouncements, 
@@ -1312,6 +1313,11 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     existingCancelada: null,
   });
   const [motivoCancelamentoInput, setMotivoCancelamentoInput] = useState<string>('');
+  const [cancelVideoUrl, setCancelVideoUrl] = useState<string>('');
+  const [cancelArquivoUrl, setCancelArquivoUrl] = useState<string>('');
+  const [cancelArquivoNome, setCancelArquivoNome] = useState<string>('');
+  const [cancelTrabalhoInstrucoes, setCancelTrabalhoInstrucoes] = useState<string>('');
+  const [cancelTrabalhoPrazo, setCancelTrabalhoPrazo] = useState<string>('');
 
   // MODAL DE PROVIDÊNCIA DOCENTE (AULA DUPLA / SUBSTITUIÇÃO)
   const [modalProvidencia, setModalProvidencia] = useState<{
@@ -1767,7 +1773,24 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       currentDataAula: dateForDay,
       existingCancelada: existing,
     });
-    setMotivoCancelamentoInput(existing?.motivo || '');
+    if (existing) {
+      const parsed = existing.motivo?.startsWith('[PROVIDENCIA_JSON]:')
+        ? parseProvidenciaMotivo(existing.motivo)
+        : null;
+      setMotivoCancelamentoInput(parsed ? parsed.motivoLimpo : (existing.motivo || ''));
+      setCancelVideoUrl(existing.video_url || parsed?.videoUrl || '');
+      setCancelArquivoUrl(existing.arquivo_url || parsed?.arquivoUrl || '');
+      setCancelArquivoNome(existing.arquivo_nome || parsed?.arquivoNome || '');
+      setCancelTrabalhoInstrucoes(existing.trabalho_instrucoes || parsed?.trabalhoInstrucoes || '');
+      setCancelTrabalhoPrazo(existing.trabalho_prazo || parsed?.trabalhoPrazo || '');
+    } else {
+      setMotivoCancelamentoInput('');
+      setCancelVideoUrl('');
+      setCancelArquivoUrl('');
+      setCancelArquivoNome('');
+      setCancelTrabalhoInstrucoes('');
+      setCancelTrabalhoPrazo('');
+    }
   };
 
   // Salvar cancelamento de aula
@@ -1798,6 +1821,11 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       autorNome: monitorLogadoName,
       autorEmail: userEmail || 'monitor@uiecbead.com.br',
       autorRole: currentRole,
+      videoUrl: cancelVideoUrl.trim() || undefined,
+      arquivoUrl: cancelArquivoUrl.trim() || undefined,
+      arquivoNome: cancelArquivoNome.trim() || undefined,
+      trabalhoInstrucoes: cancelTrabalhoInstrucoes.trim() || undefined,
+      trabalhoPrazo: cancelTrabalhoPrazo.trim() || undefined,
     });
 
     // Se a data do dia da semana for diferente da data local de hoje, garante também na data de hoje
@@ -1811,12 +1839,22 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         autorNome: monitorLogadoName,
         autorEmail: userEmail || 'monitor@uiecbead.com.br',
         autorRole: currentRole,
+        videoUrl: cancelVideoUrl.trim() || undefined,
+        arquivoUrl: cancelArquivoUrl.trim() || undefined,
+        arquivoNome: cancelArquivoNome.trim() || undefined,
+        trabalhoInstrucoes: cancelTrabalhoInstrucoes.trim() || undefined,
+        trabalhoPrazo: cancelTrabalhoPrazo.trim() || undefined,
       });
     }
 
     setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
     setMotivoCancelamentoInput('');
-    showToast(`🚫 Aviso registrado: Não haverá aula de "${modalCancelamento.aula.title}" em ${modalCancelamento.currentDataAula}.`);
+    setCancelVideoUrl('');
+    setCancelArquivoUrl('');
+    setCancelArquivoNome('');
+    setCancelTrabalhoInstrucoes('');
+    setCancelTrabalhoPrazo('');
+    showToast(`🚫 Aviso registrado: Aula de "${modalCancelamento.aula.title}" atualizada em ${modalCancelamento.currentDataAula}.`);
   };
 
   // Reativar aula cancelada
@@ -1827,6 +1865,11 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
 
     setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
     setMotivoCancelamentoInput('');
+    setCancelVideoUrl('');
+    setCancelArquivoUrl('');
+    setCancelArquivoNome('');
+    setCancelTrabalhoInstrucoes('');
+    setCancelTrabalhoPrazo('');
     showToast(`✅ Aula de "${modalCancelamento.aula.title}" reativada com sucesso!`);
   };
 
@@ -3047,22 +3090,53 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                               {/* Botão de Cancelamento / Aviso de Sem Aula */}
                               <div className="pt-2 border-t border-gray-100">
                                 {canceladaStatus ? (
-                                  <div className="p-3 bg-red-50/90 border border-red-200 rounded-2xl space-y-1.5">
-                                    <div className="flex items-center justify-between gap-1 flex-wrap">
-                                      <span className="text-[11px] font-black text-red-900 flex items-center gap-1.5">
-                                        <Ban className="w-3.5 h-3.5 text-red-600" />
-                                        <span>🚫 AULA CANCELADA HOJE</span>
+                                  <div className="p-3 bg-red-50/90 border border-red-200 rounded-xl space-y-2">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wide">
+                                        🚫 Aula Cancelada / Substituída
                                       </span>
                                       <button
-                                        onClick={() => handleOpenModalCancelamento(item, canceladaStatus)}
-                                        className="text-[10px] font-extrabold text-red-700 hover:text-red-950 underline cursor-pointer"
+                                        onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
+                                        className="text-[10px] text-red-600 hover:text-red-800 underline font-medium cursor-pointer"
                                       >
-                                        Editar / Reativar
+                                        Desfazer
                                       </button>
                                     </div>
-                                    <p className="text-[11px] text-red-950 font-medium leading-relaxed bg-white/70 p-2 rounded-xl border border-red-100">
+                                    <p className="text-xs text-red-900 leading-relaxed font-sans">
                                       <strong>Motivo:</strong> "{canceladaStatus.motivo}"
                                     </p>
+                                    {(canceladaStatus.video_url || canceladaStatus.arquivo_url) && (
+                                      <div className="pt-1.5 border-t border-red-200/60 flex flex-wrap gap-1.5">
+                                        {canceladaStatus.video_url && (
+                                          <a
+                                            href={canceladaStatus.video_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                          >
+                                            <Play className="w-3 h-3 fill-current" />
+                                            <span>Assistir Vídeo Gravado</span>
+                                          </a>
+                                        )}
+                                        {canceladaStatus.arquivo_url && (
+                                          <a
+                                            href={canceladaStatus.arquivo_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            download={canceladaStatus.arquivo_nome || 'trabalho.pdf'}
+                                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-red-50 text-red-700 border border-red-300 font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                          >
+                                            <Download className="w-3 h-3" />
+                                            <span>{canceladaStatus.arquivo_nome || 'Baixar Trabalho PDF'}</span>
+                                          </a>
+                                        )}
+                                      </div>
+                                    )}
+                                    {canceladaStatus.trabalho_prazo && (
+                                      <p className="text-[10px] text-red-800 font-semibold">
+                                        📅 <strong>Prazo:</strong> {canceladaStatus.trabalho_prazo}
+                                      </p>
+                                    )}
                                     <span className="text-[9px] text-red-700 block text-right font-mono">
                                       Registrado por: {canceladaStatus.autor_nome}
                                     </span>
@@ -4698,6 +4772,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {[
+                    'O professor deixou a aula gravada e um trabalho. A lista de chamada será o próprio trabalho.',
                     'Imprevisto de saúde do corpo docente. A aula será reposta em breve.',
                     'Feriado / Recesso institucional do Seminário Teológico.',
                     'Aula suspensa excepcionalmente hoje por motivos de força maior.',
@@ -4706,12 +4781,154 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                     <button
                       key={idx}
                       type="button"
-                      onClick={() => setMotivoCancelamentoInput(sugestao)}
-                      className="text-[10px] bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 text-slate-600 px-2.5 py-1 rounded-xl transition text-left cursor-pointer"
+                      onClick={() => {
+                        setMotivoCancelamentoInput(sugestao);
+                        if (idx === 0) {
+                          setCancelTrabalhoInstrucoes('A lista de chamada de hoje será computada pela entrega do trabalho.');
+                          setCancelTrabalhoPrazo('Até a próxima aula');
+                        }
+                      }}
+                      className={`text-[10px] px-2.5 py-1 rounded-xl transition text-left cursor-pointer border ${
+                        idx === 0 
+                          ? 'bg-purple-50 text-purple-900 border-purple-300 font-extrabold hover:bg-purple-100'
+                          : 'bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border-slate-200 text-slate-600'
+                      }`}
                     >
-                      {sugestao.substring(0, 45)}...
+                      {sugestao.substring(0, 48)}...
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* SEÇÃO DE AVISO UNIFICADO: VÍDEO GRAVADO + TRABALHO EM PDF */}
+              <div className="p-3.5 bg-purple-50/70 border border-purple-200 rounded-2xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-purple-950 flex items-center gap-1.5">
+                    <Video className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Recursos da Aula Gravada & Trabalho (Opcional - Aviso Unificado)</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">
+                    Vídeo + PDF
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {/* Link do Vídeo / Aula Gravada */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+                      <Play className="w-3 h-3 text-red-600 fill-current" />
+                      <span>Link da Aula Gravada (YouTube, Google Drive, etc.):</span>
+                    </label>
+                    <input
+                      type="url"
+                      value={cancelVideoUrl}
+                      onChange={(e) => setCancelVideoUrl(e.target.value)}
+                      placeholder="https://youtube.com/watch?v=... ou https://drive.google.com/..."
+                      className="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Arquivo do Trabalho (Upload ou Link) */}
+                  <div className="space-y-1.5">
+                    <label className="block text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                      <span className="flex items-center gap-1">
+                        <Download className="w-3 h-3 text-blue-600" />
+                        <span>Arquivo do Trabalho (PDF ou Documento):</span>
+                      </span>
+                      {cancelArquivoNome && (
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+                          📎 {cancelArquivoNome}
+                        </span>
+                      )}
+                    </label>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                      <div className="sm:col-span-7">
+                        <input
+                          type="url"
+                          value={cancelArquivoUrl.startsWith('data:') ? '' : cancelArquivoUrl}
+                          onChange={(e) => {
+                            setCancelArquivoUrl(e.target.value);
+                            if (e.target.value && !cancelArquivoNome) {
+                              setCancelArquivoNome('Trabalho_Avaliativo.pdf');
+                            }
+                          }}
+                          placeholder={cancelArquivoUrl.startsWith('data:') ? 'Arquivo anexado via upload direto' : 'https://drive.google.com/... ou link direto do PDF'}
+                          disabled={cancelArquivoUrl.startsWith('data:')}
+                          className="w-full p-2 bg-white border border-purple-200 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                        />
+                      </div>
+                      <div className="sm:col-span-5 flex items-center gap-1.5">
+                        <label className="flex-1 py-2 px-2.5 bg-blue-900 hover:bg-blue-800 text-white font-bold text-[11px] rounded-xl transition flex items-center justify-center gap-1 cursor-pointer text-center">
+                          <Upload className="w-3 h-3" />
+                          <span>{cancelArquivoUrl.startsWith('data:') ? 'Trocar PDF' : 'Anexar PDF'}</span>
+                          <input
+                            type="file"
+                            accept=".pdf,application/pdf,.doc,.docx"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              setCancelArquivoNome(file.name);
+                              const reader = new FileReader();
+                              reader.onload = () => {
+                                if (typeof reader.result === 'string') {
+                                  setCancelArquivoUrl(reader.result);
+                                  showToast(`Arquivo "${file.name}" anexado com sucesso!`);
+                                }
+                              };
+                              reader.readAsDataURL(file);
+                            }}
+                          />
+                        </label>
+
+                        {(cancelArquivoUrl || cancelArquivoNome) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCancelArquivoUrl('');
+                              setCancelArquivoNome('');
+                            }}
+                            className="p-2 text-gray-400 hover:text-red-600 text-xs font-bold"
+                            title="Remover anexo"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Prazo e Instruções da Chamada */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-amber-600" />
+                        <span>Prazo de Entrega do Trabalho:</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={cancelTrabalhoPrazo}
+                        onChange={(e) => setCancelTrabalhoPrazo(e.target.value)}
+                        placeholder="Ex: Até sexta 18/09 às 23:59"
+                        className="w-full p-2 bg-white border border-purple-200 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1 flex items-center gap-1">
+                        <ClipboardList className="w-3 h-3 text-amber-600" />
+                        <span>Orientações / Registro de Chamada:</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={cancelTrabalhoInstrucoes}
+                        onChange={(e) => setCancelTrabalhoInstrucoes(e.target.value)}
+                        placeholder="Ex: A presença será o próprio envio do trabalho"
+                        className="w-full p-2 bg-white border border-purple-200 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 

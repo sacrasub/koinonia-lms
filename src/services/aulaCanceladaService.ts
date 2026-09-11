@@ -23,6 +23,12 @@ export interface AulaCanceladaItem {
   substituto_meet_url?: string;
   substituto_presenca_url?: string;
   substituto_observacoes?: string;
+  // Campos de Aula Gravada & Trabalho em PDF (Aviso Unificado)
+  video_url?: string;
+  arquivo_url?: string;
+  arquivo_nome?: string;
+  trabalho_instrucoes?: string;
+  trabalho_prazo?: string;
 }
 
 const STORAGE_KEY = 'lms_aulas_canceladas_v1';
@@ -134,7 +140,7 @@ export function getAulaCanceladaStatus(disciplinaId: string, disciplinaName: str
   const keyByName = buildCanceladaKey(disciplinaName, dataAula);
 
   const directItem = map[keyById] || map[keyByName];
-  if (directItem && directItem.ativo) return directItem;
+  if (directItem && directItem.ativo) return hydrateCanceladaItem(directItem);
 
   // Busca genérica tolerante a variações de data e nomes
   const found = Object.values(map).find((c) => {
@@ -157,7 +163,7 @@ export function getAulaCanceladaStatus(disciplinaId: string, disciplinaName: str
     return matchDate && matchDisc;
   });
 
-  return found || null;
+  return found ? hydrateCanceladaItem(found) : null;
 }
 
 /**
@@ -178,7 +184,7 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
   const cancelStatus =
     getAulaCanceladaStatus(disciplinaId, disciplinaName, localDate) ||
     getAulaCanceladaStatus(disciplinaId, disciplinaName, brtDate);
-  if (cancelStatus) return cancelStatus;
+  if (cancelStatus) return hydrateCanceladaItem(cancelStatus);
 
   // 2. Checagem ampla em toda a lista ativa de aulas canceladas
   const map = getLocalCanceladas();
@@ -197,7 +203,7 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
       return cNormDate === normalizeDateStr(localDate) || cNormDate === normalizeDateStr(brtDate);
     });
 
-    if (canceladoAmplo) return canceladoAmplo;
+    if (canceladoAmplo) return hydrateCanceladaItem(canceladoAmplo);
   }
 
   // 3. Checagem no attendance do aluno ('nao_houve') no localStorage
@@ -250,7 +256,7 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
  */
 export function getAllAulasCanceladas(): AulaCanceladaItem[] {
   const map = getLocalCanceladas();
-  return Object.values(map).filter((c) => c.ativo);
+  return Object.values(map).filter((c) => c.ativo).map((c) => hydrateCanceladaItem(c)!);
 }
 
 /**
@@ -265,20 +271,42 @@ export async function cancelarAula(params: {
   autorNome: string;
   autorEmail: string;
   autorRole: UserRole;
+  tipoProvidencia?: TipoProvidencia;
+  videoUrl?: string;
+  arquivoUrl?: string;
+  arquivoNome?: string;
+  trabalhoInstrucoes?: string;
+  trabalhoPrazo?: string;
 }): Promise<AulaCanceladaItem> {
   const key = buildCanceladaKey(params.disciplinaId, params.dataAula);
+  const motivoFormatado = formatProvidenciaMotivo({
+    tipoProvidencia: params.tipoProvidencia || 'cancelamento',
+    motivoTexto: params.motivo,
+    videoUrl: params.videoUrl,
+    arquivoUrl: params.arquivoUrl,
+    arquivoNome: params.arquivoNome,
+    trabalhoInstrucoes: params.trabalhoInstrucoes,
+    trabalhoPrazo: params.trabalhoPrazo,
+  });
+
   const item: AulaCanceladaItem = {
     id: key,
     disciplina_id: params.disciplinaId,
     disciplina_name: params.disciplinaName,
     aula_num: params.aulaNum,
     data_aula: params.dataAula,
-    motivo: params.motivo.trim() || 'Imprevisto com o corpo docente. Aula suspensa nesta data.',
+    motivo: motivoFormatado,
     autor_nome: params.autorNome,
     autor_email: params.autorEmail,
     autor_role: params.autorRole,
     criado_em: new Date().toISOString(),
     ativo: true,
+    tipo_providencia: params.tipoProvidencia || 'cancelamento',
+    video_url: params.videoUrl,
+    arquivo_url: params.arquivoUrl,
+    arquivo_nome: params.arquivoNome,
+    trabalho_instrucoes: params.trabalhoInstrucoes,
+    trabalho_prazo: params.trabalhoPrazo,
   };
 
   const map = getLocalCanceladas();
@@ -293,7 +321,7 @@ export async function cancelarAula(params: {
       disciplina_name: params.disciplinaName,
       aula_num: params.aulaNum,
       data_aula: params.dataAula,
-      motivo: item.motivo,
+      motivo: motivoFormatado,
       autor_nome: params.autorNome,
       autor_email: params.autorEmail,
       autor_role: params.autorRole,
@@ -364,8 +392,16 @@ export function formatProvidenciaMotivo(params: {
   substitutoMeetUrl?: string;
   substitutoPresencaUrl?: string;
   substitutoObservacoes?: string;
+  videoUrl?: string;
+  arquivoUrl?: string;
+  arquivoNome?: string;
+  trabalhoInstrucoes?: string;
+  trabalhoPrazo?: string;
 }): string {
-  if (params.tipoProvidencia === 'cancelamento') {
+  const hasExtra = params.tipoProvidencia !== 'cancelamento' ||
+    Boolean(params.videoUrl || params.arquivoUrl || params.arquivoNome || params.trabalhoInstrucoes || params.trabalhoPrazo);
+
+  if (!hasExtra) {
     return params.motivoTexto.trim() || 'Imprevisto com o corpo docente. Aula suspensa nesta data.';
   }
 
@@ -377,6 +413,11 @@ export function formatProvidenciaMotivo(params: {
     sub_meet_url: params.substitutoMeetUrl || '',
     sub_presenca_url: params.substitutoPresencaUrl || '',
     sub_obs: params.substitutoObservacoes || '',
+    video_url: params.videoUrl || '',
+    arquivo_url: params.arquivoUrl || '',
+    arquivo_nome: params.arquivoNome || '',
+    trabalho_instrucoes: params.trabalhoInstrucoes || '',
+    trabalho_prazo: params.trabalhoPrazo || '',
   };
 
   return `[PROVIDENCIA_JSON]:${JSON.stringify(meta)}[FIM] ${params.motivoTexto.trim()}`;
@@ -394,6 +435,11 @@ export function parseProvidenciaMotivo(motivoRaw: string): {
   substitutoMeetUrl?: string;
   substitutoPresencaUrl?: string;
   substitutoObservacoes?: string;
+  videoUrl?: string;
+  arquivoUrl?: string;
+  arquivoNome?: string;
+  trabalhoInstrucoes?: string;
+  trabalhoPrazo?: string;
 } {
   if (!motivoRaw) {
     return { motivoLimpo: '', tipoProvidencia: 'cancelamento' };
@@ -408,13 +454,18 @@ export function parseProvidenciaMotivo(motivoRaw: string): {
         const motivoLimpo = motivoRaw.substring(fimIdx + 5).trim();
         return {
           motivoLimpo,
-          tipoProvidencia: (meta.tipo as TipoProvidencia) || 'aula_dupla',
+          tipoProvidencia: (meta.tipo as TipoProvidencia) || 'cancelamento',
           substitutoDisciplinaId: meta.sub_disc_id,
           substitutoDisciplinaName: meta.sub_disc_name,
           substitutoProfessorName: meta.sub_prof_name,
           substitutoMeetUrl: meta.sub_meet_url,
           substitutoPresencaUrl: meta.sub_presenca_url,
           substitutoObservacoes: meta.sub_obs,
+          videoUrl: meta.video_url || '',
+          arquivoUrl: meta.arquivo_url || '',
+          arquivoNome: meta.arquivo_nome || '',
+          trabalhoInstrucoes: meta.trabalho_instrucoes || '',
+          trabalhoPrazo: meta.trabalho_prazo || '',
         };
       }
     } catch (e) {}
@@ -427,7 +478,33 @@ export function parseProvidenciaMotivo(motivoRaw: string): {
 }
 
 /**
- * Registra uma providência de aula (aula dupla, substituição ou suspensão)
+ * Hidrata item de aula cancelada preenchendo campos internos a partir do motivo serializado
+ */
+export function hydrateCanceladaItem(item: AulaCanceladaItem | null): AulaCanceladaItem | null {
+  if (!item) return null;
+  if (item.motivo && item.motivo.startsWith('[PROVIDENCIA_JSON]:')) {
+    const parsed = parseProvidenciaMotivo(item.motivo);
+    return {
+      ...item,
+      tipo_providencia: item.tipo_providencia || parsed.tipoProvidencia,
+      substituto_disciplina_id: item.substituto_disciplina_id || parsed.substitutoDisciplinaId,
+      substituto_disciplina_name: item.substituto_disciplina_name || parsed.substitutoDisciplinaName,
+      substituto_professor_name: item.substituto_professor_name || parsed.substitutoProfessorName,
+      substituto_meet_url: item.substituto_meet_url || parsed.substitutoMeetUrl,
+      substituto_presenca_url: item.substituto_presenca_url || parsed.substitutoPresencaUrl,
+      substituto_observacoes: item.substituto_observacoes || parsed.substitutoObservacoes,
+      video_url: item.video_url || parsed.videoUrl,
+      arquivo_url: item.arquivo_url || parsed.arquivoUrl,
+      arquivo_nome: item.arquivo_nome || parsed.arquivoNome,
+      trabalho_instrucoes: item.trabalho_instrucoes || parsed.trabalhoInstrucoes,
+      trabalho_prazo: item.trabalho_prazo || parsed.trabalhoPrazo,
+    };
+  }
+  return item;
+}
+
+/**
+ * Registra uma providência de aula (aula dupla, substituição ou suspensão/aula gravada com trabalho)
  */
 export async function registrarProvidenciaAula(params: {
   disciplinaId: string;
@@ -445,6 +522,11 @@ export async function registrarProvidenciaAula(params: {
   substitutoMeetUrl?: string;
   substitutoPresencaUrl?: string;
   substitutoObservacoes?: string;
+  videoUrl?: string;
+  arquivoUrl?: string;
+  arquivoNome?: string;
+  trabalhoInstrucoes?: string;
+  trabalhoPrazo?: string;
 }): Promise<AulaCanceladaItem> {
   const key = buildCanceladaKey(params.disciplinaId, params.dataAula);
   const motivoFormatado = formatProvidenciaMotivo({
@@ -456,6 +538,11 @@ export async function registrarProvidenciaAula(params: {
     substitutoMeetUrl: params.substitutoMeetUrl,
     substitutoPresencaUrl: params.substitutoPresencaUrl,
     substitutoObservacoes: params.substitutoObservacoes,
+    videoUrl: params.videoUrl,
+    arquivoUrl: params.arquivoUrl,
+    arquivoNome: params.arquivoNome,
+    trabalhoInstrucoes: params.trabalhoInstrucoes,
+    trabalhoPrazo: params.trabalhoPrazo,
   });
 
   const item: AulaCanceladaItem = {
@@ -477,6 +564,11 @@ export async function registrarProvidenciaAula(params: {
     substituto_meet_url: params.substitutoMeetUrl,
     substituto_presenca_url: params.substitutoPresencaUrl,
     substituto_observacoes: params.substitutoObservacoes,
+    video_url: params.videoUrl,
+    arquivo_url: params.arquivoUrl,
+    arquivo_nome: params.arquivoNome,
+    trabalho_instrucoes: params.trabalhoInstrucoes,
+    trabalho_prazo: params.trabalhoPrazo,
   };
 
   const map = getLocalCanceladas();

@@ -9,7 +9,7 @@ import {
   BookOpen, Calendar, Globe, Info, CheckSquare, Edit3, Save, ChevronLeft, ChevronRight,
   Cloud, Settings, GraduationCap, X, Compass, PhoneCall, Archive, ArchiveRestore, CheckCircle,
   Layers, Flame, ArrowRight, Mic, Box, Ban, RefreshCw, ChevronDown, ChevronUp,
-  AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap
+  AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap, Play, Download, ClipboardList
 } from 'lucide-react';
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
@@ -925,25 +925,94 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
               </span>
             </div>
             <h3 className="text-lg sm:text-xl font-black text-white mt-0.5">
-              Atenção: Não Haverá Aula Hoje
+              Atenção: Não Haverá Aula Ao Vivo Hoje
             </h3>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          {aulasCanceladasHoje.map((canc) => (
-            <div key={canc.id} className="bg-black/30 border border-red-400/40 rounded-2xl p-3.5 space-y-1.5">
-              <h4 className="font-extrabold text-sm text-red-200 flex items-center gap-1.5">
-                <span>📖 {canc.disciplina_name}</span>
-              </h4>
-              <p className="text-xs text-slate-100 bg-red-950/60 p-2.5 rounded-xl border border-red-500/30 leading-relaxed">
-                <strong>Motivo informado:</strong> "{canc.motivo}"
-              </p>
-              <div className="flex items-center justify-between text-[10px] text-rose-300 pt-1">
-                <span>Registrado por: <strong>{canc.autor_nome}</strong></span>
-                <span>Koinonia LMS</span>
+          {aulasCanceladasHoje.map((canc) => {
+            const parsed = canc.motivo?.startsWith('[PROVIDENCIA_JSON]:')
+              ? parseProvidenciaMotivo(canc.motivo)
+              : null;
+            const motivoLimpo = parsed ? parsed.motivoLimpo : canc.motivo;
+            const videoUrl = canc.video_url || parsed?.videoUrl || '';
+            const arquivoUrl = canc.arquivo_url || parsed?.arquivoUrl || '';
+            const arquivoNome = canc.arquivo_nome || parsed?.arquivoNome || 'Trabalho_Atividade.pdf';
+            const trabalhoInstrucoes = canc.trabalho_instrucoes || parsed?.trabalhoInstrucoes || '';
+            const trabalhoPrazo = canc.trabalho_prazo || parsed?.trabalhoPrazo || '';
+            const hasExtra = Boolean(videoUrl || arquivoUrl || trabalhoInstrucoes);
+
+            return (
+              <div key={canc.id} className={`border rounded-2xl p-4 space-y-2.5 ${
+                hasExtra ? 'bg-purple-950/40 border-purple-400/50' : 'bg-black/30 border-red-400/40'
+              }`}>
+                <div className="flex items-center justify-between gap-1.5 flex-wrap">
+                  <h4 className="font-extrabold text-sm text-red-200 flex items-center gap-1.5">
+                    <span>📖 {canc.disciplina_name}</span>
+                  </h4>
+                  {hasExtra && (
+                    <span className="text-[10px] font-black uppercase tracking-wide bg-purple-600/60 text-purple-200 px-2 py-0.5 rounded-md border border-purple-400/40 flex items-center gap-1">
+                      <Video className="w-3 h-3" />
+                      <span>Aula Gravada / Trabalho</span>
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-xs text-slate-100 bg-red-950/60 p-2.5 rounded-xl border border-red-500/30 leading-relaxed">
+                  <strong>Recado oficial:</strong> "{motivoLimpo}"
+                </p>
+
+                {trabalhoInstrucoes && (
+                  <div className="bg-amber-950/50 border border-amber-500/40 p-2.5 rounded-xl text-amber-200 text-xs space-y-1">
+                    <span className="font-bold flex items-center gap-1 text-[11px] text-amber-300">
+                      <ClipboardList className="w-3 h-3 text-amber-400" />
+                      Instruções do Trabalho & Chamada {trabalhoPrazo ? `(Prazo: ${trabalhoPrazo})` : ''}
+                    </span>
+                    <p className="text-[11px] text-amber-100 leading-relaxed">
+                      {trabalhoInstrucoes}
+                    </p>
+                  </div>
+                )}
+
+                {/* Botões de Ação para o Aluno */}
+                {(videoUrl || arquivoUrl) && (
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    {videoUrl && (
+                      <a
+                        href={videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2 px-3 bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <span>Assistir Vídeo</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+
+                    {arquivoUrl && (
+                      <a
+                        href={arquivoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download={arquivoNome}
+                        className="flex-1 py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Baixar PDF ({arquivoNome})</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between text-[10px] text-rose-300 pt-1 border-t border-white/10">
+                  <span>Registrado por: <strong>{canc.autor_nome}</strong></span>
+                  <span>Koinonia LMS</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -1542,8 +1611,22 @@ href={nextAulaToday.google_meet_url}
                           className="flex-1 py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                         >
                           <ExternalLink className="w-4 h-4" />
-                          <span>Ler Artigo</span>
+                          <span>Ler Artigo / Acessar Link</span>
                         </a>
+
+                        {av.file_url && (
+                          <a
+                            href={av.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download={av.file_name || 'Arquivo_Complementar.pdf'}
+                            className="py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                            title="Baixar arquivo / PDF anexo"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>{av.file_name || 'Baixar PDF'}</span>
+                          </a>
+                        )}
 
                         <button
                           onClick={() => {

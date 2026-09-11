@@ -4,7 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Zap, Video, FileText, Ban, Check, Copy, ExternalLink, 
   Send, AlertTriangle, Sparkles, MessageSquare, ArrowRight,
-  Clock, Calendar, UserCheck, Shield, CheckCircle2, ChevronRight
+  Clock, Calendar, UserCheck, Shield, CheckCircle2, ChevronRight,
+  Play, Download, Upload, Loader2, Link as LinkIcon
 } from 'lucide-react';
 import { UserRole } from '@/types';
 import { ESCALA_DATA, EscalaItem } from '@/components/EscalaMonitoriaPage';
@@ -106,6 +107,15 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
   const [substitutoMeetUrl, setSubstitutoMeetUrl] = useState<string>('');
   const [substitutoPresencaUrl, setSubstitutoPresencaUrl] = useState<string>('');
   const [motivoTexto, setMotivoTexto] = useState<string>('');
+
+  // Novos campos: Aula Gravada + Trabalho PDF em um só aviso
+  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [arquivoUrl, setArquivoUrl] = useState<string>('');
+  const [arquivoNome, setArquivoNome] = useState<string>('');
+  const [trabalhoPrazo, setTrabalhoPrazo] = useState<string>('');
+  const [trabalhoInstrucoes, setTrabalhoInstrucoes] = useState<string>('');
+  const [isUploadingFile, setIsUploadingFile] = useState<boolean>(false);
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
@@ -179,8 +189,22 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
       setSubstitutoMeetUrl(parsed.substitutoMeetUrl || existingProvidencia.substituto_meet_url || '');
       setSubstitutoPresencaUrl(parsed.substitutoPresencaUrl || existingProvidencia.substituto_presenca_url || '');
       setMotivoTexto(parsed.motivoLimpo || 'Imprevisto docente com adaptação da grade.');
+      
+      // Carrega dados de aula gravada / trabalho anexo
+      setVideoUrl(parsed.videoUrl || existingProvidencia.video_url || '');
+      setArquivoUrl(parsed.arquivoUrl || existingProvidencia.arquivo_url || '');
+      setArquivoNome(parsed.arquivoNome || existingProvidencia.arquivo_nome || '');
+      setTrabalhoPrazo(parsed.trabalhoPrazo || existingProvidencia.trabalho_prazo || '');
+      setTrabalhoInstrucoes(parsed.trabalhoInstrucoes || existingProvidencia.trabalho_instrucoes || '');
       return;
     }
+
+    // Limpa campos adicionais se for novo registro
+    setVideoUrl('');
+    setArquivoUrl('');
+    setArquivoNome('');
+    setTrabalhoPrazo('');
+    setTrabalhoInstrucoes('');
 
     // Se for aula da Terça-feira (Ary Júnior), sugere automaticamente o Hilário Bispo (caso padrão de aula dupla)
     if (selectedAula.title.toLowerCase().includes('congregacionalismo') || selectedAula.professor.toLowerCase().includes('ary')) {
@@ -209,6 +233,31 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
       setMotivoTexto(`Devido a imprevisto com o Profº ${selectedAula.professor}, esta aula foi adaptada.`);
     }
   }, [selectedAula, existingProvidencia]);
+
+  // Função para leitura de arquivo PDF/documento (Base64 local sem quebrar cota Supabase)
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+      alert('O arquivo selecionado é muito grande. Por favor, envie arquivos de até 8MB ou informe um link do Google Drive.');
+      return;
+    }
+
+    setIsUploadingFile(true);
+    setArquivoNome(file.name);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setArquivoUrl(reader.result as string);
+      setIsUploadingFile(false);
+    };
+    reader.onerror = () => {
+      alert('Erro ao carregar o arquivo local. Tente novamente ou use um link do Google Drive.');
+      setIsUploadingFile(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Ao trocar o substituto no select
   const handleSelectSubstituto = (aulaId: string) => {
@@ -254,13 +303,29 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
         `📝 *Lista de Presença:*\n${substitutoPresencaUrl || selectedAula.presencaUrl}\n\n` +
         `💬 *Motivo:* ${motivoTexto}`;
     } else {
-      corpo += `Informamos que *NÃO HAVERÁ AULA* de *${selectedAula.title}* (${selectedAula.professor}) nesta data.\n\n` +
-        `💬 *Motivo:* ${motivoTexto}\n\n` +
-        `📚 Aproveitem a noite para atualizar as leituras e resumos no Caderno Cornell da plataforma.`;
+      corpo += `Informamos que *NÃO HAVERÁ TRANSMISSÃO AO VIVO* de *${selectedAula.title}* (${selectedAula.professor}) nesta data.\n\n` +
+        `💬 *Motivo:* ${motivoTexto}\n\n`;
+
+      if (videoUrl) {
+        corpo += `▶️ *Aula Gravada pelo Professor:*\n${videoUrl}\n\n`;
+      }
+      if (arquivoUrl) {
+        corpo += `📄 *Arquivo / Trabalho em Anexo:* ${arquivoNome || 'Disponível no Portal do Aluno'}\n${arquivoUrl.startsWith('data:') ? '(Disponível para download direto no Portal do Aluno)' : arquivoUrl}\n\n`;
+      }
+      if (trabalhoPrazo) {
+        corpo += `📅 *Prazo de Entrega da Atividade:* ${trabalhoPrazo}\n\n`;
+      }
+      if (trabalhoInstrucoes) {
+        corpo += `📋 *Instruções da Chamada / Atividade:*\n${trabalhoInstrucoes}\n\n`;
+      } else if (videoUrl || arquivoUrl) {
+        corpo += `📋 *Lista de Presença:* A entrega da atividade/trabalho corresponderá à presença desta aula.\n\n`;
+      }
+
+      corpo += `📚 Acessem o portal para assistir ao vídeo e baixar o material: https://koinonialms.vercel.app`;
     }
 
     return corpo;
-  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, substitutoPresencaUrl, motivoTexto, dateFormatted, dayOfWeekName]);
+  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, substitutoPresencaUrl, motivoTexto, dateFormatted, dayOfWeekName, videoUrl, arquivoUrl, arquivoNome, trabalhoPrazo, trabalhoInstrucoes]);
 
   // Mensagem curta para colar no Chat do Google Meet
   const mensagemChatMeet = useMemo(() => {
@@ -271,8 +336,11 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
     if (tipoProvidencia === 'substituicao') {
       return `⚠️ AVISO: Aula ministrada hoje pelo Profº ${substitutoProfName}. Link Meet: ${substitutoMeetUrl}`;
     }
+    if (videoUrl || arquivoUrl) {
+      return `⚠️ AVISO: Não haverá aula ao vivo hoje. O professor disponibilizou vídeo gravado e trabalho no portal: https://koinonialms.vercel.app`;
+    }
     return `⚠️ AVISO: A aula de hoje foi suspensa pela coordenação. Motivo: ${motivoTexto}`;
-  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, motivoTexto]);
+  }, [selectedAula, tipoProvidencia, substitutoProfName, substitutoDiscName, substitutoMeetUrl, motivoTexto, videoUrl, arquivoUrl]);
 
   const handleCopy = (text: string, key: string) => {
     if (!text) return;
@@ -308,12 +376,19 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
         substitutoMeetUrl,
         substitutoPresencaUrl,
         substitutoObservacoes: motivoTexto,
+        videoUrl: videoUrl.trim() || undefined,
+        arquivoUrl: arquivoUrl.trim() || undefined,
+        arquivoNome: arquivoNome.trim() || undefined,
+        trabalhoPrazo: trabalhoPrazo.trim() || undefined,
+        trabalhoInstrucoes: trabalhoInstrucoes.trim() || undefined,
       });
 
       const msg = tipoProvidencia === 'aula_dupla'
         ? `⚡ Aula Dupla registrada para ${dateFormatted}! O Profº ${substitutoProfName} assumiu os 2 tempos.`
         : tipoProvidencia === 'substituicao'
         ? `🔄 Substituição registrada para ${dateFormatted} com o Profº ${substitutoProfName}.`
+        : videoUrl || arquivoUrl
+        ? `📹 Aula gravada e trabalho registrados para ${dateFormatted}! Alunos notificados.`
         : `🚫 Suspensão de aula registrada para ${dateFormatted}. Alunos notificados.`;
 
       if (onSuccess) onSuccess(msg);
@@ -602,6 +677,136 @@ export const ModalProvidenciaAula: React.FC<ModalProvidenciaAulaProps> = ({
                     className="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-200 outline-none"
                   />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Passo 3 (Cancelamento): Recursos da Aula Remota / Gravada e Trabalho Anexo */}
+          {tipoProvidencia === 'cancelamento' && (
+            <div className="bg-red-50/50 dark:bg-red-950/20 p-3.5 rounded-2xl border border-red-200/80 dark:border-red-900/40 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-extrabold text-red-950 dark:text-red-200 flex items-center gap-1.5">
+                  <Play className="w-4 h-4 text-red-600" />
+                  Aula Gravada & Trabalho Avaliativo (Mesmo Aviso):
+                </span>
+                <span className="text-[10px] bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 px-2 py-0.5 rounded-md font-bold">
+                  Opcional / Integrado
+                </span>
+              </div>
+
+              {/* Botão de Sugestão Rápida */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMotivoTexto('O professor disponibilizou a aula gravada e um trabalho avaliativo. A lista de presença será o envio do próprio trabalho.');
+                  setTrabalhoInstrucoes('A lista de chamada será o próprio trabalho. Enviem pelo grupo oficial ou portal.');
+                  setTrabalhoPrazo('Próxima sexta-feira');
+                }}
+                className="w-full py-1.5 px-2.5 bg-red-100/70 hover:bg-red-200/70 text-red-800 text-[11px] font-bold rounded-xl text-left flex items-center justify-between transition cursor-pointer"
+              >
+                <span>💡 Preencher modelo rápido: "Aula Gravada + Trabalho como Presença"</span>
+                <Sparkles className="w-3.5 h-3.5 text-red-600" />
+              </button>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Link do Vídeo Gravado */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <Play className="w-3 h-3 text-red-600" />
+                    <span>Link do Vídeo Gravado (URL):</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://youtu.be/... ou Google Drive"
+                    className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-200 outline-none focus:border-red-500"
+                  />
+                </div>
+
+                {/* Prazo de Entrega */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-red-600" />
+                    <span>Prazo de Entrega do Trabalho:</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={trabalhoPrazo}
+                    onChange={(e) => setTrabalhoPrazo(e.target.value)}
+                    placeholder="Ex: Sexta-feira 18/09 às 23:59"
+                    className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-200 outline-none focus:border-red-500"
+                  />
+                </div>
+              </div>
+
+              {/* Arquivo do Trabalho / PDF */}
+              <div className="space-y-1.5 pt-1 border-t border-red-200/50 dark:border-red-900/30">
+                <label className="text-[11px] font-bold text-gray-700 dark:text-slate-300 flex items-center justify-between">
+                  <span className="flex items-center gap-1">
+                    <Download className="w-3 h-3 text-red-600" />
+                    Arquivo PDF do Trabalho / Atividade:
+                  </span>
+                  {arquivoNome && (
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold truncate max-w-[200px]">
+                      ✓ {arquivoNome}
+                    </span>
+                  )}
+                </label>
+
+                <div className="flex flex-col sm:flex-row items-center gap-2">
+                  <label className="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-red-300 dark:border-red-800 hover:bg-red-50 text-red-800 dark:text-red-300 text-xs font-bold rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shrink-0 transition active:scale-95 shadow-2xs">
+                    {isUploadingFile ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                    <span>{isUploadingFile ? 'Anexando...' : 'Anexar PDF Local'}</span>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.zip,.txt"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+
+                  <div className="relative flex-1 w-full">
+                    <input
+                      type="url"
+                      value={arquivoUrl.startsWith('data:') ? '' : arquivoUrl}
+                      onChange={(e) => {
+                        setArquivoUrl(e.target.value);
+                        if (e.target.value) setArquivoNome('Trabalho da Aula (Link)');
+                        else setArquivoNome('');
+                      }}
+                      placeholder={arquivoUrl.startsWith('data:') ? `Arquivo anexado: ${arquivoNome}` : "Ou cole o link do Google Drive/Dropbox..."}
+                      className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 outline-none"
+                    />
+                  </div>
+
+                  {(arquivoUrl || arquivoNome) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setArquivoUrl('');
+                        setArquivoNome('');
+                      }}
+                      className="text-[11px] text-red-600 hover:text-red-800 font-bold px-2 py-1 cursor-pointer"
+                    >
+                      Remover
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Instruções da Chamada / Presença */}
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-gray-700 dark:text-slate-300">
+                  Instruções de Presença / Chamada:
+                </label>
+                <input
+                  type="text"
+                  value={trabalhoInstrucoes}
+                  onChange={(e) => setTrabalhoInstrucoes(e.target.value)}
+                  placeholder="Ex: A lista de chamada será o próprio trabalho. Enviem pelo WhatsApp oficial."
+                  className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-200 outline-none focus:border-red-500"
+                />
               </div>
             </div>
           )}

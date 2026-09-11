@@ -10,7 +10,7 @@ import {
   ToggleLeft, ToggleRight, Sparkles, Video, FolderOpen, Copy, ExternalLink, 
   Clock, Calendar, BookOpen, Settings, Edit3, Trash2, ShieldCheck, UserCheck, RefreshCw,
   Archive, ArchiveRestore, Layers, Presentation, UploadCloud, Activity, Flame, Mic, Box,
-  BookMarked, Library, Zap
+  BookMarked, Library, Zap, Download, Loader2
 } from 'lucide-react';
 import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { Disciplina, Material, Avaliacao, AvisoLeituraPreAula, UserRole, LivroRecomendadoDisciplina } from '@/types';
@@ -105,10 +105,37 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const [authorName, setAuthorName] = useState('');
   const [leituraTitle, setLeituraTitle] = useState('');
   const [leituraUrl, setLeituraUrl] = useState('');
+  const [leituraFileUrl, setLeituraFileUrl] = useState('');
+  const [leituraFileName, setLeituraFileName] = useState('');
+  const [isUploadingLeituraFile, setIsUploadingLeituraFile] = useState(false);
   const [leituraMessage, setLeituraMessage] = useState('');
   const [leituraData, setLeituraData] = useState('Próxima Aula');
   const [leituraCategory, setLeituraCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar'>('durante_aula');
   const [editingAnnouncementId, setEditingAnnouncementId] = useState<string | null>(null);
+
+  const handleLeituraFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+      alert('Arquivo muito grande. O limite máximo para upload local é de 8MB. Você também pode informar um link direto do Google Drive.');
+      return;
+    }
+
+    setIsUploadingLeituraFile(true);
+    setLeituraFileName(file.name);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setLeituraFileUrl(reader.result as string);
+      setIsUploadingLeituraFile(false);
+    };
+    reader.onerror = () => {
+      alert('Erro ao carregar o arquivo local. Tente novamente ou use um link do Google Drive.');
+      setIsUploadingLeituraFile(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Modal / Edição de Dados da Matéria
   const [editingDisciplina, setEditingDisciplina] = useState<Disciplina | null>(null);
@@ -407,6 +434,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     setAuthorName(av.author_name);
     setLeituraTitle(av.title);
     setLeituraUrl(av.link_url);
+    setLeituraFileUrl(av.file_url || '');
+    setLeituraFileName(av.file_name || '');
     setLeituraMessage(av.message || '');
     setLeituraData(av.target_date || 'Próxima Aula');
     setLeituraCategory(av.category || 'pre_aula');
@@ -417,6 +446,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     setEditingAnnouncementId(null);
     setLeituraTitle('');
     setLeituraUrl('');
+    setLeituraFileUrl('');
+    setLeituraFileName('');
     setLeituraMessage('');
     setLeituraCategory('durante_aula');
     setLeituraData('Próxima Aula');
@@ -443,6 +474,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
           author_name: authorName || discObj.professor_name,
           title: leituraTitle,
           link_url: leituraUrl,
+          file_url: leituraFileUrl || undefined,
+          file_name: leituraFileName || undefined,
           message: leituraMessage || 'Link / material de apoio compartilhado com a turma.',
           category: leituraCategory,
           target_date: leituraData,
@@ -462,6 +495,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
       author_email: normalizedEmail,
       title: leituraTitle,
       link_url: leituraUrl,
+      file_url: leituraFileUrl || undefined,
+      file_name: leituraFileName || undefined,
       message: leituraMessage || (leituraCategory === 'durante_aula' ? 'Link compartilhado pelo professor durante a aula ao vivo.' : 'Textinho complementar e leitura pré-aula recomendada para nosso próximo encontro.'),
       category: leituraCategory,
       target_date: leituraData,
@@ -987,6 +1022,62 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               </div>
             </div>
 
+            {/* Anexo de Arquivo / Trabalho (PDF, DOCX ou Drive) */}
+            <div className="p-3 bg-white/80 border border-slate-200 rounded-xl space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                  <Download className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Arquivo Complementar / Trabalho (PDF, Atividade)</span>
+                </label>
+                <span className="text-[10px] text-gray-500 font-medium">Opcional</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <label className="w-full sm:w-auto px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shrink-0 border border-blue-200 transition active:scale-95 shadow-2xs">
+                  {isUploadingLeituraFile ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                  <span>{isUploadingLeituraFile ? 'Carregando...' : 'Anexar PDF Local'}</span>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.zip,.txt"
+                    onChange={handleLeituraFileUpload}
+                    className="hidden"
+                  />
+                </label>
+
+                <div className="relative flex-1 w-full">
+                  <input
+                    type="url"
+                    value={leituraFileUrl.startsWith('data:') ? '' : leituraFileUrl}
+                    onChange={(e) => {
+                      setLeituraFileUrl(e.target.value);
+                      if (e.target.value) setLeituraFileName('Arquivo / Trabalho (Link)');
+                      else setLeituraFileName('');
+                    }}
+                    placeholder={leituraFileUrl.startsWith('data:') ? `Anexo: ${leituraFileName}` : "Ou cole o link do Google Drive/PDF..."}
+                    className="w-full p-2 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                {(leituraFileUrl || leituraFileName) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLeituraFileUrl('');
+                      setLeituraFileName('');
+                    }}
+                    className="text-[11px] text-red-600 hover:text-red-800 font-bold px-1.5 py-1 cursor-pointer"
+                  >
+                    Remover
+                  </button>
+                )}
+              </div>
+              {leituraFileName && (
+                <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
+                  ✓ Anexo pronto: <strong>{leituraFileName}</strong>
+                </p>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Data / Referência da Aula</label>
@@ -1179,6 +1270,21 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                         <span>Por: <strong>{av.author_name}</strong></span>
                         <span className="bg-gray-100 px-2 py-0.5 rounded font-bold">{av.target_date || 'Data da Aula'}</span>
                       </div>
+
+                      {av.file_url && (
+                        <div className="pt-1">
+                          <a
+                            href={av.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download={av.file_name || 'anexo_aula.pdf'}
+                            className="w-full py-1.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5"
+                          >
+                            <Download className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Baixar Anexo: {av.file_name || 'Documento PDF'}</span>
+                          </a>
+                        </div>
+                      )}
 
                       <div className="flex gap-2 pt-1">
                         <a

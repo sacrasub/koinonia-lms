@@ -130,6 +130,8 @@ export interface AvisoLeituraPreAula {
   title: string;
   message: string;
   link_url: string;
+  file_url?: string;
+  file_name?: string;
   created_at: string;
   target_date?: string;
   category?: 'pre_aula' | 'durante_aula' | 'complementar';

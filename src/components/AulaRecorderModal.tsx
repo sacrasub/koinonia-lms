@@ -6,12 +6,17 @@ import {
   UploadCloud, CheckCircle2, AlertCircle, Sparkles, Clock, FolderOpen, 
   Layers, ExternalLink, ShieldCheck, Check, Copy, HelpCircle,
   Minimize2, Maximize2, Lock, Smartphone, Loader2, RefreshCw, Trash2, Unlock,
-  Bot, Timer, Infinity as InfinityIcon
+  Bot, Timer, Infinity as InfinityIcon, Calendar
 } from 'lucide-react';
 import { Disciplina, UserRole } from '@/types';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { getAuthorizedUserInfo } from '@/lib/authConfig';
 import { getDateForLesson, getAulaEmAndamentoHoje } from '@/lib/semesterUtils';
+import { 
+  playRecordingAlarm, 
+  playPresenceAlarm, 
+  playTestBeep 
+} from '@/lib/soundEffects';
 import { 
   addGravacao, 
   formatDuration, 
@@ -86,15 +91,25 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // Estados do Piloto Automático & Auto-Stop (Cristiano / Monitoria / Admin)
   const [isAutoPilot, setIsAutoPilot] = useState<boolean>(initialMode === 'autopilot');
   const [autoStopDurationMinutes, setAutoStopDurationMinutes] = useState<number>(120); // 2h padrão
-  const [autoStopMode, setAutoStopMode] = useState<'duration' | 'fixed_time'>('duration');
+  const [autoStopMode, setAutoStopMode] = useState<'duration' | 'fixed_time'>('fixed_time');
   const [autoStopFixedTime, setAutoStopFixedTime] = useState<string>('22:00');
   const [autoUploadDrive, setAutoUploadDrive] = useState<boolean>(true);
   const [autoDownloadBackup, setAutoDownloadBackup] = useState<boolean>(true);
   const [autoStopRemainingSeconds, setAutoStopRemainingSeconds] = useState<number | null>(null);
   const autoStopTargetTimeRef = useRef<number | null>(null);
 
+  // Estados de Programação de Início & Abertura Antecipada da Sala
+  const [startScheduleMode, setStartScheduleMode] = useState<'immediate' | 'official_start' | 'custom_time'>('official_start');
+  const [startScheduleTime, setStartScheduleTime] = useState<string>('19:00');
+  const [autoOpenMeet, setAutoOpenMeet] = useState<boolean>(true);
+  const [leadTimeMinutes, setLeadTimeMinutes] = useState<number>(5); // 5 minutos antes
+  const [standbyRemainingSeconds, setStandbyRemainingSeconds] = useState<number | null>(null);
+  const standbyIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startTargetTimeRef = useRef<number | null>(null);
+  const meetOpenedRef = useRef<boolean>(false);
+
   // Estados do Gravador
-  const [recordingState, setRecordingState] = useState<'idle' | 'recording' | 'paused' | 'stopped'>('idle');
+  const [recordingState, setRecordingState] = useState<'idle' | 'standby' | 'recording' | 'paused' | 'stopped'>('idle');
   const [recordingTime, setRecordingTime] = useState<number>(0);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
@@ -423,21 +438,80 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // =========================================================================
   // INICIAR GRAVAÇÃO COM PERSISTÊNCIA CONTÍNUA (INDEXEDDB)
   // =========================================================================
-  const startRecording = async (isAutopilotRun = false) => {
-    // Verifica concorrência
-    if (selectedDisciplinaId) {
-      const other = isAulaBeingRecordedByOther(selectedDisciplinaId, aulaNum, normalizedEmail);
-      if (other) {
-        setLockedByOther(other);
-        setErrorMessage(`Esta aula já está sendo gravada por ${other.recordedByName} (${other.recordedByEmail}).`);
-        return;
-      }
-    }
+  // =========================================================================
+  // AUXILIARES DE AGENDAMENTO E HORÁRIOS DO SENTINELA
+  // =========================================================================
+  const getOfficialStartTime = (): string => {
+    return selectedDisciplina?.start_time || '19:00';
+  };
 
-    setErrorMessage(null);
-    setIsSavedSuccess(false);
+  const getEffectiveScheduledStartTime = (): string => {
+    if (startScheduleMode === 'official_start') {
+      return getOfficialStartTime();
+    }
+    return startScheduleTime || '19:00';
+  };
+
+  const calculateScheduleTargetTimestamp = (): number => {
+    if (startScheduleMode === 'immediate') {
+      return Date.now();
+    }
+    const timeStr = getEffectiveScheduledStartTime();
+    const [h, m] = timeStr.split(':').map(Number);
+    const target = new Date();
+    target.setHours(h || 19, m || 0, 0, 0);
+    return target.getTime();
+  };
+
+  const getMeetOpenTimeString = (): string => {
+    const timeStr = getEffectiveScheduledStartTime();
+    const [h, m] = timeStr.split(':').map(Number);
+    const target = new Date();
+    target.setHours(h || 19, m || 0, 0, 0);
+    const meetTime = new Date(target.getTime() - leadTimeMinutes * 60 * 1000);
+    return `${String(meetTime.getHours()).padStart(2, '0')}:${String(meetTime.getMinutes()).padStart(2, '0')}`;
+  };
+
+  // Cancela o Sentinela Armado em Standby
+  const cancelStandby = () => {
+    if (standbyIntervalRef.current) {
+      clearInterval(standbyIntervalRef.current);
+      standbyIntervalRef.current = null;
+    }
+    startTargetTimeRef.current = null;
+    setStandbyRemainingSeconds(null);
+    stopTracks();
+    setRecordingState('idle');
+  };
+
+  // Forçar início imediato a partir do Standby
+  const forceStartFromStandby = async () => {
+    if (standbyIntervalRef.current) {
+      clearInterval(standbyIntervalRef.current);
+      standbyIntervalRef.current = null;
+    }
+    setStandbyRemainingSeconds(null);
+    if (streamRef.current) {
+      await initiateRecordingSessionWithStream(streamRef.current, true);
+    } else {
+      await startRecording(true);
+    }
+  };
+
+  // =========================================================================
+  // EXECUTA A GRAVAÇÃO EFETIVA UTILIZANDO UM STREAM JÁ AUTORIZADO
+  // =========================================================================
+  const initiateRecordingSessionWithStream = async (finalStream: MediaStream, isAutopilotRun = false) => {
+    // Limpa qualquer timer de standby prévio
+    if (standbyIntervalRef.current) {
+      clearInterval(standbyIntervalRef.current);
+      standbyIntervalRef.current = null;
+    }
+    setStandbyRemainingSeconds(null);
+
     chunksRef.current = [];
     chunkIndexRef.current = 0;
+    streamRef.current = finalStream;
 
     const activateAutopilot = isAutopilotRun || activeTabMode === 'autopilot' || isAutoPilot;
     if (activateAutopilot) {
@@ -452,42 +526,6 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     }
 
     try {
-      // 1. Captura a tela/aba (Google Meet) com áudio do sistema
-      const displayStream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          displaySurface: 'browser',
-          frameRate: { ideal: 30, max: 60 },
-        } as MediaTrackConstraints,
-        audio: true,
-      });
-
-      let finalStream: MediaStream = displayStream;
-
-      // 2. Mescla microfone se selecionado
-      if (includeMic) {
-        try {
-          const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-          const destination = audioCtx.createMediaStreamDestination();
-
-          const displayAudioTracks = displayStream.getAudioTracks();
-          if (displayAudioTracks.length > 0) {
-            const displaySource = audioCtx.createMediaStreamSource(new MediaStream(displayAudioTracks));
-            displaySource.connect(destination);
-          }
-
-          const micSource = audioCtx.createMediaStreamSource(micStream);
-          micSource.connect(destination);
-
-          const videoTrack = displayStream.getVideoTracks()[0];
-          finalStream = new MediaStream([videoTrack, ...destination.stream.getAudioTracks()]);
-        } catch (micErr) {
-          console.warn('Microfone não acessível, prosseguindo com áudio da aba:', micErr);
-        }
-      }
-
-      streamRef.current = finalStream;
-
       // Detecta formato suportado
       let mimeType = 'video/webm;codecs=vp9,opus';
       if (!MediaRecorder.isTypeSupported(mimeType)) {
@@ -575,7 +613,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       };
 
       // SE O USUÁRIO FECHAR A ABA DO GOOGLE MEET OU PARAR COMPARTILHAMENTO
-      const videoTrack = displayStream.getVideoTracks()[0];
+      const videoTrack = finalStream.getVideoTracks()[0];
       if (videoTrack) {
         videoTrack.onended = () => {
           if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
@@ -588,6 +626,10 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       setRecordingState('recording');
       setRecordingTime(0);
 
+      try {
+        playRecordingAlarm();
+      } catch (e) {}
+
       // Registra lock na nuvem para os outros monitores
       await startActiveRecording({
         key: sessionKey,
@@ -598,6 +640,8 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
         recordedByName: getMonitorDisplayName(),
         recordedByEmail: normalizedEmail,
       });
+
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
 
       timerIntervalRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
@@ -619,7 +663,202 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
         setTimeout(() => setIsMinimized(true), 400);
       }
     } catch (err: any) {
-      console.error('Erro ao iniciar gravação:', err);
+      console.error('Erro ao iniciar stream de gravação:', err);
+      setErrorMessage('Não foi possível iniciar a gravação. Verifique as permissões de tela e áudio.');
+    }
+  };
+
+  // =========================================================================
+  // ARMA O SENTINELA DE GRAVAÇÃO PROGRAMADA (STANDBY)
+  // =========================================================================
+  const armAutopilotSentinela = async () => {
+    // Se o modo for imediato, inicia direto
+    if (startScheduleMode === 'immediate') {
+      await startRecording(true);
+      return;
+    }
+
+    const targetTs = calculateScheduleTargetTimestamp();
+    const now = Date.now();
+
+    // Se o horário programado já passou hoje (ex: são 19:10 e o início era 19:00), inicia imediatamente
+    if (targetTs <= now) {
+      await startRecording(true);
+      return;
+    }
+
+    // Verifica concorrência
+    if (selectedDisciplinaId) {
+      const other = isAulaBeingRecordedByOther(selectedDisciplinaId, aulaNum, normalizedEmail);
+      if (other) {
+        setLockedByOther(other);
+        setErrorMessage(`Esta aula já está sendo gravada por ${other.recordedByName} (${other.recordedByEmail}).`);
+        return;
+      }
+    }
+
+    setErrorMessage(null);
+    setIsSavedSuccess(false);
+
+    try {
+      // 1. Captura prévia da tela/aba (Google Meet) enquanto o usuário está com o foco
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          displaySurface: 'browser',
+          frameRate: { ideal: 30, max: 60 },
+        } as MediaTrackConstraints,
+        audio: true,
+      });
+
+      let finalStream: MediaStream = displayStream;
+
+      // 2. Mescla microfone se selecionado
+      if (includeMic) {
+        try {
+          const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const destination = audioCtx.createMediaStreamDestination();
+
+          const displayAudioTracks = displayStream.getAudioTracks();
+          if (displayAudioTracks.length > 0) {
+            const displaySource = audioCtx.createMediaStreamSource(new MediaStream(displayAudioTracks));
+            displaySource.connect(destination);
+          }
+
+          const micSource = audioCtx.createMediaStreamSource(micStream);
+          micSource.connect(destination);
+
+          const videoTrack = displayStream.getVideoTracks()[0];
+          finalStream = new MediaStream([videoTrack, ...destination.stream.getAudioTracks()]);
+        } catch (micErr) {
+          console.warn('Microfone não acessível para o Sentinela, prosseguindo com áudio da aba:', micErr);
+        }
+      }
+
+      streamRef.current = finalStream;
+      startTargetTimeRef.current = targetTs;
+      meetOpenedRef.current = false;
+      setRecordingState('standby');
+      setIsAutoPilot(true);
+
+      const diffSecs = Math.max(0, Math.round((targetTs - Date.now()) / 1000));
+      setStandbyRemainingSeconds(diffSecs);
+
+      // Se a aba do Meet for fechada durante o standby, cancela
+      const videoTrack = finalStream.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.onended = () => {
+          if (recordingState === 'standby') {
+            cancelStandby();
+          } else if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            stopRecording();
+          }
+        };
+      }
+
+      if (standbyIntervalRef.current) clearInterval(standbyIntervalRef.current);
+
+      standbyIntervalRef.current = setInterval(async () => {
+        const remaining = Math.round((targetTs - Date.now()) / 1000);
+        setStandbyRemainingSeconds(Math.max(0, remaining));
+
+        // Abertura automática da sala do Meet com antecedência
+        if (autoOpenMeet && !meetOpenedRef.current && leadTimeMinutes > 0) {
+          if (remaining <= leadTimeMinutes * 60) {
+            meetOpenedRef.current = true;
+            if (selectedDisciplina?.google_meet_url) {
+              window.open(selectedDisciplina.google_meet_url, '_blank');
+              try { playPresenceAlarm(); } catch (e) {}
+            }
+          }
+        }
+
+        // Início pontual da gravação quando zerar o cronômetro
+        if (remaining <= 0) {
+          if (standbyIntervalRef.current) {
+            clearInterval(standbyIntervalRef.current);
+            standbyIntervalRef.current = null;
+          }
+          console.log('🤖 [Piloto Automático Sentinela] Horário de início atingido! Disparando gravação...');
+          setStandbyRemainingSeconds(0);
+          if (streamRef.current) {
+            await initiateRecordingSessionWithStream(streamRef.current, true);
+          }
+        }
+      }, 1000);
+
+      // Minimiza suavemente
+      setTimeout(() => setIsMinimized(true), 400);
+
+    } catch (err: any) {
+      console.error('Erro ao armar piloto automático:', err);
+      if (err.name !== 'NotAllowedError') {
+        setErrorMessage('Não foi possível armar o piloto automático. Verifique as permissões de tela.');
+      }
+    }
+  };
+
+  // =========================================================================
+  // INICIAR GRAVAÇÃO PADRÃO OU ENCAMINHAR PARA SENTINELA
+  // =========================================================================
+  const startRecording = async (isAutopilotRun = false) => {
+    // Se for Piloto Automático e estiver configurado para horário programado
+    if ((isAutopilotRun || activeTabMode === 'autopilot' || isAutoPilot) && startScheduleMode !== 'immediate') {
+      await armAutopilotSentinela();
+      return;
+    }
+
+    // Verifica concorrência
+    if (selectedDisciplinaId) {
+      const other = isAulaBeingRecordedByOther(selectedDisciplinaId, aulaNum, normalizedEmail);
+      if (other) {
+        setLockedByOther(other);
+        setErrorMessage(`Esta aula já está sendo gravada por ${other.recordedByName} (${other.recordedByEmail}).`);
+        return;
+      }
+    }
+
+    setErrorMessage(null);
+    setIsSavedSuccess(false);
+
+    try {
+      // 1. Captura a tela/aba (Google Meet) com áudio do sistema
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          displaySurface: 'browser',
+          frameRate: { ideal: 30, max: 60 },
+        } as MediaTrackConstraints,
+        audio: true,
+      });
+
+      let finalStream: MediaStream = displayStream;
+
+      // 2. Mescla microfone se selecionado
+      if (includeMic) {
+        try {
+          const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const destination = audioCtx.createMediaStreamDestination();
+
+          const displayAudioTracks = displayStream.getAudioTracks();
+          if (displayAudioTracks.length > 0) {
+            const displaySource = audioCtx.createMediaStreamSource(new MediaStream(displayAudioTracks));
+            displaySource.connect(destination);
+          }
+
+          const micSource = audioCtx.createMediaStreamSource(micStream);
+          micSource.connect(destination);
+
+          const videoTrack = displayStream.getVideoTracks()[0];
+          finalStream = new MediaStream([videoTrack, ...destination.stream.getAudioTracks()]);
+        } catch (micErr) {
+          console.warn('Microfone não acessível, prosseguindo com áudio da aba:', micErr);
+        }
+      }
+
+      await initiateRecordingSessionWithStream(finalStream, isAutopilotRun);
+    } catch (err: any) {
+      console.error('Erro ao iniciar gravação imediata:', err);
       if (err.name !== 'NotAllowedError') {
         setErrorMessage('Não foi possível iniciar a gravação. Verifique as permissões de tela e áudio.');
       }
@@ -919,6 +1158,61 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // MODO 1: BARRA FLUTUANTE COMPACTA (MINIMIZADA) COM UPLOAD AUTOMÁTICO EM SEGUNDO PLANO
   // =========================================================================
   if (isMinimized) {
+    if (recordingState === 'standby') {
+      return (
+        <div className="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-[60] bg-slate-950/95 text-white p-3.5 sm:p-4 rounded-3xl shadow-2xl border border-purple-500/80 backdrop-blur-xl flex items-center gap-3 sm:gap-4 animate-in slide-in-from-bottom-5 duration-300 max-w-lg border-l-4 border-l-purple-500 shadow-purple-950/50">
+          <div className="flex items-center gap-3">
+            <div className="relative flex items-center justify-center">
+              <div className="w-3.5 h-3.5 rounded-full bg-purple-500 animate-ping" />
+              <div className="w-3.5 h-3.5 rounded-full bg-purple-600 absolute" />
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-mono text-base font-black text-purple-300 tracking-wider flex items-center gap-1.5">
+                  <Bot className="w-4 h-4 text-purple-400" />
+                  <span>Inicia em: {formatDuration(standbyRemainingSeconds || 0)}</span>
+                </span>
+                <span className="text-[9px] bg-purple-500/30 text-purple-200 border border-purple-400/40 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                  🛡️ Sentinela Armado
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 truncate max-w-[200px] sm:max-w-[260px] font-medium">
+                Às {getEffectiveScheduledStartTime()} • Meet: {getMeetOpenTimeString()} • {selectedDisciplina?.name}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 ml-auto shrink-0">
+            <button
+              onClick={forceStartFromStandby}
+              className="py-1.5 px-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1"
+              title="Gravar agora imediatamente (forçar início)"
+            >
+              <Play className="w-3 h-3 fill-current" />
+              <span className="hidden sm:inline">Gravar Já</span>
+            </button>
+
+            <button
+              onClick={cancelStandby}
+              className="p-1.5 bg-red-950/80 hover:bg-red-800 text-red-300 hover:text-white rounded-xl transition cursor-pointer border border-red-500/40"
+              title="Cancelar Sentinela"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setIsMinimized(false)}
+              className="py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition flex items-center gap-1 cursor-pointer border border-slate-700"
+              title="Expandir painel do Sentinela"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={`fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-[60] bg-slate-950/95 text-white p-3.5 sm:p-4 rounded-3xl shadow-2xl border border-slate-700/80 backdrop-blur-xl flex items-center gap-3 sm:gap-4 animate-in slide-in-from-bottom-5 duration-300 max-w-lg border-l-4 ${isAutoPilot ? 'border-l-purple-500 shadow-purple-950/40' : 'border-l-red-500'}`}>
         <div className="flex items-center gap-3">
@@ -1440,53 +1734,176 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               </div>
 
               {activeTabMode === 'autopilot' ? (
-                <div className="pt-3 border-t border-purple-200 space-y-3.5">
+                <div className="pt-3 border-t border-purple-200 space-y-4">
                   {/* Banner Explicativo do Piloto Automático */}
                   <div className="p-3.5 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 text-white rounded-2xl border border-purple-500/40 shadow-sm space-y-1.5">
-                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-purple-300">
-                      <Bot className="w-4 h-4 text-purple-400 shrink-0" />
-                      <span>Piloto Automático Sentinela • Gravação Programada</span>
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-purple-300">
+                        <Bot className="w-4 h-4 text-purple-400 shrink-0" />
+                        <span>Piloto Automático Sentinela • Gravação 100% Programada</span>
+                      </div>
+                      <span className="text-[10px] bg-purple-500/30 text-purple-200 border border-purple-400/40 px-2 py-0.5 rounded-full font-bold">
+                        Auto-Start & Auto-Stop
+                      </span>
                     </div>
-                    <p className="text-[11px] text-slate-200 leading-relaxed">
-                      Planejado para você (Cristiano) colocar a aula para iniciar, entrar na sala e não precisar ficar na frente do computador até o fim. O gravador iniciará e encerrará sozinho com salvamento no Drive.
+                    <p className="text-[11px] text-slate-200 leading-relaxed font-sans">
+                      Basta o computador estar ligado e a plataforma aberta. O Sentinela abrirá a sala do Google Meet com antecedência, iniciará a gravação na hora exata da aula e encerrará sozinho enviando para o Google Drive.
                     </p>
                   </div>
 
-                  {/* 1. Sala do Google Meet */}
-                  <div className="p-3 bg-blue-50/80 border border-blue-200 rounded-2xl space-y-2">
+                  {/* PASSO 1: PROGRAMAR INÍCIO DA GRAVAÇÃO (AUTO-START) */}
+                  <div className="p-3.5 bg-purple-50/80 border border-purple-200 rounded-2xl space-y-2.5">
                     <div className="flex items-center justify-between flex-wrap gap-2">
-                      <span className="text-xs font-bold text-blue-950 flex items-center gap-1.5">
+                      <span className="text-xs font-extrabold text-purple-950 flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-purple-600" />
+                        <span>Passo 1: Programar Início da Gravação (Auto-Start)</span>
+                      </span>
+                      <span className="text-[10px] font-mono font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-full">
+                        Início: {getEffectiveScheduledStartTime()}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setStartScheduleMode('immediate')}
+                        className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
+                          startScheduleMode === 'immediate'
+                            ? 'bg-purple-600 text-white shadow-xs'
+                            : 'bg-white text-purple-900 border border-purple-200 hover:bg-purple-100'
+                        }`}
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        <span>⚡ Gravar Imediato</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setStartScheduleMode('official_start');
+                          setStartScheduleTime(getOfficialStartTime());
+                        }}
+                        className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
+                          startScheduleMode === 'official_start'
+                            ? 'bg-purple-600 text-white shadow-xs'
+                            : 'bg-white text-purple-900 border border-purple-200 hover:bg-purple-100'
+                        }`}
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>⏰ Início Oficial ({getOfficialStartTime()})</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setStartScheduleMode('custom_time')}
+                        className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
+                          startScheduleMode === 'custom_time'
+                            ? 'bg-purple-600 text-white shadow-xs'
+                            : 'bg-white text-purple-900 border border-purple-200 hover:bg-purple-100'
+                        }`}
+                      >
+                        <Timer className="w-3.5 h-3.5" />
+                        <span>⏱️ Outro Horário</span>
+                      </button>
+                    </div>
+
+                    {startScheduleMode === 'custom_time' && (
+                      <div className="pt-2 border-t border-purple-200/80 flex items-center gap-2">
+                        <label className="text-xs font-bold text-purple-900 shrink-0">
+                          Horário específico de início:
+                        </label>
+                        <input
+                          type="time"
+                          value={startScheduleTime}
+                          onChange={(e) => setStartScheduleTime(e.target.value)}
+                          className="p-1.5 bg-white border border-purple-300 rounded-xl text-xs font-bold text-purple-900 outline-none focus:ring-2 focus:ring-purple-500"
+                        />
+                        <span className="text-[11px] text-purple-700 font-medium">
+                          (Horário de Brasília)
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* PASSO 2: ABERTURA ANTECIPADA DA SALA DO GOOGLE MEET */}
+                  <div className="p-3.5 bg-blue-50/80 border border-blue-200 rounded-2xl space-y-2.5">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className="text-xs font-extrabold text-blue-950 flex items-center gap-1.5">
                         <Video className="w-3.5 h-3.5 text-blue-600" />
-                        <span>Passo 1: Entrar na Sala do Google Meet</span>
+                        <span>Passo 2: Abertura Antecipada da Sala do Google Meet</span>
                       </span>
                       {selectedDisciplina?.google_meet_url && (
-                        <span className="text-[10px] text-blue-700 bg-blue-100/80 font-mono px-2 py-0.5 rounded-full truncate max-w-[180px]">
+                        <span className="text-[10px] text-blue-700 bg-blue-100 font-mono px-2 py-0.5 rounded-full truncate max-w-[180px]">
                           {selectedDisciplina.google_meet_url}
                         </span>
                       )}
                     </div>
+
                     {selectedDisciplina?.google_meet_url ? (
-                      <button
-                        type="button"
-                        onClick={() => window.open(selectedDisciplina.google_meet_url, '_blank')}
-                        className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>🚀 1. Abrir Sala do Google Meet da Disciplina</span>
-                      </button>
+                      <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-xs font-bold text-blue-900 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={autoOpenMeet}
+                            onChange={(e) => setAutoOpenMeet(e.target.checked)}
+                            className="w-4 h-4 text-blue-600 rounded"
+                          />
+                          <span>Abrir automaticamente a sala do Meet com antecedência</span>
+                        </label>
+
+                        {autoOpenMeet && (
+                          <div className="space-y-1.5 pt-1">
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+                              {[
+                                { label: '5 min antes', mins: 5 },
+                                { label: '10 min antes', mins: 10 },
+                                { label: '15 min antes', mins: 15 },
+                                { label: 'Na hora exata', mins: 0 },
+                              ].map((item) => (
+                                <button
+                                  key={item.mins}
+                                  type="button"
+                                  onClick={() => setLeadTimeMinutes(item.mins)}
+                                  className={`py-1.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                                    leadTimeMinutes === item.mins
+                                      ? 'bg-blue-600 text-white shadow-xs'
+                                      : 'bg-white text-blue-900 border border-blue-200 hover:bg-blue-100'
+                                  }`}
+                                >
+                                  {item.label}
+                                </button>
+                              ))}
+                            </div>
+
+                            <p className="text-[11px] text-blue-800 font-medium bg-blue-100/60 p-2 rounded-xl flex items-center justify-between gap-1 flex-wrap">
+                              <span>
+                                🚪 <strong>Meet abrirá às:</strong> {getMeetOpenTimeString()}
+                                {leadTimeMinutes > 0 ? ` (${leadTimeMinutes} min antes de iniciar)` : ' (junto com o início)'}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => window.open(selectedDisciplina.google_meet_url, '_blank')}
+                                className="text-[10px] text-blue-700 hover:text-blue-900 underline font-bold cursor-pointer"
+                              >
+                                Abrir Sala Agora
+                              </button>
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <p className="text-xs text-amber-800 bg-amber-50 p-2 rounded-xl border border-amber-200">
-                        Nenhum link de Meet vinculado a esta disciplina.
+                        Nenhum link de Meet vinculado a esta disciplina. A gravação gravará a tela selecionada.
                       </p>
                     )}
                   </div>
 
-                  {/* 2. Temporizador de Auto-Stop */}
+                  {/* PASSO 3: PROGRAMAR ENCERRAMENTO (AUTO-STOP) */}
                   <div className="p-3.5 bg-purple-50/80 border border-purple-200 rounded-2xl space-y-2.5">
                     <div className="flex items-center justify-between flex-wrap gap-2">
-                      <span className="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                      <span className="text-xs font-extrabold text-purple-950 flex items-center gap-1.5">
                         <Timer className="w-3.5 h-3.5 text-purple-600" />
-                        <span>Passo 2: Programar Encerramento (Auto-Stop)</span>
+                        <span>Passo 3: Programar Encerramento (Auto-Stop)</span>
                       </span>
                       <span className="text-[10px] font-mono font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-full">
                         Término aprox: {getEstimatedEndTimeString()}
@@ -1531,11 +1948,11 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                       }`}
                     >
                       <Clock className="w-3.5 h-3.5" />
-                      <span>Parar pontualmente às 22:00 (Término Oficial)</span>
+                      <span>Parar pontualmente às 22:00 (Término Oficial da Aula)</span>
                     </button>
                   </div>
 
-                  {/* 3. Checkboxes de Proteção e Automação */}
+                  {/* PASSO 4: CHECKBOXES DE PROTEÇÃO E AUTOMAÇÃO */}
                   <div className="p-3 bg-white rounded-2xl border border-gray-200 space-y-2 text-xs">
                     <label className="flex items-center gap-2 font-bold text-gray-800 cursor-pointer">
                       <input
@@ -1642,6 +2059,92 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* PAINEL DO PILOTO AUTOMÁTICO SENTINELA EM STANDBY (AGUARDANDO HORÁRIO) */}
+          {recordingState === 'standby' && (
+            <div className="p-6 bg-gradient-to-b from-purple-950 via-slate-900 to-indigo-950 rounded-3xl text-white text-center space-y-5 shadow-2xl border-2 border-purple-500/80 animate-in fade-in">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-purple-400 animate-ping" />
+                <span className="text-xs font-black tracking-widest uppercase text-purple-300 flex items-center gap-1.5">
+                  <Bot className="w-4 h-4 text-purple-400" />
+                  <span>PILOTO AUTOMÁTICO SENTINELA ARMADO & PRONTO</span>
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-xs text-purple-200">
+                  Início programado da gravação: <strong className="text-white text-sm">{getEffectiveScheduledStartTime()}</strong>
+                </p>
+                <div className="text-4xl sm:text-6xl font-mono font-black text-purple-300 tracking-wider">
+                  {formatDuration(standbyRemainingSeconds || 0)}
+                </div>
+                <p className="text-[11px] text-purple-400 font-medium">
+                  Tempo restante até o disparo automático
+                </p>
+              </div>
+
+              {/* Status do Google Meet e Encerramento */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left text-xs">
+                <div className="p-3 bg-purple-900/40 rounded-2xl border border-purple-500/30 space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-purple-200">
+                    <Video className="w-4 h-4 text-purple-400" />
+                    <span>Google Meet da Aula:</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-snug">
+                    {meetOpenedRef.current
+                      ? '✅ Sala já aberta em nova aba do navegador.'
+                      : autoOpenMeet
+                      ? `🚪 Abrirá sozinho às ${getMeetOpenTimeString()} (${leadTimeMinutes} min antes).`
+                      : 'Abertura automática desativada.'}
+                  </p>
+                </div>
+
+                <div className="p-3 bg-purple-900/40 rounded-2xl border border-purple-500/30 space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-purple-200">
+                    <Clock className="w-4 h-4 text-purple-400" />
+                    <span>Auto-Stop Programado:</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-snug">
+                    Encerrará às {autoStopMode === 'fixed_time' ? autoStopFixedTime : getEstimatedEndTimeString()} com upload automático para o Drive.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 bg-purple-900/30 rounded-2xl border border-purple-700/40 text-[11px] text-slate-200 leading-relaxed font-sans">
+                💡 <strong>Você pode sair da frente do computador:</strong> Deixe esta aba aberta e a máquina ligada. A gravação começará e terminará sozinha com backup seguro.
+              </div>
+
+              {/* Botões de Ação do Standby */}
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={forceStartFromStandby}
+                  className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>Gravar Agora (Iniciar Imediatamente)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsMinimized(true)}
+                  className="px-4 py-2.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer border border-white/20"
+                >
+                  <Minimize2 className="w-4 h-4 text-purple-300" />
+                  <span>Minimizar Sentinela</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={cancelStandby}
+                  className="px-4 py-2.5 bg-red-900/40 hover:bg-red-800/80 active:scale-95 text-red-200 hover:text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer border border-red-500/40"
+                >
+                  <X className="w-4 h-4" />
+                  <span>Cancelar Agendamento</span>
+                </button>
+              </div>
             </div>
           )}
 
@@ -1994,8 +2497,39 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
         </div>
 
         {/* Rodapé do Modal */}
-        <div className="p-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between">
-          {recordingState === 'idle' && !isUploadingToDrive && !isSavedSuccess ? (
+        <div className="p-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between gap-2 flex-wrap">
+          {recordingState === 'standby' ? (
+            <>
+              <button
+                type="button"
+                onClick={cancelStandby}
+                className="px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-100/60 rounded-xl transition cursor-pointer flex items-center gap-1.5"
+              >
+                <X className="w-4 h-4" />
+                <span>Cancelar Sentinela</span>
+              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsMinimized(true)}
+                  className="px-4 py-2 text-xs font-bold text-purple-900 bg-purple-100/80 hover:bg-purple-200 rounded-xl transition cursor-pointer flex items-center gap-1.5"
+                >
+                  <Minimize2 className="w-4 h-4 text-purple-700" />
+                  <span>Minimizar</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={forceStartFromStandby}
+                  className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg transition flex items-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>Gravar Agora</span>
+                </button>
+              </div>
+            </>
+          ) : recordingState === 'idle' && !isUploadingToDrive && !isSavedSuccess ? (
             <>
               <button
                 type="button"
@@ -2017,7 +2551,13 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                   }`}
                 >
                   {lockedByOther ? <Lock className="w-4 h-4" /> : <Bot className="w-4 h-4 text-purple-200" />}
-                  <span>{lockedByOther ? 'Aula Sendo Gravada' : 'Armar Piloto Automático & Gravar'}</span>
+                  <span>
+                    {lockedByOther
+                      ? 'Aula Sendo Gravada'
+                      : startScheduleMode === 'immediate'
+                      ? 'Armar Piloto Automático & Gravar Imediatamente'
+                      : `🛡️ Armar Sentinela Programado (Inicia às ${getEffectiveScheduledStartTime()})`}
+                  </span>
                 </button>
               ) : activeTabMode === 'screen' ? (
                 <button
