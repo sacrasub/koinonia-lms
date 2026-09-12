@@ -596,7 +596,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
             const userCanEdit = canEditDisciplina(disc);
 
             return (
-              <div key={disc.id} className={`rounded-xl border ${disc.corBorda} ${disc.corFundo} shadow-sm overflow-hidden`}>
+              <div key={disc.id} className={`rounded-xl border ${disc.corBorda} ${disc.corFundo} dark:bg-slate-900 dark:border-slate-800 shadow-sm overflow-hidden`}>
                 <div className="flex items-center justify-between p-4 gap-3">
                   <button
                     onClick={() => setExpandedDisciplina(prev => prev === disc.id ? null : disc.id)}
@@ -604,12 +604,12 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/70 ${disc.cor}`}>{disc.num}</span>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/70 dark:bg-slate-800 ${disc.cor} dark:text-slate-200`}>{disc.num}</span>
                       </div>
-                      <p className={`font-bold text-sm ${disc.cor}`}>{disc.nome}</p>
-                      <p className="text-xs text-slate-500">{disc.professor}</p>
+                      <p className={`font-bold text-sm ${disc.cor} dark:text-slate-100`}>{disc.nome}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{disc.professor}</p>
                     </div>
-                    {expanded ? <ChevronUp className={`w-4 h-4 ${disc.cor}`} /> : <ChevronDown className={`w-4 h-4 ${disc.cor}`} />}
+                    {expanded ? <ChevronUp className={`w-4 h-4 ${disc.cor} dark:text-slate-400`} /> : <ChevronDown className={`w-4 h-4 ${disc.cor} dark:text-slate-400`} />}
                   </button>
 
                   {/* Botão de Edição Rápida da Disciplina */}
@@ -618,7 +618,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                       <button
                         onClick={() => handleOpenNewEntregavel(disc.nome)}
                         title="Adicionar avaliação para esta matéria"
-                        className="p-1.5 bg-white/80 hover:bg-white text-slate-700 hover:text-blue-700 rounded-lg text-xs font-bold border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                        className="p-1.5 bg-white/80 dark:bg-slate-800 hover:bg-white hover:dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-400 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 shadow-2xs transition flex items-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Nova Prova</span>
@@ -627,7 +627,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                       <button
                         onClick={() => handleOpenEditDisciplina(disc)}
                         title="Editar diretrizes, critérios e livros desta matéria"
-                        className="p-1.5 bg-white/80 hover:bg-white text-slate-700 hover:text-purple-700 rounded-lg text-xs font-bold border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                        className="p-1.5 bg-white/80 dark:bg-slate-800 hover:bg-white hover:dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-purple-700 dark:hover:text-purple-400 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 shadow-2xs transition flex items-center gap-1 cursor-pointer"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Editar Matéria</span>
@@ -637,22 +637,22 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                 </div>
 
                 {expanded && (
-                  <div className="border-t border-white/40 bg-white/70 p-4 space-y-4">
+                  <div className="border-t border-white/40 dark:border-slate-800 bg-white/70 dark:bg-slate-950/80 p-4 space-y-4">
                     <div>
-                      <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wide mb-2 flex items-center gap-1"><Info className="w-3 h-3" /> Diretrizes</h3>
+                      <h3 className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide mb-2 flex items-center gap-1"><Info className="w-3 h-3" /> Diretrizes</h3>
                       <ul className="space-y-1.5">
-                        {disc.regrasGerais.map((r, i) => <li key={i} className="text-xs text-slate-700 bg-white/80 rounded-lg px-3 py-2 leading-relaxed">{r}</li>)}
+                        {disc.regrasGerais.map((r, i) => <li key={i} className="text-xs text-slate-700 dark:text-slate-200 bg-white/80 dark:bg-slate-900/90 border border-transparent dark:border-slate-800 rounded-lg px-3 py-2 leading-relaxed">{r}</li>)}
                       </ul>
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wide mb-2 flex items-center gap-1"><GraduationCap className="w-3 h-3" /> Avaliação</h3>
+                      <h3 className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide mb-2 flex items-center gap-1"><GraduationCap className="w-3 h-3" /> Avaliação</h3>
                       <ul className="space-y-1.5">
-                        {disc.criteriosAvaliacao.map((c, i) => <li key={i} className="text-xs text-slate-700 bg-white/80 rounded-lg px-3 py-2 leading-relaxed">{c}</li>)}
+                        {disc.criteriosAvaliacao.map((c, i) => <li key={i} className="text-xs text-slate-700 dark:text-slate-200 bg-white/80 dark:bg-slate-900/90 border border-transparent dark:border-slate-800 rounded-lg px-3 py-2 leading-relaxed">{c}</li>)}
                       </ul>
                     </div>
                     {disc.infoExtra && (
-                      <div className="bg-white/80 rounded-lg p-3 border border-white/60">
-                        <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-line">{disc.infoExtra}</p>
+                      <div className="bg-white/80 dark:bg-slate-900/90 rounded-lg p-3 border border-white/60 dark:border-slate-800">
+                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{disc.infoExtra}</p>
                       </div>
                     )}
                     {disc.whatsapp && (

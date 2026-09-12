@@ -740,26 +740,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
             {/* Grid das 6 Fases do Ciclo */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {/* FASE 1 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     01
                   </span>
-                  <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider bg-blue-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider bg-blue-100/80 dark:bg-blue-950/80 px-2.5 py-0.5 rounded-full">
                     Pré-Aula
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   1. Google Agenda & Leituras
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Consulte a sua Google Agenda semanal para monitorar convites e horários das aulas. Realize a leitura prévia recomendada na pasta do Drive da disciplina.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">Pasta 01 a 09</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">Pasta 01 a 09</span>
                   <button 
                     onClick={() => setActiveSubTab('agenda')}
-                    className="text-blue-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Ver Agenda</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -768,26 +768,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
               </div>
 
               {/* FASE 2 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     02
                   </span>
-                  <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider bg-emerald-100/80 dark:bg-emerald-950/80 px-2.5 py-0.5 rounded-full">
                     Ao Vivo
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                   2. Google Meet & Presença
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Conecte-se com câmeras ligadas no horário marcado. Ao final do encontro, envie a sua presença pelo link do Google Forms disponibilizado pelo monitor.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">Link & PIN da Sala</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">Link & PIN da Sala</span>
                   <button 
                     onClick={() => onTabChange && onTabChange('aluno-disciplinas')}
-                    className="text-emerald-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Acessar Salas</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -796,26 +796,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
               </div>
 
               {/* FASE 3 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-amber-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     03
                   </span>
-                  <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wider bg-amber-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider bg-amber-100/80 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-full">
                     Síntese Ativa
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-amber-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                   3. Caderno Cornell (Notas)
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Organize suas anotações no Método Cornell: Tópicos e Perguntas na coluna esquerda, notas da aula no centro e Resumo Executivo + Aplicação Pastoral na base.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">Pasta 10 (Anotações)</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">Pasta 10 (Anotações)</span>
                   <button 
                     onClick={() => onTabChange && onTabChange('aluno-caderno')}
-                    className="text-amber-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Abrir Caderno</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -824,26 +824,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
               </div>
 
               {/* FASE 4 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-purple-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     04
                   </span>
-                  <span className="text-[11px] font-bold text-purple-700 uppercase tracking-wider bg-purple-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wider bg-purple-100/80 dark:bg-purple-950/80 px-2.5 py-0.5 rounded-full">
                     Mentoria IA
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   4. Personas do Gemini
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Converse com a persona especializada da disciplina no Gemini para tirar dúvidas profundas, debater teses reformadas e gerar perguntas simuladas para AV1/AV2.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">9 Personas Ativas</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">9 Personas Ativas</span>
                   <button 
                     onClick={() => setActiveSubTab('personas')}
-                    className="text-purple-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-purple-600 dark:text-purple-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Ver Personas</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -852,26 +852,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
               </div>
 
               {/* FASE 5 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-cyan-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     05
                   </span>
-                  <span className="text-[11px] font-bold text-cyan-700 uppercase tracking-wider bg-cyan-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-cyan-700 dark:text-cyan-300 uppercase tracking-wider bg-cyan-100/80 dark:bg-cyan-950/80 px-2.5 py-0.5 rounded-full">
                     Aprofundamento
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   5. NotebookLM & Podcasts
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Consulte os cadernos do NotebookLM de cada matéria (com as fontes indexadas) e gere Podcasts em áudio (Deep Dive Audio) para escutar no deslocamento.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">9 Cadernos Criados</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">9 Cadernos Criados</span>
                   <button 
                     onClick={() => setActiveSubTab('notebooklm')}
-                    className="text-cyan-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-cyan-600 dark:text-cyan-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Ver Cadernos</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -880,26 +880,26 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
               </div>
 
               {/* FASE 6 */}
-              <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 hover:shadow-md transition-all space-y-3 relative group">
+              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:shadow-md transition-all space-y-3 relative group">
                 <div className="flex items-center justify-between">
                   <span className="w-8 h-8 rounded-xl bg-rose-600 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                     06
                   </span>
-                  <span className="text-[11px] font-bold text-rose-700 uppercase tracking-wider bg-rose-100/80 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-bold text-rose-700 dark:text-rose-300 uppercase tracking-wider bg-rose-100/80 dark:bg-rose-950/80 px-2.5 py-0.5 rounded-full">
                     Revisão
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 group-hover:text-rose-600 transition-colors">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
                   6. Gravações HD & Checklist AV
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Reveja pontos complexos nas gravações oficiais em HD (Pasta 11) e acompanhe o cumprimento dos marcos de trabalho e provas no Checklist AV2.
                 </p>
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                  <span className="text-gray-500 font-medium">Pasta 11 (Gravações)</span>
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-gray-500 dark:text-slate-400 font-medium">Pasta 11 (Gravações)</span>
                   <button 
                     onClick={() => onTabChange && onTabChange('aluno-checklist')}
-                    className="text-rose-600 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-rose-600 dark:text-rose-400 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Checklist AV</span>
                     <ChevronRight className="w-3.5 h-3.5" />

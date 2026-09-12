@@ -1495,29 +1495,29 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
             }}
             className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between space-y-2 ${
               filterDisciplina === 'all'
-                ? 'border-blue-600 ring-2 ring-blue-500/30 bg-blue-50/80 shadow-md scale-[1.02]'
-                : 'border-gray-200 bg-gray-50/60 hover:bg-white hover:border-gray-300'
+                ? 'border-blue-600 ring-2 ring-blue-500/30 bg-blue-50 dark:bg-blue-950/60 shadow-md scale-[1.02]'
+                : 'border-gray-200 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900/60 hover:bg-white hover:dark:bg-slate-800/80 hover:border-gray-300 dark:hover:border-slate-700'
             }`}
           >
             <div className="flex items-center justify-between">
               <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${
-                filterDisciplina === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                filterDisciplina === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-200'
               }`}>
                 TODAS
               </span>
-              <BookOpen className={`w-3.5 h-3.5 ${filterDisciplina === 'all' ? 'text-blue-600' : 'text-gray-400'}`} />
+              <BookOpen className={`w-3.5 h-3.5 ${filterDisciplina === 'all' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500'}`} />
             </div>
 
             <div>
-              <div className="text-xs font-black text-gray-900 leading-tight">
+              <div className="text-xs font-black text-gray-900 dark:text-slate-100 leading-tight">
                 Todas as Disciplinas
               </div>
-              <div className="text-[11px] text-gray-500 mt-0.5">
+              <div className="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5">
                 Visão unificada do semestre
               </div>
             </div>
 
-            <div className="pt-1 border-t border-gray-200/60 flex items-center justify-between text-[10px] font-bold text-gray-600">
+            <div className="pt-1 border-t border-gray-200/60 dark:border-slate-800 flex items-center justify-between text-[10px] font-bold text-gray-600 dark:text-slate-300">
               <span>{allNotesList.length} cadernos salvos</span>
             </div>
           </button>
@@ -1540,8 +1540,8 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                 }}
                 className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between space-y-2 relative group ${
                   isSelected
-                    ? disc.activeBorder
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-xs'
+                    ? `${disc.activeBorder} dark:bg-slate-800/90`
+                    : 'border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 hover:border-gray-300 dark:hover:border-slate-700 hover:shadow-xs'
                 }`}
               >
                 {/* Cabeçalho do Card */}
@@ -1552,27 +1552,27 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                   {notesCount > 0 ? (
                     <span className="w-2 h-2 rounded-full bg-emerald-500" title={`${notesCount} anotações registradas`} />
                   ) : (
-                    <span className="w-2 h-2 rounded-full bg-gray-300" title="Nenhuma anotação ainda" />
+                    <span className="w-2 h-2 rounded-full bg-gray-300 dark:bg-slate-700" title="Nenhuma anotação ainda" />
                   )}
                 </div>
 
                 {/* Título & Professor */}
                 <div>
                   <div className={`text-xs font-black leading-snug line-clamp-2 transition-colors ${
-                    isSelected ? 'text-gray-950 font-black' : 'text-gray-800 group-hover:text-blue-600'
+                    isSelected ? 'text-gray-950 dark:text-white font-black' : 'text-gray-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
                   }`}>
                     {disc.shortName}
                   </div>
-                  <div className="text-[11px] text-gray-500 font-medium mt-0.5 truncate">
+                  <div className="text-[11px] text-gray-500 dark:text-slate-400 font-medium mt-0.5 truncate">
                     {disc.prof}
                   </div>
                 </div>
 
                 {/* Rodapé: Dia / Horário & Contagem */}
-                <div className="pt-1 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 font-bold">
+                <div className="pt-1 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-[10px] text-gray-500 dark:text-slate-400 font-bold">
                   <span className="truncate max-w-[90px]">{disc.dayOfWeek.split('-')[0]}</span>
                   <span className={`px-1.5 py-0.2 rounded-md text-[10px] font-bold ${
-                    notesCount > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'
+                    notesCount > 0 ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400'
                   }`}>
                     {notesCount} {notesCount === 1 ? 'aula' : 'aulas'}
                   </span>

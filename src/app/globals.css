@@ -67,7 +67,8 @@ body {
 }
 
 /* Transforma containers brancos em cartões dark elegantes */
-.dark .bg-white:not([data-preserve-light]) {
+.dark .bg-white:not([data-preserve-light]),
+.dark [class*="bg-white/"]:not([data-preserve-light]) {
   background-color: #0f172a !important;
   border-color: #1e293b !important;
   color: #f1f5f9;
@@ -104,13 +105,32 @@ body {
 }
 
 .dark .bg-gray-50:not([data-preserve-bg]),
-.dark .bg-slate-50:not([data-preserve-bg]) {
+.dark .bg-slate-50:not([data-preserve-bg]),
+.dark [class*="bg-slate-50/"]:not([data-preserve-bg]),
+.dark [class*="bg-gray-50/"]:not([data-preserve-bg]) {
   background-color: #162032 !important;
 }
 
 .dark .bg-gray-100:not([data-preserve-bg]),
-.dark .bg-slate-100:not([data-preserve-bg]) {
+.dark .bg-slate-100:not([data-preserve-bg]),
+.dark [class*="bg-slate-100/"]:not([data-preserve-bg]),
+.dark [class*="bg-gray-100/"]:not([data-preserve-bg]),
+.dark [class*="bg-gray-200/"]:not([data-preserve-bg]) {
   background-color: #1e293b !important;
+}
+
+/* Suporte a cartões temáticos de matérias em modo escuro */
+.dark .bg-amber-50:not([data-preserve-bg]),
+.dark .bg-blue-50:not([data-preserve-bg]),
+.dark .bg-emerald-50:not([data-preserve-bg]),
+.dark .bg-indigo-50:not([data-preserve-bg]),
+.dark .bg-violet-50:not([data-preserve-bg]),
+.dark .bg-rose-50:not([data-preserve-bg]),
+.dark [class*="bg-blue-50/"]:not([data-preserve-bg]),
+.dark [class*="bg-amber-50/"]:not([data-preserve-bg]),
+.dark [class*="bg-emerald-50/"]:not([data-preserve-bg]) {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
 }
 
 .dark .hover\:bg-gray-50:hover,

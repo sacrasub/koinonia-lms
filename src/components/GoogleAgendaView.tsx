@@ -746,29 +746,29 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                   key={dayItem.dateStr}
                   className={`rounded-2xl p-3 border transition-all flex flex-col justify-between min-h-[320px] ${
                     dayItem.isToday
-                      ? 'bg-blue-50/40 border-blue-300 ring-2 ring-blue-400/20'
-                      : 'bg-slate-50/70 border-gray-200/80 hover:border-blue-200'
+                      ? 'bg-blue-50/40 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 ring-2 ring-blue-400/20'
+                      : 'bg-slate-50/70 dark:bg-slate-900/80 border-gray-200/80 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800'
                   }`}
                 >
                   <div className="space-y-2.5">
                     {/* Cabeçalho do Dia */}
-                    <div className="flex items-center justify-between pb-2 border-b border-gray-200/60">
+                    <div className="flex items-center justify-between pb-2 border-b border-gray-200/60 dark:border-slate-800">
                       <div>
-                        <div className="text-[11px] font-black text-slate-600 uppercase">
+                        <div className="text-[11px] font-black text-slate-600 dark:text-slate-400 uppercase">
                           {dayItem.dayName}
                         </div>
-                        <div className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                        <div className="text-sm font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
                           <span
                             className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                               dayItem.isToday
                                 ? 'bg-blue-600 text-white shadow-xs'
-                                : 'text-slate-900'
+                                : 'text-slate-900 dark:text-slate-100'
                             }`}
                           >
                             {dayItem.dayNum}
                           </span>
                           {dayItem.isToday && (
-                            <span className="text-[9px] font-bold text-blue-600 uppercase">Hoje</span>
+                            <span className="text-[9px] font-bold text-blue-600 dark:text-blue-400 uppercase">Hoje</span>
                           )}
                         </div>
                       </div>
@@ -777,7 +777,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                         type="button"
                         onClick={() => handleOpenCreateForDate(dayItem.dateStr)}
                         title={`Adicionar compromisso em ${dayItem.dayNum}/${dayItem.date.getMonth() + 1}`}
-                        className="w-6 h-6 rounded-full bg-white hover:bg-blue-600 hover:text-white border border-gray-300 text-slate-700 font-black text-xs flex items-center justify-center transition shadow-2xs cursor-pointer"
+                        className="w-6 h-6 rounded-full bg-white dark:bg-slate-800 hover:bg-blue-600 hover:text-white border border-gray-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-black text-xs flex items-center justify-center transition shadow-2xs cursor-pointer"
                       >
                         +
                       </button>
@@ -786,7 +786,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                     {/* Lista de Eventos do Dia */}
                     <div className="space-y-2">
                       {dayEvents.length === 0 ? (
-                        <div className="py-8 text-center text-gray-400 text-[11px] font-medium">
+                        <div className="py-8 text-center text-slate-400 dark:text-slate-500 text-[11px] font-semibold">
                           Sem aulas ou entregas
                         </div>
                       ) : (
@@ -794,7 +794,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                           <div
                             key={ev.id}
                             onClick={() => setSelectedUniversalEvent(ev)}
-                            className="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs hover:border-blue-300 transition cursor-pointer space-y-1.5 group"
+                            className="bg-white dark:bg-slate-800/90 p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 shadow-2xs hover:border-blue-300 transition cursor-pointer space-y-1.5 group"
                           >
                             <div className="flex items-center justify-between gap-1">
                               <span
@@ -816,25 +816,25 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                               </span>
                             </div>
 
-                            <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-600 transition leading-snug line-clamp-2">
+                            <div className="text-[11px] font-bold text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition leading-snug line-clamp-2">
                               {ev.title}
                             </div>
 
                             {ev.professorName && (
-                              <div className="text-[10px] text-gray-500 truncate">
+                              <div className="text-[10px] text-gray-500 dark:text-slate-400 truncate">
                                 👨‍🏫 {ev.professorName}
                               </div>
                             )}
 
                             {/* Atalhos Rápidos */}
-                            <div className="flex items-center gap-1 pt-1 border-t border-gray-100">
+                            <div className="flex items-center gap-1 pt-1 border-t border-gray-100 dark:border-slate-700/60">
                               {ev.meetUrl && (
                                 <a
                                   href={ev.meetUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   onClick={(e) => e.stopPropagation()}
-                                  className="px-2 py-0.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded text-[10px] font-bold flex items-center gap-1"
+                                  className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 hover:bg-blue-100 rounded text-[10px] font-bold flex items-center gap-1"
                                 >
                                   <Video className="w-2.5 h-2.5" />
                                   <span>Meet</span>
@@ -852,7 +852,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                                       disciplinaName: ev.disciplinaCode,
                                     });
                                   }}
-                                  className="px-2 py-0.5 bg-red-50 text-red-700 hover:bg-red-100 rounded text-[10px] font-bold flex items-center gap-0.5 cursor-pointer"
+                                  className="px-2 py-0.5 bg-red-50 dark:bg-red-900/40 text-red-700 dark:text-red-300 hover:bg-red-100 rounded text-[10px] font-bold flex items-center gap-0.5 cursor-pointer"
                                 >
                                   <span>REC</span>
                                 </button>
@@ -867,7 +867,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
                   <button
                     type="button"
                     onClick={() => handleOpenCreateForDate(dayItem.dateStr)}
-                    className="w-full mt-2 py-1 bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-[11px] font-bold rounded-lg border border-dashed border-gray-300 transition text-center cursor-pointer"
+                    className="w-full mt-2 py-1 bg-white dark:bg-slate-800 hover:bg-blue-50 hover:dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-400 text-[11px] font-bold rounded-lg border border-dashed border-gray-300 dark:border-slate-700 transition text-center cursor-pointer"
                   >
                     + Adicionar
                   </button>

@@ -85,6 +85,7 @@ export interface EscalaItem {
   presencaUrl: string;
   meetUrl?: string;
   description?: string;
+  isAssincrona?: boolean;
 }
 
 export interface MonitorInfo {
@@ -514,9 +515,10 @@ export const ESCALA_DATA: EscalaItem[] = [
     monitor: 'Cristiano',
     monitorEmail: 'sacrasub@gmail.com',
     turma: 'Turma A',
-    presencaUrl: 'https://forms.gle/vULryGYArnJZgBF28',
-    meetUrl: 'https://meet.google.com/jnz-hkqd-edc',
-    description: 'Matéria modular (4 aulas gravadas no Drive oficial). Atividade avaliativa explicada na 4ª aula e enviada por e-mail até 28/11/2026.'
+    presencaUrl: '',
+    meetUrl: '',
+    isAssincrona: true,
+    description: 'Matéria modular (4 videoaulas gravadas no Google Drive oficial). Cada aluno assiste no seu próprio tempo, sem Meet ao vivo nem chamada.'
   },
 
   // ==========================================
@@ -2966,193 +2968,355 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                 </div>
 
                                 <div className="text-right">
-                                  <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-full text-xs font-extrabold border border-emerald-200 shadow-xs">
-                                    <Clock className="w-3.5 h-3.5 text-emerald-700" />
-                                    {startLocal} – {endLocal} (Local)
-                                  </span>
-                                  {!tzInfo.isBRT && (
-                                    <div className="text-[10px] text-gray-500 font-medium mt-0.5">
-                                      Brasília: {item.startBRT} – {item.endBRT} BRT
-                                    </div>
+                                  {item.isAssincrona ? (
+                                    <span className="inline-flex items-center gap-1 bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-200 px-2.5 py-1 rounded-full text-xs font-extrabold border border-purple-200 dark:border-purple-800 shadow-xs">
+                                      <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                                      <span>Assíncrona / Modular</span>
+                                    </span>
+                                  ) : (
+                                    <>
+                                      <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-full text-xs font-extrabold border border-emerald-200 shadow-xs">
+                                        <Clock className="w-3.5 h-3.5 text-emerald-700" />
+                                        {startLocal} – {endLocal} (Local)
+                                      </span>
+                                      {!tzInfo.isBRT && (
+                                        <div className="text-[10px] text-gray-500 font-medium mt-0.5">
+                                          Brasília: {item.startBRT} – {item.endBRT} BRT
+                                        </div>
+                                      )}
+                                    </>
                                   )}
                                 </div>
                               </div>
 
                               {/* Informações da Disciplina */}
-                              <div className="pt-2 border-t border-gray-100">
-                                <h3 className="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-blue-900 transition">
+                              <div className="pt-2 border-t border-gray-100 dark:border-slate-800">
+                                <h3 className="font-extrabold text-base sm:text-lg text-slate-900 dark:text-slate-100 group-hover:text-blue-900 dark:group-hover:text-blue-400 transition">
                                   {item.title}
                                 </h3>
-                                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-0.5">
                                   {item.professor}
                                 </p>
                                 {item.description && (
-                                  <p className="text-xs text-gray-500 mt-2 line-clamp-2 leading-relaxed bg-gray-50/80 p-2 rounded-xl">
+                                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed bg-gray-50/80 dark:bg-slate-900/60 p-2 rounded-xl border border-transparent dark:border-slate-800">
                                     {item.description}
                                   </p>
                                 )}
                               </div>
                             </div>
 
-                            {/* Ações Rápidas (Meet, Presença e Cancelamento) */}
-                            <div className="space-y-2.5 pt-3 border-t border-gray-100">
-                              {item.meetUrl ? (
-                                canceladaStatus ? (
-                                  <div className="w-full py-2.5 px-3 bg-gray-100 text-gray-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-gray-200 select-none cursor-not-allowed">
-                                    <Ban className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                                    <span>Meet Suspenso (Aula Cancelada)</span>
+                            {/* Ações da Aula (Síncrona vs Assíncrona) */}
+                            {item.isAssincrona ? (
+                              <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-slate-800">
+                                {/* Banner explicativo de Disciplina Assíncrona */}
+                                <div className="p-3 bg-purple-50/90 dark:bg-purple-950/40 rounded-2xl border border-purple-200/80 dark:border-purple-800 space-y-2">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-purple-600 text-white shadow-2xs">
+                                      <Sparkles className="w-3 h-3" />
+                                      <span>Disciplina 100% Assíncrona</span>
+                                    </span>
+                                    <span className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
+                                      4 Videoaulas em HD
+                                    </span>
                                   </div>
-                                ) : (
-                                  <div className="flex items-center gap-2">
+                                  <p className="text-xs text-purple-950 dark:text-purple-200 leading-relaxed font-medium">
+                                    Esta disciplina não possui aulas síncronas no Meet nem lista de presença. Cada aluno assiste no seu próprio tempo e entrega a atividade avaliativa final até <strong>28/11/2026</strong>.
+                                  </p>
+                                </div>
+
+                                {/* Botão Principal: Pasta do Drive */}
+                                <a
+                                  href="https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-full py-2.5 px-3 bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                >
+                                  <FolderOpen className="w-4 h-4" />
+                                  <span>Abrir Pasta Oficial no Google Drive</span>
+                                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                                </a>
+
+                                {/* Grade com Acesso Rápido às 4 Videoaulas */}
+                                <div className="space-y-1.5 pt-1">
+                                  <div className="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+                                    <span className="flex items-center gap-1.5">
+                                      <Play className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400 fill-current" />
+                                      <span>Videoaulas Gravadas em HD:</span>
+                                    </span>
+                                    <span className="text-[10px] text-slate-500 font-normal">Assista no seu tempo</span>
+                                  </div>
+
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                     <a
-                                      href={item.meetUrl}
+                                      href="https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 bg-red-600 hover:bg-red-700 text-white"
+                                      className="p-2.5 bg-slate-50 dark:bg-slate-900/90 hover:bg-purple-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-xl transition flex items-start gap-2 group"
                                     >
-                                      <Video className="w-3.5 h-3.5" />
-                                      <span>Entrar no Meet</span>
+                                      <span className="w-5 h-5 rounded-md bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                                        01
+                                      </span>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Por Que Esta Disciplina é Necessária?
+                                        </div>
+                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                          636 MB • Videoaula HD
+                                        </div>
+                                      </div>
+                                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
                                     </a>
 
-                                    <button
-                                      onClick={() => handleCopyMeet(item.meetUrl!, item.id, item.title, item.professor)}
-                                      title="Copiar link do Google Meet formatado"
-                                      className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
+                                    <a
+                                      href="https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-2.5 bg-slate-50 dark:bg-slate-900/90 hover:bg-purple-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-xl transition flex items-start gap-2 group"
                                     >
-                                      {isCopiedMeet ? (
+                                      <span className="w-5 h-5 rounded-md bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                                        02
+                                      </span>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Áfricas, Diáspora e Cultura Afro-BR
+                                        </div>
+                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                          595 MB • Videoaula HD
+                                        </div>
+                                      </div>
+                                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
+                                    </a>
+
+                                    <a
+                                      href="https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-2.5 bg-slate-50 dark:bg-slate-900/90 hover:bg-purple-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-xl transition flex items-start gap-2 group"
+                                    >
+                                      <span className="w-5 h-5 rounded-md bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                                        03
+                                      </span>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Povos Indígenas: Histórias & Missão
+                                        </div>
+                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                          526 MB • Videoaula HD
+                                        </div>
+                                      </div>
+                                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
+                                    </a>
+
+                                    <a
+                                      href="https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-2.5 bg-amber-50/70 dark:bg-amber-950/40 hover:bg-amber-100/80 dark:hover:bg-amber-900/50 border border-amber-200/80 dark:border-amber-800 rounded-xl transition flex items-start gap-2 group"
+                                    >
+                                      <span className="w-5 h-5 rounded-md bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                                        04
+                                      </span>
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-bold text-amber-950 dark:text-amber-200 group-hover:text-amber-700 line-clamp-1">
+                                          Religiões, Prática da Igreja & Avaliação
+                                        </div>
+                                        <div className="text-[10px] text-amber-800 dark:text-amber-300 font-semibold mt-0.5">
+                                          532 MB • Explicação do Trabalho
+                                        </div>
+                                      </div>
+                                      <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                    </a>
+                                  </div>
+                                </div>
+
+                                {/* Orientação da Atividade Avaliativa */}
+                                <div className="p-3 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-gray-200 dark:border-slate-800 text-xs space-y-1.5">
+                                  <div className="font-extrabold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                                    <span className="flex items-center gap-1.5">
+                                      <GraduationCap className="w-4 h-4 text-emerald-600" />
+                                      <span>Atividade Avaliativa Única</span>
+                                    </span>
+                                    <span className="text-[10px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-full">
+                                      Prazo: 28/11/2026
+                                    </span>
+                                  </div>
+                                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-[11px]">
+                                    O formato da atividade é explicado na 4ª videoaula pelo Profº Alexsandro. O envio do trabalho concluído deve ser realizado para o e-mail:
+                                  </p>
+                                  <div className="flex items-center justify-between gap-2 bg-white dark:bg-slate-800 p-2 rounded-lg border border-gray-200 dark:border-slate-700">
+                                    <span className="font-mono font-bold text-xs text-blue-700 dark:text-blue-400 truncate">
+                                      alexsandro@koinonia.edu.br
+                                    </span>
+                                    <a
+                                      href="mailto:alexsandro@koinonia.edu.br?subject=Trabalho%20de%20História%20da%20Cultura%20Afro%20Brasileira"
+                                      className="px-2 py-1 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 text-blue-700 dark:text-blue-300 text-[10px] font-bold rounded-md flex items-center gap-1 shrink-0"
+                                    >
+                                      <Mail className="w-3 h-3" />
+                                      <span>Enviar E-mail</span>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="space-y-2.5 pt-3 border-t border-gray-100">
+                                {item.meetUrl ? (
+                                  canceladaStatus ? (
+                                    <div className="w-full py-2.5 px-3 bg-gray-100 text-gray-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-gray-200 select-none cursor-not-allowed">
+                                      <Ban className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                                      <span>Meet Suspenso (Aula Cancelada)</span>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center gap-2">
+                                      <a
+                                        href={item.meetUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 bg-red-600 hover:bg-red-700 text-white"
+                                      >
+                                        <Video className="w-3.5 h-3.5" />
+                                        <span>Entrar no Meet</span>
+                                      </a>
+
+                                      <button
+                                        onClick={() => handleCopyMeet(item.meetUrl!, item.id, item.title, item.professor)}
+                                        title="Copiar link do Google Meet formatado"
+                                        className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
+                                      >
+                                        {isCopiedMeet ? (
+                                          <>
+                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                            <span>Copiado!</span>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Copy className="w-3.5 h-3.5" />
+                                            <span>Copiar Meet</span>
+                                          </>
+                                        )}
+                                      </button>
+                                    </div>
+                                  )
+                                ) : (
+                                  <div className="w-full py-2.5 px-3 bg-slate-100 text-slate-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+                                    <span>📹 Módulo Gravado / Assíncrono</span>
+                                  </div>
+                                )}
+
+                                {canceladaStatus ? (
+                                  <div className="w-full py-2.5 px-3 bg-red-50/80 text-red-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-red-200/80 select-none">
+                                    <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                                    <span>Lista de Presença Suspensa (Aula Cancelada)</span>
+                                  </div>
+                                ) : item.presencaUrl ? (
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      onClick={() => handleCopyPresenca(item.presencaUrl, item.id, item.title)}
+                                      className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-xs active:scale-95 ${
+                                        isCopiedPresenca
+                                          ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                          : 'bg-blue-600 hover:bg-blue-800 text-white'
+                                      }`}
+                                    >
+                                      {isCopiedPresenca ? (
                                         <>
-                                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                          <span>Copiado!</span>
+                                          <Check className="w-3.5 h-3.5" />
+                                          <span>Mensagem Copiada!</span>
                                         </>
                                       ) : (
                                         <>
                                           <Copy className="w-3.5 h-3.5" />
-                                          <span>Copiar Meet</span>
+                                          <span>📋 Copiar Lista de Presença</span>
                                         </>
                                       )}
                                     </button>
-                                  </div>
-                                )
-                              ) : (
-                                <div className="w-full py-2.5 px-3 bg-slate-100 text-slate-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
-                                  <span>📹 Módulo Gravado / Assíncrono</span>
-                                </div>
-                              )}
 
-                              {canceladaStatus ? (
-                                <div className="w-full py-2.5 px-3 bg-red-50/80 text-red-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-red-200/80 select-none">
-                                  <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                                  <span>Lista de Presença Suspensa (Aula Cancelada)</span>
-                                </div>
-                              ) : item.presencaUrl ? (
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => handleCopyPresenca(item.presencaUrl, item.id, item.title)}
-                                    className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-xs active:scale-95 ${
-                                      isCopiedPresenca
-                                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                                        : 'bg-blue-600 hover:bg-blue-800 text-white'
-                                    }`}
-                                  >
-                                    {isCopiedPresenca ? (
-                                      <>
-                                        <Check className="w-3.5 h-3.5" />
-                                        <span>Mensagem Copiada!</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="w-3.5 h-3.5" />
-                                        <span>📋 Copiar Lista de Presença</span>
-                                      </>
-                                    )}
-                                  </button>
-
-                                  <a
-                                    href={item.presencaUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    title="Abrir formulário oficial do Google Forms"
-                                    className="px-3 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
-                                  >
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                    <span>Abrir</span>
-                                  </a>
-                                </div>
-                              ) : (
-                                <button
-                                  disabled
-                                  className="w-full py-2 px-3 rounded-xl font-medium text-xs bg-slate-50 text-slate-400 border border-slate-200/60 cursor-not-allowed flex items-center justify-center gap-1"
-                                >
-                                  Sem formulário de presença ao vivo
-                                </button>
-                              )}
-
-                              {/* Botão de Cancelamento / Aviso de Sem Aula */}
-                              <div className="pt-2 border-t border-gray-100">
-                                {canceladaStatus ? (
-                                  <div className="p-3 bg-red-50/90 border border-red-200 rounded-xl space-y-2">
-                                    <div className="flex items-center justify-between gap-2">
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wide">
-                                        🚫 Aula Cancelada / Substituída
-                                      </span>
-                                      <button
-                                        onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
-                                        className="text-[10px] text-red-600 hover:text-red-800 underline font-medium cursor-pointer"
-                                      >
-                                        Desfazer
-                                      </button>
-                                    </div>
-                                    <p className="text-xs text-red-900 leading-relaxed font-sans">
-                                      <strong>Motivo:</strong> "{canceladaStatus.motivo}"
-                                    </p>
-                                    {(canceladaStatus.video_url || canceladaStatus.arquivo_url) && (
-                                      <div className="pt-1.5 border-t border-red-200/60 flex flex-wrap gap-1.5">
-                                        {canceladaStatus.video_url && (
-                                          <a
-                                            href={canceladaStatus.video_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition"
-                                          >
-                                            <Play className="w-3 h-3 fill-current" />
-                                            <span>Assistir Vídeo Gravado</span>
-                                          </a>
-                                        )}
-                                        {canceladaStatus.arquivo_url && (
-                                          <a
-                                            href={canceladaStatus.arquivo_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            download={canceladaStatus.arquivo_nome || 'trabalho.pdf'}
-                                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-red-50 text-red-700 border border-red-300 font-bold text-[10px] rounded-lg shadow-2xs transition"
-                                          >
-                                            <Download className="w-3 h-3" />
-                                            <span>{canceladaStatus.arquivo_nome || 'Baixar Trabalho PDF'}</span>
-                                          </a>
-                                        )}
-                                      </div>
-                                    )}
-                                    {canceladaStatus.trabalho_prazo && (
-                                      <p className="text-[10px] text-red-800 font-semibold">
-                                        📅 <strong>Prazo:</strong> {canceladaStatus.trabalho_prazo}
-                                      </p>
-                                    )}
-                                    <span className="text-[9px] text-red-700 block text-right font-mono">
-                                      Registrado por: {canceladaStatus.autor_nome}
-                                    </span>
+                                    <a
+                                      href={item.presencaUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      title="Abrir formulário oficial do Google Forms"
+                                      className="px-3 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
+                                    >
+                                      <ExternalLink className="w-3.5 h-3.5" />
+                                      <span>Abrir</span>
+                                    </a>
                                   </div>
                                 ) : (
                                   <button
-                                    onClick={() => handleOpenModalCancelamento(item, null)}
-                                    className="w-full py-2 px-3 bg-gray-50 hover:bg-red-50 text-gray-600 hover:text-red-700 border border-gray-200/80 hover:border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
-                                    title="Informar aos alunos que não haverá esta aula e descrever o motivo"
+                                    disabled
+                                    className="w-full py-2 px-3 rounded-xl font-medium text-xs bg-slate-50 text-slate-400 border border-slate-200/60 cursor-not-allowed flex items-center justify-center gap-1"
                                   >
-                                    <Ban className="w-3.5 h-3.5 text-red-500" />
-                                    <span>Avisar: Não Haverá Aula</span>
+                                    Sem formulário de presença ao vivo
                                   </button>
                                 )}
+
+                                {/* Botão de Cancelamento / Aviso de Sem Aula */}
+                                <div className="pt-2 border-t border-gray-100">
+                                  {canceladaStatus ? (
+                                    <div className="p-3 bg-red-50/90 border border-red-200 rounded-xl space-y-2">
+                                      <div className="flex items-center justify-between gap-2">
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wide">
+                                          🚫 Aula Cancelada / Substituída
+                                        </span>
+                                        <button
+                                          onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
+                                          className="text-[10px] text-red-600 hover:text-red-800 underline font-medium cursor-pointer"
+                                        >
+                                          Desfazer
+                                        </button>
+                                      </div>
+                                      <p className="text-xs text-red-900 leading-relaxed font-sans">
+                                        <strong>Motivo:</strong> "{canceladaStatus.motivo}"
+                                      </p>
+                                      {(canceladaStatus.video_url || canceladaStatus.arquivo_url) && (
+                                        <div className="pt-1.5 border-t border-red-200/60 flex flex-wrap gap-1.5">
+                                          {canceladaStatus.video_url && (
+                                            <a
+                                              href={canceladaStatus.video_url}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                            >
+                                              <Play className="w-3 h-3 fill-current" />
+                                              <span>Assistir Vídeo Gravado</span>
+                                            </a>
+                                          )}
+                                          {canceladaStatus.arquivo_url && (
+                                            <a
+                                              href={canceladaStatus.arquivo_url}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              download={canceladaStatus.arquivo_nome || 'trabalho.pdf'}
+                                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-red-50 text-red-700 border border-red-300 font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                            >
+                                              <Download className="w-3 h-3" />
+                                              <span>{canceladaStatus.arquivo_nome || 'Baixar Trabalho PDF'}</span>
+                                            </a>
+                                          )}
+                                        </div>
+                                      )}
+                                      {canceladaStatus.trabalho_prazo && (
+                                        <p className="text-[10px] text-red-800 font-semibold">
+                                          📅 <strong>Prazo:</strong> {canceladaStatus.trabalho_prazo}
+                                        </p>
+                                      )}
+                                      <span className="text-[9px] text-red-700 block text-right font-mono">
+                                        Registrado por: {canceladaStatus.autor_nome}
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <button
+                                      onClick={() => handleOpenModalCancelamento(item, null)}
+                                      className="w-full py-2 px-3 bg-gray-50 hover:bg-red-50 text-gray-600 hover:text-red-700 border border-gray-200/80 hover:border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"
+                                      title="Informar aos alunos que não haverá esta aula e descrever o motivo"
+                                    >
+                                      <Ban className="w-3.5 h-3.5 text-red-500" />
+                                      <span>Avisar: Não Haverá Aula</span>
+                                    </button>
+                                  )}
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         );
                       })}

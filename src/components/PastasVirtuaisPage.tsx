@@ -174,13 +174,13 @@ export const PastasVirtuaisPage: React.FC<PastasVirtuaisPageProps> = ({
       {/* SELETOR DE TURMA & BARRA DE FERRAMENTAS */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Seletor de Turma A / B */}
-        <div className="flex items-center bg-gray-200/80 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
+        <div className="flex items-center bg-slate-200 dark:bg-slate-800 border border-slate-300/60 dark:border-slate-700 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
           <button
             onClick={() => setSelectedTurmaIdx(1)}
             className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
               selectedTurmaIdx === 1
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             🏛️ Turma A (7º Período)
@@ -189,8 +189,8 @@ export const PastasVirtuaisPage: React.FC<PastasVirtuaisPageProps> = ({
             onClick={() => setSelectedTurmaIdx(2)}
             className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
               selectedTurmaIdx === 2
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             📖 Turma B (3º Período)
@@ -198,41 +198,41 @@ export const PastasVirtuaisPage: React.FC<PastasVirtuaisPageProps> = ({
         </div>
 
         {/* Navegação por Abas (Lista Simples vs Visão por Dias) */}
-        <nav className="flex items-center bg-gray-200/80 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
+        <nav className="flex items-center bg-slate-200 dark:bg-slate-800 border border-slate-300/60 dark:border-slate-700 p-1.5 rounded-2xl shadow-inner w-full sm:w-auto">
           <button
             onClick={() => setActiveTab('tab-lista')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
               activeTab === 'tab-lista'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <List className="w-4 h-4 text-blue-600" />
+            <List className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Lista Simples</span>
           </button>
           <button
             onClick={() => setActiveTab('tab-dias')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
               activeTab === 'tab-dias'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <Calendar className="w-4 h-4 text-blue-600" />
+            <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Visão por Dias</span>
           </button>
         </nav>
       </div>
 
       {/* BARRA DE PESQUISA RÁPIDA */}
-      <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-2xl border border-gray-200 shadow-xs">
-        <Search className="w-4 h-4 text-gray-400 shrink-0" />
+      <div className="flex items-center gap-3 bg-white dark:bg-slate-900 px-4 py-3 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs">
+        <Search className="w-4 h-4 text-gray-400 dark:text-slate-500 shrink-0" />
         <input
           type="text"
           placeholder="Buscar por nome da disciplina, professor ou dia da semana..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full text-xs sm:text-sm font-semibold text-slate-800 outline-none bg-transparent"
+          className="w-full text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 outline-none bg-transparent placeholder:text-slate-400 dark:placeholder:text-slate-500"
         />
         {searchQuery && (
           <button
