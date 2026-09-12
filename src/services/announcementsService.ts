@@ -38,6 +38,160 @@ export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
     target_date: '18/08/2026 (Terça-feira)',
     is_pinned: true,
     is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-hilario-1',
+    disciplina_id: 'disc-2',
+    disciplina_name: 'História do Pensamento Cristão II',
+    author_name: 'Profº Hilário Bispo',
+    author_role: 'professor',
+    author_email: 'hilario.graca@catolica.edu.br',
+    avatar_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+    title: 'A Missão de Deus: Revelando o Plano Redentor das Escrituras',
+    message: 'Leitura preliminar para compreensão do Iluminismo, razão vs. revelação e as raízes do pensamento reformado.',
+    link_url: 'https://drive.google.com/open?id=1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me&usp=drive_copy',
+    created_at: '2026-08-18T18:00:00Z',
+    target_date: 'Terça-feira às 20:35',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-uilian-1',
+    disciplina_id: 'disc-3',
+    disciplina_name: 'Aconselhamento Bíblico II',
+    author_name: 'Profº Uilian Santos',
+    author_role: 'professor',
+    author_email: 'santosuilian093@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    title: 'Leitura Obrigatória: O Ego Transformado (Timothy Keller)',
+    message: 'Texto-base essencial para o exercício do aconselhamento bíblico e preparação para a primeira avaliação objetiva.',
+    link_url: 'https://drive.google.com/open?id=1BUr0R4pLQjTt01ID8XjYKIBlZhAtaWcx&usp=drive_copy',
+    created_at: '2026-08-19T17:30:00Z',
+    target_date: 'Quarta-feira às 19:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-cleiton-1',
+    disciplina_id: 'disc-4',
+    disciplina_name: 'Direitos Humanos',
+    author_name: 'Profº Cleiton Barbirato',
+    author_role: 'professor',
+    author_email: 'cleitonpb@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    title: 'Declaração Universal dos Direitos Humanos e Ética Cristã',
+    message: 'Artigos doutrinários e análise dos tratados de direitos fundamentais para a nossa próxima sessão.',
+    link_url: 'https://drive.google.com/open?id=1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7&usp=drive_copy',
+    created_at: '2026-08-19T19:00:00Z',
+    target_date: 'Quarta-feira às 20:35',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-karol-1',
+    disciplina_id: 'disc-5',
+    disciplina_name: 'Ética Cristã',
+    author_name: 'Profª Karoline Evangelista',
+    author_role: 'professor',
+    author_email: 'karolteologia@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    title: 'Ética Cristã e Mandamentos: Catecismo Maior de Westminster',
+    message: 'Texto orientador dos seminários práticos sobre os Dez Mandamentos e dilemas éticos contemporâneos.',
+    link_url: 'https://drive.google.com/open?id=1xuOm61ul94H3kdU5psFtbl-I2KZ41QJC&usp=drive_copy',
+    created_at: '2026-08-20T17:00:00Z',
+    target_date: 'Quinta-feira às 19:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-marcio-1',
+    disciplina_id: 'disc-6',
+    disciplina_name: 'Novo Testamento III - Epístolas Gerais',
+    author_name: 'Profº Marcio Leal',
+    author_role: 'professor',
+    author_email: 'pr.marcioleal@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+    title: 'Síntese Exegética e Introdução às Epístolas Gerais',
+    message: 'Notas e slides preparatórios para acompanhamento das discussões e elaboração das 150 questões discursivas.',
+    link_url: 'https://drive.google.com/open?id=1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P&usp=drive_copy',
+    created_at: '2026-08-20T19:00:00Z',
+    target_date: 'Quinta-feira às 20:35',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-thacyto-1',
+    disciplina_id: 'disc-7',
+    disciplina_name: 'Plantação e Revitalização de Igrejas II',
+    author_name: 'Profº Thácyto Lessa',
+    author_role: 'professor',
+    author_email: 'thacyto@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
+    title: 'Leitura Obrigatória: A Treliça e a Videira (Colin Marshall & Tony Payne)',
+    message: 'Base da AV1: leitura dos 12 capítulos para elaboração do resumo reflexivo com entrega até 27/11.',
+    link_url: 'https://drive.google.com/open?id=1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8&usp=drive_copy',
+    created_at: '2026-08-21T17:00:00Z',
+    target_date: 'Sexta-feira às 19:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-gabriela-1',
+    disciplina_id: 'disc-8',
+    disciplina_name: 'TCC I',
+    author_name: 'Profª Gabriela Leal',
+    author_role: 'professor',
+    author_email: 'gabriela.lealg7757@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    title: 'Manual Metodológico e Normas ABNT para TCC',
+    message: 'Diretrizes completas para o projeto de pesquisa, objetivos, justificativa e cronograma acadêmico.',
+    link_url: 'https://drive.google.com/open?id=1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj&usp=drive_copy',
+    created_at: '2026-08-21T18:30:00Z',
+    target_date: 'Sexta-feira às 20:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'complementar',
+  },
+  {
+    id: 'aviso-betania-1',
+    disciplina_id: 'disc-b-4',
+    disciplina_name: 'Teologia do Culto e Liturgia',
+    author_name: 'Profª Betânia Barbosa',
+    author_role: 'professor',
+    author_email: 'betania@uicb.edu.br',
+    avatar_url: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&auto=format&fit=crop&q=80',
+    title: 'Princípios Bíblicos e Históricos da Liturgia Cristã',
+    message: 'Textos orientadores sobre a ordenança dos sacramentos e a condução do louvor na tradição evangélica.',
+    link_url: 'https://drive.google.com/open?id=19Y8Nv2Yvx1V-m4E5y5fUWOo5e8DZzeji&usp=drive_copy',
+    created_at: '2026-08-22T10:00:00Z',
+    target_date: 'Segunda-feira às 19:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-sylvia-1',
+    disciplina_id: 'disc-c-2',
+    disciplina_name: 'História Eclesiástica I',
+    author_name: 'Profª Sylvia Maia',
+    author_role: 'professor',
+    author_email: 'sylvia@uicb.edu.br',
+    avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80',
+    title: 'Os Pais da Igreja e os Primeiros Concílios Ecumênicos',
+    message: 'Leituras da Patrística sobre a defesa da fé cristã diante dos desafios filosóficos greco-romanos.',
+    link_url: 'https://drive.google.com/open?id=1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me&usp=drive_copy',
+    created_at: '2026-08-22T14:00:00Z',
+    target_date: 'Quarta-feira às 19:00',
+    is_pinned: false,
+    is_archived: false,
+    category: 'pre_aula',
   }
 ];
 
@@ -57,6 +211,25 @@ export function getAnnouncements(): AvisoLeituraPreAula[] {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_ANNOUNCEMENTS));
       return INITIAL_ANNOUNCEMENTS;
     }
+
+    // Auto-merge inteligente: garante que as leituras oficiais de todas as matérias/professores estejam presentes
+    // mesmo que o localStorage local tenha sido salvo previamente com apenas 2 registros
+    const existingIds = new Set(parsed.map((item) => item.id));
+    let hasNewSeeds = false;
+    const merged = [...parsed];
+
+    for (const seed of INITIAL_ANNOUNCEMENTS) {
+      if (!existingIds.has(seed.id)) {
+        merged.push(seed);
+        hasNewSeeds = true;
+      }
+    }
+
+    if (hasNewSeeds) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
     return parsed;
   } catch (err) {
     console.error('Erro ao ler avisos de leituras pré-aula:', err);

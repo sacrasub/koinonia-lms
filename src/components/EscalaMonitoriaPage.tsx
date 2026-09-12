@@ -3252,59 +3252,76 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
 
                                 {/* Botão de Cancelamento / Aviso de Sem Aula */}
                                 <div className="pt-2 border-t border-gray-100">
-                                  {canceladaStatus ? (
-                                    <div className="p-3 bg-red-50/90 border border-red-200 rounded-xl space-y-2">
-                                      <div className="flex items-center justify-between gap-2">
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase tracking-wide">
-                                          🚫 Aula Cancelada / Substituída
-                                        </span>
-                                        <button
-                                          onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
-                                          className="text-[10px] text-red-600 hover:text-red-800 underline font-medium cursor-pointer"
-                                        >
-                                          Desfazer
-                                        </button>
-                                      </div>
-                                      <p className="text-xs text-red-900 leading-relaxed font-sans">
-                                        <strong>Motivo:</strong> "{canceladaStatus.motivo}"
-                                      </p>
-                                      {(canceladaStatus.video_url || canceladaStatus.arquivo_url) && (
-                                        <div className="pt-1.5 border-t border-red-200/60 flex flex-wrap gap-1.5">
-                                          {canceladaStatus.video_url && (
-                                            <a
-                                              href={canceladaStatus.video_url}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition"
-                                            >
-                                              <Play className="w-3 h-3 fill-current" />
-                                              <span>Assistir Vídeo Gravado</span>
-                                            </a>
-                                          )}
-                                          {canceladaStatus.arquivo_url && (
-                                            <a
-                                              href={canceladaStatus.arquivo_url}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              download={canceladaStatus.arquivo_nome || 'trabalho.pdf'}
-                                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-red-50 text-red-700 border border-red-300 font-bold text-[10px] rounded-lg shadow-2xs transition"
-                                            >
-                                              <Download className="w-3 h-3" />
-                                              <span>{canceladaStatus.arquivo_nome || 'Baixar Trabalho PDF'}</span>
-                                            </a>
-                                          )}
+                                  {canceladaStatus ? (() => {
+                                    const parsed = canceladaStatus.motivo?.startsWith('[PROVIDENCIA_JSON]:')
+                                      ? parseProvidenciaMotivo(canceladaStatus.motivo)
+                                      : null;
+                                    const displayMotivo = parsed?.motivoLimpo || canceladaStatus.motivo;
+                                    const videoUrl = canceladaStatus.video_url || parsed?.videoUrl;
+                                    const arquivoUrl = canceladaStatus.arquivo_url || parsed?.arquivoUrl;
+                                    const arquivoNome = canceladaStatus.arquivo_nome || parsed?.arquivoNome || 'Orientações do trabalho.pdf';
+                                    const trabalhoPrazo = canceladaStatus.trabalho_prazo || parsed?.trabalhoPrazo;
+                                    const trabalhoInstrucoes = parsed?.trabalhoInstrucoes || canceladaStatus.trabalho_instrucoes;
+
+                                    return (
+                                      <div className="p-3 bg-red-50/90 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-xl space-y-2">
+                                        <div className="flex items-center justify-between gap-2">
+                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-200 uppercase tracking-wide">
+                                            🚫 Aula Cancelada / Substituída
+                                          </span>
+                                          <button
+                                            onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
+                                            className="text-[10px] text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline font-medium cursor-pointer"
+                                          >
+                                            Desfazer
+                                          </button>
                                         </div>
-                                      )}
-                                      {canceladaStatus.trabalho_prazo && (
-                                        <p className="text-[10px] text-red-800 font-semibold">
-                                          📅 <strong>Prazo:</strong> {canceladaStatus.trabalho_prazo}
+                                        <p className="text-xs text-red-900 dark:text-slate-100 leading-relaxed font-sans">
+                                          <strong className="text-red-950 dark:text-red-300">Motivo:</strong> "{displayMotivo}"
                                         </p>
-                                      )}
-                                      <span className="text-[9px] text-red-700 block text-right font-mono">
-                                        Registrado por: {canceladaStatus.autor_nome}
-                                      </span>
-                                    </div>
-                                  ) : (
+                                        {trabalhoInstrucoes && (
+                                          <p className="text-[11px] text-amber-900 dark:text-amber-200 bg-amber-100/70 dark:bg-amber-950/40 p-2 rounded-lg border border-amber-300/60 dark:border-amber-900/50">
+                                            <strong>Instruções do Trabalho:</strong> {trabalhoInstrucoes}
+                                          </p>
+                                        )}
+                                        {(videoUrl || arquivoUrl) && (
+                                          <div className="pt-1.5 border-t border-red-200/60 dark:border-red-900/40 flex flex-wrap gap-1.5">
+                                            {videoUrl && (
+                                              <a
+                                                href={videoUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                              >
+                                                <Play className="w-3 h-3 fill-current" />
+                                                <span>Assistir Vídeo Gravado</span>
+                                              </a>
+                                            )}
+                                            {arquivoUrl && (
+                                              <a
+                                                href={arquivoUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                download={arquivoNome}
+                                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-slate-700 text-red-700 dark:text-red-300 border border-red-300 dark:border-slate-700 font-bold text-[10px] rounded-lg shadow-2xs transition"
+                                              >
+                                                <Download className="w-3 h-3" />
+                                                <span>{arquivoNome}</span>
+                                              </a>
+                                            )}
+                                          </div>
+                                        )}
+                                        {trabalhoPrazo && (
+                                          <p className="text-[10px] text-red-800 dark:text-red-300 font-semibold">
+                                            📅 <strong>Prazo:</strong> {trabalhoPrazo}
+                                          </p>
+                                        )}
+                                        <span className="text-[9px] text-red-700 dark:text-red-400 block text-right font-mono">
+                                          Registrado por: {canceladaStatus.autor_nome}
+                                        </span>
+                                      </div>
+                                    );
+                                  })() : (
                                     <button
                                       onClick={() => handleOpenModalCancelamento(item, null)}
                                       className="w-full py-2 px-3 bg-gray-50 hover:bg-red-50 text-gray-600 hover:text-red-700 border border-gray-200/80 hover:border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-95"

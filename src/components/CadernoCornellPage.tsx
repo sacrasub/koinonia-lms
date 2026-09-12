@@ -1674,10 +1674,10 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                       isCurrentlyActiveNote
                         ? 'bg-blue-600 text-white border-blue-700 shadow-md ring-2 ring-blue-400/40 scale-[1.03]'
                         : lesson.hasNote
-                        ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950 hover:bg-emerald-100/80 shadow-2xs'
+                        ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950 hover:bg-emerald-100/80 shadow-2xs dark:bg-emerald-950/40 dark:border-emerald-700/60 dark:text-emerald-200 dark:hover:bg-emerald-900/50'
                         : isCanceladaSemNota
-                        ? 'bg-red-50/70 border-red-300 text-red-950 hover:bg-red-100 shadow-2xs'
-                        : 'bg-gray-50 border-gray-200/80 text-gray-600 hover:bg-white hover:border-blue-300'
+                        ? 'bg-red-50/70 border-red-300 text-red-950 hover:bg-red-100 shadow-2xs dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-300 dark:hover:bg-red-900/50'
+                        : 'bg-gray-50 border-gray-200/80 text-gray-600 hover:bg-white hover:border-blue-300 dark:bg-slate-900/90 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:border-slate-700'
                     }`}
                     title={
                       isCanceladaSemNota
@@ -1693,16 +1693,16 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                         isCurrentlyActiveNote
                           ? 'bg-white/20 text-white'
                           : lesson.hasNote
-                          ? 'bg-emerald-200/70 text-emerald-900 font-extrabold'
+                          ? 'bg-emerald-200/70 text-emerald-900 font-extrabold dark:bg-emerald-900/80 dark:text-emerald-200'
                           : isCanceladaSemNota
-                          ? 'bg-red-200/70 text-red-900 font-extrabold'
-                          : 'bg-gray-200 text-gray-600'
+                          ? 'bg-red-200/70 text-red-900 font-extrabold dark:bg-red-900/80 dark:text-red-200'
+                          : 'bg-gray-200 text-gray-600 dark:bg-slate-800 dark:text-slate-300'
                       }`}>
                         Aula {lesson.aulaNum}
                       </span>
 
                       {lesson.hasAiSummary && (
-                        <span className={`text-[10px] ${isCurrentlyActiveNote ? 'text-amber-300' : 'text-purple-600'}`} title="Resumo IA do Google Meet disponível">
+                        <span className={`text-[10px] ${isCurrentlyActiveNote ? 'text-amber-300' : 'text-purple-600 dark:text-purple-400'}`} title="Resumo IA do Google Meet disponível">
                           ✨
                         </span>
                       )}
@@ -1710,7 +1710,13 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
 
                     {/* Data formatada */}
                     <div className={`text-xs font-black ${
-                      isCurrentlyActiveNote ? 'text-white' : isCanceladaSemNota ? 'text-red-950' : 'text-gray-900'
+                      isCurrentlyActiveNote
+                        ? 'text-white'
+                        : isCanceladaSemNota
+                        ? 'text-red-950 dark:text-red-300'
+                        : lesson.hasNote
+                        ? 'text-emerald-950 dark:text-emerald-200'
+                        : 'text-gray-900 dark:text-slate-100'
                     }`}>
                       {lesson.dateBr.substring(0, 5)}
                     </div>
@@ -1722,15 +1728,15 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                           ● Folha {currentNote.sheet_index || 1}
                         </span>
                       ) : lesson.hasNote ? (
-                        <span className="text-emerald-700 font-extrabold">
+                        <span className="text-emerald-700 dark:text-emerald-400 font-extrabold">
                           {lesson.noteCount > 1 ? `📑 ${lesson.noteCount} folhas` : '✓ Anotada'}
                         </span>
                       ) : isCanceladaSemNota ? (
-                        <span className="text-red-700 font-black">
+                        <span className="text-red-700 dark:text-red-400 font-black">
                           🚫 Cancelada
                         </span>
                       ) : (
-                        <span className="text-gray-400">+ Iniciar</span>
+                        <span className="text-gray-400 dark:text-slate-400">+ Iniciar</span>
                       )}
                     </div>
                   </button>
@@ -1795,13 +1801,13 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                   onClick={() => handleSelectNote(n.id)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-blue-600 text-white shadow-sm ring-1 ring-blue-400'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800 dark:border-slate-800'
                   }`}
                 >
                   <span>🗓️ {n.date}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-md ${
-                    isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700 font-bold'
+                    isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700 font-bold dark:bg-slate-800 dark:text-slate-200'
                   }`}>
                     {n.disciplina_name.split('-')[0].trim()}
                   </span>
@@ -1979,10 +1985,10 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
           </div>
 
           {/* BARRA DE MÚLTIPLAS FOLHAS DA MESMA AULA (PAGINAÇÃO & NAVEGAÇÃO DE ESTUDO) */}
-          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50 via-indigo-50/80 to-blue-50 border border-purple-200/90 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50 via-indigo-50/80 to-blue-50 dark:from-purple-950/40 dark:via-slate-900 dark:to-indigo-950/40 border border-purple-200/90 dark:border-purple-800/60 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
             <div className="flex items-center gap-2 flex-wrap min-w-0">
-              <span className="text-xs font-black uppercase text-purple-950 flex items-center gap-1.5 shrink-0">
-                <Layers className="w-4 h-4 text-purple-700" />
+              <span className="text-xs font-black uppercase text-purple-950 dark:text-purple-200 flex items-center gap-1.5 shrink-0">
+                <Layers className="w-4 h-4 text-purple-700 dark:text-purple-400" />
                 <span>Folhas da Aula ({sheetsForCurrentLesson.length}):</span>
               </span>
 
@@ -1998,7 +2004,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                       className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap ${
                         isSheetActive
                           ? 'bg-purple-700 text-white shadow-xs scale-102 ring-2 ring-purple-400/30'
-                          : 'bg-white hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs'
+                          : 'bg-white hover:bg-purple-100 text-purple-900 border border-purple-200 shadow-2xs dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-purple-200 dark:border-purple-800/60'
                       }`}
                     >
                       <span>📄 Folha {sheetNum}</span>
@@ -2017,13 +2023,13 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                 type="button"
                 onClick={handleNavigatePreviousSheet}
                 disabled={currentSheetIndexInLesson <= 0}
-                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-purple-200 dark:border-purple-800/60"
                 title="Ir para a folha anterior desta aula"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <span className="text-xs font-black text-purple-950 bg-white/80 px-2.5 py-1 rounded-lg border border-purple-200">
+              <span className="text-xs font-black text-purple-950 bg-white/80 px-2.5 py-1 rounded-lg border border-purple-200 dark:text-purple-200 dark:bg-slate-800 dark:border-purple-800/60">
                 {currentSheetIndexInLesson + 1} de {sheetsForCurrentLesson.length}
               </span>
 
@@ -2031,7 +2037,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                 type="button"
                 onClick={handleNavigateNextSheet}
                 disabled={currentSheetIndexInLesson >= sheetsForCurrentLesson.length - 1}
-                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                className="p-1.5 bg-white hover:bg-purple-100 disabled:opacity-40 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold transition cursor-pointer dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-purple-200 dark:border-purple-800/60"
                 title="Ir para a próxima folha desta aula"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -2050,11 +2056,11 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
           </div>
 
           {/* 1. CABEÇALHO DE METADADOS (Faixa Superior da Folha Cornell) */}
-          <div className="p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-2xl border border-gray-200/90 space-y-3">
+          <div className="p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-blue-50/30 dark:from-slate-900/90 dark:to-slate-950 rounded-2xl border border-gray-200/90 dark:border-slate-800 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* Disciplina */}
               <div>
-                <label className="block text-[11px] font-extrabold text-gray-600 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-extrabold text-gray-600 dark:text-slate-300 uppercase tracking-wider mb-1">
                   Disciplina Teológica:
                 </label>
                 <select
@@ -2067,37 +2073,37 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                       professor_name: disc?.prof || currentNote.professor_name,
                     });
                   }}
-                  className="w-full p-2 border border-gray-200 rounded-xl bg-white font-bold text-xs text-blue-900 outline-none focus:border-blue-500 shadow-2xs"
+                  className="w-full p-2 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 font-bold text-xs text-blue-900 dark:text-blue-300 outline-none focus:border-blue-500 shadow-2xs"
                 >
                   {disciplinasList.map((d) => (
-                    <option key={d.name} value={d.name}>{d.name} ({d.code})</option>
+                    <option key={d.name} value={d.name} className="dark:bg-slate-900 dark:text-slate-100">{d.name} ({d.code})</option>
                   ))}
                 </select>
               </div>
 
               {/* Data da Aula */}
               <div>
-                <label className="block text-[11px] font-extrabold text-gray-600 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-extrabold text-gray-600 dark:text-slate-300 uppercase tracking-wider mb-1">
                   Data da Aula:
                 </label>
                 <input
                   type="date"
                   value={currentNote.date ?? ''}
                   onChange={(e) => handleUpdateCurrentNote({ date: e.target.value })}
-                  className="w-full p-2 border border-gray-200 rounded-xl bg-white font-bold text-xs text-gray-800 outline-none focus:border-blue-500 shadow-2xs"
+                  className="w-full p-2 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 font-bold text-xs text-gray-800 dark:text-slate-100 outline-none focus:border-blue-500 shadow-2xs"
                 />
               </div>
 
               {/* Professor Responsável */}
               <div>
-                <label className="block text-[11px] font-extrabold text-gray-600 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-extrabold text-gray-600 dark:text-slate-300 uppercase tracking-wider mb-1">
                   Docente / Professor:
                 </label>
                 <input
                   type="text"
                   value={currentNote.professor_name ?? ''}
                   onChange={(e) => handleUpdateCurrentNote({ professor_name: e.target.value })}
-                  className="w-full p-2 border border-gray-200 rounded-xl bg-white font-semibold text-xs text-gray-800 outline-none focus:border-blue-500 shadow-2xs"
+                  className="w-full p-2 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 font-semibold text-xs text-gray-800 dark:text-slate-100 outline-none focus:border-blue-500 shadow-2xs"
                   placeholder="Nome do docente..."
                 />
               </div>
@@ -2106,27 +2112,27 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
             {/* Tema da Aula & Referências Bíblicas */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-[11px] font-extrabold text-gray-600 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-extrabold text-gray-600 dark:text-slate-300 uppercase tracking-wider mb-1">
                   Tema Central da Aula:
                 </label>
                 <input
                   type="text"
                   value={currentNote.theme ?? ''}
                   onChange={(e) => handleUpdateCurrentNote({ theme: e.target.value })}
-                  className="w-full p-2.5 border border-gray-200 rounded-xl bg-white font-extrabold text-xs sm:text-sm text-gray-900 outline-none focus:border-blue-500 shadow-2xs"
+                  className="w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 font-extrabold text-xs sm:text-sm text-gray-900 dark:text-slate-100 outline-none focus:border-blue-500 shadow-2xs"
                   placeholder="Ex: Justificação pela Fé em Romanos..."
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-extrabold text-gray-600 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-extrabold text-gray-600 dark:text-slate-300 uppercase tracking-wider mb-1">
                   Textos Bíblicos & Apoio:
                 </label>
                 <input
                   type="text"
                   value={currentNote.biblical_references ?? ''}
                   onChange={(e) => handleUpdateCurrentNote({ biblical_references: e.target.value })}
-                  className="w-full p-2.5 border border-gray-200 rounded-xl bg-white font-semibold text-xs text-indigo-900 outline-none focus:border-indigo-500 shadow-2xs"
+                  className="w-full p-2.5 border border-gray-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 font-semibold text-xs text-indigo-900 dark:text-indigo-300 outline-none focus:border-indigo-500 shadow-2xs"
                   placeholder="Ex: Romanos 3:21-26; Efésios 2:8-9..."
                 />
               </div>

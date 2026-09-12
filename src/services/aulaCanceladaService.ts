@@ -486,6 +486,7 @@ export function hydrateCanceladaItem(item: AulaCanceladaItem | null): AulaCancel
     const parsed = parseProvidenciaMotivo(item.motivo);
     return {
       ...item,
+      motivo: parsed.motivoLimpo || item.motivo,
       tipo_providencia: item.tipo_providencia || parsed.tipoProvidencia,
       substituto_disciplina_id: item.substituto_disciplina_id || parsed.substitutoDisciplinaId,
       substituto_disciplina_name: item.substituto_disciplina_name || parsed.substitutoDisciplinaName,
@@ -664,7 +665,7 @@ export async function fetchAulasCanceladasFromCloud(force: boolean = false): Pro
           disciplina_name: row.disciplina_name,
           aula_num: row.aula_num,
           data_aula: row.data_aula,
-          motivo: row.motivo,
+          motivo: parsed.motivoLimpo || row.motivo,
           autor_nome: row.autor_nome,
           autor_email: row.autor_email,
           autor_role: row.autor_role,
@@ -677,6 +678,11 @@ export async function fetchAulasCanceladasFromCloud(force: boolean = false): Pro
           substituto_meet_url: parsed.substitutoMeetUrl,
           substituto_presenca_url: parsed.substitutoPresencaUrl,
           substituto_observacoes: parsed.substitutoObservacoes,
+          video_url: parsed.videoUrl || row.video_url,
+          arquivo_url: parsed.arquivoUrl || row.arquivo_url,
+          arquivo_nome: parsed.arquivoNome || row.arquivo_nome,
+          trabalho_instrucoes: parsed.trabalhoInstrucoes || row.trabalho_instrucoes,
+          trabalho_prazo: parsed.trabalhoPrazo || row.trabalho_prazo,
         };
       });
       saveLocalCanceladas(map);

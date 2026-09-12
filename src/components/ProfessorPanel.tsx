@@ -521,8 +521,10 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     showNotification(leituraCategory === 'durante_aula' ? 'Link da aula ao vivo publicado com sucesso!' : 'Leitura pré-aula publicada com sucesso!');
   };
 
-  // Estado de Sub-aba para Leituras: 'active' ou 'archived'
+  // Estado de Sub-aba para Leituras: 'active' ou 'archived', filtro por matéria e busca
   const [announcementsSubTab, setAnnouncementsSubTab] = useState<'active' | 'archived'>('active');
+  const [announcementsDisciplinaFilter, setAnnouncementsDisciplinaFilter] = useState<string>('ALL');
+  const [announcementsSearchQuery, setAnnouncementsSearchQuery] = useState<string>('');
 
   const handleCopyAvisoWhatsApp = (aviso: AvisoLeituraPreAula) => {
     const text = formatAnnouncementForWhatsApp(aviso);
@@ -915,37 +917,37 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
       {activeProfView === 'aulas' && (
         <>
-      <div data-tour="prof-publicar-leituras" className="bg-white p-6 sm:p-7 rounded-3xl border border-blue-200/80 shadow-xs space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+      <div data-tour="prof-publicar-leituras" className="bg-white dark:bg-slate-900 p-6 sm:p-7 rounded-3xl border border-blue-200/80 dark:border-slate-800 shadow-xs space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 dark:border-slate-800 pb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-50 text-blue-700 rounded-2xl border border-blue-100">
+            <div className="p-2.5 bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-blue-400 rounded-2xl border border-blue-100 dark:border-slate-700">
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 text-lg">Publicar Leituras, Links e Recursos da Aula</h3>
-              <p className="text-xs text-gray-500">
+              <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-lg">Publicar Leituras, Links e Recursos da Aula</h3>
+              <p className="text-xs text-gray-500 dark:text-slate-400">
                 Envie textos pré-aula, links compartilhados durante a transmissão ao vivo ou materiais complementares com 1 clique para WhatsApp e portal do aluno.
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 w-fit">
-            {announcements.length} {announcements.length === 1 ? 'Link / Leitura Ativa' : 'Links / Leituras Ativas'}
+          <span className="text-xs font-bold text-blue-800 dark:text-blue-300 bg-blue-50 dark:bg-slate-800 px-3 py-1 rounded-full border border-blue-100 dark:border-slate-700 w-fit">
+            {announcements.filter(a => !a.is_archived).length} {announcements.filter(a => !a.is_archived).length === 1 ? 'Link / Leitura Ativa' : 'Links / Leituras Ativas'}
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Formulário de Envio / Edição Rápida */}
-          <form onSubmit={handleAddAnnouncement} className="lg:col-span-6 space-y-4 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
-            <div className="flex items-center justify-between border-b border-slate-200/60 pb-2.5">
-              <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <form onSubmit={handleAddAnnouncement} className="lg:col-span-6 space-y-4 bg-slate-50/70 dark:bg-slate-800/50 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700">
+            <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700 pb-2.5">
+              <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
                 {editingAnnouncementId ? (
                   <>
-                    <Edit3 className="w-3.5 h-3.5 text-amber-600" />
+                    <Edit3 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     <span>Editar Link ou Leitura</span>
                   </>
                 ) : (
                   <>
-                    <PlusCircle className="w-3.5 h-3.5 text-blue-600" />
+                    <PlusCircle className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Novo Link ou Leitura</span>
                   </>
                 )}
@@ -955,7 +957,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                 <button
                   type="button"
                   onClick={handleCancelEditAnnouncement}
-                  className="text-xs font-bold text-gray-500 hover:text-red-600 transition flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-bold text-gray-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition flex items-center gap-1 cursor-pointer"
                 >
                   ✕ Cancelar Edição
                 </button>
@@ -964,14 +966,14 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
             {/* Banner de Edição */}
             {editingAnnouncementId && (
-              <div className="p-2.5 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-950 font-medium">
+              <div className="p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-xl text-xs text-amber-950 dark:text-amber-200 font-medium">
                 Editando: <strong>{leituraTitle || 'Item selecionado'}</strong>
               </div>
             )}
 
             {/* Seletor de Categoria / Momento do Link */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Momento / Categoria do Recurso
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -980,8 +982,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   onClick={() => setLeituraCategory('durante_aula')}
                   className={`p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                     leituraCategory === 'durante_aula'
-                      ? 'bg-rose-50 border-rose-500 text-rose-900 shadow-2xs font-extrabold'
-                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                      ? 'bg-rose-50 dark:bg-rose-950/50 border-rose-500 text-rose-900 dark:text-rose-200 shadow-2xs font-extrabold'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
@@ -993,11 +995,11 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   onClick={() => setLeituraCategory('pre_aula')}
                   className={`p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                     leituraCategory === 'pre_aula'
-                      ? 'bg-blue-50 border-blue-500 text-blue-900 shadow-2xs font-extrabold'
-                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-950/50 border-blue-500 text-blue-900 dark:text-blue-200 shadow-2xs font-extrabold'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-blue-600" />
+                  <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>📖 Pré-Aula</span>
                 </button>
 
@@ -1006,11 +1008,11 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   onClick={() => setLeituraCategory('complementar')}
                   className={`p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                     leituraCategory === 'complementar'
-                      ? 'bg-emerald-50 border-emerald-500 text-emerald-900 shadow-2xs font-extrabold'
-                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-100'
+                      ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-900 dark:text-emerald-200 shadow-2xs font-extrabold'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>📌 Complementar</span>
                 </button>
               </div>
@@ -1018,15 +1020,15 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Disciplina</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Disciplina</label>
                 <select
                   value={selectedDisciplinaId}
                   onChange={(e) => setSelectedDisciplinaId(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
                 >
                   {userDisciplinas.map((d) => (
-                    <option key={d.id} value={d.id}>
+                    <option key={d.id} value={d.id} className="dark:bg-slate-900 dark:text-slate-100">
                       {d.name} ({d.day_of_week})
                     </option>
                   ))}
@@ -1034,181 +1036,129 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Docente Responsável</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Docente Responsável</label>
                 <input
                   type="text"
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
                   placeholder="Ex: Profº Cleiton Barbirato"
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Título do Link / Artigo / Recurso</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Título do Link / Artigo / Recurso</label>
               <input
                 type="text"
                 value={leituraTitle}
                 onChange={(e) => setLeituraTitle(e.target.value)}
-                placeholder="Ex: Slide da Apresentação, Artigo do IBGE, Vídeo..."
-                className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Ex: Slide da Apresentação, Artigo do IBGE, Vídeo Temático..."
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Link de Acesso (URL Completa)</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Link de Acesso (URL Completa)</label>
               <div className="relative">
                 <input
                   type="url"
-                  value={leituraUrl}
-                  onChange={(e) => setLeituraUrl(e.target.value)}
+                  value={leituraLink}
+                  onChange={(e) => setLeituraLink(e.target.value)}
                   placeholder="https://..."
-                  className="w-full p-2.5 pl-8 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full p-2.5 pl-8 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-blue-800 dark:text-blue-300 font-mono placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
                 />
-                <LinkIcon className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-3" />
+                <ExternalLink className="w-4 h-4 text-gray-400 dark:text-slate-500 absolute left-2.5 top-3" />
               </div>
             </div>
 
-            {/* Anexo de Arquivo / Trabalho (PDF, DOCX ou Drive) */}
-            <div className="p-3 bg-white/80 border border-slate-200 rounded-xl space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <Download className="w-3.5 h-3.5 text-blue-600" />
-                  <span>Arquivo Complementar / Trabalho (PDF, Atividade)</span>
-                </label>
-                <span className="text-[10px] text-gray-500 font-medium">Opcional</span>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-2">
-                <label className="w-full sm:w-auto px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shrink-0 border border-blue-200 transition active:scale-95 shadow-2xs">
-                  {isUploadingLeituraFile ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
-                  <span>{isUploadingLeituraFile ? 'Carregando...' : 'Anexar PDF Local'}</span>
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.zip,.txt"
-                    onChange={handleLeituraFileUpload}
-                    className="hidden"
-                  />
-                </label>
-
-                <div className="relative flex-1 w-full">
-                  <input
-                    type="url"
-                    value={leituraFileUrl.startsWith('data:') ? '' : leituraFileUrl}
-                    onChange={(e) => {
-                      setLeituraFileUrl(e.target.value);
-                      if (e.target.value) setLeituraFileName('Arquivo / Trabalho (Link)');
-                      else setLeituraFileName('');
-                    }}
-                    placeholder={leituraFileUrl.startsWith('data:') ? `Anexo: ${leituraFileName}` : "Ou cole o link do Google Drive/PDF..."}
-                    className="w-full p-2 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  />
-                </div>
-
-                {(leituraFileUrl || leituraFileName) && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLeituraFileUrl('');
-                      setLeituraFileName('');
-                    }}
-                    className="text-[11px] text-red-600 hover:text-red-800 font-bold px-1.5 py-1 cursor-pointer"
-                  >
-                    Remover
-                  </button>
-                )}
-              </div>
-
-              {isUploadingLeituraFile && (
-                <div className="w-full space-y-1 p-2 bg-blue-50/70 border border-blue-200 rounded-xl animate-in fade-in">
-                  <div className="flex justify-between text-[11px] font-bold text-blue-800">
-                    <span className="flex items-center gap-1.5">
-                      <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
-                      <span>Processando arquivo ({leituraFileName || 'PDF'})...</span>
-                    </span>
-                    <span>{uploadProgress}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-blue-600 rounded-full transition-all duration-200"
-                      style={{ width: `${Math.max(10, uploadProgress)}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {leituraFileName && !isUploadingLeituraFile && (
-                <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
-                  ✓ Anexo pronto: <strong>{leituraFileName}</strong>
-                </p>
-              )}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                Instruções / Recado para os Alunos (Opcional)
+              </label>
+              <textarea
+                rows={2}
+                value={leituraMessage}
+                onChange={(e) => setLeituraMessage(e.target.value)}
+                placeholder="Ex: Leiam as páginas 12 a 24 antes do início da aula..."
+                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Data / Referência da Aula</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Data de Referência da Aula</label>
                 <input
                   type="text"
-                  value={leituraData}
-                  onChange={(e) => setLeituraData(e.target.value)}
-                  placeholder="Ex: Aula de Hoje ou 26/08/2026"
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  value={leituraTargetDate}
+                  onChange={(e) => setLeituraTargetDate(e.target.value)}
+                  placeholder="Ex: 18/08 (Terça) ou Aula 2"
+                  className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Recado / Contexto aos Alunos</label>
-                <input
-                  type="text"
-                  value={leituraMessage}
-                  onChange={(e) => setLeituraMessage(e.target.value)}
-                  placeholder="Ex: Link citado na aula para leitura complementar..."
-                  className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Anexar Arquivo PDF (Opcional)
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleLeituraFileSelect}
+                    className="w-full p-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-gray-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-slate-800 file:text-blue-700 dark:file:text-blue-300"
+                  />
+                  {leituraFileName && (
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold block mt-1">
+                      📎 {leituraFileName}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
             <button
               type="submit"
-              className={`w-full py-2.5 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer ${
-                editingAnnouncementId ? 'bg-amber-600 hover:bg-amber-700' : 'bg-blue-900 hover:bg-blue-800'
+              className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-xs transition flex items-center justify-center gap-2 cursor-pointer ${
+                editingAnnouncementId
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
             >
               {editingAnnouncementId ? (
                 <>
                   <Check className="w-4 h-4" />
-                  <span>Salvar Alterações</span>
+                  <span>Salvar Alterações do Link / Leitura</span>
                 </>
               ) : (
                 <>
-                  <PlusCircle className="w-4 h-4 text-blue-300" />
-                  <span>{leituraCategory === 'durante_aula' ? 'Publicar Link da Aula Ao Vivo' : 'Publicar no LMS'}</span>
+                  <UploadCloud className="w-4 h-4" />
+                  <span>Publicar Link / Recurso no Portal do Aluno</span>
                 </>
               )}
             </button>
           </form>
 
-          {/* Lista de Leituras Ativas & Arquivadas */}
+          {/* Lista de Leituras Ativas & Arquivadas com Filtro de Disciplina e Busca */}
           <div className="lg:col-span-6 space-y-3">
-            <div className="flex items-center justify-between gap-2 border-b border-gray-200 pb-2">
-              <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <FolderOpen className="w-3.5 h-3.5 text-blue-600" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 dark:border-slate-800 pb-2">
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                <FolderOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Links & Leituras das Matérias</span>
               </h4>
 
               {/* Seletor de Aba: Ativas vs Arquivadas */}
-              <div className="flex items-center bg-gray-100 p-0.5 rounded-xl text-xs font-bold">
+              <div className="flex items-center bg-gray-100 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-bold">
                 <button
                   type="button"
                   onClick={() => setAnnouncementsSubTab('active')}
                   className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 cursor-pointer ${
                     announcementsSubTab === 'active'
-                      ? 'bg-white text-blue-900 shadow-2xs'
-                      : 'text-gray-500 hover:text-gray-900'
+                      ? 'bg-white dark:bg-slate-900 text-blue-900 dark:text-blue-300 shadow-2xs'
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
                   }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -1219,30 +1169,84 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   onClick={() => setAnnouncementsSubTab('archived')}
                   className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 cursor-pointer ${
                     announcementsSubTab === 'archived'
-                      ? 'bg-white text-amber-900 shadow-2xs'
-                      : 'text-gray-500 hover:text-gray-900'
+                      ? 'bg-white dark:bg-slate-900 text-amber-900 dark:text-amber-300 shadow-2xs'
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
                   }`}
                 >
-                  <Archive className="w-3 h-3 text-amber-600" />
+                  <Archive className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                   <span>Arquivados ({announcements.filter((a) => a.is_archived).length})</span>
                 </button>
               </div>
             </div>
 
+            {/* Barra de Filtros Rápidos (Busca & Filtro por Matéria) */}
+            <div className="flex flex-col sm:flex-row items-center gap-2 pt-1 pb-1">
+              {/* Seletor de Disciplina */}
+              {userDisciplinas.length > 1 && (
+                <select
+                  value={announcementsDisciplinaFilter}
+                  onChange={(e) => setAnnouncementsDisciplinaFilter(e.target.value)}
+                  className="w-full sm:w-auto flex-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
+                >
+                  <option value="ALL">🌐 Todas as Matérias ({announcements.length})</option>
+                  {userDisciplinas.map((d) => (
+                    <option key={d.id} value={d.id} className="dark:bg-slate-900 dark:text-slate-100">
+                      {d.name.split('-')[0].trim()} ({d.professor_name?.split(' ')[0] || 'Docente'})
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {/* Campo de Busca Rápida */}
+              <div className="relative w-full sm:w-56">
+                <input
+                  type="text"
+                  value={announcementsSearchQuery}
+                  onChange={(e) => setAnnouncementsSearchQuery(e.target.value)}
+                  placeholder="Filtrar por título ou docente..."
+                  className="w-full p-2 pl-7 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+                <span className="absolute left-2.5 top-2.5 text-slate-400 dark:text-slate-500 text-xs pointer-events-none">🔍</span>
+                {announcementsSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setAnnouncementsSearchQuery('')}
+                    className="absolute right-2 top-2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
+
             {(() => {
-              const displayedList = announcements.filter((a) =>
+              let displayedList = announcements.filter((a) =>
                 announcementsSubTab === 'active' ? !a.is_archived : a.is_archived
               );
 
+              if (announcementsDisciplinaFilter !== 'ALL') {
+                displayedList = displayedList.filter((a) => a.disciplina_id === announcementsDisciplinaFilter);
+              }
+
+              if (announcementsSearchQuery.trim()) {
+                const q = announcementsSearchQuery.toLowerCase();
+                displayedList = displayedList.filter((a) =>
+                  a.title.toLowerCase().includes(q) ||
+                  a.disciplina_name.toLowerCase().includes(q) ||
+                  a.author_name.toLowerCase().includes(q) ||
+                  (a.message && a.message.toLowerCase().includes(q))
+                );
+              }
+
               if (displayedList.length === 0) {
                 return (
-                  <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200 text-center text-xs text-gray-500 space-y-1">
-                    <p className="font-semibold text-gray-700">
+                  <div className="p-6 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-gray-200 dark:border-slate-700 text-center text-xs text-gray-500 dark:text-slate-400 space-y-1">
+                    <p className="font-semibold text-gray-700 dark:text-slate-300">
                       {announcementsSubTab === 'active'
                         ? 'Nenhum link ou leitura ativa no momento para as matérias selecionadas.'
                         : 'Nenhum item no acervo arquivado.'}
                     </p>
-                    <p className="text-[11px] text-gray-400">
+                    <p className="text-[11px] text-gray-400 dark:text-slate-500">
                       {announcementsSubTab === 'active'
                         ? 'Use o formulário ao lado para compartilhar um novo link ou leitura para os alunos.'
                         : 'Ao arquivar um link ou leitura ativa, ele é guardado aqui para consulta histórica.'}
@@ -1256,46 +1260,46 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   {displayedList.map((av) => (
                     <div
                       key={av.id}
-                      className={`p-4 rounded-2xl bg-white border shadow-2xs space-y-3 transition ${
+                      className={`p-4 rounded-2xl bg-white dark:bg-slate-900/90 border shadow-2xs space-y-3 transition ${
                         editingAnnouncementId === av.id
-                          ? 'border-2 border-amber-400 bg-amber-50/30 ring-2 ring-amber-300/40'
+                          ? 'border-2 border-amber-400 bg-amber-50/30 dark:bg-amber-950/30 ring-2 ring-amber-300/40'
                           : av.is_archived
-                          ? 'border-amber-200 bg-amber-50/30 hover:border-amber-400'
-                          : 'border-gray-200/90 hover:border-blue-300'
+                          ? 'border-amber-200 dark:border-amber-800/60 bg-amber-50/30 dark:bg-amber-950/30 hover:border-amber-400'
+                          : 'border-gray-200/90 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="space-y-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wide bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wide bg-blue-100 dark:bg-blue-950/80 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-800 px-2 py-0.5 rounded-md">
                               {av.disciplina_name}
                             </span>
 
                             {/* Badge de Categoria / Momento */}
                             {av.category === 'durante_aula' ? (
-                              <span className="text-[10px] font-black uppercase tracking-wide bg-rose-100 text-rose-900 border border-rose-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="text-[10px] font-black uppercase tracking-wide bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border border-rose-200 dark:border-rose-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
                                 🔴 Em Aula (Ao Vivo)
                               </span>
                             ) : av.category === 'complementar' ? (
-                              <span className="text-[10px] font-extrabold uppercase tracking-wide bg-emerald-100 text-emerald-900 border border-emerald-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="text-[10px] font-extrabold uppercase tracking-wide bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 📌 Complementar
                               </span>
                             ) : (
-                              <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-100 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="text-[10px] font-extrabold uppercase tracking-wide bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 📖 Leitura Pré-Aula
                               </span>
                             )}
 
                             {av.is_archived && (
-                              <span className="text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              <span className="text-[10px] font-bold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 <Archive className="w-2.5 h-2.5" /> Arquivada
                               </span>
                             )}
                           </div>
-                          <h5 className="font-extrabold text-sm text-slate-900">{av.title}</h5>
+                          <h5 className="font-extrabold text-sm text-slate-900 dark:text-slate-100">{av.title}</h5>
                           {av.message && (
-                            <p className="text-xs text-slate-600 italic">"{av.message}"</p>
+                            <p className="text-xs text-slate-600 dark:text-slate-300 italic">"{av.message}"</p>
                           )}
                         </div>
 
@@ -1304,7 +1308,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                           <button
                             onClick={() => handleStartEditAnnouncement(av)}
                             title="Editar este link ou leitura"
-                            className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition cursor-pointer"
+                            className="p-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition cursor-pointer"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
@@ -1313,7 +1317,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                             <button
                               onClick={() => handleUnarchiveAnnouncement(av.id)}
                               title="Restaurar leitura para o feed ativo dos alunos"
-                              className="p-1.5 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition cursor-pointer"
+                              className="p-1.5 text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg transition cursor-pointer"
                             >
                               <ArchiveRestore className="w-4 h-4" />
                             </button>
@@ -1321,7 +1325,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                             <button
                               onClick={() => handleArchiveAnnouncement(av.id)}
                               title="Arquivar leitura (sair do feed principal do aluno)"
-                              className="p-1.5 text-amber-600 hover:text-amber-800 hover:bg-amber-50 rounded-lg transition cursor-pointer"
+                              className="p-1.5 text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-slate-800 rounded-lg transition cursor-pointer"
                             >
                               <Archive className="w-4 h-4" />
                             </button>
@@ -1329,16 +1333,16 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                           <button
                             onClick={() => handleDeleteAnnouncement(av.id)}
                             title="Excluir link definitivamente"
-                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                            className="p-1.5 text-gray-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-slate-800 rounded-lg transition cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px] text-gray-500">
-                        <span>Por: <strong>{av.author_name}</strong></span>
-                        <span className="bg-gray-100 px-2 py-0.5 rounded font-bold">{av.target_date || 'Data da Aula'}</span>
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-slate-800 text-[11px] text-gray-500 dark:text-slate-400">
+                        <span>Por: <strong className="text-slate-800 dark:text-slate-200">{av.author_name}</strong></span>
+                        <span className="bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded font-bold text-slate-700 dark:text-slate-300">{av.target_date || 'Data da Aula'}</span>
                       </div>
 
                       {av.file_url && (
@@ -1348,9 +1352,9 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                             target="_blank"
                             rel="noopener noreferrer"
                             download={av.file_name || 'anexo_aula.pdf'}
-                            className="w-full py-1.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5"
+                            className="w-full py-1.5 px-3 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5"
                           >
-                            <Download className="w-3.5 h-3.5 text-emerald-600" />
+                            <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                             <span>Baixar Anexo: {av.file_name || 'Documento PDF'}</span>
                           </a>
                         </div>
@@ -1361,7 +1365,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                           href={av.link_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs rounded-xl border border-blue-200 transition flex items-center justify-center gap-1.5"
+                          className="flex-1 py-1.5 px-3 bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 text-blue-800 dark:text-blue-300 font-bold text-xs rounded-xl border border-blue-200 dark:border-slate-700 transition flex items-center justify-center gap-1.5"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                           <span>Abrir Link</span>
