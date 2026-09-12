@@ -1,5 +1,5 @@
 // Koinonia LMS Service Worker (PWA & Web Push)
-const CACHE_NAME = 'koinonia-lms-v1';
+const CACHE_NAME = 'koinonia-lms-v1.0.0';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

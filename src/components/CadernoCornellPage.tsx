@@ -1298,6 +1298,41 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
     }
   };
 
+  const handleExportNotesBackup = () => {
+    try {
+      const notesList = Object.values(allNotes);
+      const backupData = {
+        plataforma: 'Koinonia LMS',
+        versao: '1.0.0',
+        data_exportacao: new Date().toISOString(),
+        data_formatada: new Date().toLocaleString('pt-BR'),
+        aluno_email: normalizedEmail,
+        total_anotacoes: notesList.length,
+        anotacoes: allNotes,
+      };
+
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute('href', dataStr);
+      downloadAnchor.setAttribute('download', `Minhas_Anotacoes_Cornell_Koinonia_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      setSaveStatusMessage(`Backup de ${notesList.length} anotações exportado com sucesso!`);
+      setTimeout(() => setSaveStatusMessage(null), 3500);
+
+      trackEvent({
+        event_type: 'cornell_notes_exported',
+        user_email: normalizedEmail,
+        page_title: 'Caderno Cornell'
+      });
+    } catch (err) {
+      console.error('Erro ao exportar anotações:', err);
+      alert('Não foi possível gerar o arquivo de exportação das anotações.');
+    }
+  };
+
   const handlePrintNote = () => {
     window.print();
   };
@@ -1360,6 +1395,15 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
           >
             <KeyRound className="w-4 h-4 text-amber-400" />
             <span>Configurar IA Gemini</span>
+          </button>
+
+          <button
+            onClick={handleExportNotesBackup}
+            className="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer"
+            title="Exportar backup seguro de todas as suas anotações (JSON)"
+          >
+            <Download className="w-4 h-4" />
+            <span>Backup Anotações</span>
           </button>
 
           <button

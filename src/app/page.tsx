@@ -55,6 +55,7 @@ const PlanoEstudosPage = dynamic(() => import('@/components/PlanoEstudosPage').t
 const AttendanceAlarmModal = dynamic(() => import('@/components/AttendanceAlarmModal').then(m => m.AttendanceAlarmModal));
 const PesquisaTCCPage = dynamic(() => import('@/app/pesquisa-tcc/page'), { loading: DynamicLoadingFallback });
 const OficinaEstudosHub = dynamic(() => import('@/components/oficina-estudos/OficinaEstudosHub').then(m => m.OficinaEstudosHub), { loading: DynamicLoadingFallback });
+const WhatsNewModal = dynamic(() => import('@/components/WhatsNewModal').then(m => m.WhatsNewModal));
 
 export default function Home() {
   const router = useRouter();
@@ -956,6 +957,9 @@ export default function Home() {
           }
         }}
       />
+
+      {/* MODAL DE ATUALIZAÇÃO DO SISTEMA (ESTILO APPLE / RELEASE v1.0.0) */}
+      <WhatsNewModal />
     </div>
   );
 }

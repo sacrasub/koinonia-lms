@@ -5,6 +5,23 @@ const READ_STORAGE_PREFIX = 'lms_read_system_updates_';
 
 export const INITIAL_SYSTEM_UPDATES: SystemUpdate[] = [
   {
+    id: 'upd-2026-09-12-v1-0-0-golden-master',
+    version: 'v1.0.0 Oficial',
+    title: '🎉 Lançamento Oficial: Koinonia LMS 1.0 (Golden Master)',
+    description: 'A versão oficial 1.0 fecha o ciclo de maturidade da plataforma, trazendo blindagem definitiva para suas anotações, novo chat com alerta sonoro e modo não perturbe, e ferramentas avançadas de compartilhamento.',
+    date: '12/09/2026',
+    category: 'novidade',
+    badge: 'Versão 1.0',
+    highlights: [
+      '🛡️ Blindagem de Anotações: Suas anotações no Caderno Cornell estão seguras na nuvem e você agora pode exportar um backup pessoal a qualquer momento.',
+      '🔔 Chat com Notificações Sonoras e Não Perturbe: Alerta sonoro sutil quando receber mensagens, com chave rápida de silenciamento.',
+      '📚 Biblioteca Compartilhável: Compartilhe o link de qualquer livro da biblioteca diretamente no LMS ou no WhatsApp com 1 clique.',
+      '📋 Cronograma para WhatsApp: No checklist de avaliações, gere um texto formatado com todas as provas e trabalhos previstos para a turma.',
+      '⚡ Leitor de PDF Aprimorado: Acesso rápido e botão de abertura direta no Google Drive.'
+    ],
+    author: 'Equipe de Tecnologia • Seminário Koinonia'
+  },
+  {
     id: 'upd-2026-09-09-diretoria-afro',
     version: 'Aviso Oficial',
     title: '📢 Matéria Modular: História da Cultura Afro-brasileira e Indígena',
