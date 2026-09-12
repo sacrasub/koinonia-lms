@@ -213,22 +213,27 @@ export async function syncRbacFromCloud(force: boolean = false): Promise<void> {
     if (reqData && reqData.length > 0 && reqData[0].file_url) {
       try {
         const parsed: AccessRequest[] = JSON.parse(reqData[0].file_url);
-        const localReqs = getPendingRequests();
         const reqMap = new Map<string, AccessRequest>();
         if (Array.isArray(parsed)) {
-          parsed.forEach((r) => reqMap.set(r.email.toLowerCase().trim(), r));
+          parsed.forEach((r) => {
+            const norm = r.email.toLowerCase().trim();
+            // Se o usuário já está na lista de autorizados, ele não deve constar como pendente
+            if (!mergedUsers[norm] && !INITIAL_AUTHORIZED_USERS[norm]) {
+              reqMap.set(norm, r);
+            }
+          });
         }
-        localReqs.forEach((r) => {
-          const norm = r.email.toLowerCase().trim();
-          if (!reqMap.has(norm)) {
-            reqMap.set(norm, r);
-          }
-        });
         const mergedReqs = Array.from(reqMap.values());
         try {
           localStorage.setItem('lms_pending_access_requests', JSON.stringify(mergedReqs));
         } catch (_) {}
       } catch (e) {}
+    } else {
+      // Se não há dados na nuvem, limpa requisições locais de usuários já autorizados
+      try {
+        const localReqs = getPendingRequests().filter((r) => !mergedUsers[r.email.toLowerCase().trim()]);
+        localStorage.setItem('lms_pending_access_requests', JSON.stringify(localReqs));
+      } catch (_) {}
     }
 
     // Dispara evento global para que componentes (Navbar, AdminPanel) atualizem a UI imediatamente
@@ -469,7 +474,11 @@ export function getPendingRequests(): AccessRequest[] {
   try {
     const stored = localStorage.getItem('lms_pending_access_requests');
     if (stored) {
-      return JSON.parse(stored);
+      const parsed: AccessRequest[] = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        const authorized = getAuthorizedUsersList();
+        return parsed.filter((r) => r.email && !authorized[r.email.toLowerCase().trim()]);
+      }
     }
   } catch (e) {
     console.error('Erro ao ler solicitações de acesso:', e);
@@ -614,11 +623,13 @@ export async function approveAccessRequest(requestId: string, role: UserRole = '
     }
   } catch (e) {}
 
-  const req = requests.find((r) => r.id === requestId);
+  const localReqs = getPendingRequests();
+  const req = requests.find((r) => r.id === requestId) || localReqs.find((r) => r.id === requestId);
 
   if (req) {
     req.status = 'approved';
-    const remaining = requests.filter((r) => r.id !== requestId);
+    const reqEmailNorm = req.email.toLowerCase().trim();
+    const remaining = requests.filter((r) => r.id !== requestId && r.email.toLowerCase().trim() !== reqEmailNorm);
     await savePendingRequests(remaining);
 
     // Adiciona à lista de autorizados com turma, período, whatsapp e nome oficiais
@@ -649,7 +660,13 @@ export async function rejectAccessRequest(requestId: string): Promise<void> {
     }
   } catch (e) {}
 
-  const remaining = requests.filter((r) => r.id !== requestId);
+  const localReqs = getPendingRequests();
+  const targetReq = requests.find((r) => r.id === requestId) || localReqs.find((r) => r.id === requestId);
+  const targetEmailNorm = targetReq?.email.toLowerCase().trim();
+
+  const remaining = requests.filter(
+    (r) => r.id !== requestId && (!targetEmailNorm || r.email.toLowerCase().trim() !== targetEmailNorm)
+  );
   await savePendingRequests(remaining);
 }
 

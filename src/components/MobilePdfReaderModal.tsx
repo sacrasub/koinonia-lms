@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, ZoomIn, ZoomOut, RotateCcw, Moon, Sun, Download, 
   ExternalLink, Maximize2, Minimize2, FileText, Sparkles,
-  Headphones, Info, CheckCircle2, BookOpen
+  Headphones, Info, CheckCircle2, BookOpen, Share2
 } from 'lucide-react';
 
 interface MobilePdfReaderModalProps {
@@ -15,6 +15,7 @@ interface MobilePdfReaderModalProps {
   disciplinaName?: string;
   author?: string;
   description?: string;
+  onShare?: () => void;
 }
 
 export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
@@ -25,6 +26,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   disciplinaName,
   author,
   description,
+  onShare,
 }) => {
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isNightMode, setIsNightMode] = useState<boolean>(false);
@@ -135,6 +137,28 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                 <span className="hidden lg:inline">Sobre a Obra</span>
               </button>
             )}
+
+            {/* Compartilhar Obra */}
+            <button
+              onClick={() => {
+                if (onShare) {
+                  onShare();
+                } else if (typeof navigator !== 'undefined' && navigator.share) {
+                  navigator.share({
+                    title,
+                    text: `Livro "${title}" no acervo do Seminário Koinonia`,
+                    url: directOpenUrl,
+                  }).catch(() => {});
+                } else if (typeof navigator !== 'undefined') {
+                  navigator.clipboard.writeText(directOpenUrl);
+                }
+              }}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1 cursor-pointer border bg-blue-900/40 text-blue-300 hover:bg-blue-800/60 border-blue-500/30 active:scale-95"
+              title="Compartilhar esta obra (WhatsApp, Link ou Citação)"
+            >
+              <Share2 className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden sm:inline">Compartilhar</span>
+            </button>
 
             {/* Zoom Controls */}
             <div className="hidden sm:flex items-center gap-0.5 bg-slate-900 p-0.5 rounded-xl border border-slate-800 text-xs">

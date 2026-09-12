@@ -141,8 +141,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const reloadData = async () => {
     await syncRbacFromCloud(true);
-    setUsersList(getAuthorizedUsersList());
-    setPendingRequests(getPendingRequests());
+    const users = getAuthorizedUsersList();
+    setUsersList(users);
+    const pending = getPendingRequests().filter((p) => p.email && !users[p.email.toLowerCase().trim()]);
+    setPendingRequests(pending);
     setDisciplinasList(getAllDisciplinas());
   };
 
@@ -156,8 +158,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
     const handleDiscUpd = () => setDisciplinasList(getAllDisciplinas());
     const handleRbacUpd = () => {
-      setUsersList(getAuthorizedUsersList());
-      setPendingRequests(getPendingRequests());
+      const users = getAuthorizedUsersList();
+      setUsersList(users);
+      const pending = getPendingRequests().filter((p) => p.email && !users[p.email.toLowerCase().trim()]);
+      setPendingRequests(pending);
     };
 
     window.addEventListener('lms_disciplinas_updated', handleDiscUpd);
@@ -176,8 +180,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
   const handleApprove = async (req: AccessRequest, role: UserRole) => {
-    await approveAccessRequest(req.id, role);
-    await reloadData();
+    // Atualização otimista imediata na UI para não travar na tela do celular
+    const reqEmailNorm = req.email.toLowerCase().trim();
+    setPendingRequests((prev) => prev.filter((p) => p.id !== req.id && p.email.toLowerCase().trim() !== reqEmailNorm));
+
     const emailInfo = formatApprovalEmail(req.name, req.email, role, req.whatsapp);
     setApprovalModalData({
       name: req.name,
@@ -191,9 +197,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       copied: false,
     });
     showNotify(`Solicitação de ${req.name} aprovada no perfil de ${role.toUpperCase()}!`);
+
+    await approveAccessRequest(req.id, role);
+    await reloadData();
   };
 
   const handleReject = async (id: string) => {
+    setPendingRequests((prev) => prev.filter((p) => p.id !== id));
     await rejectAccessRequest(id);
     await reloadData();
     showNotify('Solicitação de acesso rejeitada.');
