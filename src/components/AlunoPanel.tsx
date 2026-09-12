@@ -1832,6 +1832,53 @@ href={nextAulaToday.google_meet_url}
     );
   };
 
+  // Card de Destaque da Biblioteca Digital Teológica
+  const renderCardBibliotecaDigital = () => (
+    <div
+      data-tour="aluno-card-biblioteca"
+      className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-4 sm:p-5 rounded-2xl border border-emerald-800/50 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition hover:border-emerald-500/60 animate-in fade-in"
+    >
+      <div className="flex items-center gap-3">
+        <div className="p-2.5 bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 rounded-xl shrink-0 shadow-xs">
+          <BookOpen className="w-5 h-5 text-emerald-400" />
+        </div>
+        <div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h4 className="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
+              <span>Biblioteca Digital Teológica</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                Acervo Completo
+              </span>
+            </h4>
+          </div>
+          <p className="text-[11px] text-slate-300 mt-0.5">
+            Consulte livros teológicos, comentários exegéticos, léxicos e obras recomendadas pelos professores do seminário.
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+        <button
+          type="button"
+          onClick={() => {
+            if (onTabChange) {
+              onTabChange('aluno-biblioteca');
+            } else if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: { tab: 'aluno-biblioteca' } }));
+              window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-biblioteca' }));
+            }
+          }}
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95 whitespace-nowrap"
+          title="Acessar o acervo de livros da Biblioteca Digital"
+        >
+          <BookOpen className="w-3.5 h-3.5" />
+          <span>Acessar Biblioteca</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+
   const renderGradeAulas = () => (
     <div data-tour="disciplinas-grid" className="space-y-6">
       <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -2208,6 +2255,9 @@ href={nextAulaToday.google_meet_url}
 
           {renderAulasGravadas()}
 
+          {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
+          {renderCardBibliotecaDigital()}
+
           {renderCardsMetodologias(true)}
         </>
       ) : (
@@ -2220,6 +2270,9 @@ href={nextAulaToday.google_meet_url}
 
           {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
           {renderAulasGravadas()}
+
+          {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
+          {renderCardBibliotecaDigital()}
 
           {/* 3. MODO DE ESTUDO ENTRE AS AULAS ONLINE (LABORATÓRIOS DE PRÁTICA PASTORAL, HOMILÉTICA & 3D) */}
           {renderCardsMetodologias(false)}

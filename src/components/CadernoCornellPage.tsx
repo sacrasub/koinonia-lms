@@ -423,6 +423,24 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [saveStatusMessage, setSaveStatusMessage] = useState<string | null>(null);
 
+  // Busca Global no acervo de notas Cornell (100% Local, Zero Egress)
+  const filteredNotes = useMemo(() => {
+    if (!searchTerm.trim()) return [];
+    const term = searchTerm.toLowerCase().trim();
+    const notesArray = Object.values(allNotes);
+    return notesArray.filter((n) => {
+      const matchTheme = (n.theme || '').toLowerCase().includes(term);
+      const matchDisc = (n.disciplina_name || '').toLowerCase().includes(term);
+      const matchNotes = (n.notes || '').toLowerCase().includes(term);
+      const matchCues = (n.cues || '').toLowerCase().includes(term);
+      const matchSummary = (n.summary || '').toLowerCase().includes(term);
+      const matchProf = (n.professor_name || '').toLowerCase().includes(term);
+      const matchRefs = (n.biblical_references || '').toLowerCase().includes(term);
+      const matchAi = (n.ai_summary_text || '').toLowerCase().includes(term);
+      return matchTheme || matchDisc || matchNotes || matchCues || matchSummary || matchProf || matchRefs || matchAi;
+    });
+  }, [allNotes, searchTerm]);
+
   // Modais e Estados do Transformador de IA (Google Meet / Docs ➡️ Método Cornell)
   const [isAiSummaryModalOpen, setIsAiSummaryModalOpen] = useState<boolean>(false);
   const [isEditAiModalOpen, setIsEditAiModalOpen] = useState<boolean>(false);
