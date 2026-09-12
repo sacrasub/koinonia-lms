@@ -497,13 +497,21 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
       setAllBooks(getAllBibliotecaBooks());
     };
     const handleSearchEvent = (e: Event) => {
-      const customEvent = e as CustomEvent<string | { search?: string; category?: string }>;
+      const customEvent = e as CustomEvent<string | { search?: string; category?: string; bookId?: string }>;
       if (typeof customEvent.detail === 'string') {
         setSearchTerm(customEvent.detail);
         setSelectedCategory('all');
       } else if (customEvent.detail) {
         if (customEvent.detail.search) setSearchTerm(customEvent.detail.search);
         if (customEvent.detail.category) setSelectedCategory(customEvent.detail.category);
+        if (customEvent.detail.bookId) {
+          const targetId = customEvent.detail.bookId;
+          const currentBooks = getAllBibliotecaBooks();
+          const found = currentBooks.find(b => b.id === targetId || b.id.toLowerCase() === targetId.toLowerCase());
+          if (found) {
+            setViewingBook(found);
+          }
+        }
       }
     };
 

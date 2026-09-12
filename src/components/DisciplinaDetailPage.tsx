@@ -7,7 +7,7 @@ import {
   FileText, Link as LinkIcon, AlertCircle, Quote, ShieldCheck, GraduationCap,
   Layers, MessageSquare, PhoneCall, Globe, Compass, Edit3, Library,
   Presentation, Maximize2, Minimize2, PenTool, ChevronLeft, ChevronRight, Settings, Play,
-  Mic
+  Mic, Share2
 } from 'lucide-react';
 import { Disciplina, Aula, LivroRecomendadoDisciplina, GeminiNoteItem, GravacaoAulaItem, Material, AvisoLeituraPreAula, UserRole } from '@/types';
 import { getAllDisciplinas, updateDisciplina, getDisciplinasForUser } from '@/services/disciplinasService';
@@ -16,7 +16,8 @@ import {
   getLivrosRecomendadosForDisciplina, 
   addLivroRecomendado, 
   updateLivroRecomendado,
-  deleteLivroRecomendado 
+  deleteLivroRecomendado,
+  resolveLivroRecomendado
 } from '@/services/livrosRecomendadosService';
 import { 
   getGeminiNotesForDisciplina, 
@@ -408,6 +409,42 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
       deleteLivroRecomendado(id);
       showToast(`Livro removido da bibliografia.`);
       refreshData();
+    }
+  };
+
+  const isBookFolderUrl = (url?: string) => {
+    if (!url) return true;
+    if (url.includes('/folders/')) return true;
+    const folderIds = [
+      '19Y8Nv2Yvx1V-m4E5y5fUWOo5e8DZzeji', 
+      '1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me', 
+      '1BUr0R4pLQjTt01ID8XjYKIBlZhAtaWcx', 
+      '1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7', 
+      '1xuOm61ul94H3kdU5psFtbl-I2KZ41QJC', 
+      '1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P', 
+      '1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8', 
+      '1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj'
+    ];
+    return folderIds.some(fid => url.includes(fid));
+  };
+
+  const handleShareLivro = (livro: LivroRecomendadoDisciplina) => {
+    const resolved = resolveLivroRecomendado(livro);
+    const shareUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}/biblioteca?livro=${encodeURIComponent(resolved.biblioteca_book_id || resolved.book_title)}`
+      : resolved.book_url;
+    
+    const text = `📖 *${resolved.book_title}*\n✍️ Autor: ${resolved.book_author || 'Diversos'}\n🏛️ Disciplina: ${disciplina?.name || resolved.disciplina_name}\n\nLeia diretamente no LMS Koinonia:\n${shareUrl}`;
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: resolved.book_title,
+        text: text,
+        url: shareUrl,
+      }).catch(() => {});
+    } else if (typeof window !== 'undefined') {
+      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
     }
   };
 
@@ -1302,58 +1339,99 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                       )}
                     </div>
 
-                    <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-[10px] text-gray-500">Por: {livro.added_by_name}</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            if (onTabChange) {
-                              onTabChange('aluno-biblioteca');
-                            } else {
-                              window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-biblioteca' }));
-                            }
-                            setTimeout(() => {
-                              window.dispatchEvent(new CustomEvent('lms_search_biblioteca', { detail: livro.book_title }));
-                            }, 60);
-                          }}
-                          className="py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                          title="Consultar e ler na Biblioteca Digital"
-                        >
-                          <Library className="w-3.5 h-3.5 text-indigo-600" />
-                          <span>Biblioteca Digital</span>
-                        </button>
-                        {livro.book_url && (livro.book_url.includes('drive.google.com') || livro.book_url.includes('/file/d/') || livro.book_url.endsWith('.pdf')) && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
-                              setMobilePdfModal({ 
-                                isOpen: true, 
-                                title: livro.book_title, 
-                                pdfUrl: livro.book_url,
-                                author: livro.book_author,
-                                description: livro.notes
-                              });
-                            }}
-                            className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                            title="Ler PDF diretamente no App (Leitor Embutido)"
-                          >
-                            <BookOpen className="w-3.5 h-3.5" />
-                            <span>Ler no App</span>
-                          </button>
-                        )}
-                        <a
-                          href={livro.book_url && !livro.book_url.includes('1Xl2x4f-default-book') ? livro.book_url : (disciplina.google_drive_url || 'https://drive.google.com')}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
-                          title="Abrir arquivo diretamente no Google Drive"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Acessar Obra</span>
-                        </a>
-                      </div>
-                    </div>
+                    {(() => {
+                      const resolvedLivro = resolveLivroRecomendado(livro);
+                      const isFolder = isBookFolderUrl(resolvedLivro.book_url);
+
+                      return (
+                        <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-[10px] text-gray-500">Por: {resolvedLivro.added_by_name}</span>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {/* Botão Compartilhar */}
+                            <button
+                              type="button"
+                              onClick={() => handleShareLivro(resolvedLivro)}
+                              className="py-1.5 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1 active:scale-95 cursor-pointer"
+                              title="Compartilhar livro (WhatsApp / Link Direto)"
+                            >
+                              <Share2 className="w-3.5 h-3.5 text-slate-600" />
+                              <span className="hidden sm:inline">Compartilhar</span>
+                            </button>
+
+                            {/* Botão Biblioteca Digital */}
+                            <button
+                              onClick={() => {
+                                if (onTabChange) {
+                                  onTabChange('aluno-biblioteca');
+                                } else {
+                                  window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-biblioteca' }));
+                                }
+                                setTimeout(() => {
+                                  window.dispatchEvent(new CustomEvent('lms_search_biblioteca', { 
+                                    detail: {
+                                      search: resolvedLivro.book_title,
+                                      bookId: resolvedLivro.biblioteca_book_id
+                                    }
+                                  }));
+                                }, 60);
+                              }}
+                              className="py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                              title="Consultar e abrir na Biblioteca Digital"
+                            >
+                              <Library className="w-3.5 h-3.5 text-indigo-600" />
+                              <span>Biblioteca Digital</span>
+                            </button>
+
+                            {/* Botão Ler no App (Apenas para PDFs individuais) */}
+                            {resolvedLivro.book_url && !isFolder && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  trackEvent('biblioteca', 'open_book_reader', resolvedLivro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
+                                  setMobilePdfModal({ 
+                                    isOpen: true, 
+                                    title: resolvedLivro.book_title, 
+                                    pdfUrl: resolvedLivro.book_url,
+                                    author: resolvedLivro.book_author,
+                                    description: resolvedLivro.notes
+                                  });
+                                }}
+                                className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                                title="Ler PDF diretamente no App (Leitor Embutido)"
+                              >
+                                <BookOpen className="w-3.5 h-3.5" />
+                                <span>Ler no App</span>
+                              </button>
+                            )}
+
+                            {/* Botão Google Drive */}
+                            {isFolder ? (
+                              <a
+                                href={resolvedLivro.book_url || (disciplina.google_drive_url || 'https://drive.google.com')}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-1.5 px-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                                title="Abrir pasta de materiais no Google Drive"
+                              >
+                                <FolderOpen className="w-3.5 h-3.5" />
+                                <span>Pasta de Materiais</span>
+                              </a>
+                            ) : (
+                              <a
+                                href={resolvedLivro.book_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                                title="Abrir arquivo diretamente no Google Drive"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                                <span>Acessar Obra</span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 ))}
               </div>
@@ -1554,58 +1632,99 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                     )}
                   </div>
 
-                  <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-[10px] text-gray-500">Por: {livro.added_by_name}</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          if (onTabChange) {
-                            onTabChange('aluno-biblioteca');
-                          } else {
-                            window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-biblioteca' }));
-                          }
-                          setTimeout(() => {
-                            window.dispatchEvent(new CustomEvent('lms_search_biblioteca', { detail: livro.book_title }));
-                          }, 60);
-                        }}
-                        className="py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                        title="Consultar e ler na Biblioteca Digital"
-                      >
-                        <Library className="w-3.5 h-3.5 text-indigo-600" />
-                        <span>Biblioteca Digital</span>
-                      </button>
-                      {livro.book_url && (livro.book_url.includes('drive.google.com') || livro.book_url.includes('/file/d/') || livro.book_url.endsWith('.pdf')) && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            trackEvent('biblioteca', 'open_book_reader', livro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
-                            setMobilePdfModal({ 
-                              isOpen: true, 
-                              title: livro.book_title, 
-                              pdfUrl: livro.book_url,
-                              author: livro.book_author,
-                              description: livro.notes
-                            });
-                          }}
-                          className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                          title="Ler PDF diretamente no App (Leitor Embutido)"
-                        >
-                          <BookOpen className="w-3.5 h-3.5" />
-                          <span>Ler no App</span>
-                        </button>
-                      )}
-                      <a
-                        href={livro.book_url && !livro.book_url.includes('1Xl2x4f-default-book') ? livro.book_url : (disciplina.google_drive_url || 'https://drive.google.com')}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
-                        title="Abrir arquivo diretamente no Google Drive"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Acessar Obra</span>
-                      </a>
-                    </div>
-                  </div>
+                  {(() => {
+                    const resolvedLivro = resolveLivroRecomendado(livro);
+                    const isFolder = isBookFolderUrl(resolvedLivro.book_url);
+
+                    return (
+                      <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-[10px] text-gray-500">Por: {resolvedLivro.added_by_name}</span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {/* Botão Compartilhar */}
+                          <button
+                            type="button"
+                            onClick={() => handleShareLivro(resolvedLivro)}
+                            className="py-1.5 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1 active:scale-95 cursor-pointer"
+                            title="Compartilhar livro (WhatsApp / Link Direto)"
+                          >
+                            <Share2 className="w-3.5 h-3.5 text-slate-600" />
+                            <span className="hidden sm:inline">Compartilhar</span>
+                          </button>
+
+                          {/* Botão Biblioteca Digital */}
+                          <button
+                            onClick={() => {
+                              if (onTabChange) {
+                                onTabChange('aluno-biblioteca');
+                              } else {
+                                window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-biblioteca' }));
+                              }
+                              setTimeout(() => {
+                                window.dispatchEvent(new CustomEvent('lms_search_biblioteca', { 
+                                  detail: {
+                                    search: resolvedLivro.book_title,
+                                    bookId: resolvedLivro.biblioteca_book_id
+                                  }
+                                }));
+                              }, 60);
+                            }}
+                            className="py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                            title="Consultar e abrir na Biblioteca Digital"
+                          >
+                            <Library className="w-3.5 h-3.5 text-indigo-600" />
+                            <span>Biblioteca Digital</span>
+                          </button>
+
+                          {/* Botão Ler no App (Apenas para PDFs individuais) */}
+                          {resolvedLivro.book_url && !isFolder && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                trackEvent('biblioteca', 'open_book_reader', resolvedLivro.book_title, { disciplina: disciplina.name }, userEmail, currentRole);
+                                setMobilePdfModal({ 
+                                  isOpen: true, 
+                                  title: resolvedLivro.book_title, 
+                                  pdfUrl: resolvedLivro.book_url,
+                                  author: resolvedLivro.book_author,
+                                  description: resolvedLivro.notes
+                                });
+                              }}
+                              className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                              title="Ler PDF diretamente no App (Leitor Embutido)"
+                            >
+                              <BookOpen className="w-3.5 h-3.5" />
+                              <span>Ler no App</span>
+                            </button>
+                          )}
+
+                          {/* Botão Google Drive */}
+                          {isFolder ? (
+                            <a
+                              href={resolvedLivro.book_url || (disciplina.google_drive_url || 'https://drive.google.com')}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="py-1.5 px-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                              title="Abrir pasta de materiais no Google Drive"
+                            >
+                              <FolderOpen className="w-3.5 h-3.5" />
+                              <span>Pasta de Materiais</span>
+                            </a>
+                          ) : (
+                            <a
+                              href={resolvedLivro.book_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                              title="Abrir arquivo diretamente no Google Drive"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              <span>Acessar Obra</span>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               ))}
             </div>
