@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   CheckSquare, PenTool, AlertCircle, Zap, CheckCircle2, Clock, 
-  Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw
+  Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
+  MessageCircle, Share2, Copy, Check, ExternalLink
 } from 'lucide-react';
 import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
 
@@ -293,10 +294,102 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   const [newSubtasksText, setNewSubtasksText] = useState('');
 
   const [notification, setNotification] = useState<string | null>(null);
+  const [isShareWhatsAppModalOpen, setIsShareWhatsAppModalOpen] = useState(false);
+  const [copiedWhatsAppText, setCopiedWhatsAppText] = useState(false);
 
   const showNotification = (msg: string) => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 3500);
+  };
+
+  const generateWhatsAppAssessmentsText = () => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://koinonialms.vercel.app';
+    const checklistUrl = `${origin}/?tab=checklist`;
+
+    // Ordena cronologicamente por prazo
+    const sorted = [...tasks].sort((a, b) => {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+    });
+
+    let text = `📚 *SEMINÁRIO KOINONIA - CALENDÁRIO DE AVALIAÇÕES E TRABALHOS 2026.2*\n\n` +
+      `Olá, irmãos e colegas de turma! Segue o cronograma oficial de trabalhos acadêmicos, seminários e avaliações previstos para este semestre:\n\n` +
+      `🗓️ *CRONOGRAMA DE TRABALHOS E PRAZOS:*\n\n`;
+
+    sorted.forEach((task, index) => {
+      let formattedDate = 'A definir';
+      if (task.dueDate) {
+        const parts = task.dueDate.split('-');
+        if (parts.length === 3) {
+          formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+      }
+      const statusIcon = task.status === 'done' ? '✅' : task.status === 'doing' ? '⏳' : '📌';
+
+      text += `${statusIcon} *${formattedDate}* - ${task.subject}\n` +
+        `📝 *${task.title}* (${task.type})\n` +
+        `👤 *Docente:* ${task.professor}\n`;
+
+      if (task.strategyNote) {
+        const shortNote = task.strategyNote.length > 130 ? `${task.strategyNote.slice(0, 130)}...` : task.strategyNote;
+        text += `💡 _${shortNote}_\n`;
+      }
+      text += `\n`;
+    });
+
+    text += `━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `🔗 *Acompanhe seu progresso e marque suas etapas no LMS:*\n` +
+      `${checklistUrl}\n\n` +
+      `📲 *Como acessar seu checklist na plataforma:*\n` +
+      `1. Toque no link acima (ou acesse pelo computador).\n` +
+      `2. Faça login com seu e-mail do Seminário.\n` +
+      `3. No menu, acesse a aba *Checklist*.\n` +
+      `4. Você poderá marcar etapas concluídas, criar seus próprios prazos de estudo e acompanhar sua evolução em tempo real!\n`;
+
+    return text;
+  };
+
+  const handleShareWhatsApp = () => {
+    const text = generateWhatsAppAssessmentsText();
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleCopyWhatsAppText = () => {
+    const text = generateWhatsAppAssessmentsText();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopiedWhatsAppText(true);
+        showNotification('✓ Texto do cronograma copiado para o WhatsApp!');
+        setTimeout(() => setCopiedWhatsAppText(false), 2500);
+      });
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopiedWhatsAppText(true);
+      showNotification('✓ Texto do cronograma copiado para o WhatsApp!');
+      setTimeout(() => setCopiedWhatsAppText(false), 2500);
+    }
+  };
+
+  const handleNativeShareAssessments = async () => {
+    const text = generateWhatsAppAssessmentsText();
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Calendário de Avaliações 2026.2 - Seminário Koinonia',
+          text,
+        });
+        showNotification('✓ Cronograma compartilhado com sucesso!');
+        return;
+      } catch (e) {}
+    }
+    handleCopyWhatsAppText();
   };
 
   useEffect(() => {
@@ -446,6 +539,15 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
               ></div>
             </div>
           </div>
+
+          <button
+            onClick={() => setIsShareWhatsAppModalOpen(true)}
+            title="Compartilhar lista de trabalhos e avaliações formatada para o WhatsApp"
+            className="px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer active:scale-95"
+          >
+            <MessageCircle className="w-4 h-4 text-white" />
+            <span>Compartilhar no WhatsApp</span>
+          </button>
 
           <button
             onClick={handleResetToOfficialSemester}
@@ -755,6 +857,87 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE COMPARTILHAMENTO DE AVALIAÇÕES PARA O WHATSAPP */}
+      {isShareWhatsAppModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-in fade-in">
+          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-gray-100 flex flex-col animate-in zoom-in-95 duration-150 max-h-[90vh]">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-emerald-50/80">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-sm sm:text-base text-gray-900">Compartilhar Avaliações no WhatsApp</h3>
+                  <p className="text-[11px] text-gray-500">Texto simplificado e otimizado com link direto</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsShareWhatsAppModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-white hover:bg-gray-100 text-gray-500 hover:text-gray-900 flex items-center justify-center border border-gray-200 transition cursor-pointer"
+                title="Fechar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Conteúdo: Prévia do Texto */}
+            <div className="p-5 space-y-4 overflow-y-auto flex-1">
+              <div className="space-y-1">
+                <span className="text-xs font-bold text-gray-700 block">Prévia da Mensagem Formatada:</span>
+                <p className="text-[11px] text-gray-500">
+                  O texto abaixo já contém todos os prazos, links e orientações de acesso para enviar nos grupos de alunos e turmas.
+                </p>
+              </div>
+
+              <div className="bg-slate-900 text-slate-100 font-mono text-xs p-3.5 rounded-2xl border border-slate-800 whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto shadow-inner select-all">
+                {generateWhatsAppAssessmentsText()}
+              </div>
+
+              {/* Botões de Ação */}
+              <div className="space-y-2 pt-1">
+                <button
+                  onClick={handleShareWhatsApp}
+                  className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Enviar Agora pelo WhatsApp</span>
+                </button>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    onClick={handleCopyWhatsAppText}
+                    className="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-200 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    {copiedWhatsAppText ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-600" />}
+                    <span>{copiedWhatsAppText ? 'Texto Copiado!' : 'Copiar Texto'}</span>
+                  </button>
+
+                  <button
+                    onClick={handleNativeShareAssessments}
+                    className="py-2.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs rounded-xl border border-blue-200 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-4 h-4 text-blue-600" />
+                    <span>Outros Aplicativos</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Rodapé */}
+            <div className="px-5 py-3 bg-gray-50 border-t border-gray-100 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setIsShareWhatsAppModalOpen(false)}
+                className="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl transition cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         </div>
       )}

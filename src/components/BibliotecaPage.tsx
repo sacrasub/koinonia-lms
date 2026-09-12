@@ -742,34 +742,34 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
     }
   };
 
+  const getBookShareUrl = (book: BibliotecaBook) => {
+    if (typeof window !== 'undefined') {
+      return `${window.location.origin}/?tab=biblioteca&livro=${encodeURIComponent(book.id)}`;
+    }
+    return `https://koinonialms.vercel.app/?tab=biblioteca&livro=${encodeURIComponent(book.id)}`;
+  };
+
   const handleCopyBookLink = (book: BibliotecaBook) => {
-    const driveUrl = book.drive_url || `https://drive.google.com/file/d/${book.id}/view`;
+    const shareUrl = getBookShareUrl(book);
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(driveUrl).then(() => {
+      navigator.clipboard.writeText(shareUrl).then(() => {
         setCopiedBookId(book.id);
-        showToast(`Link copiado: ${book.title}`);
+        showToast(`✓ Link da obra na biblioteca copiado!`);
         setTimeout(() => setCopiedBookId(null), 2500);
       }).catch(() => {
-        fallbackCopy(driveUrl, () => {
+        fallbackCopy(shareUrl, () => {
           setCopiedBookId(book.id);
-          showToast(`Link copiado: ${book.title}`);
+          showToast(`✓ Link da obra na biblioteca copiado!`);
           setTimeout(() => setCopiedBookId(null), 2500);
         });
       });
     } else {
-      fallbackCopy(driveUrl, () => {
+      fallbackCopy(shareUrl, () => {
         setCopiedBookId(book.id);
-        showToast(`Link copiado: ${book.title}`);
+        showToast(`✓ Link da obra na biblioteca copiado!`);
         setTimeout(() => setCopiedBookId(null), 2500);
       });
     }
-  };
-
-  const getBookShareUrl = (book: BibliotecaBook) => {
-    if (typeof window !== 'undefined') {
-      return `${window.location.origin}/biblioteca?livro=${encodeURIComponent(book.id)}`;
-    }
-    return `https://koinonialms.vercel.app/biblioteca?livro=${encodeURIComponent(book.id)}`;
   };
 
   const getBookWhatsAppShareText = (book: BibliotecaBook) => {
@@ -1285,16 +1285,16 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                     <div className="flex items-center justify-between gap-1.5">
                       <button
                         onClick={() => handleOpenShareModal(book)}
-                        className="flex-1 py-1.5 px-2 rounded-xl bg-blue-50/80 hover:bg-blue-100 text-blue-900 transition text-xs font-bold flex items-center justify-center gap-1.5 border border-blue-200 cursor-pointer shadow-2xs active:scale-95"
-                        title="Compartilhar Obra (WhatsApp, Link, Citação)"
+                        className="flex-1 py-2 px-2.5 rounded-xl bg-blue-600/15 hover:bg-blue-600/25 text-blue-700 dark:text-blue-300 transition text-xs font-bold flex items-center justify-center gap-1.5 border border-blue-400/30 dark:border-blue-500/30 cursor-pointer shadow-2xs active:scale-95"
+                        title="Compartilhar Link da Obra na Biblioteca (WhatsApp, Link Direto, Citação)"
                       >
-                        <Share2 className="w-3.5 h-3.5 text-blue-600" />
-                        <span className="text-[11px]">Compartilhar</span>
+                        <Share2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                        <span className="text-[11px] font-extrabold">Compartilhar</span>
                       </button>
 
                       <button
                         onClick={() => copyCitation(book)}
-                        className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-blue-900 transition text-xs font-semibold flex items-center gap-1 border border-gray-200 cursor-pointer"
+                        className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 transition text-xs font-semibold flex items-center gap-1 border border-gray-200 dark:border-slate-700 cursor-pointer"
                         title="Copiar Citação ABNT"
                       >
                         <Quote className="w-3.5 h-3.5" />
@@ -1303,8 +1303,8 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
 
                       <button
                         onClick={() => handleCopyBookLink(book)}
-                        className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-blue-900 transition text-xs font-semibold flex items-center gap-1 border border-gray-200 cursor-pointer"
-                        title="Copiar Link Direto para Indicar aos Alunos"
+                        className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 transition text-xs font-semibold flex items-center gap-1 border border-gray-200 dark:border-slate-700 cursor-pointer"
+                        title="Copiar Link da Obra na Plataforma"
                       >
                         {copiedBookId === book.id ? (
                           <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -1848,10 +1848,23 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
                       </a>
                     </div>
                   ) : previewUrl ? (
-                    <div className="flex-1 w-full h-full min-h-[55vh] sm:min-h-[68vh] rounded-2xl overflow-hidden shadow-inner border border-gray-200 bg-slate-950 relative">
+                    <div className="flex-1 w-full h-full min-h-[55vh] sm:min-h-[68vh] rounded-2xl overflow-hidden shadow-inner border border-gray-200 bg-slate-950 flex flex-col relative">
+                      <div className="bg-slate-900 border-b border-slate-800 px-3.5 py-2 flex items-center justify-between gap-2 shrink-0 text-xs text-slate-300">
+                        <span className="truncate text-[11px] text-slate-300">
+                          Se o leitor exibir <strong className="text-amber-300">&ldquo;Nenhuma visualização disponível&rdquo;</strong> (bloqueio de cookies do navegador):
+                        </span>
+                        <a
+                          href={driveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] shrink-0 shadow-xs transition"
+                        >
+                          Abrir no Drive ↗
+                        </a>
+                      </div>
                       <iframe
                         src={previewUrl}
-                        className="w-full h-full min-h-[55vh] sm:min-h-[68vh] border-0"
+                        className="w-full flex-1 min-h-[50vh] sm:min-h-[62vh] border-0"
                         title={`Prévia do livro ${viewingBook.title}`}
                         allow="autoplay"
                       />

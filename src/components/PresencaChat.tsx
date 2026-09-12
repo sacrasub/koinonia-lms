@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   MessageSquare, Users, Send, X, Minimize2, Maximize2, 
-  Circle, CheckCheck, Sparkles, Smile, RefreshCw
+  Circle, CheckCheck, Sparkles, Smile, RefreshCw, Bell, BellOff
 } from 'lucide-react';
 import { DirectMessage, OnlinePeer, UserRole } from '@/types';
 import { 
@@ -12,6 +12,7 @@ import {
   getDirectMessages, 
   sendDirectMessage, 
   getUnreadMessagesCount, 
+  getLatestUnreadMessage,
   markMessagesAsRead 
 } from '@/services/collaborationService';
 
@@ -19,6 +20,31 @@ interface PresencaChatProps {
   currentUserEmail: string;
   currentUserName?: string;
   currentUserRole?: UserRole;
+}
+
+// Sintetizador Web Audio API de toque suave (harmonioso e polido, sem arquivos externos)
+function playNotificationChime() {
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    // Harmônico suave: D5 (587.33Hz) saltando para A5 (880Hz)
+    osc.frequency.setValueAtTime(587.33, now);
+    osc.frequency.setValueAtTime(880.00, now + 0.09);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.22, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.40);
+  } catch (e) {
+    // Silently ignore se áudio não for permitido antes de interação do usuário
+  }
 }
 
 export const PresencaChat: React.FC<PresencaChatProps> = ({
@@ -34,13 +60,41 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<'peers' | 'chat'>('peers');
 
+  // Modo Não Perturbe (DND) com persistência local
+  const [isDndActive, setIsDndActive] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('lms_chat_dnd') === 'true';
+    }
+    return false;
+  });
+
+  // Notificação visual flutuante (Toast de nova mensagem)
+  const [incomingToast, setIncomingToast] = useState<{
+    id: string;
+    senderName: string;
+    senderEmail: string;
+    conteudo: string;
+  } | null>(null);
+
+  const lastNotifiedMsgIdRef = useRef<string | null>(null);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Heartbeat de Presença e Atualização de Peers
+  const toggleDnd = () => {
+    setIsDndActive((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('lms_chat_dnd', String(next));
+      }
+      return next;
+    });
+  };
+
+  // Heartbeat de Presença e Atualização de Mensagens / Notificações
   useEffect(() => {
     if (!currentUserEmail) return;
 
@@ -51,7 +105,7 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
       role: currentUserRole,
     });
 
-    const updatePresence = async () => {
+    const checkNewMessagesAndPresence = async () => {
       try {
         const activePeers = await getOnlinePeers(currentUserEmail);
         setPeers(activePeers);
@@ -60,10 +114,36 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
       try {
         const count = await getUnreadMessagesCount(currentUserEmail);
         setUnreadCount(count);
+
+        if (count > 0) {
+          const latestUnread = await getLatestUnreadMessage(currentUserEmail);
+          if (latestUnread && latestUnread.id !== lastNotifiedMsgIdRef.current) {
+            // Se for primeira vez lendo, apenas registra sem tocar som para não assustar no load
+            if (lastNotifiedMsgIdRef.current !== null) {
+              // Nova mensagem real chegou!
+              if (!isDndActive) {
+                playNotificationChime();
+                setIncomingToast({
+                  id: latestUnread.id,
+                  senderName: latestUnread.remetente_nome || latestUnread.remetente_email.split('@')[0],
+                  senderEmail: latestUnread.remetente_email,
+                  conteudo: latestUnread.conteudo,
+                });
+                if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+                toastTimeoutRef.current = setTimeout(() => {
+                  setIncomingToast(null);
+                }, 7000);
+              }
+            }
+            lastNotifiedMsgIdRef.current = latestUnread.id;
+          }
+        }
       } catch (e) {}
     };
 
-    updatePresence();
+    checkNewMessagesAndPresence();
+
+    // Polling inteligente de mensagens a cada 12s quando visível
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
         sendPresenceHeartbeat({
@@ -71,12 +151,15 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
           nome: currentUserName,
           role: currentUserRole,
         });
-        updatePresence();
+        checkNewMessagesAndPresence();
       }
-    }, 60000); // Polling suave a cada 60s para precisão e blindagem de cota
+    }, 12000);
 
-    return () => clearInterval(interval);
-  }, [currentUserEmail, currentUserName, currentUserRole]);
+    return () => {
+      clearInterval(interval);
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    };
+  }, [currentUserEmail, currentUserName, currentUserRole, isDndActive]);
 
   // Carrega mensagens do colega selecionado
   useEffect(() => {
@@ -177,6 +260,11 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
                   ? `${totalConnected} Conectados` 
                   : 'Online'}
               </span>
+              {isDndActive && (
+                <span title="Modo Não Perturbe Ativo (Silenciado)">
+                  <BellOff className="w-3 h-3 text-amber-400 shrink-0" />
+                </span>
+              )}
             </div>
 
             {unreadCount > 0 && (
@@ -236,7 +324,20 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
+              {/* Botão Modo Não Perturbe (DND) */}
+              <button
+                onClick={toggleDnd}
+                className={`p-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
+                  isDndActive 
+                    ? 'text-amber-300 bg-amber-500/20 border border-amber-500/40' 
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+                title={isDndActive ? 'Não Perturbe ATIVO (Sons e avisos silenciados) - Clique para reativar' : 'Ativar Modo Não Perturbe (Silenciar sons)'}
+              >
+                {isDndActive ? <BellOff className="w-3.5 h-3.5 text-amber-400" /> : <Bell className="w-3.5 h-3.5" />}
+              </button>
+
               {selectedPeer && (
                 <button
                   onClick={() => setSelectedPeer(null)}
@@ -406,6 +507,56 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
               </form>
             </div>
           )}
+        </div>
+      )}
+
+      {/* 3. AVISO VISUAL DE NOVA MENSAGEM RECEBIDA (TOAST FLUTUANTE COM RESPOSTA RÁPIDA) */}
+      {incomingToast && !isOpen && (
+        <div className="fixed bottom-24 sm:bottom-20 right-4 sm:right-6 z-60 max-w-xs sm:max-w-sm w-full bg-slate-900/95 backdrop-blur-md text-white p-3.5 rounded-2xl border-2 border-emerald-500/80 shadow-2xl flex items-start gap-3 animate-in slide-in-from-bottom-5 duration-300">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-700 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm ring-2 ring-emerald-400/40">
+            {incomingToast.senderName.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xs font-black text-emerald-300 truncate">
+                {incomingToast.senderName}
+              </span>
+              <button
+                onClick={() => setIncomingToast(null)}
+                className="text-slate-400 hover:text-white p-0.5 rounded cursor-pointer"
+                title="Fechar aviso"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-200 line-clamp-2 mt-0.5 leading-snug">
+              {incomingToast.conteudo}
+            </p>
+            <div className="flex items-center justify-between gap-2 mt-2 pt-1 border-t border-slate-800">
+              <button
+                onClick={() => {
+                  const peer = peers.find(p => p.email.toLowerCase() === incomingToast.senderEmail.toLowerCase()) || {
+                    email: incomingToast.senderEmail,
+                    nome: incomingToast.senderName,
+                    role: 'aluno' as UserRole,
+                    ultimo_heartbeat: new Date().toISOString(),
+                    is_online: true,
+                  };
+                  setSelectedPeer(peer);
+                  setActiveTab('chat');
+                  setIsOpen(true);
+                  setIncomingToast(null);
+                }}
+                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold rounded-lg shadow-sm transition active:scale-95 cursor-pointer flex items-center gap-1"
+              >
+                <span>Responder agora</span>
+                <span>→</span>
+              </button>
+              <span className="text-[10px] text-slate-400">
+                Agora mesmo
+              </span>
+            </div>
+          </div>
         </div>
       )}
     </>

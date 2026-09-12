@@ -472,6 +472,30 @@ export async function getUnreadMessagesCount(userEmail: string): Promise<number>
   return local.filter((m) => m.destinatario_email.toLowerCase() === normEmail && !m.lida).length;
 }
 
+export async function getLatestUnreadMessage(userEmail: string): Promise<DirectMessage | null> {
+  const normEmail = (userEmail || '').toLowerCase().trim();
+  try {
+    const { data, error } = await supabase
+      .from('tcc_mensagens')
+      .select('*')
+      .eq('destinatario_email', normEmail)
+      .eq('lida', false)
+      .order('criado_em', { ascending: false })
+      .limit(1);
+
+    if (!error && data && data.length > 0) {
+      return data[0];
+    }
+  } catch (e) {}
+
+  const local = getLocalData<DirectMessage[]>(STORAGE_MESSAGES_KEY, []);
+  const unread = local
+    .filter((m) => m.destinatario_email.toLowerCase() === normEmail && !m.lida)
+    .sort((a, b) => new Date(b.criado_em).getTime() - new Date(a.criado_em).getTime());
+
+  return unread[0] || null;
+}
+
 export async function markMessagesAsRead(senderEmail: string, receiverEmail: string): Promise<void> {
   const sEmail = senderEmail.toLowerCase().trim();
   const rEmail = receiverEmail.toLowerCase().trim();

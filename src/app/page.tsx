@@ -64,6 +64,17 @@ export default function Home() {
   const [currentRole, setCurrentRole] = useState<UserRole>('aluno');
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') || params.get('aba');
+      const bookParam = params.get('livro') || params.get('book') || params.get('id');
+      if (bookParam || tabParam === 'biblioteca' || tabParam === 'aluno-biblioteca') {
+        return 'aluno-biblioteca';
+      }
+      if (tabParam === 'checklist' || tabParam === 'aluno-checklist' || tabParam === 'avaliacoes') {
+        return 'aluno-checklist';
+      }
+      if (tabParam) return tabParam;
+
       const savedTab = localStorage.getItem('lms_active_tab');
       if (savedTab) return savedTab;
     }

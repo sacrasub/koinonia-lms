@@ -206,8 +206,8 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'Ética Cristã',
     book_title: 'Catecismo Maior de Westminster Comentado: Exposição Doutrinária',
     book_author: 'Johannes G. Vos / Assembleia de Westminster',
-    book_url: 'https://drive.google.com/file/d/14nL60p5-Gs150PAPH904hItyNDRLbFhm/view?usp=drivesdk',
-    biblioteca_book_id: 'fmb_d4d28638014e',
+    book_url: 'https://drive.google.com/file/d/1GR7IcQv9YrcNmbgjY_dKz6U0EK5mMcKv/view?usp=drivesdk',
+    biblioteca_book_id: 'fmb_2e65013ce8cf',
     is_mandatory: true,
     category: '04 - Teologia Sistemática',
     notes: '⭐ BASE OFICIAL DOS SEMINÁRIOS: Exposição detalhada dos Dez Mandamentos para os seminários práticos de 22/10 a 19/11.',
@@ -221,8 +221,8 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     disciplina_name: 'Ética Cristã',
     book_title: 'O Catecismo Maior de Westminster: Texto Oficial e Exposição dos Dez Mandamentos',
     book_author: 'Assembleia de Westminster (1647)',
-    book_url: 'https://drive.google.com/file/d/183_kT4sPIBxHxvZ7sFFnY-tU9AJCe1Fs/view?usp=drivesdk',
-    biblioteca_book_id: 'fmb_b317123c01c5',
+    book_url: 'https://drive.google.com/file/d/14nL60p5-Gs150PAPH904hItyNDRLbFhm/view?usp=drivesdk',
+    biblioteca_book_id: 'fmb_d4d28638014e',
     category: '04 - Teologia Sistemática',
     notes: 'Documento confessional histórico padrão utilizado como base nos seminários em grupo.',
     added_by_name: 'Profª Karoline Evangelista',
@@ -568,12 +568,12 @@ export const LIBRARY_BOOK_CROSS_REFERENCE: Record<string, { bibId: string; drive
     driveUrl: 'https://drive.google.com/file/d/15FTDt2QtK4XX-Z5FyKF9fFPzoGf4nk09/view?usp=drivesdk',
   },
   'catecismo maior de westminster comentado': {
-    bibId: 'fmb_d4d28638014e',
-    driveUrl: 'https://drive.google.com/file/d/14nL60p5-Gs150PAPH904hItyNDRLbFhm/view?usp=drivesdk',
+    bibId: 'fmb_2e65013ce8cf',
+    driveUrl: 'https://drive.google.com/file/d/1GR7IcQv9YrcNmbgjY_dKz6U0EK5mMcKv/view?usp=drivesdk',
   },
   'o catecismo maior de westminster': {
-    bibId: 'fmb_b317123c01c5',
-    driveUrl: 'https://drive.google.com/file/d/183_kT4sPIBxHxvZ7sFFnY-tU9AJCe1Fs/view?usp=drivesdk',
+    bibId: 'fmb_d4d28638014e',
+    driveUrl: 'https://drive.google.com/file/d/14nL60p5-Gs150PAPH904hItyNDRLbFhm/view?usp=drivesdk',
   },
   'etica crista': {
     bibId: 'fmb_972b8e205f00',
@@ -648,7 +648,7 @@ export function resolveLivroRecomendado(livro: LivroRecomendadoDisciplina): Livr
   return livro;
 }
 
-const STORAGE_KEY = 'lms_livros_recomendados_v5';
+const STORAGE_KEY = 'lms_livros_recomendados_v6';
 
 export function getAllLivrosRecomendados(): LivroRecomendadoDisciplina[] {
   if (typeof window === 'undefined') return INITIAL_LIVROS_RECOMENDADOS.map(resolveLivroRecomendado);

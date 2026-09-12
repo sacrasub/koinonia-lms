@@ -200,15 +200,17 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
               {isNightMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
             </button>
 
-            {/* Abrir em Nova Aba / Drive */}
+            {/* Abrir diretamente no Google Drive Oficial */}
             <a
               href={directOpenUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition border border-slate-700 hidden sm:flex items-center gap-1"
-              title="Abrir diretamente no Google Drive"
+              className="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+              title="Abrir no visualizador oficial do Google Drive em nova aba (Autenticado com sua conta)"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Abrir no Drive</span>
+              <span className="sm:hidden">Drive</span>
             </a>
 
             {/* Baixar Arquivo Original */}
@@ -240,6 +242,24 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
               <X className="w-4 h-4" />
             </button>
           </div>
+        </div>
+
+        {/* BANNER INFORMATIVO PARA CASO O NAVEGADOR BLOQUEIE COOKIES DE TERCEIROS NO IFRAME */}
+        <div className="bg-slate-900/95 border-b border-slate-800 px-3 sm:px-5 py-2 flex items-center justify-between gap-3 text-xs text-slate-300 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 animate-pulse"></span>
+            <p className="truncate text-[11px] sm:text-xs text-slate-300">
+              <strong className="text-white">Acesso do Seminário:</strong> Se o leitor exibir <span className="text-amber-300 font-semibold italic">&ldquo;Nenhuma visualização disponível&rdquo;</span> (bloqueio de cookies do navegador), acesse com sua conta autorizada:
+            </p>
+          </div>
+          <a
+            href={directOpenUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-[11px] flex items-center gap-1.5 shadow-sm shrink-0 active:scale-95 transition"
+          >
+            <span>Abrir no Google Drive ↗</span>
+          </a>
         </div>
 
         {/* ÁREA PRINCIPAL: VISUALIZADOR OFICIAL COM TODAS AS FOLHAS REAIS DO PDF */}
