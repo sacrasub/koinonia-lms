@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
-  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun
+  RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
+  ChevronRight
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
@@ -166,13 +167,37 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const getTabLabel = (tab: string): string => {
+    const map: Record<string, string> = {
+      'aluno-disciplinas': 'Disciplinas',
+      'aluno-caderno': 'Caderno Cornell',
+      'aluno-biblioteca': 'Biblioteca Digital',
+      'aluno-plano': 'Plano de Estudos',
+      'aluno-agenda': 'Grade Semanal',
+      'aluno-ia': 'Hub de IA',
+      'aluno-homiletica': 'Estúdio de Homilética',
+      'aluno-pesquisa': 'Pesquisa de Campo',
+      'aluno-tcc': 'Banca de TCC',
+      'aluno-metaverso': 'Metaverso Bíblico',
+      'prof-disciplinas': 'Minhas Aulas',
+      'prof-notas': 'Livro de Notas',
+      'monitor-escala': 'Escala de Monitoria',
+      'monitor-gravador': 'Gravador de Aulas',
+      'monitor-incidentes': 'Incidentes',
+      'admin-painel': 'Painel Geral',
+      'central-ajuda': 'Central de Ajuda',
+    };
+    return map[tab] || 'Painel';
+  };
+
+  const currentTabLabel = getTabLabel(activeTab);
+  const roleName = currentRole === 'admin' ? 'Admin' : currentRole === 'professor' ? 'Professor' : currentRole === 'monitor' ? 'Monitor' : 'Aluno';
+
   return (
     <>
       <header className="sticky top-0 z-50 glass-header px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border-b border-gray-200/80 dark:border-slate-800/80 transition-colors">
-        
-        {/* LADO ESQUERDO: Botão Menu (Mobile) + Logotipo */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Botão Menu Hambúrguer no Mobile / Tablet */}
+        {/* LADO ESQUERDO: Botão Menu (Mobile) + Logotipo + Título + Breadcrumb */}
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <button
             data-tour="btn-mobile-menu"
             onClick={() => setIsDrawerOpen(true)}
@@ -186,15 +211,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             <img src="/logo-koinonia-lms.png" alt="Logo Oficial Koinonia LMS" className="w-full h-full object-cover" />
           </div>
 
-          <div>
-            <h1 className="text-sm sm:text-lg font-extrabold text-gray-900 dark:text-white leading-tight flex items-center gap-1.5">
-              <span>Koinonia LMS</span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h1 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-tight truncate">
+                Koinonia LMS
+              </h1>
+              {/* Breadcrumb Dinâmico de Localização Atual */}
+              <nav aria-label="Breadcrumb" className="hidden sm:inline-flex items-center text-[11px] font-semibold text-gray-400 dark:text-slate-400">
+                <ChevronRight className="w-3 h-3 mx-0.5 text-gray-400 dark:text-slate-500" />
+                <span className="text-gray-600 dark:text-slate-300 font-medium">{roleName}</span>
+                <ChevronRight className="w-3 h-3 mx-0.5 text-gray-400 dark:text-slate-500" />
+                <span className="text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded-md">
+                  {currentTabLabel}
+                </span>
+              </nav>
               {isMobile && (
                 <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 md:hidden">
                   {currentRole}
                 </span>
               )}
-            </h1>
+            </div>
             <p className="text-[11px] text-gray-500 dark:text-slate-400 font-medium hidden sm:block">Seminário Teológico Congregacional • Semestre 2026.2</p>
           </div>
         </div>

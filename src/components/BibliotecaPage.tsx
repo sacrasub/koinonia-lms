@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import { BibliotecaBook, UserRole } from '@/types';
 import { 
-  getAllBibliotecaBooks, 
+  getAllBibliotecaBooks,
+  fetchBibliotecaBooksFromApi, 
   addCustomBook, 
   deleteCustomBook, 
   updateBibliotecaBook,
@@ -486,6 +487,7 @@ export const BibliotecaPage: React.FC<BibliotecaPageProps> = ({
   // Carregar e sincronizar acervo completo
   useEffect(() => {
     setAllBooks(getAllBibliotecaBooks());
+    fetchBibliotecaBooksFromApi().catch(() => {});
     const handleUpd = () => {
       setAllBooks(getAllBibliotecaBooks());
     };

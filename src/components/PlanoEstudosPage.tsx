@@ -15,6 +15,7 @@ import {
   addOrUpdateEntregavel, deleteEntregavel, updateRequisitosDisciplina
 } from '@/services/planoEstudosService';
 import { getDisciplinasForUser } from '@/services/disciplinasService';
+import { PomodoroTimerWidget } from '@/components/PomodoroTimerWidget';
 
 interface PlanoEstudosPageProps {
   userEmail?: string;
@@ -472,6 +473,9 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* WIDGET CRONÔMETRO POMODORO (FOCO ACADÊMICO & PAUSAS) */}
+      <PomodoroTimerWidget />
 
       {/* SELETOR DE SEÇÃO */}
       <div className="flex bg-slate-100 p-1 rounded-xl gap-1">

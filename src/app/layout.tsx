@@ -54,6 +54,8 @@ export const viewport: Viewport = {
   themeColor: '#0071E3',
 };
 
+import { PwaInitializer } from '@/components/PwaInitializer';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -91,6 +93,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-full bg-[#F5F5F7] dark:bg-[#090d16] text-gray-900 dark:text-slate-100 overflow-x-hidden selection:bg-blue-500 selection:text-white transition-colors duration-200">
+        <PwaInitializer />
         {children}
       </body>
     </html>

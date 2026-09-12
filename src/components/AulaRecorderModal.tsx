@@ -30,6 +30,7 @@ import {
   uploadRecordingToGoogleDrive,
   uploadLargeRecordingDirectToDrive,
   getActiveRecordings,
+  getGravacoesForDisciplina,
   ActiveRecordingSession
 } from '@/services/gravacoesService';
 import {
@@ -84,9 +85,21 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const [aulaNum, setAulaNum] = useState<number>(defaultAulaNum);
   const [dataAula, setDataAula] = useState<string>(new Date().toLocaleDateString('pt-BR'));
   const [includeMic, setIncludeMic] = useState<boolean>(true);
-  const [activeTabMode, setActiveTabMode] = useState<'screen' | 'file' | 'link' | 'autopilot'>(initialMode || 'screen');
+  const [activeTabMode, setActiveTabMode] = useState<'screen' | 'file' | 'link' | 'autopilot' | 'history'>(initialMode || 'screen');
   const [directDriveUrl, setDirectDriveUrl] = useState<string>('');
   const [directRecordingTitle, setDirectRecordingTitle] = useState<string>('');
+  const [isOnline, setIsOnline] = useState<boolean>(() => typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Estados do Piloto Automático & Auto-Stop (Cristiano / Monitoria / Admin)
   const [isAutoPilot, setIsAutoPilot] = useState<boolean>(initialMode === 'autopilot');
@@ -1651,6 +1664,17 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                   <FolderOpen className="w-3.5 h-3.5 text-amber-600" />
                   <span>Link Drive</span>
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTabMode('history')}
+                  className={`flex-1 py-2 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                    activeTabMode === 'history' ? 'bg-white text-indigo-950 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Clock className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Histórico</span>
+                </button>
               </div>
 
               {/* OPÇÃO DE TRANSCRIÇÃO DE VOZ AO VIVO */}
@@ -2029,6 +2053,59 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                     O arquivo será salvo automaticamente na pasta oficial do Google Drive.
                   </p>
                 </div>
+              ) : activeTabMode === 'history' ? (
+                <div className="pt-3 border-t border-gray-200 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Gravações Anteriores desta Disciplina</span>
+                    </span>
+                    <span className="text-[10px] text-gray-500 font-medium">
+                      Cache local (Zero Egress)
+                    </span>
+                  </div>
+
+                  {(() => {
+                    const gravacoesDisciplina = getGravacoesForDisciplina(selectedDisciplinaId);
+                    if (gravacoesDisciplina.length === 0) {
+                      return (
+                        <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-center text-xs text-gray-500">
+                          Nenhuma gravação registrada localmente para esta disciplina ainda.
+                        </div>
+                      );
+                    }
+                    return (
+                      <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                        {gravacoesDisciplina.slice(0, 5).map((grav) => (
+                          <div key={grav.id} className="p-3 bg-white border border-gray-200 rounded-xl flex items-center justify-between gap-2 shadow-2xs hover:border-indigo-300 transition">
+                            <div className="min-w-0">
+                              <p className="text-xs font-bold text-gray-900 truncate">
+                                Aula {grav.aula_num}: {grav.titulo || 'Gravação da Aula'}
+                              </p>
+                              <p className="text-[10px] text-gray-500">
+                                {grav.data_gravacao} {grav.duracao ? `• ${grav.duracao}` : ''}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {grav.video_drive_url && (
+                                <a
+                                  href={grav.video_drive_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold flex items-center gap-1"
+                                  title="Abrir no Google Drive"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                  <span className="hidden sm:inline text-[11px]">Drive</span>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
               ) : (
                 <div className="pt-2 border-t border-gray-200 space-y-3">
                   <div>
@@ -2345,6 +2422,24 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                     ? uploadStatusStep || 'Enviando bytes do vídeo para a pasta oficial compartilhada...'
                     : 'Gravação finalizada. O upload foi processado.'}
                 </p>
+
+                {/* Indicador de Qualidade de Rede e Conectividade */}
+                {isUploadingToDrive && (
+                  <div className="pt-2 border-t border-blue-200/60 flex items-center justify-between text-[11px]">
+                    {isOnline ? (
+                      <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Rede Estável • Conexão ativa com o servidor</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5 text-red-700 font-bold bg-red-100/80 px-2 py-1 rounded-lg">
+                        <AlertCircle className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                        <span>Atenção: Conexão interrompida! Aguardando retorno da internet...</span>
+                      </div>
+                    )}
+                    <span className="text-gray-500 text-[10px]">Proteção anti-falha de rede</span>
+                  </div>
+                )}
               </div>
 
               {/* Player de Prévia */}

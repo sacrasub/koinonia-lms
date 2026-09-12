@@ -1355,6 +1355,98 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
+          BARRA DE PESQUISA GLOBAL NAS ANOTAÇÕES CORNELL (LOCAL-FIRST)
+      ─────────────────────────────────────────────────────────────── */}
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 rounded-lg">
+              <Search className="w-4 h-4" />
+            </span>
+            <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
+              Pesquisa Global de Anotações
+            </span>
+          </div>
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Limpar Busca</span>
+            </button>
+          )}
+        </div>
+
+        <div className="relative">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Pesquise por palavra-chave em todo o acervo (ex: 'Browne', 'exegese', 'pacto', 'graça', '1 Pedro')..."
+            className="w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-100 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          />
+          <Search className="w-4 h-4 text-blue-600 dark:text-blue-400 absolute left-3.5 top-3.5" />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {searchTerm && (
+          <div className="space-y-2 pt-1 border-t border-slate-100 dark:border-slate-800 animate-in fade-in">
+            <div className="flex items-center justify-between text-[11px] font-bold text-gray-500 dark:text-slate-400 px-1">
+              <span>{filteredNotes.length} anotação(ões) encontrada(s) no semestre</span>
+              <span>Clique para abrir</span>
+            </div>
+
+            {filteredNotes.length === 0 ? (
+              <div className="p-4 text-center text-xs text-gray-400">
+                Nenhuma folha encontrada contendo "{searchTerm}".
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1 scrollbar-thin">
+                {filteredNotes.map((n) => (
+                  <button
+                    key={n.id}
+                    onClick={() => {
+                      if (n.disciplina_name) setFilterDisciplina(n.disciplina_name);
+                      setActiveNoteId(n.id);
+                      setCurrentNote(n);
+                    }}
+                    className={`p-3 rounded-2xl border text-left transition flex flex-col justify-between gap-1.5 cursor-pointer ${
+                      activeNoteId === n.id
+                        ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-400 dark:border-blue-700 shadow-xs'
+                        : 'bg-white dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-200 truncate">
+                        {n.disciplina_name || 'Geral'}
+                      </span>
+                      <span className="text-[10px] text-gray-400 dark:text-slate-500 shrink-0">{n.date}</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1">
+                      {n.theme || 'Sem tema'}
+                    </div>
+                    {n.biblical_references && (
+                      <div className="text-[10px] text-indigo-600 dark:text-indigo-400 line-clamp-1 italic">
+                        📖 {n.biblical_references}
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
           1. SELETOR VISUAL DE MATÉRIAS (BOTÕES GRANDES E CLAROS)
       ─────────────────────────────────────────────────────────────── */}
       <div className="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-sm space-y-4">

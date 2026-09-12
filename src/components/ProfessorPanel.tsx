@@ -10,8 +10,9 @@ import {
   ToggleLeft, ToggleRight, Sparkles, Video, FolderOpen, Copy, ExternalLink, 
   Clock, Calendar, BookOpen, Settings, Edit3, Trash2, ShieldCheck, UserCheck, RefreshCw,
   Archive, ArchiveRestore, Layers, Presentation, UploadCloud, Activity, Flame, Mic, Box,
-  BookMarked, Library, Zap, Download, Loader2
+  BookMarked, Library, Zap, Download, Loader2, GraduationCap
 } from 'lucide-react';
+import { ProfessorGradebook } from '@/components/ProfessorGradebook';
 import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { Disciplina, Material, Avaliacao, AvisoLeituraPreAula, UserRole, LivroRecomendadoDisciplina } from '@/types';
 import { 
@@ -108,6 +109,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const [leituraFileUrl, setLeituraFileUrl] = useState('');
   const [leituraFileName, setLeituraFileName] = useState('');
   const [isUploadingLeituraFile, setIsUploadingLeituraFile] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [activeProfView, setActiveProfView] = useState<'aulas' | 'gradebook'>('aulas');
   const [leituraMessage, setLeituraMessage] = useState('');
   const [leituraData, setLeituraData] = useState('Próxima Aula');
   const [leituraCategory, setLeituraCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar'>('durante_aula');
@@ -123,16 +126,25 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     }
 
     setIsUploadingLeituraFile(true);
+    setUploadProgress(10);
     setLeituraFileName(file.name);
 
     const reader = new FileReader();
+    reader.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const pct = Math.round((event.loaded / event.total) * 100);
+        setUploadProgress(pct);
+      }
+    };
     reader.onload = () => {
+      setUploadProgress(100);
       setLeituraFileUrl(reader.result as string);
       setIsUploadingLeituraFile(false);
     };
     reader.onerror = () => {
       alert('Erro ao carregar o arquivo local. Tente novamente ou use um link do Google Drive.');
       setIsUploadingLeituraFile(false);
+      setUploadProgress(0);
     };
     reader.readAsDataURL(file);
   };
@@ -863,7 +875,46 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
         </div>
       )}
 
-      {/* SEÇÃO 1: PUBLICAR LEITURAS, LINKS E RECURSOS DA AULA (DESTAQUE PRIORITÁRIO) */}
+      {/* SELETOR DE VISÃO DO PROFESSOR: GESTÃO DE AULAS vs LIVRO DE NOTAS */}
+      <div className="flex items-center gap-2 border-b border-gray-200 pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveProfView('aulas')}
+          className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+            activeProfView === 'aulas'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>Gestão de Aulas & Materiais</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveProfView('gradebook')}
+          className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+            activeProfView === 'gradebook'
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <GraduationCap className="w-4 h-4" />
+          <span>Livro de Notas & Desempenho</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black bg-amber-400 text-slate-900">Novo</span>
+        </button>
+      </div>
+
+      {activeProfView === 'gradebook' && (
+        <ProfessorGradebook
+          disciplinas={userDisciplinas}
+          userEmail={userEmail}
+          isAdmin={isAdmin}
+        />
+      )}
+
+      {activeProfView === 'aulas' && (
+        <>
       <div data-tour="prof-publicar-leituras" className="bg-white p-6 sm:p-7 rounded-3xl border border-blue-200/80 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
           <div className="flex items-center gap-3">
@@ -1071,7 +1122,26 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   </button>
                 )}
               </div>
-              {leituraFileName && (
+
+              {isUploadingLeituraFile && (
+                <div className="w-full space-y-1 p-2 bg-blue-50/70 border border-blue-200 rounded-xl animate-in fade-in">
+                  <div className="flex justify-between text-[11px] font-bold text-blue-800">
+                    <span className="flex items-center gap-1.5">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
+                      <span>Processando arquivo ({leituraFileName || 'PDF'})...</span>
+                    </span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-blue-600 rounded-full transition-all duration-200"
+                      style={{ width: `${Math.max(10, uploadProgress)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {leituraFileName && !isUploadingLeituraFile && (
                 <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
                   ✓ Anexo pronto: <strong>{leituraFileName}</strong>
                 </p>
@@ -1845,6 +1915,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
           }}
         />
       </div>
+      </>
+      )}
 
       {/* MODAL PARA MANEJAR INDIVIDUALMENTE OS DADOS DA MATÉRIA */}
       {editingDisciplina && (

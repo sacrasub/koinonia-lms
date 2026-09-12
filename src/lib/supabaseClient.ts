@@ -1,21 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const DEFAULT_SUPABASE_URL = 'https://lbljtnbyhruubnsqzabt.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ptEmz7I2XJGnhFwhekrobA_oXiPKVrZ';
+const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const envKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const envKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+export const supabaseUrl = envUrl;
+export const supabaseAnonKey = envKey;
 
-// Garante que a nova instância do Supabase seja sempre usada, ignorando credenciais legadas bloqueadas
-export const supabaseUrl = (envUrl && envUrl.includes('supabase.co') && !envUrl.includes('wgfbsbakmfhenxciktvs')) 
-  ? envUrl 
-  : DEFAULT_SUPABASE_URL;
-
-export const supabaseAnonKey = (envKey && envKey.length > 30 && !envKey.includes('hIlWLsEIIJT4')) 
-  ? envKey 
-  : DEFAULT_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Garante que o cliente seja instanciado com as variáveis de ambiente oficiais sem vazar credenciais no código-fonte
+export const supabase = createClient(
+  supabaseUrl || 'https://lbljtnbyhruubnsqzabt.supabase.co',
+  supabaseAnonKey || 'sb_publishable_placeholder'
+);
 
 /**
  * Inicia o fluxo de login via Google OAuth no Supabase Auth

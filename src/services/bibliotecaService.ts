@@ -1,5 +1,4 @@
 import { BibliotecaBook } from '@/types';
-import rawBooksData from '@/lib/bibliotecaData.json';
 
 export const BIBLIOTECA_ROOT_DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/1qpHLjy3pcnf--FWSpg8jiTcRru5bkQEf?usp=sharing';
 export const BIBLIOTECA_PROFESSOR_SUGGESTIONS_FOLDER_URL = 'https://drive.google.com/drive/folders/1ZYlVXv5MTJNQZJB7WVrjGJmHd7ceauG1';
@@ -524,64 +523,64 @@ export const PROFESSOR_RECOMMENDED_LIBRARY_BOOKS: BibliotecaBook[] = [
   },
 ];
 
-// Livros padrão carregados do JSON estático (acervo real indexado da pasta FMB no Google Drive)
-const rawBaseBooks: BibliotecaBook[] = (rawBooksData as BibliotecaBook[]).map((b) => ({
-  ...b,
-  is_custom: false,
-  in_library: true,
-  is_available: true,
-}));
-
-// Montagem inicial unificada: a verdade absoluta do acervo é estritamente os livros reais com PDF
+// Montagem inicial unificada: inicia com obras recomendadas oficiais e enriquece sob demanda via API
 const baseBooksMap = new Map<string, BibliotecaBook>();
 
-// 1. Inserir todos os livros reais do acervo
-rawBaseBooks.forEach((book) => {
-  baseBooksMap.set(book.id, book);
-});
-
-// 2. Cruzar com recomendações dos professores:
-// Se a obra recomendada EXISTE no acervo real, enriquece a descrição e autoria sem sobrescrever o link do PDF!
-// Se a obra recomendada NÃO existe no acervo real, NÃO é inserida no acervo da biblioteca (evita falsos positivos).
+// Inserir inicialmente as recomendações do corpo docente
 PROFESSOR_RECOMMENDED_LIBRARY_BOOKS.forEach((rec) => {
-  const normRecTitle = (rec.title || '').toLowerCase().trim();
-  
-  // Procura no acervo real por ID ou Título aproximado
-  let matchedBook: BibliotecaBook | undefined;
-  for (const book of baseBooksMap.values()) {
-    if (book.id === rec.id || book.id === rec.drive_url) {
-      matchedBook = book;
-      break;
-    }
-    const normBookTitle = (book.title || '').toLowerCase().trim();
-    if (normBookTitle === normRecTitle || (normRecTitle.length > 8 && normBookTitle.includes(normRecTitle))) {
-      matchedBook = book;
-      break;
-    }
-  }
-
-  if (matchedBook) {
-    // Atualiza o livro real com as anotações do professor, preservando o drive_url real do PDF
-    baseBooksMap.set(matchedBook.id, {
-      ...matchedBook,
-      description: rec.description || matchedBook.description,
-      added_by_name: rec.added_by_name || matchedBook.added_by_name,
-      added_by_role: rec.added_by_role || matchedBook.added_by_role,
-      in_library: true,
-      is_available: true,
-    });
-  } else {
-    // Obras recomendadas oficialmente por professores com material no Drive entram no acervo geral
-    baseBooksMap.set(rec.id, {
-      ...rec,
-      in_library: true,
-      is_available: true,
-    });
-  }
+  baseBooksMap.set(rec.id, {
+    ...rec,
+    in_library: true,
+    is_available: true,
+  });
 });
 
-// Extrair lista final dos livros efetivamente disponíveis no acervo
-const baseBooks: BibliotecaBook[] = Array.from(baseBooksMap.values());
+let isFetchingApiBooks = false;
+let apiBooksLoaded = false;
+
+/**
+ * Busca o acervo completo da Biblioteca Digital via API Route /api/biblioteca
+ * sem embutir 4.9 MB de JSON no bundle estático do cliente
+ */
+export async function fetchBibliotecaBooksFromApi(): Promise<BibliotecaBook[]> {
+  if (apiBooksLoaded) {
+    return Array.from(baseBooksMap.values());
+  }
+  if (isFetchingApiBooks) {
+    return Array.from(baseBooksMap.values());
+  }
+
+  isFetchingApiBooks = true;
+  try {
+    const res = await fetch('/api/biblioteca?limit=all');
+    if (!res.ok) throw new Error('Falha ao carregar catálogo da biblioteca');
+    const data = await res.json();
+    if (data && data.success && Array.isArray(data.books)) {
+      data.books.forEach((book: BibliotecaBook) => {
+        if (!baseBooksMap.has(book.id)) {
+          baseBooksMap.set(book.id, book);
+        } else {
+          const existing = baseBooksMap.get(book.id)!;
+          baseBooksMap.set(book.id, {
+            ...book,
+            description: existing.description || book.description,
+            added_by_name: existing.added_by_name || book.added_by_name,
+            added_by_role: existing.added_by_role || book.added_by_role,
+          });
+        }
+      });
+      apiBooksLoaded = true;
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lms_biblioteca_updated'));
+      }
+    }
+  } catch (err) {
+    console.warn('[Biblioteca] Erro ao carregar acervo remoto:', err);
+  } finally {
+    isFetchingApiBooks = false;
+  }
+  return Array.from(baseBooksMap.values());
+}
 
 /**
  * Retorna URLs sobrescritas para livros padrão
@@ -666,7 +665,7 @@ export function saveCustomBooks(list: BibliotecaBook[]): void {
 export function getAllBibliotecaBooks(): BibliotecaBook[] {
   const custom = getCustomBooks();
   const overrides = getBookOverrides();
-  const mergedBase = baseBooks.map((b) => {
+  const mergedBase = Array.from(baseBooksMap.values()).map((b) => {
     if (overrides[b.id]) {
       return { ...b, ...overrides[b.id] };
     }

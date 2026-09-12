@@ -49,6 +49,33 @@ async function loadFromCloud(
   if (!email) return empty;
 
   try {
+    // 1. Consulta prioritária na tabela dedicada 'student_sync' (SSOT)
+    const { data: syncData, error: syncError } = await supabase
+      .from('student_sync')
+      .select('completed_lessons, student_notes, portal_profile, checklist_tasks, updated_at')
+      .eq('email', email)
+      .limit(1);
+
+    if (!syncError && syncData && syncData.length > 0) {
+      const row = syncData[0];
+      const rawNotes = row.student_notes || {};
+      
+      // Suporte a formato empacotado e formato plano legado
+      const studentNotes = rawNotes.textNotes ? rawNotes.textNotes : rawNotes;
+      const cornellNotes = rawNotes.cornellNotes || {};
+      const lessonAttendanceStatus = rawNotes.lessonAttendanceStatus || {};
+
+      return {
+        completedLessons: row.completed_lessons || {},
+        lessonAttendanceStatus: lessonAttendanceStatus || {},
+        studentNotes: studentNotes || {},
+        cornellNotes: cornellNotes || {},
+        portalProfile: row.portal_profile || null,
+        checklistTasks: row.checklist_tasks || null,
+      };
+    }
+
+    // 2. Fallback de Migração: Se ainda não estiver em student_sync, lê da tabela legada 'materiais'
     const syncKey = `student_sync_${email}`;
     const { data, error } = await supabase
       .from('materiais')
@@ -59,7 +86,7 @@ async function loadFromCloud(
     if (!error && data && data.length > 0 && data[0].file_url) {
       try {
         const parsed = JSON.parse(data[0].file_url);
-        return {
+        const legacyResult = {
           completedLessons: parsed.completedLessons || {},
           lessonAttendanceStatus: parsed.lessonAttendanceStatus || {},
           studentNotes: parsed.studentNotes || {},
@@ -67,8 +94,31 @@ async function loadFromCloud(
           portalProfile: parsed.portalProfile || null,
           checklistTasks: parsed.checklistTasks || null,
         };
+
+        // Migra automaticamente em background para a tabela dedicada student_sync
+        (async () => {
+          try {
+            await supabase.from('student_sync').upsert(
+              {
+                email,
+                completed_lessons: legacyResult.completedLessons,
+                student_notes: {
+                  textNotes: legacyResult.studentNotes,
+                  cornellNotes: legacyResult.cornellNotes,
+                  lessonAttendanceStatus: legacyResult.lessonAttendanceStatus,
+                },
+                portal_profile: legacyResult.portalProfile,
+                checklist_tasks: legacyResult.checklistTasks,
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'email' }
+            );
+          } catch {}
+        })();
+
+        return legacyResult;
       } catch (parseErr) {
-        console.warn('[StudentSync] Erro ao parsear dados da nuvem:', parseErr);
+        console.warn('[StudentSync] Erro ao parsear dados da nuvem legada:', parseErr);
       }
     }
 
@@ -81,7 +131,8 @@ async function loadFromCloud(
 
 /**
  * Upsert na nuvem.
- * Persiste na tabela materiais (SSOT global protegida de RLS) e users.
+ * Persiste na tabela dedicada student_sync (SSOT oficial) e users.
+ * Elimina o double-upsert na tabela materiais, economizando 50% de egress de gravação.
  */
 async function upsertToCloud(
   email: string,
@@ -103,7 +154,7 @@ async function upsertToCloud(
   pendingUpserts[email] = { ...(pendingUpserts[email] || {}), ...patch };
 
   try {
-    // Usa dados do cache local (SSOT instantânea no cliente) para mesclar sem download lento redundante
+    // Usa dados do cache local (SSOT instantânea no cliente) para mesclar sem download redundante
     const local = readLocalCache(email);
 
     const mergedPayload = {
@@ -125,29 +176,26 @@ async function upsertToCloud(
       updatedAt: new Date().toISOString(),
     };
 
-    const syncKey = `student_sync_${email}`;
-    const payloadStr = JSON.stringify(mergedPayload);
+    // 1. Grava exclusivamente na tabela dedicada 'student_sync' (SSOT de alto desempenho)
+    const notesPayload = {
+      textNotes: mergedPayload.studentNotes || {},
+      cornellNotes: mergedPayload.cornellNotes || {},
+      lessonAttendanceStatus: local.lessonAttendanceStatus || {},
+    };
 
-    // 1. Grava no banco de dados Supabase (tabela materiais)
-    const { data: existing } = await supabase
-      .from('materiais')
-      .select('id')
-      .eq('title', syncKey);
+    const { error: syncErr } = await supabase.from('student_sync').upsert(
+      {
+        email,
+        completed_lessons: mergedPayload.completedLessons,
+        student_notes: notesPayload,
+        portal_profile: mergedPayload.portalProfile,
+        checklist_tasks: mergedPayload.checklistTasks,
+        updated_at: mergedPayload.updatedAt,
+      },
+      { onConflict: 'email' }
+    );
 
-    let cloudSaved = false;
-
-    if (existing && existing.length > 0) {
-      const { error: updateErr } = await supabase
-        .from('materiais')
-        .update({ file_url: payloadStr })
-        .eq('title', syncKey);
-      if (!updateErr) cloudSaved = true;
-    } else {
-      const { error: insertErr } = await supabase
-        .from('materiais')
-        .insert({ title: syncKey, file_url: payloadStr, is_native_upload: false });
-      if (!insertErr) cloudSaved = true;
-    }
+    const cloudSaved = !syncErr;
 
     // 2. Atualiza perfil do usuário na tabela 'users' se houver alteração
     if (patch.portal_profile) {
@@ -165,21 +213,6 @@ async function upsertToCloud(
           );
       } catch {}
     }
-
-    // 3. Tenta gravar em student_sync como canal secundário
-    try {
-      await supabase.from('student_sync').upsert(
-        {
-          email,
-          completed_lessons: mergedPayload.completedLessons,
-          student_notes: mergedPayload.studentNotes,
-          portal_profile: mergedPayload.portalProfile,
-          checklist_tasks: mergedPayload.checklistTasks,
-          updated_at: mergedPayload.updatedAt,
-        },
-        { onConflict: 'email' }
-      );
-    } catch {}
 
     if (cloudSaved) {
       delete pendingUpserts[email];

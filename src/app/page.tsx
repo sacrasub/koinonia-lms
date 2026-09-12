@@ -5,47 +5,56 @@ import { useRouter } from 'next/navigation';
 import { UserRole } from '@/types';
 import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
+import dynamic from 'next/dynamic';
 import { AlunoPanel } from '@/components/AlunoPanel';
-import { ProfessorPanel } from '@/components/ProfessorPanel';
-import { MonitorPanel } from '@/components/MonitorPanel';
-import { AdminPanel } from '@/components/AdminPanel';
-import { PendingAccessPage } from '@/components/PendingAccessPage';
-import { BibliotecaPage } from '@/components/BibliotecaPage';
-import { ChecklistAV2Page } from '@/components/ChecklistAV2Page';
-import { PortalAcademicoPage } from '@/components/PortalAcademicoPage';
-import { CadernoCornellPage } from '@/components/CadernoCornellPage';
-import { EscalaMonitoriaPage } from '@/components/EscalaMonitoriaPage';
-import { PastasVirtuaisPage } from '@/components/PastasVirtuaisPage';
-import { DisciplinaDetailPage } from '@/components/DisciplinaDetailPage';
-import { CentralAjudaPage } from '@/components/CentralAjudaPage';
-import { AulaRecorderModal } from '@/components/AulaRecorderModal';
-import { GlobalWalkthrough } from '@/components/GlobalWalkthrough';
-import RPGPastoralSimulador from '@/components/RPGPastoralSimulador';
-import PortfolioMediador from '@/components/PortfolioMediador';
-import SeletorMetacognitivoAvaliacao from '@/components/SeletorMetacognitivoAvaliacao';
+import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity } from 'lucide-react';
 import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud } from '@/lib/authConfig';
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
 import { onSessionRestored, cleanupBulkyLocalStorage } from '@/services/studentSyncService';
 import { startUserSession, endCurrentSession, trackEvent } from '@/services/telemetryService';
-import { AdminAnalyticsView } from '@/components/AdminAnalyticsView';
-import { TCCSurveyModal } from '@/components/TCCSurveyModal';
-import { ForumColaborativo } from '@/components/ForumColaborativo';
-import { PresencaChat } from '@/components/PresencaChat';
-import { MuralKoinonia } from '@/components/MuralKoinonia';
-import { TeleProximidadeDashboard } from '@/components/TeleProximidadeDashboard';
-import { QuatrodsDsPage } from '@/components/QuatrodsDsPage';
-import { HomileticaEstudioPage } from '@/components/HomileticaEstudioPage';
-import { MetaversoTeologicoPage } from '@/components/MetaversoTeologicoPage';
-import { TccSacramentoPage } from '@/components/TccSacramentoPage';
-import { FluxoEstudosPage } from '@/components/FluxoEstudosPage';
-import { GoogleAgendaView } from '@/components/GoogleAgendaView';
-import { PlanoEstudosPage } from '@/components/PlanoEstudosPage';
-import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
-import { AttendanceAlarmModal } from '@/components/AttendanceAlarmModal';
-import PesquisaTCCPage from '@/app/pesquisa-tcc/page';
-import { OficinaEstudosHub } from '@/components/oficina-estudos/OficinaEstudosHub';
+
+const DynamicLoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-[300px] p-8 text-center animate-pulse">
+    <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
+    <p className="text-xs font-bold text-gray-500 dark:text-slate-400">Carregando módulo...</p>
+  </div>
+);
+
+const ProfessorPanel = dynamic(() => import('@/components/ProfessorPanel').then(m => m.ProfessorPanel), { loading: DynamicLoadingFallback });
+const MonitorPanel = dynamic(() => import('@/components/MonitorPanel').then(m => m.MonitorPanel), { loading: DynamicLoadingFallback });
+const AdminPanel = dynamic(() => import('@/components/AdminPanel').then(m => m.AdminPanel), { loading: DynamicLoadingFallback });
+const PendingAccessPage = dynamic(() => import('@/components/PendingAccessPage').then(m => m.PendingAccessPage), { loading: DynamicLoadingFallback });
+const BibliotecaPage = dynamic(() => import('@/components/BibliotecaPage').then(m => m.BibliotecaPage), { loading: DynamicLoadingFallback });
+const ChecklistAV2Page = dynamic(() => import('@/components/ChecklistAV2Page').then(m => m.ChecklistAV2Page), { loading: DynamicLoadingFallback });
+const PortalAcademicoPage = dynamic(() => import('@/components/PortalAcademicoPage').then(m => m.PortalAcademicoPage), { loading: DynamicLoadingFallback });
+const CadernoCornellPage = dynamic(() => import('@/components/CadernoCornellPage').then(m => m.CadernoCornellPage), { loading: DynamicLoadingFallback });
+const EscalaMonitoriaPage = dynamic(() => import('@/components/EscalaMonitoriaPage').then(m => m.EscalaMonitoriaPage), { loading: DynamicLoadingFallback });
+const PastasVirtuaisPage = dynamic(() => import('@/components/PastasVirtuaisPage').then(m => m.PastasVirtuaisPage), { loading: DynamicLoadingFallback });
+const DisciplinaDetailPage = dynamic(() => import('@/components/DisciplinaDetailPage').then(m => m.DisciplinaDetailPage), { loading: DynamicLoadingFallback });
+const CentralAjudaPage = dynamic(() => import('@/components/CentralAjudaPage').then(m => m.CentralAjudaPage), { loading: DynamicLoadingFallback });
+const AulaRecorderModal = dynamic(() => import('@/components/AulaRecorderModal').then(m => m.AulaRecorderModal));
+const GlobalWalkthrough = dynamic(() => import('@/components/GlobalWalkthrough').then(m => m.GlobalWalkthrough));
+const RPGPastoralSimulador = dynamic(() => import('@/components/RPGPastoralSimulador'), { loading: DynamicLoadingFallback });
+const PortfolioMediador = dynamic(() => import('@/components/PortfolioMediador'), { loading: DynamicLoadingFallback });
+const SeletorMetacognitivoAvaliacao = dynamic(() => import('@/components/SeletorMetacognitivoAvaliacao'), { loading: DynamicLoadingFallback });
+const AdminAnalyticsView = dynamic(() => import('@/components/AdminAnalyticsView').then(m => m.AdminAnalyticsView), { loading: DynamicLoadingFallback });
+const TCCSurveyModal = dynamic(() => import('@/components/TCCSurveyModal').then(m => m.TCCSurveyModal));
+const ForumColaborativo = dynamic(() => import('@/components/ForumColaborativo').then(m => m.ForumColaborativo), { loading: DynamicLoadingFallback });
+const PresencaChat = dynamic(() => import('@/components/PresencaChat').then(m => m.PresencaChat), { loading: DynamicLoadingFallback });
+const MuralKoinonia = dynamic(() => import('@/components/MuralKoinonia').then(m => m.MuralKoinonia), { loading: DynamicLoadingFallback });
+const TeleProximidadeDashboard = dynamic(() => import('@/components/TeleProximidadeDashboard').then(m => m.TeleProximidadeDashboard), { loading: DynamicLoadingFallback });
+const QuatrodsDsPage = dynamic(() => import('@/components/QuatrodsDsPage').then(m => m.QuatrodsDsPage), { loading: DynamicLoadingFallback });
+const HomileticaEstudioPage = dynamic(() => import('@/components/HomileticaEstudioPage').then(m => m.HomileticaEstudioPage), { loading: DynamicLoadingFallback });
+const MetaversoTeologicoPage = dynamic(() => import('@/components/MetaversoTeologicoPage').then(m => m.MetaversoTeologicoPage), { loading: DynamicLoadingFallback });
+const TccSacramentoPage = dynamic(() => import('@/components/TccSacramentoPage').then(m => m.TccSacramentoPage), { loading: DynamicLoadingFallback });
+const FluxoEstudosPage = dynamic(() => import('@/components/FluxoEstudosPage').then(m => m.FluxoEstudosPage), { loading: DynamicLoadingFallback });
+const GoogleAgendaView = dynamic(() => import('@/components/GoogleAgendaView').then(m => m.GoogleAgendaView), { loading: DynamicLoadingFallback });
+const PlanoEstudosPage = dynamic(() => import('@/components/PlanoEstudosPage').then(m => m.PlanoEstudosPage), { loading: DynamicLoadingFallback });
+const AttendanceAlarmModal = dynamic(() => import('@/components/AttendanceAlarmModal').then(m => m.AttendanceAlarmModal));
+const PesquisaTCCPage = dynamic(() => import('@/app/pesquisa-tcc/page'), { loading: DynamicLoadingFallback });
+const OficinaEstudosHub = dynamic(() => import('@/components/oficina-estudos/OficinaEstudosHub').then(m => m.OficinaEstudosHub), { loading: DynamicLoadingFallback });
 
 export default function Home() {
   const router = useRouter();

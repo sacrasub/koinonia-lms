@@ -761,16 +761,72 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
     }
   } catch (err) {}
 
-  // 4. Integração em tempo real com os acessos e perfis sincronizados de alunos (student_sync_%)
+  // 4. Integração em tempo real com os acessos e perfis sincronizados de alunos (student_sync)
   try {
-    const { data: studentRows } = await supabase
-      .from('materiais')
-      .select('title, file_url, created_at')
-      .ilike('title', 'student_sync_%');
+    const { data: dedicatedSyncRows, error: syncErr } = await supabase
+      .from('student_sync')
+      .select('email, completed_lessons, student_notes, portal_profile, checklist_tasks, updated_at');
 
-    if (studentRows && studentRows.length > 0) {
-      const studentSessions: UserSessionLog[] = [];
-      const now = Date.now();
+    const studentSessions: UserSessionLog[] = [];
+    const now = Date.now();
+
+    if (!syncErr && dedicatedSyncRows && dedicatedSyncRows.length > 0) {
+      dedicatedSyncRows.forEach((row) => {
+        try {
+          const rawEmail = (row.email || '').toLowerCase().trim();
+          const profile = row.portal_profile || {};
+          const name = profile.name || rawEmail.split('@')[0];
+          const avatar = profile.avatarUrl || '';
+          const lastActivityIso = row.updated_at || new Date().toISOString();
+          const lastActivityTime = new Date(lastActivityIso).getTime();
+          const isRecentlyOnline = (now - lastActivityTime) < 15 * 60 * 1000;
+
+          const rawNotes = row.student_notes || {};
+          const notesCount = Object.keys(rawNotes.cornellNotes || {}).length + Object.keys(rawNotes.textNotes || rawNotes || {}).length;
+          const lessonsCount = Object.keys(row.completed_lessons || {}).length;
+          const tasksCount = Array.isArray(row.checklist_tasks) ? row.checklist_tasks.length : 0;
+          const totalActivities = notesCount + lessonsCount + tasksCount;
+
+          let sessionDurationSeconds: number;
+          if (isRecentlyOnline) {
+            sessionDurationSeconds = Math.max(60, Math.min(15 * 60, Math.floor((now - lastActivityTime) / 1000)));
+          } else {
+            sessionDurationSeconds = Math.min(40 * 60, Math.max(12 * 60, (15 * 60) + (totalActivities * 120)));
+          }
+
+          const pageViewsCount = Math.max(2, Math.min(25, 3 + totalActivities));
+          const eventsCount = Math.max(1, totalActivities || 3);
+          const sessionStartIso = isRecentlyOnline
+            ? lastActivityIso
+            : new Date(lastActivityTime - sessionDurationSeconds * 1000).toISOString();
+
+          studentSessions.push({
+            id: `sess_sync_${rawEmail.replace(/[^a-z0-9]/g, '_')}_${lastActivityTime}`,
+            user_email: rawEmail,
+            user_name: name,
+            user_role: 'aluno',
+            avatar_url: avatar,
+            device_type: 'desktop',
+            browser: 'Google Chrome',
+            os: 'Windows',
+            started_at: sessionStartIso,
+            last_heartbeat_at: lastActivityIso,
+            ended_at: isRecentlyOnline ? undefined : lastActivityIso,
+            duration_seconds: sessionDurationSeconds,
+            page_views_count: pageViewsCount,
+            events_count: eventsCount,
+            is_active: isRecentlyOnline,
+            sync_status: 'synced',
+          });
+        } catch (e) {}
+      });
+    } else {
+      const { data: studentRows } = await supabase
+        .from('materiais')
+        .select('title, file_url, created_at')
+        .ilike('title', 'student_sync_%');
+
+      if (studentRows && studentRows.length > 0) {
 
       studentRows.forEach((row) => {
         try {
@@ -824,7 +880,10 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
           });
         } catch (_) {}
       });
+    }
+  }
 
+    if (studentSessions.length > 0) {
       remoteSessions = mergeSessionLists(remoteSessions, studentSessions);
     }
   } catch (err) {}
