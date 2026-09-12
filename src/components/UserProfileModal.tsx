@@ -205,6 +205,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const handleRemindLaterClick = () => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(`lms_remind_profile_later_${normalizedEmail}`, 'true');
+      window.dispatchEvent(
+        new CustomEvent('lms_profile_confirmed', { detail: { email: normalizedEmail, skipped: true } })
+      );
     }
     if (onRemindLater) onRemindLater();
     onClose();
@@ -238,6 +241,10 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       if (typeof window !== 'undefined') {
         window.dispatchEvent(
           new CustomEvent('lms_student_sync_updated', { detail: { email: normalizedEmail } })
+        );
+        // Notifica que o perfil foi confirmado para iniciar o tour guiado de boas-vindas
+        window.dispatchEvent(
+          new CustomEvent('lms_profile_confirmed', { detail: { email: normalizedEmail, skipped: false } })
         );
       }
 

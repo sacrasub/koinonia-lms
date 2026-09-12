@@ -17,11 +17,33 @@ export interface AccessRequest {
   id: string;
   email: string;
   name: string;
+  googleName?: string;
   avatarUrl?: string;
   requestedAt: string;
   status: 'pending' | 'approved' | 'rejected';
   whatsapp?: string;
+  turmaIdx?: number;
+  turmaNome?: string;
+  periodoNum?: number;
+  periodoNome?: string;
+  perfilSolicitado?: 'aluno' | 'professor' | 'monitor' | 'ouvinte';
+  observacao?: string;
 }
+
+export interface RequestAccessPayload {
+  email: string;
+  name?: string;
+  googleName?: string;
+  avatarUrl?: string;
+  whatsapp?: string;
+  turmaIdx?: number;
+  turmaNome?: string;
+  periodoNum?: number;
+  periodoNome?: string;
+  perfilSolicitado?: 'aluno' | 'professor' | 'monitor' | 'ouvinte';
+  observacao?: string;
+}
+
 
 // Lista inicial de emergência (Superadministrador e contingência offline)
 // Todos os demais alunos e professores são carregados dinamicamente da nuvem (Supabase / users / RBAC)
@@ -481,8 +503,21 @@ export async function savePendingRequests(requests: AccessRequest[]): Promise<vo
   }
 }
 
-export async function requestAccess(email: string, name?: string, avatarUrl?: string): Promise<AccessRequest> {
-  const normalized = email.toLowerCase().trim();
+export async function requestAccess(
+  payloadOrEmail: string | RequestAccessPayload,
+  nameArg?: string,
+  avatarUrlArg?: string
+): Promise<AccessRequest> {
+  const payload: RequestAccessPayload =
+    typeof payloadOrEmail === 'string'
+      ? {
+          email: payloadOrEmail,
+          name: nameArg,
+          avatarUrl: avatarUrlArg,
+        }
+      : payloadOrEmail;
+
+  const normalized = payload.email.toLowerCase().trim();
   
   // Busca as requisições mais recentes diretamente da nuvem
   let cloudRequests: AccessRequest[] = [];
@@ -512,16 +547,41 @@ export async function requestAccess(email: string, name?: string, avatarUrl?: st
 
   const existing = reqMap.get(normalized);
   if (existing) {
-    return existing;
+    // Se já existia, atualiza com os dados complementares mais recentes caso fornecidos
+    const updated: AccessRequest = {
+      ...existing,
+      name: payload.name || existing.name || normalized,
+      googleName: payload.googleName || existing.googleName,
+      avatarUrl: payload.avatarUrl || existing.avatarUrl,
+      whatsapp: payload.whatsapp || existing.whatsapp,
+      turmaIdx: payload.turmaIdx !== undefined ? payload.turmaIdx : existing.turmaIdx,
+      turmaNome: payload.turmaNome || existing.turmaNome,
+      periodoNum: payload.periodoNum !== undefined ? payload.periodoNum : existing.periodoNum,
+      periodoNome: payload.periodoNome || existing.periodoNome,
+      perfilSolicitado: payload.perfilSolicitado || existing.perfilSolicitado,
+      observacao: payload.observacao || existing.observacao,
+    };
+    reqMap.set(normalized, updated);
+    const updatedList = Array.from(reqMap.values());
+    await savePendingRequests(updatedList);
+    return updated;
   }
 
   const newReq: AccessRequest = {
     id: `req_${Date.now()}`,
     email: normalized,
-    name: name || normalized,
-    avatarUrl,
+    name: payload.name || normalized,
+    googleName: payload.googleName,
+    avatarUrl: payload.avatarUrl,
     requestedAt: new Date().toLocaleString('pt-BR'),
     status: 'pending',
+    whatsapp: payload.whatsapp,
+    turmaIdx: payload.turmaIdx,
+    turmaNome: payload.turmaNome,
+    periodoNum: payload.periodoNum,
+    periodoNome: payload.periodoNome,
+    perfilSolicitado: payload.perfilSolicitado || 'aluno',
+    observacao: payload.observacao,
   };
 
   reqMap.set(normalized, newReq);
@@ -533,7 +593,7 @@ export async function requestAccess(email: string, name?: string, avatarUrl?: st
     fetch('/api/auth/request-access', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: normalized, name, avatarUrl }),
+      body: JSON.stringify(newReq),
     }).catch(() => {});
   } catch (e) {}
 
@@ -561,7 +621,7 @@ export async function approveAccessRequest(requestId: string, role: UserRole = '
     const remaining = requests.filter((r) => r.id !== requestId);
     await savePendingRequests(remaining);
 
-    // Adiciona à lista de autorizados
+    // Adiciona à lista de autorizados com turma, período, whatsapp e nome oficiais
     addOrUpdateAuthorizedUser({
       email: req.email,
       name: req.name,
@@ -569,6 +629,8 @@ export async function approveAccessRequest(requestId: string, role: UserRole = '
       defaultRole: role,
       avatarUrl: req.avatarUrl,
       whatsapp: req.whatsapp,
+      turmaIdx: req.turmaIdx,
+      periodoNum: req.periodoNum,
     });
   }
 }
@@ -594,7 +656,7 @@ export async function rejectAccessRequest(requestId: string): Promise<void> {
 /**
  * Gera os dados de e-mail de confirmação de aprovação de acesso (com links diretos para Gmail Web, WhatsApp e mailto)
  */
-export function formatApprovalEmail(name: string, email: string, role: UserRole): {
+export function formatApprovalEmail(name: string, email: string, role: UserRole, whatsapp?: string): {
   subject: string;
   body: string;
   mailtoUrl: string;
@@ -626,7 +688,13 @@ Projeto de TCC do Seminarista Cristiano do Sacramento Soares`;
   const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   const whatsappText = `Olá, *${name || 'Estudante'}*! ✨ Sua solicitação de acesso ao *Koinonia LMS* foi APROVADA com sucesso no perfil de *${roleName}*!\n\nEsta plataforma é fruto do *Projeto de TCC do Seminarista Cristiano do Sacramento Soares (UNIMB / Seminário Teológico Congregacional)*.\n\n► *Link Oficial de Acesso:*\nhttps://koinonialms.vercel.app\n\n✔ *Como acessar:*\nBasta entrar com sua conta Google cadastrada (${email}) para ter acesso completo. Seja bem-vindo(a)!`;
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
+  
+  const cleanPhone = whatsapp ? whatsapp.replace(/\D/g, '') : '';
+  const phoneParam = cleanPhone ? (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`) : '';
+  const whatsappUrl = phoneParam
+    ? `https://api.whatsapp.com/send?phone=${phoneParam}&text=${encodeURIComponent(whatsappText)}`
+    : `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappText)}`;
 
   return { subject, body, mailtoUrl, gmailUrl, whatsappUrl };
 }
+

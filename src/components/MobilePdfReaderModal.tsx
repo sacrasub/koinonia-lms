@@ -7,7 +7,7 @@ import {
   Headphones, Play, Pause, Square, Volume2, FastForward,
   Settings2, Copy, Check, BookOpen, AlertCircle, RefreshCw,
   ChevronLeft, ChevronRight, RotateCw, PlusCircle, Bookmark,
-  Type, AlignLeft, VolumeX
+  Type, AlignLeft, VolumeX, Info, CheckCircle2
 } from 'lucide-react';
 
 interface MobilePdfReaderModalProps {
@@ -20,6 +20,65 @@ interface MobilePdfReaderModalProps {
   description?: string;
 }
 
+/**
+ * Sanitiza o texto para síntese de voz (TTS), removendo emojis, caracteres
+ * especiais e markdown que causam erros silenciosos no sintetizador do Windows/Chromium.
+ */
+function sanitizeTextForSpeech(raw: string): string {
+  if (!raw) return '';
+  return raw
+    // Remove emojis e símbolos pictográficos comuns que travam vozes SAPI/OneCore
+    .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F018}-\u{1F270}\u{2388}\u{2B05}-\u{2B07}\u{2934}-\u{2935}\u{2190}-\u{21FF}]/gu, '')
+    // Substitui traço longo por vírgula para manter pausa natural de respiração
+    .replace(/—|–/g, ', ')
+    // Remove colchetes de tags como [Dica do Leitor]:
+    .replace(/\[|\]/g, ' ')
+    // Expande abreviações acadêmicas e teológicas para pronúncia fluida
+    .replace(/\bProfº\b|\bProf\.\b/gi, 'Professor ')
+    .replace(/\bProfª\b/gi, 'Professora ')
+    .replace(/\bCap\.\b/gi, 'Capítulo ')
+    .replace(/\bpág\.\b|\bpágs\.\b/gi, 'página ')
+    .replace(/\bUIECB\b/g, 'U I E C B')
+    .replace(/\bLMS\b/g, 'L M S')
+    .replace(/\bAT\b/g, 'Antigo Testamento')
+    .replace(/\bNT\b/g, 'Novo Testamento')
+    // Remove asteriscos e caracteres de formatação markdown
+    .replace(/[*_#`~]+/g, '')
+    // Normaliza múltiplos espaços e quebras de linha
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+}
+
+/**
+ * Divide o texto da página em sentenças curtas (chunks de até 150 caracteres).
+ * Isso contorna 100% o bug crônico do Chromium/Chrome que congela a fala após ~15 segundos.
+ */
+function splitIntoSpeechChunks(text: string): string[] {
+  const clean = sanitizeTextForSpeech(text);
+  if (!clean) return [];
+
+  // Divide primariamente por pontuação de fim de sentença (. ! ? ; \n)
+  const rawParts = clean.split(/(?<=[.?!;:\n])\s+/);
+  const chunks: string[] = [];
+
+  for (const part of rawParts) {
+    const trimmed = part.trim();
+    if (!trimmed) continue;
+
+    // Se a sentença for excessivamente longa (> 150 caracteres), divide em vírgulas
+    if (trimmed.length > 150) {
+      const subParts = trimmed.split(/(?<=,)\s+/);
+      for (const sub of subParts) {
+        if (sub.trim()) chunks.push(sub.trim());
+      }
+    } else {
+      chunks.push(trimmed);
+    }
+  }
+
+  return chunks.length > 0 ? chunks : [clean];
+}
+
 export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   isOpen,
   onClose,
@@ -29,8 +88,8 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   author,
   description,
 }) => {
-  // Modos de Exibição: 'pdf' (Visualizador original) ou 'ebook' (Leitura contínua & Áudio)
-  const [readerMode, setReaderMode] = useState<'pdf' | 'ebook'>('ebook');
+  // Modos de Exibição: 'ebook' (Leitura contínua & Áudio com páginas) ou 'pdf' (Visualizador original)
+  const [readerMode, setReaderMode] = useState<'ebook' | 'pdf'>('ebook');
 
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isNightMode, setIsNightMode] = useState<boolean>(false);
@@ -47,12 +106,19 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
   const [ttsSupported, setTtsSupported] = useState<boolean>(true);
 
+  // Estados de Chunking e Destaque Visual em Tempo Real
+  const [currentChunkIdx, setCurrentChunkIdx] = useState<number>(0);
+  const [activeSpokenSentence, setActiveSpokenSentence] = useState<string>('');
+  const speechChunksRef = useRef<string[]>([]);
+  const keepAliveIntervalRef = useRef<any>(null);
+
   // Estados de Leitura Contínua & Páginas
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
   const [autoAdvancePages, setAutoAdvancePages] = useState<boolean>(true);
   const [pages, setPages] = useState<string[]>([]);
   const [isAddPagesModalOpen, setIsAddPagesModalOpen] = useState<boolean>(false);
   const [importTextContent, setImportTextContent] = useState<string>('');
+  const [showEdgeGuideModal, setShowEdgeGuideModal] = useState<boolean>(false);
 
   // Seleção Direta de Trecho na Tela ("Ouvir a partir daqui")
   const [selectionPopup, setSelectionPopup] = useState<{
@@ -77,7 +143,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   const storageKey = `lms_book_pages_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
   const progressKey = `lms_book_progress_${encodeURIComponent(title.trim().toLowerCase().slice(0, 40))}`;
 
-  // Extrai o texto de todas as páginas do PDF do Drive via backend
+  // Extrai o texto de todas as páginas do PDF do Drive via backend autenticado
   const extractPagesFromPdfBackend = async (force = false) => {
     if (!pdfUrl) return;
 
@@ -97,6 +163,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
 
       if (data.isScanned) {
         setIsScannedPdf(true);
+        showToast('ℹ️ Este PDF é digitalizado em scanner. Use o modo PDF Original ou o leitor do navegador.');
       } else if (Array.isArray(data.pages) && data.pages.length > 0) {
         setPages(data.pages);
         setIsScannedPdf(false);
@@ -105,10 +172,11 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
             localStorage.setItem(storageKey, JSON.stringify(data.pages));
           } catch {}
         }
-        showToast(`✨ ${data.pages.length} páginas carregadas para leitura e áudio contínuo!`);
+        showToast(`✨ ${data.pages.length} páginas extraídas com sucesso para leitura contínua!`);
       }
     } catch (err: any) {
       console.warn('Falha na extração de texto do PDF:', err);
+      showToast('Aviso: Não foi possível extrair texto digital completo. Você pode ouvir os metadados ou colar o texto.');
     } finally {
       setIsExtractingPages(false);
     }
@@ -162,9 +230,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
             setCurrentPageIndex(pageNum);
           }
         }
-      } catch {
-        // Ignora
-      }
+      } catch {}
     }
   }, [isOpen, storageKey, progressKey, title, author, disciplinaName, description]);
 
@@ -197,8 +263,13 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
         setVoices(ptVoices.length > 0 ? ptVoices : allVoices);
 
         if (!selectedVoiceURI) {
-          const defaultPt = ptVoices.find(v => v.lang === 'pt-BR') || ptVoices[0] || allVoices[0];
-          if (defaultPt) setSelectedVoiceURI(defaultPt.voiceURI);
+          // Prioriza vozes pt-BR de alta fidelidade
+          const preferredPt = ptVoices.find(v => 
+            v.lang.toLowerCase() === 'pt-br' && 
+            (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Francisca') || v.name.includes('Daniel') || v.name.includes('Maria'))
+          ) || ptVoices.find(v => v.lang.toLowerCase() === 'pt-br') || ptVoices[0] || allVoices[0];
+
+          if (preferredPt) setSelectedVoiceURI(preferredPt.voiceURI);
         }
       }
     };
@@ -223,17 +294,53 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     };
   }, [isOpen]);
 
-  // Executa a síntese de voz (TTS)
-  const playAudio = (textOverride?: string, nextPageIndexOnEnd?: number) => {
+  // Limpeza de timers de keep-alive ao desmontar
+  useEffect(() => {
+    return () => {
+      if (keepAliveIntervalRef.current) {
+        clearInterval(keepAliveIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // =========================================================================
+  // MOTOR DE ÁUDIO TTS BLINDADO COM CHUNKING ANTI-FREEZE
+  // =========================================================================
+
+  const stopAudio = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (keepAliveIntervalRef.current) {
+      clearInterval(keepAliveIntervalRef.current);
+      keepAliveIntervalRef.current = null;
+    }
+    try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
+    setIsPlaying(false);
+    setIsPaused(false);
+    setActiveSpokenSentence('');
+    setSelectionPopup(null);
+  };
+
+  const playChunkSequence = (chunks: string[], startIdx: number, onCompleteAll?: () => void) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
-    window.speechSynthesis.cancel();
+    if (startIdx >= chunks.length) {
+      setIsPlaying(false);
+      setIsPaused(false);
+      setActiveSpokenSentence('');
+      if (onCompleteAll) onCompleteAll();
+      return;
+    }
 
-    const textToRead = (textOverride || pages[currentPageIndex] || '').trim();
-    if (!textToRead) return;
+    const chunk = chunks[startIdx];
+    setCurrentChunkIdx(startIdx);
+    setActiveSpokenSentence(chunk);
 
-    const utterance = new SpeechSynthesisUtterance(textToRead);
+    const utterance = new SpeechSynthesisUtterance(chunk);
     utteranceRef.current = utterance;
+    // Prevenção contra Garbage Collection prematura do V8/Chromium
+    (window as any).__lmsCurrentUtterance = utterance;
 
     utterance.rate = playbackRate;
     utterance.pitch = pitch;
@@ -249,54 +356,138 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
       setIsPaused(false);
     };
 
-    // QUANDO A PÁGINA ACABA: Leitura Contínua Automática!
     utterance.onend = () => {
-      setIsPlaying(false);
-      setIsPaused(false);
-
-      // Se a leitura contínua estiver ativada e houver próxima página:
-      if (autoAdvancePages) {
-        const nextIdx = nextPageIndexOnEnd !== undefined ? nextPageIndexOnEnd : currentPageIndex + 1;
-        if (nextIdx < pages.length) {
-          handleSetPage(nextIdx);
-          // Inicia a próxima página com um breve respiro natural
-          setTimeout(() => {
-            playAudio(pages[nextIdx], nextIdx + 1);
-          }, 600);
+      // Avança para o próximo chunk após pequeno intervalo natural
+      setTimeout(() => {
+        if (speechChunksRef.current === chunks) {
+          playChunkSequence(chunks, startIdx + 1, onCompleteAll);
         }
-      }
+      }, 70);
     };
 
-    utterance.onerror = () => {
-      setIsPlaying(false);
-      setIsPaused(false);
+    utterance.onerror = (e) => {
+      console.warn('Erro na emissão do chunk:', e);
+      setTimeout(() => {
+        if (speechChunksRef.current === chunks) {
+          playChunkSequence(chunks, startIdx + 1, onCompleteAll);
+        }
+      }, 70);
     };
 
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.warn('Falha ao acionar sintetizador:', err);
+    }
+  };
+
+  const playAudio = (textOverride?: string, nextPageIndexOnEnd?: number) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      showToast('⚠️ Seu navegador não suporta a API nativa de voz.');
+      return;
+    }
+
+    stopAudio();
+
+    const rawText = (textOverride || pages[currentPageIndex] || '').trim();
+    if (!rawText) {
+      showToast('Nenhum texto disponível nesta página para leitura.');
+      return;
+    }
+
+    const chunks = splitIntoSpeechChunks(rawText);
+    if (chunks.length === 0) return;
+
+    speechChunksRef.current = chunks;
     setIsPlaying(true);
     setIsPaused(false);
+
+    // Keep-alive a cada 9 segundos para evitar congelamento crônico do Chromium
+    keepAliveIntervalRef.current = setInterval(() => {
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
+    }, 9000);
+
+    // Pequeno delay após cancel() para que o Chrome processe o cancelamento da fila
+    setTimeout(() => {
+      playChunkSequence(chunks, 0, () => {
+        // Callback ao finalizar todos os chunks da página:
+        if (autoAdvancePages) {
+          const nextIdx = nextPageIndexOnEnd !== undefined ? nextPageIndexOnEnd : currentPageIndex + 1;
+          if (nextIdx < pages.length) {
+            handleSetPage(nextIdx);
+            setTimeout(() => {
+              playAudio(pages[nextIdx], nextIdx + 1);
+            }, 600);
+          }
+        }
+      });
+    }, 80);
   };
 
   const pauseAudio = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.pause();
+    try {
+      window.speechSynthesis.pause();
+    } catch (e) {}
     setIsPaused(true);
     setIsPlaying(false);
   };
 
   const resumeAudio = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.resume();
+    try {
+      window.speechSynthesis.resume();
+    } catch (e) {}
     setIsPaused(false);
     setIsPlaying(true);
   };
 
-  const stopAudio = () => {
+  // Testar voz do sintetizador
+  const handleTestVoice = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    setIsPlaying(false);
-    setIsPaused(false);
-    setSelectionPopup(null);
+    stopAudio();
+    setTimeout(() => {
+      const testPhrase = 'Áudio do Koinonia LMS conectado com sucesso! O sintetizador está funcionando.';
+      const u = new SpeechSynthesisUtterance(testPhrase);
+      u.rate = playbackRate;
+      u.lang = 'pt-BR';
+      if (selectedVoiceURI && voices.length > 0) {
+        const v = voices.find(voice => voice.voiceURI === selectedVoiceURI);
+        if (v) u.voice = v;
+      }
+      (window as any).__lmsCurrentUtterance = u;
+      try {
+        window.speechSynthesis.resume();
+        window.speechSynthesis.speak(u);
+        showToast('🔊 Testando som do sintetizador...');
+      } catch (e) {}
+    }, 80);
+  };
+
+  // Alternativa de Alta Fidelidade: Ouvir no Microsoft Edge / Navegador (Ctrl+Shift+U)
+  const handleOpenInBrowserForSpeech = () => {
+    let directPdfUrl = pdfUrl;
+    const match = pdfUrl.match(/\/(?:file\/)?d\/([a-zA-Z0-9_-]+)/) ||
+                  pdfUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      directPdfUrl = `https://drive.google.com/file/d/${match[1]}/view`;
+    }
+    window.open(directPdfUrl, '_blank', 'noopener,noreferrer');
+    setShowEdgeGuideModal(true);
+  };
+
+  // Copiar o texto da folha atual para a área de transferência
+  const handleCopyCurrentPageText = () => {
+    const txt = pages[currentPageIndex] || '';
+    if (!txt) return;
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(txt);
+      showToast('📋 Texto da folha copiado! Você pode colar no Word ou em outro leitor de áudio.');
+    }
   };
 
   // Altera a velocidade dinamicamente durante a leitura
@@ -353,14 +544,12 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
 
     let textToSpeak = selectionPopup.text;
     if (startIndex !== -1) {
-      // Fala a partir do ponto selecionado até o final da página
       textToSpeak = pageText.slice(startIndex);
     }
 
     playAudio(textToSpeak);
     setSelectionPopup(null);
 
-    // Limpa a seleção visual
     if (typeof window !== 'undefined' && window.getSelection) {
       window.getSelection()?.removeAllRanges();
     }
@@ -370,7 +559,6 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
   const handleSaveImportedPages = () => {
     if (!importTextContent.trim()) return;
 
-    // Divide por marcadores de página ou parágrafos longos
     let splitPages = importTextContent
       .split(/\n\s*---\s*\n|\f|\[P[aá]gina\s*\d+\]/gi)
       .map(p => p.trim())
@@ -390,6 +578,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     }
     setIsAddPagesModalOpen(false);
     setImportTextContent('');
+    showToast(`✨ ${splitPages.length} páginas importadas com sucesso!`);
   };
 
   if (!isOpen || !pdfUrl) return null;
@@ -418,6 +607,15 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-0 sm:p-2 animate-in fade-in duration-200">
+      
+      {/* Toast flutuante de feedback */}
+      {toastMessage && (
+        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-60 px-4 py-2.5 rounded-xl bg-slate-900 border border-emerald-500/50 text-white text-xs font-bold shadow-2xl animate-in slide-in-from-top-4 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-emerald-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       <div 
         className={`w-full flex flex-col bg-slate-900 border border-slate-700 shadow-2xl transition-all duration-200 ${
           isFullscreen 
@@ -551,11 +749,13 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
 
         {/* PAINEL FLUTUANTE DE ÁUDIO & VELOCIDADE (EXPANSÍVEL) */}
         {isAudioPanelOpen && (
-          <div className="bg-slate-950 border-b border-slate-800 p-2.5 sm:p-3 text-slate-200 shadow-md shrink-0">
-            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+          <div className="bg-slate-950 border-b border-slate-800 p-2.5 sm:p-3 text-slate-200 shadow-md shrink-0 space-y-2">
+            
+            {/* Linha 1: Controles de Áudio Web */}
+            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
               
               {/* Controles de Reprodução Primários */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 {!isPlaying && !isPaused ? (
                   <button
                     onClick={() => playAudio()}
@@ -588,6 +788,16 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                     <Square className="w-3 h-3 fill-current" /> Parar
                   </button>
                 )}
+
+                {/* Botão de Teste Rápido de Som */}
+                <button
+                  onClick={handleTestVoice}
+                  className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1 cursor-pointer"
+                  title="Testar se o áudio do sintetizador está funcionando na saída de som"
+                >
+                  <Volume2 className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="hidden sm:inline">Testar Som</span>
+                </button>
               </div>
 
               {/* Seletor de Velocidades Rápidas */}
@@ -639,6 +849,39 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                 <RotateCw className={`w-3 h-3 ${autoAdvancePages ? 'text-emerald-400 animate-spin' : ''}`} style={{ animationDuration: '6s' }} />
                 <span>Leitura Contínua {autoAdvancePages ? 'ON' : 'OFF'}</span>
               </button>
+            </div>
+
+            {/* Linha 2: Alternativas Confiáveis de Voz Alta & Ferramentas */}
+            <div className="max-w-5xl mx-auto pt-1.5 border-t border-slate-900 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Alternativa A: Ouvir no Microsoft Edge / Navegador com Vozes Neurais */}
+                <button
+                  onClick={handleOpenInBrowserForSpeech}
+                  className="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  title="Abre no Microsoft Edge ou Chrome para usar o recurso 'Ler em voz alta' (Ctrl+Shift+U) com vozes neurais perfeitas"
+                >
+                  <Headphones className="w-3.5 h-3.5 text-sky-200" />
+                  <span>Ouvir no Edge / Navegador (Ler em Voz Alta • Ctrl+Shift+U)</span>
+                </button>
+
+                {/* Alternativa B: Copiar texto da folha */}
+                <button
+                  onClick={handleCopyCurrentPageText}
+                  className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-medium border border-slate-800 transition flex items-center gap-1 cursor-pointer"
+                  title="Copiar texto desta folha para colar em leitores externos ou Word"
+                >
+                  <Copy className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="hidden sm:inline">Copiar Folha</span>
+                </button>
+              </div>
+
+              {/* Indicador de Frase Sendo Falada */}
+              {isPlaying && activeSpokenSentence && (
+                <div className="text-[11px] text-amber-300 bg-amber-950/40 border border-amber-500/30 px-2.5 py-0.5 rounded-lg truncate max-w-md flex items-center gap-1.5 animate-pulse">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                  <span className="truncate">Lendo: &ldquo;{activeSpokenSentence}&rdquo;</span>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -758,18 +1001,27 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                       <p className="font-bold text-amber-300 text-sm">Livro Digitalizado por Scanner (Fac-símile em Imagens)</p>
                       <p className="text-xs text-amber-200/90 mt-1 leading-relaxed">
                         Este arquivo PDF original é composto por páginas digitalizadas em scanner físico (sem camada de texto digital embutida). 
-                        Você pode folhear a obra completa com nitidez e zoom no modo <strong>[📄 PDF Original]</strong> no topo. 
-                        Para narrar trechos ou capítulos com o sintetizador de voz, utilize o botão <strong>[📋 Colar Páginas]</strong>.
+                        Você pode folhear a obra completa com nitidez e zoom no modo <strong>[📄 PDF Original]</strong> no topo, ou usar o botão <strong>Ouvir no Edge / Navegador</strong> com OCR neural.
                       </p>
                     </div>
                   </div>
                 )}
+
+                {/* Parágrafos da Folha com Destaque Visual da Frase Falada */}
                 {currentPageText.split('\n\n').map((paragraph, pIdx) => {
                   if (!paragraph.trim()) return null;
+
+                  // Verifica se a frase atualmente falada pertence a este parágrafo
+                  const isParagraphSpeaking = isPlaying && activeSpokenSentence && paragraph.includes(activeSpokenSentence.slice(0, 20));
+
                   return (
                     <div 
                       key={pIdx}
-                      className="group relative rounded-xl p-2 transition hover:bg-slate-800/40"
+                      className={`group relative rounded-xl p-2.5 transition ${
+                        isParagraphSpeaking
+                          ? 'bg-amber-500/10 border-l-4 border-amber-400'
+                          : 'hover:bg-slate-800/40'
+                      }`}
                     >
                       <p className="whitespace-pre-wrap leading-relaxed">
                         {paragraph}
@@ -812,7 +1064,7 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
             <div className="px-4 py-2 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 shrink-0">
               <span className="flex items-center gap-1.5 text-[11px]">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Selecione qualquer frase com o mouse/dedo para ver o botão <strong>"Ouvir a partir daqui"</strong></span>
+                <span>Selecione qualquer frase com o mouse/dedo para ver o botão <strong>&ldquo;Ouvir a partir daqui&rdquo;</strong></span>
               </span>
 
               <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
@@ -838,6 +1090,67 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
                 title={title}
                 allow="autoplay"
               />
+            </div>
+          </div>
+        )}
+
+        {/* MODAL DE GUIA: COMO OUVIR NO EDGE COM VOZES NEURAIS (CTRL+SHIFT+U) */}
+        {showEdgeGuideModal && (
+          <div className="fixed inset-0 z-60 bg-black/80 flex items-center justify-center p-4 animate-in fade-in duration-150">
+            <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl p-6 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <Headphones className="w-5 h-5 text-sky-400" />
+                  <h4 className="text-sm font-bold text-white">Como Ouvir em Voz Alta no Navegador</h4>
+                </div>
+                <button
+                  onClick={() => setShowEdgeGuideModal(false)}
+                  className="p-1 rounded-lg text-slate-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="space-y-3 text-xs text-slate-300 leading-relaxed">
+                <div className="p-3 rounded-xl bg-blue-950/60 border border-blue-500/40 text-blue-200 space-y-1.5">
+                  <p className="font-bold flex items-center gap-1.5 text-blue-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    O arquivo PDF foi aberto em uma nova aba!
+                  </p>
+                  <p>Para escutar com a melhor qualidade de voz do mundo (Microsoft Azure Neural):</p>
+                </div>
+
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-start gap-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="px-2 py-0.5 rounded bg-blue-600 font-mono font-bold text-white text-[11px]">1</span>
+                    <div>
+                      <p className="font-bold text-white">No Microsoft Edge (Recomendado):</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        Pressione o atalho <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700 font-mono font-bold">Ctrl + Shift + U</kbd> no teclado ou clique com o botão direito no PDF e selecione <strong>&ldquo;Ler em voz alta&rdquo;</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800">
+                    <span className="px-2 py-0.5 rounded bg-indigo-600 font-mono font-bold text-white text-[11px]">2</span>
+                    <div>
+                      <p className="font-bold text-white">No Google Chrome:</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        Ative o painel lateral de <strong>&ldquo;Modo de Leitura&rdquo;</strong> e clique no ícone de reproduzir áudio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end pt-3 border-t border-slate-800">
+                <button
+                  onClick={() => setShowEdgeGuideModal(false)}
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md transition"
+                >
+                  Entendi, obrigado!
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -898,4 +1211,3 @@ export const MobilePdfReaderModal: React.FC<MobilePdfReaderModalProps> = ({
     </div>
   );
 };
-

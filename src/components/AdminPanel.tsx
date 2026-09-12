@@ -100,6 +100,44 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [editProfEmail, setEditProfEmail] = useState('');
   const [editMeetUrl, setEditMeetUrl] = useState('');
   const [editDriveUrl, setEditDriveUrl] = useState('');
+  const [editTurmaIdx, setEditTurmaIdx] = useState<number>(1);
+  const [discTurmaFilter, setDiscTurmaFilter] = useState<number | 'all'>('all');
+
+  // Mapeamento e estilo dos badges de turmas
+  const getTurmaBadgeInfo = (idx?: number) => {
+    switch (idx) {
+      case 1:
+        return { 
+          label: 'Turma A (7º)', 
+          fullName: 'Turma A • 7º Período (Veteranos)', 
+          badgeCls: 'bg-blue-100 text-blue-900 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800' 
+        };
+      case 2:
+        return { 
+          label: 'Turma B (3º)', 
+          fullName: 'Turma B • 3º Período (Ingressantes)', 
+          badgeCls: 'bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800' 
+        };
+      case 0:
+        return { 
+          label: 'Fim de Semana (5º)', 
+          fullName: 'Turma Fim de Semana • 5º Período (Modular)', 
+          badgeCls: 'bg-amber-100 text-amber-900 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800' 
+        };
+      case 3:
+        return { 
+          label: 'Curso Básico', 
+          fullName: 'Curso Básico de Teologia', 
+          badgeCls: 'bg-emerald-100 text-emerald-900 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800' 
+        };
+      default:
+        return { 
+          label: 'Geral', 
+          fullName: 'Geral / Outra Turma', 
+          badgeCls: 'bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700' 
+        };
+    }
+  };
 
   const reloadData = async () => {
     await syncRbacFromCloud(true);
@@ -140,7 +178,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const handleApprove = async (req: AccessRequest, role: UserRole) => {
     await approveAccessRequest(req.id, role);
     await reloadData();
-    const emailInfo = formatApprovalEmail(req.name, req.email, role);
+    const emailInfo = formatApprovalEmail(req.name, req.email, role, req.whatsapp);
     setApprovalModalData({
       name: req.name,
       email: req.email,
@@ -258,6 +296,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     setEditProfEmail(d.professor_email || '');
     setEditMeetUrl(d.google_meet_url || '');
     setEditDriveUrl(d.google_drive_url || '');
+    setEditTurmaIdx(d.turma_idx ?? 1);
   };
 
   const handleSaveDisc = (e: React.FormEvent) => {
@@ -270,6 +309,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       professor_email: editProfEmail.trim() || undefined,
       google_meet_url: editMeetUrl.trim() || undefined,
       google_drive_url: editDriveUrl.trim() || undefined,
+      turma_idx: editTurmaIdx,
     };
 
     updateDisciplina(updated);
@@ -288,9 +328,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   });
 
   const filteredDisciplinas = disciplinasList.filter((d) => {
+    // Filtro por turma
+    if (discTurmaFilter !== 'all' && d.turma_idx !== discTurmaFilter) {
+      return false;
+    }
     const q = searchQuery.toLowerCase();
     return (
       d.name.toLowerCase().includes(q) ||
+      d.code?.toLowerCase().includes(q) ||
       d.professor_name?.toLowerCase().includes(q) ||
       d.day_of_week.toLowerCase().includes(q) ||
       d.professor_email?.toLowerCase().includes(q)
@@ -444,60 +489,126 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
       {/* CONTEÚDO 1: SOLICITAÇÕES PENDENTES */}
       {activeSubTab === 'requests' && (
-
         <div className="space-y-4">
           {pendingRequests.length === 0 ? (
-            <div className="p-8 bg-white rounded-2xl border border-gray-200 text-center text-gray-500 text-xs space-y-2">
+            <div className="p-8 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 text-center text-gray-500 text-xs space-y-2">
               <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto" />
-              <div className="font-bold text-gray-700">Nenhuma solicitação pendente no momento.</div>
-              <p>Quando um e-mail novo tentar logar com o Google e solicitar acesso, o pedido aparecerá aqui para sua aprovação.</p>
+              <div className="font-bold text-gray-700 dark:text-slate-300">Nenhuma solicitação pendente no momento.</div>
+              <p className="dark:text-slate-400">Quando um novo usuário tentar entrar pelo Google e enviar seu pedido com turma e período, o registro aparecerá aqui para análise e aprovação.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {pendingRequests.map((req) => (
-                <div key={req.id} className="p-5 bg-white rounded-2xl border border-amber-200 shadow-sm space-y-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={req.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
-                      alt={req.name}
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-amber-400/30"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-bold text-gray-900 truncate">{req.name}</div>
-                      <div className="text-xs text-gray-500 truncate">{req.email}</div>
-                      <div className="text-[10px] text-amber-700 mt-0.5">Solicitado em: {req.requestedAt}</div>
+              {pendingRequests.map((req) => {
+                const turmaInfo = getTurmaBadgeInfo(req.turmaIdx);
+                const hasCustomName = req.googleName && req.googleName.toLowerCase().trim() !== req.name.toLowerCase().trim();
+
+                return (
+                  <div key={req.id} className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-amber-900/50 shadow-sm space-y-3.5 text-left">
+                    {/* Header do Solicitante */}
+                    <div className="flex items-start gap-3">
+                      <img
+                        src={req.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                        alt={req.name}
+                        className="w-11 h-11 rounded-full object-cover ring-2 ring-amber-400/40 shrink-0 mt-0.5"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-1.5 flex-wrap">
+                          <span>{req.name}</span>
+                          {hasCustomName && (
+                            <span className="text-[10px] font-normal text-gray-500 dark:text-slate-400">
+                              (Google: {req.googleName})
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-slate-400 truncate">{req.email}</div>
+                        <div className="text-[10px] text-amber-700 dark:text-amber-400 font-medium mt-0.5 flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> Solicitado em: {req.requestedAt}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Dados Acadêmicos Informados */}
+                    <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        Dados Informados no Pedido:
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 items-center">
+                        {/* Turma */}
+                        <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border flex items-center gap-1 ${turmaInfo.badgeCls}`}>
+                          <GraduationCap className="w-3 h-3 shrink-0" />
+                          <span>{req.turmaNome || turmaInfo.label}</span>
+                        </span>
+
+                        {/* Período */}
+                        <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800 flex items-center gap-1">
+                          <Clock className="w-3 h-3 shrink-0" />
+                          <span>{req.periodoNome || (req.periodoNum ? `${req.periodoNum}º Período` : 'Período não informado')}</span>
+                        </span>
+
+                        {/* Perfil Pretendido */}
+                        <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 capitalize flex items-center gap-1">
+                          <BookOpen className="w-3 h-3 shrink-0" />
+                          <span>{req.perfilSolicitado ? `Perfil: ${req.perfilSolicitado}` : 'Aluno Regular'}</span>
+                        </span>
+
+                        {/* WhatsApp Direto */}
+                        {req.whatsapp && (
+                          <a
+                            href={getWhatsAppUrl(cleanPhoneNumber(req.whatsapp), `Olá, *${req.name}*! Sou da coordenação do *Koinonia LMS*. Recebemos sua solicitação de autorização para o Semestre 2026.2.`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 transition flex items-center gap-1"
+                            title="Conversar no WhatsApp"
+                          >
+                            <Phone className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                            <span>{formatPhone(req.whatsapp)}</span>
+                          </a>
+                        )}
+                      </div>
+
+                      {/* Observações do Solicitante */}
+                      {req.observacao && (
+                        <div className="pt-1.5 border-t border-slate-200/60 dark:border-slate-700/60 text-[11px] text-slate-600 dark:text-slate-300 italic">
+                          "{req.observacao}"
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Botões de Ação */}
+                    <div className="pt-2 border-t border-gray-100 dark:border-slate-800 flex flex-wrap gap-1.5">
+                      <button
+                        onClick={() => handleApprove(req, 'aluno')}
+                        className="flex-1 py-2 px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
+                        title={`Aprovar Aluno na ${turmaInfo.label}`}
+                      >
+                        <GraduationCap className="w-3.5 h-3.5" /> Aprovar Aluno
+                      </button>
+                      <button
+                        onClick={() => handleApprove(req, 'professor')}
+                        className="flex-1 py-2 px-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
+                        title="Aprovar como Docente / Professor"
+                      >
+                        <BookOpen className="w-3.5 h-3.5" /> Aprovar Professor
+                      </button>
+                      <button
+                        onClick={() => handleApprove(req, 'monitor')}
+                        className="py-2 px-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
+                        title="Aprovar como Monitor da Turma"
+                      >
+                        <UserCheck className="w-3.5 h-3.5" /> Monitor
+                      </button>
+                      <button
+                        onClick={() => handleReject(req.id)}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition cursor-pointer"
+                        title="Rejeitar Solicitação"
+                      >
+                        <XCircle className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-
-                  <div className="pt-3 border-t border-gray-100 flex flex-wrap gap-1.5">
-                    <button
-                      onClick={() => handleApprove(req, 'aluno')}
-                      className="flex-1 py-2 px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
-                    >
-                      <GraduationCap className="w-3.5 h-3.5" /> Aprovar Aluno
-                    </button>
-                    <button
-                      onClick={() => handleApprove(req, 'professor')}
-                      className="flex-1 py-2 px-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
-                    >
-                      <BookOpen className="w-3.5 h-3.5" /> Aprovar Professor
-                    </button>
-                    <button
-                      onClick={() => handleApprove(req, 'monitor')}
-                      className="py-2 px-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] rounded-lg shadow-sm transition flex items-center justify-center gap-1 cursor-pointer"
-                    >
-                      <UserCheck className="w-3.5 h-3.5" /> Monitor
-                    </button>
-                    <button
-                      onClick={() => handleReject(req.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-                      title="Rejeitar"
-                    >
-                      <XCircle className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -645,88 +756,181 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* CONTEÚDO 3: DISCIPLINAS & DOCENTES */}
       {activeSubTab === 'disciplinas' && (
         <div className="space-y-4">
-          <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-200">
+          {/* Seletor / Filtro por Turma */}
+          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <button
+              type="button"
+              onClick={() => setDiscTurmaFilter('all')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                discTurmaFilter === 'all'
+                  ? 'bg-white dark:bg-slate-900 text-purple-700 dark:text-purple-400 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <span>Todas as Turmas</span>
+              <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-slate-200 dark:bg-slate-800 font-extrabold">
+                {disciplinasList.length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setDiscTurmaFilter(1)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                discTurmaFilter === 1
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
+              }`}
+            >
+              <span>Turma A (7º Período)</span>
+              <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 font-extrabold">
+                {disciplinasList.filter((d) => d.turma_idx === 1).length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setDiscTurmaFilter(2)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                discTurmaFilter === 2
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400'
+              }`}
+            >
+              <span>Turma B (3º Período)</span>
+              <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-purple-100 text-purple-900 dark:bg-purple-950 dark:text-purple-300 font-extrabold">
+                {disciplinasList.filter((d) => d.turma_idx === 2).length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setDiscTurmaFilter(0)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                discTurmaFilter === 0
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400'
+              }`}
+            >
+              <span>Fim de Semana (5º Período)</span>
+              <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 font-extrabold">
+                {disciplinasList.filter((d) => d.turma_idx === 0).length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setDiscTurmaFilter(3)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                discTurmaFilter === 3
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400'
+              }`}
+            >
+              <span>Curso Básico Teológico</span>
+              <span className="px-1.5 py-0.2 text-[10px] rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 font-extrabold">
+                {disciplinasList.filter((d) => d.turma_idx === 3).length}
+              </span>
+            </button>
+          </div>
+
+          {/* Campo de Busca */}
+          <div className="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-gray-200 dark:border-slate-800">
             <Search className="w-4 h-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Buscar matéria por nome, docente, dia ou e-mail..."
+              placeholder="Buscar matéria por nome, código, docente, dia ou e-mail..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full text-xs font-semibold text-gray-800 outline-none bg-transparent"
+              className="w-full text-xs font-semibold text-gray-800 dark:text-slate-200 outline-none bg-transparent"
             />
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          {/* Tabela de Disciplinas */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px]">
+                <thead className="bg-gray-50 dark:bg-slate-800/80 border-b border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 font-bold uppercase text-[10px]">
                   <tr>
-                    <th className="p-3.5">Disciplina / Turma</th>
+                    <th className="p-3.5">Disciplina / Código</th>
+                    <th className="p-3.5">Turma Oficial</th>
                     <th className="p-3.5">Horário</th>
                     <th className="p-3.5">Docente Responsável</th>
                     <th className="p-3.5">E-mail do Professor</th>
-                    <th className="p-3.5">Google Meet & Drive</th>
+                    <th className="p-3.5">Meet & Drive</th>
                     <th className="p-3.5 text-right">Ações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {filteredDisciplinas.map((d) => (
-                    <tr key={d.id} className="hover:bg-gray-50/60 transition">
-                      <td className="p-3.5">
-                        <div className="font-bold text-gray-900">{d.name}</div>
-                        <div className="text-gray-400 text-[10px] font-mono">{d.code} • {d.turma_idx === 2 ? 'Turma B (3º)' : 'Turma A (7º)'}</div>
-                      </td>
-                      <td className="p-3.5">
-                        <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-900 border border-blue-200 rounded text-[10px] font-bold">
-                          {d.day_of_week} ({d.start_time} - {d.end_time})
-                        </span>
-                      </td>
-                      <td className="p-3.5">
-                        <div className="font-bold text-slate-800">{d.professor_name}</div>
-                      </td>
-                      <td className="p-3.5">
-                        <div className="text-slate-500 font-mono text-[11px]">
-                          {d.professor_email || <span className="text-amber-600 font-bold">Não vinculado</span>}
-                        </div>
-                      </td>
-                      <td className="p-3.5">
-                        <div className="flex items-center gap-2">
-                          {d.google_meet_url ? (
-                            <a
-                              href={d.google_meet_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-red-600 hover:text-red-700 p-1"
-                              title="Link Google Meet"
-                            >
-                              <Video className="w-4 h-4" />
-                            </a>
-                          ) : (
-                            <span className="text-gray-300 text-[10px]">—</span>
-                          )}
-                          {d.google_drive_url && (
-                            <a
-                              href={d.google_drive_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-700 p-1"
-                              title="Pasta Google Drive"
-                            >
-                              <FolderOpen className="w-4 h-4" />
-                            </a>
-                          )}
-                        </div>
-                      </td>
-                      <td className="p-3.5 text-right">
-                        <button
-                          onClick={() => handleOpenEditDisc(d)}
-                          className="p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg font-bold text-[11px] inline-flex items-center gap-1 transition"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" /> Editar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
+                  {filteredDisciplinas.map((d) => {
+                    const badge = getTurmaBadgeInfo(d.turma_idx);
+
+                    return (
+                      <tr key={d.id} className="hover:bg-gray-50/60 dark:hover:bg-slate-800/40 transition">
+                        <td className="p-3.5">
+                          <div className="font-bold text-gray-900 dark:text-white">{d.name}</div>
+                          <div className="text-gray-400 dark:text-slate-500 text-[10px] font-mono mt-0.5">
+                            {d.code}
+                          </div>
+                        </td>
+                        <td className="p-3.5">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold border ${badge.badgeCls}`}>
+                            <GraduationCap className="w-3 h-3" />
+                            <span>{badge.label}</span>
+                          </span>
+                        </td>
+                        <td className="p-3.5">
+                          <span className="inline-block px-2 py-0.5 bg-blue-50 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded text-[10px] font-bold whitespace-nowrap">
+                            {d.day_of_week} ({d.start_time} - {d.end_time})
+                          </span>
+                        </td>
+                        <td className="p-3.5">
+                          <div className="font-bold text-slate-800 dark:text-slate-200">{d.professor_name}</div>
+                        </td>
+                        <td className="p-3.5">
+                          <div className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                            {d.professor_email || <span className="text-amber-600 dark:text-amber-400 font-bold">Não vinculado</span>}
+                          </div>
+                        </td>
+                        <td className="p-3.5">
+                          <div className="flex items-center gap-2">
+                            {d.google_meet_url ? (
+                              <a
+                                href={d.google_meet_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-red-600 dark:text-red-400 hover:text-red-700 p-1"
+                                title="Link Google Meet"
+                              >
+                                <Video className="w-4 h-4" />
+                              </a>
+                            ) : (
+                              <span className="text-gray-300 dark:text-slate-600 text-[10px]">—</span>
+                            )}
+                            {d.google_drive_url && (
+                              <a
+                                href={d.google_drive_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 p-1"
+                                title="Pasta Google Drive"
+                              >
+                                <FolderOpen className="w-4 h-4" />
+                              </a>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-3.5 text-right">
+                          <button
+                            onClick={() => handleOpenEditDisc(d)}
+                            className="p-1.5 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 rounded-lg font-bold text-[11px] inline-flex items-center gap-1 transition cursor-pointer"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" /> Editar
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -1054,18 +1258,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
       {/* MODAL EDITAR DISCIPLINA & ATRIBUIÇÃO DE DOCENTE */}
       {editingDisc && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-4">
-            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-4 border border-gray-200 dark:border-slate-800">
+            <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-3">
               <div>
-                <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
-                  <Edit3 className="w-5 h-5 text-purple-600" /> Atribuição de Disciplina: {editingDisc.name}
+                <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+                  <Edit3 className="w-5 h-5 text-purple-600 dark:text-purple-400" /> Atribuição de Disciplina: {editingDisc.name}
                 </h3>
-                <span className="text-[11px] text-gray-500">{editingDisc.code} • {editingDisc.day_of_week} ({editingDisc.start_time} - {editingDisc.end_time})</span>
+                <span className="text-[11px] text-gray-500 dark:text-slate-400">{editingDisc.code} • {editingDisc.day_of_week} ({editingDisc.start_time} - {editingDisc.end_time})</span>
               </div>
               <button
                 onClick={() => setEditingDisc(null)}
-                className="w-7 h-7 rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center text-xs"
+                className="w-7 h-7 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 font-bold flex items-center justify-center text-xs cursor-pointer"
               >
                 ✕
               </button>
@@ -1073,19 +1277,36 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             <form onSubmit={handleSaveDisc} className="space-y-4 text-left">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Nome do Docente Responsável:</label>
+                <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Turma da Disciplina:</label>
+                <select
+                  value={editTurmaIdx}
+                  onChange={(e) => setEditTurmaIdx(Number(e.target.value))}
+                  className="w-full p-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                >
+                  <option value={1}>Turma A • 7º Período (Veteranos - Semanal Noturno)</option>
+                  <option value={2}>Turma B • 3º Período (Ingressantes - Semanal Noturno)</option>
+                  <option value={0}>Turma Fim de Semana • 5º Período (Modular)</option>
+                  <option value={3}>Curso Básico Teológico</option>
+                </select>
+                <span className="text-[10px] text-gray-500 dark:text-slate-400 mt-1 block">
+                  Define a qual turma esta disciplina pertencerá na grade e no portal acadêmico dos alunos.
+                </span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Nome do Docente Responsável:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Profº Ary Júnior"
                   value={editProfName}
                   onChange={(e) => setEditProfName(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">
                   E-mail do Professor (Para Login & Acesso Restrito):
                 </label>
                 <input
@@ -1093,32 +1314,32 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   placeholder="professor@uicb.edu.br ou gmail.com"
                   value={editProfEmail}
                   onChange={(e) => setEditProfEmail(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
-                <span className="text-[10px] text-gray-500 mt-1 block">
+                <span className="text-[10px] text-gray-500 dark:text-slate-400 mt-1 block">
                   O professor logado com este e-mail terá acesso exclusivo para gerenciar esta matéria.
                 </span>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Link do Google Meet:</label>
+                <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Link do Google Meet:</label>
                 <input
                   type="url"
                   placeholder="https://meet.google.com/..."
                   value={editMeetUrl}
                   onChange={(e) => setEditMeetUrl(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Link da Pasta no Google Drive:</label>
+                <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Link da Pasta no Google Drive:</label>
                 <input
                   type="url"
                   placeholder="https://drive.google.com/open?id=..."
                   value={editDriveUrl}
                   onChange={(e) => setEditDriveUrl(e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-semibold text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />
               </div>
 
@@ -1126,13 +1347,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditingDisc(null)}
-                  className="flex-1 py-2.5 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl"
+                  className="flex-1 py-2.5 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 font-bold text-xs rounded-xl cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 transition"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow transition"
+                  className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer"
                 >
                   Salvar Atribuição
                 </button>

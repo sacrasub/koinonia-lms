@@ -24,10 +24,36 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       const stored = localStorage.getItem('lms_sidebar_pinned');
       if (stored !== null) return stored === 'true';
     }
-    return false; // Padrão: auto-expansível no hover
+    // A navegação deve iniciar aberta e ser fechada após o tour guiado
+    return true;
   });
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  // Listener para controle dinâmico do tour guiado (abre no início do tour e fecha ao concluir)
+  React.useEffect(() => {
+    const handleOpen = () => {
+      setIsPinned(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('lms_sidebar_pinned', 'true');
+      }
+    };
+    const handleClose = () => {
+      setIsPinned(false);
+      setIsHovered(false);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('lms_sidebar_pinned', 'false');
+      }
+    };
+
+    window.addEventListener('lms_open_sidebar', handleOpen);
+    window.addEventListener('lms_close_sidebar', handleClose);
+
+    return () => {
+      window.removeEventListener('lms_open_sidebar', handleOpen);
+      window.removeEventListener('lms_close_sidebar', handleClose);
+    };
+  }, []);
 
   // A barra fica expandida se estiver fixada OU se o mouse estiver sobre ela
   const isExpanded = isPinned || isHovered;

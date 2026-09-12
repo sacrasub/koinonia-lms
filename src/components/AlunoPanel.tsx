@@ -316,10 +316,42 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     if (typeof window !== 'undefined' && normalizedEmail) {
       const confirmed = localStorage.getItem(`lms_profile_confirmed_${normalizedEmail}`) === 'true';
       const remind = localStorage.getItem(`lms_remind_profile_later_${normalizedEmail}`) === 'true';
+
+      // Checa se o usuário já possui cadastro previamente editado/preenchido
+      let hasExistingData = false;
+      try {
+        const storedProfile = localStorage.getItem(`lms_profile_${normalizedEmail}`);
+        if (storedProfile) {
+          const parsed = JSON.parse(storedProfile);
+          if (parsed && (parsed.phone || parsed.igreja || parsed.cidade || parsed.turmaNome || parsed.periodo)) {
+            hasExistingData = true;
+          }
+        }
+      } catch (e) {}
+
+      const authUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
+      if (authUser && (authUser.whatsapp || (authUser.turmaIdx !== undefined && authUser.turmaIdx !== 1))) {
+        hasExistingData = true;
+      }
+
+      // Se já possui dados cadastrais salvos, marca como confirmado e não solicita novamente
+      if (hasExistingData) {
+        if (!confirmed) {
+          localStorage.setItem(`lms_profile_confirmed_${normalizedEmail}`, 'true');
+          window.dispatchEvent(
+            new CustomEvent('lms_profile_confirmed', { detail: { email: normalizedEmail, autoConfirmed: true } })
+          );
+        }
+        setIsProfileConfirmed(true);
+        setIsProfileModalOpen(false);
+        setIsFirstAccessModal(false);
+        return;
+      }
+
       setIsProfileConfirmed(confirmed);
       setIsRemindLater(remind);
 
-      // Se o aluno nunca confirmou o perfil e ainda não clicou em lembrar depois, abre no primeiro acesso
+      // Se o aluno nunca confirmou o perfil, não clicou em lembrar depois e não tem dados salvos, abre no primeiro acesso
       if (!confirmed && !remind) {
         setIsFirstAccessModal(true);
         setIsProfileModalOpen(true);
