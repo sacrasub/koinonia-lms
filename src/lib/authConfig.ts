@@ -42,7 +42,12 @@ export interface RequestAccessPayload {
   periodoNome?: string;
   perfilSolicitado?: 'aluno' | 'professor' | 'monitor' | 'ouvinte';
   observacao?: string;
+  // Campos de Segurança Anti-Bot
+  b_security_code?: string;
+  website_hp?: string;
+  turnstileToken?: string;
 }
+
 
 
 // Lista inicial de emergência (Superadministrador e contingência offline)
@@ -527,6 +532,25 @@ export async function requestAccess(
       : payloadOrEmail;
 
   const normalized = payload.email.toLowerCase().trim();
+
+  // 0. Bloqueio Imediato: Não aceita solicitações de e-mails banidos/revogados
+  const revokedSet = new Set(getRevokedUsersList());
+  if (revokedSet.has(normalized)) {
+    console.warn(`[requestAccess] Tentativa de solicitação de conta banida/revogada: ${normalized}`);
+    throw new Error('Esta conta foi desativada ou banida pela administração do LMS.');
+  }
+
+  // 0.1 Bloqueio Honeypot no Client: Se o campo fantasma estiver preenchido, descarta
+  if (payload.b_security_code || payload.website_hp) {
+    console.warn(`[requestAccess] Preenchimento automatizado detectado para: ${normalized}`);
+    return {
+      id: `req_discarded`,
+      email: normalized,
+      name: payload.name || normalized,
+      requestedAt: new Date().toLocaleString('pt-BR'),
+      status: 'pending',
+    };
+  }
   
   // Busca as requisições mais recentes diretamente da nuvem
   let cloudRequests: AccessRequest[] = [];
@@ -573,6 +597,21 @@ export async function requestAccess(
     reqMap.set(normalized, updated);
     const updatedList = Array.from(reqMap.values());
     await savePendingRequests(updatedList);
+
+    // Envia atualização para a API com proteção
+    try {
+      fetch('/api/auth/request-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...updated,
+          b_security_code: payload.b_security_code,
+          website_hp: payload.website_hp,
+          turnstileToken: payload.turnstileToken,
+        }),
+      }).catch(() => {});
+    } catch (_) {}
+
     return updated;
   }
 
@@ -597,17 +636,23 @@ export async function requestAccess(
   const updatedList = Array.from(reqMap.values());
   await savePendingRequests(updatedList);
 
-  // Dupla garantia: dispara também via API Route do servidor Next.js
+  // Dupla garantia: dispara também via API Route do servidor Next.js com payload completo anti-bot
   try {
     fetch('/api/auth/request-access', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newReq),
+      body: JSON.stringify({
+        ...newReq,
+        b_security_code: payload.b_security_code,
+        website_hp: payload.website_hp,
+        turnstileToken: payload.turnstileToken,
+      }),
     }).catch(() => {});
   } catch (e) {}
 
   return newReq;
 }
+
 
 export async function approveAccessRequest(requestId: string, role: UserRole = 'aluno'): Promise<void> {
   let requests = getPendingRequests();

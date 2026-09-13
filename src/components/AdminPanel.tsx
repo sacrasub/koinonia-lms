@@ -286,7 +286,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const handleRemoveUser = async (email: string) => {
     const normalized = email.toLowerCase().trim();
-    if (confirm(`Tem certeza que deseja revogar o acesso do e-mail ${email}?`)) {
+    if (confirm(`Tem certeza que deseja revogar e banir o acesso do e-mail ${email}?\n\nOs tokens de autenticação serão imediatamente cancelados no Supabase Auth e o usuário não conseguirá mais efetuar login.`)) {
       // 1. Remoção otimista instantânea na UI para sumir imediatamente da tela
       setUsersList((prev) => {
         const next = { ...prev };
@@ -295,8 +295,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       });
       // 2. Persistir revogação definitiva no storage, na nuvem e tabela users
       removeAuthorizedUser(normalized);
+
+      // 3. Dispara invalidação profunda de tokens no Supabase Auth e expurgo de telemetria
+      try {
+        const activeAdmin = typeof window !== 'undefined' ? localStorage.getItem('lms_active_user_email') || 'sacrasub@gmail.com' : 'sacrasub@gmail.com';
+        await fetch('/api/admin/security/ban-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetEmail: normalized, adminEmail: activeAdmin }),
+        });
+      } catch (_) {}
+
       await reloadData();
-      showNotify(`Acesso do e-mail ${email} revogado com sucesso.`);
+      showNotify(`Acesso do e-mail ${email} revogado e tokens invalidados com sucesso.`);
     }
   };
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 import { AccessRequest } from '@/lib/authConfig';
+import { getClientIp } from '@/lib/rateLimit';
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,8 +17,23 @@ export async function POST(req: NextRequest) {
       periodoNum, 
       periodoNome, 
       perfilSolicitado, 
-      observacao 
+      observacao,
+      // Campos de Segurança Anti-Bot (Honeypot & CAPTCHA)
+      b_security_code,
+      website_hp,
+      turnstileToken
     } = body;
+
+    // ========================================================================
+    // 1. VERIFICAÇÃO DE HONEYPOT (Detecta bots que preenchem inputs invisíveis)
+    // ========================================================================
+    if (b_security_code || website_hp) {
+      console.warn(`[Anti-Bot Honeypot] Requisição automatizada barrada para o e-mail: ${email}`);
+      return NextResponse.json(
+        { error: 'Requisição inválida ou detectada como preenchimento automatizado.' },
+        { status: 400 }
+      );
+    }
 
     if (!email || typeof email !== 'string' || !email.includes('@')) {
       return NextResponse.json({ error: 'E-mail inválido' }, { status: 400 });
@@ -25,7 +41,62 @@ export async function POST(req: NextRequest) {
 
     const normalized = email.toLowerCase().trim();
 
-    // 1. Busca solicitações pendentes atuais na nuvem
+    // ========================================================================
+    // 2. VERIFICAÇÃO DE BLACKLIST DE CONTAS REVOGADAS / BANIDAS
+    // ========================================================================
+    try {
+      const { data: revRow } = await supabase
+        .from('materiais')
+        .select('file_url')
+        .eq('title', 'system_rbac_revoked_users')
+        .limit(1);
+
+      if (revRow && revRow.length > 0 && revRow[0].file_url) {
+        const revokedList: string[] = JSON.parse(revRow[0].file_url);
+        if (Array.isArray(revokedList) && revokedList.includes(normalized)) {
+          return NextResponse.json(
+            { error: 'Este e-mail foi desativado ou banido pela administração.' },
+            { status: 403 }
+          );
+        }
+      }
+    } catch (_) {}
+
+    // ========================================================================
+    // 3. VERIFICAÇÃO DE CAPTCHA INVISÍVEL (Cloudflare Turnstile)
+    // ========================================================================
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret) {
+      if (!turnstileToken) {
+        return NextResponse.json(
+          { error: 'Validação de segurança (CAPTCHA) obrigatória ausente.' },
+          { status: 422 }
+        );
+      }
+
+      try {
+        const ip = getClientIp(req);
+        const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `secret=${encodeURIComponent(turnstileSecret)}&response=${encodeURIComponent(turnstileToken)}&remoteip=${encodeURIComponent(ip)}`,
+        });
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success) {
+          return NextResponse.json(
+            { error: 'Falha na verificação de segurança do CAPTCHA. Tente novamente.' },
+            { status: 400 }
+          );
+        }
+      } catch (captchaErr) {
+        console.warn('[CAPTCHA] Erro na validação com Cloudflare:', captchaErr);
+      }
+    }
+
+    // ========================================================================
+    // 4. PROCESSAMENTO DA SOLICITAÇÃO DE ACESSO
+    // ========================================================================
+    // 4.1 Busca solicitações pendentes atuais na nuvem
     const { data: reqRow, error: fetchErr } = await supabase
       .from('materiais')
       .select('id, file_url')
@@ -44,7 +115,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 2. Verifica se já existe solicitação
+    // 4.2 Verifica se já existe solicitação
     const existingIndex = currentList.findIndex((r) => r.email === normalized);
     let targetReq: AccessRequest;
 
@@ -65,7 +136,7 @@ export async function POST(req: NextRequest) {
       };
       targetReq = currentList[existingIndex];
     } else {
-      // 3. Cria nova solicitação
+      // 4.3 Cria nova solicitação com status pendente estrito
       targetReq = {
         id: `req_${Date.now()}`,
         email: normalized,
@@ -104,3 +175,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error?.message || 'Erro interno' }, { status: 500 });
   }
 }
+

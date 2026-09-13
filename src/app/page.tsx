@@ -10,7 +10,8 @@ import { AlunoPanel } from '@/components/AlunoPanel';
 import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity } from 'lucide-react';
-import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud } from '@/lib/authConfig';
+import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud, getRevokedUsersList } from '@/lib/authConfig';
+
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
 import { onSessionRestored, cleanupBulkyLocalStorage } from '@/services/studentSyncService';
 import { startUserSession, endCurrentSession, trackEvent } from '@/services/telemetryService';
@@ -199,6 +200,24 @@ export default function Home() {
         return;
       }
 
+      // 3.1 BLOQUEIO IMEDIATO DE CONTAS BANIDAS / REVOGADAS (Status 401 / 403)
+      const normEmail = email.toLowerCase().trim();
+      const revokedList = getRevokedUsersList();
+      if (revokedList.includes(normEmail)) {
+        console.warn(`[Segurança LMS] Acesso bloqueado para conta banida: ${normEmail}`);
+        try {
+          await supabaseSignOut();
+        } catch (_) {}
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('lms_active_user_email');
+          localStorage.removeItem('lms_active_user_role');
+          localStorage.removeItem('lms_active_tab');
+        }
+        setLoadingSession(false);
+        router.push('/login?error=account_banned');
+        return;
+      }
+
       if (isSubscribed) {
         const name = session?.user?.user_metadata?.full_name || session?.user?.user_metadata?.name || email;
         const avatar = session?.user?.user_metadata?.avatar_url || session?.user?.user_metadata?.picture || '';
@@ -221,12 +240,11 @@ export default function Home() {
           else if (initialRole === 'monitor') setActiveTab('monitor-escala');
           else setActiveTab('aluno-disciplinas');
 
-          // Rastreia início da sessão de usuário autorizado
+          // Rastreia início da sessão apenas de usuário devidamente autorizado
           startUserSession(email, name, initialRole, avatar);
         } else {
+          // Conta pendente de aprovação: NÃO registra sessão como aluno nem consome banco
           setIsAuthorized(false);
-          // Rastreia início de sessão de usuário visitante / aguardando autorização
-          startUserSession(email, name, 'aluno', avatar);
         }
         setLoadingSession(false);
 
@@ -259,9 +277,27 @@ export default function Home() {
     window.addEventListener('lms_rbac_updated', handleRbacUpdate);
 
     // 5. Listener de estado de autenticação do Supabase
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user?.email && isSubscribed) {
         const email = session.user.email;
+        const norm = email.toLowerCase().trim();
+
+        // Checagem imediata de banimento no evento de autenticação
+        const revoked = getRevokedUsersList();
+        if (revoked.includes(norm)) {
+          try {
+            await supabaseSignOut();
+          } catch (_) {}
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('lms_active_user_email');
+            localStorage.removeItem('lms_active_user_role');
+            localStorage.removeItem('lms_active_tab');
+          }
+          setLoadingSession(false);
+          router.push('/login?error=account_banned');
+          return;
+        }
+
         const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || email;
         const avatar = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '';
 
@@ -283,8 +319,8 @@ export default function Home() {
           // Rastreia sessão ativa
           startUserSession(email, name, initialRole, avatar);
         } else {
+          // Conta pendente: isolamento total de telemetria
           setIsAuthorized(false);
-          startUserSession(email, name, 'aluno', avatar);
         }
         setLoadingSession(false);
 

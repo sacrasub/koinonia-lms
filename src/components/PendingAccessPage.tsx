@@ -41,6 +41,9 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
   const [observacao, setObservacao] = useState<string>('');
   const [formError, setFormError] = useState<string | null>(null);
 
+  // Honeypot Anti-Bot (Invisível via CSS)
+  const [honeypotCode, setHoneypotCode] = useState<string>('');
+
   // Mapeamento de rótulos amigáveis de turmas
   const TURMA_OPTIONS = [
     { idx: 1, label: 'Turma A • Semanal Noturno (7º Período - Veteranos)', defaultPeriodo: 7 },
@@ -98,6 +101,13 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
     e.preventDefault();
     setFormError(null);
 
+    // Se o honeypot estiver preenchido, é um bot! Descarte silencioso.
+    if (honeypotCode && honeypotCode.trim().length > 0) {
+      console.warn('[Anti-Bot] Tentativa automatizada bloqueada via Honeypot.');
+      setRequested(true);
+      return;
+    }
+
     const trimmedName = fullName.trim();
     if (!trimmedName || trimmedName.length < 3) {
       setFormError('Por favor informe seu nome completo civil.');
@@ -119,6 +129,7 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
       perfilSolicitado,
       whatsapp: cleanPhoneNumber(whatsapp),
       observacao: observacao.trim() || undefined,
+      b_security_code: honeypotCode,
     };
 
     try {
@@ -127,9 +138,9 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
       setExistingData(req);
       setRequested(true);
       setIsEditing(false);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Erro ao solicitar acesso:', err);
-      setFormError('Ocorreu um erro ao enviar sua solicitação. Tente novamente.');
+      setFormError(err?.message || 'Ocorreu um erro ao enviar sua solicitação. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -244,6 +255,32 @@ export const PendingAccessPage: React.FC<PendingAccessPageProps> = ({
                 <span>{formError}</span>
               </div>
             )}
+
+            {/* Campo Honeypot Oculto (Anti-Bot: invisível para humanos, preenchido por scripts automatizados) */}
+            <div
+              style={{
+                display: 'none',
+                position: 'absolute',
+                left: '-9999px',
+                opacity: 0,
+                pointerEvents: 'none',
+                width: 0,
+                height: 0,
+                overflow: 'hidden'
+              }}
+              aria-hidden="true"
+            >
+              <label htmlFor="b_security_code">Segurança - Deixe em branco</label>
+              <input
+                id="b_security_code"
+                type="text"
+                name="b_security_code"
+                tabIndex={-1}
+                autoComplete="new-password"
+                value={honeypotCode}
+                onChange={(e) => setHoneypotCode(e.target.value)}
+              />
+            </div>
 
             {/* 1. Nome Completo */}
             <div className="space-y-1.5">

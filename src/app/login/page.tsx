@@ -16,6 +16,11 @@ export default function LoginPage() {
     if (typeof window !== 'undefined') {
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       setIsLocalhost(isLocal);
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('error') === 'account_banned') {
+        setErrorMessage('Acesso não autorizado: Esta conta foi permanentemente desativada ou banida pela administração.');
+      }
     }
 
     async function checkExistingSession() {

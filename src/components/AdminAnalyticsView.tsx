@@ -10,7 +10,7 @@ import {
   GraduationCap, AlertCircle, ArrowUpRight, ArrowDownRight, 
   Calendar, BarChart3, PieChart, Zap, Radio, ChevronDown, ChevronUp, ChevronRight,
   User, ExternalLink, Eye, X, CalendarDays, ListFilter, Sliders,
-  Clock3, Globe, Sparkle, ArrowRight
+  Clock3, Globe, Sparkle, ArrowRight, ShieldAlert
 } from 'lucide-react';
 import { 
   AnalyticsSummary, 
@@ -114,6 +114,36 @@ export const AdminAnalyticsView: React.FC = () => {
     } finally {
       setLoading(false);
       if (isManual) setTimeout(() => setRefreshing(false), 400);
+    }
+  };
+
+  const [isBanning, setIsBanning] = useState<boolean>(false);
+
+  const handleBanMaliciousUser = async (targetEmail: string, targetName: string) => {
+    const confirmed = window.confirm(
+      `⚠️ CONFIRMAÇÃO DE SEGURANÇA:\n\nDeseja realmente BANIR e REVOGAR permanentemente a conta de "${targetName}" (${targetEmail})?\n\n• Os tokens de autenticação serão imediatamente cancelados no Supabase Auth.\n• Todas as sessões e eventos de telemetria desta conta serão expurgados.\n• O e-mail será adicionado à Blacklist permanente do sistema.`
+    );
+    if (!confirmed) return;
+
+    try {
+      setIsBanning(true);
+      const activeAdmin = typeof window !== 'undefined' ? localStorage.getItem('lms_active_user_email') || 'sacrasub@gmail.com' : 'sacrasub@gmail.com';
+      const res = await fetch('/api/admin/security/ban-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetEmail, adminEmail: activeAdmin }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Falha ao banir conta.');
+      }
+      alert(`✓ Sucesso: ${data.message || 'Conta banida e registros expurgados.'}`);
+      setDossierUserEmail(null);
+      await loadData(true);
+    } catch (err: any) {
+      alert(`Erro ao banir usuário: ${err?.message || 'Erro inesperado'}`);
+    } finally {
+      setIsBanning(false);
     }
   };
 
@@ -2015,6 +2045,18 @@ export const AdminAnalyticsView: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2">
+                {userDossierData.user_email !== 'sacrasub@gmail.com' && userDossierData.user_email !== 'riffocristianmision@gmail.com' && (
+                  <button
+                    onClick={() => handleBanMaliciousUser(userDossierData.user_email, userDossierData.user_name)}
+                    disabled={isBanning}
+                    className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/40 text-red-200 hover:text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border border-red-400/30 disabled:opacity-50"
+                    title="Banir esta conta permanentemente, revogar tokens e expurgar acessos"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+                    <span className="hidden sm:inline">{isBanning ? 'Banindo...' : 'Banir Bot / Conta'}</span>
+                  </button>
+                )}
+
                 <button
                   onClick={() => {
                     const csv = exportSessionsCSV(userDossierData.all_sessions);
