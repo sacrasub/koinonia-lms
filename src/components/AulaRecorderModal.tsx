@@ -106,7 +106,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const [autoStopDurationMinutes, setAutoStopDurationMinutes] = useState<number>(120); // 2h padrão
   const [autoStopMode, setAutoStopMode] = useState<'duration' | 'fixed_time'>('fixed_time');
   const [autoStopFixedTime, setAutoStopFixedTime] = useState<string>('22:00');
-  const [autoUploadDrive, setAutoUploadDrive] = useState<boolean>(true);
+  const [autoUploadDrive, setAutoUploadDrive] = useState<boolean>(false);
   const [autoDownloadBackup, setAutoDownloadBackup] = useState<boolean>(true);
   const [autoStopRemainingSeconds, setAutoStopRemainingSeconds] = useState<number | null>(null);
   const autoStopTargetTimeRef = useRef<number | null>(null);
@@ -604,23 +604,35 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
           blobSize: blob.size,
         });
 
-        // Se contingência local estiver ativada, baixa o arquivo no computador
-        if (autoDownloadBackup && (isAutoPilot || activeTabMode === 'autopilot')) {
-          try {
-            const dlUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = dlUrl;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          } catch (dlErr) {
-            console.warn('Erro ao disparar download automático de contingência:', dlErr);
-          }
+        // 1. Download automático universal no computador (Garantia Zero-Perda para qualquer monitor/máquina)
+        try {
+          const dlUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = dlUrl;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } catch (dlErr) {
+          console.warn('Aviso no disparo de download automático:', dlErr);
         }
 
-        // DISPARO AUTOMÁTICO IMEDIATO PARA O GOOGLE DRIVE
-        if (autoUploadDrive || !isAutoPilot) {
+        // 2. Libera o lock de gravação ativa na nuvem para não bloquear outros monitores
+        if (sessionKey) {
+          try {
+            await stopActiveRecording(sessionKey);
+          } catch (_) {}
+        }
+        if (selectedDisciplina) {
+          try {
+            await forceClearActiveRecordingForAula(selectedDisciplina.id, aulaNum);
+          } catch (_) {}
+        }
+        setActiveSessionKey(null);
+        currentSessionKeyRef.current = null;
+
+        // 3. Envio automático para o Google Drive (Apenas se o usuário tiver explicitamente ativado)
+        if (autoUploadDrive) {
           await executeAutoUploadPipeline(blob, fileName, finalDuration, sessionKey);
         }
       };
@@ -1380,7 +1392,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 
         {/* Corpo do Modal */}
         <div className="p-6 overflow-y-auto space-y-5">
-          {errorMessage && (
+          {errorMessage && !errorMessage.includes('storageQuotaExceeded') && !errorMessage.includes('storage quota') && !errorMessage.includes('Cota do Google Drive') && (
             <div className="p-4 bg-amber-50 border-2 border-amber-400 text-amber-950 rounded-2xl text-xs space-y-3 animate-in fade-in">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-2.5">
@@ -2386,63 +2398,61 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
             </div>
           )}
 
-          {/* 3. PAINEL DE VÍDEO CONCLUÍDO & STATUS DE UPLOAD */}
+          {/* 3. PAINEL DE VÍDEO CONCLUÍDO & FLUXO DO MONITOR EM 2 PASSOS */}
           {(recordingState === 'stopped' || isUploadingToDrive || isSavedSuccess) && (
             <div className="space-y-4">
-              <div className={`p-4 rounded-2xl border ${isSavedSuccess ? 'bg-emerald-50 border-emerald-300 text-emerald-950' : 'bg-blue-50 border-blue-300 text-blue-950'} space-y-2`}>
+              {/* Card de Confirmação de Gravação Concluída */}
+              <div className={`p-4 rounded-2xl border ${isSavedSuccess ? 'bg-emerald-50 border-emerald-300 text-emerald-950' : 'bg-emerald-50/90 border-emerald-300 text-emerald-950'} space-y-2.5 shadow-xs`}>
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="font-extrabold text-sm flex items-center gap-2">
+                  <span className="font-extrabold text-sm sm:text-base flex items-center gap-2">
                     {isSavedSuccess ? (
                       <>
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                        Gravação Salva com Sucesso no Google Drive!
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                        <span>Gravação Publicada com Sucesso no LMS!</span>
                       </>
                     ) : isUploadingToDrive ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
-                        Salvando Automaticamente no Google Drive...
+                        <Loader2 className="w-5 h-5 animate-spin text-blue-600 shrink-0" />
+                        <span>Vinculando no LMS...</span>
                       </>
                     ) : (
                       <>
-                        <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                        Vídeo Pronto
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                        <span>Gravação Concluída & Salva no seu Computador!</span>
                       </>
                     )}
                   </span>
                   {recordingTime > 0 && (
-                    <span className="text-xs font-mono font-bold bg-slate-200/80 px-2.5 py-0.5 rounded-full">
+                    <span className="text-xs font-mono font-bold bg-emerald-100 text-emerald-900 border border-emerald-200 px-2.5 py-0.5 rounded-full">
                       Duração: {formatDuration(recordingTime)}
                     </span>
                   )}
                 </div>
-                <p className="text-xs">
+                <p className="text-xs text-emerald-900 leading-relaxed">
                   {isSavedSuccess
-                    ? 'O arquivo já foi indexado e está disponível para todos os alunos autenticados.'
+                    ? 'A aula foi vinculada e já está disponível para todos os alunos e professores no portal.'
                     : isUploadingToDrive
-                    ? uploadStatusStep || 'Enviando bytes do vídeo para a pasta oficial compartilhada...'
-                    : 'Gravação finalizada. O upload foi processado.'}
+                    ? uploadStatusStep || 'Salvando e publicando gravação...'
+                    : `O arquivo de vídeo (${videoFileName || 'aula_gravada.webm'}) já foi baixado automaticamente para a sua pasta de Downloads.`}
                 </p>
 
-                {/* Indicador de Qualidade de Rede e Conectividade */}
-                {isUploadingToDrive && (
-                  <div className="pt-2 border-t border-blue-200/60 flex items-center justify-between text-[11px]">
-                    {isOnline ? (
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>Rede Estável • Conexão ativa com o servidor</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 text-red-700 font-bold bg-red-100/80 px-2 py-1 rounded-lg">
-                        <AlertCircle className="w-3.5 h-3.5 text-red-600 shrink-0" />
-                        <span>Atenção: Conexão interrompida! Aguardando retorno da internet...</span>
-                      </div>
-                    )}
-                    <span className="text-gray-500 text-[10px]">Proteção anti-falha de rede</span>
+                {/* Botão de segurança para baixar de novo se desejar */}
+                {!isSavedSuccess && (
+                  <div className="pt-1 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleDownloadVideo}
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Baixar Cópia Novamente</span>
+                    </button>
+                    <span className="text-[11px] text-emerald-800">Arquivo preservado com segurança no computador</span>
                   </div>
                 )}
               </div>
 
-              {/* Player de Prévia */}
+              {/* Player de Prévia do Vídeo Gravado */}
               {recordedVideoUrl && (
                 <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow border border-gray-200">
                   <video
@@ -2453,140 +2463,162 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 </div>
               )}
 
-              {/* CARD DE STATUS OFICIAL */}
-              <div className="p-4 bg-gradient-to-br from-blue-950 to-slate-900 text-white rounded-2xl border border-blue-800/60 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-amber-400" />
-                    <h5 className="font-extrabold text-sm text-white">
-                      Status da Gravação
-                    </h5>
+              {/* CARD DE SUCESSO TOTAL SE JÁ PUBLICOU */}
+              {isSavedSuccess ? (
+                <div className="p-5 bg-gradient-to-br from-emerald-950 to-slate-900 text-white rounded-2xl border border-emerald-500/50 space-y-3 shadow-lg text-center">
+                  <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-400/30">
+                    <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <span className="text-[11px] font-mono bg-blue-900/80 text-blue-200 px-2.5 py-0.5 rounded-full">
-                    Pasta: 01 - Teologia / 15 - Gravações
-                  </span>
+                  <h4 className="text-base font-extrabold text-white">
+                    Gravação 100% Salva e Ativa!
+                  </h4>
+                  <p className="text-xs text-slate-300 max-w-md mx-auto">
+                    A aula {aulaNum} de <strong>{selectedDisciplina?.name}</strong> foi registrada no LMS. Os alunos já podem assistir pelo portal acadêmico.
+                  </p>
+                  {uploadedDriveUrl && (
+                    <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
+                      <a
+                        href={uploadedDriveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Abrir Vídeo no Google Drive</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={handleCloseModal}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl transition cursor-pointer"
+                      >
+                        Fechar Janela
+                      </button>
+                    </div>
+                  )}
                 </div>
-
-                {isUploadingToDrive ? (
-                  <div className="p-3.5 bg-blue-900/60 rounded-xl space-y-2.5 border border-blue-700/60">
-                    <div className="flex items-center justify-between text-xs font-bold text-amber-300">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
-                        <span>{uploadStatusStep || 'Enviando para o Google Drive...'}</span>
+              ) : (
+                /* FLUXO DO MONITOR EM 2 PASSOS: ENVIAR AO DRIVE & PUBLICAR NO LMS */
+                <div className="p-5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl border border-indigo-500/40 space-y-4 shadow-xl">
+                  <div className="flex items-center justify-between border-b border-indigo-500/30 pb-3">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-amber-400" />
+                      <div>
+                        <h4 className="font-extrabold text-sm sm:text-base text-white">
+                          Publicar Aula para os Alunos (2 Passos Simples)
+                        </h4>
+                        <p className="text-[11px] text-indigo-200">
+                          Os vídeos ficam armazenados no Google Drive oficial para que qualquer monitor grave com facilidade.
+                        </p>
                       </div>
-                      <span className="font-mono text-xs font-black text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-md">
-                        {uploadProgress}%
+                    </div>
+                    <span className="text-[10px] font-mono bg-indigo-900/80 text-indigo-200 border border-indigo-700/50 px-2.5 py-1 rounded-full hidden sm:inline-block">
+                      {selectedDisciplina?.code || 'Aula Oficial'}
+                    </span>
+                  </div>
+
+                  {/* PASSO 1: ABRIR PASTA DA DISCIPLINA NO GOOGLE DRIVE */}
+                  <div className="p-3.5 bg-indigo-900/40 rounded-xl border border-indigo-400/30 space-y-2">
+                    <div className="flex items-center justify-between flex-wrap gap-1">
+                      <span className="text-xs font-black text-amber-300 flex items-center gap-1.5 uppercase tracking-wide">
+                        <span>Passo 1</span>
+                        <span>• Enviar Vídeo para o Google Drive</span>
+                      </span>
+                      <span className="text-[10px] text-slate-300">
+                        Pasta da Matéria
                       </span>
                     </div>
-                    <div className="w-full bg-blue-950 rounded-full h-2.5 overflow-hidden border border-blue-800/80">
-                      <div
-                        className="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-300 rounded-full"
-                        style={{ width: `${Math.max(uploadProgress, 4)}%` }}
-                      />
-                    </div>
-                  </div>
-                ) : isSavedSuccess ? (
-                  <div className="p-3.5 bg-emerald-950/80 border border-emerald-500 rounded-xl space-y-2">
-                    <div className="flex items-center gap-2 text-xs font-extrabold text-emerald-300">
-                      <Check className="w-4 h-4 text-emerald-400" />
-                      <span>Gravação Salva com Sucesso na Pasta Oficial do Google Drive!</span>
-                    </div>
-                    {uploadedDriveUrl && (
-                      <div className="flex items-center gap-2 pt-1">
-                        <a
-                          href={uploadedDriveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-300 hover:text-white underline flex items-center gap-1 font-bold"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Abrir Gravação no Google Drive</span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <button
-                    onClick={handleManualUploadClick}
-                    className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-extrabold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer border border-emerald-400"
-                  >
-                    <UploadCloud className="w-5 h-5" />
-                    <span>Reenviar para a Pasta do Google Drive</span>
-                  </button>
-                )}
-              </div>
 
-              {/* Opção em Destaque: Salvar na Pasta Sincronizada do Google Drive Desktop */}
-              <div className="p-3.5 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-2xl space-y-2">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="text-xs font-black text-indigo-950 flex items-center gap-1.5">
-                    <FolderOpen className="w-4 h-4 text-indigo-600" />
-                    <span>Google Drive Desktop Local (Recomendado)</span>
-                  </span>
-                  <span className="text-[10px] font-bold text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded-full border border-indigo-200">
-                    Sem erro de cota • Sincronização 100% direta
-                  </span>
-                </div>
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      Clique no botão abaixo para abrir a pasta oficial da disciplina em uma nova aba e <strong>arraste o arquivo baixado</strong> ({videoFileName || 'aula_gravada.webm'}) para lá:
+                    </p>
 
-                <p className="text-[11px] text-indigo-900 leading-relaxed">
-                  Grava o vídeo pronto direto na pasta do seu computador (<strong>D:\Meu Drive\01 - Teologia\11 - Gravações das aulas</strong>). O Google Drive para Desktop sincronizará automaticamente com a nuvem.
-                </p>
-
-                {localFolderSuccess && (
-                  <div className="p-2.5 bg-emerald-100 text-emerald-950 text-xs font-bold rounded-xl border border-emerald-300 flex items-center gap-1.5 animate-in fade-in">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>{localFolderSuccess}</span>
-                  </div>
-                )}
-
-                {localFolderError && (
-                  <div className="p-2.5 bg-red-100 text-red-950 text-xs font-bold rounded-xl border border-red-300 flex items-center gap-1.5 animate-in fade-in">
-                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-                    <span>{localFolderError}</span>
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  disabled={isSavingToLocalFolder}
-                  onClick={handleSaveToGoogleDriveDesktop}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-98 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer border border-indigo-400"
-                >
-                  {isSavingToLocalFolder ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
-                      <span>Gravando na Pasta do Google Drive...</span>
-                    </>
-                  ) : (
-                    <>
+                    <a
+                      href={selectedDisciplina?.google_drive_url || OFFICIAL_DRIVE_RECORDINGS_FOLDER}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-indigo-500 active:scale-98 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer border border-blue-400/40"
+                    >
                       <FolderOpen className="w-4 h-4 text-amber-300" />
-                      <span>📁 Salvar na Pasta do Google Drive Desktop (1 Clique)</span>
-                    </>
+                      <span>1. Abrir Pasta da Aula no Google Drive (Nova Aba)</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-blue-200" />
+                    </a>
+                  </div>
+
+                  {/* PASSO 2: COLAR O LINK DO DRIVE E SALVAR NO LMS */}
+                  <div className="p-3.5 bg-emerald-950/40 rounded-xl border border-emerald-500/40 space-y-2.5">
+                    <div className="flex items-center justify-between flex-wrap gap-1">
+                      <span className="text-xs font-black text-emerald-300 flex items-center gap-1.5 uppercase tracking-wide">
+                        <span>Passo 2</span>
+                        <span>• Vincular Link no LMS & Publicar</span>
+                      </span>
+                      <span className="text-[10px] text-emerald-200">
+                        Disponível na hora para os alunos
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-200 leading-relaxed">
+                      No Google Drive, clique com botão direito no vídeo enviado, selecione <strong>Compartilhar ➔ Copiar link</strong> e cole abaixo:
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <input
+                        type="url"
+                        placeholder="Cole aqui o link (ex: https://drive.google.com/file/d/.../view)"
+                        value={directDriveUrl}
+                        onChange={(e) => setDirectDriveUrl(e.target.value)}
+                        className="flex-1 p-2.5 bg-slate-900 border border-emerald-500/40 rounded-xl text-xs font-mono text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleSaveDirectDriveLink()}
+                        disabled={!directDriveUrl.trim() || isUploadingToDrive}
+                        className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-xs sm:text-sm rounded-xl transition cursor-pointer shrink-0 shadow-lg shadow-emerald-950/30 flex items-center justify-center gap-1.5"
+                      >
+                        {isUploadingToDrive ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>Publicando...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Check className="w-4 h-4" />
+                            <span>2. Publicar para os Alunos</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Opção para quem usa Google Drive Desktop */}
+                  <div className="pt-2 border-t border-indigo-500/20 flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-[11px] text-slate-400">
+                      Usa o app do Google Drive no seu computador?
+                    </span>
+                    <button
+                      type="button"
+                      disabled={isSavingToLocalFolder}
+                      onClick={handleSaveToGoogleDriveDesktop}
+                      className="py-1.5 px-3 bg-white/10 hover:bg-white/20 text-indigo-200 text-xs font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer border border-white/10"
+                    >
+                      <FolderOpen className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{isSavingToLocalFolder ? 'Salvando...' : 'Salvar no Google Drive Desktop'}</span>
+                    </button>
+                  </div>
+
+                  {localFolderSuccess && (
+                    <div className="p-2.5 bg-emerald-900/60 text-emerald-200 text-xs font-bold rounded-xl border border-emerald-500/40 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{localFolderSuccess}</span>
+                    </div>
                   )}
-                </button>
-              </div>
-
-              {/* Opções de Download Local e Acesso ao Drive */}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                <button
-                  onClick={handleDownloadVideo}
-                  className="flex-1 py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Download className="w-4 h-4 text-slate-600" />
-                  <span>Baixar Cópia Local (Downloads)</span>
-                </button>
-
-                <a
-                  href={OFFICIAL_DRIVE_RECORDINGS_FOLDER}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
-                  title="Abrir a pasta oficial do Google Drive"
-                >
-                  <FolderOpen className="w-4 h-4 text-blue-600" />
-                  <span>Abrir Pasta do Drive</span>
-                </a>
-              </div>
+                  {localFolderError && (
+                    <div className="p-2.5 bg-red-900/60 text-red-200 text-xs font-bold rounded-xl border border-red-500/40 flex items-center gap-1.5">
+                      <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                      <span>{localFolderError}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -2690,14 +2722,24 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
               )}
             </>
           ) : (
-            <button
-              type="button"
-              onClick={handleReset}
-              className="px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-200 rounded-xl transition ml-auto cursor-pointer flex items-center gap-1.5"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Gravar Outra Aula</span>
-            </button>
+            <div className="flex items-center justify-between w-full gap-2">
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="px-4 py-2 text-xs font-bold text-gray-600 hover:bg-gray-200 rounded-xl transition cursor-pointer"
+              >
+                Fechar Janela
+              </button>
+
+              <button
+                type="button"
+                onClick={handleReset}
+                className="px-4 py-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition cursor-pointer flex items-center gap-1.5"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Gravar Outra Aula</span>
+              </button>
+            </div>
           )}
         </div>
       </div>
