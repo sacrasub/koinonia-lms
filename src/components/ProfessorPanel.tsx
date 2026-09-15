@@ -1065,8 +1065,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               <div className="relative">
                 <input
                   type="url"
-                  value={leituraLink}
-                  onChange={(e) => setLeituraLink(e.target.value)}
+                  value={leituraUrl}
+                  onChange={(e) => setLeituraUrl(e.target.value)}
                   placeholder="https://..."
                   className="w-full p-2.5 pl-8 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-blue-800 dark:text-blue-300 font-mono placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
@@ -1093,8 +1093,8 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Data de Referência da Aula</label>
                 <input
                   type="text"
-                  value={leituraTargetDate}
-                  onChange={(e) => setLeituraTargetDate(e.target.value)}
+                  value={leituraData}
+                  onChange={(e) => setLeituraData(e.target.value)}
                   placeholder="Ex: 18/08 (Terça) ou Aula 2"
                   className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
@@ -1108,7 +1108,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                   <input
                     type="file"
                     accept=".pdf,.doc,.docx"
-                    onChange={handleLeituraFileSelect}
+                    onChange={handleLeituraFileUpload}
                     className="w-full p-2 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-gray-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-slate-800 file:text-blue-700 dark:file:text-blue-300"
                   />
                   {leituraFileName && (

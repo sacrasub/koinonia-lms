@@ -1875,6 +1875,19 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     showToast(`✅ Aula de "${modalCancelamento.aula.title}" reativada com sucesso!`);
   };
 
+  // Desfazer cancelamento diretamente pelo card da aula
+  const handleDesfazerCancelamentoDirect = async (item: EscalaItem) => {
+    const dateForDay = getDateForDayOfWeek(item.dayOfWeek);
+    const todayStr = new Date().toLocaleDateString('pt-BR');
+    await reativarAula(item.id, dateForDay);
+    await reativarAula(item.title, dateForDay);
+    if (item.dayOfWeek === currentDayOfWeekName) {
+      await reativarAula(item.id, todayStr);
+      await reativarAula(item.title, todayStr);
+    }
+    showToast(`✅ Cancelamento desfeito: Aula de "${item.title}" reativada!`);
+  };
+
   const groupedEscala = useMemo(() => {
     return daysOrder.map(day => {
       const classes = filteredEscala.filter(item => item.dayOfWeek === day);
@@ -3270,7 +3283,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                             🚫 Aula Cancelada / Substituída
                                           </span>
                                           <button
-                                            onClick={() => handleDesfazerCancelamento(item.id, dataFormatada)}
+                                            onClick={() => handleDesfazerCancelamentoDirect(item)}
                                             className="text-[10px] text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline font-medium cursor-pointer"
                                           >
                                             Desfazer

@@ -6,7 +6,7 @@ import {
   UploadCloud, CheckCircle2, AlertCircle, Sparkles, Clock, FolderOpen, 
   Layers, ExternalLink, ShieldCheck, Check, Copy, HelpCircle,
   Minimize2, Maximize2, Lock, Smartphone, Loader2, RefreshCw, Trash2, Unlock,
-  Bot, Timer, Infinity as InfinityIcon, Calendar
+  Bot, Timer, Infinity as InfinityIcon, Calendar, Zap
 } from 'lucide-react';
 import { Disciplina, UserRole } from '@/types';
 import { getAllDisciplinas } from '@/services/disciplinasService';
@@ -2080,16 +2080,16 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                           <div key={grav.id} className="p-3 bg-white border border-gray-200 rounded-xl flex items-center justify-between gap-2 shadow-2xs hover:border-indigo-300 transition">
                             <div className="min-w-0">
                               <p className="text-xs font-bold text-gray-900 truncate">
-                                Aula {grav.aula_num}: {grav.titulo || 'Gravação da Aula'}
+                                Aula {grav.aula_num}: {grav.title || 'Gravação da Aula'}
                               </p>
                               <p className="text-[10px] text-gray-500">
-                                {grav.data_gravacao} {grav.duracao ? `• ${grav.duracao}` : ''}
+                                {grav.data_aula} {grav.duration_formatted ? `• ${grav.duration_formatted}` : ''}
                               </p>
                             </div>
                             <div className="flex items-center gap-1.5 shrink-0">
-                              {grav.video_drive_url && (
+                              {grav.video_url && (
                                 <a
-                                  href={grav.video_drive_url}
+                                  href={grav.video_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold flex items-center gap-1"

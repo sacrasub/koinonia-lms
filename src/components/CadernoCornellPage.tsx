@@ -1322,11 +1322,14 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       setSaveStatusMessage(`Backup de ${notesList.length} anotações exportado com sucesso!`);
       setTimeout(() => setSaveStatusMessage(null), 3500);
 
-      trackEvent({
-        event_type: 'cornell_notes_exported',
-        user_email: normalizedEmail,
-        page_title: 'Caderno Cornell'
-      });
+      trackEvent(
+        'cornell_notes',
+        'export_notes',
+        'Backup de Anotações Exportado',
+        { count: notesList.length },
+        normalizedEmail,
+        'aluno'
+      );
     } catch (err) {
       console.error('Erro ao exportar anotações:', err);
       alert('Não foi possível gerar o arquivo de exportação das anotações.');

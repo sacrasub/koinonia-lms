@@ -407,10 +407,12 @@ export interface UserSessionLog {
   screen_resolution?: string;
   started_at: string;
   last_heartbeat_at: string;
+  ended_at?: string;
   duration_seconds: number;
   is_active: boolean;
   page_views_count: number;
   events_count: number;
+  sync_status?: 'local' | 'synced' | 'pending';
 }
 
 export type AnalyticsCategory = 
