@@ -13,6 +13,13 @@ import { getAllDisciplinas } from '@/services/disciplinasService';
 import { getAuthorizedUserInfo } from '@/lib/authConfig';
 import { getDateForLesson, getAulaEmAndamentoHoje } from '@/lib/semesterUtils';
 import { 
+  convertBRTToLocalTime, 
+  getBrasiliaTargetTimestamp, 
+  formatTimestampToLocalTime,
+  getLocalTimeZoneInfo,
+  TimeZoneInfo 
+} from '@/lib/timeUtils';
+import { 
   playRecordingAlarm, 
   playPresenceAlarm, 
   playTestBeep 
@@ -111,9 +118,15 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const [autoStopRemainingSeconds, setAutoStopRemainingSeconds] = useState<number | null>(null);
   const autoStopTargetTimeRef = useRef<number | null>(null);
 
+  // Fuso horário local detectado
+  const [tzInfo, setTzInfo] = useState<TimeZoneInfo>(() => getLocalTimeZoneInfo());
+  useEffect(() => {
+    setTzInfo(getLocalTimeZoneInfo());
+  }, []);
+
   // Estados de Programação de Início & Abertura Antecipada da Sala
   const [startScheduleMode, setStartScheduleMode] = useState<'immediate' | 'official_start' | 'custom_time'>('official_start');
-  const [startScheduleTime, setStartScheduleTime] = useState<string>('19:00');
+  const [startScheduleTime, setStartScheduleTime] = useState<string>(() => convertBRTToLocalTime('19:00'));
   const [autoOpenMeet, setAutoOpenMeet] = useState<boolean>(true);
   const [leadTimeMinutes, setLeadTimeMinutes] = useState<number>(5); // 5 minutos antes
   const [standbyRemainingSeconds, setStandbyRemainingSeconds] = useState<number | null>(null);
@@ -249,20 +262,21 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       if (disc) {
         const calculatedDate = getDateForLesson(aulaNum - 1, disc.day_of_week);
         setDataAula(calculatedDate);
+        if (disc.end_time) {
+          setAutoStopFixedTime(disc.end_time);
+        }
       }
     }
   }, [selectedDisciplinaId, aulaNum, disciplinas, recordingState]);
 
   const calculateAutoStopTargetTimestamp = (): number => {
     if (autoStopMode === 'fixed_time') {
-      const now = new Date();
-      const [hours, minutes] = autoStopFixedTime.split(':').map(Number);
-      const target = new Date();
-      target.setHours(hours || 22, minutes || 0, 0, 0);
-      if (target.getTime() <= now.getTime()) {
-        return now.getTime() + 120 * 60 * 1000;
+      const now = Date.now();
+      const targetTs = getBrasiliaTargetTimestamp(autoStopFixedTime || '22:00');
+      if (targetTs <= now) {
+        return now + 120 * 60 * 1000;
       }
-      return target.getTime();
+      return targetTs;
     } else {
       return Date.now() + autoStopDurationMinutes * 60 * 1000;
     }
@@ -270,12 +284,15 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 
   const getEstimatedEndTimeString = (): string => {
     if (autoStopMode === 'fixed_time') {
-      return autoStopFixedTime;
+      const brt = autoStopFixedTime || '22:00';
+      const local = convertBRTToLocalTime(brt);
+      if (local !== brt) {
+        return `${local} (${brt} BRT)`;
+      }
+      return `${brt} BRT`;
     }
     const end = new Date(Date.now() + autoStopDurationMinutes * 60 * 1000);
-    const h = String(end.getHours()).padStart(2, '0');
-    const m = String(end.getMinutes()).padStart(2, '0');
-    return `${h}:${m}`;
+    return end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
   const checkPendingRecoveries = async () => {
@@ -452,10 +469,14 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // INICIAR GRAVAÇÃO COM PERSISTÊNCIA CONTÍNUA (INDEXEDDB)
   // =========================================================================
   // =========================================================================
-  // AUXILIARES DE AGENDAMENTO E HORÁRIOS DO SENTINELA
+  // AUXILIARES DE AGENDAMENTO E HORÁRIOS DO SENTINELA (ADAPTADOS AO FUSO LOCAL)
   // =========================================================================
   const getOfficialStartTime = (): string => {
     return selectedDisciplina?.start_time || '19:00';
+  };
+
+  const getOfficialStartTimeLocal = (): string => {
+    return convertBRTToLocalTime(getOfficialStartTime());
   };
 
   const getEffectiveScheduledStartTime = (): string => {
@@ -465,11 +486,41 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     return startScheduleTime || '19:00';
   };
 
+  // Exibição clara para o usuário com horário local e referência BRT
+  const getEffectiveScheduledStartTimeDisplay = (): string => {
+    if (startScheduleMode === 'official_start') {
+      const brt = getOfficialStartTime();
+      const local = getOfficialStartTimeLocal();
+      if (local !== brt) {
+        return `${local} (Base Brasília: ${brt} BRT)`;
+      }
+      return `${brt} BRT`;
+    }
+    return `${startScheduleTime} (Seu Horário Local)`;
+  };
+
+  // Exibição compacta para a barra flutuante minimizada
+  const getShortScheduledStartTimeDisplay = (): string => {
+    if (startScheduleMode === 'official_start') {
+      const brt = getOfficialStartTime();
+      const local = getOfficialStartTimeLocal();
+      if (local !== brt) {
+        return `${local} (${brt} BRT)`;
+      }
+      return `${brt} BRT`;
+    }
+    return startScheduleTime;
+  };
+
   const calculateScheduleTargetTimestamp = (): number => {
     if (startScheduleMode === 'immediate') {
       return Date.now();
     }
-    const timeStr = getEffectiveScheduledStartTime();
+    if (startScheduleMode === 'official_start') {
+      return getBrasiliaTargetTimestamp(getOfficialStartTime());
+    }
+    // Modo personalizado: o usuário informa o horário local do seu relógio
+    const timeStr = startScheduleTime || '19:00';
     const [h, m] = timeStr.split(':').map(Number);
     const target = new Date();
     target.setHours(h || 19, m || 0, 0, 0);
@@ -477,12 +528,9 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   };
 
   const getMeetOpenTimeString = (): string => {
-    const timeStr = getEffectiveScheduledStartTime();
-    const [h, m] = timeStr.split(':').map(Number);
-    const target = new Date();
-    target.setHours(h || 19, m || 0, 0, 0);
-    const meetTime = new Date(target.getTime() - leadTimeMinutes * 60 * 1000);
-    return `${String(meetTime.getHours()).padStart(2, '0')}:${String(meetTime.getMinutes()).padStart(2, '0')}`;
+    const targetTs = calculateScheduleTargetTimestamp();
+    const meetTs = targetTs - leadTimeMinutes * 60 * 1000;
+    return formatTimestampToLocalTime(meetTs);
   };
 
   // Cancela o Sentinela Armado em Standby
@@ -1203,7 +1251,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-slate-300 truncate max-w-[200px] sm:max-w-[260px] font-medium">
-                Às {getEffectiveScheduledStartTime()} • Meet: {getMeetOpenTimeString()} • {selectedDisciplina?.name}
+                Às {getShortScheduledStartTimeDisplay()} • Meet: {getMeetOpenTimeString()} • {selectedDisciplina?.name}
               </p>
             </div>
           </div>
@@ -1817,7 +1865,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                         type="button"
                         onClick={() => {
                           setStartScheduleMode('official_start');
-                          setStartScheduleTime(getOfficialStartTime());
+                          setStartScheduleTime(getOfficialStartTimeLocal());
                         }}
                         className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
                           startScheduleMode === 'official_start'
@@ -1826,7 +1874,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                         }`}
                       >
                         <Calendar className="w-3.5 h-3.5" />
-                        <span>⏰ Início Oficial ({getOfficialStartTime()})</span>
+                        <span>⏰ Início Oficial ({getOfficialStartTimeLocal()}{!tzInfo.isBRT ? ` • ${getOfficialStartTime()} BRT` : ''})</span>
                       </button>
 
                       <button
@@ -1855,7 +1903,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                           className="p-1.5 bg-white border border-purple-300 rounded-xl text-xs font-bold text-purple-900 outline-none focus:ring-2 focus:ring-purple-500"
                         />
                         <span className="text-[11px] text-purple-700 font-medium">
-                          (Horário de Brasília)
+                          ({tzInfo.timeZone} • {tzInfo.gmtOffset})
                         </span>
                       </div>
                     )}
@@ -1975,7 +2023,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                       type="button"
                       onClick={() => {
                         setAutoStopMode('fixed_time');
-                        setAutoStopFixedTime('22:00');
+                        setAutoStopFixedTime(selectedDisciplina?.end_time || '22:00');
                       }}
                       className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                         autoStopMode === 'fixed_time'
@@ -1984,7 +2032,10 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                       }`}
                     >
                       <Clock className="w-3.5 h-3.5" />
-                      <span>Parar pontualmente às 22:00 (Término Oficial da Aula)</span>
+                      <span>
+                        Parar pontualmente às {convertBRTToLocalTime(selectedDisciplina?.end_time || autoStopFixedTime || '22:00')}
+                        {!tzInfo.isBRT ? ` (${selectedDisciplina?.end_time || autoStopFixedTime || '22:00'} BRT)` : ''} (Término Oficial da Aula)
+                      </span>
                     </button>
                   </div>
 
@@ -2164,7 +2215,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 
               <div className="space-y-1">
                 <p className="text-xs text-purple-200">
-                  Início programado da gravação: <strong className="text-white text-sm">{getEffectiveScheduledStartTime()}</strong>
+                  Início programado da gravação: <strong className="text-white text-sm">{getEffectiveScheduledStartTimeDisplay()}</strong>
                 </p>
                 <div className="text-4xl sm:text-6xl font-mono font-black text-purple-300 tracking-wider">
                   {formatDuration(standbyRemainingSeconds || 0)}
@@ -2683,7 +2734,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                       ? 'Aula Sendo Gravada'
                       : startScheduleMode === 'immediate'
                       ? 'Armar Piloto Automático & Gravar Imediatamente'
-                      : `🛡️ Armar Sentinela Programado (Inicia às ${getEffectiveScheduledStartTime()})`}
+                      : `🛡️ Armar Sentinela Programado (Inicia às ${getShortScheduledStartTimeDisplay()})`}
                   </span>
                 </button>
               ) : activeTabMode === 'screen' ? (

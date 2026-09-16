@@ -1000,6 +1000,12 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [lastPlayedAlarmKey, setLastPlayedAlarmKey] = useState<string>('');
   const [currentMinutesTick, setCurrentMinutesTick] = useState<number>(() => getCurrentBrasiliaMinutes());
 
+  // Fuso horário local detectado (como no restante do LMS)
+  const [tzInfo, setTzInfo] = useState<TimeZoneInfo>(() => getLocalTimeZoneInfo());
+  useEffect(() => {
+    setTzInfo(getLocalTimeZoneInfo());
+  }, []);
+
   // Sincronização em tempo real de gravações ativas (bloqueio entre monitores)
   const [activeRecordings, setActiveRecordings] = useState<ActiveRecordingSession[]>(() => getActiveRecordings());
   const [allGravacoes, setAllGravacoes] = useState(() => getAllGravacoes());
@@ -1110,6 +1116,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         continue;
       }
 
+      const startLocal = convertBRTToLocalTime(aula.startBRT);
+      const timeDisplay = tzInfo.isBRT ? `${aula.startBRT} BRT` : `${startLocal} (${aula.startBRT} BRT)`;
+
       // 0. Alarme Prévio de Preparação (15 min antes do início da aula)
       if (currentMinutes >= (startMin - 15) && currentMinutes < startMin) {
         if (!activeSession && !isAlreadyRecordedToday) {
@@ -1119,7 +1128,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
             key: `prep_${aula.id}_${startMin}`,
             aula,
             title: `⏰ Preparação da Aula: ${aula.title}`,
-            message: `A aula inicia em ${minLeft} min (às ${aula.startBRT} BRT). Acesse a sala do Google Meet com 15 min de antecedência para abrir a sessão e acolher a turma!`,
+            message: `A aula inicia em ${minLeft} min (às ${timeDisplay}). Acesse a sala do Google Meet com 15 min de antecedência para abrir a sessão e acolher a turma!`,
             actionLabel: '📹 Acessar Sala do Google Meet',
             badge: `Inicia em ${minLeft} min`,
           };
@@ -1135,9 +1144,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
             key: `rec_${aula.id}_${startMin}`,
             aula,
             title: `🚨 Início da Aula: ${aula.title}`,
-            message: `A aula iniciou às ${aula.startBRT} BRT. Acesse o Google Meet e inicie a gravação oficial da aula!`,
+            message: `A aula iniciou às ${timeDisplay}. Acesse o Google Meet e inicie a gravação oficial da aula!`,
             actionLabel: '🔴 Iniciar Gravação Pré-Configurada',
-            badge: 'Início da Transmissão',
+            badge: tzInfo.isBRT ? 'Início da Transmissão' : `Início da Transmissão (${startLocal})`,
           };
         }
       }
@@ -1172,7 +1181,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
 
     return null;
-  }, [currentMinutesTick, selectedTurma, activeRecordings, allGravacoes, aulasCanceladasList]);
+  }, [currentMinutesTick, selectedTurma, activeRecordings, allGravacoes, aulasCanceladasList, tzInfo]);
 
   // Cálculo da Aula Ativa em Andamento e Barra de Progresso/Contagem (com 15 min de antecedência)
   const activeLiveAulaMonitor = useMemo(() => {
@@ -1243,17 +1252,6 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       playAlarmTone(monitorAlarm.type);
     }
   }, [monitorAlarm, soundEnabled, lastPlayedAlarmKey]);
-
-  // Fuso horário local detectado (como no restante do LMS)
-  const [tzInfo, setTzInfo] = useState<TimeZoneInfo>({
-    timeZone: 'America/Sao_Paulo',
-    gmtOffset: 'GMT-3',
-    isBRT: true
-  });
-
-  useEffect(() => {
-    setTzInfo(getLocalTimeZoneInfo());
-  }, []);
 
   // Modal para trocar foto com upload ou link
   const [modalFotoMonitor, setModalFotoMonitor] = useState<string | null>(null);
@@ -1943,7 +1941,10 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                   {monitorAlarm.badge}
                 </span>
                 <span className="text-xs text-slate-300 font-mono">
-                  {monitorAlarm.aula.startBRT} – {monitorAlarm.aula.endBRT} BRT • Monitor(a): {monitorAlarm.aula.monitor}
+                  {tzInfo.isBRT 
+                    ? `${monitorAlarm.aula.startBRT} – ${monitorAlarm.aula.endBRT} BRT` 
+                    : `⏰ ${convertBRTToLocalTime(monitorAlarm.aula.startBRT)} – ${convertBRTToLocalTime(monitorAlarm.aula.endBRT)} (${monitorAlarm.aula.startBRT} – ${monitorAlarm.aula.endBRT} BRT)`
+                  } • Monitor(a): {monitorAlarm.aula.monitor}
                 </span>
               </div>
               <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
