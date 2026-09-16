@@ -2199,9 +2199,9 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
 
           {/* EXIBIÇÃO: MODO 'POR AULA' */}
           {gravacoesViewMode === 'aula' && (() => {
-            const activeGravacao = gravacoes.find((g) => g.aula_num === selectedGravacaoAulaNum);
+            const matchingGravacoes = gravacoes.filter((g) => g.aula_num === selectedGravacaoAulaNum);
 
-            if (!activeGravacao) {
+            if (matchingGravacoes.length === 0) {
               return (
                 <div className="p-10 sm:p-14 text-center bg-slate-50/90 rounded-2xl border border-gray-200 text-xs text-gray-500 space-y-4 animate-in fade-in duration-200">
                   <Video className="w-12 h-12 text-gray-300 mx-auto" />
@@ -2250,74 +2250,89 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
             }
 
             return (
-              <div className="p-6 sm:p-7 rounded-3xl border border-red-200 bg-red-50/20 hover:bg-white transition space-y-4 shadow-sm animate-in fade-in duration-200">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-red-100 pb-3">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-black uppercase tracking-wide bg-red-600 text-white px-3 py-1 rounded-lg">
-                      Aula {activeGravacao.aula_num || selectedGravacaoAulaNum}
-                    </span>
-                    <span className="text-xs text-red-950 font-bold bg-red-100 px-2.5 py-0.5 rounded-md">
-                      📅 {activeGravacao.data_aula || 'Semestre 2026.2'}
-                    </span>
-                    {activeGravacao.duration_formatted && (
-                      <span className="text-xs text-slate-700 font-mono bg-white border border-gray-200 px-2.5 py-0.5 rounded-md">
-                        ⏱ Duração: <strong>{activeGravacao.duration_formatted}</strong>
-                      </span>
-                    )}
+              <div className="space-y-4">
+                {matchingGravacoes.length > 1 && (
+                  <div className="bg-amber-50 border border-amber-200/80 p-3 rounded-2xl flex items-center gap-2 text-xs text-amber-900 font-bold">
+                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                    <span>Esta aula possui {matchingGravacoes.length} gravações disponíveis (Videoaula do Professor e Gravação da Aula ao Vivo).</span>
                   </div>
+                )}
 
-                  {canManageContent && (
-                    <div className="flex items-center gap-2 self-end sm:self-auto">
-                      <button
-                        onClick={() => handleOpenEditGravacao(activeGravacao)}
-                        className="px-3 py-1.5 bg-white hover:bg-blue-50 text-blue-800 border border-blue-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
-                        title="Editar Matéria, Aula ou Detalhes da Gravação"
-                      >
-                        <Edit3 className="w-3.5 h-3.5 text-blue-600" />
-                        <span>Editar Gravação</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (confirm(`Deseja remover a gravação da Aula ${activeGravacao.aula_num}?`)) {
-                            deleteGravacao(activeGravacao.id);
-                            setGravacoes((prev) => prev.filter((g) => g.id !== activeGravacao.id));
-                            showToast('Gravação removida com sucesso.');
-                            refreshData();
-                          }
-                        }}
-                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition cursor-pointer"
-                        title="Remover vídeo"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                <div className={`grid gap-4 ${matchingGravacoes.length > 1 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                  {matchingGravacoes.map((activeGravacao) => (
+                    <div key={activeGravacao.id} className="p-6 sm:p-7 rounded-3xl border border-red-200 bg-red-50/20 hover:bg-white transition space-y-4 shadow-sm animate-in fade-in duration-200 flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-red-100 pb-3">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-black uppercase tracking-wide bg-red-600 text-white px-3 py-1 rounded-lg">
+                              Aula {activeGravacao.aula_num || selectedGravacaoAulaNum}
+                            </span>
+                            <span className="text-xs text-red-950 font-bold bg-red-100 px-2.5 py-0.5 rounded-md">
+                              📅 {activeGravacao.data_aula || 'Semestre 2026.2'}
+                            </span>
+                            {activeGravacao.duration_formatted && (
+                              <span className="text-xs text-slate-700 font-mono bg-white border border-gray-200 px-2.5 py-0.5 rounded-md">
+                                ⏱ Duração: <strong>{activeGravacao.duration_formatted}</strong>
+                              </span>
+                            )}
+                          </div>
+
+                          {canManageContent && (
+                            <div className="flex items-center gap-2 self-end sm:self-auto">
+                              <button
+                                onClick={() => handleOpenEditGravacao(activeGravacao)}
+                                className="px-3 py-1.5 bg-white hover:bg-blue-50 text-blue-800 border border-blue-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
+                                title="Editar Matéria, Aula ou Detalhes da Gravação"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 text-blue-600" />
+                                <span>Editar Gravação</span>
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (confirm(`Deseja remover a gravação da Aula ${activeGravacao.aula_num}?`)) {
+                                    deleteGravacao(activeGravacao.id);
+                                    setGravacoes((prev) => prev.filter((g) => g.id !== activeGravacao.id));
+                                    showToast('Gravação removida com sucesso.');
+                                    refreshData();
+                                  }
+                                }}
+                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition cursor-pointer"
+                                title="Remover vídeo"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          <h4 className="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">
+                            {activeGravacao.title}
+                          </h4>
+                          <p className="text-xs text-slate-500">
+                            Gravado por: <strong className="text-slate-700">{activeGravacao.recorded_by_name}</strong> ({activeGravacao.recorded_by_role})
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-gray-100 mt-2">
+                        <button
+                          onClick={() => {
+                            setActiveVideoModal({
+                              isOpen: true,
+                              title: activeGravacao.title,
+                              videoUrl: activeGravacao.video_url,
+                              aulaNum: activeGravacao.aula_num,
+                            });
+                          }}
+                          className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                        >
+                          <Play className="w-4 h-4" />
+                          <span>Assistir Gravação em HD</span>
+                        </button>
+                      </div>
                     </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">
-                    {activeGravacao.title}
-                  </h4>
-                  <p className="text-xs text-slate-500">
-                    Gravado por: <strong className="text-slate-700">{activeGravacao.recorded_by_name}</strong> ({activeGravacao.recorded_by_role})
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-gray-100">
-                  <button
-                    onClick={() => {
-                      setActiveVideoModal({
-                        isOpen: true,
-                        title: activeGravacao.title,
-                        videoUrl: activeGravacao.video_url,
-                        aulaNum: activeGravacao.aula_num,
-                      });
-                    }}
-                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-                  >
-                    <Play className="w-4 h-4" />
-                    <span>Assistir Gravação em HD</span>
-                  </button>
+                  ))}
                 </div>
               </div>
             );

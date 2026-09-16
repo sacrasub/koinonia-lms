@@ -215,6 +215,23 @@ const INITIAL_SEEDS = [
     created_at: '04/09/2026',
   },
   {
+    id: 'rec-seed-aula3-afr',
+    disciplina_id: 'disc-9',
+    disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
+    aula_num: 3,
+    data_aula: '28/08/2026',
+    title: 'Aula 3 • História da Cultura Afro Brasileira e Indígena (Gravação HD)',
+    video_url: 'https://drive.google.com/file/d/13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa/view',
+    drive_file_id: '13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa',
+    recorded_by_name: 'Cristiano Sacramento',
+    recorded_by_role: 'monitor',
+    recorded_by_email: 'sacrasub@gmail.com',
+    duration_formatted: 'Aula Gravada',
+    duration_seconds: 0,
+    is_restricted_lms: true,
+    created_at: '28/08/2026',
+  },
+  {
     disciplina_id: 'disc-7',
     disciplina_name: 'Plantação e Revitalização de Igrejas II',
     aula_num: 2,
@@ -319,18 +336,29 @@ const INITIAL_SEEDS = [
 ];
 
 function readLocalDataFile(): any[] {
+  const map = new Map<string, any>();
+
+  // 1. Base oficial de seeds
+  INITIAL_SEEDS.forEach((item) => {
+    if (item && item.id) map.set(item.id, item);
+  });
+
+  // 2. Mescla com atualizações do arquivo data/gravacoes.json
   try {
     if (fs.existsSync(DATA_FILE_PATH)) {
       const raw = fs.readFileSync(DATA_FILE_PATH, 'utf-8');
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        parsed.forEach((item: any) => {
+          if (item && item.id) map.set(item.id, item);
+        });
       }
     }
   } catch (err) {
     console.warn('Aviso ao ler data/gravacoes.json:', err);
   }
-  return INITIAL_SEEDS;
+
+  return Array.from(map.values());
 }
 
 const DELETED_CLOUD_TITLE_KEY = 'lms_deleted_gravacoes_cloud_v1';

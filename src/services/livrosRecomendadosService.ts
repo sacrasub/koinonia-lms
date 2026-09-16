@@ -648,12 +648,23 @@ export function resolveLivroRecomendado(livro: LivroRecomendadoDisciplina): Livr
   return livro;
 }
 
-const STORAGE_KEY = 'lms_livros_recomendados_v6';
+const STORAGE_KEY = 'lms_livros_recomendados_v7';
+const LEGACY_STORAGE_KEYS = ['lms_livros_recomendados_v6', 'lms_livros_recomendados_v5', 'lms_livros_recomendados_v4'];
 
 export function getAllLivrosRecomendados(): LivroRecomendadoDisciplina[] {
   if (typeof window === 'undefined') return INITIAL_LIVROS_RECOMENDADOS.map(resolveLivroRecomendado);
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      for (const legKey of LEGACY_STORAGE_KEYS) {
+        const legRaw = localStorage.getItem(legKey);
+        if (legRaw) {
+          raw = legRaw;
+          break;
+        }
+      }
+    }
+
     if (!raw) {
       const seeded = INITIAL_LIVROS_RECOMENDADOS.map(resolveLivroRecomendado);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));

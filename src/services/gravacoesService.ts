@@ -239,6 +239,24 @@ export const INITIAL_GRAVACOES_SEED: GravacaoAulaItem[] = [
     created_at: '04/09/2026',
   },
   {
+    id: 'rec-seed-aula3-afr',
+    disciplina_id: 'disc-9',
+    disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
+    aula_num: 3,
+    data_aula: '28/08/2026',
+    title: 'Aula 3 • História da Cultura Afro Brasileira e Indígena (Gravação HD)',
+    video_url: 'https://drive.google.com/file/d/13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa/view',
+    drive_file_id: '13vp8jOcvdtH13O2iauyvsaTCw7DwiPIa',
+    folder_url: AFRO_BRASILEIRA_DRIVE_FOLDER_URL,
+    recorded_by_name: 'Cristiano Sacramento',
+    recorded_by_role: 'monitor',
+    recorded_by_email: 'sacrasub@gmail.com',
+    duration_formatted: 'Aula Gravada',
+    duration_seconds: 0,
+    is_restricted_lms: true,
+    created_at: '28/08/2026',
+  },
+  {
     id: 'rec-1788042267784-hf135',
     disciplina_id: 'disc-7',
     disciplina_name: 'Plantação e Revitalização de Igrejas II',
@@ -838,11 +856,12 @@ export async function fetchGravacoesFromCloud(force: boolean = false): Promise<G
         }
       }
 
-      // 3. Mescla dando PRIORIDADE à Nuvem sobre o cache local antigo do celular/navegador
+      // 3. Mescla dando PRIORIDADE à Nuvem, mas preservando integralmente INITIAL_GRAVACOES_SEED e cache local
       const localList = getAllGravacoes();
-      const sourceList = cloudList && cloudList.length > 0 ? cloudList : INITIAL_GRAVACOES_SEED;
-      
-      const mergedList = mergeGravacoesLists(sourceList, localList);
+      const baseWithSeeds = mergeGravacoesLists(localList, INITIAL_GRAVACOES_SEED);
+      const mergedList = cloudList && cloudList.length > 0 
+        ? mergeGravacoesLists(cloudList, baseWithSeeds) 
+        : baseWithSeeds;
 
       if (typeof window !== 'undefined') {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedList));

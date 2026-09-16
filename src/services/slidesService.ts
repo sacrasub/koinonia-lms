@@ -12,7 +12,8 @@ export interface SlideItem {
   created_at: string;
 }
 
-const STORAGE_KEY = 'lms_disciplinas_slides_v1';
+const STORAGE_KEY = 'lms_disciplinas_slides_v2';
+const LEGACY_STORAGE_KEY = 'lms_disciplinas_slides_v1';
 
 export const INITIAL_SLIDES: SlideItem[] = [
   {
@@ -75,8 +76,23 @@ export const INITIAL_SLIDES: SlideItem[] = [
 export function getAllSlides(): SlideItem[] {
   if (typeof window === 'undefined') return INITIAL_SLIDES;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
+      // Migração de versão v1 legada
+      const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (legacyRaw) {
+        try {
+          const legacyParsed = JSON.parse(legacyRaw);
+          if (Array.isArray(legacyParsed)) {
+            const existingIds = new Set(legacyParsed.map((s: any) => s.id));
+            const missing = INITIAL_SLIDES.filter((s) => !existingIds.has(s.id));
+            const merged = [...legacyParsed, ...missing];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+            return merged;
+          }
+        } catch (e) {}
+      }
+
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_SLIDES));
       return INITIAL_SLIDES;
     }
