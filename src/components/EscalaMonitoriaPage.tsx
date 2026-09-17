@@ -2480,19 +2480,40 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                   onClick={() => {
                     if (typeof window !== 'undefined') {
                       const allDiscs = getAllDisciplinas();
+                      let targetDiscId: string | undefined;
+                      let targetDiscName: string | undefined;
+                      let targetMeetUrl: string | undefined;
+
+                      if (monitorAlarm?.aula) {
+                        const aNorm = monitorAlarm.aula.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+                        const found = allDiscs.find((d) => {
+                          const dNorm = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                          return dNorm.includes(aNorm) || aNorm.includes(dNorm);
+                        });
+                        if (found) {
+                          targetDiscId = found.id;
+                          targetDiscName = found.name;
+                          targetMeetUrl = found.google_meet_url;
+                        }
+                      }
+
                       const aulaInfo = getAulaEmAndamentoHoje(allDiscs);
-                      if (aulaInfo?.googleMeetUrl) {
-                        window.open(aulaInfo.googleMeetUrl, '_blank');
+                      const finalId = targetDiscId || aulaInfo?.disciplinaId;
+                      const finalName = targetDiscName || aulaInfo?.disciplinaName;
+                      const finalMeet = targetMeetUrl || monitorAlarm?.aula?.meetUrl || aulaInfo?.googleMeetUrl;
+
+                      if (finalMeet) {
+                        window.open(finalMeet, '_blank');
                       }
                       window.dispatchEvent(new CustomEvent('lms_open_recorder', {
                         detail: {
-                          disciplinaId: aulaInfo?.disciplinaId,
-                          disciplina: aulaInfo?.disciplinaName,
-                          aulaNumero: String(aulaInfo?.aulaNum || 4),
+                          disciplinaId: finalId,
+                          disciplina: finalName,
+                          aulaNumero: String(targetAulaNum || aulaInfo?.aulaNum || 6),
                           initialMode: 'autopilot',
                         }
                       }));
-                      showToast(`🚀 Sala "${aulaInfo?.disciplinaName || 'Hoje'}" aberta no Meet! Gravador preparado no Piloto Automático.`);
+                      showToast(`🚀 Sala "${finalName || 'Hoje'}" aberta no Meet! Gravador preparado no Piloto Automático.`);
                     }
                   }}
                   className="w-full py-2.5 px-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-purple-400/40 cursor-pointer shadow-purple-950/30"
@@ -2506,12 +2527,30 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                   onClick={() => {
                     if (typeof window !== 'undefined') {
                       const allDiscs = getAllDisciplinas();
+                      let targetDiscId: string | undefined;
+                      let targetDiscName: string | undefined;
+
+                      if (monitorAlarm?.aula) {
+                        const aNorm = monitorAlarm.aula.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+                        const found = allDiscs.find((d) => {
+                          const dNorm = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+                          return dNorm.includes(aNorm) || aNorm.includes(dNorm);
+                        });
+                        if (found) {
+                          targetDiscId = found.id;
+                          targetDiscName = found.name;
+                        }
+                      }
+
                       const aulaInfo = getAulaEmAndamentoHoje(allDiscs);
+                      const finalId = targetDiscId || aulaInfo?.disciplinaId;
+                      const finalName = targetDiscName || aulaInfo?.disciplinaName;
+
                       window.dispatchEvent(new CustomEvent('lms_open_recorder', {
                         detail: {
-                          disciplinaId: aulaInfo?.disciplinaId,
-                          disciplina: aulaInfo?.disciplinaName,
-                          aulaNumero: String(aulaInfo?.aulaNum || 4),
+                          disciplinaId: finalId,
+                          disciplina: finalName,
+                          aulaNumero: String(targetAulaNum || aulaInfo?.aulaNum || 6),
                           initialMode: 'screen',
                         }
                       }));

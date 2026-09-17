@@ -215,27 +215,36 @@ export function getAulaEmAndamentoHoje(allDisciplinas: Disciplina[]): AulaEmAnda
   let chosenDisc = discsToday[0];
   let isHappeningNow = false;
 
-  for (let i = 0; i < discsToday.length; i++) {
-    const d = discsToday[i];
+  // 1. Verifica se alguma aula está estritamente em andamento agora (entre startMin e endMin)
+  const ongoing = discsToday.find((d) => {
     const [startH, startM] = (d.start_time || '19:00').split(':').map(Number);
     const [endH, endM] = (d.end_time || '20:25').split(':').map(Number);
     const startMin = startH * 60 + startM;
     const endMin = endH * 60 + endM;
+    return currentMinutes >= startMin && currentMinutes < endMin;
+  });
 
-    // Se estiver no intervalo da aula (com 20 min de antecedência e até 10 min após o encerramento)
-    if (currentMinutes >= (startMin - 20) && currentMinutes <= (endMin + 10)) {
-      chosenDisc = d;
-      isHappeningNow = true;
-      break;
-    }
-  }
+  if (ongoing) {
+    chosenDisc = ongoing;
+    isHappeningNow = true;
+  } else {
+    // 2. Se nenhuma aula está em andamento estrito, busca a próxima aula cujo horário de término ainda não passou
+    // (abrange a janela de transição e pré-aula de 20 minutos antes do início)
+    const nextUpcoming = discsToday.find((d) => {
+      const [endH, endM] = (d.end_time || '20:25').split(':').map(Number);
+      const endMin = endH * 60 + endM;
+      return currentMinutes < endMin;
+    });
 
-  // Se não estiver exatamente no horário de nenhuma, mas for depois do fim da primeira aula (ex: 20:30 em diante)
-  if (!isHappeningNow && discsToday.length > 1) {
-    const [firstEndH, firstEndM] = (discsToday[0].end_time || '20:25').split(':').map(Number);
-    const firstEndMin = firstEndH * 60 + firstEndM;
-    if (currentMinutes >= firstEndMin) {
-      chosenDisc = discsToday[1];
+    if (nextUpcoming) {
+      chosenDisc = nextUpcoming;
+      const [startH, startM] = (nextUpcoming.start_time || '19:00').split(':').map(Number);
+      const startMin = startH * 60 + startM;
+      isHappeningNow = currentMinutes >= (startMin - 20);
+    } else {
+      // 3. Se todas as aulas do dia já terminaram, seleciona a última aula ministrada hoje
+      chosenDisc = discsToday[discsToday.length - 1];
+      isHappeningNow = false;
     }
   }
 
