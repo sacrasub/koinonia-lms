@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabaseClient';
 import { UserRole } from '@/types';
 
-export type TipoProvidencia = 'cancelamento' | 'aula_dupla' | 'substituicao';
+export type TipoProvidencia = 'cancelamento' | 'aula_dupla' | 'substituicao' | 'aula_encerrada';
 
 export interface AulaCanceladaItem {
   id: string; // Ex: "canc_disc-1_28-08-2026"
@@ -126,6 +126,15 @@ export function buildCanceladaKey(disciplinaIdOrName: string, dataAula: string):
 }
 
 /**
+ * Normaliza chave de aula encerrada
+ */
+export function buildEncerradaKey(disciplinaIdOrName: string, dataAula: string): string {
+  const safeName = cleanDiscName(disciplinaIdOrName) || normalizeDiscName(disciplinaIdOrName);
+  const safeDate = normalizeDateStr(dataAula).replace(/[^0-9]/g, '-');
+  return `enc_${safeName}_${safeDate}`;
+}
+
+/**
  * Consulta se uma aula está cancelada para determinada data com tolerância total a formatos
  */
 export function getAulaCanceladaStatus(disciplinaId: string, disciplinaName: string, dataAula: string): AulaCanceladaItem | null {
@@ -140,11 +149,11 @@ export function getAulaCanceladaStatus(disciplinaId: string, disciplinaName: str
   const keyByName = buildCanceladaKey(disciplinaName, dataAula);
 
   const directItem = map[keyById] || map[keyByName];
-  if (directItem && directItem.ativo) return hydrateCanceladaItem(directItem);
+  if (directItem && directItem.ativo && directItem.tipo_providencia !== 'aula_encerrada') return hydrateCanceladaItem(directItem);
 
   // Busca genérica tolerante a variações de data e nomes
   const found = Object.values(map).find((c) => {
-    if (!c.ativo) return false;
+    if (!c.ativo || c.tipo_providencia === 'aula_encerrada') return false;
     const cDate = normalizeDateStr(c.data_aula);
     const cCleanName = cleanDiscName(c.disciplina_name);
     const cCleanId = cleanDiscName(c.disciplina_id);
@@ -184,7 +193,7 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
   const cancelStatus =
     getAulaCanceladaStatus(disciplinaId, disciplinaName, localDate) ||
     getAulaCanceladaStatus(disciplinaId, disciplinaName, brtDate);
-  if (cancelStatus) return hydrateCanceladaItem(cancelStatus);
+  if (cancelStatus && cancelStatus.tipo_providencia !== 'aula_encerrada') return hydrateCanceladaItem(cancelStatus);
 
   // 2. Checagem ampla em toda a lista ativa de aulas canceladas
   const map = getLocalCanceladas();
@@ -193,7 +202,7 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
 
   if (targetClean) {
     const canceladoAmplo = Object.values(map).find((c) => {
-      if (!c.ativo) return false;
+      if (!c.ativo || c.tipo_providencia === 'aula_encerrada') return false;
       const cClean = cleanDiscName(c.disciplina_name) || cleanDiscName(c.disciplina_id);
       const isSameDisc = cClean === targetClean || cClean.includes(targetClean) || targetClean.includes(cClean);
       if (!isSameDisc) return false;
@@ -249,6 +258,48 @@ export function isAulaCanceladaHoje(disciplinaId: string, disciplinaName: string
   }
 
   return null;
+}
+
+/**
+ * Consulta se uma aula foi marcada como oficialmente encerrada/concluída hoje
+ */
+export function isAulaEncerradaHoje(disciplinaId: string, disciplinaName: string): AulaCanceladaItem | null {
+  const now = new Date();
+  const localDate = now.toLocaleDateString('pt-BR');
+  let brtDate = localDate;
+  try {
+    brtDate = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo' }).format(now);
+  } catch (e) {}
+
+  const normLocalDate = normalizeDateStr(localDate);
+  const normBrtDate = normalizeDateStr(brtDate);
+  const map = getLocalCanceladas();
+
+  const keyById = buildEncerradaKey(disciplinaId, localDate);
+  const keyByName = buildEncerradaKey(disciplinaName, localDate);
+  const direct = map[keyById] || map[keyByName];
+  if (direct && direct.ativo && direct.tipo_providencia === 'aula_encerrada') {
+    return hydrateCanceladaItem(direct);
+  }
+
+  const targetClean = cleanDiscName(disciplinaName) || cleanDiscName(disciplinaId);
+  const targetNorm = normalizeDiscName(disciplinaName);
+
+  const found = Object.values(map).find((c) => {
+    if (!c.ativo || c.tipo_providencia !== 'aula_encerrada') return false;
+    const cNormDate = normalizeDateStr(c.data_aula);
+    const matchDate = cNormDate === normLocalDate || cNormDate === normBrtDate;
+    if (!matchDate) return false;
+
+    const cClean = cleanDiscName(c.disciplina_name) || cleanDiscName(c.disciplina_id);
+    const cNorm = normalizeDiscName(c.disciplina_name);
+    const matchDisc =
+      (targetClean && cClean && (targetClean === cClean || targetClean.includes(cClean) || cClean.includes(targetClean))) ||
+      (targetNorm && cNorm && targetNorm === cNorm);
+    return matchDisc;
+  });
+
+  return found ? hydrateCanceladaItem(found) : null;
 }
 
 /**
@@ -376,6 +427,112 @@ export async function reativarAula(disciplinaId: string, dataAula: string): Prom
       type: 'broadcast',
       event: 'aula_cancelada_sync',
       payload: { key, reativada: true }
+    });
+  } catch (e) {}
+}
+
+/**
+ * Marca uma aula como oficialmente encerrada/concluída
+ */
+export async function encerrarAula(params: {
+  disciplinaId: string;
+  disciplinaName: string;
+  aulaNum?: number;
+  dataAula?: string;
+  autorNome: string;
+  autorEmail: string;
+  autorRole: UserRole;
+  motivo?: string;
+}): Promise<AulaCanceladaItem> {
+  const now = new Date();
+  const dataAula = params.dataAula || now.toLocaleDateString('pt-BR');
+  const key = buildEncerradaKey(params.disciplinaId, dataAula);
+
+  const motivoFormatado = formatProvidenciaMotivo({
+    tipoProvidencia: 'aula_encerrada',
+    motivoTexto: params.motivo || `Aula oficialmente encerrada pela equipe de monitoria/docência às ${now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}.`,
+  });
+
+  const item: AulaCanceladaItem = {
+    id: key,
+    disciplina_id: params.disciplinaId,
+    disciplina_name: params.disciplinaName,
+    aula_num: params.aulaNum,
+    data_aula: dataAula,
+    motivo: motivoFormatado,
+    autor_nome: params.autorNome,
+    autor_email: params.autorEmail,
+    autor_role: params.autorRole,
+    criado_em: now.toISOString(),
+    ativo: true,
+    tipo_providencia: 'aula_encerrada',
+  };
+
+  const map = getLocalCanceladas();
+  map[key] = item;
+  saveLocalCanceladas(map);
+
+  // Sincroniza com Supabase se disponível
+  try {
+    await supabase.from('lms_aulas_canceladas').upsert({
+      id: key,
+      disciplina_id: params.disciplinaId,
+      disciplina_name: params.disciplinaName,
+      aula_num: params.aulaNum,
+      data_aula: dataAula,
+      motivo: motivoFormatado,
+      autor_nome: params.autorNome,
+      autor_email: params.autorEmail,
+      autor_role: params.autorRole,
+      ativo: true,
+      updated_at: now.toISOString(),
+    }, { onConflict: 'id' });
+
+    // Dispara broadcast Realtime para todos os outros clientes conectados (0 egress)
+    const channel = supabase.channel('lms_aulas_realtime');
+    await channel.send({
+      type: 'broadcast',
+      event: 'aula_cancelada_sync',
+      payload: { key, disciplinaName: params.disciplinaName, dataAula, encerrada: true }
+    });
+  } catch (e) {}
+
+  return item;
+}
+
+/**
+ * Reabre uma aula que foi marcada como encerrada por engano
+ */
+export async function reabrirAulaEncerrada(disciplinaId: string, dataAula?: string): Promise<void> {
+  const data = dataAula || new Date().toLocaleDateString('pt-BR');
+  const key = buildEncerradaKey(disciplinaId, data);
+  const map = getLocalCanceladas();
+
+  if (map[key]) {
+    map[key].ativo = false;
+  }
+  Object.values(map).forEach((item) => {
+    if (
+      item.tipo_providencia === 'aula_encerrada' &&
+      (item.disciplina_id === disciplinaId || normalizeDiscName(item.disciplina_name) === normalizeDiscName(disciplinaId)) &&
+      normalizeDateStr(item.data_aula) === normalizeDateStr(data)
+    ) {
+      item.ativo = false;
+    }
+  });
+  saveLocalCanceladas(map);
+
+  try {
+    await supabase.from('lms_aulas_canceladas').update({
+      ativo: false,
+      updated_at: new Date().toISOString(),
+    }).eq('id', key);
+
+    const channel = supabase.channel('lms_aulas_realtime');
+    await channel.send({
+      type: 'broadcast',
+      event: 'aula_cancelada_sync',
+      payload: { key, reaberta: true }
     });
   } catch (e) {}
 }

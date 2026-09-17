@@ -8,7 +8,7 @@ import {
   HelpCircle, CheckSquare, PhoneCall, Mail, Award, Bell, Camera, Share2,
   Smartphone, Eye, Download, Image as ImageIcon, Upload, Loader2, GraduationCap,
   Volume2, VolumeX, Play, Archive, FolderOpen, Lock, Edit3, Link as LinkIcon,
-  Ban, AlertTriangle, Bot, Zap, FileText, ClipboardList
+  Ban, AlertTriangle, Bot, Zap, FileText, ClipboardList, RotateCcw
 } from 'lucide-react';
 import { ModalProvidenciaAula } from '@/components/ModalProvidenciaAula';
 import { UserRole, AvisoLeituraPreAula } from '@/types';
@@ -19,6 +19,9 @@ import {
   reativarAula, 
   getAulaCanceladaStatus, 
   isAulaCanceladaHoje,
+  isAulaEncerradaHoje,
+  encerrarAula,
+  reabrirAulaEncerrada,
   getAllAulasCanceladas,
   fetchAulasCanceladasFromCloud, 
   AulaCanceladaItem,
@@ -1047,6 +1050,57 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     return () => clearInterval(interval);
   }, []);
 
+  // Encerramento Oficial da Aula pelo Monitor ou Docente
+  const handleEncerrarAula = async (aula: { id: string; title: string }) => {
+    const confirmEnd = window.confirm(
+      `Confirmar que a aula de "${aula.title}" já terminou?\n\nAo confirmar, os alarmes de encerramento serão desativados e a aula será registrada como concluída hoje.`
+    );
+    if (!confirmEnd) return;
+
+    try {
+      const normalizedUserEmail = (userEmail || '').toLowerCase().trim();
+      const currentUserAuth = INITIAL_AUTHORIZED_USERS[normalizedUserEmail];
+      const autorNome = currentUserAuth?.name || (currentRole === 'monitor' ? 'Monitor(a)' : 'Docente/Admin');
+
+      await encerrarAula({
+        disciplinaId: aula.id,
+        disciplinaName: aula.title,
+        autorNome,
+        autorEmail: userEmail || '',
+        autorRole: currentRole,
+      });
+
+      // Libera qualquer sessão de gravação ativa na nuvem que tenha ficado vinculada a esta aula
+      await forceClearActiveRecordingForAula(aula.id);
+      setActiveRecordings(getActiveRecordings());
+
+      // Atualiza lista local
+      setAulasCanceladasList(getAllAulasCanceladas());
+
+      showToast(`🏁 Aula de "${aula.title}" oficialmente concluída e encerrada!`);
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Ocorreu um erro ao registrar o encerramento da aula.');
+    }
+  };
+
+  // Reabertura de Aula caso tenha sido encerrada por engano
+  const handleReabrirAula = async (aula: { id: string; title: string }) => {
+    const confirmReopen = window.confirm(
+      `Deseja reabrir a aula de "${aula.title}"?\n\nOs alarmes e o status de transmissão ao vivo serão restaurados.`
+    );
+    if (!confirmReopen) return;
+
+    try {
+      await reabrirAulaEncerrada(aula.id);
+      setAulasCanceladasList(getAllAulasCanceladas());
+      showToast(`🔄 Aula de "${aula.title}" reaberta com sucesso.`);
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Ocorreu um erro ao reabrir a aula.');
+    }
+  };
+
   // Toca o alarme sonoro com volume ajustado e alta nitidez harmônica
   const playAlarmTone = (type: 'recording' | 'presence' | 'closing') => {
     if (!soundEnabled) return;
@@ -1113,6 +1167,12 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         getAulaCanceladaStatus(aula.id, aula.title, todayFormatted) ||
         getAulaCanceladaStatus(aula.id, aula.title, getDateForDayOfWeek(currentDayName));
       if (canceladaHoje) {
+        continue;
+      }
+
+      // Verifica se a aula já foi oficialmente encerrada/concluída hoje pelo monitor ou docência
+      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title);
+      if (encerradaHoje) {
         continue;
       }
 
@@ -1215,6 +1275,8 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         continue;
       }
 
+      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title);
+
       const [startH, startM] = aula.startBRT.split(':').map(Number);
       const [endH, endM] = aula.endBRT.split(':').map(Number);
       const startMin = startH * 60 + startM;
@@ -1238,6 +1300,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           minutesToStart,
           progressPercent: pct,
           is50PercentReached,
+          encerradaHoje,
         };
       }
     }
@@ -2006,6 +2069,17 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               </button>
             )}
 
+            {/* Botão de Encerramento Direto no Alarme de Monitoria */}
+            <button
+              type="button"
+              onClick={() => handleEncerrarAula(monitorAlarm.aula)}
+              className="w-full sm:w-auto px-4 py-3 bg-slate-900/90 hover:bg-black active:scale-95 text-emerald-400 hover:text-emerald-300 font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center justify-center gap-2 border border-emerald-500/40 cursor-pointer"
+              title="Informar que a aula terminou e desativar este alarme"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>🏁 Aula Já Terminou</span>
+            </button>
+
             <div className="flex items-center gap-1 bg-black/30 p-1 rounded-2xl border border-white/10">
               <button
                 type="button"
@@ -2127,134 +2201,187 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       {/* CARD DE AULA ATIVA COM BARRA DE CONTAGEM / PROGRESSO DE DURAÇÃO (MONITOR) */}
       {/* ========================================================================= */}
       {activeLiveAulaMonitor && !isAulaCanceladaHoje(activeLiveAulaMonitor.aula.id, activeLiveAulaMonitor.aula.title, userEmail) && (
-        <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-xl space-y-4 animate-in fade-in duration-300">
-          {/* Topo do Card de Aula Ativa */}
-          <div>
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse shadow-xs" />
-              <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
-                Aula Ativa: <span className="text-blue-700">{activeLiveAulaMonitor.aula.title}</span>
-              </h3>
-              {activeLiveAulaMonitor.isPreLive && (
-                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-xs animate-pulse">
-                  ⏰ Sala Aberta (Inicia em {activeLiveAulaMonitor.minutesToStart} min)
-                </span>
-              )}
-            </div>
-
-            <div className="text-xs text-gray-600 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span>Professor(a): <strong>{activeLiveAulaMonitor.aula.professor || 'Corpo Docente'}</strong></span>
-              <span>•</span>
-              <span>Monitor(a): <strong>{activeLiveAulaMonitor.aula.monitor}</strong></span>
-              <span>•</span>
-              <span className="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
-                ⏰ Seu Horário: {convertBRTToLocalTime(activeLiveAulaMonitor.aula.startBRT)} – {convertBRTToLocalTime(activeLiveAulaMonitor.aula.endBRT)}
-              </span>
-              <span className="text-gray-500">
-                (Base Brasília: {activeLiveAulaMonitor.aula.startBRT} – {activeLiveAulaMonitor.aula.endBRT} BRT)
-              </span>
-            </div>
-          </div>
-
-          {/* Barra de Progresso do Tempo da Aula */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-bold text-gray-700 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-600" /> {activeLiveAulaMonitor.isPreLive ? 'Sala aberta com 15 min de antecedência' : 'Progresso de Duração da Aula em Andamento'}
-              </span>
-              <span className={`font-black px-2.5 py-0.5 rounded-md ${
-                activeLiveAulaMonitor.is50PercentReached
-                  ? 'bg-emerald-100 text-emerald-900 border border-emerald-200'
-                  : activeLiveAulaMonitor.isPreLive
-                  ? 'bg-blue-100 text-blue-900 border border-blue-200'
-                  : 'bg-amber-100 text-amber-900 border border-amber-200'
-              }`}>
-                {activeLiveAulaMonitor.isPreLive
-                  ? `Início oficial em ${activeLiveAulaMonitor.minutesToStart} min`
-                  : `${activeLiveAulaMonitor.progressPercent}% da aula percorrida`}
-              </span>
-            </div>
-
-            <div className="w-full bg-gray-200 rounded-full h-3.5 overflow-hidden p-0.5 border border-gray-300/60 shadow-inner relative">
-              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-400/80 z-10" title="Gatilho de 50% de Presença" />
-              <div
-                className={`h-2.5 rounded-full transition-all duration-700 ${
-                  activeLiveAulaMonitor.is50PercentReached 
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600' 
-                    : activeLiveAulaMonitor.isPreLive
-                    ? 'bg-gradient-to-r from-blue-400 to-indigo-500'
-                    : 'bg-gradient-to-r from-amber-400 to-blue-500'
-                }`}
-                style={{ width: `${activeLiveAulaMonitor.isPreLive ? 100 : activeLiveAulaMonitor.progressPercent}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Ações da Transmissão do Google Meet e Presença */}
-          <div className="space-y-3 pt-1">
-            {activeLiveAulaMonitor.aula.meetUrl && (
-              <div className="p-3.5 bg-red-50/90 border border-red-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 text-xs text-red-950 font-medium">
-                  <span className="p-2.5 bg-red-600 text-white rounded-xl shrink-0 shadow-xs">
-                    <Video className="w-4 h-4" />
-                  </span>
-                  <div>
-                    <strong className="block text-red-900 font-extrabold text-xs sm:text-sm">
-                      {activeLiveAulaMonitor.isPreLive 
-                        ? 'Transmissão Oficial do Google Meet Liberada (15 min de antecedência)' 
-                        : 'Transmissão Oficial do Google Meet em Andamento'}
-                    </strong>
-                    <span className="text-[11px] text-red-800">
-                      {activeLiveAulaMonitor.isPreLive
-                        ? 'Acesse a sala com antecedência para abrir a sessão, testar microfone/vídeo e acolher os alunos.'
-                        : 'Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.'}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 flex-wrap">
-                  <a
-                    href={activeLiveAulaMonitor.aula.meetUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 shrink-0 active:scale-95"
-                  >
-                    <Video className="w-4 h-4" />
-                    <span>Entrar na Aula ao Vivo (Google Meet)</span>
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {activeLiveAulaMonitor.is50PercentReached ? (
-              <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-emerald-950">
-                <div className="flex items-center gap-2.5 text-xs">
-                  <span className="p-2 bg-emerald-600 text-white rounded-xl shrink-0 shadow-xs">
+        activeLiveAulaMonitor.encerradaHoje ? (
+          <div className="bg-gradient-to-br from-emerald-950/90 via-slate-900 to-teal-950 text-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-500/60 shadow-xl space-y-4 animate-in fade-in duration-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500 text-white shadow-xs">
                     <CheckCircle2 className="w-4 h-4" />
+                    <span>AULA CONCLUÍDA E ENCERRADA</span>
                   </span>
-                  <div>
-                    <strong className="block text-emerald-900 font-extrabold">Chamada Oficial Liberada (50% atingido)!</strong>
-                    <span className="text-[11px] text-emerald-800">Dispare agora o link da lista de presença no chat do Google Meet para os alunos.</span>
-                  </div>
+                  <span className="text-xs text-emerald-300 font-mono">
+                    {activeLiveAulaMonitor.aula.dayOfWeek} • {activeLiveAulaMonitor.aula.startBRT} – {activeLiveAulaMonitor.aula.endBRT} BRT
+                  </span>
                 </div>
+                <h3 className="font-black text-lg sm:text-xl text-white">
+                  {activeLiveAulaMonitor.aula.title}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+                  A aula de hoje foi oficialmente informada como <strong>terminada</strong> por <strong>{activeLiveAulaMonitor.encerradaHoje.autor_nome}</strong>. Todos os alarmes de encerramento foram desativados.
+                </p>
+              </div>
 
+              <div className="flex items-center gap-2 shrink-0">
                 <button
-                  onClick={() => handleCopyPresenca(activeLiveAulaMonitor.aula.presencaUrl, activeLiveAulaMonitor.aula.id, activeLiveAulaMonitor.aula.title)}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer"
+                  type="button"
+                  onClick={() => handleReabrirAula(activeLiveAulaMonitor.aula)}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white font-bold text-xs rounded-xl border border-white/20 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                  title="Reabrir a aula se foi encerrada por engano"
                 >
-                  <Copy className="w-4 h-4" />
-                  <span>📋 Copiar Chamada p/ Chat</span>
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Reabrir Aula se Necessário</span>
                 </button>
               </div>
-            ) : (
-              <div className="p-3.5 bg-amber-50/80 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span className="text-[11px] leading-relaxed">
-                  <strong>Atenção:</strong> O link para registrar a presença no Google Forms será liberado automaticamente assim que atingir 50% do tempo da aula corrente.
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-xl space-y-4 animate-in fade-in duration-300">
+            {/* Topo do Card de Aula Ativa */}
+            <div>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse shadow-xs" />
+                <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
+                  Aula Ativa: <span className="text-blue-700">{activeLiveAulaMonitor.aula.title}</span>
+                </h3>
+                {activeLiveAulaMonitor.isPreLive && (
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-xs animate-pulse">
+                    ⏰ Sala Aberta (Inicia em {activeLiveAulaMonitor.minutesToStart} min)
+                  </span>
+                )}
+              </div>
+
+              <div className="text-xs text-gray-600 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span>Professor(a): <strong>{activeLiveAulaMonitor.aula.professor || 'Corpo Docente'}</strong></span>
+                <span>•</span>
+                <span>Monitor(a): <strong>{activeLiveAulaMonitor.aula.monitor}</strong></span>
+                <span>•</span>
+                <span className="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
+                  ⏰ Seu Horário: {convertBRTToLocalTime(activeLiveAulaMonitor.aula.startBRT)} – {convertBRTToLocalTime(activeLiveAulaMonitor.aula.endBRT)}
+                </span>
+                <span className="text-gray-500">
+                  (Base Brasília: {activeLiveAulaMonitor.aula.startBRT} – {activeLiveAulaMonitor.aula.endBRT} BRT)
                 </span>
               </div>
-            )}
+            </div>
+
+            {/* Barra de Progresso do Tempo da Aula */}
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold text-gray-700 flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-blue-600" /> {activeLiveAulaMonitor.isPreLive ? 'Sala aberta com 15 min de antecedência' : 'Progresso de Duração da Aula em Andamento'}
+                </span>
+                <span className={`font-black px-2.5 py-0.5 rounded-md ${
+                  activeLiveAulaMonitor.is50PercentReached
+                    ? 'bg-emerald-100 text-emerald-900 border border-emerald-200'
+                    : activeLiveAulaMonitor.isPreLive
+                    ? 'bg-blue-100 text-blue-900 border border-blue-200'
+                    : 'bg-amber-100 text-amber-900 border border-amber-200'
+                }`}>
+                  {activeLiveAulaMonitor.isPreLive
+                    ? `Início oficial em ${activeLiveAulaMonitor.minutesToStart} min`
+                    : `${activeLiveAulaMonitor.progressPercent}% da aula percorrida`}
+                </span>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-3.5 overflow-hidden p-0.5 border border-gray-300/60 shadow-inner relative">
+                <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-400/80 z-10" title="Gatilho de 50% de Presença" />
+                <div
+                  className={`h-2.5 rounded-full transition-all duration-700 ${
+                    activeLiveAulaMonitor.is50PercentReached 
+                      ? 'bg-gradient-to-r from-emerald-500 to-teal-600' 
+                      : activeLiveAulaMonitor.isPreLive
+                      ? 'bg-gradient-to-r from-blue-400 to-indigo-500'
+                      : 'bg-gradient-to-r from-amber-400 to-blue-500'
+                  }`}
+                  style={{ width: `${activeLiveAulaMonitor.isPreLive ? 100 : activeLiveAulaMonitor.progressPercent}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Ações da Transmissão do Google Meet e Presença */}
+            <div className="space-y-3 pt-1">
+              {activeLiveAulaMonitor.aula.meetUrl && (
+                <div className="p-3.5 bg-red-50/90 border border-red-200 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 text-xs text-red-950 font-medium">
+                    <span className="p-2.5 bg-red-600 text-white rounded-xl shrink-0 shadow-xs">
+                      <Video className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <strong className="block text-red-900 font-extrabold text-xs sm:text-sm">
+                        {activeLiveAulaMonitor.isPreLive 
+                          ? 'Transmissão Oficial do Google Meet Liberada (15 min de antecedência)' 
+                          : 'Transmissão Oficial do Google Meet em Andamento'}
+                      </strong>
+                      <span className="text-[11px] text-red-800">
+                        {activeLiveAulaMonitor.isPreLive
+                          ? 'Acesse a sala com antecedência para abrir a sessão, testar microfone/vídeo e acolher os alunos.'
+                          : 'Clique ao lado para ingressar na sala da aula ao vivo com o docente e a turma.'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 flex-wrap">
+                    <a
+                      href={activeLiveAulaMonitor.aula.meetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 shrink-0 active:scale-95"
+                    >
+                      <Video className="w-4 h-4" />
+                      <span>Entrar na Aula ao Vivo (Google Meet)</span>
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {activeLiveAulaMonitor.is50PercentReached ? (
+                <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-emerald-950">
+                  <div className="flex items-center gap-2.5 text-xs">
+                    <span className="p-2 bg-emerald-600 text-white rounded-xl shrink-0 shadow-xs">
+                      <CheckCircle2 className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <strong className="block text-emerald-900 font-extrabold">Chamada Oficial Liberada (50% atingido)!</strong>
+                      <span className="text-[11px] text-emerald-800">Dispare agora o link da lista de presença no chat do Google Meet para os alunos.</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleCopyPresenca(activeLiveAulaMonitor.aula.presencaUrl, activeLiveAulaMonitor.aula.id, activeLiveAulaMonitor.aula.title)}
+                    className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0 cursor-pointer"
+                  >
+                    <Copy className="w-4 h-4" />
+                    <span>📋 Copiar Chamada p/ Chat</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="p-3.5 bg-amber-50/80 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span className="text-[11px] leading-relaxed">
+                    <strong>Atenção:</strong> O link para registrar a presença no Google Forms será liberado automaticamente assim que atingir 50% do tempo da aula corrente.
+                  </span>
+                </div>
+              )}
+
+              {/* Botão para Informar Término da Aula */}
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100">
+                <span className="text-xs text-gray-500 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  A aula encerrou ou terminou mais cedo?
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleEncerrarAula(activeLiveAulaMonitor.aula)}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-slate-900 hover:bg-black text-emerald-400 hover:text-emerald-300 font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-2 border border-slate-700 cursor-pointer active:scale-95"
+                  title="Informar que a aula já terminou e silenciar alarmes"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>🏁 Informar que a Aula Já Terminou</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )
       )}
 
       {/* Header Principal com Estilo Moderno e Divisão de Turmas */}
