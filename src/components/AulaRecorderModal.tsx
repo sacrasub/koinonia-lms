@@ -234,9 +234,12 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
       const all = getAllDisciplinas();
       const aulaEmAndamento = getAulaEmAndamentoHoje(all);
 
+      let targetDiscId = selectedDisciplinaId;
       if (defaultDisciplinaId) {
+        targetDiscId = defaultDisciplinaId;
         setSelectedDisciplinaId(defaultDisciplinaId);
       } else if (aulaEmAndamento) {
+        targetDiscId = aulaEmAndamento.disciplinaId;
         setSelectedDisciplinaId(aulaEmAndamento.disciplinaId);
       }
 
@@ -247,13 +250,23 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
         setDataAula(aulaEmAndamento.dataAula);
       }
 
+      const foundDisc = all.find((d) => d.id === targetDiscId);
+      if (foundDisc) {
+        if (foundDisc.end_time) {
+          setAutoStopFixedTime(foundDisc.end_time);
+        }
+        if (foundDisc.start_time) {
+          setStartScheduleTime(convertBRTToLocalTime(foundDisc.start_time));
+        }
+      }
+
       const mode = initialMode || 'autopilot';
       setActiveTabMode(mode);
       if (mode === 'autopilot') {
         setIsAutoPilot(true);
       }
     }
-  }, [isOpen, defaultDisciplinaId, defaultAulaNum, initialMode]);
+  }, [isOpen, defaultDisciplinaId, defaultAulaNum, initialMode, selectedDisciplinaId]);
 
   // Atualiza a data sugerida da aula ao mudar a disciplina ou número
   useEffect(() => {
@@ -264,6 +277,9 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
         setDataAula(calculatedDate);
         if (disc.end_time) {
           setAutoStopFixedTime(disc.end_time);
+        }
+        if (disc.start_time) {
+          setStartScheduleTime(convertBRTToLocalTime(disc.start_time));
         }
       }
     }
@@ -555,7 +571,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
     if (streamRef.current) {
       await initiateRecordingSessionWithStream(streamRef.current, true);
     } else {
-      await startRecording(true);
+      await startRecording(true, true);
     }
   };
 
@@ -747,7 +763,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   const armAutopilotSentinela = async () => {
     // Se o modo for imediato, inicia direto
     if (startScheduleMode === 'immediate') {
-      await startRecording(true);
+      await startRecording(true, true);
       return;
     }
 
@@ -756,7 +772,8 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
 
     // Se o horário programado já passou hoje (ex: são 19:10 e o início era 19:00), inicia imediatamente
     if (targetTs <= now) {
-      await startRecording(true);
+      console.log('⏰ Horário de início da aula já foi atingido. Disparando gravação de imediato...');
+      await startRecording(true, true);
       return;
     }
 
@@ -874,9 +891,9 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
   // =========================================================================
   // INICIAR GRAVAÇÃO PADRÃO OU ENCAMINHAR PARA SENTINELA
   // =========================================================================
-  const startRecording = async (isAutopilotRun = false) => {
+  const startRecording = async (isAutopilotRun = false, bypassSchedule = false) => {
     // Se for Piloto Automático e estiver configurado para horário programado
-    if ((isAutopilotRun || activeTabMode === 'autopilot' || isAutoPilot) && startScheduleMode !== 'immediate') {
+    if (!bypassSchedule && (isAutopilotRun || activeTabMode === 'autopilot' || isAutoPilot) && startScheduleMode !== 'immediate') {
       await armAutopilotSentinela();
       return;
     }
@@ -1843,7 +1860,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                         <span>Passo 1: Programar Início da Gravação (Auto-Start)</span>
                       </span>
                       <span className="text-[10px] font-mono font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-full">
-                        Início: {getEffectiveScheduledStartTime()}
+                        Início: {getShortScheduledStartTimeDisplay()}
                       </span>
                     </div>
 
@@ -2247,7 +2264,7 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                     <span>Auto-Stop Programado:</span>
                   </div>
                   <p className="text-[11px] text-slate-300 leading-snug">
-                    Encerrará às {autoStopMode === 'fixed_time' ? autoStopFixedTime : getEstimatedEndTimeString()} com upload automático para o Drive.
+                    Encerrará às {getEstimatedEndTimeString()} com upload automático para o Drive.
                   </p>
                 </div>
               </div>
@@ -2732,8 +2749,8 @@ export const AulaRecorderModal: React.FC<AulaRecorderModalProps> = ({
                   <span>
                     {lockedByOther
                       ? 'Aula Sendo Gravada'
-                      : startScheduleMode === 'immediate'
-                      ? 'Armar Piloto Automático & Gravar Imediatamente'
+                      : startScheduleMode === 'immediate' || (startScheduleMode === 'official_start' && calculateScheduleTargetTimestamp() <= Date.now())
+                      ? '⚡ Aula em Andamento • Gravar Imediatamente (Piloto Automático)'
                       : `🛡️ Armar Sentinela Programado (Inicia às ${getShortScheduledStartTimeDisplay()})`}
                   </span>
                 </button>
