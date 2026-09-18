@@ -2509,7 +2509,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                         detail: {
                           disciplinaId: finalId,
                           disciplina: finalName,
-                          aulaNumero: String(targetAulaNum || aulaInfo?.aulaNum || 6),
+                          aulaNumero: String(aulaInfo?.aulaNum || 6),
                           initialMode: 'autopilot',
                         }
                       }));
@@ -2550,7 +2550,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                         detail: {
                           disciplinaId: finalId,
                           disciplina: finalName,
-                          aulaNumero: String(targetAulaNum || aulaInfo?.aulaNum || 6),
+                          aulaNumero: String(aulaInfo?.aulaNum || 6),
                           initialMode: 'screen',
                         }
                       }));
