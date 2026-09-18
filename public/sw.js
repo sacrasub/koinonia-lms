@@ -1,7 +1,6 @@
 // Koinonia LMS Service Worker (PWA & Web Push)
-const CACHE_NAME = 'koinonia-lms-v1.0.2';
+const CACHE_NAME = 'koinonia-lms-v1.0.3';
 const STATIC_ASSETS = [
-  '/',
   '/manifest.json',
   '/favicon.ico',
   '/logo-koinonia-lms.png',
@@ -31,21 +30,35 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Network-first com fallback para cache em páginas estáticas, evitando cachear chamadas da API do Supabase
+// Network-first para assets estáticos, ignorando chamadas de API e chunks dinâmicos do Next.js
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Ignorar chamadas Supabase ou Google APIs para não interferir nas políticas anti-egress
+  // Ignorar chamadas Supabase, Google APIs ou chunks/assets internos do Next.js
   if (
     url.hostname.includes('supabase.co') ||
     url.hostname.includes('googleapis.com') ||
-    url.pathname.startsWith('/api/')
+    url.pathname.startsWith('/api/') ||
+    url.pathname.startsWith('/_next/')
   ) {
     return;
   }
 
   // Apenas métodos GET
   if (event.request.method !== 'GET') return;
+
+  // Para navegação entre páginas (HTML), sempre buscar da rede para garantir os hashes de chunk mais recentes
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return new Response(
+          '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Koinonia LMS - Modo Offline</title><style>body{font-family:sans-serif;background:#090d16;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:20px;text-align:center;}h1{font-size:20px;}p{font-size:14px;color:#94a3b8;}</style></head><body><div><h1>Você está offline</h1><p>Conecte-se à internet e recarregue para acessar a plataforma.</p><button onclick="window.location.reload()" style="margin-top:16px;padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">Tentar Novamente</button></div></body></html>',
+          { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+        );
+      })
+    );
+    return;
+  }
 
   event.respondWith(
     fetch(event.request)
@@ -61,9 +74,6 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         return caches.match(event.request).then((cachedResponse) => {
           if (cachedResponse) return cachedResponse;
-          if (event.request.mode === 'navigate') {
-            return caches.match('/');
-          }
           return new Response('Offline', { status: 503, statusText: 'Offline' });
         });
       })
