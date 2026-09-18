@@ -21,7 +21,8 @@ import {
   AnalyticsCategory 
 } from '@/types';
 import { 
-  getAnalyticsSummary, 
+  getAnalyticsSummary,
+  getLocalAnalyticsSummary,
   exportSessionsCSV, 
   exportEventsCSV, 
   downloadFile,
@@ -34,8 +35,18 @@ import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import { TeleProximidadeDashboard } from '@/components/TeleProximidadeDashboard';
 
 export const AdminAnalyticsView: React.FC = () => {
-  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const local = getLocalAnalyticsSummary();
+        if (local && (local.total_sessions > 0 || local.total_events > 0)) {
+          return local;
+        }
+      } catch (_) {}
+    }
+    return null;
+  });
+  const [loading, setLoading] = useState<boolean>(() => !summary);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'sessions' | 'modules' | 'insights' | 'events' | 'tele-proximidade'>('sessions');
 
@@ -104,11 +115,10 @@ export const AdminAnalyticsView: React.FC = () => {
   const loadData = async (isManual = false) => {
     if (isManual) setRefreshing(true);
     try {
-      if (isManual) {
-        await uploadLocalSessionsToCloud();
-      }
       const data = await getAnalyticsSummary(isManual);
-      setSummary(data);
+      if (data) {
+        setSummary(data);
+      }
     } catch (err) {
       console.error('Erro ao carregar telemetria:', err);
     } finally {
@@ -166,10 +176,11 @@ export const AdminAnalyticsView: React.FC = () => {
       } catch (e) {}
     }
 
-    // Unifica sessões acumuladas deste dispositivo na nuvem e puxa o resumo global consolidado
+    // Carregamento não-bloqueante: local-first imediato + sync de background
+    loadData(false);
     uploadLocalSessionsToCloud()
-      .then(() => loadData(true))
-      .catch(() => loadData(false));
+      .then(() => loadData(false))
+      .catch(() => {});
 
     // Revalidação inteligente: atualiza apenas se a aba voltar ao foco e após 1 minuto de inatividade
     let lastFocusRefresh = Date.now();

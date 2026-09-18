@@ -53,10 +53,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
 
-  const [usersList, setUsersList] = useState<Record<string, UserRoleMapping>>({});
+  const [usersList, setUsersList] = useState<Record<string, UserRoleMapping>>(() => {
+    return getAuthorizedUsersList();
+  });
 
-  const [pendingRequests, setPendingRequests] = useState<AccessRequest[]>([]);
-  const [disciplinasList, setDisciplinasList] = useState<Disciplina[]>([]);
+  const [pendingRequests, setPendingRequests] = useState<AccessRequest[]>(() => {
+    const users = getAuthorizedUsersList();
+    return getPendingRequests().filter((p) => p.email && !users[p.email.toLowerCase().trim()]);
+  });
+  const [disciplinasList, setDisciplinasList] = useState<Disciplina[]>(() => {
+    return getAllDisciplinas();
+  });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
 
@@ -140,12 +147,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   };
 
   const reloadData = async () => {
-    await syncRbacFromCloud(true);
+    // 1. Atualização síncrona local imediata (0ms)
     const users = getAuthorizedUsersList();
     setUsersList(users);
     const pending = getPendingRequests().filter((p) => p.email && !users[p.email.toLowerCase().trim()]);
     setPendingRequests(pending);
     setDisciplinasList(getAllDisciplinas());
+
+    // 2. Sincronização em nuvem não-bloqueante
+    try {
+      await syncRbacFromCloud(true);
+      const cloudUsers = getAuthorizedUsersList();
+      setUsersList(cloudUsers);
+      const cloudPending = getPendingRequests().filter((p) => p.email && !cloudUsers[p.email.toLowerCase().trim()]);
+      setPendingRequests(cloudPending);
+      setDisciplinasList(getAllDisciplinas());
+    } catch (_) {}
   };
 
   useEffect(() => {

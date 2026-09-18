@@ -60,10 +60,44 @@ const WhatsNewModal = dynamic(() => import('@/components/WhatsNewModal').then(m 
 
 export default function Home() {
   const router = useRouter();
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
-  const [userAvatar, setUserAvatar] = useState<string>('');
-  const [currentRole, setCurrentRole] = useState<UserRole>('aluno');
+  const [userEmail, setUserEmail] = useState<string>(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('lms_active_user_email') || '';
+    return '';
+  });
+  const [userName, setUserName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('lms_active_user_email');
+      if (email) {
+        const info = getAuthorizedUserInfo(email);
+        if (info.user?.name) return info.user.name;
+      }
+    }
+    return '';
+  });
+  const [userAvatar, setUserAvatar] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('lms_active_user_email');
+      if (email) {
+        const info = getAuthorizedUserInfo(email);
+        if (info.user?.avatarUrl) return info.user.avatarUrl;
+      }
+    }
+    return '';
+  });
+  const [currentRole, setCurrentRole] = useState<UserRole>(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('lms_active_user_email');
+      const storedRole = localStorage.getItem('lms_active_user_role') as UserRole;
+      if (email) {
+        const info = getAuthorizedUserInfo(email);
+        if (info.user) {
+          if (storedRole && info.user.roles.includes(storedRole)) return storedRole;
+          return info.user.defaultRole;
+        }
+      }
+    }
+    return 'aluno';
+  });
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -82,8 +116,28 @@ export default function Home() {
     }
     return 'aluno-disciplinas';
   });
-  const [loadingSession, setLoadingSession] = useState<boolean>(true);
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [loadingSession, setLoadingSession] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('lms_active_user_email');
+      if (email) {
+        const info = getAuthorizedUserInfo(email);
+        if (info.isAuthorized && info.user) {
+          return false; // Local-First: abre imediatamente em 0ms
+        }
+      }
+    }
+    return true;
+  });
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('lms_active_user_email');
+      if (email) {
+        const info = getAuthorizedUserInfo(email);
+        return !!(info.isAuthorized && info.user);
+      }
+    }
+    return false;
+  });
 
   // Pull-to-refresh em dispositivos móveis / iOS PWA
   const [pulling, setPulling] = useState<boolean>(false);
@@ -176,14 +230,19 @@ export default function Home() {
           if (initialRole === 'professor') setActiveTab('prof-disciplinas');
           else if (initialRole === 'monitor') setActiveTab('monitor-escala');
           else setActiveTab('aluno-disciplinas');
+          setLoadingSession(false); // Liberação imediata sem esperar rede
         }
       }
 
       // Sincroniza RBAC global da nuvem em background
       syncRbacFromCloud().catch(() => {});
 
-      // 2. Verifica se o Supabase tem uma sessão ativa real
-      const { data: { session } } = await supabase.auth.getSession();
+      // 2. Verifica se o Supabase tem uma sessão ativa com timeout de segurança (máx 2.5s)
+      const sessionPromise = supabase.auth.getSession();
+      const timeoutPromise = new Promise<{ data: { session: any } }>((resolve) => 
+        setTimeout(() => resolve({ data: { session: null } }), 2500)
+      );
+      const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
 
       // 3. Fallback: Se não houver session mas houver hash com token no redirect do Google OAuth
       let fallbackEmail: string | null = null;

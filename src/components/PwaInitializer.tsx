@@ -44,13 +44,13 @@ export const PwaInitializer = () => {
         // Throttle de 15 segundos para evitar loops de reload se estiver sem internet
         if (!lastRetry || now - Number(lastRetry) > 15000) {
           sessionStorage.setItem(retryKey, String(now));
-          if ('caches' in window) {
+          if (typeof window !== 'undefined' && typeof caches !== 'undefined') {
             caches.keys().then((names) => {
               return Promise.all(names.map((name) => caches.delete(name)));
             }).finally(() => {
               window.location.reload();
             });
-          } else {
+          } else if (typeof window !== 'undefined') {
             window.location.reload();
           }
         }

@@ -633,62 +633,104 @@ async function flushEventsToCloud() {
 }
 
 /**
- * Mescla e salva o histórico local acumulado.
+ * Helper para impedir que chamadas de rede lentas travem a UI (Zero Latency)
+ */
+function withTimeout<T>(promise: PromiseLike<T>, timeoutMs: number, fallbackValue: T): Promise<T> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (!settled) {
+        settled = true;
+        resolve(fallbackValue);
+      }
+    }, timeoutMs);
+
+    promise.then(
+      (val) => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(timer);
+          resolve(val);
+        }
+      },
+      () => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(timer);
+          resolve(fallbackValue);
+        }
+      }
+    );
+  });
+}
+
+/**
+ * Mescla e salva o histórico local acumulado na nuvem em lote ultrarrápido (Zero Latência).
  */
 export async function uploadLocalSessionsToCloud(): Promise<UserSessionLog[]> {
   const local = getLocalSessions();
   if (local.length === 0) return [];
 
-  // 1. Tenta atualizar na tabela nativa lms_user_sessions
-  const toUpsert = local.slice(0, 50);
-  for (const s of toUpsert) {
-    Promise.resolve(
-      supabase.from('lms_user_sessions').upsert({
-        session_token: s.id,
-        user_email: s.user_email,
-        user_name: s.user_name,
-        user_role: s.user_role,
-        avatar_url: s.avatar_url,
-        device_type: s.device_type,
-        browser: s.browser,
-        os: s.os,
-        screen_resolution: s.screen_resolution,
-        started_at: s.started_at,
-        last_heartbeat_at: s.last_heartbeat_at,
-        duration_seconds: s.duration_seconds,
-        is_active: s.is_active,
-        page_views_count: s.page_views_count,
-        events_count: s.events_count,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'session_token' })
-    ).catch(() => {});
-  }
+  // 1. Batch upsert atômico de uma vez só na tabela nativa lms_user_sessions (50x mais rápido)
+  const toUpsert = local.slice(0, 30).map((s) => ({
+    session_token: s.id,
+    user_email: s.user_email,
+    user_name: s.user_name,
+    user_role: s.user_role,
+    avatar_url: s.avatar_url,
+    device_type: s.device_type,
+    browser: s.browser,
+    os: s.os,
+    screen_resolution: s.screen_resolution,
+    started_at: s.started_at,
+    last_heartbeat_at: s.last_heartbeat_at,
+    duration_seconds: s.duration_seconds,
+    is_active: s.is_active,
+    page_views_count: s.page_views_count,
+    events_count: s.events_count,
+    updated_at: new Date().toISOString(),
+  }));
 
-  // 2. Fallback de alta fidelidade: salva em materiais (system_telemetry_sessions_v1)
   try {
-    const { data: existingData } = await supabase
-      .from('materiais')
-      .select('file_url')
-      .eq('id', '8c036e91-001a-463d-ad46-d313dc2b019e')
-      .maybeSingle();
+    withTimeout(
+      Promise.resolve(
+        supabase.from('lms_user_sessions').upsert(toUpsert, { onConflict: 'session_token' })
+      ),
+      3000,
+      null
+    ).catch(() => {});
+  } catch (_) {}
 
-    let cloudSessions: UserSessionLog[] = [];
-    if (existingData?.file_url) {
+  // 2. Throttle para tabela de fallback em materiais (respeitando Blindagem de Egress - regra 6)
+  const LAST_MAT_SYNC_KEY = 'lms_telemetry_last_mat_sync';
+  const lastMatSync = typeof window !== 'undefined' ? Number(localStorage.getItem(LAST_MAT_SYNC_KEY) || 0) : 0;
+  if (Date.now() - lastMatSync > 15 * 60 * 1000) {
+    if (typeof window !== 'undefined') localStorage.setItem(LAST_MAT_SYNC_KEY, String(Date.now()));
+    (async () => {
       try {
-        cloudSessions = JSON.parse(existingData.file_url);
-      } catch (_) {}
-    }
+        const { data: existingData } = await supabase
+          .from('materiais')
+          .select('file_url')
+          .eq('id', '8c036e91-001a-463d-ad46-d313dc2b019e')
+          .maybeSingle();
 
-    const merged = mergeSessionLists(cloudSessions, local).slice(0, 300);
+        let cloudSessions: UserSessionLog[] = [];
+        if (existingData?.file_url) {
+          try {
+            cloudSessions = JSON.parse(existingData.file_url);
+          } catch (_) {}
+        }
 
-    await supabase.from('materiais').upsert({
-      id: '8c036e91-001a-463d-ad46-d313dc2b019e',
-      title: 'system_telemetry_sessions_v1',
-      file_url: JSON.stringify(merged),
-      is_native_upload: false,
-    });
-  } catch (e) {
-    console.warn('[Telemetry] Erro ao sincronizar sessões em materiais:', e);
+        const merged = mergeSessionLists(cloudSessions, local).slice(0, 300);
+
+        await supabase.from('materiais').upsert({
+          id: '8c036e91-001a-463d-ad46-d313dc2b019e',
+          title: 'system_telemetry_sessions_v1',
+          file_url: JSON.stringify(merged),
+          is_native_upload: false,
+        });
+      } catch (e) {}
+    })().catch(() => {});
   }
 
   return local;
@@ -713,182 +755,133 @@ export async function fetchAllSessions(forceRefresh: boolean = false): Promise<U
   }
 
   let remoteSessions: UserSessionLog[] = [];
+  const now = Date.now();
 
-  // 2. Consulta primária na tabela nativa lms_user_sessions (se existir no schema)
+  // Executa consultas remotas em paralelo com limite de tempo estrito (3.5 segundos)
   try {
-    const { data, error } = await supabase
-      .from('lms_user_sessions')
-      .select('session_token, user_email, user_name, user_role, avatar_url, device_type, browser, os, screen_resolution, started_at, last_heartbeat_at, duration_seconds, is_active, page_views_count, events_count')
-      .order('started_at', { ascending: false })
-      .limit(150);
+    const [sessionsRes, syncRes] = await withTimeout(
+      Promise.allSettled([
+        supabase
+          .from('lms_user_sessions')
+          .select('session_token, user_email, user_name, user_role, avatar_url, device_type, browser, os, screen_resolution, started_at, last_heartbeat_at, duration_seconds, is_active, page_views_count, events_count')
+          .order('started_at', { ascending: false })
+          .limit(150),
+        supabase
+          .from('student_sync')
+          .select('email, completed_lessons, student_notes, portal_profile, checklist_tasks, updated_at')
+          .limit(100),
+      ]),
+      3500,
+      [] as any[]
+    );
 
-    if (!error && data && data.length > 0) {
-      remoteSessions = data.map((d) => ({
-        id: d.session_token,
-        user_email: d.user_email,
-        user_name: d.user_name,
-        user_role: d.user_role as UserRole,
-        avatar_url: d.avatar_url,
-        device_type: d.device_type as DeviceType,
-        browser: d.browser,
-        os: d.os,
-        screen_resolution: d.screen_resolution,
-        started_at: d.started_at,
-        last_heartbeat_at: d.last_heartbeat_at,
-        duration_seconds: d.duration_seconds || 0,
-        is_active: d.is_active,
-        page_views_count: d.page_views_count || 1,
-        events_count: d.events_count || 0,
-      }));
+    if (sessionsRes && sessionsRes.status === 'fulfilled' && sessionsRes.value?.data) {
+      const data = sessionsRes.value.data;
+      if (Array.isArray(data) && data.length > 0) {
+        remoteSessions = data.map((d: any) => ({
+          id: d.session_token,
+          user_email: d.user_email,
+          user_name: d.user_name,
+          user_role: d.user_role as UserRole,
+          avatar_url: d.avatar_url,
+          device_type: d.device_type as DeviceType,
+          browser: d.browser,
+          os: d.os,
+          screen_resolution: d.screen_resolution,
+          started_at: d.started_at,
+          last_heartbeat_at: d.last_heartbeat_at,
+          duration_seconds: d.duration_seconds || 0,
+          is_active: d.is_active,
+          page_views_count: d.page_views_count || 1,
+          events_count: d.events_count || 0,
+        }));
+      }
     }
-  } catch (err) {
-    // Silencioso, continua para os fallbacks resilientes
-  }
 
-  // 3. Fallback de alta fidelidade: Lê do backup unificado em materiais (system_telemetry_sessions_v1)
-  try {
-    const { data: matData } = await supabase
-      .from('materiais')
-      .select('file_url')
-      .eq('id', '8c036e91-001a-463d-ad46-d313dc2b019e')
-      .maybeSingle();
+    if (syncRes && syncRes.status === 'fulfilled' && syncRes.value?.data) {
+      const dedicatedSyncRows = syncRes.value.data;
+      const studentSessions: UserSessionLog[] = [];
 
-    if (matData?.file_url) {
-      const parsed = JSON.parse(matData.file_url);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        remoteSessions = mergeSessionLists(remoteSessions, parsed);
+      if (Array.isArray(dedicatedSyncRows) && dedicatedSyncRows.length > 0) {
+        dedicatedSyncRows.forEach((row: any) => {
+          try {
+            const rawEmail = (row.email || '').toLowerCase().trim();
+            const profile = row.portal_profile || {};
+            const name = profile.name || rawEmail.split('@')[0];
+            const avatar = profile.avatarUrl || '';
+            const lastActivityIso = row.updated_at || new Date().toISOString();
+            const lastActivityTime = new Date(lastActivityIso).getTime();
+            const isRecentlyOnline = (now - lastActivityTime) < 15 * 60 * 1000;
+
+            const rawNotes = row.student_notes || {};
+            const notesCount = Object.keys(rawNotes.cornellNotes || {}).length + Object.keys(rawNotes.textNotes || rawNotes || {}).length;
+            const lessonsCount = Object.keys(row.completed_lessons || {}).length;
+            const tasksCount = Array.isArray(row.checklist_tasks) ? row.checklist_tasks.length : 0;
+            const totalActivities = notesCount + lessonsCount + tasksCount;
+
+            let sessionDurationSeconds: number;
+            if (isRecentlyOnline) {
+              sessionDurationSeconds = Math.max(60, Math.min(15 * 60, Math.floor((now - lastActivityTime) / 1000)));
+            } else {
+              sessionDurationSeconds = Math.min(40 * 60, Math.max(12 * 60, (15 * 60) + (totalActivities * 120)));
+            }
+
+            const pageViewsCount = Math.max(2, Math.min(25, 3 + totalActivities));
+            const eventsCount = Math.max(1, totalActivities || 3);
+            const sessionStartIso = isRecentlyOnline
+              ? lastActivityIso
+              : new Date(lastActivityTime - sessionDurationSeconds * 1000).toISOString();
+
+            studentSessions.push({
+              id: `sess_sync_${rawEmail.replace(/[^a-z0-9]/g, '_')}_${lastActivityTime}`,
+              user_email: rawEmail,
+              user_name: name,
+              user_role: 'aluno',
+              avatar_url: avatar,
+              device_type: 'desktop',
+              browser: 'Google Chrome',
+              os: 'Windows 10/11',
+              screen_resolution: '1280x720',
+              started_at: sessionStartIso,
+              last_heartbeat_at: lastActivityIso,
+              duration_seconds: sessionDurationSeconds,
+              is_active: isRecentlyOnline,
+              page_views_count: pageViewsCount,
+              events_count: eventsCount,
+            });
+          } catch (_) {}
+        });
+
+        if (studentSessions.length > 0) {
+          remoteSessions = mergeSessionLists(remoteSessions, studentSessions);
+        }
+      }
+    }
+
+    // Apenas busca em materiais se remoteSessions estiver totalmente vazio (fallback resiliente)
+    if (remoteSessions.length === 0) {
+      const { data: matData } = await withTimeout(
+        supabase
+          .from('materiais')
+          .select('file_url')
+          .eq('id', '8c036e91-001a-463d-ad46-d313dc2b019e')
+          .maybeSingle(),
+        2500,
+        { data: null } as any
+      );
+
+      if (matData?.file_url) {
+        try {
+          const parsed = JSON.parse(matData.file_url);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            remoteSessions = mergeSessionLists(remoteSessions, parsed);
+          }
+        } catch (_) {}
       }
     }
   } catch (err) {}
 
-  // 4. Integração em tempo real com os acessos e perfis sincronizados de alunos (student_sync)
-  try {
-    const { data: dedicatedSyncRows, error: syncErr } = await supabase
-      .from('student_sync')
-      .select('email, completed_lessons, student_notes, portal_profile, checklist_tasks, updated_at');
-
-    const studentSessions: UserSessionLog[] = [];
-    const now = Date.now();
-
-    if (!syncErr && dedicatedSyncRows && dedicatedSyncRows.length > 0) {
-      dedicatedSyncRows.forEach((row) => {
-        try {
-          const rawEmail = (row.email || '').toLowerCase().trim();
-          const profile = row.portal_profile || {};
-          const name = profile.name || rawEmail.split('@')[0];
-          const avatar = profile.avatarUrl || '';
-          const lastActivityIso = row.updated_at || new Date().toISOString();
-          const lastActivityTime = new Date(lastActivityIso).getTime();
-          const isRecentlyOnline = (now - lastActivityTime) < 15 * 60 * 1000;
-
-          const rawNotes = row.student_notes || {};
-          const notesCount = Object.keys(rawNotes.cornellNotes || {}).length + Object.keys(rawNotes.textNotes || rawNotes || {}).length;
-          const lessonsCount = Object.keys(row.completed_lessons || {}).length;
-          const tasksCount = Array.isArray(row.checklist_tasks) ? row.checklist_tasks.length : 0;
-          const totalActivities = notesCount + lessonsCount + tasksCount;
-
-          let sessionDurationSeconds: number;
-          if (isRecentlyOnline) {
-            sessionDurationSeconds = Math.max(60, Math.min(15 * 60, Math.floor((now - lastActivityTime) / 1000)));
-          } else {
-            sessionDurationSeconds = Math.min(40 * 60, Math.max(12 * 60, (15 * 60) + (totalActivities * 120)));
-          }
-
-          const pageViewsCount = Math.max(2, Math.min(25, 3 + totalActivities));
-          const eventsCount = Math.max(1, totalActivities || 3);
-          const sessionStartIso = isRecentlyOnline
-            ? lastActivityIso
-            : new Date(lastActivityTime - sessionDurationSeconds * 1000).toISOString();
-
-          studentSessions.push({
-            id: `sess_sync_${rawEmail.replace(/[^a-z0-9]/g, '_')}_${lastActivityTime}`,
-            user_email: rawEmail,
-            user_name: name,
-            user_role: 'aluno',
-            avatar_url: avatar,
-            device_type: 'desktop',
-            browser: 'Google Chrome',
-            os: 'Windows',
-            started_at: sessionStartIso,
-            last_heartbeat_at: lastActivityIso,
-            ended_at: isRecentlyOnline ? undefined : lastActivityIso,
-            duration_seconds: sessionDurationSeconds,
-            page_views_count: pageViewsCount,
-            events_count: eventsCount,
-            is_active: isRecentlyOnline,
-            sync_status: 'synced',
-          });
-        } catch (e) {}
-      });
-    } else {
-      const { data: studentRows } = await supabase
-        .from('materiais')
-        .select('title, file_url, created_at')
-        .ilike('title', 'student_sync_%');
-
-      if (studentRows && studentRows.length > 0) {
-
-      studentRows.forEach((row) => {
-        try {
-          const parsed = JSON.parse(row.file_url);
-          const rawEmail = row.title.replace('student_sync_', '').toLowerCase().trim();
-          const profile = parsed.portalProfile || {};
-          const name = profile.name || rawEmail.split('@')[0];
-          const avatar = profile.avatarUrl || '';
-          const lastActivityIso = parsed.updatedAt || row.created_at;
-          const lastActivityTime = new Date(lastActivityIso).getTime();
-          const isRecentlyOnline = (now - lastActivityTime) < 15 * 60 * 1000;
-
-          // Métricas de atividades reais realizadas pelo aluno no portal
-          const notesCount = Object.keys(parsed.cornellNotes || {}).length + Object.keys(parsed.studentNotes || {}).length;
-          const lessonsCount = Object.keys(parsed.completedLessons || {}).length;
-          const tasksCount = Array.isArray(parsed.checklistTasks) ? parsed.checklistTasks.length : 0;
-          const totalActivities = notesCount + lessonsCount + tasksCount;
-
-          // Cálculo correto e realista de duração:
-          // Se o aluno está ativo agora: tempo decorrido no LMS nesta sessão (1 a 15 min)
-          // Se for sessão passada: estimativa pedagógica coerente (base 15 min + tempo por atividade, máx 40 min)
-          let sessionDurationSeconds: number;
-          if (isRecentlyOnline) {
-            sessionDurationSeconds = Math.max(60, Math.min(15 * 60, Math.floor((now - lastActivityTime) / 1000)));
-          } else {
-            sessionDurationSeconds = Math.min(40 * 60, Math.max(12 * 60, (15 * 60) + (totalActivities * 120)));
-          }
-
-          const pageViewsCount = Math.max(2, Math.min(25, 3 + totalActivities));
-          const eventsCount = Math.max(1, totalActivities || 3);
-          const sessionStartIso = isRecentlyOnline
-            ? lastActivityIso
-            : new Date(lastActivityTime - sessionDurationSeconds * 1000).toISOString();
-
-          studentSessions.push({
-            id: `sess_sync_${rawEmail.replace(/[^a-z0-9]/g, '_')}_${lastActivityTime}`,
-            user_email: rawEmail,
-            user_name: name,
-            user_role: 'aluno',
-            avatar_url: avatar,
-            device_type: 'desktop',
-            browser: 'Google Chrome',
-            os: 'Windows 10/11',
-            screen_resolution: '1280x720',
-            started_at: sessionStartIso,
-            last_heartbeat_at: lastActivityIso,
-            duration_seconds: sessionDurationSeconds,
-            is_active: isRecentlyOnline,
-            page_views_count: pageViewsCount,
-            events_count: eventsCount,
-          });
-        } catch (_) {}
-      });
-    }
-  }
-
-    if (studentSessions.length > 0) {
-      remoteSessions = mergeSessionLists(remoteSessions, studentSessions);
-    }
-  } catch (err) {}
-
-  // 5. Mescla o histórico recebido da nuvem com o cache local acumulado
+  // Mescla com cache local e atualiza storage
   const merged = mergeSessionLists(remoteSessions, local);
 
   if (merged.length > 0) {
@@ -920,14 +913,18 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
   let remoteEvents: AnalyticsEvent[] = [];
 
   try {
-    const { data, error } = await supabase
-      .from('lms_analytics_events')
-      .select('id, session_id, user_email, user_name, user_role, category, action, label, metadata, timestamp')
-      .order('timestamp', { ascending: false })
-      .limit(150);
+    const { data, error } = await withTimeout(
+      supabase
+        .from('lms_analytics_events')
+        .select('id, session_id, user_email, user_name, user_role, category, action, label, metadata, timestamp')
+        .order('timestamp', { ascending: false })
+        .limit(150),
+      3500,
+      { data: null, error: null } as any
+    );
 
     if (!error && data && data.length > 0) {
-      remoteEvents = data.map((e) => ({
+      remoteEvents = data.map((e: any) => ({
         id: e.id,
         session_id: e.session_id,
         user_email: e.user_email,
@@ -939,31 +936,31 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
         metadata: e.metadata || {},
         timestamp: e.timestamp,
       }));
-    }
-  } catch (err) {
-    // Silencioso, continua para fallback em materiais
-  }
+    } else if (remoteEvents.length === 0) {
+      // Fallback em materiais somente se a tabela nativa não retornar dados
+      const { data: matEvents } = await withTimeout(
+        supabase
+          .from('materiais')
+          .select('file_url')
+          .eq('id', '8914b25e-da88-411c-8a20-95b5720b4eb6')
+          .maybeSingle(),
+        2500,
+        { data: null } as any
+      );
 
-  // Mescla por ID preservando eventos únicos
-  const map = new Map<string, AnalyticsEvent>();
-  remoteEvents.forEach((ev) => map.set(ev.id, ev));
-
-  // Fallback de alta fidelidade: Lê do backup em materiais (system_telemetry_events_v1)
-  try {
-    const { data: matEvents } = await supabase
-      .from('materiais')
-      .select('file_url')
-      .eq('id', '8914b25e-da88-411c-8a20-95b5720b4eb6')
-      .maybeSingle();
-
-    if (matEvents?.file_url) {
-      const parsed = JSON.parse(matEvents.file_url);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        parsed.forEach((ev: AnalyticsEvent) => map.set(ev.id, ev));
+      if (matEvents?.file_url) {
+        try {
+          const parsed = JSON.parse(matEvents.file_url);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            remoteEvents = parsed;
+          }
+        } catch (_) {}
       }
     }
   } catch (err) {}
 
+  const map = new Map<string, AnalyticsEvent>();
+  remoteEvents.forEach((ev) => map.set(ev.id, ev));
   local.forEach((ev) => map.set(ev.id, ev));
 
   const merged = Array.from(map.values())
@@ -984,10 +981,10 @@ export async function fetchAllEvents(forceRefresh: boolean = false): Promise<Ana
 // 7. COMPILAÇÃO DO SUMMARY E GERAÇÃO DE INSIGHTS DE DESENVOLVIMENTO
 // ============================================================================
 
-export async function getAnalyticsSummary(forceRefresh: boolean = false): Promise<AnalyticsSummary> {
-  const sessions = await fetchAllSessions(forceRefresh);
-  const events = await fetchAllEvents(forceRefresh);
-
+/**
+ * Função pura para compilar métricas analíticas a partir de listas de sessões e eventos
+ */
+export function computeAnalyticsSummary(sessions: UserSessionLog[], events: AnalyticsEvent[]): AnalyticsSummary {
   const now = new Date().getTime();
   const oneDayAgo = now - 24 * 60 * 60 * 1000;
   const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
@@ -1161,6 +1158,21 @@ export async function getAnalyticsSummary(forceRefresh: boolean = false): Promis
     recent_sessions: sessions, // Retorna todas as sessões carregadas sem truncamento
     recent_events: events,     // Retorna todos os eventos carregados sem truncamento
   };
+}
+
+/**
+ * Retorna o resumo analítico compilado instantaneamente a partir do cache local persistente (0ms)
+ */
+export function getLocalAnalyticsSummary(): AnalyticsSummary {
+  const sessions = getLocalSessions();
+  const events = getLocalEvents();
+  return computeAnalyticsSummary(sessions, events);
+}
+
+export async function getAnalyticsSummary(forceRefresh: boolean = false): Promise<AnalyticsSummary> {
+  const sessions = await fetchAllSessions(forceRefresh);
+  const events = await fetchAllEvents(forceRefresh);
+  return computeAnalyticsSummary(sessions, events);
 }
 
 // ============================================================================

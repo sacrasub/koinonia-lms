@@ -35,13 +35,13 @@ export default function GlobalError({
         setIsReloading(true);
 
         // Limpa o CacheStorage de assets do Service Worker para forçar download do novo build
-        if ('caches' in window) {
+        if (typeof window !== 'undefined' && typeof caches !== 'undefined') {
           caches.keys().then((names) => {
             return Promise.all(names.map((name) => caches.delete(name)));
           }).finally(() => {
             window.location.reload();
           });
-        } else {
+        } else if (typeof window !== 'undefined') {
           window.location.reload();
         }
       }
