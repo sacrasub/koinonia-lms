@@ -95,7 +95,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
     switch (currentRole) {
       case 'aluno':
         return [
-          { id: 'aluno-disciplinas', label: 'Minhas Disciplinas', icon: GraduationCap, essential: true },
+          { id: 'aluno-disciplinas', label: 'Painel Acadêmico', icon: GraduationCap, essential: true },
+          { id: 'disciplina-detalhe', label: 'Minhas Disciplinas', icon: Layers, essential: true },
           { id: 'google-agenda', label: 'Agenda', icon: Calendar, essential: true },
           { id: 'aluno-materiais', label: 'Pastas Virtuais', icon: FolderOpen, essential: true },
           { id: 'aluno-caderno', label: 'Caderno de Anotações', icon: BookOpen, essential: true },
@@ -107,7 +108,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           // --- Modo Imersivo ---
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target, essential: false },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass, essential: false },
-          { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Matéria)', icon: Layers, essential: false },
           { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame, essential: false },
           ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target, essential: false }] : []),
           { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle, essential: false },
@@ -122,7 +122,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'professor':
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen },
-          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Visão)', icon: Layers },
@@ -147,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           { id: 'monitor-escala', label: '⚡ Central do Monitor', icon: UserCheck },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
-          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
@@ -174,7 +174,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'monitor-escala', label: '📅 Escala de Monitores 2026.2', icon: Calendar },
           { id: 'tele-proximidade', label: '📡 Radar de Tele-Proximidade', icon: Radio },
           // --- RECURSOS PEDAGÓGICOS ---
-          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
+          { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },

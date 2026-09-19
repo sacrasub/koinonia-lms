@@ -5,7 +5,7 @@ import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
   RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
-  ChevronRight
+  ChevronRight, Sparkles, LayoutGrid
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
@@ -58,6 +58,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     return false;
   });
 
+  const [experienceMode, setExperienceMode] = useState<'simple' | 'advanced'>('simple');
+
   const toggleDarkMode = () => {
     if (typeof window === 'undefined') return;
     const nextMode = !isDarkMode;
@@ -71,6 +73,40 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
     window.dispatchEvent(new CustomEvent('lms_theme_changed', { detail: { isDark: nextMode } }));
   };
+
+  const toggleExperienceMode = () => {
+    const next: 'simple' | 'advanced' = experienceMode === 'simple' ? 'advanced' : 'simple';
+    setExperienceMode(next);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(`lms_experience_mode_${normalizedEmail}`, next);
+        window.dispatchEvent(new CustomEvent('lms_experience_mode_changed', { detail: next }));
+      } catch (e) {
+        console.error('Erro ao salvar preferência de modo:', e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const saved = localStorage.getItem(`lms_experience_mode_${normalizedEmail}`);
+      if (saved === 'advanced' || saved === 'simple') {
+        setExperienceMode(saved);
+      }
+    } catch {}
+
+    const handleModeChange = (e: CustomEvent<'simple' | 'advanced'>) => {
+      if (e.detail === 'simple' || e.detail === 'advanced') {
+        setExperienceMode(e.detail);
+      }
+    };
+
+    window.addEventListener('lms_experience_mode_changed' as any, handleModeChange);
+    return () => {
+      window.removeEventListener('lms_experience_mode_changed' as any, handleModeChange);
+    };
+  }, [normalizedEmail]);
 
   useEffect(() => {
     const updateUnread = () => {
@@ -169,9 +205,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const getTabLabel = (tab: string): string => {
     const map: Record<string, string> = {
-      'aluno-disciplinas': 'Disciplinas',
-      'aluno-caderno': 'Caderno Cornell',
+      'aluno-disciplinas': 'Painel Acadêmico',
+      'disciplina-detalhe': 'Minhas Disciplinas',
+      'google-agenda': 'Agenda',
+      'aluno-materiais': 'Pastas Virtuais',
+      'aluno-caderno': 'Caderno de Anotações',
+      'aluno-checklist': 'Trabalhos e Avaliações',
+      'aluno-portal-2026': 'Portal Acadêmico',
+      'comunidade-forum': 'Koinonia',
       'aluno-biblioteca': 'Biblioteca Digital',
+      'central-ajuda': 'Central de Ajuda (Vídeos)',
       'aluno-plano': 'Plano de Estudos',
       'aluno-agenda': 'Grade Semanal',
       'aluno-ia': 'Hub de IA',
@@ -185,7 +228,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       'monitor-gravador': 'Gravador de Aulas',
       'monitor-incidentes': 'Incidentes',
       'admin-painel': 'Painel Geral',
-      'central-ajuda': 'Central de Ajuda',
     };
     return map[tab] || 'Painel';
   };
@@ -236,54 +278,43 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* LADO DIREITO: Ações Rápidas Adaptativas */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
-          {/* Botão do Sininho de Atualizações do Sistema */}
-          <button
-            data-tour="btn-atualizacoes"
-            onClick={() => setIsUpdatesModalOpen(true)}
-            className={`relative p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border flex items-center gap-1.5 cursor-pointer active:scale-95 ${
-              unreadUpdatesCount > 0
-                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 dark:from-blue-950/40 dark:to-indigo-950/40 dark:text-blue-200 border-blue-300 dark:border-blue-800 ring-2 ring-blue-400/20'
-                : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:border-gray-300'
-            }`}
-            title={unreadUpdatesCount > 0 ? `${unreadUpdatesCount} novas atualizações do LMS!` : 'Atualizações e Novidades do LMS'}
-          >
-            <div className="relative flex items-center justify-center">
-              <Bell className={`w-4 h-4 ${unreadUpdatesCount > 0 ? 'text-blue-600 animate-bounce' : 'text-gray-500 dark:text-slate-400'}`} />
-              {unreadUpdatesCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-black shadow-xs animate-pulse">
-                  {unreadUpdatesCount}
-                </span>
-              )}
-            </div>
-            <span className="hidden md:inline font-bold">
-              {unreadUpdatesCount > 0 ? 'Novidades' : 'Atualizações'}
-            </span>
-          </button>
-
-          {/* Botão de Ajuda & Tutoriais */}
-          <button
-            data-tour="btn-ajuda"
-            onClick={() => {
-              if (onTabChange) {
-                onTabChange('central-ajuda');
-              } else if (typeof window !== 'undefined') {
-                window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'central-ajuda' }));
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Botão Modo Essencial / Modo Imersivo no Cabeçalho */}
+          {currentRole === 'aluno' && (
+            <button
+              type="button"
+              onClick={toggleExperienceMode}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black shadow-xs transition-all duration-300 cursor-pointer border ${
+                experienceMode === 'advanced'
+                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-violet-400/50 shadow-violet-500/25 shadow-md ring-2 ring-violet-400/30'
+                  : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
+              }`}
+              title={
+                experienceMode === 'advanced'
+                  ? 'Modo Imersivo ativo — clique para alternar para Modo Essencial'
+                  : 'Modo Essencial ativo — clique para alternar para Modo Imersivo'
               }
-            }}
-            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/60 text-purple-900 dark:text-purple-300 border-purple-200 dark:border-purple-800/50 hover:border-purple-300 cursor-pointer"
-            title="Central de Ajuda & Tutoriais em Vídeo"
-          >
-            <HelpCircle className="w-4 h-4 text-purple-700 dark:text-purple-400 shrink-0" />
-            <span className="hidden md:inline">Ajuda & Vídeos</span>
-          </button>
+            >
+              {experienceMode === 'advanced' ? (
+                <>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span className="hidden sm:inline">Modo Imersivo</span>
+                </>
+              ) : (
+                <>
+                  <LayoutGrid className="w-3.5 h-3.5 text-gray-500 dark:text-slate-400" />
+                  <span className="hidden sm:inline">Modo Essencial</span>
+                </>
+              )}
+            </button>
+          )}
 
-          {/* Botão de Sincronização em Nuvem (Compacto no Mobile) */}
+          {/* Botão de Sincronização em Nuvem (Apenas o símbolo) */}
           <button
             data-tour="btn-sincronizar"
             onClick={handleManualSync}
             disabled={syncing}
-            className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 ${
+            className={`p-2 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 flex items-center justify-center ${
               syncing
                 ? 'bg-blue-50/90 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 border-blue-300 dark:border-blue-700 ring-2 ring-blue-200 animate-pulse'
                 : showSyncSuccess
@@ -291,6 +322,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-slate-700 hover:border-blue-300'
             }`}
             title={syncing ? 'Sincronizando dados com a nuvem (Supabase)...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar Dados'}
+            aria-label="Sincronizar Dados"
           >
             {syncing ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600 dark:text-blue-400 shrink-0" />
@@ -299,22 +331,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <RefreshCw className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
             )}
-            <span className="hidden md:inline">
-              {syncing ? 'Sincronizando...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar'}
-            </span>
           </button>
 
-          {/* Botão Alternar Modo Escuro / Dark Mode */}
+          {/* Botão Alternar Modo Escuro / Claro (Apenas o símbolo) */}
           <button
             data-tour="dark-mode-toggle"
             onClick={toggleDarkMode}
-            className="p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 flex items-center gap-1.5"
+            className="p-2 rounded-xl text-xs font-bold transition-all shadow-xs border bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border-slate-200 dark:border-slate-700 cursor-pointer active:scale-95 flex items-center justify-center"
             title={isDarkMode ? 'Mudar para Modo Claro (Light)' : 'Mudar para Modo Escuro (Dark Mode)'}
+            aria-label={isDarkMode ? 'Modo Claro' : 'Modo Escuro'}
           >
             {isDarkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-            <span className="hidden xl:inline text-[11px] font-bold">
-              {isDarkMode ? 'Claro' : 'Escuro'}
-            </span>
           </button>
 
           {/* Seletor de Perfil do Usuário Autenticado (Visível apenas em Desktop) */}
@@ -348,6 +375,45 @@ export const Navbar: React.FC<NavbarProps> = ({
               })}
             </div>
           )}
+
+          {/* Botão ? (Ajuda & Tutoriais - apenas o símbolo) ao lado do sino */}
+          <button
+            data-tour="btn-ajuda"
+            onClick={() => {
+              if (onTabChange) {
+                onTabChange('central-ajuda');
+              } else if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'central-ajuda' }));
+              }
+            }}
+            className="p-2 rounded-xl text-xs font-bold transition-all shadow-xs border bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/40 dark:hover:bg-purple-900/60 text-purple-900 dark:text-purple-300 border-purple-200 dark:border-purple-800/50 hover:border-purple-300 cursor-pointer active:scale-95 flex items-center justify-center"
+            title="Central de Ajuda & Tutoriais em Vídeo"
+            aria-label="Ajuda & Tutoriais"
+          >
+            <HelpCircle className="w-4 h-4 text-purple-700 dark:text-purple-400 shrink-0" />
+          </button>
+
+          {/* Botão do Sininho (Notificações / Novidades) ao lado de Aluno */}
+          <button
+            data-tour="btn-atualizacoes"
+            onClick={() => setIsUpdatesModalOpen(true)}
+            className={`relative p-2 rounded-xl text-xs font-bold transition-all shadow-xs border flex items-center justify-center cursor-pointer active:scale-95 ${
+              unreadUpdatesCount > 0
+                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-900 dark:from-blue-950/40 dark:to-indigo-950/40 dark:text-blue-200 border-blue-300 dark:border-blue-800 ring-2 ring-blue-400/20'
+                : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:border-gray-300'
+            }`}
+            title={unreadUpdatesCount > 0 ? `${unreadUpdatesCount} novas atualizações do LMS!` : 'Atualizações e Novidades do LMS'}
+            aria-label="Atualizações e Novidades"
+          >
+            <div className="relative flex items-center justify-center">
+              <Bell className={`w-4 h-4 ${unreadUpdatesCount > 0 ? 'text-blue-600 animate-bounce' : 'text-gray-500 dark:text-slate-400'}`} />
+              {unreadUpdatesCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-black shadow-xs animate-pulse">
+                  {unreadUpdatesCount}
+                </span>
+              )}
+            </div>
+          </button>
 
           {/* Informações do Usuário Ativo - Clique na Foto/Nome para Editar Perfil */}
           <div className="flex items-center gap-2 sm:gap-3 border-l border-gray-200 dark:border-slate-800 pl-1.5 sm:pl-3">

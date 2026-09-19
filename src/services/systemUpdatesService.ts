@@ -73,12 +73,12 @@ export const INITIAL_SYSTEM_UPDATES: SystemUpdate[] = [
   {
     id: 'upd-2026-08-18-v1',
     version: 'v2.6.0',
-    title: '📅 Grade Horária 2026.2 & Sincronização com Google Agenda',
+    title: '📅 Grade Horária 2026.2 & Sincronização com Agenda',
     description: 'Disponibilização da grade oficial de aulas com exportação em lote (.ICS) e links diretos.',
     date: '18/08/2026',
     category: 'melhoria',
     highlights: [
-      '🗓️ Exportação unificada de todas as matérias para Google Agenda e Apple Calendar.',
+      '🗓️ Exportação unificada de todas as matérias para Agenda e Apple Calendar.',
       '⚡ Acesso a salas virtuais do Google Meet com 15 minutos de antecedência.',
       '📂 Pastas virtuais restritas no Google Drive indexadas no Supabase com TTFB ultrarrápido.'
     ],

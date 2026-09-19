@@ -606,7 +606,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
             </h1>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              Unindo a organização do seu <strong>Google Drive (01 a 11)</strong>, <strong>Google Agenda</strong>, <strong>Google Meet</strong>, <strong>Caderno Cornell</strong>, <strong>Personas Gemini</strong> e <strong>NotebookLM</strong> em um único fluxo de excelência acadêmica.
+              Unindo a organização do seu <strong>Google Drive (01 a 11)</strong>, <strong>Agenda</strong>, <strong>Google Meet</strong>, <strong>Caderno Cornell</strong>, <strong>Personas Gemini</strong> e <strong>NotebookLM</strong> em um único fluxo de excelência acadêmica.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -709,7 +709,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
             }`}
           >
             <Calendar className="w-4 h-4 text-emerald-400" />
-            <span>5. Google Agenda & Horários</span>
+            <span>5. Agenda & Horários</span>
           </button>
         </div>
       </div>
@@ -750,10 +750,10 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
                   </span>
                 </div>
                 <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  1. Google Agenda & Leituras
+                  1. Agenda & Leituras
                 </h3>
                 <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
-                  Consulte a sua Google Agenda semanal para monitorar convites e horários das aulas. Realize a leitura prévia recomendada na pasta do Drive da disciplina.
+                  Consulte a sua Agenda semanal para monitorar convites e horários das aulas. Realize a leitura prévia recomendada na pasta do Drive da disciplina.
                 </p>
                 <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
                   <span className="text-gray-500 dark:text-slate-400 font-medium">Pasta 01 a 09</span>
@@ -1500,7 +1500,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          ABA 5: GOOGLE AGENDA & HORÁRIOS SEMANAIS (INTERATIVO)
+          ABA 5: AGENDA & HORÁRIOS SEMANAIS (INTERATIVO)
       ─────────────────────────────────────────────────────────────── */}
       {activeSubTab === 'agenda' && (
         <div className="animate-fadeIn">

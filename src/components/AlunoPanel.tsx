@@ -63,7 +63,7 @@ interface AlunoPanelProps {
 export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }) => {
   const normalizedEmail = (userEmail || 'sacrasub@gmail.com').toLowerCase().trim();
 
-  // Modo de visualização principal: 'dashboard' (Aulas & Caderno) ou 'calendario' (Google Agenda de Trabalhos e Avaliações)
+  // Modo de visualização principal: 'dashboard' (Aulas & Caderno) ou 'calendario' (Agenda de Trabalhos e Avaliações)
   const [alunoMainView, setAlunoMainView] = useState<'dashboard' | 'calendario'>('dashboard');
 
   // Modo de experiência: 'simple' (Essencial, padrão) ou 'advanced' (Imersivo com laboratórios)
@@ -808,7 +808,7 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
             </div>
             <h3 className="text-xl font-black text-white">Fluxo de Estudos & Ecossistema Teológico (6 Fases)</h3>
             <p className="text-xs text-indigo-100/90 max-w-2xl leading-relaxed">
-              Acesse o ciclo de estudo integrado conectando os horários da Google Agenda, salas Google Meet, Caderno Cornell, prompts de mentoria do Gemini e fontes do NotebookLM.
+              Acesse o ciclo de estudo integrado conectando os horários da Agenda, salas Google Meet, Caderno Cornell, prompts de mentoria do Gemini e fontes do NotebookLM.
             </p>
           </div>
           <button
@@ -941,10 +941,10 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
                 ? 'bg-amber-500 hover:bg-amber-600 text-slate-950 ring-2 ring-amber-400'
                 : 'bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white border border-blue-400/40 shadow-sm'
             }`}
-            title="Abrir o Calendário de Trabalhos e Avaliações 2026.2 no formato Google Agenda"
+            title="Abrir o Calendário de Trabalhos e Avaliações 2026.2 no formato Agenda"
           >
             <Calendar className="w-3.5 h-3.5 text-amber-300" />
-            <span>{alunoMainView === 'calendario' ? 'Voltar para Aulas & Caderno' : 'Calendário de Avaliações (Google Agenda)'}</span>
+            <span>{alunoMainView === 'calendario' ? 'Voltar para Aulas & Caderno' : 'Calendário de Avaliações (Agenda)'}</span>
             <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">12</span>
           </button>
 
@@ -2334,7 +2334,7 @@ href={nextAulaToday.google_meet_url}
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
-                    Google Agenda 2026.2
+                    Agenda 2026.2
                   </span>
                   <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
                 </div>
@@ -2352,7 +2352,7 @@ href={nextAulaToday.google_meet_url}
               onClick={() => setAlunoMainView('calendario')}
               className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer whitespace-nowrap self-start md:self-auto"
             >
-              <span>Abrir Google Agenda</span>
+              <span>Abrir Agenda</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

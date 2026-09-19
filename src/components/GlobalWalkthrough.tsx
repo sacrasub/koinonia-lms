@@ -113,7 +113,7 @@ export function GlobalWalkthrough({
       element: '[data-tour="card-fluxo-estudos"]',
       fallbackElement: 'main',
       title: '🧭 Fluxo de Estudos & Ecossistema Teológico',
-      description: 'Conecte suas 11 pastas do Google Drive, Google Agenda, salas do Meet, Caderno Cornell, prompts do Gemini e cadernos do NotebookLM em 6 fases de estudo.',
+      description: 'Conecte suas 11 pastas do Google Drive, Agenda, salas do Meet, Caderno Cornell, prompts do Gemini e cadernos do NotebookLM em 6 fases de estudo.',
       side: 'top',
       align: 'center',
       requiredTab: 'aluno-disciplinas',

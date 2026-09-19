@@ -114,7 +114,7 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: event.colorTag }} />
             <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-              {event.code} • Google Agenda
+              {event.code} • Agenda
             </span>
           </div>
 
@@ -124,7 +124,7 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
               href={generateGoogleCalendarUrl(event)}
               target="_blank"
               rel="noopener noreferrer"
-              title="Adicionar à minha conta do Google Agenda"
+              title="Adicionar à minha conta da Agenda"
               className="p-2 rounded-full hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
             >
               <Calendar className="w-4 h-4" />
@@ -149,7 +149,7 @@ export const GoogleAgendaEventModal: React.FC<GoogleAgendaEventModalProps> = ({
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-gray-700/70 text-gray-200"
                   >
                     <ExternalLink className="w-4 h-4 text-emerald-400" />
-                    <span>Adicionar ao Google Agenda</span>
+                    <span>Adicionar à Agenda</span>
                   </a>
                   <button
                     onClick={() => {

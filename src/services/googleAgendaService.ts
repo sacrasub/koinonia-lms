@@ -1,7 +1,7 @@
 /**
- * googleAgendaService.ts - Serviço de Gestão e Dados da Google Agenda (Koinonia LMS)
+ * googleAgendaService.ts - Serviço de Gestão e Dados da Agenda (Koinonia LMS)
  * Contém o catálogo completo das aulas semanais (Grade 2026.2), metadados do Google Meet,
- * informações de conexão por telefone/PIN, links do Drive/Docs, RSVP e exportação para a Google Agenda.
+ * informações de conexão por telefone/PIN, links do Drive/Docs, RSVP e exportação para a Agenda.
  */
 
 export type RSVPStatus = 'yes' | 'no' | 'maybe' | 'none';
@@ -501,7 +501,7 @@ export function getUserRSVP(eventId: string): RSVPStatus {
   return all[eventId] || 'yes'; // Padrão: 'yes' (aluno matriculado)
 }
 
-// ── GERAÇÃO DE URL PARA ADICIONAR DIRETO À GOOGLE AGENDA PESSOAL ──
+// ── GERAÇÃO DE URL PARA ADICIONAR DIRETO À AGENDA PESSOAL ──
 export function generateGoogleCalendarUrl(event: GoogleAgendaEvent): string {
   const base = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
   const text = encodeURIComponent(event.title);

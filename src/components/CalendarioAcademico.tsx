@@ -844,7 +844,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full border border-blue-500/30">
-                  Google Agenda Acadêmica
+                  Agenda Acadêmica
                 </span>
                 <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30">
                   Semestre 2026.2

@@ -272,7 +272,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
         isCustomStudentEvent: true,
         userEmail: normalizedEmail,
       }, normalizedEmail);
-      setSyncStatusMsg('Evento atualizado na sua Google Agenda!');
+      setSyncStatusMsg('Evento atualizado na sua Agenda!');
     } else {
       addCustomStudentEvent({
         title: formTitle.trim(),
@@ -284,7 +284,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
         description: formDesc.trim(),
         location: formLocation.trim() || undefined,
       }, normalizedEmail);
-      setSyncStatusMsg('Novo evento adicionado à sua Google Agenda!');
+      setSyncStatusMsg('Novo evento adicionado à sua Agenda!');
     }
 
     setIsCreateModalOpen(false);
@@ -555,14 +555,14 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
             {/* Exportar .ICS */}
             <button
               onClick={handleDownloadFullSchedule}
-              title="Baixar arquivo unificado .ICS de todas as aulas para sincronizar no Google Agenda / Apple Calendar"
+              title="Baixar arquivo unificado .ICS de todas as aulas para sincronizar na Agenda / Apple Calendar"
               className="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-xl text-xs font-bold border border-blue-200 flex items-center gap-1.5 transition cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Exportar .ICS</span>
             </button>
 
-            {/* Abrir Google Agenda Pessoal */}
+            {/* Abrir Agenda Pessoal */}
             <a
               href={customCalendarUrl || 'https://calendar.google.com'}
               target="_blank"
@@ -570,7 +570,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
               className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              <span>Abrir Google Agenda</span>
+              <span>Abrir Agenda</span>
             </a>
 
             {/* Configurar Agenda Pessoal */}
@@ -1133,7 +1133,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
                 <CalendarIcon className="w-5 h-5 text-blue-600" />
-                <span>{editingEventId ? 'Editar Compromisso' : 'Adicionar Evento na Google Agenda'}</span>
+                <span>{editingEventId ? 'Editar Compromisso' : 'Adicionar Evento na Agenda'}</span>
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
@@ -1397,7 +1397,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
                 <Settings className="w-5 h-5 text-blue-600" />
-                <span>Configurar Google Agenda Pessoal</span>
+                <span>Configurar Agenda Pessoal</span>
               </h3>
               <button
                 onClick={() => setIsSettingsModalOpen(false)}
@@ -1408,11 +1408,11 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
             </div>
 
             <p className="text-xs text-slate-600 leading-relaxed">
-              Vincule a URL direta da sua Google Agenda individual para acesso rápido no botão do topo.
+              Vincule a URL direta da sua Agenda individual para acesso rápido no botão do topo.
             </p>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700">Link da sua Agenda Google:</label>
+              <label className="text-xs font-bold text-slate-700">Link da sua Agenda:</label>
               <input
                 type="url"
                 value={tempCalendarUrl}
