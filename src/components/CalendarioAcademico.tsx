@@ -615,10 +615,19 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   const [viewMode, setViewMode] = useState<'grade' | 'lista'>('grade');
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>('all');
 
-  // Clique 1: Modal Compacto (Popup Resumo)
+  // Clique 1: Modal com Todos os Prazos do Dia Selecionado
+  const [selectedDayModal, setSelectedDayModal] = useState<{
+    dayNumber: number;
+    date: Date;
+    dateString: string;
+    dataTexto: string;
+    events: AvaliacaoEvento[];
+  } | null>(null);
+
+  // Clique 2: Modal Compacto (Popup Resumo)
   const [popupEvento, setPopupEvento] = useState<AvaliacaoEvento | null>(null);
 
-  // Clique 2: Painel Lateral / Drawer (Passo a Passo Completo)
+  // Clique 3: Painel Lateral / Drawer (Passo a Passo Completo)
   const [drawerEvento, setDrawerEvento] = useState<AvaliacaoEvento | null>(null);
 
   // Checklists persistidos no localStorage: record de booleans por evento e índice de passo
@@ -989,7 +998,13 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
                   key={idx}
                   onClick={() => {
                     if (hasEvents) {
-                      setPopupEvento(cDay.events[0]);
+                      setSelectedDayModal({
+                        dayNumber: cDay.dayNumber,
+                        date: cDay.date,
+                        dateString: cDay.dateString,
+                        dataTexto: cDay.events[0]?.dataTexto || `${cDay.dayNumber} de ${activeMonthData.nome} de ${activeMonthData.ano}`,
+                        events: cDay.events
+                      });
                     }
                   }}
                   className={`min-h-[85px] sm:min-h-[125px] rounded-2xl p-1.5 sm:p-2.5 flex flex-col justify-between border transition relative ${
@@ -1031,7 +1046,13 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setPopupEvento(ev);
+                            setSelectedDayModal({
+                              dayNumber: cDay.dayNumber,
+                              date: cDay.date,
+                              dateString: cDay.dateString,
+                              dataTexto: cDay.events[0]?.dataTexto || `${cDay.dayNumber} de ${activeMonthData.nome} de ${activeMonthData.ano}`,
+                              events: cDay.events
+                            });
                           }}
                           className={`w-full text-left px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition flex items-center justify-between gap-1 shadow-xs truncate cursor-pointer ${ev.cor.pillBg}`}
                         >
@@ -1051,7 +1072,13 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setPopupEvento(cDay.events[0]);
+                          setSelectedDayModal({
+                            dayNumber: cDay.dayNumber,
+                            date: cDay.date,
+                            dateString: cDay.dateString,
+                            dataTexto: cDay.events[0]?.dataTexto || `${cDay.dayNumber} de ${activeMonthData.nome} de ${activeMonthData.ano}`,
+                            events: cDay.events
+                          });
                         }}
                         className="text-[10px] font-extrabold text-blue-400 hover:text-blue-300 pl-1 block text-left"
                       >
@@ -1155,7 +1182,124 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
       )}
 
       {/* ========================================================================= */}
-      {/* CLIQUE 1: POPUP RESUMO (MODAL COMPACTO AO CLICAR NO DIA OU EVENTO)        */}
+      {/* MODAL: TODOS OS PRAZOS DO DIA SELECIONADO                                 */}
+      {/* ========================================================================= */}
+      {selectedDayModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl text-white flex flex-col max-h-[90vh]">
+            {/* CABEÇALHO DO DIA */}
+            <div className="p-5 sm:p-6 bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border-b border-slate-800 flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-13 h-13 rounded-2xl bg-blue-600/30 border border-blue-400/40 text-blue-300 flex flex-col items-center justify-center font-black flex-shrink-0 shadow-inner">
+                  <span className="text-[10px] uppercase font-mono tracking-wider">{activeMonthData.nome.substring(0, 3)}</span>
+                  <span className="text-xl leading-none mt-0.5">{selectedDayModal.dayNumber}</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
+                      {selectedDayModal.events.length} {selectedDayModal.events.length === 1 ? 'Prazo neste dia' : 'Prazos neste dia'}
+                    </span>
+                    <span className="text-xs text-slate-400 font-semibold">
+                      Semestre 2026.2
+                    </span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-white">
+                    {selectedDayModal.dataTexto}
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-0.5">
+                    Selecione um dos prazos abaixo para abrir os detalhes e o checklist:
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedDayModal(null)}
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-sm transition cursor-pointer flex-shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* LISTA DE PRAZOS DO DIA */}
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-3 flex-1">
+              {selectedDayModal.events.map((ev) => {
+                const prog = getEventProgress(ev);
+                return (
+                  <div
+                    key={ev.id}
+                    onClick={() => {
+                      // Ao clicar no prazo do dia, abre o Drawer de detalhes
+                      setDrawerEvento(ev);
+                    }}
+                    className={`p-4 rounded-2xl border transition cursor-pointer ${ev.cor.bg} ${ev.cor.border} hover:scale-[1.01] hover:shadow-xl hover:border-blue-400/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group`}
+                  >
+                    <div className="space-y-1.5 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${ev.cor.badgeBg} ${ev.cor.badgeText}`}>
+                          {ev.tipoBadge}
+                        </span>
+                        <span className="text-xs font-mono text-blue-300 font-bold flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" /> {ev.horario}
+                        </span>
+                      </div>
+
+                      <h4 className="text-base font-black text-white group-hover:text-blue-300 transition">
+                        {ev.disciplina}
+                      </h4>
+
+                      <p className="text-xs text-slate-300">
+                        Docente: <strong className="text-white">{ev.professor}</strong> • <span className="text-amber-300 font-medium">{ev.peso}</span>
+                      </p>
+
+                      <p className="text-xs text-slate-400 line-clamp-1">
+                        {ev.tipo}
+                      </p>
+                    </div>
+
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-700/50 flex-shrink-0">
+                      {prog.total > 0 && (
+                        <span className="text-[11px] font-extrabold text-blue-300 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-700/60">
+                          {prog.completed}/{prog.total} concluídos
+                        </span>
+                      )}
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPopupEvento(ev);
+                          }}
+                          className="text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-xl transition cursor-pointer"
+                        >
+                          Resumo
+                        </button>
+                        <span className="text-xs font-extrabold text-white bg-blue-600 group-hover:bg-blue-500 px-3 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1">
+                          Ver Detalhes <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* RODAPÉ DO MODAL DO DIA */}
+            <div className="p-4 bg-slate-950/90 border-t border-slate-800 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setSelectedDayModal(null)}
+                className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* CLIQUE 2: POPUP RESUMO (MODAL COMPACTO AO CLICAR EM RESUMO)               */}
       {/* ========================================================================= */}
       {popupEvento && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
