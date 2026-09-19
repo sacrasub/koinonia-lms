@@ -52,6 +52,7 @@ import { getAllGravacoes, fetchGravacoesFromCloud, sortGravacoesChronologicalDes
 import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { UserProfileModal } from '@/components/UserProfileModal';
 import { trackEvent } from '@/services/telemetryService';
+import { CalendarioAcademico } from '@/components/CalendarioAcademico';
 
 interface AlunoPanelProps {
   userEmail?: string;
@@ -60,6 +61,9 @@ interface AlunoPanelProps {
 
 export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }) => {
   const normalizedEmail = (userEmail || 'sacrasub@gmail.com').toLowerCase().trim();
+
+  // Modo de visualização principal: 'dashboard' (Aulas & Caderno) ou 'calendario' (Google Agenda de Trabalhos e Avaliações)
+  const [alunoMainView, setAlunoMainView] = useState<'dashboard' | 'calendario'>('dashboard');
 
   const semesterWeeks = getSemester2026Weeks();
   const currentWeekIdx = getCurrentWeekIndex();
@@ -912,6 +916,20 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
           >
             <Settings className="w-3 h-3 text-amber-300" />
             <span>Configuração Oficial & Perfil</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setAlunoMainView(alunoMainView === 'calendario' ? 'dashboard' : 'calendario')}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition cursor-pointer active:scale-95 ${
+              alunoMainView === 'calendario'
+                ? 'bg-amber-500 hover:bg-amber-600 text-slate-950 ring-2 ring-amber-400'
+                : 'bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white border border-blue-400/40 shadow-sm'
+            }`}
+            title="Abrir o Calendário de Trabalhos e Avaliações 2026.2 no formato Google Agenda"
+          >
+            <Calendar className="w-3.5 h-3.5 text-amber-300" />
+            <span>{alunoMainView === 'calendario' ? 'Voltar para Aulas & Caderno' : 'Calendário de Avaliações (Google Agenda)'}</span>
+            <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">12</span>
           </button>
         </div>
         <div>
@@ -2263,54 +2281,95 @@ href={nextAulaToday.google_meet_url}
       {/* 1. CARD PRINCIPAL UNIFICADO: PAINEL ACADÊMICO DO ALUNO (COM PERÍODO, TURMA, SEMESTRE E FUSO) */}
       {renderUnifiedHeader()}
 
-      {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
-      {renderProfileReminder()}
-
-      {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
-      {renderAulaAoVivoOuProxima()}
-
-      {/* 4. SE HOUVER LEITURAS EM ABERTO: CARD EM EVIDÊNCIA MÁXIMA NO TOPO (LOGO APÓS AULA AO VIVO) */}
-      {pendingAnnouncementsCount > 0 && (
-        <div className="animate-in fade-in slide-in-from-top-3 duration-300">
-          {renderMuralRecursos(true)}
+      {/* RENDERIZAÇÃO CONDICIONAL: SE FOR O MODO CALENDÁRIO GOOGLE AGENDA */}
+      {alunoMainView === 'calendario' ? (
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <CalendarioAcademico userEmail={normalizedEmail} onBack={() => setAlunoMainView('dashboard')} />
         </div>
-      )}
-
-      {/* 5. SEÇÕES PRINCIPAIS (REORDENAÇÃO INTELIGENTE CONFORME HORÁRIO DE AULA) */}
-      {activeLiveAula ? (
-        <>
-          {/* GRADE DE AULAS NO TOPO DURANTE A AULA OU 15 MIN ANTES */}
-          {renderGradeAulas()}
-
-          {/* MURAL QUANDO TODAS ESTIVEREM LIDAS FICA APÓS A GRADE */}
-          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
-
-          {renderAulasGravadas()}
-
-          {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
-          {renderCardBibliotecaDigital()}
-
-          {renderCardsMetodologias(true)}
-        </>
       ) : (
         <>
-          {/* FORA DA AULA AO VIVO (QUANDO AS AULAS TERMINAREM NO DIA, INTERVALOS OU DIAS SEM AULA):
-              OS CARDS VOLTAM A SER APRESENTADOS NO TOPO, ANTES DA GRADE DE AULAS! */}
+          {/* BANNER DESTAQUE DO CALENDÁRIO DE AVALIAÇÕES (GOOGLE AGENDA) */}
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3.5 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-2xl shadow-lg shadow-blue-500/25 flex-shrink-0">
+                <Calendar className="w-7 h-7" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
+                    Google Agenda 2026.2
+                  </span>
+                  <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-white">
+                  Calendário de Trabalhos e Avaliações (2026.2)
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Consulte a grade mensal de Agosto a Dezembro com popups de resumo, normas ABNT e checklists passo a passo para cada matéria.
+                </p>
+              </div>
+            </div>
 
-          {/* MURAL DE RECURSOS (SOMENTE QUANDO TODAS ESTIVEREM LIDAS OU RECOLHIDO, POIS SE HOUVER PENDENTES JÁ ESTÁ NO TOPO NO ITEM 4) */}
-          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+            <button
+              type="button"
+              onClick={() => setAlunoMainView('calendario')}
+              className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer whitespace-nowrap self-start md:self-auto"
+            >
+              <span>Abrir Google Agenda</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
 
-          {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
-          {renderAulasGravadas()}
+          {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
+          {renderProfileReminder()}
 
-          {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
-          {renderCardBibliotecaDigital()}
+          {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
+          {renderAulaAoVivoOuProxima()}
 
-          {/* 3. MODO DE ESTUDO ENTRE AS AULAS ONLINE (LABORATÓRIOS DE PRÁTICA PASTORAL, HOMILÉTICA & 3D) */}
-          {renderCardsMetodologias(false)}
+          {/* 4. SE HOUVER LEITURAS EM ABERTO: CARD EM EVIDÊNCIA MÁXIMA NO TOPO (LOGO APÓS AULA AO VIVO) */}
+          {pendingAnnouncementsCount > 0 && (
+            <div className="animate-in fade-in slide-in-from-top-3 duration-300">
+              {renderMuralRecursos(true)}
+            </div>
+          )}
 
-          {/* 4. GRADE DE AULAS & MEU CADERNO DE ESTUDOS */}
-          {renderGradeAulas()}
+          {/* 5. SEÇÕES PRINCIPAIS (REORDENAÇÃO INTELIGENTE CONFORME HORÁRIO DE AULA) */}
+          {activeLiveAula ? (
+            <>
+              {/* GRADE DE AULAS NO TOPO DURANTE A AULA OU 15 MIN ANTES */}
+              {renderGradeAulas()}
+
+              {/* MURAL QUANDO TODAS ESTIVEREM LIDAS FICA APÓS A GRADE */}
+              {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+
+              {renderAulasGravadas()}
+
+              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
+              {renderCardBibliotecaDigital()}
+
+              {renderCardsMetodologias(true)}
+            </>
+          ) : (
+            <>
+              {/* FORA DA AULA AO VIVO (QUANDO AS AULAS TERMINAREM NO DIA, INTERVALOS OU DIAS SEM AULA):
+                  OS CARDS VOLTAM A SER APRESENTADOS NO TOPO, ANTES DA GRADE DE AULAS! */}
+
+              {/* MURAL DE RECURSOS (SOMENTE QUANDO TODAS ESTIVEREM LIDAS OU RECOLHIDO, POIS SE HOUVER PENDENTES JÁ ESTÁ NO TOPO NO ITEM 4) */}
+              {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+
+              {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
+              {renderAulasGravadas()}
+
+              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
+              {renderCardBibliotecaDigital()}
+
+              {/* 3. MODO DE ESTUDO ENTRE AS AULAS ONLINE (LABORATÓRIOS DE PRÁTICA PASTORAL, HOMILÉTICA & 3D) */}
+              {renderCardsMetodologias(false)}
+
+              {/* 4. GRADE DE AULAS & MEU CADERNO DE ESTUDOS */}
+              {renderGradeAulas()}
+            </>
+          )}
         </>
       )}
 
