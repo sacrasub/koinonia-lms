@@ -457,7 +457,7 @@ export const GoogleAgendaView: React.FC<GoogleAgendaViewProps> = ({
               </div>
               <div>
                 <h1 className="text-base sm:text-lg font-black text-slate-900 leading-tight flex items-center gap-1.5">
-                  <span>Google Agenda</span>
+                  <span>Agenda</span>
                   <span className="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
                     2026.2
                   </span>
