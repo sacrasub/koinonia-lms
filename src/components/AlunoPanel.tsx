@@ -9,7 +9,8 @@ import {
   BookOpen, Calendar, Globe, Info, CheckSquare, Edit3, Save, ChevronLeft, ChevronRight,
   Cloud, Settings, GraduationCap, X, Compass, PhoneCall, Archive, ArchiveRestore, CheckCircle,
   Layers, Flame, ArrowRight, Mic, Box, Ban, RefreshCw, ChevronDown, ChevronUp,
-  AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap, Play, Download, ClipboardList
+  AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap, Play, Download, ClipboardList,
+  LayoutGrid
 } from 'lucide-react';
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
@@ -64,6 +65,19 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
   // Modo de visualização principal: 'dashboard' (Aulas & Caderno) ou 'calendario' (Google Agenda de Trabalhos e Avaliações)
   const [alunoMainView, setAlunoMainView] = useState<'dashboard' | 'calendario'>('dashboard');
+
+  // Modo de experiência: 'simple' (Essencial, padrão) ou 'advanced' (Imersivo com laboratórios)
+  const [experienceMode, setExperienceMode] = useState<'simple' | 'advanced'>(() => {
+    if (typeof window === 'undefined') return 'simple';
+    const saved = localStorage.getItem(`lms_experience_mode_${(userEmail || 'sacrasub@gmail.com').toLowerCase().trim()}`);
+    return (saved === 'advanced' ? 'advanced' : 'simple');
+  });
+
+  const toggleExperienceMode = () => {
+    const next = experienceMode === 'simple' ? 'advanced' : 'simple';
+    setExperienceMode(next);
+    localStorage.setItem(`lms_experience_mode_${normalizedEmail}`, next);
+  };
 
   const semesterWeeks = getSemester2026Weeks();
   const currentWeekIdx = getCurrentWeekIndex();
@@ -930,6 +944,27 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
             <Calendar className="w-3.5 h-3.5 text-amber-300" />
             <span>{alunoMainView === 'calendario' ? 'Voltar para Aulas & Caderno' : 'Calendário de Avaliações (Google Agenda)'}</span>
             <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">12</span>
+          </button>
+
+          {/* TOGGLE DE EXPERIÊNCIA: MODO ESSENCIAL vs. MODO IMERSIVO */}
+          <button
+            type="button"
+            onClick={toggleExperienceMode}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition-all duration-300 cursor-pointer border ${
+              experienceMode === 'advanced'
+                ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-violet-400/50 shadow-violet-500/25 shadow-md ring-2 ring-violet-400/30'
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-600 border-gray-200 hover:border-gray-300'
+            }`}
+            title={experienceMode === 'advanced'
+              ? 'Modo Imersivo ativo — clique para voltar ao Modo Essencial (dia a dia)'
+              : 'Ativar Modo Imersivo com laboratórios, biblioteca digital e ferramentas avançadas'
+            }
+          >
+            {experienceMode === 'advanced' ? (
+              <><Sparkles className="w-3.5 h-3.5 text-amber-300" /><span>Modo Imersivo</span></>
+            ) : (
+              <><LayoutGrid className="w-3.5 h-3.5 text-gray-500" /><span>Modo Essencial</span></>
+            )}
           </button>
         </div>
         <div>
@@ -2344,10 +2379,11 @@ href={nextAulaToday.google_meet_url}
 
               {renderAulasGravadas()}
 
-              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
-              {renderCardBibliotecaDigital()}
+              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA (apenas no Modo Imersivo) */}
+              {experienceMode === 'advanced' && renderCardBibliotecaDigital()}
 
-              {renderCardsMetodologias(true)}
+              {/* LABORATÓRIOS E METODOLOGIAS (apenas no Modo Imersivo) */}
+              {experienceMode === 'advanced' && renderCardsMetodologias(true)}
             </>
           ) : (
             <>
@@ -2360,11 +2396,11 @@ href={nextAulaToday.google_meet_url}
               {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
               {renderAulasGravadas()}
 
-              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA */}
-              {renderCardBibliotecaDigital()}
+              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA (apenas no Modo Imersivo) */}
+              {experienceMode === 'advanced' && renderCardBibliotecaDigital()}
 
-              {/* 3. MODO DE ESTUDO ENTRE AS AULAS ONLINE (LABORATÓRIOS DE PRÁTICA PASTORAL, HOMILÉTICA & 3D) */}
-              {renderCardsMetodologias(false)}
+              {/* 3. LABORATÓRIOS E METODOLOGIAS (apenas no Modo Imersivo) */}
+              {experienceMode === 'advanced' && renderCardsMetodologias(false)}
 
               {/* 4. GRADE DE AULAS & MEU CADERNO DE ESTUDOS */}
               {renderGradeAulas()}
