@@ -95,13 +95,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
     switch (currentRole) {
       case 'aluno':
         return [
-          { id: 'aluno-disciplinas', label: 'Minhas Disciplinas (Estudos)', icon: GraduationCap, essential: true },
-          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar, essential: true },
-          { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen, essential: true },
-          { id: 'aluno-caderno', label: 'Caderno Cornell (Notas)', icon: BookOpen, essential: true },
-          { id: 'aluno-checklist', label: 'Checklist & Dashboard AV', icon: CheckSquare, essential: true },
-          { id: 'aluno-portal-2026', label: 'Portal & Calendário 2026.2', icon: Calendar, essential: true },
-          { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare, essential: true },
+          { id: 'aluno-disciplinas', label: 'Minhas Disciplinas', icon: GraduationCap, essential: true },
+          { id: 'google-agenda', label: 'Agenda', icon: Calendar, essential: true },
+          { id: 'aluno-materiais', label: 'Pastas Virtuais', icon: FolderOpen, essential: true },
+          { id: 'aluno-caderno', label: 'Caderno de Anotações', icon: BookOpen, essential: true },
+          { id: 'aluno-checklist', label: 'Trabalhos e Avaliações', icon: CheckSquare, essential: true },
+          { id: 'aluno-portal-2026', label: 'Portal Acadêmico', icon: Calendar, essential: true },
+          { id: 'comunidade-forum', label: 'Koinonia', icon: MessageSquare, essential: true },
+          { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library, essential: true },
           { id: 'central-ajuda', label: 'Central de Ajuda (Vídeos)', icon: HelpCircle, essential: true },
           // --- Modo Imersivo ---
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target, essential: false },
@@ -117,7 +118,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
           { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart, essential: false },
           { id: 'meu-portfolio', label: 'Meu Portfólio Reflexivo', icon: Archive, essential: false },
           { id: 'seletor-avaliacao', label: 'Trilha de Avaliação', icon: SlidersHorizontal, essential: false },
-          { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library, essential: false },
         ];
       case 'professor':
         return [
