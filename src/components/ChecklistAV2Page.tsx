@@ -518,7 +518,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            Checklist & Dashboard AV Pessoal
+            Trabalhos e Avaliações
           </h2>
           <p className="text-sm text-gray-600 font-medium">
             Acompanhamento individual de trabalhos escritos, portfólios e provas objetivas finais.

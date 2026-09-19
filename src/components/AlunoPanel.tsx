@@ -2339,7 +2339,7 @@ href={nextAulaToday.google_meet_url}
                   <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
                 </div>
                 <h3 className="text-base sm:text-lg font-black text-white">
-                  Calendário de Trabalhos e Avaliações (2026.2)
+                  Trabalhos e Avaliações
                 </h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Consulte a grade mensal de Agosto a Dezembro com popups de resumo, normas ABNT e checklists passo a passo para cada matéria.

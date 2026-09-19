@@ -623,7 +623,7 @@ export const PortalAcademicoPage: React.FC<PortalAcademicoPageProps> = ({ userEm
               title="Acompanhamento individual de trabalhos escritos, portfólios e provas objetivas finais"
             >
               <CheckSquare className="w-4 h-4 text-amber-300" />
-              <span>Checklist & Dashboard AV</span>
+              <span>Trabalhos e Avaliações</span>
             </button>
 
             <button
