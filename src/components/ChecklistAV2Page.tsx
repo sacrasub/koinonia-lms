@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckSquare, PenTool, AlertCircle, Zap, CheckCircle2, Clock, 
   Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
-  MessageCircle, Share2, Copy, Check, ExternalLink
+  MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight
 } from 'lucide-react';
+import { CalendarioAcademico } from './CalendarioAcademico';
 import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
 
 export interface KanbanTask {
@@ -282,6 +283,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   const [tasks, setTasks] = useState<KanbanTask[]>(defaultSemesterTasks);
   const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [activeViewTab, setActiveViewTab] = useState<'kanban' | 'calendario'>('kanban');
 
   // Form State para Nova Tarefa
   const [newTitle, setNewTitle] = useState('');
@@ -503,9 +505,69 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header Principal: Checklist & Dashboard AV Pessoal */}
-      <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
+    <div className="space-y-6">
+      {/* 1. BANNER DESTAQUE: AGENDA 2026.2 / TRABALHOS E AVALIAÇÕES */}
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="p-3.5 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-2xl shadow-lg shadow-blue-500/25 flex-shrink-0">
+            <Calendar className="w-7 h-7" />
+          </div>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
+                Agenda 2026.2
+              </span>
+              <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
+            </div>
+            <h3 className="text-base sm:text-lg font-black text-white">
+              Trabalhos e Avaliações
+            </h3>
+            <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+              Consulte a grade mensal de Agosto a Dezembro com popups de resumo, normas ABNT e checklists passo a passo para cada matéria.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
+          <button
+            type="button"
+            onClick={() => setActiveViewTab('kanban')}
+            className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-md ${
+              activeViewTab === 'kanban'
+                ? 'bg-blue-600 hover:bg-blue-500 text-white ring-2 ring-blue-400 font-black'
+                : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+            }`}
+          >
+            <CheckSquare className="w-4 h-4" />
+            <span>Quadro Kanban ({tasks.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveViewTab('calendario')}
+            className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-md ${
+              activeViewTab === 'calendario'
+                ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 ring-2 ring-amber-300 font-black'
+                : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+            }`}
+          >
+            <Calendar className="w-4 h-4 text-amber-300" />
+            <span>Grade & Calendário Mensal</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {activeViewTab === 'calendario' ? (
+        <div className="space-y-4 animate-in fade-in duration-200">
+          <CalendarioAcademico 
+            userEmail={normalizedEmail} 
+            onBack={() => setActiveViewTab('kanban')} 
+          />
+        </div>
+      ) : (
+        <>
+          {/* Header Principal: Checklist & Dashboard AV Pessoal */}
+          <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
@@ -940,6 +1002,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
             </div>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );
