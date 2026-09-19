@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserRole } from '@/types';
 import { 
   LayoutDashboard, GraduationCap, BookOpen, UserCheck, 
   ShieldCheck, Library, CheckSquare, FolderOpen, Compass, 
   Calendar, Layers, HelpCircle, Drama, Archive, SlidersHorizontal, 
-  Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target, Bookmark
+  Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target, Bookmark,
+  Sparkles, LayoutGrid
 } from 'lucide-react';
 
 
@@ -30,8 +31,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
+  // Modo de experiência: 'simple' (Essencial) ou 'advanced' (Imersivo)
+  // Lido do localStorage e atualizado via evento customizado disparado pelo AlunoPanel
+  const [experienceMode, setExperienceMode] = useState<'simple' | 'advanced'>(() => {
+    if (typeof window === 'undefined') return 'simple';
+    const normalizedEmail = userEmail.toLowerCase().trim() || 'sacrasub@gmail.com';
+    const saved = localStorage.getItem(`lms_experience_mode_${normalizedEmail}`);
+    return saved === 'advanced' ? 'advanced' : 'simple';
+  });
+
   // Listener para controle dinâmico do tour guiado (abre no início do tour e fecha ao concluir)
-  React.useEffect(() => {
+  useEffect(() => {
     const handleOpen = () => {
       setIsPinned(true);
       if (typeof window !== 'undefined') {
@@ -46,12 +56,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       }
     };
 
+    // Listener para mudança de modo (disparado pelo AlunoPanel ao alternar)
+    const handleModeChange = (e: Event) => {
+      const detail = (e as CustomEvent<'simple' | 'advanced'>).detail;
+      if (detail === 'simple' || detail === 'advanced') {
+        setExperienceMode(detail);
+      }
+    };
+
     window.addEventListener('lms_open_sidebar', handleOpen);
     window.addEventListener('lms_close_sidebar', handleClose);
+    window.addEventListener('lms_experience_mode_changed', handleModeChange);
 
     return () => {
       window.removeEventListener('lms_open_sidebar', handleOpen);
       window.removeEventListener('lms_close_sidebar', handleClose);
+      window.removeEventListener('lms_experience_mode_changed', handleModeChange);
     };
   }, []);
 
@@ -71,32 +91,33 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
                            userEmail.toLowerCase().includes('cristiano') || 
                            currentRole === 'admin';
 
-  const getNavItems = () => {
+  const getNavItems = (): { id: string; label: string; icon: React.ElementType; essential?: boolean }[] => {
     switch (currentRole) {
       case 'aluno':
         return [
-          { id: 'aluno-disciplinas', label: 'Minhas Disciplinas (Estudos)', icon: GraduationCap },
-          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar },
-          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
-          { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
-          { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Matéria)', icon: Layers },
-          { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame },
-          ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target }] : []),
-          { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle },
-          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark },
-          { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic },
-          { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box },
-          { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
-          { id: 'aluno-caderno', label: 'Caderno Cornell (Notas)', icon: BookOpen },
-          { id: 'aluno-checklist', label: 'Checklist & Dashboard AV', icon: CheckSquare },
-          { id: 'aluno-portal-2026', label: 'Portal & Calendário 2026.2', icon: Calendar },
-          { id: 'rpg-simulador', label: 'Simulador Pastoral RPG', icon: Drama },
-          { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare },
-          { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart },
-          { id: 'meu-portfolio', label: 'Meu Portfólio Reflexivo', icon: Archive },
-          { id: 'seletor-avaliacao', label: 'Trilha de Avaliação', icon: SlidersHorizontal },
-          { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library },
-          { id: 'central-ajuda', label: 'Central de Ajuda (Vídeos)', icon: HelpCircle },
+          { id: 'aluno-disciplinas', label: 'Minhas Disciplinas (Estudos)', icon: GraduationCap, essential: true },
+          { id: 'google-agenda', label: 'Google Agenda & Meet (Grade)', icon: Calendar, essential: true },
+          { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen, essential: true },
+          { id: 'aluno-caderno', label: 'Caderno Cornell (Notas)', icon: BookOpen, essential: true },
+          { id: 'aluno-checklist', label: 'Checklist & Dashboard AV', icon: CheckSquare, essential: true },
+          { id: 'aluno-portal-2026', label: 'Portal & Calendário 2026.2', icon: Calendar, essential: true },
+          { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare, essential: true },
+          { id: 'central-ajuda', label: 'Central de Ajuda (Vídeos)', icon: HelpCircle, essential: true },
+          // --- Modo Imersivo ---
+          { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target, essential: false },
+          { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass, essential: false },
+          { id: 'disciplina-detalhe', label: 'Hub da Disciplina (Matéria)', icon: Layers, essential: false },
+          { id: 'quatro-ds', label: 'Trilha dos Quatro Ds (Jesus)', icon: Flame, essential: false },
+          ...(isSacramentoUser ? [{ id: 'tcc-sacramento', label: 'Painel do TCC (Sacramento)', icon: Target, essential: false }] : []),
+          { id: 'pesquisa-tcc', label: 'Pesquisa de Campo (TCC)', icon: HelpCircle, essential: false },
+          { id: 'oficina-estudos', label: 'Oficina de Estudos (TCC)', icon: Bookmark, essential: false },
+          { id: 'homiletica', label: 'Estúdio de Homilética (Pares)', icon: Mic, essential: false },
+          { id: 'metaverso', label: 'Metaverso Teológico (3D)', icon: Box, essential: false },
+          { id: 'rpg-simulador', label: 'Simulador Pastoral RPG', icon: Drama, essential: false },
+          { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart, essential: false },
+          { id: 'meu-portfolio', label: 'Meu Portfólio Reflexivo', icon: Archive, essential: false },
+          { id: 'seletor-avaliacao', label: 'Trilha de Avaliação', icon: SlidersHorizontal, essential: false },
+          { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library, essential: false },
         ];
       case 'professor':
         return [
@@ -176,7 +197,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
     }
   };
 
-  const navItems = getNavItems();
+  const allNavItems = getNavItems() ?? [];
+
+  // Filtra itens com base no modo de experiência (apenas para o perfil 'aluno')
+  const navItems = currentRole === 'aluno' && experienceMode === 'simple'
+    ? allNavItems.filter((item) => item.essential !== false)
+    : allNavItems;
 
   return (
     <aside 
@@ -197,21 +223,39 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
               <h2 className="text-[11px] font-extrabold text-gray-400 dark:text-slate-500 uppercase tracking-wider truncate">
                 NAVEGAÇÃO ({currentRole.toUpperCase()})
               </h2>
-              <button
-                onClick={togglePin}
-                className={`p-1.5 rounded-xl transition-all flex items-center justify-center cursor-pointer ${
-                  isPinned 
-                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 shadow-2xs' 
-                    : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-700 dark:hover:text-slate-200'
-                }`}
-                title={isPinned ? 'Barra lateral fixada. Clique para ativar auto-contração no mouse.' : 'Clique para fixar a barra lateral aberta'}
-              >
-                {isPinned ? (
-                  <Pin className="w-3.5 h-3.5 fill-blue-600 dark:fill-blue-400 text-blue-600 dark:text-blue-400 rotate-45" />
-                ) : (
-                  <Pin className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1">
+                {/* Indicador visual do modo ativo (só para o aluno) */}
+                {currentRole === 'aluno' && (
+                  <span
+                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-black border transition-all ${
+                      experienceMode === 'advanced'
+                        ? 'bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-950/40 dark:text-violet-300 dark:border-violet-800'
+                        : 'bg-gray-100 text-gray-500 border-gray-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
+                    }`}
+                    title={experienceMode === 'advanced' ? 'Modo Imersivo ativo' : 'Modo Essencial ativo'}
+                  >
+                    {experienceMode === 'advanced'
+                      ? <><Sparkles className="w-2.5 h-2.5" /><span>Imersivo</span></>
+                      : <><LayoutGrid className="w-2.5 h-2.5" /><span>Essencial</span></>
+                    }
+                  </span>
                 )}
-              </button>
+                <button
+                  onClick={togglePin}
+                  className={`p-1.5 rounded-xl transition-all flex items-center justify-center cursor-pointer ${
+                    isPinned 
+                      ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 shadow-2xs' 
+                      : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-700 dark:hover:text-slate-200'
+                  }`}
+                  title={isPinned ? 'Barra lateral fixada. Clique para ativar auto-contração no mouse.' : 'Clique para fixar a barra lateral aberta'}
+                >
+                  {isPinned ? (
+                    <Pin className="w-3.5 h-3.5 fill-blue-600 dark:fill-blue-400 text-blue-600 dark:text-blue-400 rotate-45" />
+                  ) : (
+                    <Pin className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              </div>
             </>
           ) : (
             <div className="w-full flex justify-center">

@@ -77,6 +77,8 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     const next = experienceMode === 'simple' ? 'advanced' : 'simple';
     setExperienceMode(next);
     localStorage.setItem(`lms_experience_mode_${normalizedEmail}`, next);
+    // Notifica o Sidebar em tempo real via evento customizado (sem prop drilling)
+    window.dispatchEvent(new CustomEvent('lms_experience_mode_changed', { detail: next }));
   };
 
   const semesterWeeks = getSemester2026Weeks();
