@@ -8,6 +8,7 @@ import {
   Mail, Copy, Check, Sparkles, Filter, List, 
   Grid, ArrowRight, Share2, Award, Info, AlertCircle
 } from 'lucide-react';
+import { saveChecklistTasks } from '@/services/studentSyncService';
 
 export interface AvaliacaoEvento {
   id: string;
@@ -659,7 +660,8 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   const toggleChecklistStep = (eventoId: string, stepIdx: number) => {
     setChecklistMap((prev) => {
       const currentEvChecks = { ...(prev[eventoId] || {}) };
-      currentEvChecks[stepIdx] = !currentEvChecks[stepIdx];
+      const newDone = !currentEvChecks[stepIdx];
+      currentEvChecks[stepIdx] = newDone;
       const updated = { ...prev, [eventoId]: currentEvChecks };
       
       if (typeof window !== 'undefined') {
@@ -667,10 +669,80 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
         try {
           localStorage.setItem(storageKey, JSON.stringify(currentEvChecks));
         } catch (_) {}
+
+        // Sincroniza em tempo real com o Quadro Kanban (Checklist do Aluno)
+        try {
+          const kanbanKey = `lms_checklist_${normalizedEmail}`;
+          const rawKanban = localStorage.getItem(kanbanKey);
+          if (rawKanban) {
+            const kanbanTasks: any[] = JSON.parse(rawKanban);
+            let hasChanged = false;
+            const updatedKanban = kanbanTasks.map((t) => {
+              if (t.assessmentId === eventoId || t.id === eventoId) {
+                hasChanged = true;
+                const updatedSubtasks = t.subtasks ? t.subtasks.map((st: any, idx: number) =>
+                  idx === stepIdx ? { ...st, done: newDone } : st
+                ) : [];
+                const doneCount = updatedSubtasks.filter((st: any) => st.done).length;
+                const newStatus =
+                  doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+                    ? 'done'
+                    : doneCount > 0
+                    ? 'doing'
+                    : 'todo';
+                return { ...t, subtasks: updatedSubtasks, status: newStatus };
+              }
+              return t;
+            });
+
+            if (hasChanged) {
+              localStorage.setItem(kanbanKey, JSON.stringify(updatedKanban));
+              saveChecklistTasks(normalizedEmail, updatedKanban);
+            }
+          }
+        } catch (_) {}
+
+        // Dispara evento para atualização instantânea em componentes ativos
+        window.dispatchEvent(new CustomEvent('koinonia_assessment_progress_updated', {
+          detail: {
+            source: 'calendario',
+            assessmentId: eventoId,
+            stepIdx,
+            done: newDone,
+            allSteps: currentEvChecks
+          }
+        }));
       }
       return updated;
     });
   };
+
+  // Listener para sincronização bidirecional em tempo real vinda do Quadro Kanban
+  useEffect(() => {
+    const handleAssessmentSync = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (!customEvent.detail || customEvent.detail.source === 'calendario') return;
+      const { assessmentId } = customEvent.detail;
+      if (!assessmentId) return;
+
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) {
+          const checks = JSON.parse(raw);
+          setChecklistMap((prev) => ({
+            ...prev,
+            [assessmentId]: checks,
+          }));
+        }
+      } catch (_) {}
+    };
+
+    window.addEventListener('koinonia_assessment_progress_updated', handleAssessmentSync);
+    return () => {
+      window.removeEventListener('koinonia_assessment_progress_updated', handleAssessmentSync);
+    };
+  }, [normalizedEmail]);
 
   const getEventProgress = (evento: AvaliacaoEvento) => {
     const checks = checklistMap[evento.id] || {};

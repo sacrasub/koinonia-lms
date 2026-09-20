@@ -11,6 +11,7 @@ import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSy
 
 export interface KanbanTask {
   id: string;
+  assessmentId?: string;
   title: string;
   subject: string;
   professor: string;
@@ -23,6 +24,7 @@ export interface KanbanTask {
 }
 
 const defaultSemesterTasks: KanbanTask[] = [
+  // 1. Marco Inicial: Estágio Básico (Concluído)
   {
     id: 'LMS-001',
     title: 'Início das Aulas Semanais de Estágio Básico',
@@ -38,6 +40,7 @@ const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-001-2', text: 'Elaboração e registro das atividades práticas propostas', done: true },
     ],
   },
+  // 2. Marco Inicial: Alinhamento TCC I (Concluído)
   {
     id: 'LMS-002',
     title: 'Início do Prazo para Elaboração do Projeto',
@@ -53,22 +56,142 @@ const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-002-2', text: 'Início de contato com orientadores específicos por afinidade temática', done: true },
     ],
   },
+  // 3. Avaliação 1 Oficial: Plantação e Revitalização II (18/09)
   {
-    id: 'LMS-003',
-    title: 'Entrega Final do Projeto de Pesquisa (ABNT)',
-    subject: 'Trabalho de Conclusão de Curso I (TCC I)',
-    professor: 'Profª Gabriela Leal',
-    dueDate: '2026-09-04',
-    priority: 'Máxima',
-    type: 'TCC',
-    status: 'doing',
-    strategyNote: 'Prazo rígido de duas semanas: Capa, Sumário, Objetivos (Geral e 2-3 Específicos no infinitivo), Justificativa, Referencial Teórico e Cronograma em tabela. Introdução por último. Linguagem impessoal (3ª pessoa) e sem IA.',
+    id: 'aval-1-plantacao-freq',
+    assessmentId: 'aval-1-plantacao-freq',
+    title: 'Atividade Prática / Exercício de Fixação (Aula Gravada)',
+    subject: 'Plantação e Revitalização de Igrejas II',
+    professor: 'Profº Thácyto Lessa',
+    dueDate: '2026-09-18',
+    priority: 'Normal',
+    type: 'Atividade Modular',
+    status: 'todo',
+    strategyNote: 'Texto digitado em folha única com cabeçalho simples. Sem necessidade de capa ou folha de rosto ABNT. Envio por e-mail para thacyto@gmail.com até às 23:59.',
     subtasks: [
-      { id: 'st-003-1', text: 'Definir título provisório, justificativa e objetivos no infinitivo', done: true },
-      { id: 'st-003-2', text: 'Construir referencial teórico com normas ABNT e cronograma em tabela', done: false },
-      { id: 'st-003-3', text: 'Revisar impessoalidade (3ª pessoa), ausência de IA e anexos de pesquisa de campo', done: false },
+      { id: 'st-aval-1-0', text: 'Assistir ao vídeo da aula gravada disponibilizado pelo professor (~1h20 de duração).', done: false },
+      { id: 'st-aval-1-1', text: 'Responder às questões propostas sobre a aula no caderno ou bloco de notas.', done: false },
+      { id: 'st-aval-1-2', text: 'Digitar as respostas em um documento simples contendo apenas o cabeçalho (Nome, Disciplina e Data).', done: false },
+      { id: 'st-aval-1-3', text: 'Salvar e enviar o arquivo por e-mail para o docente impreterivelmente até às 23:59.', done: false },
     ],
   },
+  // 4. Avaliação 2 Oficial: História do Congregacionalismo (29/09)
+  {
+    id: 'aval-2-congregacionalismo-av1',
+    assessmentId: 'aval-2-congregacionalismo-av1',
+    title: 'Prova Escrita (AV1) + Leitura Obrigatória + Frequência',
+    subject: 'História do Congregacionalismo',
+    professor: 'Profº Ary Júnior',
+    dueDate: '2026-09-29',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: 'Uso obrigatório de câmera ligada durante toda a aula e na prova (18:30 às 20:25). Questão declaratória direta sobre leitura dos textos em PDF.',
+    subtasks: [
+      { id: 'st-aval-2-0', text: 'Acessar os links dos 4 a 6 textos em PDF compartilhados pelo professor no chat/drive da turma.', done: false },
+      { id: 'st-aval-2-1', text: 'Realizar a leitura integral dos textos abordando a Reforma Inglesa, Puritans, Separatistas e Westminster.', done: false },
+      { id: 'st-aval-2-2', text: 'Conectar-se no horário da aula no dia 29/09/2026 com a câmera aberta.', done: false },
+      { id: 'st-aval-2-3', text: 'Preencher a avaliação escrita e marcar a confirmação de leitura dos textos indicados.', done: false },
+    ],
+  },
+  // 5. Avaliação 3 Oficial: História do Pensamento Cristão II (29/09)
+  {
+    id: 'aval-3-pensamento-cristao-av1',
+    assessmentId: 'aval-3-pensamento-cristao-av1',
+    title: 'Trabalho Escrito de Pesquisa Acadêmica (AV1)',
+    subject: 'História do Pensamento Cristão II',
+    professor: 'Profº Hilário Bispo',
+    dueDate: '2026-09-29',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: 'Tema: Iluminismo e Modernidade (Racionalismo, Empirismo, Razão vs Revelação). Mínimo 5 a 6 páginas nas normas ABNT. Individual ou grupo até 3.',
+    subtasks: [
+      { id: 'st-aval-3-0', text: 'Definir a composição do trabalho (individual ou grupo de até 3 alunos).', done: false },
+      { id: 'st-aval-3-1', text: 'Revisar os slides fornecidos na primeira aula sobre a estrutura e os requisitos do trabalho.', done: false },
+      { id: 'st-aval-3-2', text: 'Estruturar a pesquisa cobrindo o tema Iluminismo e Modernidade (Descartes, Locke, Kant).', done: false },
+      { id: 'st-aval-3-3', text: 'Redigir o texto com no mínimo 5 a 6 páginas no padrão ABNT.', done: false },
+      { id: 'st-aval-3-4', text: 'Entregar o trabalho na data da prova (29/09/2026).', done: false },
+    ],
+  },
+  // 6. Avaliação 4 Oficial: Aconselhamento Bíblico II (30/09)
+  {
+    id: 'aval-4-aconselhamento-av1',
+    assessmentId: 'aval-4-aconselhamento-av1',
+    title: 'Prova Objetiva Online (Sem Trabalho Escrito)',
+    subject: 'Aconselhamento Bíblico II',
+    professor: 'Profº Uilian Santos',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '19:00 às 20:25 via Google Forms. Rigorosamente SEM CONSULTA. Restrito às informações dos slides 1 a 6 (Suficiência Bíblica, Jó, Ídolos e 5 Áreas). Correção automática.',
+    subtasks: [
+      { id: 'st-aval-4-0', text: 'Estudar os slides das aulas 1 a 6 disponibilizados na pasta da disciplina.', done: false },
+      { id: 'st-aval-4-1', text: 'Fixar tópicos centrais: Suficiência das Escrituras, Jó, Pecado e Ídolos, e 5 Áreas do Inventário.', done: false },
+      { id: 'st-aval-4-2', text: 'Acessar o link do Google Forms disponibilizado no dia 30/09/2026 no horário de aula.', done: false },
+      { id: 'st-aval-4-3', text: 'Preencher as questões objetivas e clicar em enviar para receber a nota automática.', done: false },
+    ],
+  },
+  // 7. Avaliação 5 Oficial: Direitos Humanos - Trabalho (30/09)
+  {
+    id: 'aval-5-direitos-humanos-trabalho',
+    assessmentId: 'aval-5-direitos-humanos-trabalho',
+    title: 'Trabalho Escrito Dissertativo / Pesquisa Individual (AV1)',
+    subject: 'Direitos Humanos',
+    professor: 'Profº Cleiton Barbirato',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: 'Até 1 lauda sobre "Desigualdade Social e Privilégios" e a Igreja (Times New Roman 12, esp. 1,5). Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de notas" até 23:59. Vale 2,0 pts.',
+    subtasks: [
+      { id: 'st-aval-5-0', text: 'Assistir ao vídeo indicado pelo professor ("A corrida da vida / Pergunta aos jovens sobre privilégios").', done: false },
+      { id: 'st-aval-5-1', text: 'Refletir sobre desigualdade social e o papel da Igreja como agente de transformação.', done: false },
+      { id: 'st-aval-5-2', text: 'Redigir texto dissertativo autoral de até 1 página em Times New Roman 12, espaçamento 1,5.', done: false },
+      { id: 'st-aval-5-3', text: 'Enviar arquivo para cleitonpb@gmail.com com assunto "Trabalho para composição de notas".', done: false },
+      { id: 'st-aval-5-4', text: 'Enviar antes das 23:59 do dia 30/09/2026.', done: false },
+    ],
+  },
+  // 8. Avaliação 6 Oficial: Direitos Humanos - Prova (30/09)
+  {
+    id: 'aval-6-direitos-humanos-prova',
+    assessmentId: 'aval-6-direitos-humanos-prova',
+    title: 'Prova Objetiva de Múltipla Escolha (AV1)',
+    subject: 'Direitos Humanos',
+    professor: 'Profº Cleiton Barbirato',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '20:30 no horário da aula. Vale 8,0 pontos. Múltipla escolha via Google Forms sem consulta a materiais ou IA.',
+    subtasks: [
+      { id: 'st-aval-6-0', text: 'Estudar a apostila digital composta por todos os slides da disciplina.', done: false },
+      { id: 'st-aval-6-1', text: 'Revisar: Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Pirâmide de Kelsen.', done: false },
+      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms no dia 30/09/2026 às 20:30.', done: false },
+      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: false },
+    ],
+  },
+  // 9. Avaliação 7 Oficial: Novo Testamento III (01/10)
+  {
+    id: 'aval-7-nt3-epistolas-av1',
+    assessmentId: 'aval-7-nt3-epistolas-av1',
+    title: 'Prova Objetiva (AV1)',
+    subject: 'Novo Testamento III - Epístolas Gerais',
+    professor: 'Profº Marcio Leal',
+    dueDate: '2026-10-01',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '20:25 durante a aula via Google Forms. Conteúdo: anotações de aula e "Introdução ao Novo Testamento" (Carson/Moo/Morris) sobre Hebreus, Tiago, 1 e 2 Pedro.',
+    subtasks: [
+      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: false },
+      { id: 'st-aval-7-1', text: 'Estudar as introduções especiais, autoria, destinatários e propósitos das epístolas no Carson.', done: false },
+      { id: 'st-aval-7-2', text: 'Acessar o formulário no dia 01/10/2026 no horário da aula (20:25).', done: false },
+      { id: 'st-aval-7-3', text: 'Preencher o exame e enviar.', done: false },
+    ],
+  },
+  // 10. Marco Eclesiástico: Posse Pastoral Pr. Uilian Santos (17/10)
   {
     id: 'LMS-004',
     title: 'Cerimônia de Posse Pastoral do Pr. Uilian Santos',
@@ -83,22 +206,27 @@ const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-004-1', text: 'Intercessão e comunhão eclesiástica da comunidade acadêmica', done: false },
     ],
   },
+  // 11. Avaliação 8 Oficial: Ética Cristã - Seminário (22/10)
   {
-    id: 'LMS-005',
-    title: 'Abertura dos Seminários: Os Dez Mandamentos',
+    id: 'aval-8-etica-crista-seminario',
+    assessmentId: 'aval-8-etica-crista-seminario',
+    title: 'Seminário em Grupo + Apresentação Oral Individual na Tribuna',
     subject: 'Ética Cristã',
     professor: 'Profª Karoline Evangelista',
     dueDate: '2026-10-22',
     priority: 'Máxima',
     type: 'Seminário em Grupo',
     status: 'todo',
-    strategyNote: 'Início das apresentações em equipes (duplas/trios) sobre os Dez Mandamentos com fundamentação no Catecismo Maior de Westminster e Norman Geisler (30 min por equipe, 10 min por orador no cronômetro).',
+    strategyNote: '22/10 a 19/11 nas quintas-feiras (18:45 às 20:25). 30 min por equipe / 10 min por orador com cronômetro. Tema: Dez Mandamentos (Catecismo Maior de Westminster + Norman Geisler).',
     subtasks: [
-      { id: 'st-005-1', text: 'Organização da equipe e divisão do tema dos mandamentos', done: false },
-      { id: 'st-005-2', text: 'Estudo do Catecismo Maior de Westminster e confecção dos slides', done: false },
-      { id: 'st-005-3', text: 'Ensaio cronometrado de oratória e desenvoltura no púlpito (10 min)', done: false },
+      { id: 'st-aval-8-0', text: 'Reunir-se com a equipe definida em sala e confirmar o mandamento sorteado (1º ao 10º Mandamento).', done: false },
+      { id: 'st-aval-8-1', text: 'Estudar o trecho correspondente do Catecismo Maior de Westminster (deveres e pecados proibidos).', done: false },
+      { id: 'st-aval-8-2', text: 'Consultar "Ética Cristã" de Norman Geisler para enriquecer com dilemas morais contemporâneos.', done: false },
+      { id: 'st-aval-8-3', text: 'Montar os slides da apresentação em conjunto.', done: false },
+      { id: 'st-aval-8-4', text: 'Treinar a exposição individual com cronômetro para não ultrapassar 10 minutos por orador.', done: false },
     ],
   },
+  // 12. Marco: Viagem Pr. Márcio Leal para Malásia (24/10)
   {
     id: 'LMS-006',
     title: 'Viagem do Pr. Márcio Leal para a Malásia',
@@ -113,162 +241,82 @@ const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-006-1', text: 'Acompanhar comunicados oficiais e atividades compensatórias', done: false },
     ],
   },
+  // 13. Avaliação 9 Oficial: Plantação II - Resumo Treliça e Videira (27/11)
   {
-    id: 'LMS-007',
-    title: 'Encerramento dos Seminários: Os Dez Mandamentos',
-    subject: 'Ética Cristã',
-    professor: 'Profª Karoline Evangelista',
-    dueDate: '2026-11-19',
-    priority: 'Máxima',
-    type: 'Seminário em Grupo',
-    status: 'todo',
-    strategyNote: 'Conclusão das bancas de apresentações sobre os Dez Mandamentos e consolidação das notas individuais (V1 + V2).',
-    subtasks: [
-      { id: 'st-007-1', text: 'Envio final dos slides e consolidação das notas individuais', done: false },
-    ],
-  },
-  {
-    id: 'LMS-008',
-    title: 'Entrega do Resumo de "A Treliça e a Videira" (AV1)',
+    id: 'aval-9-plantacao-resumo-livro',
+    assessmentId: 'aval-9-plantacao-resumo-livro',
+    title: 'Trabalho Escrito de Resumo de Livro Capítulo por Capítulo (AV1)',
     subject: 'Plantação e Revitalização de Igrejas II',
     professor: 'Profº Thácyto Lessa',
     dueDate: '2026-11-27',
     priority: 'Máxima',
     type: 'Resumo Crítico',
     status: 'todo',
-    strategyNote: 'Envio do resumo detalhado capítulo por capítulo do livro "A Treliça e a Videira" (Marshall & Payne). Limite rígido de 1 página por capítulo (12 capítulos = 12 folhas). Enviar para thacyto@gmail.com.',
+    strategyNote: 'Envio do resumo detalhado capítulo por capítulo do livro "A Treliça e a Videira" (Marshall & Payne). Limite rígido de 1 página por capítulo (12 capítulos = 12 folhas). Enviar para thacyto@gmail.com até 19:00.',
     subtasks: [
-      { id: 'st-008-1', text: 'Leitura completa dos 12 capítulos da obra', done: false },
-      { id: 'st-008-2', text: 'Redação sintética de 1 página por capítulo (total de 12 páginas)', done: false },
-      { id: 'st-008-3', text: 'Envio em PDF/DOCX para thacyto@gmail.com', done: false },
+      { id: 'st-aval-9-0', text: 'Realizar a leitura atenta dos 12 capítulos do livro "A Treliça e a Videira".', done: false },
+      { id: 'st-aval-9-1', text: 'Sintetizar a ideia central de cada capítulo (treliça/estrutura vs videira/pessoas e crescimento orgânico).', done: false },
+      { id: 'st-aval-9-2', text: 'Redigir o resumo respeitando rigorosamente o limite de 1 página para cada capítulo (12 páginas).', done: false },
+      { id: 'st-aval-9-3', text: 'Formatar o trabalho e enviá-lo em formato PDF/Word por e-mail para thacyto@gmail.com.', done: false },
     ],
   },
+  // 14. Avaliação 10 Oficial: Plantação II - Prova AV2 (27/11)
   {
-    id: 'LMS-009',
-    title: 'Realização da Prova Teórica Online (AV2)',
+    id: 'aval-10-plantacao-prova-av2',
+    assessmentId: 'aval-10-plantacao-prova-av2',
+    title: 'Prova Objetiva Online (AV2)',
     subject: 'Plantação e Revitalização de Igrejas II',
     professor: 'Profº Thácyto Lessa',
     dueDate: '2026-11-27',
     priority: 'Máxima',
     type: 'Prova Objetiva',
     status: 'todo',
-    strategyNote: 'Prova por link de formulário abordando os Quatro Ps da Revitalização (Pregar, Piedade, Pastorear, Perseverar) e Treliça/Videira. Consulta 100% autorizada a anotações e slides.',
+    strategyNote: '19:00 (horário da aula). Prova por link de formulário abordando os Quatro Ps da Revitalização (Pregar, Piedade, Pastorear, Perseverar) e Treliça/Videira. Consulta autorizada a anotações e slides.',
     subtasks: [
-      { id: 'st-009-1', text: 'Revisar conceitos dos Quatro Ps e slides unificados', done: false },
-      { id: 'st-009-2', text: 'Preencher o formulário oficial da AV2', done: false },
+      { id: 'st-aval-10-0', text: 'Revisar todos os slides fornecidos durante o semestre.', done: false },
+      { id: 'st-aval-10-1', text: 'Estudar os tópicos centrais: 9 marcas de uma igreja saudável, 4 Ps e tipos de igreja.', done: false },
+      { id: 'st-aval-10-2', text: 'Acessar o link do formulário disponibilizado no dia 27/11/2026 às 19:00.', done: false },
+      { id: 'st-aval-10-3', text: 'Responder às questões objetivas e submeter.', done: false },
     ],
   },
+  // 15. Avaliação 11 Oficial: Afro-Brasileira e Indígena (28/11)
   {
-    id: 'LMS-010',
-    title: 'Encerramento das Provas AV1 e AV2 (Google Forms)',
-    subject: 'Aconselhamento Bíblico II',
-    professor: 'Profº Uilian Santos',
-    dueDate: '2026-12-15',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: 'Aplicação de 2 avaliações teóricas no Google Forms com correção e notas instantâneas. Aborda suficiência bíblica, Jó, teodiceia e "Ego Transformado" (Keller). Sem trabalhos escritos; focado nos slides.',
-    subtasks: [
-      { id: 'st-010-1', text: 'Leitura atenta do livreto "Ego Transformado" (Timothy Keller)', done: false },
-      { id: 'st-010-2', text: 'Revisão minuciosa dos slides de aula para AV1 e AV2', done: false },
-      { id: 'st-010-3', text: 'Preenchimento e envio dos formulários das provas', done: false },
-    ],
-  },
-  {
-    id: 'LMS-011',
-    title: 'Consolidação das Avaliações V1 e V2',
-    subject: 'Direitos Humanos',
-    professor: 'Profº Cleiton Barbirato',
-    dueDate: '2026-12-15',
+    id: 'aval-11-afro-indigena-final',
+    assessmentId: 'aval-11-afro-indigena-final',
+    title: 'Trabalho Escrito / Produção Individual Final Aplicada',
+    subject: 'História e Cultura Afro-Brasileira e Indígena',
+    professor: 'Profº Alexsandro de Oliveira Silva',
+    dueDate: '2026-11-28',
     priority: 'Máxima',
     type: 'Trabalho Escrito',
     status: 'todo',
-    strategyNote: 'V1 (30/09/2026): Dissertação de até 1 lauda sobre Desigualdade Social e Privilégios (peso 2,0) + Prova Forms (peso 8,0). V2 (25/11/2026): Prova Forms (peso 8,0) + Pesquisa escrita (peso 2,0). Média >= 7,0 para aprovação.',
+    strategyNote: 'Extensão: 2 laudas em 3 partes (descrição do problema na igreja/missão, análise bíblico-teológica com 2 autores e proposta concreta de ação). Submeter no AVA até 28/11/2026.',
     subtasks: [
-      { id: 'st-011-1', text: 'Redigir dissertação de até 1 lauda sobre "Desigualdade Social e Privilégios" e a Igreja como agente transformador (Times New Roman 12, esp. 1,5)', done: false },
-      { id: 'st-011-2', text: 'Enviar dissertação da AV1 para cleitonpb@gmail.com com assunto "Trabalho para composição de nota" até 30/09/2026 (Valor: 2,0 pts)', done: false },
-      { id: 'st-011-3', text: 'Realizar prova objetiva no Google Forms sem consulta na data da AV1 (Valor: 8,0 pts)', done: false },
-      { id: 'st-011-4', text: 'Preparação para as etapas da V2 (Prova Forms peso 8 + Trabalho peso 2 em 25/11)', done: false },
+      { id: 'st-aval-11-0', text: 'Assistir às 4 videoaulas gravadas do curso EAD na pasta oficial.', done: false },
+      { id: 'st-aval-11-1', text: 'Selecionar uma situação real ou caso prático envolvendo questões étnico-raciais ou indígenas.', done: false },
+      { id: 'st-aval-11-2', text: 'Redigir texto de 2 laudas com fundamentação bíblica citando no mínimo 2 autores e proposta prática.', done: false },
+      { id: 'st-aval-11-3', text: 'Submeter o arquivo no ambiente virtual da UIECB até 28/11/2026.', done: false },
     ],
   },
+  // 16. Avaliação 12 Oficial: TCC I - Artigo Científico Final (04/12)
   {
-    id: 'LMS-012',
-    title: 'Fechamento de Notas da Unidade I e II',
-    subject: 'História do Congregacionalismo',
-    professor: 'Profº Ary Júnior',
-    dueDate: '2026-12-15',
-    priority: 'Máxima',
-    type: 'Provas e Participação',
-    status: 'todo',
-    strategyNote: 'Fechamento das duas unidades: Prova escrita (0 a 8 pts) + Frequência e participação ativa com câmeras ligadas (1 pt) + Confirmação ética de leitura obrigatória (1 pt).',
-    subtasks: [
-      { id: 'st-012-1', text: 'Leitura dos textos obrigatórios e da obra de Hidauro Campos', done: false },
-      { id: 'st-012-2', text: 'Participação ativa com câmeras ligadas em todas as transmissões', done: false },
-      { id: 'st-012-3', text: 'Realização das provas escritas da Unidade 1 e Unidade 2', done: false },
-    ],
-  },
-  {
-    id: 'LMS-013',
-    title: 'Entrega da AV1 (Trabalho ABNT) e AV2 (Prova 10 Questões)',
-    subject: 'História do Pensamento Cristão II',
-    professor: 'Profº Hilário Bispo',
-    dueDate: '2026-12-15',
-    priority: 'Máxima',
-    type: 'Trabalho Escrito',
-    status: 'todo',
-    strategyNote: 'Entrega de trabalho acadêmico de pesquisa sobre "Iluminismo e a Modernidade" em ABNT (AV1 - individual/trio). Prova objetiva de 10 questões no Google Forms com resultado automático (AV2).',
-    subtasks: [
-      { id: 'st-013-1', text: 'Pesquisa sobre conflito razão/revelação e redação nas normas ABNT', done: false },
-      { id: 'st-013-2', text: 'Envio da pesquisa acadêmica da AV1', done: false },
-      { id: 'st-013-3', text: 'Realização da prova objetiva de 10 questões no Google Forms (AV2)', done: false },
-    ],
-  },
-  {
-    id: 'LMS-014',
-    title: 'Avaliação de 150 Questões Discursivas e Orais',
-    subject: 'Novo Testamento III - Epístolas Gerais',
-    professor: 'Profº Marcio Leal',
-    dueDate: '2026-12-15',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: 'Formulário contendo 150 questões de natureza teológica e exegética sobre Epístolas Gerais (foco em Hebreus e livro de Carson). Câmeras ligadas e anotações ricas das aulas verbais.',
-    subtasks: [
-      { id: 'st-014-1', text: 'Manter anotações ricas e ativas durante as transmissões ao vivo', done: false },
-      { id: 'st-014-2', text: 'Estudo do livro "Introdução ao Novo Testamento" (Carson/Moo/Morris)', done: false },
-      { id: 'st-014-3', text: 'Preenchimento da bateria de 150 questões no Google Forms', done: false },
-    ],
-  },
-  {
-    id: 'LMS-015',
-    title: 'Entrega Final do Artigo Científico Redigido',
-    subject: 'Trabalho de Conclusão de Curso I (TCC I)',
-    professor: 'Profª Gabriela Leal',
-    dueDate: '2026-12-15',
+    id: 'aval-12-tcc1-artigo-final',
+    assessmentId: 'aval-12-tcc1-artigo-final',
+    title: 'Projeto de Pesquisa & Artigo Científico Final',
+    subject: 'TCC I - Trabalho de Conclusão de Curso I',
+    professor: 'Profª Gabriela Leal (Márcio Leal)',
+    dueDate: '2026-12-04',
     priority: 'Máxima',
     type: 'TCC',
     status: 'todo',
-    strategyNote: 'Fechamento da redação final do projeto de pesquisa estruturado e texto integral do artigo científico. Sem provas tradicionais; nota por progresso contínuo e envio final.',
+    strategyNote: 'Artigo Científico individual (20 a 25 páginas ABNT/FMB). Linguagem impessoal na 3ª pessoa. Estrutura completa: Capa, Resumo PT/EN, Introdução, Metodologia, Discussão, Considerações e Referências. Sem IA.',
     subtasks: [
-      { id: 'st-015-1', text: 'Desenvolvimento do artigo sob orientação docente especializada', done: false },
-      { id: 'st-015-2', text: 'Redação científica impessoal (3ª pessoa) e revisão final ABNT', done: false },
-      { id: 'st-015-3', text: 'Entrega do artigo completo e anexos de pesquisa de campo', done: false },
-    ],
-  },
-  {
-    id: 'LMS-016',
-    title: 'Produção e Envio da Atividade Modular (4ª Aula)',
-    subject: 'História da Cultura Afro Brasileira e Indígena',
-    professor: 'Profº Alexsandro',
-    dueDate: '2026-11-28',
-    priority: 'Máxima',
-    type: 'Atividade Modular',
-    status: 'todo',
-    strategyNote: 'Matéria modular com 4 aulas gravadas na pasta oficial do Google Drive. Na 4ª aula, o Profº Alexsandro apresenta e explica a atividade que deve ser produzida e enviada para o seu e-mail até o final do período (28/11/2026).',
-    subtasks: [
-      { id: 'st-016-1', text: 'Assistir às 4 aulas gravadas na pasta oficial do Google Drive', done: false },
-      { id: 'st-016-2', text: 'Anotar as orientações da atividade avaliativa explicadas na 4ª aula', done: false },
-      { id: 'st-016-3', text: 'Produzir a atividade e enviar para o e-mail do Profº Alexsandro até 28/11/2026', done: false },
+      { id: 'st-aval-12-0', text: 'Confirmar o convite ao orientador docente com afinidade temática.', done: false },
+      { id: 'st-aval-12-1', text: 'Estruturar o Projeto de Pesquisa (Tema, Problema, Justificativa, Objetivo Geral e Específicos).', done: false },
+      { id: 'st-aval-12-2', text: 'Redigir as seções do Artigo na ordem metodológica: Metodologia, Resultados e Discussão e Considerações Finais.', done: false },
+      { id: 'st-aval-12-3', text: 'Redigir ao final a Introdução e o Resumo (15-20 linhas com palavras-chave em PT/EN).', done: false },
+      { id: 'st-aval-12-4', text: 'Formatar as referências em ordem alfabética segundo o padrão ABNT/FMB e ajustar paginação.', done: false },
+      { id: 'st-aval-12-5', text: 'Submeter o artigo finalizado à coordenação/orientação até o encerramento do semestre.', done: false },
     ],
   },
 ];
@@ -302,6 +350,41 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   const showNotification = (msg: string) => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 3500);
+  };
+
+  // Helper para sincronizar um array de KanbanTask com os checklists do localStorage
+  const syncTasksWithLocalChecklists = (taskList: KanbanTask[]): KanbanTask[] => {
+    if (typeof window === 'undefined') return taskList;
+    return taskList.map((task) => {
+      if (!task.assessmentId) return task;
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${task.assessmentId}`;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) {
+          const checks: Record<number, boolean> = JSON.parse(raw);
+          const updatedSubtasks = task.subtasks.map((st, idx) => ({
+            ...st,
+            done: checks[idx] !== undefined ? !!checks[idx] : st.done,
+          }));
+          const doneCount = updatedSubtasks.filter((st) => st.done).length;
+          const status: 'todo' | 'doing' | 'done' =
+            doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+              ? 'done'
+              : doneCount > 0
+              ? 'doing'
+              : 'todo';
+          return { ...task, subtasks: updatedSubtasks, status };
+        } else {
+          // Se não há dados no localStorage, grava o estado atual das subtasks
+          const initialChecks: Record<number, boolean> = {};
+          task.subtasks.forEach((st, idx) => {
+            initialChecks[idx] = st.done;
+          });
+          localStorage.setItem(storageKey, JSON.stringify(initialChecks));
+        }
+      } catch (_) {}
+      return task;
+    });
   };
 
   const generateWhatsAppAssessmentsText = () => {
@@ -397,14 +480,70 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   useEffect(() => {
     const unsubscribe = subscribeToStudentSync(normalizedEmail, (data) => {
       if (data.checklistTasks && Array.isArray(data.checklistTasks) && data.checklistTasks.length > 0) {
-        setTasks(data.checklistTasks);
+        // Verifica se a lista salva na nuvem é legada (sem assessmentId nas avaliações oficiais)
+        const hasAssessmentIds = data.checklistTasks.some((t: any) => !!t.assessmentId);
+        if (!hasAssessmentIds) {
+          // Atualiza para a lista oficial vinculada aos 12 prazos, mantendo tarefas personalizadas do aluno
+          const customTasks = data.checklistTasks.filter((t: any) => !t.id.startsWith('LMS-'));
+          const upgraded = [...defaultSemesterTasks, ...customTasks];
+          const synced = syncTasksWithLocalChecklists(upgraded);
+          setTasks(synced);
+          saveChecklistTasks(normalizedEmail, synced);
+        } else {
+          const synced = syncTasksWithLocalChecklists(data.checklistTasks);
+          setTasks(synced);
+        }
       } else {
         // Se a nuvem não tiver tarefas gravadas para este aluno, inicializa com o padrão oficial e grava na nuvem
-        saveChecklistTasks(normalizedEmail, defaultSemesterTasks);
+        const synced = syncTasksWithLocalChecklists(defaultSemesterTasks);
+        setTasks(synced);
+        saveChecklistTasks(normalizedEmail, synced);
       }
     });
 
     return () => unsubscribe();
+  }, [normalizedEmail]);
+
+  // Listener para sincronização bidirecional em tempo real com o CalendarioAcademico
+  useEffect(() => {
+    const handleAssessmentSync = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (!customEvent.detail || customEvent.detail.source === 'kanban') return;
+      const { assessmentId } = customEvent.detail;
+      if (!assessmentId) return;
+
+      setTasks((prev) => {
+        const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
+        let checks: Record<number, boolean> = {};
+        try {
+          const raw = localStorage.getItem(storageKey);
+          if (raw) checks = JSON.parse(raw);
+        } catch (_) {}
+
+        return prev.map((t) => {
+          if (t.assessmentId === assessmentId) {
+            const updatedSubtasks = t.subtasks.map((st, idx) => ({
+              ...st,
+              done: checks[idx] !== undefined ? !!checks[idx] : st.done,
+            }));
+            const doneCount = updatedSubtasks.filter((st) => st.done).length;
+            const status: 'todo' | 'doing' | 'done' =
+              doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+                ? 'done'
+                : doneCount > 0
+                ? 'doing'
+                : 'todo';
+            return { ...t, subtasks: updatedSubtasks, status };
+          }
+          return t;
+        });
+      });
+    };
+
+    window.addEventListener('koinonia_assessment_progress_updated', handleAssessmentSync);
+    return () => {
+      window.removeEventListener('koinonia_assessment_progress_updated', handleAssessmentSync);
+    };
   }, [normalizedEmail]);
 
   const saveTasks = (newTasks: KanbanTask[]) => {
@@ -413,30 +552,120 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   };
 
   const handleResetToOfficialSemester = () => {
-    if (confirm('Deseja sincronizar e restaurar a lista oficial de 15 marcos acadêmicos e avaliações do semestre 2026.2? Suas tarefas personalizadas serão preservadas.')) {
+    if (confirm('Deseja sincronizar e restaurar a lista oficial de 16 marcos acadêmicos e avaliações do semestre 2026.2? Suas tarefas personalizadas serão preservadas.')) {
       // Mescla tarefas personalizadas com a lista oficial
       const customTasks = tasks.filter((t) => !defaultSemesterTasks.some((dt) => dt.id === t.id));
       const merged = [...defaultSemesterTasks, ...customTasks];
-      saveTasks(merged);
-      showNotification('✓ Lista oficial do semestre 2026.2 sincronizada com a Nuvem e seu perfil!');
+      const synced = syncTasksWithLocalChecklists(merged);
+      saveTasks(synced);
+      showNotification('✓ Lista oficial do semestre 2026.2 sincronizada com a Nuvem e o Calendário!');
     }
   };
 
   const handleStatusChange = (taskId: string, newStatus: 'todo' | 'doing' | 'done') => {
-    const updated = tasks.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t));
+    let affectedAssessmentId: string | undefined;
+    let affectedChecks: Record<number, boolean> | null = null;
+
+    const updated = tasks.map((t) => {
+      if (t.id === taskId) {
+        let updatedSubtasks = t.subtasks;
+        if (newStatus === 'done') {
+          updatedSubtasks = t.subtasks.map((st) => ({ ...st, done: true }));
+        } else if (newStatus === 'todo') {
+          updatedSubtasks = t.subtasks.map((st) => ({ ...st, done: false }));
+        }
+
+        if (t.assessmentId) {
+          affectedAssessmentId = t.assessmentId;
+          const checks: Record<number, boolean> = {};
+          updatedSubtasks.forEach((st, idx) => {
+            checks[idx] = st.done;
+          });
+          affectedChecks = checks;
+        }
+
+        return { ...t, status: newStatus, subtasks: updatedSubtasks };
+      }
+      return t;
+    });
+
+    if (affectedAssessmentId && affectedChecks) {
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${affectedAssessmentId}`;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(affectedChecks));
+      } catch (_) {}
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('koinonia_assessment_progress_updated', {
+            detail: {
+              source: 'kanban',
+              assessmentId: affectedAssessmentId,
+              status: newStatus,
+              allSteps: affectedChecks,
+            },
+          })
+        );
+      }
+    }
+
     saveTasks(updated);
   };
 
   const handleToggleSubtask = (taskId: string, subtaskId: string) => {
+    let affectedAssessmentId: string | undefined;
+    let affectedStepIdx = -1;
+    let affectedNewDone = false;
+
     const updated = tasks.map((t) => {
       if (t.id === taskId) {
-        const updatedSubtasks = t.subtasks.map((st) =>
-          st.id === subtaskId ? { ...st, done: !st.done } : st
+        const stepIdx = t.subtasks.findIndex((st) => st.id === subtaskId);
+        const updatedSubtasks = t.subtasks.map((st, idx) =>
+          idx === stepIdx ? { ...st, done: !st.done } : st
         );
-        return { ...t, subtasks: updatedSubtasks };
+        const doneCount = updatedSubtasks.filter((st) => st.done).length;
+        const newStatus: 'todo' | 'doing' | 'done' =
+          doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+            ? 'done'
+            : doneCount > 0
+            ? 'doing'
+            : 'todo';
+
+        if (t.assessmentId && stepIdx !== -1) {
+          affectedAssessmentId = t.assessmentId;
+          affectedStepIdx = stepIdx;
+          affectedNewDone = updatedSubtasks[stepIdx].done;
+        }
+
+        return { ...t, subtasks: updatedSubtasks, status: newStatus };
       }
       return t;
     });
+
+    // Se pertence a uma avaliação oficial, sincroniza com localStorage e dispara evento para o CalendarioAcademico
+    if (affectedAssessmentId && affectedStepIdx !== -1) {
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${affectedAssessmentId}`;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        const checks = raw ? JSON.parse(raw) : {};
+        checks[affectedStepIdx] = affectedNewDone;
+        localStorage.setItem(storageKey, JSON.stringify(checks));
+      } catch (_) {}
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('koinonia_assessment_progress_updated', {
+            detail: {
+              source: 'kanban',
+              assessmentId: affectedAssessmentId,
+              stepIdx: affectedStepIdx,
+              done: affectedNewDone,
+            },
+          })
+        );
+      }
+    }
+
     saveTasks(updated);
   };
 
