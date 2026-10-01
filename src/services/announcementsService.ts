@@ -117,7 +117,7 @@ export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
     author_email: 'pr.marcioleal@gmail.com',
     avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
     title: 'Síntese Exegética e Introdução às Epístolas Gerais',
-    message: 'Notas e slides preparatórios para acompanhamento das discussões e elaboração das 150 questões discursivas.',
+    message: 'Notas e slides preparatórios para acompanhamento das discussões e realização da avaliação objetiva online via Google Forms (Hebreus a 2 Pedro).',
     link_url: 'https://drive.google.com/open?id=1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P&usp=drive_copy',
     created_at: '2026-08-20T19:00:00Z',
     target_date: 'Quinta-feira às 20:35',

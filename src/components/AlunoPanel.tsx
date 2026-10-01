@@ -54,6 +54,7 @@ import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { UserProfileModal } from '@/components/UserProfileModal';
 import { trackEvent } from '@/services/telemetryService';
 import { CalendarioAcademico } from '@/components/CalendarioAcademico';
+import { AVALIACOES_2026_2 } from '@/data/avaliacoes2026_2';
 
 interface AlunoPanelProps {
   userEmail?: string;
@@ -2449,149 +2450,141 @@ href={nextAulaToday.google_meet_url}
             <div className="p-6 space-y-4 bg-white max-h-[80vh] overflow-y-auto">
               {selectedAvaliacao.disciplina.toLowerCase().includes('direitos humanos') && selectedAvaliacao.tipo === 'AV1' ? (
                 <div className="space-y-4">
-                  {/* Banner de Destaque com Valor e Prazo */}
-                  <div className="p-4 rounded-xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-xs space-y-2">
+                  {/* BANNER 1: PROVA OBJETIVA PRORROGADA (PESO 8,0) */}
+                  <div className="p-4 rounded-xl bg-amber-500/15 border-2 border-amber-500 text-amber-950 text-xs space-y-2 shadow-sm">
                     <div className="flex justify-between items-center flex-wrap gap-2">
                       <span className="font-extrabold text-sm text-amber-900 flex items-center gap-1.5">
-                        <FileText className="w-4 h-4 text-amber-600" />
-                        Trabalho para Composição de Nota (AV1)
+                        <AlertCircle className="w-4 h-4 text-amber-600" />
+                        📢 PROVA OBJETIVA AV1 — PRAZO PRORROGADO!
                       </span>
                       <span className="px-2.5 py-1 bg-amber-600 text-white font-black text-xs rounded-lg shadow-xs">
-                        Valor: 02 Pontos na AV01
+                        Valor: 08 Pontos (Forms)
                       </span>
                     </div>
-                    <p className="text-amber-900 leading-relaxed font-medium">
-                      A nota da AV1 é composta por: <strong>Prova Objetiva Forms (08 pontos)</strong> + <strong>Trabalho de Dissertação Individual (02 pontos)</strong>.
+                    <p className="text-amber-950 leading-relaxed font-semibold">
+                      O prazo oficial para a Prova Objetiva AV1 via Google Forms foi estendido! Prova 100% de múltipla escolha e rigorosamente sem consulta.
                     </p>
-                    <div className="flex items-center justify-between pt-2 border-t border-amber-200 text-xs font-bold text-amber-950">
-                      <span>Data Final Improrrogável:</span>
-                      <span className="px-2 py-0.5 bg-white border border-amber-300 rounded text-red-700 font-black">
-                        🗓️ 30/09/2026
+                    <div className="flex items-center justify-between pt-2 border-t border-amber-300 text-xs font-bold text-amber-950">
+                      <span>Novo Prazo Limite:</span>
+                      <span className="px-2.5 py-1 bg-white border border-amber-400 rounded-lg text-emerald-800 font-black">
+                        🗓️ 04/10/2026 (Domingo) às 23:59
                       </span>
                     </div>
                   </div>
 
-                  {/* Diretrizes Oficiais do Trabalho (Slide 15 - Aula 3) */}
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 space-y-3">
-                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                      <CheckSquare className="w-3.5 h-3.5 text-blue-600" />
-                      Regras de Elaboração da Dissertação
-                    </h4>
-
-                    <div className="space-y-2 text-xs text-slate-800">
-                      <p className="p-2.5 bg-white rounded-lg border border-slate-200 leading-relaxed">
-                        ✍️ <strong>Extensão Máxima:</strong> Redigir uma dissertação de, <strong>no máximo, uma lauda</strong>.
-                      </p>
-
-                      <div className="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1.5">
-                        <p className="font-bold text-slate-900">
-                          🎯 Tema:
-                        </p>
-                        <p className="text-slate-700 italic">
-                          "Desigualdade social e privilégios conforme trabalhado no vídeo da aula do dia 26/09/2026."
-                        </p>
-                        <p className="font-semibold text-blue-900 pt-1">
-                          Discutir no texto a importância da igreja como agente de transformação social.
-                        </p>
-                      </div>
-
-                      <div className="p-2.5 bg-white rounded-lg border border-slate-200 grid grid-cols-3 gap-2 text-center text-[11px] font-semibold">
-                        <div className="p-1.5 bg-slate-50 rounded border border-slate-100">
-                          <span className="block text-slate-500 text-[10px]">Fonte</span>
-                          Times New Roman
-                        </div>
-                        <div className="p-1.5 bg-slate-50 rounded border border-slate-100">
-                          <span className="block text-slate-500 text-[10px]">Tamanho</span>
-                          12
-                        </div>
-                        <div className="p-1.5 bg-slate-50 rounded border border-slate-100">
-                          <span className="block text-slate-500 text-[10px]">Espaçamento</span>
-                          1,5
-                        </div>
-                      </div>
+                  {/* BANNER 2: TRABALHO DISSERTATIVO AV1 (PESO 2,0) */}
+                  <div className="p-4 rounded-xl bg-slate-100 border border-slate-300 text-slate-800 text-xs space-y-2">
+                    <div className="flex justify-between items-center flex-wrap gap-2">
+                      <span className="font-extrabold text-sm text-slate-800 flex items-center gap-1.5">
+                        <FileText className="w-4 h-4 text-slate-600" />
+                        Trabalho Dissertativo AV1 (1 lauda)
+                      </span>
+                      <span className="px-2.5 py-0.5 bg-slate-200 text-slate-700 font-bold text-xs rounded border border-slate-300">
+                        Status: Encerrado (Peso 2,0)
+                      </span>
+                    </div>
+                    <p className="text-slate-600 leading-relaxed font-medium">
+                      Tema: "Desigualdade social e privilégios e o papel da igreja". Máximo 1 lauda, Times New Roman 12, espaçamento 1,5.
+                    </p>
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-200 text-xs font-medium text-slate-700">
+                      <span>Prazo de Entrega:</span>
+                      <span className="px-2 py-0.5 bg-white border border-slate-300 rounded text-slate-600 font-bold">
+                        🗓️ 30/09/2026 às 23:59 (Encerrado)
+                      </span>
                     </div>
                   </div>
 
-                  {/* Instruções de Envio por E-mail */}
+                  {/* Instruções de Envio por E-mail do Trabalho */}
                   <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-950 space-y-2.5 text-xs">
                     <h5 className="font-bold text-blue-950 flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-blue-600" />
-                      Instruções de Envio por E-mail
+                      Canal Oficial de Envio do Trabalho:
                     </h5>
 
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-blue-200">
-                        <div>
-                          <span className="text-[10px] text-gray-500 block">Enviar para o endereço de e-mail:</span>
-                          <span className="font-mono font-bold text-blue-900">cleitonpb@gmail.com</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            navigator.clipboard.writeText('cleitonpb@gmail.com');
-                            setCopiedId('email-cleiton');
-                            setTimeout(() => setCopiedId(null), 2000);
-                          }}
-                          className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
-                        >
-                          {copiedId === 'email-cleiton' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                          <span>{copiedId === 'email-cleiton' ? 'Copiado' : 'Copiar'}</span>
-                        </button>
+                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-blue-200">
+                      <div>
+                        <span className="text-[10px] text-gray-500 block">Enviar para o endereço de e-mail:</span>
+                        <span className="font-mono font-bold text-blue-900">cleitonpb@gmail.com</span>
                       </div>
-
-                      <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-blue-200">
-                        <div>
-                          <span className="text-[10px] text-gray-500 block">Preencher no campo Assunto:</span>
-                          <span className="font-semibold text-gray-900">“Trabalho para composição de nota”</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            navigator.clipboard.writeText('Trabalho para composição de nota');
-                            setCopiedId('assunto-trabalho');
-                            setTimeout(() => setCopiedId(null), 2000);
-                          }}
-                          className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
-                        >
-                          {copiedId === 'assunto-trabalho' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                          <span>{copiedId === 'assunto-trabalho' ? 'Copiado' : 'Copiar'}</span>
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('cleitonpb@gmail.com');
+                          setCopiedId('email-cleiton');
+                          setTimeout(() => setCopiedId(null), 2000);
+                        }}
+                        className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
+                      >
+                        {copiedId === 'email-cleiton' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                        <span>{copiedId === 'email-cleiton' ? 'Copiado' : 'Copiar'}</span>
+                      </button>
                     </div>
-
-                    <a
-                      href="mailto:cleitonpb@gmail.com?subject=Trabalho%20para%20composi%C3%A7%C3%A3o%20de%20nota"
-                      className="mt-2 w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2"
-                    >
-                      <Mail className="w-3.5 h-3.5" />
-                      <span>Abrir E-mail Pré-Formatado para o Professor</span>
-                    </a>
                   </div>
                 </div>
-              ) : (
-                <>
-                  <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs space-y-2">
-                    <div className="flex justify-between items-center font-bold text-sm">
-                      <span>Data Agendada:</span>
-                      <span className="px-2.5 py-1 bg-white rounded-lg text-blue-700 shadow-sm border border-blue-200">
-                        🗓️ {selectedAvaliacao.data}
-                      </span>
-                    </div>
-                    <p className="text-blue-800 leading-relaxed pt-2 border-t border-blue-200/60">
-                      Esta prova será disponibilizada pelo professor no portal durante a semana de avaliações acadêmicas ({selectedAvaliacao.tipo === 'AV1' ? '28/09 a 03/10/2026' : '23/11 a 28/11/2026'}).
-                    </p>
-                  </div>
+              ) : (() => {
+                const ssot = AVALIACOES_2026_2.find(ev => 
+                  selectedAvaliacao.disciplina && (
+                    ev.disciplina.toLowerCase().includes(selectedAvaliacao.disciplina.toLowerCase()) ||
+                    selectedAvaliacao.disciplina.toLowerCase().includes(ev.disciplinaShort.toLowerCase())
+                  )
+                );
 
-                  <div className="space-y-2">
-                    <h4 className="text-xs font-bold text-gray-700">Instruções de Envio da Prova:</h4>
-                    <ul className="text-xs text-gray-600 list-disc list-inside space-y-1">
-                      <li>O formulário de questões será ativado na data <strong>{selectedAvaliacao.data}</strong>.</li>
-                      <li>Mantenha as atividades e leituras do módulo em dia.</li>
-                      <li>Em caso de dúvidas sobre o conteúdo, consulte a monitoria da disciplina.</li>
-                    </ul>
+                if (ssot) {
+                  return (
+                    <div className="space-y-3.5 text-xs">
+                      <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-950 space-y-2">
+                        <div className="flex justify-between items-center flex-wrap gap-2 font-bold text-sm">
+                          <span className="text-blue-950">{ssot.tipo}</span>
+                          <span className="px-2.5 py-1 bg-white rounded-lg text-blue-800 shadow-xs border border-blue-200 text-xs">
+                            🗓️ {ssot.dataTexto}
+                          </span>
+                        </div>
+                        <p className="text-blue-900 font-medium pt-1 border-t border-blue-200/60">
+                          <strong>Docente:</strong> {ssot.professor} • <strong>Peso:</strong> {ssot.peso}
+                        </p>
+                      </div>
+
+                      <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                          <CheckSquare className="w-3.5 h-3.5 text-blue-600" /> Diretrizes Oficiais:
+                        </h4>
+                        <ul className="space-y-1 text-slate-700 list-disc list-inside">
+                          {ssot.regras.map((r, i) => (
+                            <li key={i}>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <h4 className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-indigo-600" /> Passo a Passo Recomendado:
+                        </h4>
+                        <ol className="space-y-1 text-slate-700 list-decimal list-inside">
+                          {ssot.passoAPasso.map((p, i) => (
+                            <li key={i}>{p}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="space-y-3 text-xs">
+                    <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 space-y-2">
+                      <div className="flex justify-between items-center font-bold text-sm">
+                        <span>Data Agendada:</span>
+                        <span className="px-2.5 py-1 bg-white rounded-lg text-blue-700 shadow-sm border border-blue-200">
+                          🗓️ {selectedAvaliacao.data}
+                        </span>
+                      </div>
+                      <p className="text-blue-800 leading-relaxed pt-2 border-t border-blue-200/60">
+                        Esta avaliação será realizada conforme as diretrizes acadêmicas do semestre letivo 2026.2.
+                      </p>
+                    </div>
                   </div>
-                </>
-              )}
+                );
+              })()}
 
               <button
                 onClick={() => setSelectedAvaliacao(null)}

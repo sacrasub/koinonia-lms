@@ -1008,7 +1008,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                   >
                     <option value="prova">📝 Prova Escrita / Forms</option>
                     <option value="trabalho">📄 Trabalho Acadêmico</option>
-                    <option value="resumo">📖 Resumo Manuscrito</option>
+                    <option value="resumo">📖 Resumo Crítico / Fichamento</option>
                     <option value="apresentacao">🎤 Seminário / Apresentação</option>
                     <option value="entrega">📤 Entrega de Projeto / Artigo</option>
                   </select>

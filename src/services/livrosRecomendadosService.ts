@@ -272,7 +272,7 @@ export const INITIAL_LIVROS_RECOMENDADOS: LivroRecomendadoDisciplina[] = [
     biblioteca_book_id: '1bqPhMnDVckT_V2LYQBu7ctc_vLrY9QDR_1513',
     is_mandatory: true,
     category: '02 - Exegese e Hermenêutica',
-    notes: '⭐ LIVRO-BASE PRINCIPAL: Obra referencial recomendada pelo Profº Marcio Leal para a bateria de 150 questões.',
+    notes: '⭐ LIVRO-BASE PRINCIPAL: Obra referencial recomendada pelo Profº Marcio Leal para a Prova Objetiva Online de Novo Testamento III (Hebreus a 2 Pedro).',
     added_by_name: 'Profº Marcio Leal',
     added_by_role: 'professor',
     created_at: '2026-08-13T11:00:00Z',

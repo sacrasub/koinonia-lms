@@ -187,13 +187,13 @@ Suas diretrizes:
     accentBg: 'from-indigo-500/10 to-indigo-600/5',
     sourcesCount: 3,
     notebookLmTitle: '06 - Novo Testamento III - Epístolas Gerais - Marcio Leal',
-    shortDesc: 'Exegeta das Epístolas Universais (Hebreus, Tiago, 1 e 2 Pedro, 1, 2 e 3 João e Judas), fundamentado em Carson, Moo e Morris e preparação para as 150 questões.',
+    shortDesc: 'Exegeta das Epístolas Universais (Hebreus, Tiago, 1 e 2 Pedro, 1, 2 e 3 João e Judas), fundamentado em Carson, Moo e Morris e preparação para a Prova Objetiva Online.',
     specialties: ['Exegese de Hebreus (Cristologia)', 'Tiago (Fé e Obras)', '1 e 2 Pedro (Sofrimento e Escatologia)', 'Epístolas Joaninas (Comunhão e Verdade)', 'Judas (Defesa da Fé - Apologética)'],
     systemPrompt: `Você é o Tutor Especialista em Novo Testamento III (Epístolas Gerais) para o Seminário Teológico Koinonia LMS.
 Docente da Cadeira: Profº Marcio Leal.
 Suas diretrizes:
 1. Baseie-se na Introdução ao NT de Carson, Moo e Morris e nas análises textuais sintéticas apresentadas nas aulas.
-2. Auxilie os alunos na resolução e fixação do banco de 150 questões discursivas e orais.
+2. Auxilie os alunos na fixação e revisão dos conceitos de Hebreus a 2 Pedro para a prova objetiva online.
 3. Demonstre a teologia bíblica de cada carta, autoria, destinatários, ocasião histórica e estrutura literária.
 4. Mantenha fidelidade ao texto grego e à ortodoxia reformada.`,
     studyQuestions: [
@@ -219,7 +219,7 @@ Suas diretrizes:
     systemPrompt: `Você é o Mentor em Plantação e Revitalização de Igrejas II para estudantes do Seminário Teológico Koinonia LMS.
 Docente da Cadeira: Profº Thácyto Lessa.
 Suas diretrizes:
-1. Ajude os alunos a produzir o Resumo Crítico capítulo por capítulo (1 página por capítulo, total de 12 laudas) da obra "A Treliça e a Videira".
+1. Ajude os alunos a produzir o Resumo Crítico DIGITADO capítulo por capítulo (1 página digitada por capítulo, total de 12 laudas em PDF) da obra "A Treliça e a Videira".
 2. Ensine a distinção entre trabalho na "Treliça" (estrutura, prédios, comissões) e trabalho na "Videira" (pessoas, proclamação da Palavra, oração e discipulado).
 3. Prepare os estudantes para a avaliação com consulta do dia 27/11 com casos práticos de ministério.`,
     studyQuestions: [
@@ -357,7 +357,7 @@ const DRIVE_FOLDERS_11: DriveFolderItem[] = [
     num: '06',
     name: '06 - Novo Testamento III - Epístolas Gerais - Marcio Leal',
     category: 'materia',
-    desc: 'Esboços exegéticos de Hebreus a Judas e banco de 150 questões de fixação.',
+    desc: 'Esboços exegéticos de Hebreus a 2 Pedro e simulados para a prova objetiva online.',
     linkDrive: 'https://drive.google.com/open?id=1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P&usp=drive_copy',
     personaId: 'persona-06',
     notebookLmTitle: '06 - Novo Testamento III - Epístolas Gerais - Marcio Leal',
