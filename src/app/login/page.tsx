@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithGoogle, supabase } from '@/lib/supabaseClient';
-import { Lock, AlertCircle, Laptop, Zap, ShieldCheck, BookOpen, UserCheck, GraduationCap } from 'lucide-react';
+import { Lock, AlertCircle, Laptop, Zap, ShieldCheck, BookOpen, UserCheck, GraduationCap, Sparkles, MessageCircle } from 'lucide-react';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 
 export default function LoginPage() {
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLocalhost, setIsLocalhost] = useState<boolean>(false);
+  const [isWhatsAppInvite, setIsWhatsAppInvite] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -21,6 +22,10 @@ export default function LoginPage() {
       if (params.get('error') === 'account_banned') {
         setErrorMessage('Acesso não autorizado: Esta conta foi permanentemente desativada ou banida pela administração.');
       }
+      const refParam = params.get('ref');
+      if (refParam && refParam.includes('whatsapp')) {
+        setIsWhatsAppInvite(true);
+      }
     }
 
     async function checkExistingSession() {
@@ -29,6 +34,14 @@ export default function LoginPage() {
       const storedEmail = typeof window !== 'undefined' ? localStorage.getItem('lms_active_user_email') : null;
 
       if (session?.user?.email || storedEmail) {
+        if (typeof window !== 'undefined') {
+          const params = new URLSearchParams(window.location.search);
+          const disc = params.get('disciplina');
+          if (disc) {
+            router.push(`/?disciplina=${encodeURIComponent(disc)}&tab=disciplina-detalhe&subtab=gemini`);
+            return;
+          }
+        }
         router.push('/');
       }
     }
@@ -53,7 +66,13 @@ export default function LoginPage() {
       if (user) {
         localStorage.setItem('lms_active_user_role', user.defaultRole);
       }
-      window.location.href = '/';
+      const params = new URLSearchParams(window.location.search);
+      const disc = params.get('disciplina');
+      if (disc) {
+        window.location.href = `/?disciplina=${encodeURIComponent(disc)}&tab=disciplina-detalhe&subtab=gemini`;
+      } else {
+        window.location.href = '/';
+      }
     }
   };
 
@@ -70,15 +89,30 @@ export default function LoginPage() {
           <p className="text-xs sm:text-sm text-gray-500 mt-1">Portal Acadêmico • Seminário Teológico (2026.2)</p>
         </div>
 
-        {/* Banner Informativo */}
-        <div className="p-4 bg-blue-50/80 border border-blue-200 rounded-2xl text-left space-y-1.5">
-          <div className="flex items-center gap-2 text-blue-900 font-bold text-xs">
-            <Lock className="w-4 h-4 text-blue-600 flex-shrink-0" /> Autenticação via Google
+        {/* Banner de Captação Exclusivo WhatsApp */}
+        {isWhatsAppInvite && (
+          <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 rounded-2xl text-left space-y-1.5 shadow-xs">
+            <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs">
+              <MessageCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>Convite Especial • WhatsApp</span>
+            </div>
+            <p className="text-xs text-emerald-800 leading-relaxed font-medium">
+              Você recebeu um convite para acessar materiais, videoaulas e slides do Seminário Koinonia. Conecte sua conta do Google abaixo para liberar seu acesso!
+            </p>
           </div>
-          <p className="text-xs text-blue-800 leading-relaxed">
-            Utilize sua conta do Google para acessar a plataforma oficial Koinonia LMS.
-          </p>
-        </div>
+        )}
+
+        {/* Banner Informativo */}
+        {!isWhatsAppInvite && (
+          <div className="p-4 bg-blue-50/80 border border-blue-200 rounded-2xl text-left space-y-1.5">
+            <div className="flex items-center gap-2 text-blue-900 font-bold text-xs">
+              <Lock className="w-4 h-4 text-blue-600 flex-shrink-0" /> Autenticação via Google
+            </div>
+            <p className="text-xs text-blue-800 leading-relaxed">
+              Utilize sua conta do Google para acessar a plataforma oficial Koinonia LMS.
+            </p>
+          </div>
+        )}
 
         {errorMessage && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs font-semibold text-left flex items-center gap-2">

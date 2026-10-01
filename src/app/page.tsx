@@ -117,6 +117,10 @@ export default function Home() {
       if (tabParam === 'livro-notas' || tabParam === 'gradebook' || tabParam === 'diario') {
         return 'livro-notas';
       }
+      const discParam = params.get('disciplina');
+      if (discParam) {
+        return 'disciplina-detalhe';
+      }
       if (tabParam) return tabParam;
 
       const savedTab = localStorage.getItem('lms_active_tab');
@@ -462,13 +466,38 @@ export default function Home() {
   };
 
 
-  const [selectedDisciplinaId, setSelectedDisciplinaId] = useState<string>('disc-1');
+  const [selectedDisciplinaId, setSelectedDisciplinaId] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const discParam = params.get('disciplina');
+      if (discParam) return discParam;
+    }
+    return 'disc-1';
+  });
   const [globalRecorder, setGlobalRecorder] = useState<{
     isOpen: boolean;
     disciplinaId?: string;
     aulaNum?: number;
     initialMode?: 'screen' | 'file' | 'link' | 'autopilot';
   }>({ isOpen: false });
+
+  // Detecção de parâmetros de compartilhamento do WhatsApp / Captação de Usuários
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const discParam = params.get('disciplina');
+      const subtabParam = params.get('subtab') || (params.get('mat') ? 'gemini' : null);
+      if (discParam) {
+        setSelectedDisciplinaId(discParam);
+        setActiveTab('disciplina-detalhe');
+        if (subtabParam) {
+          try {
+            localStorage.setItem('lms_pending_disciplina_subtab', subtabParam);
+          } catch (err) {}
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleTabEvent = (e: Event) => {

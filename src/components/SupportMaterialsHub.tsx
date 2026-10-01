@@ -5,7 +5,8 @@ import {
   Sparkles, Headphones, FileText, Network, Presentation, Video, CheckSquare, 
   Plus, Edit3, Trash2, ExternalLink, Play, Pause, RotateCcw, Volume2, 
   VolumeX, Download, Copy, Check, ChevronDown, ChevronUp, Search, 
-  Filter, BookOpen, Layers, Clock, Calendar, User, Tag, Sparkle
+  Filter, BookOpen, Layers, Clock, Calendar, User, Tag, Sparkle,
+  MessageCircle, Share2
 } from 'lucide-react';
 import { GeminiNoteItem, SupportMaterialType, Disciplina, UserRole } from '@/types';
 import { 
@@ -330,27 +331,56 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     }
   };
 
-  // Copiar Formato WhatsApp
+  // Compartilhar no WhatsApp com Captação de Usuários para a Plataforma
   const handleCopyWhatsApp = (note: GeminiNoteItem) => {
     const config = SUPPORT_MATERIAL_CONFIG[note.tipo || 'anotacao'];
-    const text = `📚 *MATERIAL DE APOIO & FIXAÇÃO — KOINONIA-LMS*
-📖 *Matéria:* ${note.disciplina_name}
-🎯 *${config.emoji} Tipo:* ${config.label}
-🗓️ *Aula:* ${note.aula_num || 1} • ${note.data_aula || 'Semestre 2026.2'}
-📌 *Título:* ${note.title}
+    const origin = typeof window !== 'undefined' && window.location.origin
+      ? window.location.origin
+      : 'https://koinonialms.vercel.app';
+    
+    // Links oficiais na plataforma Koinonia LMS para captação e acesso direto
+    const platformUrl = `${origin}/?disciplina=${encodeURIComponent(note.disciplina_id)}&tab=disciplina-detalhe&subtab=gemini&mat=${encodeURIComponent(note.id)}&ref=whatsapp_share`;
+    const signupUrl = `${origin}/login?ref=whatsapp_invite&disciplina=${encodeURIComponent(note.disciplina_id)}`;
 
-📝 *Síntese dos Tópicos:*
-${note.summary_snippet || 'Acesse o material completo no link abaixo.'}
+    const text = `🎓 *SEMINÁRIO TEOLÓGICO KOINONIA*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 *${config.emoji} ${config.label.toUpperCase()}*
+📖 *Disciplina:* ${note.disciplina_name}
+👤 *Professor(a):* ${note.author_name || 'Corpo Docente Koinonia'}
+🗓️ *Módulo / Aula:* ${note.aula_num || 1} • ${note.data_aula || 'Semestre 2026.2'}
+📌 *Tema:* ${note.title}
 
-🔗 *Link do Material:* ${note.gemini_url}
-${note.audio_url ? `🎙️ *Link do Áudio:* ${note.audio_url}\n` : ''}
-${note.tags && note.tags.length > 0 ? `🏷️ *Tags:* ${note.tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')}\n` : ''}
-_Disponível no Portal do Aluno do Seminário UIECB_`;
+📝 *Resumo do Conteúdo:*
+${note.summary_snippet || 'Acesse o material de estudo e aprofundamento acadêmico.'}
 
-    navigator.clipboard.writeText(text);
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 *ACESSE AGORA NA PLATAFORMA KOINONIA LMS:*
+👉 ${platformUrl}
+
+${note.gemini_url ? `📂 *Link Direto do Arquivo (Drive):*\n👉 ${note.gemini_url}\n` : ''}
+✨ *Recursos da Plataforma:*
+• Videoaulas em HD e Apresentações de Slides Oficiais
+• Caderno Inteligente Cornell com Resumos em IA
+• Biblioteca Digital e Cronograma Integrado 2026.2
+
+👥 *Ainda não tem cadastro ou deseja estudar no Seminário?*
+Cadastre-se ou solicite sua matrícula com sua Conta Google:
+👉 ${signupUrl}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+_Koinonia LMS • Excelência na Educação Teológica_`;
+
+    // 1. Copia o texto para a área de transferência
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+
+    // 2. Abre o WhatsApp com a mensagem pré-preenchida
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+
     setCopiedId(note.id);
-    showToast('Mensagem formatada para WhatsApp copiada com sucesso!');
-    setTimeout(() => setCopiedId(null), 2500);
+    showToast('✓ Abrindo WhatsApp! Mensagem de captação copiada.');
+    setTimeout(() => setCopiedId(null), 3000);
   };
 
   // Abrir Modal de Criação
@@ -836,20 +866,20 @@ _Disponível no Portal do Aluno do Seminário UIECB_`;
                       )}
                     </button>
 
-                    {/* Copiar Formato WhatsApp */}
+                    {/* Compartilhar no WhatsApp / Captação de Usuários */}
                     <button
                       onClick={() => handleCopyWhatsApp(note)}
-                      className="py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs rounded-xl transition flex items-center gap-1 cursor-pointer"
-                      title="Copiar texto pronto para o grupo do WhatsApp"
+                      className="py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                      title="Compartilhar no WhatsApp e convidar novos alunos para a plataforma"
                     >
                       {copiedId === note.id ? (
                         <>
                           <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Copiado!</span>
+                          <span>Abrindo...</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5 text-emerald-600" />
+                          <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
                           <span>WhatsApp</span>
                         </>
                       )}
