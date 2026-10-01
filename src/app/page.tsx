@@ -8,8 +8,8 @@ import { Sidebar } from '@/components/Sidebar';
 import dynamic from 'next/dynamic';
 import { AlunoPanel } from '@/components/AlunoPanel';
 import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
-import { getAllDisciplinas } from '@/services/disciplinasService';
-import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity } from 'lucide-react';
+import { getAllDisciplinas, getDisciplinasForUser } from '@/services/disciplinasService';
+import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity, Award } from 'lucide-react';
 import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud, getRevokedUsersList } from '@/lib/authConfig';
 
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
@@ -29,6 +29,8 @@ const AdminPanel = dynamic(() => import('@/components/AdminPanel').then(m => m.A
 const PendingAccessPage = dynamic(() => import('@/components/PendingAccessPage').then(m => m.PendingAccessPage), { loading: DynamicLoadingFallback });
 const BibliotecaPage = dynamic(() => import('@/components/BibliotecaPage').then(m => m.BibliotecaPage), { loading: DynamicLoadingFallback });
 const ChecklistAV2Page = dynamic(() => import('@/components/ChecklistAV2Page').then(m => m.ChecklistAV2Page), { loading: DynamicLoadingFallback });
+const AlunoBoletim = dynamic(() => import('@/components/AlunoBoletim').then(m => m.AlunoBoletim), { loading: DynamicLoadingFallback });
+const ProfessorGradebook = dynamic(() => import('@/components/ProfessorGradebook').then(m => m.ProfessorGradebook), { loading: DynamicLoadingFallback });
 const PortalAcademicoPage = dynamic(() => import('@/components/PortalAcademicoPage').then(m => m.PortalAcademicoPage), { loading: DynamicLoadingFallback });
 const CadernoCornellPage = dynamic(() => import('@/components/CadernoCornellPage').then(m => m.CadernoCornellPage), { loading: DynamicLoadingFallback });
 const EscalaMonitoriaPage = dynamic(() => import('@/components/EscalaMonitoriaPage').then(m => m.EscalaMonitoriaPage), { loading: DynamicLoadingFallback });
@@ -108,6 +110,12 @@ export default function Home() {
       }
       if (tabParam === 'checklist' || tabParam === 'aluno-checklist' || tabParam === 'avaliacoes') {
         return 'aluno-checklist';
+      }
+      if (tabParam === 'boletim' || tabParam === 'aluno-boletim' || tabParam === 'notas' || tabParam === 'meu-boletim') {
+        return 'aluno-boletim';
+      }
+      if (tabParam === 'livro-notas' || tabParam === 'gradebook' || tabParam === 'diario') {
+        return 'livro-notas';
       }
       if (tabParam) return tabParam;
 
@@ -559,6 +567,20 @@ export default function Home() {
     }
     if (activeTab === 'aluno-checklist' || activeTab === 'checklist') {
       return <ChecklistAV2Page userEmail={userEmail} />;
+    }
+    if (activeTab === 'aluno-boletim' || activeTab === 'boletim' || activeTab === 'notas' || activeTab === 'meu-boletim') {
+      return <AlunoBoletim userEmail={userEmail} onTabChange={handleTabChange} />;
+    }
+    if (activeTab === 'livro-notas' || activeTab === 'gradebook' || activeTab === 'prof-notas') {
+      return (
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6">
+          <ProfessorGradebook
+            disciplinas={getDisciplinasForUser(userEmail, currentRole)}
+            userEmail={userEmail}
+            isAdmin={currentRole === 'admin'}
+          />
+        </div>
+      );
     }
     if (activeTab === 'aluno-materiais' || activeTab === 'prof-materiais' || activeTab === 'admin-materiais' || activeTab === 'materiais') {
       return <PastasVirtuaisPage userEmail={userEmail} currentRole={currentRole} onTabChange={handleTabChange} />;

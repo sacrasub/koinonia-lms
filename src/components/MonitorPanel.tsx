@@ -16,6 +16,7 @@ import { convertBRTToLocalTime, getCurrentBrasiliaMinutes } from '@/lib/timeUtil
 import { GravacaoAulaItem, AvisoLeituraPreAula, UserRole } from '@/types';
 import { getAulaEmAndamentoHoje } from '@/lib/semesterUtils';
 import { getAllDisciplinas } from '@/services/disciplinasService';
+import { isAulaCanceladaHoje, parseProvidenciaMotivo } from '@/services/aulaCanceladaService';
 
 interface MonitorPanelProps {
   userEmail?: string;
@@ -53,17 +54,43 @@ export const MonitorPanel: React.FC<MonitorPanelProps> = ({ userEmail = '', onTa
     return ESCALA_DATA.filter(e => e.dayOfWeek === todayName);
   }, []);
 
-  // Identifica aula em andamento agora
+  const [currentMinTick, setCurrentMinTick] = useState<number>(() => getCurrentBrasiliaMinutes());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentMinTick(getCurrentBrasiliaMinutes());
+    }, 15000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Identifica aula em andamento agora (adaptada com providência se houver)
   const aulaAgora = useMemo(() => {
-    const currentMin = getCurrentBrasiliaMinutes();
-    return todayEscala.find(e => {
+    const found = todayEscala.find(e => {
       const [sh, sm] = e.startBRT.split(':').map(Number);
       const [eh, em] = e.endBRT.split(':').map(Number);
-      const start = sh * 60 + sm - 10; // 10 min antes
-      const end = eh * 60 + em + 10;   // 10 min depois
-      return currentMin >= start && currentMin <= end;
-    }) || null;
-  }, [todayEscala]);
+      const start = sh * 60 + sm - 15; // 15 min antes (sala aberta)
+      const end = eh * 60 + em;
+      return currentMinTick >= start && currentMinTick <= end;
+    });
+    if (!found) return null;
+
+    const cancelStatus = isAulaCanceladaHoje(found.id, found.title, userEmail);
+    if (cancelStatus) {
+      const parsed = parseProvidenciaMotivo(cancelStatus.motivo || '');
+      const tipo = cancelStatus.tipo_providencia || parsed?.tipoProvidencia || 'cancelamento';
+      if (tipo === 'aula_dupla' || tipo === 'substituicao') {
+        return {
+          ...found,
+          title: parsed?.substitutoDisciplinaName || cancelStatus.substituto_disciplina_name || found.title,
+          professor: parsed?.substitutoProfessorName || cancelStatus.substituto_professor_name || found.professor,
+          meetUrl: parsed?.substitutoMeetUrl || cancelStatus.substituto_meet_url || found.meetUrl,
+          presencaUrl: parsed?.substitutoPresencaUrl || cancelStatus.substituto_presenca_url || found.presencaUrl,
+        };
+      }
+      return null; // Cancelamento puro: não está em andamento
+    }
+    return found;
+  }, [todayEscala, currentMinTick, userEmail]);
 
   const handleCopy = useCallback((text: string, key: string) => {
     if (!text) return;

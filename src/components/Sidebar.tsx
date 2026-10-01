@@ -7,7 +7,7 @@ import {
   ShieldCheck, Library, CheckSquare, FolderOpen, Compass, 
   Calendar, Layers, HelpCircle, Drama, Archive, SlidersHorizontal, 
   Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target, Bookmark,
-  Sparkles, LayoutGrid
+  Sparkles, LayoutGrid, Award
 } from 'lucide-react';
 
 
@@ -96,6 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'aluno':
         return [
           { id: 'aluno-disciplinas', label: 'Painel Acadêmico', icon: GraduationCap, essential: true },
+          { id: 'aluno-boletim', label: 'Meu Boletim de Notas', icon: Award, essential: true },
           { id: 'disciplina-detalhe', label: 'Minhas Disciplinas', icon: Layers, essential: true },
           { id: 'google-agenda', label: 'Agenda', icon: Calendar, essential: true },
           { id: 'aluno-materiais', label: 'Pastas Virtuais', icon: FolderOpen, essential: true },
@@ -122,6 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'professor':
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen },
+          { id: 'livro-notas', label: 'Livro de Notas & Diário', icon: GraduationCap },
           { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass },
@@ -146,6 +148,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'monitor':
         return [
           { id: 'monitor-escala', label: '⚡ Central do Monitor', icon: UserCheck },
+          { id: 'livro-notas', label: 'Consulta de Diários & Faltas', icon: GraduationCap },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
           { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
@@ -168,9 +171,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           // --- GESTÃO DO SISTEMA (ADMIN) ---
           { id: 'admin-dashboard', label: '🛡 Painel do Administrador (Analytics)', icon: ShieldCheck },
+          { id: 'livro-notas', label: '📊 Livro de Notas & Diário Geral', icon: GraduationCap },
           { id: 'admin-usuarios', label: '👥 Gerenciar Usuários & Perfis', icon: UserCheck },
           { id: 'admin-disciplinas', label: '📚 Gerenciar Disciplinas', icon: GraduationCap },
           { id: 'admin-solicitacoes', label: '📋 Solicitações de Acesso', icon: CheckSquare },
+
           { id: 'monitor-escala', label: '📅 Escala de Monitores 2026.2', icon: Calendar },
           { id: 'tele-proximidade', label: '📡 Radar de Tele-Proximidade', icon: Radio },
           // --- RECURSOS PEDAGÓGICOS ---

@@ -560,27 +560,23 @@ export const LiveAulaGlobalBanner: React.FC<LiveAulaGlobalBannerProps> = ({
           </span>
         </div>
 
-        {/* Alerta Destacado de Aula Dupla / Substituição Docente */}
+        {/* Alerta Compacto de Aula Dupla / Substituição Docente */}
         {providenciaInfo && (
-          <div className="mt-3 p-3 bg-amber-100/80 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-2xl flex items-start gap-2.5 text-amber-950 dark:text-amber-200 shadow-2xs animate-in fade-in duration-200">
-            <div className="p-1.5 bg-amber-500 text-white rounded-xl shrink-0 mt-0.5 shadow-2xs">
-              <Zap className="w-3.5 h-3.5" />
-            </div>
-            <div className="text-xs space-y-1">
-              <div className="flex items-center gap-2 flex-wrap">
+          <div className="mt-2.5 px-3 py-1.5 bg-amber-100/90 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-950 dark:text-amber-200 shadow-2xs">
+            <div className="flex items-center gap-2 min-w-0">
+              <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span className="text-[11px] truncate">
                 <strong className="font-extrabold text-amber-900 dark:text-amber-100">
-                  {providenciaInfo.tipo_providencia === 'aula_dupla'
-                    ? 'Atenção Turma: Aula Dupla Ministrada pelo Docente Substituto'
-                    : 'Atenção Turma: Substituição Docente Emergencial'}
-                </strong>
-                <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-md">
-                  Sala do Meet Oficial Abaixo
-                </span>
-              </div>
-              <p className="font-medium text-amber-950 dark:text-amber-200 leading-relaxed">
-                {parseProvidenciaMotivo(providenciaInfo.motivo || '').motivoLimpo || providenciaInfo.motivo}
-              </p>
+                  {providenciaInfo.tipo_providencia === 'aula_dupla' ? '⚡ Aula Dupla:' : '🔄 Substituição:'}
+                </strong>{' '}
+                {(parseProvidenciaMotivo(providenciaInfo.motivo || '').motivoLimpo || providenciaInfo.motivo || '')
+                  .replace(/Profº\s*Profº/gi, 'Profº')
+                  .replace(/Prof\.\s*Prof\./gi, 'Prof.')}
+              </span>
             </div>
+            <span className="text-[10px] bg-amber-200 text-amber-900 font-black px-2 py-0.5 rounded-md shrink-0">
+              Meet Abaixo
+            </span>
           </div>
         )}
 

@@ -1166,18 +1166,32 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         isAulaCanceladaHoje(aula.id, aula.title, userEmail) ||
         getAulaCanceladaStatus(aula.id, aula.title, todayFormatted) ||
         getAulaCanceladaStatus(aula.id, aula.title, getDateForDayOfWeek(currentDayName));
+
+      let effectiveAlarmAula = aula;
       if (canceladaHoje) {
-        continue;
+        const parsed = parseProvidenciaMotivo(canceladaHoje.motivo || '');
+        const tipo = canceladaHoje.tipo_providencia || parsed?.tipoProvidencia || 'cancelamento';
+        if (tipo === 'aula_dupla' || tipo === 'substituicao') {
+          effectiveAlarmAula = {
+            ...aula,
+            title: parsed?.substitutoDisciplinaName || canceladaHoje.substituto_disciplina_name || aula.title,
+            professor: parsed?.substitutoProfessorName || canceladaHoje.substituto_professor_name || aula.professor,
+            meetUrl: parsed?.substitutoMeetUrl || canceladaHoje.substituto_meet_url || aula.meetUrl,
+            presencaUrl: parsed?.substitutoPresencaUrl || canceladaHoje.substituto_presenca_url || aula.presencaUrl,
+          };
+        } else {
+          continue;
+        }
       }
 
       // Verifica se a aula já foi oficialmente encerrada/concluída hoje pelo monitor ou docência
-      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title);
+      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title) || (effectiveAlarmAula !== aula ? isAulaEncerradaHoje(effectiveAlarmAula.id, effectiveAlarmAula.title) : null);
       if (encerradaHoje) {
         continue;
       }
 
-      const startLocal = convertBRTToLocalTime(aula.startBRT);
-      const timeDisplay = tzInfo.isBRT ? `${aula.startBRT} BRT` : `${startLocal} (${aula.startBRT} BRT)`;
+      const startLocal = convertBRTToLocalTime(effectiveAlarmAula.startBRT);
+      const timeDisplay = tzInfo.isBRT ? `${effectiveAlarmAula.startBRT} BRT` : `${startLocal} (${effectiveAlarmAula.startBRT} BRT)`;
 
       // 0. Alarme Prévio de Preparação (15 min antes do início da aula)
       if (currentMinutes >= (startMin - 15) && currentMinutes < startMin) {
@@ -1185,9 +1199,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
           const minLeft = startMin - currentMinutes;
           return {
             type: 'recording' as const,
-            key: `prep_${aula.id}_${startMin}`,
-            aula,
-            title: `⏰ Preparação da Aula: ${aula.title}`,
+            key: `prep_${effectiveAlarmAula.id}_${startMin}`,
+            aula: effectiveAlarmAula,
+            title: `⏰ Preparação da Aula: ${effectiveAlarmAula.title}`,
             message: `A aula inicia em ${minLeft} min (às ${timeDisplay}). Acesse a sala do Google Meet com 15 min de antecedência para abrir a sessão e acolher a turma!`,
             actionLabel: '📹 Acessar Sala do Google Meet',
             badge: `Inicia em ${minLeft} min`,
@@ -1266,19 +1280,38 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     const todayFormatted = now.toLocaleDateString('pt-BR');
 
     for (const aula of aulasToday) {
-      // Ignora se a aula foi cancelada hoje pelo monitor/docência ou perfil acadêmico
+      // Verifica se a aula foi cancelada hoje pelo monitor/docência ou perfil acadêmico
       const canceladaHoje =
         isAulaCanceladaHoje(aula.id, aula.title, userEmail) ||
         getAulaCanceladaStatus(aula.id, aula.title, todayFormatted) ||
         getAulaCanceladaStatus(aula.id, aula.title, getDateForDayOfWeek(currentDayName));
+
+      let effectiveAula = aula;
+      let providenciaAtiva = false;
+      let providenciaTipo = '';
+
       if (canceladaHoje) {
-        continue;
+        const parsed = parseProvidenciaMotivo(canceladaHoje.motivo || '');
+        const tipo = canceladaHoje.tipo_providencia || parsed?.tipoProvidencia || 'cancelamento';
+        if (tipo === 'aula_dupla' || tipo === 'substituicao') {
+          providenciaAtiva = true;
+          providenciaTipo = tipo;
+          effectiveAula = {
+            ...aula,
+            title: parsed?.substitutoDisciplinaName || canceladaHoje.substituto_disciplina_name || aula.title,
+            professor: parsed?.substitutoProfessorName || canceladaHoje.substituto_professor_name || aula.professor,
+            meetUrl: parsed?.substitutoMeetUrl || canceladaHoje.substituto_meet_url || aula.meetUrl,
+            presencaUrl: parsed?.substitutoPresencaUrl || canceladaHoje.substituto_presenca_url || aula.presencaUrl,
+          };
+        } else {
+          continue; // Suspensão pura: ignora
+        }
       }
 
-      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title);
+      const encerradaHoje = isAulaEncerradaHoje(aula.id, aula.title) || (effectiveAula !== aula ? isAulaEncerradaHoje(effectiveAula.id, effectiveAula.title) : null);
 
-      const [startH, startM] = aula.startBRT.split(':').map(Number);
-      const [endH, endM] = aula.endBRT.split(':').map(Number);
+      const [startH, startM] = effectiveAula.startBRT.split(':').map(Number);
+      const [endH, endM] = effectiveAula.endBRT.split(':').map(Number);
       const startMin = startH * 60 + startM;
       const endMin = endH * 60 + endM;
 
@@ -1291,7 +1324,10 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
         const is50PercentReached = pct >= 50;
 
         return {
-          aula,
+          aula: effectiveAula,
+          rawAula: aula,
+          providenciaAtiva,
+          providenciaTipo,
           startMin,
           endMin,
           totalDuration,
@@ -2200,7 +2236,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       {/* ========================================================================= */}
       {/* CARD DE AULA ATIVA COM BARRA DE CONTAGEM / PROGRESSO DE DURAÇÃO (MONITOR) */}
       {/* ========================================================================= */}
-      {activeLiveAulaMonitor && !isAulaCanceladaHoje(activeLiveAulaMonitor.aula.id, activeLiveAulaMonitor.aula.title, userEmail) && (
+      {activeLiveAulaMonitor && (
         activeLiveAulaMonitor.encerradaHoje ? (
           <div className="bg-gradient-to-br from-emerald-950/90 via-slate-900 to-teal-950 text-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-500/60 shadow-xl space-y-4 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -2236,20 +2272,51 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-xl space-y-4 animate-in fade-in duration-300">
+          <div className={`rounded-3xl p-5 sm:p-6 shadow-xl space-y-4 animate-in fade-in duration-300 ${
+            activeLiveAulaMonitor.providenciaAtiva 
+              ? 'bg-gradient-to-br from-amber-50/95 via-white to-blue-50/90 border-2 border-amber-400 ring-2 ring-amber-500/20' 
+              : 'bg-white border-2 border-amber-300'
+          }`}>
             {/* Topo do Card de Aula Ativa */}
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <span className="w-3.5 h-3.5 rounded-full bg-amber-500 animate-pulse shadow-xs" />
+                <span className={`w-3.5 h-3.5 rounded-full animate-pulse shadow-xs ${
+                  activeLiveAulaMonitor.providenciaAtiva ? 'bg-amber-500' : 'bg-red-500'
+                }`} />
+                {activeLiveAulaMonitor.providenciaAtiva ? (
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white bg-amber-500 shadow-xs flex items-center gap-1 animate-pulse">
+                    <Zap className="w-3 h-3" />
+                    {activeLiveAulaMonitor.providenciaTipo === 'aula_dupla' ? '⚡ Aula Dupla • 2 Tempos' : '🔄 Substituição Docente'}
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white bg-red-600 shadow-xs animate-pulse">
+                    🔴 Aula Ao Vivo
+                  </span>
+                )}
                 <h3 className="font-extrabold text-base sm:text-lg text-gray-900 leading-tight">
                   Aula Ativa: <span className="text-blue-700">{activeLiveAulaMonitor.aula.title}</span>
                 </h3>
                 {activeLiveAulaMonitor.isPreLive && (
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500 text-white shadow-xs animate-pulse">
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-600 text-white shadow-xs animate-pulse">
                     ⏰ Sala Aberta (Inicia em {activeLiveAulaMonitor.minutesToStart} min)
                   </span>
                 )}
               </div>
+
+              {activeLiveAulaMonitor.providenciaAtiva && (
+                <div className="mt-2.5 px-3 py-1.5 bg-amber-100/90 border border-amber-300 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-950 shadow-2xs">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span className="text-[11px] truncate">
+                      <strong>{activeLiveAulaMonitor.providenciaTipo === 'aula_dupla' ? '⚡ Aula Dupla Ativa:' : '🔄 Substituição Ativa:'}</strong>{' '}
+                      Regência assumida por <strong>{activeLiveAulaMonitor.aula.professor}</strong> com sala do Meet e forms prontos.
+                    </span>
+                  </div>
+                  <span className="text-[10px] bg-amber-200 text-amber-900 font-bold px-2 py-0.5 rounded-md shrink-0">
+                    Links Prontos
+                  </span>
+                </div>
+              )}
 
               <div className="text-xs text-gray-600 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span>Professor(a): <strong>{activeLiveAulaMonitor.aula.professor || 'Corpo Docente'}</strong></span>
@@ -3096,12 +3163,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                         const avatarUrl = getMonitorAvatar(item.monitor);
                         const isGravado = item.typeTag?.includes('Assíncrono');
                         const canceladaStatus = getCanceladaStatusForItem(item);
+                        const parsedProvidencia = canceladaStatus ? parseProvidenciaMotivo(canceladaStatus.motivo || '') : null;
+                        const providenciaTipo = canceladaStatus ? (canceladaStatus.tipo_providencia || parsedProvidencia?.tipoProvidencia || 'cancelamento') : null;
+                        const isProvidenciaAtiva = providenciaTipo === 'aula_dupla' || providenciaTipo === 'substituicao';
+                        const effectiveMeetUrl = isProvidenciaAtiva ? (parsedProvidencia?.substitutoMeetUrl || canceladaStatus?.substituto_meet_url || item.meetUrl) : item.meetUrl;
+                        const effectivePresencaUrl = isProvidenciaAtiva ? (parsedProvidencia?.substitutoPresencaUrl || canceladaStatus?.substituto_presenca_url || item.presencaUrl) : item.presencaUrl;
+                        const effectiveProfessor = isProvidenciaAtiva ? (parsedProvidencia?.substitutoProfessorName || canceladaStatus?.substituto_professor_name || item.professor) : item.professor;
 
                         return (
                           <div
                             key={item.id}
                             className={`bg-white border rounded-3xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 group ${
-                              canceladaStatus 
+                              isProvidenciaAtiva
+                                ? 'border-amber-300 bg-gradient-to-b from-amber-50/25 to-white ring-2 ring-amber-400/20'
+                                : canceladaStatus 
                                 ? 'border-red-300 bg-gradient-to-b from-red-50/30 to-white' 
                                 : isToday 
                                 ? 'border-blue-300 ring-2 ring-blue-500/10' 
@@ -3171,11 +3246,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
 
                               {/* Informações da Disciplina */}
                               <div className="pt-2 border-t border-gray-100 dark:border-slate-800">
+                                {isProvidenciaAtiva && (
+                                  <div className="mb-2 px-2.5 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-xs font-bold flex items-center gap-1.5">
+                                    <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                    <span>
+                                      {providenciaTipo === 'aula_dupla' ? '⚡ Aula Dupla • Ministrada por' : '🔄 Substituição por'}{' '}
+                                      <strong>{effectiveProfessor}</strong>
+                                    </span>
+                                  </div>
+                                )}
                                 <h3 className="font-extrabold text-base sm:text-lg text-slate-900 dark:text-slate-100 group-hover:text-blue-900 dark:group-hover:text-blue-400 transition">
-                                  {item.title}
+                                  {isProvidenciaAtiva && parsedProvidencia?.substitutoDisciplinaName ? parsedProvidencia.substitutoDisciplinaName : item.title}
                                 </h3>
                                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium mt-0.5">
-                                  {item.professor}
+                                  {effectiveProfessor}
                                 </p>
                                 {item.description && (
                                   <p className="text-xs text-gray-500 dark:text-slate-400 mt-2 line-clamp-2 leading-relaxed bg-gray-50/80 dark:bg-slate-900/60 p-2 rounded-xl border border-transparent dark:border-slate-800">
@@ -3237,18 +3321,18 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                         01
                                       </span>
                                       <div className="min-w-0 flex-1">
-                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
-                                          Por Que Esta Disciplina é Necessária?
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-700 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Introdução à História & Cultura Afro
                                         </div>
-                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                                          636 MB • Videoaula HD
+                                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">
+                                          585 MB • Videoaula Completa
                                         </div>
                                       </div>
                                       <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
                                     </a>
 
                                     <a
-                                      href="https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link"
+                                      href="https://drive.google.com/file/d/1y61G6sJd9P4E1-G3QGqK1J9kQ5Z8xY8Z/view?usp=drive_link"
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2.5 bg-slate-50 dark:bg-slate-900/90 hover:bg-purple-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-xl transition flex items-start gap-2 group"
@@ -3257,18 +3341,18 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                         02
                                       </span>
                                       <div className="min-w-0 flex-1">
-                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
-                                          Áfricas, Diáspora e Cultura Afro-BR
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-700 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Herança Cultural & Identidade
                                         </div>
-                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                                          595 MB • Videoaula HD
+                                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">
+                                          612 MB • Videoaula Completa
                                         </div>
                                       </div>
                                       <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
                                     </a>
 
                                     <a
-                                      href="https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link"
+                                      href="https://drive.google.com/file/d/1y72H7tKe0Q5F2-H4RHrL2K0lR6a9yZ9a/view?usp=drive_link"
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="p-2.5 bg-slate-50 dark:bg-slate-900/90 hover:bg-purple-50 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-xl transition flex items-start gap-2 group"
@@ -3277,23 +3361,23 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                         03
                                       </span>
                                       <div className="min-w-0 flex-1">
-                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 line-clamp-1">
-                                          Povos Indígenas: Histórias & Missão
+                                        <div className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-700 dark:group-hover:text-purple-400 line-clamp-1">
+                                          Cosmovisão Bíblica & Desafios
                                         </div>
-                                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                                          526 MB • Videoaula HD
+                                        <div className="text-[10px] text-slate-500 font-medium mt-0.5">
+                                          598 MB • Videoaula Completa
                                         </div>
                                       </div>
                                       <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-600 shrink-0" />
                                     </a>
 
                                     <a
-                                      href="https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link"
+                                      href="https://drive.google.com/file/d/1y83I8uLf1R6G3-I5SIrM3L1mS7b0z00b/view?usp=drive_link"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="p-2.5 bg-amber-50/70 dark:bg-amber-950/40 hover:bg-amber-100/80 dark:hover:bg-amber-900/50 border border-amber-200/80 dark:border-amber-800 rounded-xl transition flex items-start gap-2 group"
+                                      className="p-2.5 bg-amber-50/80 dark:bg-amber-950/30 hover:bg-amber-100/80 border border-amber-200 dark:border-amber-900/50 rounded-xl transition flex items-start gap-2 group"
                                     >
-                                      <span className="w-5 h-5 rounded-md bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                                      <span className="w-5 h-5 rounded-md bg-amber-500 text-slate-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                                         04
                                       </span>
                                       <div className="min-w-0 flex-1">
@@ -3339,8 +3423,8 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                               </div>
                             ) : (
                               <div className="space-y-2.5 pt-3 border-t border-gray-100">
-                                {item.meetUrl ? (
-                                  canceladaStatus ? (
+                                {effectiveMeetUrl ? (
+                                  canceladaStatus && !isProvidenciaAtiva ? (
                                     <div className="w-full py-2.5 px-3 bg-gray-100 text-gray-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-gray-200 select-none cursor-not-allowed">
                                       <Ban className="w-3.5 h-3.5 text-red-500 shrink-0" />
                                       <span>Meet Suspenso (Aula Cancelada)</span>
@@ -3348,17 +3432,21 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                   ) : (
                                     <div className="flex items-center gap-2">
                                       <a
-                                        href={item.meetUrl}
+                                        href={effectiveMeetUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 bg-red-600 hover:bg-red-700 text-white"
+                                        className={`flex-1 py-2.5 px-3 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 ${
+                                          isProvidenciaAtiva 
+                                            ? 'bg-amber-500 hover:bg-amber-600 text-white' 
+                                            : 'bg-red-600 hover:bg-red-700 text-white'
+                                        }`}
                                       >
                                         <Video className="w-3.5 h-3.5" />
-                                        <span>Entrar no Meet</span>
+                                        <span>{isProvidenciaAtiva ? 'Entrar no Meet (Substituto)' : 'Entrar no Meet'}</span>
                                       </a>
 
                                       <button
-                                        onClick={() => handleCopyMeet(item.meetUrl!, item.id, item.title, item.professor)}
+                                        onClick={() => handleCopyMeet(effectiveMeetUrl, item.id, item.title, effectiveProfessor)}
                                         title="Copiar link do Google Meet formatado"
                                         className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1 active:scale-95"
                                       >
@@ -3382,18 +3470,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                   </div>
                                 )}
 
-                                {canceladaStatus ? (
+                                {canceladaStatus && !isProvidenciaAtiva ? (
                                   <div className="w-full py-2.5 px-3 bg-red-50/80 text-red-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 border border-red-200/80 select-none">
                                     <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
                                     <span>Lista de Presença Suspensa (Aula Cancelada)</span>
                                   </div>
-                                ) : item.presencaUrl ? (
+                                ) : effectivePresencaUrl ? (
                                   <div className="flex items-center gap-2">
                                     <button
-                                      onClick={() => handleCopyPresenca(item.presencaUrl, item.id, item.title)}
+                                      onClick={() => handleCopyPresenca(effectivePresencaUrl, item.id, item.title)}
                                       className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-xs active:scale-95 ${
                                         isCopiedPresenca
                                           ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                          : isProvidenciaAtiva
+                                          ? 'bg-amber-600 hover:bg-amber-700 text-white'
                                           : 'bg-blue-600 hover:bg-blue-800 text-white'
                                       }`}
                                     >

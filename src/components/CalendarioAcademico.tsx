@@ -47,6 +47,49 @@ export interface AvaliacaoEvento {
 
 export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   {
+    id: 'aval-0-tcc1-projeto-pesquisa',
+    disciplina: 'Trabalho de Conclusão de Curso I (TCC I)',
+    disciplinaShort: 'TCC I (Projeto de Pesquisa)',
+    professor: 'Profª Gabriela Leal',
+    tipo: 'Entrega Final do Projeto de Pesquisa (ABNT)',
+    tipoBadge: 'TRABALHO',
+    dataLimite: '2026-09-04',
+    dataTexto: '04 de Setembro de 2026 (Sexta-feira)',
+    horario: 'Até às 23:59',
+    peso: 'Marco Metodológico de Acompanhamento (AV1)',
+    regras: [
+      'Prazo rígido de duas semanas: Capa, Sumário, Objetivos (Geral e 2-3 Específicos no infinitivo), Justificativa, Referencial Teórico e Cronograma em tabela.',
+      'Introdução por último.',
+      'Linguagem impessoal (3ª pessoa) e rigorosamente sem Inteligência Artificial.'
+    ],
+    passoAPasso: [
+      'Definir título provisório, justificativa e objetivos no infinitivo.',
+      'Construir referencial teórico com normas ABNT e cronograma em tabela.',
+      'Revisar impessoalidade (3ª pessoa), ausência de IA e anexos de pesquisa de campo.'
+    ],
+    bibliografia: {
+      obrigatoria: [
+        'Manual de Trabalhos Acadêmicos da Faculdade Maciço do Baturité (FMB)',
+        'Normas ABNT vigentes para projetos de pesquisa científica'
+      ]
+    },
+    canalEnvio: {
+      tipo: 'email',
+      destinatario: 'gabriela.leal@koinonia.edu.br',
+      assunto: 'Projeto de Pesquisa ABNT - TCC I - [Nome do Aluno]',
+      observacao: 'Envio em PDF ou DOCX para o e-mail da professora orientadora.'
+    },
+    cor: {
+      bg: 'bg-fuchsia-500/10',
+      text: 'text-fuchsia-300',
+      border: 'border-fuchsia-500/30',
+      pillBg: 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white',
+      dot: 'bg-fuchsia-400',
+      badgeBg: 'bg-fuchsia-500/20',
+      badgeText: 'text-fuchsia-300'
+    }
+  },
+  {
     id: 'aval-1-plantacao-freq',
     disciplina: 'Plantação e Revitalização de Igrejas II',
     disciplinaShort: 'Plantação de Igrejas II',
@@ -589,6 +632,382 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   }
 ];
 
+export interface KanbanTask {
+  id: string;
+  assessmentId?: string;
+  title: string;
+  subject: string;
+  professor: string;
+  dueDate: string;
+  priority: 'Máxima' | 'Média' | 'Normal';
+  type: 'Trabalho Escrito' | 'Portfólio' | 'Prova Objetiva' | 'Resumo Crítico' | 'Estudo de Caso' | 'TCC' | string;
+  status: 'todo' | 'doing' | 'done';
+  strategyNote: string;
+  subtasks: { id: string; text: string; done: boolean }[];
+}
+
+export const defaultSemesterTasks: KanbanTask[] = [
+  // 1. Marco Inicial: Estágio Básico (Concluído)
+  {
+    id: 'LMS-001',
+    title: 'Início das Aulas Semanais de Estágio Básico',
+    subject: 'Estágio Básico I e II (Bacharelado)',
+    professor: 'Prof. Antônio Carlos',
+    dueDate: '2026-08-17',
+    priority: 'Normal',
+    type: 'Aulas / Encontros',
+    status: 'done',
+    strategyNote: 'Aulas regulares presenciais/virtuais todas as segundas-feiras para estudantes de 5º e 8º períodos do Bacharelado em Teologia.',
+    subtasks: [
+      { id: 'st-001-1', text: 'Participação ativa nos encontros de segunda-feira', done: true },
+      { id: 'st-001-2', text: 'Elaboração e registro das atividades práticas propostas', done: true },
+    ],
+  },
+  // 2. Marco Inicial: Alinhamento TCC I (Concluído)
+  {
+    id: 'LMS-002',
+    title: 'Início do Prazo para Elaboração do Projeto',
+    subject: 'Trabalho de Conclusão de Curso I (TCC I)',
+    professor: 'Profª Gabriela Leal',
+    dueDate: '2026-08-21',
+    priority: 'Máxima',
+    type: 'Marco Metodológico',
+    status: 'done',
+    strategyNote: 'Sessão de alinhamento metodológico inicial. Cronômetro rígido de duas semanas para a entrega estruturada.',
+    subtasks: [
+      { id: 'st-002-1', text: 'Presença na aula inaugural de metodologia do TCC', done: true },
+      { id: 'st-002-2', text: 'Início de contato com orientadores específicos por afinidade temática', done: true },
+    ],
+  },
+  // 3. Avaliação 0 Oficial: TCC I - Projeto de Pesquisa (04/09)
+  {
+    id: 'aval-0-tcc1-projeto-pesquisa',
+    assessmentId: 'aval-0-tcc1-projeto-pesquisa',
+    title: 'Entrega Final do Projeto de Pesquisa (ABNT)',
+    subject: 'Trabalho de Conclusão de Curso I (TCC I)',
+    professor: 'Profª Gabriela Leal',
+    dueDate: '2026-09-04',
+    priority: 'Máxima',
+    type: 'TCC',
+    status: 'todo',
+    strategyNote: 'Prazo rígido de duas semanas: Capa, Sumário, Objetivos, Justificativa, Referencial Teórico e Cronograma. Sem IA.',
+    subtasks: [
+      { id: 'st-aval-0-0', text: 'Definir título provisório, justificativa e objetivos no infinitivo.', done: false },
+      { id: 'st-aval-0-1', text: 'Construir referencial teórico com normas ABNT e cronograma em tabela.', done: false },
+      { id: 'st-aval-0-2', text: 'Revisar impessoalidade (3ª pessoa), ausência de IA e anexos de pesquisa de campo.', done: false },
+    ],
+  },
+  // 4. Avaliação 1 Oficial: Plantação e Revitalização II (18/09)
+  {
+    id: 'aval-1-plantacao-freq',
+    assessmentId: 'aval-1-plantacao-freq',
+    title: 'Atividade Prática / Exercício de Fixação (Aula Gravada)',
+    subject: 'Plantação e Revitalização de Igrejas II',
+    professor: 'Profº Thácyto Lessa',
+    dueDate: '2026-09-18',
+    priority: 'Normal',
+    type: 'Atividade Modular',
+    status: 'todo',
+    strategyNote: 'Texto digitado em folha única com cabeçalho simples. Sem necessidade de capa ou folha de rosto ABNT. Envio por e-mail para thacyto@gmail.com até às 23:59.',
+    subtasks: [
+      { id: 'st-aval-1-0', text: 'Assistir ao vídeo da aula gravada disponibilizado pelo professor (~1h20 de duração).', done: false },
+      { id: 'st-aval-1-1', text: 'Responder às questões propostas sobre a aula no caderno ou bloco de notas.', done: false },
+      { id: 'st-aval-1-2', text: 'Digitar as respostas em um documento simples contendo apenas o cabeçalho (Nome, Disciplina e Data).', done: false },
+      { id: 'st-aval-1-3', text: 'Salvar e enviar o arquivo por e-mail para o docente impreterivelmente até às 23:59.', done: false },
+    ],
+  },
+  // 5. Avaliação 2 Oficial: História do Congregacionalismo (29/09)
+  {
+    id: 'aval-2-congregacionalismo-av1',
+    assessmentId: 'aval-2-congregacionalismo-av1',
+    title: 'Prova Escrita (AV1) + Leitura Obrigatória + Frequência',
+    subject: 'História do Congregacionalismo',
+    professor: 'Profº Ary Júnior',
+    dueDate: '2026-09-29',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: 'Uso obrigatório de câmera ligada durante toda a aula e na prova (18:30 às 20:25). Questão declaratória direta sobre leitura dos textos em PDF.',
+    subtasks: [
+      { id: 'st-aval-2-0', text: 'Acessar os links dos 4 a 6 textos em PDF compartilhados pelo professor no chat/drive da turma.', done: false },
+      { id: 'st-aval-2-1', text: 'Realizar a leitura integral dos textos abordando a Reforma Inglesa, Puritans, Separatistas e Westminster.', done: false },
+      { id: 'st-aval-2-2', text: 'Conectar-se no horário da aula no dia 29/09/2026 com a câmera aberta.', done: false },
+      { id: 'st-aval-2-3', text: 'Preencher a avaliação escrita e marcar a confirmação de leitura dos textos indicados.', done: false },
+    ],
+  },
+  // 6. Avaliação 3 Oficial: História do Pensamento Cristão II (29/09)
+  {
+    id: 'aval-3-pensamento-cristao-av1',
+    assessmentId: 'aval-3-pensamento-cristao-av1',
+    title: 'Trabalho Escrito de Pesquisa Acadêmica (AV1)',
+    subject: 'História do Pensamento Cristão II',
+    professor: 'Profº Hilário Bispo',
+    dueDate: '2026-09-29',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: 'Tema: Iluminismo e Modernidade (Racionalismo, Empirismo, Razão vs Revelação). Mínimo 5 a 6 páginas nas normas ABNT. Individual ou grupo até 3.',
+    subtasks: [
+      { id: 'st-aval-3-0', text: 'Definir a composição do trabalho (individual ou grupo de até 3 alunos).', done: false },
+      { id: 'st-aval-3-1', text: 'Revisar os slides fornecidos na primeira aula sobre a estrutura e os requisitos do trabalho.', done: false },
+      { id: 'st-aval-3-2', text: 'Estruturar a pesquisa cobrindo o tema Iluminismo e Modernidade (Descartes, Locke, Kant).', done: false },
+      { id: 'st-aval-3-3', text: 'Redigir o texto com no mínimo 5 a 6 páginas no padrão ABNT.', done: false },
+      { id: 'st-aval-3-4', text: 'Entregar o trabalho na data da prova (29/09/2026).', done: false },
+    ],
+  },
+  // 7. Avaliação 4 Oficial: Aconselhamento Bíblico II (30/09)
+  {
+    id: 'aval-4-aconselhamento-av1',
+    assessmentId: 'aval-4-aconselhamento-av1',
+    title: 'Prova Objetiva Online (Sem Trabalho Escrito)',
+    subject: 'Aconselhamento Bíblico II',
+    professor: 'Profº Uilian Santos',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '19:00 às 20:25 via Google Forms. Rigorosamente SEM CONSULTA. Restrito às informações dos slides 1 a 6 (Suficiência Bíblica, Jó, Ídolos e 5 Áreas). Correção automática.',
+    subtasks: [
+      { id: 'st-aval-4-0', text: 'Estudar os slides das aulas 1 a 6 disponibilizados na pasta da disciplina.', done: false },
+      { id: 'st-aval-4-1', text: 'Fixar tópicos centrais: Suficiência das Escrituras, Jó, Pecado e Ídolos, e 5 Áreas do Inventário.', done: false },
+      { id: 'st-aval-4-2', text: 'Acessar o link do Google Forms disponibilizado no dia 30/09/2026 no horário de aula.', done: false },
+      { id: 'st-aval-4-3', text: 'Preencher as questões objetivas e clicar em enviar para receber a nota automática.', done: false },
+    ],
+  },
+  // 8. Avaliação 5 Oficial: Direitos Humanos - Trabalho (30/09)
+  {
+    id: 'aval-5-direitos-humanos-trabalho',
+    assessmentId: 'aval-5-direitos-humanos-trabalho',
+    title: 'Trabalho Escrito Dissertativo / Pesquisa Individual (AV1)',
+    subject: 'Direitos Humanos',
+    professor: 'Profº Cleiton Barbirato',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: 'Até 1 lauda sobre "Desigualdade Social e Privilégios" e a Igreja (Times New Roman 12, esp. 1,5). Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de notas" até 23:59. Vale 2,0 pts.',
+    subtasks: [
+      { id: 'st-aval-5-0', text: 'Assistir ao vídeo indicado pelo professor ("A corrida da vida / Pergunta aos jovens sobre privilégios").', done: false },
+      { id: 'st-aval-5-1', text: 'Refletir sobre desigualdade social e o papel da Igreja como agente de transformação.', done: false },
+      { id: 'st-aval-5-2', text: 'Redigir texto dissertativo autoral de até 1 página em Times New Roman 12, espaçamento 1,5.', done: false },
+      { id: 'st-aval-5-3', text: 'Enviar arquivo para cleitonpb@gmail.com com assunto "Trabalho para composição de notas".', done: false },
+      { id: 'st-aval-5-4', text: 'Enviar antes das 23:59 do dia 30/09/2026.', done: false },
+    ],
+  },
+  // 9. Avaliação 6 Oficial: Direitos Humanos - Prova (30/09)
+  {
+    id: 'aval-6-direitos-humanos-prova',
+    assessmentId: 'aval-6-direitos-humanos-prova',
+    title: 'Prova Objetiva de Múltipla Escolha (AV1)',
+    subject: 'Direitos Humanos',
+    professor: 'Profº Cleiton Barbirato',
+    dueDate: '2026-09-30',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '20:30 no horário da aula. Vale 8,0 pontos. Múltipla escolha via Google Forms sem consulta a materiais ou IA.',
+    subtasks: [
+      { id: 'st-aval-6-0', text: 'Estudar a apostila digital composta por todos os slides da disciplina.', done: false },
+      { id: 'st-aval-6-1', text: 'Revisar: Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Pirâmide de Kelsen.', done: false },
+      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms no dia 30/09/2026 às 20:30.', done: false },
+      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: false },
+    ],
+  },
+  // 10. Avaliação 7 Oficial: Novo Testamento III (01/10)
+  {
+    id: 'aval-7-nt3-epistolas-av1',
+    assessmentId: 'aval-7-nt3-epistolas-av1',
+    title: 'Prova Objetiva (AV1)',
+    subject: 'Novo Testamento III - Epístolas Gerais',
+    professor: 'Profº Marcio Leal',
+    dueDate: '2026-10-01',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '20:25 durante a aula via Google Forms. Conteúdo: anotações de aula e "Introdução ao Novo Testamento" (Carson/Moo/Morris) sobre Hebreus, Tiago, 1 e 2 Pedro.',
+    subtasks: [
+      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: false },
+      { id: 'st-aval-7-1', text: 'Estudar as introduções especiais, autoria, destinatários e propósitos das epístolas no Carson.', done: false },
+      { id: 'st-aval-7-2', text: 'Acessar o formulário no dia 01/10/2026 no horário da aula (20:25).', done: false },
+      { id: 'st-aval-7-3', text: 'Preencher o exame e enviar.', done: false },
+    ],
+  },
+  // 11. Marco Eclesiástico: Posse Pastoral Pr. Uilian Santos (17/10)
+  {
+    id: 'LMS-004',
+    title: 'Cerimônia de Posse Pastoral do Pr. Uilian Santos',
+    subject: 'Geral / Vida Comunitária',
+    professor: 'Pr. Uilian Santos / Pr. Márcio Leal',
+    dueDate: '2026-10-17',
+    priority: 'Normal',
+    type: 'Evento Eclesiástico',
+    status: 'todo',
+    strategyNote: 'Culto de posse oficial do Pr. Uilian Santos na Igreja Congregacional de Sete Pontes (São Gonçalo). Pregação do Profº Márcio Leal.',
+    subtasks: [
+      { id: 'st-004-1', text: 'Intercessão e comunhão eclesiástica da comunidade acadêmica', done: false },
+    ],
+  },
+  // 12. Avaliação 8 Oficial: Ética Cristã - Seminário (22/10)
+  {
+    id: 'aval-8-etica-crista-seminario',
+    assessmentId: 'aval-8-etica-crista-seminario',
+    title: 'Seminário em Grupo + Apresentação Oral Individual na Tribuna',
+    subject: 'Ética Cristã',
+    professor: 'Profª Karoline Evangelista',
+    dueDate: '2026-10-22',
+    priority: 'Máxima',
+    type: 'Seminário em Grupo',
+    status: 'todo',
+    strategyNote: '22/10 a 19/11 nas quintas-feiras (18:45 às 20:25). 30 min por equipe / 10 min por orador com cronômetro. Tema: Dez Mandamentos (Catecismo Maior de Westminster + Norman Geisler).',
+    subtasks: [
+      { id: 'st-aval-8-0', text: 'Reunir-se com a equipe definida em sala e confirmar o mandamento sorteado (1º ao 10º Mandamento).', done: false },
+      { id: 'st-aval-8-1', text: 'Estudar o trecho correspondente do Catecismo Maior de Westminster (deveres e pecados proibidos).', done: false },
+      { id: 'st-aval-8-2', text: 'Consultar "Ética Cristã" de Norman Geisler para enriquecer com dilemas morais contemporâneos.', done: false },
+      { id: 'st-aval-8-3', text: 'Montar os slides da apresentação em conjunto.', done: false },
+      { id: 'st-aval-8-4', text: 'Treinar a exposição individual com cronômetro para não ultrapassar 10 minutos por orador.', done: false },
+    ],
+  },
+  // 13. Marco: Viagem Pr. Márcio Leal para Malásia (24/10)
+  {
+    id: 'LMS-006',
+    title: 'Viagem do Pr. Márcio Leal para a Malásia',
+    subject: 'Geral / Viagem Docente',
+    professor: 'Profº Marcio Leal',
+    dueDate: '2026-10-24',
+    priority: 'Normal',
+    type: 'Interrupção / Evento',
+    status: 'todo',
+    strategyNote: 'Viagem internacional do docente para o Encontro Global de Líderes (Saf City na Malásia). Ficar atento a compensações no cronograma síncrono.',
+    subtasks: [
+      { id: 'st-006-1', text: 'Acompanhar comunicados oficiais e atividades compensatórias', done: false },
+    ],
+  },
+  // 14. Avaliação 9 Oficial: Plantação II - Resumo Treliça e Videira (27/11)
+  {
+    id: 'aval-9-plantacao-resumo-livro',
+    assessmentId: 'aval-9-plantacao-resumo-livro',
+    title: 'Trabalho Escrito de Resumo de Livro Capítulo por Capítulo (AV1)',
+    subject: 'Plantação e Revitalização de Igrejas II',
+    professor: 'Profº Thácyto Lessa',
+    dueDate: '2026-11-27',
+    priority: 'Máxima',
+    type: 'Resumo Crítico',
+    status: 'todo',
+    strategyNote: 'Envio do resumo detalhado capítulo por capítulo do livro "A Treliça e a Videira" (Marshall & Payne). Limite rígido de 1 página por capítulo (12 capítulos = 12 folhas). Enviar para thacyto@gmail.com até 19:00.',
+    subtasks: [
+      { id: 'st-aval-9-0', text: 'Realizar a leitura atenta dos 12 capítulos do livro "A Treliça e a Videira".', done: false },
+      { id: 'st-aval-9-1', text: 'Sintetizar a ideia central de cada capítulo (treliça/estrutura vs videira/pessoas e crescimento orgânico).', done: false },
+      { id: 'st-aval-9-2', text: 'Redigir o resumo respeitando rigorosamente o limite de 1 página para cada capítulo (12 páginas).', done: false },
+      { id: 'st-aval-9-3', text: 'Formatar o trabalho e enviá-lo em formato PDF/Word por e-mail para thacyto@gmail.com.', done: false },
+    ],
+  },
+  // 15. Avaliação 10 Oficial: Plantação II - Prova AV2 (27/11)
+  {
+    id: 'aval-10-plantacao-prova-av2',
+    assessmentId: 'aval-10-plantacao-prova-av2',
+    title: 'Prova Objetiva Online (AV2)',
+    subject: 'Plantação e Revitalização de Igrejas II',
+    professor: 'Profº Thácyto Lessa',
+    dueDate: '2026-11-27',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '19:00 (horário da aula). Prova por link de formulário abordando os Quatro Ps da Revitalização (Pregar, Piedade, Pastorear, Perseverar) e Treliça/Videira. Consulta autorizada a anotações e slides.',
+    subtasks: [
+      { id: 'st-aval-10-0', text: 'Revisar todos os slides fornecidos durante o semestre.', done: false },
+      { id: 'st-aval-10-1', text: 'Estudar os tópicos centrais: 9 marcas de uma igreja saudável, 4 Ps e tipos de igreja.', done: false },
+      { id: 'st-aval-10-2', text: 'Acessar o link do formulário disponibilizado no dia 27/11/2026 às 19:00.', done: false },
+      { id: 'st-aval-10-3', text: 'Responder às questões objetivas e submeter.', done: false },
+    ],
+  },
+  // 16. Avaliação 11 Oficial: Afro-Brasileira e Indígena (28/11)
+  {
+    id: 'aval-11-afro-indigena-final',
+    assessmentId: 'aval-11-afro-indigena-final',
+    title: 'Trabalho Escrito / Produção Individual Final Aplicada',
+    subject: 'História e Cultura Afro-Brasileira e Indígena',
+    professor: 'Profº Alexsandro de Oliveira Silva',
+    dueDate: '2026-11-28',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: 'Extensão: 2 laudas em 3 partes (descrição do problema na igreja/missão, análise bíblico-teológica com 2 autores e proposta concreta de ação). Submeter no AVA até 28/11/2026.',
+    subtasks: [
+      { id: 'st-aval-11-0', text: 'Assistir às 4 videoaulas gravadas do curso EAD na pasta oficial.', done: false },
+      { id: 'st-aval-11-1', text: 'Selecionar uma situação real ou caso prático envolvendo questões étnico-raciais ou indígenas.', done: false },
+      { id: 'st-aval-11-2', text: 'Redigir texto de 2 laudas com fundamentação bíblica citando no mínimo 2 autores e proposta prática.', done: false },
+      { id: 'st-aval-11-3', text: 'Submeter o arquivo no ambiente virtual da UIECB até 28/11/2026.', done: false },
+    ],
+  },
+  // 17. Avaliação 12 Oficial: TCC I - Artigo Científico Final (04/12)
+  {
+    id: 'aval-12-tcc1-artigo-final',
+    assessmentId: 'aval-12-tcc1-artigo-final',
+    title: 'Projeto de Pesquisa & Artigo Científico Final',
+    subject: 'TCC I - Trabalho de Conclusão de Curso I',
+    professor: 'Profª Gabriela Leal (Márcio Leal)',
+    dueDate: '2026-12-04',
+    priority: 'Máxima',
+    type: 'TCC',
+    status: 'todo',
+    strategyNote: 'Artigo Científico individual (20 a 25 páginas ABNT/FMB). Linguagem impessoal na 3ª pessoa. Estrutura completa: Capa, Resumo PT/EN, Introdução, Metodologia, Discussão, Considerações e Referências. Sem IA.',
+    subtasks: [
+      { id: 'st-aval-12-0', text: 'Confirmar o convite ao orientador docente com afinidade temática.', done: false },
+      { id: 'st-aval-12-1', text: 'Estruturar o Projeto de Pesquisa (Tema, Problema, Justificativa, Objetivo Geral e Específicos).', done: false },
+      { id: 'st-aval-12-2', text: 'Redigir as seções do Artigo na ordem metodológica: Metodologia, Resultados e Discussão e Considerações Finais.', done: false },
+      { id: 'st-aval-12-3', text: 'Redigir ao final a Introdução e o Resumo (15-20 linhas com palavras-chave em PT/EN).', done: false },
+      { id: 'st-aval-12-4', text: 'Formatar as referências em ordem alfabética segundo o padrão ABNT/FMB e ajustar paginação.', done: false },
+      { id: 'st-aval-12-5', text: 'Submeter o artigo finalizado à coordenação/orientação até o encerramento do semestre.', done: false },
+    ],
+  },
+];
+
+export function normalizeToIsoDate(dateStr: string): string {
+  if (!dateStr) return '';
+  const trimmed = dateStr.trim();
+  // Se for no formato DD/MM/YYYY
+  if (trimmed.includes('/')) {
+    const parts = trimmed.split('/');
+    if (parts.length === 3) {
+      const [day, month, year] = parts;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+  }
+  // Se for formato ISO com hora (ex: 2026-09-04T00:00:00)
+  if (trimmed.includes('T')) {
+    return trimmed.split('T')[0];
+  }
+  // Se for formato YYYY-M-D
+  if (trimmed.includes('-')) {
+    const parts = trimmed.split('-');
+    if (parts.length === 3) {
+      const [year, month, day] = parts;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+  }
+  return trimmed;
+}
+
+export function formatIsoToDataTexto(isoDate: string): string {
+  if (!isoDate) return 'Data a definir';
+  const parts = isoDate.split('-');
+  if (parts.length === 3) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+    const monthNames = [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+    const monthName = monthNames[month - 1] || '';
+    const dateObj = new Date(year, month - 1, day);
+    const dayNames = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    const dayOfWeek = dayNames[dateObj.getDay()] || '';
+    return `${String(day).padStart(2, '0')} de ${monthName} de ${year} (${dayOfWeek})`;
+  }
+  return isoDate;
+}
+
 interface CalendarioAcademicoProps {
   userEmail?: string;
   onBack?: () => void;
@@ -636,25 +1055,205 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [copiedResumo, setCopiedResumo] = useState<boolean>(false);
 
+  // Carrega tarefas adicionais do Kanban (ex: tarefas criadas pelo aluno ou trabalhos extras)
+  const [extraKanbanEvents, setExtraKanbanEvents] = useState<AvaliacaoEvento[]>([]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const syncKanbanIntoCalendar = () => {
+      try {
+        const kanbanKey = `lms_checklist_${normalizedEmail}`;
+        const raw = localStorage.getItem(kanbanKey);
+        let tasks: KanbanTask[] = [];
+        if (raw) {
+          tasks = JSON.parse(raw);
+        } else {
+          tasks = defaultSemesterTasks;
+        }
+
+        const extras: AvaliacaoEvento[] = [];
+        tasks.forEach((t) => {
+          const isAlreadyInOfficial = AVALIACOES_2026_2.some((ev) => ev.id === t.id || ev.id === t.assessmentId);
+          if (!isAlreadyInOfficial && t.dueDate) {
+            const badge: 'PROVA' | 'TRABALHO' | 'SEMINÁRIO' | 'RESUMO' | 'ATIVIDADE' | 'ARTIGO' =
+              t.type?.includes('Prova') ? 'PROVA'
+              : t.type?.includes('Seminário') ? 'SEMINÁRIO'
+              : t.type?.includes('Resumo') ? 'RESUMO'
+              : t.type?.includes('TCC') ? 'ARTIGO'
+              : t.type?.includes('Atividade') ? 'ATIVIDADE'
+              : 'TRABALHO';
+
+            const normalizedDueDate = normalizeToIsoDate(t.dueDate);
+            const dataTextoFormatted = formatIsoToDataTexto(normalizedDueDate);
+
+            extras.push({
+              id: t.id,
+              disciplina: t.subject || 'Atividade Acadêmica',
+              disciplinaShort: (t.subject || 'Atividade').length > 25 ? (t.subject || 'Atividade').slice(0, 22) + '...' : (t.subject || 'Atividade'),
+              professor: t.professor || 'Docente Responsável',
+              tipo: t.title,
+              tipoBadge: badge,
+              dataLimite: normalizedDueDate,
+              dataTexto: dataTextoFormatted,
+              horario: 'Consulte orientações da disciplina',
+              peso: t.priority === 'Máxima' ? 'Prioridade Máxima' : 'Prioridade Normal',
+              regras: t.strategyNote ? [t.strategyNote] : ['Seguir as orientações docentes.'],
+              passoAPasso: t.subtasks && t.subtasks.length > 0 ? t.subtasks.map((st: any) => st.text) : ['Planejamento', 'Execução', 'Revisão', 'Entrega'],
+              bibliografia: {},
+              canalEnvio: { tipo: 'plataforma' },
+              cor: {
+                bg: badge === 'PROVA' ? 'bg-amber-500/10' : badge === 'RESUMO' ? 'bg-emerald-500/10' : badge === 'SEMINÁRIO' ? 'bg-yellow-500/10' : badge === 'ARTIGO' ? 'bg-fuchsia-500/10' : badge === 'ATIVIDADE' ? 'bg-teal-500/10' : 'bg-indigo-500/10',
+                text: badge === 'PROVA' ? 'text-amber-300' : badge === 'RESUMO' ? 'text-emerald-300' : badge === 'SEMINÁRIO' ? 'text-yellow-300' : badge === 'ARTIGO' ? 'text-fuchsia-300' : badge === 'ATIVIDADE' ? 'text-teal-300' : 'text-indigo-300',
+                border: badge === 'PROVA' ? 'border-amber-500/30' : badge === 'RESUMO' ? 'border-emerald-500/30' : badge === 'SEMINÁRIO' ? 'border-yellow-500/30' : badge === 'ARTIGO' ? 'border-fuchsia-500/30' : badge === 'ATIVIDADE' ? 'border-teal-500/30' : 'border-indigo-500/30',
+                pillBg: badge === 'PROVA' ? 'bg-amber-600 hover:bg-amber-500 text-white' : badge === 'RESUMO' ? 'bg-emerald-700 hover:bg-emerald-600 text-white' : badge === 'SEMINÁRIO' ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold' : badge === 'ARTIGO' ? 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white' : badge === 'ATIVIDADE' ? 'bg-teal-600 hover:bg-teal-500 text-white' : 'bg-indigo-600 hover:bg-indigo-500 text-white',
+                dot: badge === 'PROVA' ? 'bg-amber-400' : badge === 'RESUMO' ? 'bg-emerald-300' : badge === 'SEMINÁRIO' ? 'bg-amber-300' : badge === 'ARTIGO' ? 'bg-fuchsia-400' : badge === 'ATIVIDADE' ? 'bg-teal-300' : 'bg-indigo-400',
+                badgeBg: badge === 'PROVA' ? 'bg-amber-500/20' : badge === 'RESUMO' ? 'bg-emerald-500/20' : badge === 'SEMINÁRIO' ? 'bg-yellow-500/20' : badge === 'ARTIGO' ? 'bg-fuchsia-500/20' : badge === 'ATIVIDADE' ? 'bg-teal-500/20' : 'bg-indigo-500/20',
+                badgeText: badge === 'PROVA' ? 'text-amber-300' : badge === 'RESUMO' ? 'text-emerald-300' : badge === 'SEMINÁRIO' ? 'text-yellow-300' : badge === 'ARTIGO' ? 'text-fuchsia-300' : badge === 'ATIVIDADE' ? 'text-teal-300' : 'text-indigo-300',
+              }
+            });
+          }
+        });
+        setExtraKanbanEvents(extras);
+      } catch (_) {}
+    };
+
+    syncKanbanIntoCalendar();
+    window.addEventListener('koinonia_assessment_progress_updated', syncKanbanIntoCalendar);
+    window.addEventListener('lms_student_sync_updated', syncKanbanIntoCalendar);
+    window.addEventListener('storage', syncKanbanIntoCalendar);
+    return () => {
+      window.removeEventListener('koinonia_assessment_progress_updated', syncKanbanIntoCalendar);
+      window.removeEventListener('lms_student_sync_updated', syncKanbanIntoCalendar);
+      window.removeEventListener('storage', syncKanbanIntoCalendar);
+    };
+  }, [normalizedEmail]);
+
+  const allCalendarEvents = useMemo(() => {
+    const combined = [...AVALIACOES_2026_2, ...extraKanbanEvents];
+    return combined.sort((a, b) => (a.dataLimite || '').localeCompare(b.dataLimite || ''));
+  }, [extraKanbanEvents]);
+
   // Carregar checklists do localStorage
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const initialChecklists: Record<string, Record<number, boolean>> = {};
-    AVALIACOES_2026_2.forEach((ev) => {
+    const kanbanKey = `lms_checklist_${normalizedEmail}`;
+    const kanbanTasksMap: Record<string, any> = {};
+    try {
+      const rawKanban = localStorage.getItem(kanbanKey);
+      const kTasks = rawKanban ? JSON.parse(rawKanban) : defaultSemesterTasks;
+      kTasks.forEach((t: any) => {
+        if (t.id) kanbanTasksMap[t.id] = t;
+        if (t.assessmentId) kanbanTasksMap[t.assessmentId] = t;
+      });
+    } catch (_) {}
+
+    allCalendarEvents.forEach((ev) => {
       const storageKey = `koinonia_checklist_${normalizedEmail}_${ev.id}`;
       try {
         const raw = localStorage.getItem(storageKey);
         if (raw) {
           initialChecklists[ev.id] = JSON.parse(raw);
         } else {
-          initialChecklists[ev.id] = {};
+          // Inicializa a partir das subtasks do Kanban se existirem
+          const kTask = kanbanTasksMap[ev.id];
+          const checks: Record<number, boolean> = {};
+          if (kTask) {
+            if (kTask.status === 'done') {
+              ev.passoAPasso.forEach((_, idx) => {
+                checks[idx] = true;
+              });
+            } else if (kTask.subtasks && kTask.subtasks.length > 0) {
+              kTask.subtasks.forEach((st: any, idx: number) => {
+                checks[idx] = !!st.done;
+              });
+            }
+            try {
+              localStorage.setItem(storageKey, JSON.stringify(checks));
+            } catch (_) {}
+          }
+          initialChecklists[ev.id] = checks;
         }
       } catch (_) {
         initialChecklists[ev.id] = {};
       }
     });
     setChecklistMap(initialChecklists);
-  }, [normalizedEmail]);
+  }, [normalizedEmail, allCalendarEvents]);
+
+  // Concluir toda a avaliação de uma vez e sincronizar com o Kanban
+  const handleCompleteAssessment = (evento: AvaliacaoEvento) => {
+    const allChecks: Record<number, boolean> = {};
+    evento.passoAPasso.forEach((_, idx) => {
+      allChecks[idx] = true;
+    });
+
+    setChecklistMap((prev) => ({
+      ...prev,
+      [evento.id]: allChecks,
+    }));
+
+    if (typeof window !== 'undefined') {
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${evento.id}`;
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(allChecks));
+      } catch (_) {}
+
+      try {
+        const kanbanKey = `lms_checklist_${normalizedEmail}`;
+        const rawKanban = localStorage.getItem(kanbanKey);
+        let kanbanTasks: any[] = [];
+        try {
+          kanbanTasks = rawKanban ? JSON.parse(rawKanban) : [];
+        } catch (_) {}
+
+        let found = false;
+        const updatedKanban = kanbanTasks.map((t) => {
+          if (t.assessmentId === evento.id || t.id === evento.id) {
+            found = true;
+            const updatedSubtasks = t.subtasks && t.subtasks.length > 0
+              ? t.subtasks.map((st: any) => ({ ...st, done: true }))
+              : evento.passoAPasso.map((p, idx) => ({ id: `st-${evento.id}-${idx}`, text: p, done: true }));
+            return { ...t, status: 'done', subtasks: updatedSubtasks };
+          }
+          return t;
+        });
+
+        if (!found) {
+          const newTask = {
+            id: evento.id,
+            assessmentId: evento.id,
+            title: evento.tipo,
+            subject: evento.disciplina,
+            professor: evento.professor,
+            dueDate: evento.dataLimite,
+            priority: 'Máxima',
+            type: evento.tipoBadge === 'PROVA' ? 'Prova Objetiva' : evento.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : evento.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : evento.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : evento.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
+            status: 'done',
+            strategyNote: `${evento.dataTexto} • ${evento.horario}. ${evento.peso}`,
+            subtasks: evento.passoAPasso.map((p, idx) => ({ id: `st-${evento.id}-${idx}`, text: p, done: true })),
+          };
+          updatedKanban.push(newTask);
+        }
+
+        localStorage.setItem(kanbanKey, JSON.stringify(updatedKanban));
+        saveChecklistTasks(normalizedEmail, updatedKanban);
+      } catch (_) {}
+
+      window.dispatchEvent(
+        new CustomEvent('koinonia_assessment_progress_updated', {
+          detail: {
+            source: 'calendario',
+            assessmentId: evento.id,
+            status: 'done',
+            allSteps: allChecks,
+          },
+        })
+      );
+    }
+
+    setDrawerEvento(null);
+  };
 
   // Alternar checkbox do passo a passo
   const toggleChecklistStep = (eventoId: string, stepIdx: number) => {
@@ -674,32 +1273,65 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
         try {
           const kanbanKey = `lms_checklist_${normalizedEmail}`;
           const rawKanban = localStorage.getItem(kanbanKey);
-          if (rawKanban) {
-            const kanbanTasks: any[] = JSON.parse(rawKanban);
-            let hasChanged = false;
-            const updatedKanban = kanbanTasks.map((t) => {
-              if (t.assessmentId === eventoId || t.id === eventoId) {
-                hasChanged = true;
-                const updatedSubtasks = t.subtasks ? t.subtasks.map((st: any, idx: number) =>
-                  idx === stepIdx ? { ...st, done: newDone } : st
-                ) : [];
-                const doneCount = updatedSubtasks.filter((st: any) => st.done).length;
-                const newStatus =
-                  doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
-                    ? 'done'
-                    : doneCount > 0
-                    ? 'doing'
-                    : 'todo';
-                return { ...t, subtasks: updatedSubtasks, status: newStatus };
-              }
-              return t;
-            });
+          let kanbanTasks: any[] = [];
+          try {
+            kanbanTasks = rawKanban ? JSON.parse(rawKanban) : [];
+          } catch (_) {}
 
-            if (hasChanged) {
-              localStorage.setItem(kanbanKey, JSON.stringify(updatedKanban));
-              saveChecklistTasks(normalizedEmail, updatedKanban);
+          let found = false;
+          const updatedKanban = kanbanTasks.map((t) => {
+            if (t.assessmentId === eventoId || t.id === eventoId) {
+              found = true;
+              const updatedSubtasks = t.subtasks && t.subtasks.length > 0 ? t.subtasks.map((st: any, idx: number) =>
+                idx === stepIdx ? { ...st, done: newDone } : st
+              ) : [];
+              const doneCount = updatedSubtasks.filter((st: any) => st.done).length;
+              const newStatus =
+                doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+                  ? 'done'
+                  : doneCount > 0
+                  ? 'doing'
+                  : 'todo';
+              return { ...t, subtasks: updatedSubtasks, status: newStatus };
+            }
+            return t;
+          });
+
+          if (!found) {
+            const ev = allCalendarEvents.find((e) => e.id === eventoId);
+            if (ev) {
+              const subtasks = ev.passoAPasso.map((p, idx) => ({
+                id: `st-${ev.id}-${idx}`,
+                text: p,
+                done: idx === stepIdx ? newDone : !!currentEvChecks[idx],
+              }));
+              const doneCount = subtasks.filter((st) => st.done).length;
+              const newStatus =
+                doneCount === subtasks.length && subtasks.length > 0
+                  ? 'done'
+                  : doneCount > 0
+                  ? 'doing'
+                  : 'todo';
+
+              const newTask = {
+                id: ev.id,
+                assessmentId: ev.id,
+                title: ev.tipo,
+                subject: ev.disciplina,
+                professor: ev.professor,
+                dueDate: ev.dataLimite,
+                priority: 'Máxima',
+                type: ev.tipoBadge === 'PROVA' ? 'Prova Objetiva' : ev.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : ev.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : ev.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : ev.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
+                status: newStatus,
+                strategyNote: `${ev.dataTexto} • ${ev.horario}. ${ev.peso}`,
+                subtasks,
+              };
+              updatedKanban.push(newTask);
             }
           }
+
+          localStorage.setItem(kanbanKey, JSON.stringify(updatedKanban));
+          saveChecklistTasks(normalizedEmail, updatedKanban);
         } catch (_) {}
 
         // Dispara evento para atualização instantânea em componentes ativos
@@ -759,17 +1391,17 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   // Lista única de disciplinas para filtro
   const disciplinasList = useMemo(() => {
     const map = new Map<string, string>();
-    AVALIACOES_2026_2.forEach((ev) => {
+    allCalendarEvents.forEach((ev) => {
       map.set(ev.disciplina, ev.disciplinaShort);
     });
     return Array.from(map.entries()).map(([full, short]) => ({ full, short }));
-  }, []);
+  }, [allCalendarEvents]);
 
   // Eventos filtrados
   const filteredEvents = useMemo(() => {
-    if (selectedDiscipline === 'all') return AVALIACOES_2026_2;
-    return AVALIACOES_2026_2.filter((ev) => ev.disciplina === selectedDiscipline);
-  }, [selectedDiscipline]);
+    if (selectedDiscipline === 'all') return allCalendarEvents;
+    return allCalendarEvents.filter((ev) => ev.disciplina === selectedDiscipline);
+  }, [selectedDiscipline, allCalendarEvents]);
 
   // Navegação entre meses
   const handlePrevMonth = () => {
@@ -792,6 +1424,13 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
 
   // Matriz de Dias do Mês (Grade do Google Agenda: 7 colunas)
   const calendarDays = useMemo(() => {
+    const formatToYmd = (date: Date) => {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    };
+
     const firstDay = new Date(currentYear, currentMonthIndex, 1);
     const lastDay = new Date(currentYear, currentMonthIndex + 1, 0);
 
@@ -812,7 +1451,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     for (let i = startingDayOfWeek - 1; i >= 0; i--) {
       const d = prevMonthLastDay - i;
       const prevDate = new Date(currentYear, currentMonthIndex - 1, d);
-      const str = `${currentYear}-${String(currentMonthIndex).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const str = formatToYmd(prevDate);
       const evs = filteredEvents.filter((e) => e.dataLimite === str);
       days.push({
         date: prevDate,
@@ -826,7 +1465,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     // Dias do mês atual
     for (let d = 1; d <= totalDaysInMonth; d++) {
       const currDate = new Date(currentYear, currentMonthIndex, d);
-      const str = `${currentYear}-${String(currentMonthIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const str = formatToYmd(currDate);
       
       // Tratamento especial para o Seminário de Ética Cristã que abrange quintas-feiras de 22/10 a 19/11
       const evs = filteredEvents.filter((e) => {
@@ -855,7 +1494,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     const remainingDays = (7 - (days.length % 7)) % 7;
     for (let d = 1; d <= remainingDays; d++) {
       const nextDate = new Date(currentYear, currentMonthIndex + 1, d);
-      const str = `${currentYear}-${String(currentMonthIndex + 2).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const str = formatToYmd(nextDate);
       const evs = filteredEvents.filter((e) => e.dataLimite === str);
       days.push({
         date: nextDate,
@@ -1373,375 +2012,470 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
       {/* ========================================================================= */}
       {/* CLIQUE 2: POPUP RESUMO (MODAL COMPACTO AO CLICAR EM RESUMO)               */}
       {/* ========================================================================= */}
-      {popupEvento && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white space-y-0">
-            {/* TOPO COM IDENTIFICAÇÃO DA DISCIPLINA */}
-            <div className={`p-5 border-b border-slate-800 flex items-start justify-between gap-3 ${popupEvento.cor.bg}`}>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${popupEvento.cor.badgeBg} ${popupEvento.cor.badgeText}`}>
-                    {popupEvento.tipoBadge}
-                  </span>
-                  <span className="text-xs font-bold text-slate-300">
-                    Semestre 2026.2
-                  </span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-black text-white">
-                  {popupEvento.disciplina}
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Ministrada por: <strong className="text-white">{popupEvento.professor}</strong>
-                </p>
-              </div>
+      <PopupResumoAvaliacao
+        evento={popupEvento}
+        checklistMap={checklistMap}
+        onClose={() => setPopupEvento(null)}
+        onOpenDrawer={(ev) => {
+          setPopupEvento(null);
+          setDrawerEvento(ev);
+        }}
+      />
 
-              <button
-                type="button"
-                onClick={() => setPopupEvento(null)}
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-sm transition cursor-pointer"
-              >
-                ✕
-              </button>
+      {/* ========================================================================= */}
+      {/* CLIQUE 3: PAINEL LATERAL / DRAWER (SLIDE-OVER COM GUIA COMPLETO)          */}
+      {/* ========================================================================= */}
+      <DrawerAvaliacao
+        evento={drawerEvento}
+        checklistMap={checklistMap}
+        onToggleStep={toggleChecklistStep}
+        onCompleteAssessment={handleCompleteAssessment}
+        onClose={() => setDrawerEvento(null)}
+      />
+    </div>
+  );
+};
+
+// ============================================================================
+// COMPONENTES EXPORTADOS PARA DUAL-VIEW (USADOS NO CALENDÁRIO E NO QUADRO KANBAN)
+// ============================================================================
+
+export interface PopupResumoAvaliacaoProps {
+  evento: AvaliacaoEvento | null;
+  checklistMap: Record<string, Record<number, boolean>>;
+  onClose: () => void;
+  onOpenDrawer: (evento: AvaliacaoEvento) => void;
+}
+
+export const PopupResumoAvaliacao: React.FC<PopupResumoAvaliacaoProps> = ({
+  evento,
+  checklistMap,
+  onClose,
+  onOpenDrawer,
+}) => {
+  if (!evento) return null;
+
+  const checks = checklistMap[evento.id] || {};
+  const total = evento.passoAPasso.length;
+  let completed = 0;
+  for (let i = 0; i < total; i++) {
+    if (checks[i]) completed++;
+  }
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white space-y-0">
+        {/* TOPO COM IDENTIFICAÇÃO DA DISCIPLINA */}
+        <div className={`p-5 border-b border-slate-800 flex items-start justify-between gap-3 ${evento.cor.bg}`}>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${evento.cor.badgeBg} ${evento.cor.badgeText}`}>
+                {evento.tipoBadge}
+              </span>
+              <span className="text-xs font-bold text-slate-300">
+                Semestre 2026.2
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white">
+              {evento.disciplina}
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Ministrada por: <strong className="text-white">{evento.professor}</strong>
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-sm transition cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* CONTEÚDO PRINCIPAL DO RESUMO */}
+        <div className="p-5 sm:p-6 space-y-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+              <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-400" /> Prazo e Horário
+              </span>
+              <p className="text-xs font-extrabold text-white mt-1">
+                {evento.dataTexto}
+              </p>
+              <p className="text-[11px] text-blue-300 font-mono mt-0.5">
+                {evento.horario}
+              </p>
             </div>
 
-            {/* CONTEÚDO PRINCIPAL DO RESUMO */}
-            <div className="p-5 sm:p-6 space-y-4 text-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
-                  <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-blue-400" /> Prazo e Horário
-                  </span>
-                  <p className="text-xs font-extrabold text-white mt-1">
-                    {popupEvento.dataTexto}
-                  </p>
-                  <p className="text-[11px] text-blue-300 font-mono mt-0.5">
-                    {popupEvento.horario}
-                  </p>
-                </div>
+            <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+              <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 text-amber-400" /> Peso / Pontuação
+              </span>
+              <p className="text-xs font-bold text-slate-200 mt-1">
+                {evento.peso}
+              </p>
+            </div>
+          </div>
 
-                <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
-                  <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1.5">
-                    <Award className="w-3.5 h-3.5 text-amber-400" /> Peso / Pontuação
-                  </span>
-                  <p className="text-xs font-bold text-slate-200 mt-1">
-                    {popupEvento.peso}
-                  </p>
-                </div>
-              </div>
+          {/* TIPO E DESCRIÇÃO SINTÉTICA */}
+          <div className="bg-slate-800/40 p-3.5 rounded-2xl border border-slate-700/60 space-y-1.5">
+            <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
+              Tipo da Avaliação
+            </span>
+            <p className="text-xs font-semibold text-slate-200 leading-relaxed">
+              {evento.tipo}
+            </p>
+          </div>
 
-              {/* TIPO E DESCRIÇÃO SINTÉTICA */}
-              <div className="bg-slate-800/40 p-3.5 rounded-2xl border border-slate-700/60 space-y-1.5">
-                <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
-                  Tipo da Avaliação
-                </span>
-                <p className="text-xs font-semibold text-slate-200 leading-relaxed">
-                  {popupEvento.tipo}
-                </p>
-              </div>
+          {/* PROGRESSO NO CHECKLIST */}
+          <div className="bg-blue-950/30 border border-blue-500/30 p-3.5 rounded-2xl flex items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-black text-blue-200 block">
+                Seu Checklist de Preparação
+              </span>
+              <span className="text-[11px] text-slate-400">
+                {completed} de {total} etapas concluídas ({percent}%)
+              </span>
+            </div>
+            <div className="w-24 bg-slate-800 rounded-full h-2.5 overflow-hidden">
+              <div
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2.5 rounded-full transition-all duration-300"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
+          </div>
+        </div>
 
-              {/* PROGRESSO NO CHECKLIST */}
-              {(() => {
-                const prog = getEventProgress(popupEvento);
+        {/* BOTÕES DE AÇÃO */}
+        <div className="p-5 bg-slate-950/80 border-t border-slate-800 flex flex-col sm:flex-row items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => onOpenDrawer(evento)}
+            className="w-full sm:flex-1 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-lg shadow-blue-500/25 transition cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+          >
+            <span>Ver Passo a Passo Completo</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full sm:w-auto px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export interface DrawerAvaliacaoProps {
+  evento: AvaliacaoEvento | null;
+  checklistMap: Record<string, Record<number, boolean>>;
+  onToggleStep: (eventoId: string, stepIdx: number) => void;
+  onCompleteAssessment?: (evento: AvaliacaoEvento) => void;
+  onClose: () => void;
+}
+
+export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
+  evento,
+  checklistMap,
+  onToggleStep,
+  onCompleteAssessment,
+  onClose,
+}) => {
+  const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
+  const [copiedResumo, setCopiedResumo] = useState<boolean>(false);
+
+  if (!evento) return null;
+
+  const checks = checklistMap[evento.id] || {};
+  const total = evento.passoAPasso.length;
+  let completed = 0;
+  for (let i = 0; i < total; i++) {
+    if (checks[i]) completed++;
+  }
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  const handleCopyEmail = (email: string) => {
+    navigator.clipboard.writeText(email);
+    setCopiedEmail(email);
+    setTimeout(() => setCopiedEmail(null), 2500);
+  };
+
+  const handleCopyResumo = (ev: AvaliacaoEvento) => {
+    const texto = `📋 *${ev.disciplina}*\n` +
+      `👤 Professor: ${ev.professor}\n` +
+      `📅 Prazo: ${ev.dataTexto} — ${ev.horario}\n` +
+      `🎯 Tipo: ${ev.tipo}\n` +
+      `⚖️ Peso: ${ev.peso}\n\n` +
+      `📝 *Passo a Passo de Execução:*\n` +
+      ev.passoAPasso.map((p, idx) => `${idx + 1}. ${p}`).join('\n') +
+      `\n\n📌 *Regras Principais:*\n` +
+      ev.regras.map((r) => `• ${r}`).join('\n') +
+      (ev.canalEnvio.destinatario ? `\n\n✉️ Envio: ${ev.canalEnvio.destinatario}` : '');
+
+    navigator.clipboard.writeText(texto);
+    setCopiedResumo(true);
+    setTimeout(() => setCopiedResumo(false), 2500);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex justify-end animate-in fade-in duration-300">
+      <div className="bg-slate-900 border-l border-slate-800 w-full max-w-2xl h-full flex flex-col shadow-2xl text-white animate-in slide-in-from-right duration-300">
+        {/* TOPO DO DRAWER */}
+        <div className={`p-5 sm:p-6 border-b border-slate-800 flex items-start justify-between gap-4 ${evento.cor.bg}`}>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${evento.cor.badgeBg} ${evento.cor.badgeText}`}>
+                {evento.tipoBadge}
+              </span>
+              <span className="text-xs font-bold text-slate-300">
+                Guia Oficial de Execução
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white">
+              {evento.disciplina}
+            </h2>
+            <p className="text-xs text-slate-300 mt-1">
+              Profº <strong className="text-white">{evento.professor}</strong> • {evento.tipo}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-base transition cursor-pointer"
+            title="Fechar painel"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* CORPO DO DRAWER COM SCROLL */}
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+          {/* BANNER DE PRAZO E PONTUAÇÃO */}
+          <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-blue-400" /> Data Limite e Horário:
+              </span>
+              <p className="text-sm font-black text-white mt-0.5">
+                {evento.dataTexto}
+              </p>
+              <p className="text-xs text-blue-300 font-mono mt-0.5">
+                {evento.horario}
+              </p>
+            </div>
+
+            <div className="sm:text-right pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-700">
+              <span className="text-[11px] font-bold text-slate-400 block flex items-center sm:justify-end gap-1">
+                <Award className="w-3.5 h-3.5 text-amber-400" /> Peso na Média:
+              </span>
+              <p className="text-xs font-extrabold text-amber-300 mt-0.5">
+                {evento.peso}
+              </p>
+            </div>
+          </div>
+
+          {/* 1. GUIA PASSO A PASSO COM CHECKLIST INTERATIVO */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                Passo a Passo de Execução (Checklist)
+              </h3>
+              <span className="text-xs font-extrabold text-blue-400">
+                {completed}/{total} ({percent}%)
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              {evento.passoAPasso.map((passo, sIdx) => {
+                const isChecked = Boolean(checklistMap[evento.id]?.[sIdx]);
                 return (
-                  <div className="bg-blue-950/30 border border-blue-500/30 p-3.5 rounded-2xl flex items-center justify-between gap-4">
-                    <div>
-                      <span className="text-xs font-black text-blue-200 block">
-                        Seu Checklist de Preparação
+                  <div
+                    key={sIdx}
+                    onClick={() => onToggleStep(evento.id, sIdx)}
+                    className={`p-3.5 rounded-2xl border transition flex items-start gap-3 cursor-pointer ${
+                      isChecked
+                        ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-100'
+                        : 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800/80 text-slate-200'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className="mt-0.5 flex-shrink-0 cursor-pointer"
+                    >
+                      {isChecked ? (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      ) : (
+                        <Circle className="w-5 h-5 text-slate-500 hover:text-slate-300" />
+                      )}
+                    </button>
+                    <div className="space-y-0.5">
+                      <span className="text-[11px] font-black uppercase text-slate-400 block">
+                        Etapa {sIdx + 1}
                       </span>
-                      <span className="text-[11px] text-slate-400">
-                        {prog.completed} de {prog.total} etapas concluídas ({prog.percent}%)
-                      </span>
-                    </div>
-                    <div className="w-24 bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2.5 rounded-full transition-all duration-300"
-                        style={{ width: `${prog.percent}%` }}
-                      />
+                      <p className={`text-xs sm:text-sm leading-relaxed ${isChecked ? 'line-through opacity-80' : 'font-medium'}`}>
+                        {passo}
+                      </p>
                     </div>
                   </div>
                 );
-              })()}
-            </div>
-
-            {/* BOTÕES DE AÇÃO */}
-            <div className="p-5 bg-slate-950/80 border-t border-slate-800 flex flex-col sm:flex-row items-center gap-2.5">
-              <button
-                type="button"
-                onClick={() => {
-                  const ev = popupEvento;
-                  setPopupEvento(null);
-                  setDrawerEvento(ev);
-                }}
-                className="w-full sm:flex-1 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-lg shadow-blue-500/25 transition cursor-pointer flex items-center justify-center gap-2 active:scale-98"
-              >
-                <span>Ver Passo a Passo Completo</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPopupEvento(null)}
-                className="w-full sm:w-auto px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
-              >
-                Fechar
-              </button>
+              })}
             </div>
           </div>
-        </div>
-      )}
 
-      {/* ========================================================================= */}
-      {/* CLIQUE 2: PAINEL LATERAL / DRAWER (SLIDE-OVER COM GUIA COMPLETO)          */}
-      {/* ========================================================================= */}
-      {drawerEvento && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex justify-end animate-in fade-in duration-300">
-          <div className="bg-slate-900 border-l border-slate-800 w-full max-w-2xl h-full flex flex-col shadow-2xl text-white animate-in slide-in-from-right duration-300">
-            {/* TOPO DO DRAWER */}
-            <div className={`p-5 sm:p-6 border-b border-slate-800 flex items-start justify-between gap-4 ${drawerEvento.cor.bg}`}>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${drawerEvento.cor.badgeBg} ${drawerEvento.cor.badgeText}`}>
-                    {drawerEvento.tipoBadge}
-                  </span>
-                  <span className="text-xs font-bold text-slate-300">
-                    Guia Oficial de Execução
-                  </span>
+          {/* 2. REGRAS RÍGIDAS DE FORMATAÇÃO E CRITÉRIOS */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-400" />
+              Regras Rígidas de Formatação e Critérios
+            </h3>
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 space-y-2 text-xs">
+              {evento.regras.map((regra, rIdx) => (
+                <div key={rIdx} className="flex items-start gap-2 text-amber-200">
+                  <span className="text-amber-400 font-black">•</span>
+                  <p className="leading-relaxed">{regra}</p>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white">
-                  {drawerEvento.disciplina}
-                </h2>
-                <p className="text-xs text-slate-300 mt-1">
-                  Profº <strong className="text-white">{drawerEvento.professor}</strong> • {drawerEvento.tipo}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setDrawerEvento(null)}
-                className="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-base transition cursor-pointer"
-                title="Fechar painel"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              ))}
             </div>
+          </div>
 
-            {/* CORPO DO DRAWER COM SCROLL */}
-            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
-              {/* BANNER DE PRAZO E PONTUAÇÃO */}
-              <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* 3. BIBLIOGRAFIA E LIVROS EXIGIDOS */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-blue-400" />
+              Bibliografia e Livros Exigidos
+            </h3>
+            <div className="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-4 space-y-3 text-xs">
+              {evento.bibliografia.obrigatoria && evento.bibliografia.obrigatoria.length > 0 && (
                 <div>
-                  <span className="text-[11px] font-bold text-slate-400 block flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-blue-400" /> Data Limite e Horário:
+                  <span className="text-[10px] font-black uppercase tracking-wider text-blue-400 block mb-1.5">
+                    Leitura Obrigatória:
                   </span>
-                  <p className="text-sm font-black text-white mt-0.5">
-                    {drawerEvento.dataTexto}
-                  </p>
-                  <p className="text-xs text-blue-300 font-mono mt-0.5">
-                    {drawerEvento.horario}
-                  </p>
+                  <ul className="space-y-1 text-slate-200">
+                    {evento.bibliografia.obrigatoria.map((b, bIdx) => (
+                      <li key={bIdx} className="flex items-start gap-1.5">
+                        <span className="text-blue-400 font-bold">➔</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
+              )}
 
-                <div className="sm:text-right pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-700">
-                  <span className="text-[11px] font-bold text-slate-400 block flex items-center sm:justify-end gap-1">
-                    <Award className="w-3.5 h-3.5 text-amber-400" /> Peso na Média:
+              {evento.bibliografia.recomendada && evento.bibliografia.recomendada.length > 0 && (
+                <div className="pt-2 border-t border-slate-700">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 block mb-1.5">
+                    Leitura Recomendada / Complementar:
                   </span>
-                  <p className="text-xs font-extrabold text-amber-300 mt-0.5">
-                    {drawerEvento.peso}
-                  </p>
+                  <ul className="space-y-1 text-slate-300">
+                    {evento.bibliografia.recomendada.map((b, bIdx) => (
+                      <li key={bIdx} className="flex items-start gap-1.5">
+                        <span className="text-amber-400 font-bold">➔</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-
-              {/* 1. GUIA PASSO A PASSO COM CHECKLIST INTERATIVO */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    Passo a Passo de Execução (Checklist)
-                  </h3>
-                  {(() => {
-                    const prog = getEventProgress(drawerEvento);
-                    return (
-                      <span className="text-xs font-extrabold text-blue-400">
-                        {prog.completed}/{prog.total} ({prog.percent}%)
-                      </span>
-                    );
-                  })()}
-                </div>
-
-                <div className="space-y-2">
-                  {drawerEvento.passoAPasso.map((passo, sIdx) => {
-                    const isChecked = Boolean(checklistMap[drawerEvento.id]?.[sIdx]);
-                    return (
-                      <div
-                        key={sIdx}
-                        onClick={() => toggleChecklistStep(drawerEvento.id, sIdx)}
-                        className={`p-3.5 rounded-2xl border transition flex items-start gap-3 cursor-pointer ${
-                          isChecked
-                            ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-100'
-                            : 'bg-slate-800/40 border-slate-700/60 hover:bg-slate-800/80 text-slate-200'
-                        }`}
-                      >
-                        <button
-                          type="button"
-                          className="mt-0.5 flex-shrink-0 cursor-pointer"
-                        >
-                          {isChecked ? (
-                            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                          ) : (
-                            <Circle className="w-5 h-5 text-slate-500 hover:text-slate-300" />
-                          )}
-                        </button>
-                        <div className="space-y-0.5">
-                          <span className="text-[11px] font-black uppercase text-slate-400 block">
-                            Etapa {sIdx + 1}
-                          </span>
-                          <p className={`text-xs sm:text-sm leading-relaxed ${isChecked ? 'line-through opacity-80' : 'font-medium'}`}>
-                            {passo}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 2. REGRAS RÍGIDAS DE FORMATAÇÃO E CRITÉRIOS */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400" />
-                  Regras Rígidas de Formatação e Critérios
-                </h3>
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 space-y-2 text-xs">
-                  {drawerEvento.regras.map((regra, rIdx) => (
-                    <div key={rIdx} className="flex items-start gap-2 text-amber-200">
-                      <span className="text-amber-400 font-black">•</span>
-                      <p className="leading-relaxed">{regra}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 3. BIBLIOGRAFIA E LIVROS EXIGIDOS */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-blue-400" />
-                  Bibliografia e Livros Exigidos
-                </h3>
-                <div className="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-4 space-y-3 text-xs">
-                  {drawerEvento.bibliografia.obrigatoria && drawerEvento.bibliografia.obrigatoria.length > 0 && (
-                    <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-blue-400 block mb-1.5">
-                        Leitura Obrigatória:
-                      </span>
-                      <ul className="space-y-1 text-slate-200">
-                        {drawerEvento.bibliografia.obrigatoria.map((b, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-1.5">
-                            <span className="text-blue-400 font-bold">➔</span>
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {drawerEvento.bibliografia.recomendada && drawerEvento.bibliografia.recomendada.length > 0 && (
-                    <div className="pt-2 border-t border-slate-700">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 block mb-1.5">
-                        Leitura Recomendada / Complementar:
-                      </span>
-                      <ul className="space-y-1 text-slate-300">
-                        {drawerEvento.bibliografia.recomendada.map((b, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-1.5">
-                            <span className="text-amber-400 font-bold">➔</span>
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* 4. CANAL E INSTRUÇÕES DE ENVIO */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-indigo-400" />
-                  Canal e Instruções de Envio
-                </h3>
-                <div className="bg-indigo-950/20 border border-indigo-500/30 rounded-2xl p-4 space-y-3 text-xs">
-                  {drawerEvento.canalEnvio.destinatario && (
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900 rounded-xl border border-indigo-500/30">
-                      <div>
-                        <span className="text-[10px] font-bold text-slate-400 block">E-mail para Submissão:</span>
-                        <span className="font-mono text-xs font-black text-indigo-300">
-                          {drawerEvento.canalEnvio.destinatario}
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => handleCopyEmail(drawerEvento.canalEnvio.destinatario!)}
-                        className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-extrabold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
-                      >
-                        {copiedEmail === drawerEvento.canalEnvio.destinatario ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 text-emerald-300" /> E-mail Copiado!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5" /> Copiar E-mail
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
-
-                  {drawerEvento.canalEnvio.assunto && (
-                    <div className="p-3 bg-slate-900 rounded-xl border border-slate-700">
-                      <span className="text-[10px] font-bold text-slate-400 block">Assunto Obrigatório do E-mail:</span>
-                      <span className="font-mono text-xs font-black text-amber-300">
-                        "{drawerEvento.canalEnvio.assunto}"
-                      </span>
-                    </div>
-                  )}
-
-                  {drawerEvento.canalEnvio.observacao && (
-                    <p className="text-slate-300 leading-relaxed">
-                      {drawerEvento.canalEnvio.observacao}
-                    </p>
-                  )}
-                </div>
-              </div>
+              )}
             </div>
+          </div>
 
-            {/* RODAPÉ DO DRAWER COM AÇÕES */}
-            <div className="p-5 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center gap-2.5">
-              <button
-                type="button"
-                onClick={() => handleCopyResumo(drawerEvento)}
-                className="w-full sm:flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-extrabold text-xs rounded-xl transition cursor-pointer flex items-center justify-center gap-2 active:scale-98"
-              >
-                {copiedResumo ? (
-                  <>
-                    <Check className="w-4 h-4 text-emerald-400" /> Resumo Copiado para a Área de Transferência!
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="w-4 h-4" /> Copiar Resumo para WhatsApp / Bloco de Notas
-                  </>
-                )}
-              </button>
+          {/* 4. CANAL E INSTRUÇÕES DE ENVIO */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <Mail className="w-4 h-4 text-indigo-400" />
+              Canal e Instruções de Envio
+            </h3>
+            <div className="bg-indigo-950/20 border border-indigo-500/30 rounded-2xl p-4 space-y-3 text-xs">
+              {evento.canalEnvio.destinatario && (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-slate-900 rounded-xl border border-indigo-500/30">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 block">E-mail para Submissão:</span>
+                    <span className="font-mono text-xs font-black text-indigo-300">
+                      {evento.canalEnvio.destinatario}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail(evento.canalEnvio.destinatario!)}
+                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-extrabold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                  >
+                    {copiedEmail === evento.canalEnvio.destinatario ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-300" /> E-mail Copiado!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" /> Copiar E-mail
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
 
-              <button
-                type="button"
-                onClick={() => setDrawerEvento(null)}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-xl transition cursor-pointer"
-              >
-                Concluído
-              </button>
+              {evento.canalEnvio.assunto && (
+                <div className="p-3 bg-slate-900 rounded-xl border border-slate-700">
+                  <span className="text-[10px] font-bold text-slate-400 block">Assunto Obrigatório do E-mail:</span>
+                  <span className="font-mono text-xs font-black text-amber-300">
+                    "{evento.canalEnvio.assunto}"
+                  </span>
+                </div>
+              )}
+
+              {evento.canalEnvio.observacao && (
+                <p className="text-slate-300 leading-relaxed">
+                  {evento.canalEnvio.observacao}
+                </p>
+              )}
             </div>
           </div>
         </div>
-      )}
+
+        {/* RODAPÉ DO DRAWER COM AÇÕES */}
+        <div className="p-5 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => handleCopyResumo(evento)}
+            className="w-full sm:flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-extrabold text-xs rounded-xl transition cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+          >
+            {copiedResumo ? (
+              <>
+                <Check className="w-4 h-4 text-emerald-400" /> Resumo Copiado!
+              </>
+            ) : (
+              <>
+                <Share2 className="w-4 h-4" /> Copiar Resumo
+              </>
+            )}
+          </button>
+
+          {onCompleteAssessment && (
+            <button
+              type="button"
+              onClick={() => onCompleteAssessment(evento)}
+              className="w-full sm:w-auto px-5 py-3 bg-emerald-600 hover:bg-emerald-500 active:scale-98 text-white font-black text-xs rounded-xl shadow-lg shadow-emerald-600/30 transition cursor-pointer flex items-center justify-center gap-2"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Concluir Avaliação (100%)</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full sm:w-auto px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

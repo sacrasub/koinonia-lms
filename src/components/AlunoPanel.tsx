@@ -10,7 +10,7 @@ import {
   Cloud, Settings, GraduationCap, X, Compass, PhoneCall, Archive, ArchiveRestore, CheckCircle,
   Layers, Flame, ArrowRight, Mic, Box, Ban, RefreshCw, ChevronDown, ChevronUp,
   AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap, Play, Download, ClipboardList,
-  LayoutGrid
+  LayoutGrid, Award
 } from 'lucide-react';
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
@@ -948,6 +948,21 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
             <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">12</span>
           </button>
 
+          {/* BOTÃO DIRETO PARA MEU BOLETIM DE NOTAS */}
+          <button
+            type="button"
+            onClick={() => {
+              if (onTabChange) onTabChange('aluno-boletim');
+              else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-boletim' }));
+            }}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/40 shadow-sm active:scale-95"
+            title="Consultar meu Boletim Oficial de Notas e Faltas 2026.2"
+          >
+            <Award className="w-3.5 h-3.5 text-amber-300" />
+            <span>Meu Boletim</span>
+            <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">Oficial</span>
+          </button>
+
           {/* TOGGLE DE EXPERIÊNCIA: MODO ESSENCIAL vs. MODO IMERSIVO */}
           <button
             type="button"
@@ -996,111 +1011,110 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
 
   const renderAulasCanceladas = () => {
     if (aulasCanceladasHoje.length === 0) return null;
+
     return (
-      <div className="bg-gradient-to-r from-red-950 via-rose-900 to-slate-900 border-2 border-red-500 rounded-3xl p-5 sm:p-6 text-white shadow-xl space-y-3 animate-in fade-in zoom-in-95 duration-300">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-red-600 text-white rounded-2xl animate-pulse">
-            <Ban className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider bg-red-500 text-white px-2.5 py-0.5 rounded-full">
-                🚫 Aviso Acadêmico Oficial
-              </span>
-              <span className="text-xs text-rose-200 font-mono">
-                Data: {new Date().toLocaleDateString('pt-BR')}
-              </span>
-            </div>
-            <h3 className="text-lg sm:text-xl font-black text-white mt-0.5">
-              Atenção: Não Haverá Aula Ao Vivo Hoje
-            </h3>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          {aulasCanceladasHoje.map((canc) => {
-            const parsed = canc.motivo?.startsWith('[PROVIDENCIA_JSON]:')
-              ? parseProvidenciaMotivo(canc.motivo)
-              : null;
-            const motivoLimpo = parsed ? parsed.motivoLimpo : canc.motivo;
-            const videoUrl = canc.video_url || parsed?.videoUrl || '';
-            const arquivoUrl = canc.arquivo_url || parsed?.arquivoUrl || '';
-            const arquivoNome = canc.arquivo_nome || parsed?.arquivoNome || 'Trabalho_Atividade.pdf';
-            const trabalhoInstrucoes = canc.trabalho_instrucoes || parsed?.trabalhoInstrucoes || '';
-            const trabalhoPrazo = canc.trabalho_prazo || parsed?.trabalhoPrazo || '';
-            const hasExtra = Boolean(videoUrl || arquivoUrl || trabalhoInstrucoes);
+      <div className="space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
+        {aulasCanceladasHoje.map((canc) => {
+          const parsed = canc.motivo?.startsWith('[PROVIDENCIA_JSON]:')
+            ? parseProvidenciaMotivo(canc.motivo)
+            : null;
+          const tipo = canc.tipo_providencia || parsed?.tipoProvidencia || 'cancelamento';
+          const isProvidencia = tipo === 'aula_dupla' || tipo === 'substituicao';
+          const motivoLimpo = parsed ? parsed.motivoLimpo : canc.motivo;
+          const videoUrl = canc.video_url || parsed?.videoUrl || '';
+          const arquivoUrl = canc.arquivo_url || parsed?.arquivoUrl || '';
+          const arquivoNome = canc.arquivo_nome || parsed?.arquivoNome || 'Atividade.pdf';
+          const trabalhoInstrucoes = canc.trabalho_instrucoes || parsed?.trabalhoInstrucoes || '';
+          const trabalhoPrazo = canc.trabalho_prazo || parsed?.trabalhoPrazo || '';
 
+          if (isProvidencia) {
             return (
-              <div key={canc.id} className={`border rounded-2xl p-4 space-y-2.5 ${
-                hasExtra ? 'bg-purple-950/40 border-purple-400/50' : 'bg-black/30 border-red-400/40'
-              }`}>
-                <div className="flex items-center justify-between gap-1.5 flex-wrap">
-                  <h4 className="font-extrabold text-sm text-red-200 flex items-center gap-1.5">
-                    <span>📖 {canc.disciplina_name}</span>
-                  </h4>
-                  {hasExtra && (
-                    <span className="text-[10px] font-black uppercase tracking-wide bg-purple-600/60 text-purple-200 px-2 py-0.5 rounded-md border border-purple-400/40 flex items-center gap-1">
-                      <Video className="w-3 h-3" />
-                      <span>Aula Gravada / Trabalho</span>
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-xs text-slate-100 bg-red-950/60 p-2.5 rounded-xl border border-red-500/30 leading-relaxed">
-                  <strong>Recado oficial:</strong> "{motivoLimpo}"
-                </p>
-
-                {trabalhoInstrucoes && (
-                  <div className="bg-amber-950/50 border border-amber-500/40 p-2.5 rounded-xl text-amber-200 text-xs space-y-1">
-                    <span className="font-bold flex items-center gap-1 text-[11px] text-amber-300">
-                      <ClipboardList className="w-3 h-3 text-amber-400" />
-                      Instruções do Trabalho & Chamada {trabalhoPrazo ? `(Prazo: ${trabalhoPrazo})` : ''}
-                    </span>
-                    <p className="text-[11px] text-amber-100 leading-relaxed">
-                      {trabalhoInstrucoes}
+              <div
+                key={canc.id}
+                className="bg-amber-500/10 dark:bg-amber-950/30 border border-amber-500/30 dark:border-amber-500/40 rounded-2xl p-3 sm:p-3.5 text-amber-950 dark:text-amber-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="p-2 bg-amber-500 text-slate-950 rounded-xl shrink-0 shadow-xs">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full">
+                        {tipo === 'aula_dupla' ? '⚡ Aula Dupla • 2 Tempos' : '🔄 Substituição Docente'}
+                      </span>
+                      <strong className="text-xs sm:text-sm font-extrabold truncate text-slate-900 dark:text-white">
+                        {canc.disciplina_name}
+                      </strong>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-amber-900 dark:text-amber-200 mt-0.5 leading-snug">
+                      {(motivoLimpo || '')
+                        .replace(/Profº\s*Profº/gi, 'Profº')
+                        .replace(/Prof\.\s*Prof\./gi, 'Prof.')}
                     </p>
                   </div>
-                )}
+                </div>
 
-                {/* Botões de Ação para o Aluno */}
-                {(videoUrl || arquivoUrl) && (
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                    {videoUrl && (
-                      <a
-                        href={videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-2 px-3 bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                      >
-                        <Play className="w-3.5 h-3.5 fill-current" />
-                        <span>Assistir Vídeo</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
-
-                    {arquivoUrl && (
-                      <a
-                        href={arquivoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download={arquivoNome}
-                        className="flex-1 py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Baixar PDF ({arquivoNome})</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between text-[10px] text-rose-300 pt-1 border-t border-white/10">
-                  <span>Registrado por: <strong>{canc.autor_nome}</strong></span>
-                  <span>Koinonia LMS</span>
+                <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto text-[10px] text-amber-800 dark:text-amber-300 font-medium">
+                  <span>Registrado por: <strong>{canc.autor_nome.split(' ')[0]}</strong></span>
                 </div>
               </div>
             );
-          })}
-        </div>
+          }
+
+          // Suspensão / Cancelamento Puro (Compacto e objetivo)
+          return (
+            <div
+              key={canc.id}
+              className="bg-rose-500/10 dark:bg-rose-950/30 border border-rose-500/30 dark:border-rose-500/40 rounded-2xl p-3 sm:p-3.5 text-rose-950 dark:text-rose-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="p-2 bg-rose-600 text-white rounded-xl shrink-0 shadow-xs">
+                  <Ban className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-rose-600 text-white px-2 py-0.5 rounded-full">
+                      🚫 Sem Aula Ao Vivo
+                    </span>
+                    <strong className="text-xs sm:text-sm font-extrabold truncate text-slate-900 dark:text-white">
+                      {canc.disciplina_name}
+                    </strong>
+                  </div>
+                  <p className="text-[11px] sm:text-xs text-rose-900 dark:text-rose-200 mt-0.5 leading-snug">
+                    {motivoLimpo}
+                  </p>
+                </div>
+              </div>
+
+              {(videoUrl || arquivoUrl) && (
+                <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+                  {videoUrl && (
+                    <a
+                      href={videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-1 px-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-[11px] rounded-lg transition flex items-center gap-1"
+                    >
+                      <Play className="w-3 h-3 fill-current" />
+                      <span>Vídeo</span>
+                    </a>
+                  )}
+                  {arquivoUrl && (
+                    <a
+                      href={arquivoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-1 px-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] rounded-lg transition flex items-center gap-1"
+                    >
+                      <Download className="w-3 h-3" />
+                      <span>PDF</span>
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -2312,9 +2326,6 @@ href={nextAulaToday.google_meet_url}
 
   return (
     <div className="space-y-8">
-      {/* BANNER DE AVISO OFICIAL: AULAS CANCELADAS HOJE */}
-      {renderAulasCanceladas()}
-
       {/* 1. CARD PRINCIPAL UNIFICADO: PAINEL ACADÊMICO DO ALUNO (COM PERÍODO, TURMA, SEMESTRE E FUSO) */}
       {renderUnifiedHeader()}
 
@@ -2325,6 +2336,15 @@ href={nextAulaToday.google_meet_url}
         </div>
       ) : (
         <>
+          {/* AVISOS ACADÊMICOS / PROVIDÊNCIAS COMPACTOS (EXATAMENTE ENTRE O PAINEL ACADÊMICO E A AULA AO VIVO) */}
+          {renderAulasCanceladas()}
+
+          {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
+          {renderProfileReminder()}
+
+          {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
+          {renderAulaAoVivoOuProxima()}
+
           {/* BANNER DESTAQUE DO CALENDÁRIO DE AVALIAÇÕES (GOOGLE AGENDA) */}
           <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -2356,12 +2376,6 @@ href={nextAulaToday.google_meet_url}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-
-          {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
-          {renderProfileReminder()}
-
-          {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
-          {renderAulaAoVivoOuProxima()}
 
           {/* 4. SE HOUVER LEITURAS EM ABERTO: CARD EM EVIDÊNCIA MÁXIMA NO TOPO (LOGO APÓS AULA AO VIVO) */}
           {pendingAnnouncementsCount > 0 && (

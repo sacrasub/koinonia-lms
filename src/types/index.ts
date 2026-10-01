@@ -895,3 +895,31 @@ export interface ResumoMetaversoTCC {
   total_missoes_concluidas: number;
   cenarios_mais_explorados: Cenario3D[];
 }
+
+export type SituacaoAcademica = 
+  | 'Aprovado' 
+  | 'Em Recuperação' 
+  | 'Reprovado' 
+  | 'Reprovado por Faltas' 
+  | 'Cursando' 
+  | 'Sem Notas';
+
+export interface StudentGradeRecord {
+  id?: string;
+  disciplina_id: string;
+  disciplina_name?: string;
+  student_email: string;
+  student_name?: string;
+  av1?: number | null;
+  av2?: number | null;
+  trabalho?: number | null;
+  recuperacao?: number | null;
+  faltas: number;
+  observacoes?: string;
+  status_fechamento?: 'aberto' | 'fechado';
+  media?: number | null;
+  situacao?: SituacaoAcademica;
+  updated_at?: string;
+  updated_by?: string;
+}
+

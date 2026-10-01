@@ -6,320 +6,19 @@ import {
   Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
   MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight
 } from 'lucide-react';
-import { CalendarioAcademico } from './CalendarioAcademico';
+import { 
+  CalendarioAcademico,
+  AVALIACOES_2026_2,
+  AvaliacaoEvento,
+  DrawerAvaliacao,
+  PopupResumoAvaliacao,
+  KanbanTask,
+  defaultSemesterTasks
+} from './CalendarioAcademico';
 import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
 
-export interface KanbanTask {
-  id: string;
-  assessmentId?: string;
-  title: string;
-  subject: string;
-  professor: string;
-  dueDate: string;
-  priority: 'Máxima' | 'Média' | 'Normal';
-  type: 'Trabalho Escrito' | 'Portfólio' | 'Prova Objetiva' | 'Resumo Crítico' | 'Estudo de Caso' | 'TCC' | string;
-  status: 'todo' | 'doing' | 'done';
-  strategyNote: string;
-  subtasks: { id: string; text: string; done: boolean }[];
-}
-
-const defaultSemesterTasks: KanbanTask[] = [
-  // 1. Marco Inicial: Estágio Básico (Concluído)
-  {
-    id: 'LMS-001',
-    title: 'Início das Aulas Semanais de Estágio Básico',
-    subject: 'Estágio Básico I e II (Bacharelado)',
-    professor: 'Prof. Antônio Carlos',
-    dueDate: '2026-08-17',
-    priority: 'Normal',
-    type: 'Aulas / Encontros',
-    status: 'done',
-    strategyNote: 'Aulas regulares presenciais/virtuais todas as segundas-feiras para estudantes de 5º e 8º períodos do Bacharelado em Teologia.',
-    subtasks: [
-      { id: 'st-001-1', text: 'Participação ativa nos encontros de segunda-feira', done: true },
-      { id: 'st-001-2', text: 'Elaboração e registro das atividades práticas propostas', done: true },
-    ],
-  },
-  // 2. Marco Inicial: Alinhamento TCC I (Concluído)
-  {
-    id: 'LMS-002',
-    title: 'Início do Prazo para Elaboração do Projeto',
-    subject: 'Trabalho de Conclusão de Curso I (TCC I)',
-    professor: 'Profª Gabriela Leal',
-    dueDate: '2026-08-21',
-    priority: 'Máxima',
-    type: 'Marco Metodológico',
-    status: 'done',
-    strategyNote: 'Sessão de alinhamento metodológico inicial. Cronômetro rígido de duas semanas para a entrega estruturada.',
-    subtasks: [
-      { id: 'st-002-1', text: 'Presença na aula inaugural de metodologia do TCC', done: true },
-      { id: 'st-002-2', text: 'Início de contato com orientadores específicos por afinidade temática', done: true },
-    ],
-  },
-  // 3. Avaliação 1 Oficial: Plantação e Revitalização II (18/09)
-  {
-    id: 'aval-1-plantacao-freq',
-    assessmentId: 'aval-1-plantacao-freq',
-    title: 'Atividade Prática / Exercício de Fixação (Aula Gravada)',
-    subject: 'Plantação e Revitalização de Igrejas II',
-    professor: 'Profº Thácyto Lessa',
-    dueDate: '2026-09-18',
-    priority: 'Normal',
-    type: 'Atividade Modular',
-    status: 'todo',
-    strategyNote: 'Texto digitado em folha única com cabeçalho simples. Sem necessidade de capa ou folha de rosto ABNT. Envio por e-mail para thacyto@gmail.com até às 23:59.',
-    subtasks: [
-      { id: 'st-aval-1-0', text: 'Assistir ao vídeo da aula gravada disponibilizado pelo professor (~1h20 de duração).', done: false },
-      { id: 'st-aval-1-1', text: 'Responder às questões propostas sobre a aula no caderno ou bloco de notas.', done: false },
-      { id: 'st-aval-1-2', text: 'Digitar as respostas em um documento simples contendo apenas o cabeçalho (Nome, Disciplina e Data).', done: false },
-      { id: 'st-aval-1-3', text: 'Salvar e enviar o arquivo por e-mail para o docente impreterivelmente até às 23:59.', done: false },
-    ],
-  },
-  // 4. Avaliação 2 Oficial: História do Congregacionalismo (29/09)
-  {
-    id: 'aval-2-congregacionalismo-av1',
-    assessmentId: 'aval-2-congregacionalismo-av1',
-    title: 'Prova Escrita (AV1) + Leitura Obrigatória + Frequência',
-    subject: 'História do Congregacionalismo',
-    professor: 'Profº Ary Júnior',
-    dueDate: '2026-09-29',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: 'Uso obrigatório de câmera ligada durante toda a aula e na prova (18:30 às 20:25). Questão declaratória direta sobre leitura dos textos em PDF.',
-    subtasks: [
-      { id: 'st-aval-2-0', text: 'Acessar os links dos 4 a 6 textos em PDF compartilhados pelo professor no chat/drive da turma.', done: false },
-      { id: 'st-aval-2-1', text: 'Realizar a leitura integral dos textos abordando a Reforma Inglesa, Puritans, Separatistas e Westminster.', done: false },
-      { id: 'st-aval-2-2', text: 'Conectar-se no horário da aula no dia 29/09/2026 com a câmera aberta.', done: false },
-      { id: 'st-aval-2-3', text: 'Preencher a avaliação escrita e marcar a confirmação de leitura dos textos indicados.', done: false },
-    ],
-  },
-  // 5. Avaliação 3 Oficial: História do Pensamento Cristão II (29/09)
-  {
-    id: 'aval-3-pensamento-cristao-av1',
-    assessmentId: 'aval-3-pensamento-cristao-av1',
-    title: 'Trabalho Escrito de Pesquisa Acadêmica (AV1)',
-    subject: 'História do Pensamento Cristão II',
-    professor: 'Profº Hilário Bispo',
-    dueDate: '2026-09-29',
-    priority: 'Máxima',
-    type: 'Trabalho Escrito',
-    status: 'todo',
-    strategyNote: 'Tema: Iluminismo e Modernidade (Racionalismo, Empirismo, Razão vs Revelação). Mínimo 5 a 6 páginas nas normas ABNT. Individual ou grupo até 3.',
-    subtasks: [
-      { id: 'st-aval-3-0', text: 'Definir a composição do trabalho (individual ou grupo de até 3 alunos).', done: false },
-      { id: 'st-aval-3-1', text: 'Revisar os slides fornecidos na primeira aula sobre a estrutura e os requisitos do trabalho.', done: false },
-      { id: 'st-aval-3-2', text: 'Estruturar a pesquisa cobrindo o tema Iluminismo e Modernidade (Descartes, Locke, Kant).', done: false },
-      { id: 'st-aval-3-3', text: 'Redigir o texto com no mínimo 5 a 6 páginas no padrão ABNT.', done: false },
-      { id: 'st-aval-3-4', text: 'Entregar o trabalho na data da prova (29/09/2026).', done: false },
-    ],
-  },
-  // 6. Avaliação 4 Oficial: Aconselhamento Bíblico II (30/09)
-  {
-    id: 'aval-4-aconselhamento-av1',
-    assessmentId: 'aval-4-aconselhamento-av1',
-    title: 'Prova Objetiva Online (Sem Trabalho Escrito)',
-    subject: 'Aconselhamento Bíblico II',
-    professor: 'Profº Uilian Santos',
-    dueDate: '2026-09-30',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: '19:00 às 20:25 via Google Forms. Rigorosamente SEM CONSULTA. Restrito às informações dos slides 1 a 6 (Suficiência Bíblica, Jó, Ídolos e 5 Áreas). Correção automática.',
-    subtasks: [
-      { id: 'st-aval-4-0', text: 'Estudar os slides das aulas 1 a 6 disponibilizados na pasta da disciplina.', done: false },
-      { id: 'st-aval-4-1', text: 'Fixar tópicos centrais: Suficiência das Escrituras, Jó, Pecado e Ídolos, e 5 Áreas do Inventário.', done: false },
-      { id: 'st-aval-4-2', text: 'Acessar o link do Google Forms disponibilizado no dia 30/09/2026 no horário de aula.', done: false },
-      { id: 'st-aval-4-3', text: 'Preencher as questões objetivas e clicar em enviar para receber a nota automática.', done: false },
-    ],
-  },
-  // 7. Avaliação 5 Oficial: Direitos Humanos - Trabalho (30/09)
-  {
-    id: 'aval-5-direitos-humanos-trabalho',
-    assessmentId: 'aval-5-direitos-humanos-trabalho',
-    title: 'Trabalho Escrito Dissertativo / Pesquisa Individual (AV1)',
-    subject: 'Direitos Humanos',
-    professor: 'Profº Cleiton Barbirato',
-    dueDate: '2026-09-30',
-    priority: 'Máxima',
-    type: 'Trabalho Escrito',
-    status: 'todo',
-    strategyNote: 'Até 1 lauda sobre "Desigualdade Social e Privilégios" e a Igreja (Times New Roman 12, esp. 1,5). Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de notas" até 23:59. Vale 2,0 pts.',
-    subtasks: [
-      { id: 'st-aval-5-0', text: 'Assistir ao vídeo indicado pelo professor ("A corrida da vida / Pergunta aos jovens sobre privilégios").', done: false },
-      { id: 'st-aval-5-1', text: 'Refletir sobre desigualdade social e o papel da Igreja como agente de transformação.', done: false },
-      { id: 'st-aval-5-2', text: 'Redigir texto dissertativo autoral de até 1 página em Times New Roman 12, espaçamento 1,5.', done: false },
-      { id: 'st-aval-5-3', text: 'Enviar arquivo para cleitonpb@gmail.com com assunto "Trabalho para composição de notas".', done: false },
-      { id: 'st-aval-5-4', text: 'Enviar antes das 23:59 do dia 30/09/2026.', done: false },
-    ],
-  },
-  // 8. Avaliação 6 Oficial: Direitos Humanos - Prova (30/09)
-  {
-    id: 'aval-6-direitos-humanos-prova',
-    assessmentId: 'aval-6-direitos-humanos-prova',
-    title: 'Prova Objetiva de Múltipla Escolha (AV1)',
-    subject: 'Direitos Humanos',
-    professor: 'Profº Cleiton Barbirato',
-    dueDate: '2026-09-30',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: '20:30 no horário da aula. Vale 8,0 pontos. Múltipla escolha via Google Forms sem consulta a materiais ou IA.',
-    subtasks: [
-      { id: 'st-aval-6-0', text: 'Estudar a apostila digital composta por todos os slides da disciplina.', done: false },
-      { id: 'st-aval-6-1', text: 'Revisar: Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Pirâmide de Kelsen.', done: false },
-      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms no dia 30/09/2026 às 20:30.', done: false },
-      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: false },
-    ],
-  },
-  // 9. Avaliação 7 Oficial: Novo Testamento III (01/10)
-  {
-    id: 'aval-7-nt3-epistolas-av1',
-    assessmentId: 'aval-7-nt3-epistolas-av1',
-    title: 'Prova Objetiva (AV1)',
-    subject: 'Novo Testamento III - Epístolas Gerais',
-    professor: 'Profº Marcio Leal',
-    dueDate: '2026-10-01',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: '20:25 durante a aula via Google Forms. Conteúdo: anotações de aula e "Introdução ao Novo Testamento" (Carson/Moo/Morris) sobre Hebreus, Tiago, 1 e 2 Pedro.',
-    subtasks: [
-      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: false },
-      { id: 'st-aval-7-1', text: 'Estudar as introduções especiais, autoria, destinatários e propósitos das epístolas no Carson.', done: false },
-      { id: 'st-aval-7-2', text: 'Acessar o formulário no dia 01/10/2026 no horário da aula (20:25).', done: false },
-      { id: 'st-aval-7-3', text: 'Preencher o exame e enviar.', done: false },
-    ],
-  },
-  // 10. Marco Eclesiástico: Posse Pastoral Pr. Uilian Santos (17/10)
-  {
-    id: 'LMS-004',
-    title: 'Cerimônia de Posse Pastoral do Pr. Uilian Santos',
-    subject: 'Geral / Vida Comunitária',
-    professor: 'Pr. Uilian Santos / Pr. Márcio Leal',
-    dueDate: '2026-10-17',
-    priority: 'Normal',
-    type: 'Evento Eclesiástico',
-    status: 'todo',
-    strategyNote: 'Culto de posse oficial do Pr. Uilian Santos na Igreja Congregacional de Sete Pontes (São Gonçalo). Pregação do Profº Márcio Leal.',
-    subtasks: [
-      { id: 'st-004-1', text: 'Intercessão e comunhão eclesiástica da comunidade acadêmica', done: false },
-    ],
-  },
-  // 11. Avaliação 8 Oficial: Ética Cristã - Seminário (22/10)
-  {
-    id: 'aval-8-etica-crista-seminario',
-    assessmentId: 'aval-8-etica-crista-seminario',
-    title: 'Seminário em Grupo + Apresentação Oral Individual na Tribuna',
-    subject: 'Ética Cristã',
-    professor: 'Profª Karoline Evangelista',
-    dueDate: '2026-10-22',
-    priority: 'Máxima',
-    type: 'Seminário em Grupo',
-    status: 'todo',
-    strategyNote: '22/10 a 19/11 nas quintas-feiras (18:45 às 20:25). 30 min por equipe / 10 min por orador com cronômetro. Tema: Dez Mandamentos (Catecismo Maior de Westminster + Norman Geisler).',
-    subtasks: [
-      { id: 'st-aval-8-0', text: 'Reunir-se com a equipe definida em sala e confirmar o mandamento sorteado (1º ao 10º Mandamento).', done: false },
-      { id: 'st-aval-8-1', text: 'Estudar o trecho correspondente do Catecismo Maior de Westminster (deveres e pecados proibidos).', done: false },
-      { id: 'st-aval-8-2', text: 'Consultar "Ética Cristã" de Norman Geisler para enriquecer com dilemas morais contemporâneos.', done: false },
-      { id: 'st-aval-8-3', text: 'Montar os slides da apresentação em conjunto.', done: false },
-      { id: 'st-aval-8-4', text: 'Treinar a exposição individual com cronômetro para não ultrapassar 10 minutos por orador.', done: false },
-    ],
-  },
-  // 12. Marco: Viagem Pr. Márcio Leal para Malásia (24/10)
-  {
-    id: 'LMS-006',
-    title: 'Viagem do Pr. Márcio Leal para a Malásia',
-    subject: 'Geral / Viagem Docente',
-    professor: 'Profº Marcio Leal',
-    dueDate: '2026-10-24',
-    priority: 'Normal',
-    type: 'Interrupção / Evento',
-    status: 'todo',
-    strategyNote: 'Viagem internacional do docente para o Encontro Global de Líderes (Saf City na Malásia). Ficar atento a compensações no cronograma síncrono.',
-    subtasks: [
-      { id: 'st-006-1', text: 'Acompanhar comunicados oficiais e atividades compensatórias', done: false },
-    ],
-  },
-  // 13. Avaliação 9 Oficial: Plantação II - Resumo Treliça e Videira (27/11)
-  {
-    id: 'aval-9-plantacao-resumo-livro',
-    assessmentId: 'aval-9-plantacao-resumo-livro',
-    title: 'Trabalho Escrito de Resumo de Livro Capítulo por Capítulo (AV1)',
-    subject: 'Plantação e Revitalização de Igrejas II',
-    professor: 'Profº Thácyto Lessa',
-    dueDate: '2026-11-27',
-    priority: 'Máxima',
-    type: 'Resumo Crítico',
-    status: 'todo',
-    strategyNote: 'Envio do resumo detalhado capítulo por capítulo do livro "A Treliça e a Videira" (Marshall & Payne). Limite rígido de 1 página por capítulo (12 capítulos = 12 folhas). Enviar para thacyto@gmail.com até 19:00.',
-    subtasks: [
-      { id: 'st-aval-9-0', text: 'Realizar a leitura atenta dos 12 capítulos do livro "A Treliça e a Videira".', done: false },
-      { id: 'st-aval-9-1', text: 'Sintetizar a ideia central de cada capítulo (treliça/estrutura vs videira/pessoas e crescimento orgânico).', done: false },
-      { id: 'st-aval-9-2', text: 'Redigir o resumo respeitando rigorosamente o limite de 1 página para cada capítulo (12 páginas).', done: false },
-      { id: 'st-aval-9-3', text: 'Formatar o trabalho e enviá-lo em formato PDF/Word por e-mail para thacyto@gmail.com.', done: false },
-    ],
-  },
-  // 14. Avaliação 10 Oficial: Plantação II - Prova AV2 (27/11)
-  {
-    id: 'aval-10-plantacao-prova-av2',
-    assessmentId: 'aval-10-plantacao-prova-av2',
-    title: 'Prova Objetiva Online (AV2)',
-    subject: 'Plantação e Revitalização de Igrejas II',
-    professor: 'Profº Thácyto Lessa',
-    dueDate: '2026-11-27',
-    priority: 'Máxima',
-    type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: '19:00 (horário da aula). Prova por link de formulário abordando os Quatro Ps da Revitalização (Pregar, Piedade, Pastorear, Perseverar) e Treliça/Videira. Consulta autorizada a anotações e slides.',
-    subtasks: [
-      { id: 'st-aval-10-0', text: 'Revisar todos os slides fornecidos durante o semestre.', done: false },
-      { id: 'st-aval-10-1', text: 'Estudar os tópicos centrais: 9 marcas de uma igreja saudável, 4 Ps e tipos de igreja.', done: false },
-      { id: 'st-aval-10-2', text: 'Acessar o link do formulário disponibilizado no dia 27/11/2026 às 19:00.', done: false },
-      { id: 'st-aval-10-3', text: 'Responder às questões objetivas e submeter.', done: false },
-    ],
-  },
-  // 15. Avaliação 11 Oficial: Afro-Brasileira e Indígena (28/11)
-  {
-    id: 'aval-11-afro-indigena-final',
-    assessmentId: 'aval-11-afro-indigena-final',
-    title: 'Trabalho Escrito / Produção Individual Final Aplicada',
-    subject: 'História e Cultura Afro-Brasileira e Indígena',
-    professor: 'Profº Alexsandro de Oliveira Silva',
-    dueDate: '2026-11-28',
-    priority: 'Máxima',
-    type: 'Trabalho Escrito',
-    status: 'todo',
-    strategyNote: 'Extensão: 2 laudas em 3 partes (descrição do problema na igreja/missão, análise bíblico-teológica com 2 autores e proposta concreta de ação). Submeter no AVA até 28/11/2026.',
-    subtasks: [
-      { id: 'st-aval-11-0', text: 'Assistir às 4 videoaulas gravadas do curso EAD na pasta oficial.', done: false },
-      { id: 'st-aval-11-1', text: 'Selecionar uma situação real ou caso prático envolvendo questões étnico-raciais ou indígenas.', done: false },
-      { id: 'st-aval-11-2', text: 'Redigir texto de 2 laudas com fundamentação bíblica citando no mínimo 2 autores e proposta prática.', done: false },
-      { id: 'st-aval-11-3', text: 'Submeter o arquivo no ambiente virtual da UIECB até 28/11/2026.', done: false },
-    ],
-  },
-  // 16. Avaliação 12 Oficial: TCC I - Artigo Científico Final (04/12)
-  {
-    id: 'aval-12-tcc1-artigo-final',
-    assessmentId: 'aval-12-tcc1-artigo-final',
-    title: 'Projeto de Pesquisa & Artigo Científico Final',
-    subject: 'TCC I - Trabalho de Conclusão de Curso I',
-    professor: 'Profª Gabriela Leal (Márcio Leal)',
-    dueDate: '2026-12-04',
-    priority: 'Máxima',
-    type: 'TCC',
-    status: 'todo',
-    strategyNote: 'Artigo Científico individual (20 a 25 páginas ABNT/FMB). Linguagem impessoal na 3ª pessoa. Estrutura completa: Capa, Resumo PT/EN, Introdução, Metodologia, Discussão, Considerações e Referências. Sem IA.',
-    subtasks: [
-      { id: 'st-aval-12-0', text: 'Confirmar o convite ao orientador docente com afinidade temática.', done: false },
-      { id: 'st-aval-12-1', text: 'Estruturar o Projeto de Pesquisa (Tema, Problema, Justificativa, Objetivo Geral e Específicos).', done: false },
-      { id: 'st-aval-12-2', text: 'Redigir as seções do Artigo na ordem metodológica: Metodologia, Resultados e Discussão e Considerações Finais.', done: false },
-      { id: 'st-aval-12-3', text: 'Redigir ao final a Introdução e o Resumo (15-20 linhas com palavras-chave em PT/EN).', done: false },
-      { id: 'st-aval-12-4', text: 'Formatar as referências em ordem alfabética segundo o padrão ABNT/FMB e ajustar paginação.', done: false },
-      { id: 'st-aval-12-5', text: 'Submeter o artigo finalizado à coordenação/orientação até o encerramento do semestre.', done: false },
-    ],
-  },
-];
+export type { KanbanTask };
+export { defaultSemesterTasks };
 
 interface ChecklistAV2PageProps {
   userEmail?: string;
@@ -332,6 +31,11 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeViewTab, setActiveViewTab] = useState<'kanban' | 'calendario'>('kanban');
+
+  // Estados para os Modais Compartilhados com o Calendário Acadêmico (Dual-View)
+  const [drawerEvento, setDrawerEvento] = useState<AvaliacaoEvento | null>(null);
+  const [popupEvento, setPopupEvento] = useState<AvaliacaoEvento | null>(null);
+  const [checklistMap, setChecklistMap] = useState<Record<string, Record<number, boolean>>>({});
 
   // Form State para Nova Tarefa
   const [newTitle, setNewTitle] = useState('');
@@ -352,12 +56,38 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     setTimeout(() => setNotification(null), 3500);
   };
 
+  // Garante que todas as 13 avaliações da grade estejam sempre no Kanban
+  const ensureAllOfficialAssessments = (taskList: KanbanTask[]): KanbanTask[] => {
+    const result = [...taskList];
+    AVALIACOES_2026_2.forEach((ev) => {
+      const exists = result.some((t) => t.assessmentId === ev.id || t.id === ev.id);
+      if (!exists) {
+        result.push({
+          id: ev.id,
+          assessmentId: ev.id,
+          title: ev.tipo,
+          subject: ev.disciplina,
+          professor: ev.professor,
+          dueDate: ev.dataLimite,
+          priority: 'Máxima',
+          type: ev.tipoBadge === 'PROVA' ? 'Prova Objetiva' : ev.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : ev.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : ev.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : ev.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
+          status: 'todo',
+          strategyNote: `${ev.dataTexto} • ${ev.horario}. ${ev.peso}`,
+          subtasks: ev.passoAPasso.map((p, idx) => ({ id: `st-${ev.id}-${idx}`, text: p, done: false })),
+        });
+      }
+    });
+    return result;
+  };
+
   // Helper para sincronizar um array de KanbanTask com os checklists do localStorage
   const syncTasksWithLocalChecklists = (taskList: KanbanTask[]): KanbanTask[] => {
     if (typeof window === 'undefined') return taskList;
-    return taskList.map((task) => {
-      if (!task.assessmentId) return task;
-      const storageKey = `koinonia_checklist_${normalizedEmail}_${task.assessmentId}`;
+    const withOfficials = ensureAllOfficialAssessments(taskList);
+    return withOfficials.map((task) => {
+      const assessmentId = task.assessmentId || (task.id.startsWith('aval-') ? task.id : undefined);
+      if (!assessmentId) return task;
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
       try {
         const raw = localStorage.getItem(storageKey);
         if (raw) {
@@ -373,7 +103,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
               : doneCount > 0
               ? 'doing'
               : 'todo';
-          return { ...task, subtasks: updatedSubtasks, status };
+          return { ...task, assessmentId, subtasks: updatedSubtasks, status };
         } else {
           // Se não há dados no localStorage, grava o estado atual das subtasks
           const initialChecks: Record<number, boolean> = {};
@@ -383,7 +113,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           localStorage.setItem(storageKey, JSON.stringify(initialChecks));
         }
       } catch (_) {}
-      return task;
+      return { ...task, assessmentId };
     });
   };
 
@@ -504,6 +234,21 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     return () => unsubscribe();
   }, [normalizedEmail]);
 
+  // Carrega checklistMap para sincronização com os modais
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const initialChecklists: Record<string, Record<number, boolean>> = {};
+    tasks.forEach((t) => {
+      const key = t.assessmentId || t.id;
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${key}`;
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) initialChecklists[key] = JSON.parse(raw);
+      } catch (_) {}
+    });
+    setChecklistMap(initialChecklists);
+  }, [normalizedEmail, tasks]);
+
   // Listener para sincronização bidirecional em tempo real com o CalendarioAcademico
   useEffect(() => {
     const handleAssessmentSync = (e: Event) => {
@@ -512,16 +257,21 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       const { assessmentId } = customEvent.detail;
       if (!assessmentId) return;
 
-      setTasks((prev) => {
-        const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
-        let checks: Record<number, boolean> = {};
-        try {
-          const raw = localStorage.getItem(storageKey);
-          if (raw) checks = JSON.parse(raw);
-        } catch (_) {}
+      const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
+      let checks: Record<number, boolean> = {};
+      try {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) checks = JSON.parse(raw);
+      } catch (_) {}
 
+      setChecklistMap((prev) => ({
+        ...prev,
+        [assessmentId]: checks,
+      }));
+
+      setTasks((prev) => {
         return prev.map((t) => {
-          if (t.assessmentId === assessmentId) {
+          if (t.assessmentId === assessmentId || t.id === assessmentId) {
             const updatedSubtasks = t.subtasks.map((st, idx) => ({
               ...st,
               done: checks[idx] !== undefined ? !!checks[idx] : st.done,
@@ -545,6 +295,166 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       window.removeEventListener('koinonia_assessment_progress_updated', handleAssessmentSync);
     };
   }, [normalizedEmail]);
+
+  // Alternar etapa do passo a passo a partir do Drawer aberto no Kanban
+  const handleToggleStepFromDrawer = (eventoId: string, stepIdx: number) => {
+    const storageKey = `koinonia_checklist_${normalizedEmail}_${eventoId}`;
+    let currentEvChecks: Record<number, boolean> = {};
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) currentEvChecks = JSON.parse(raw);
+    } catch (_) {}
+
+    const newDone = !currentEvChecks[stepIdx];
+    currentEvChecks[stepIdx] = newDone;
+
+    setChecklistMap((prev) => ({
+      ...prev,
+      [eventoId]: currentEvChecks,
+    }));
+
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(currentEvChecks));
+    } catch (_) {}
+
+    setTasks((prev) => {
+      const updated = prev.map((t) => {
+        if (t.assessmentId === eventoId || t.id === eventoId) {
+          const updatedSubtasks = t.subtasks.map((st, idx) =>
+            idx === stepIdx ? { ...st, done: newDone } : st
+          );
+          const doneCount = updatedSubtasks.filter((st) => st.done).length;
+          const status: 'todo' | 'doing' | 'done' =
+            doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
+              ? 'done'
+              : doneCount > 0
+              ? 'doing'
+              : 'todo';
+          return { ...t, subtasks: updatedSubtasks, status };
+        }
+        return t;
+      });
+      localStorage.setItem(`lms_checklist_${normalizedEmail}`, JSON.stringify(updated));
+      saveChecklistTasks(normalizedEmail, updated);
+      return updated;
+    });
+
+    window.dispatchEvent(
+      new CustomEvent('koinonia_assessment_progress_updated', {
+        detail: {
+          source: 'kanban',
+          assessmentId: eventoId,
+          stepIdx,
+          done: newDone,
+          allSteps: currentEvChecks,
+        },
+      })
+    );
+  };
+
+  // Concluir toda a avaliação a partir do Drawer aberto no Kanban
+  const handleCompleteAssessmentFromDrawer = (evento: AvaliacaoEvento) => {
+    const allChecks: Record<number, boolean> = {};
+    evento.passoAPasso.forEach((_, idx) => {
+      allChecks[idx] = true;
+    });
+
+    setChecklistMap((prev) => ({
+      ...prev,
+      [evento.id]: allChecks,
+    }));
+
+    const storageKey = `koinonia_checklist_${normalizedEmail}_${evento.id}`;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(allChecks));
+    } catch (_) {}
+
+    setTasks((prev) => {
+      let found = false;
+      const updated = prev.map((t) => {
+        if (t.assessmentId === evento.id || t.id === evento.id) {
+          found = true;
+          const updatedSubtasks = t.subtasks.map((st) => ({ ...st, done: true }));
+          return { ...t, status: 'done' as const, subtasks: updatedSubtasks };
+        }
+        return t;
+      });
+
+      if (!found) {
+        updated.push({
+          id: evento.id,
+          assessmentId: evento.id,
+          title: evento.tipo,
+          subject: evento.disciplina,
+          professor: evento.professor,
+          dueDate: evento.dataLimite,
+          priority: 'Máxima',
+          type: evento.tipoBadge === 'PROVA' ? 'Prova Objetiva' : evento.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : evento.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : evento.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : evento.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
+          status: 'done',
+          strategyNote: `${evento.dataTexto} • ${evento.horario}. ${evento.peso}`,
+          subtasks: evento.passoAPasso.map((p, idx) => ({ id: `st-${evento.id}-${idx}`, text: p, done: true })),
+        });
+      }
+
+      localStorage.setItem(`lms_checklist_${normalizedEmail}`, JSON.stringify(updated));
+      saveChecklistTasks(normalizedEmail, updated);
+      return updated;
+    });
+
+    window.dispatchEvent(
+      new CustomEvent('koinonia_assessment_progress_updated', {
+        detail: {
+          source: 'kanban',
+          assessmentId: evento.id,
+          status: 'done',
+          allSteps: allChecks,
+        },
+      })
+    );
+
+    setDrawerEvento(null);
+    showNotification(`✓ Avaliação "${evento.tipo}" concluída com êxito!`);
+  };
+
+  // Obtém ou constrói o AvaliacaoEvento correspondente a uma KanbanTask
+  const getEventoForTask = (task: KanbanTask): AvaliacaoEvento => {
+    const found = AVALIACOES_2026_2.find((ev) => ev.id === task.assessmentId || ev.id === task.id);
+    if (found) return found;
+
+    const badge: 'PROVA' | 'TRABALHO' | 'SEMINÁRIO' | 'RESUMO' | 'ATIVIDADE' | 'ARTIGO' =
+      task.type?.includes('Prova') ? 'PROVA'
+      : task.type?.includes('Seminário') ? 'SEMINÁRIO'
+      : task.type?.includes('Resumo') ? 'RESUMO'
+      : task.type?.includes('TCC') ? 'ARTIGO'
+      : task.type?.includes('Atividade') ? 'ATIVIDADE'
+      : 'TRABALHO';
+
+    return {
+      id: task.id,
+      disciplina: task.subject,
+      disciplinaShort: task.subject.length > 25 ? task.subject.slice(0, 22) + '...' : task.subject,
+      professor: task.professor,
+      tipo: task.title,
+      tipoBadge: badge,
+      dataLimite: task.dueDate,
+      dataTexto: task.dueDate,
+      horario: 'Consulte orientações da disciplina',
+      peso: task.priority === 'Máxima' ? 'Prioridade Máxima' : 'Prioridade Normal',
+      regras: task.strategyNote ? [task.strategyNote] : ['Seguir orientações docentes.'],
+      passoAPasso: task.subtasks.length > 0 ? task.subtasks.map((st) => st.text) : ['Planejamento', 'Execução', 'Revisão', 'Entrega'],
+      bibliografia: {},
+      canalEnvio: { tipo: 'plataforma' },
+      cor: {
+        bg: 'bg-indigo-500/10',
+        text: 'text-indigo-300',
+        border: 'border-indigo-500/30',
+        pillBg: 'bg-indigo-600 hover:bg-indigo-500 text-white',
+        dot: 'bg-indigo-400',
+        badgeBg: 'bg-indigo-500/20',
+        badgeText: 'text-indigo-300'
+      }
+    };
+  };
 
   const saveTasks = (newTasks: KanbanTask[]) => {
     setTasks(newTasks);
@@ -694,6 +604,16 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
 
     const next = [newTask, ...tasks];
     saveTasks(next);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('koinonia_assessment_progress_updated', {
+          detail: {
+            source: 'kanban',
+            taskId: newTask.id,
+          },
+        })
+      );
+    }
     setIsModalOpen(false);
     setNewTitle('');
     setNewStrategyNote('');
@@ -704,6 +624,16 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     if (confirm('Deseja realmente excluir esta atividade do seu checklist?')) {
       const next = tasks.filter((t) => t.id !== taskId);
       saveTasks(next);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('koinonia_assessment_progress_updated', {
+            detail: {
+              source: 'kanban',
+              taskId,
+            },
+          })
+        );
+      }
     }
   };
 
@@ -931,6 +861,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                   onStatusChange={handleStatusChange}
                   onToggleSubtask={handleToggleSubtask}
                   onDeleteTask={handleDeleteTask}
+                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
+                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
                 />
               ))}
             {filteredTasks.filter((t) => t.status === 'todo').length === 0 && (
@@ -962,6 +894,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                   onStatusChange={handleStatusChange}
                   onToggleSubtask={handleToggleSubtask}
                   onDeleteTask={handleDeleteTask}
+                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
+                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
                 />
               ))}
             {filteredTasks.filter((t) => t.status === 'doing').length === 0 && (
@@ -993,6 +927,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                   onStatusChange={handleStatusChange}
                   onToggleSubtask={handleToggleSubtask}
                   onDeleteTask={handleDeleteTask}
+                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
+                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
                 />
               ))}
             {filteredTasks.filter((t) => t.status === 'done').length === 0 && (
@@ -1234,6 +1170,25 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       )}
         </>
       )}
+
+      {/* MODAIS COMPARTILHADOS DUAL-VIEW (CALENDÁRIO & KANBAN) */}
+      <PopupResumoAvaliacao
+        evento={popupEvento}
+        checklistMap={checklistMap}
+        onClose={() => setPopupEvento(null)}
+        onOpenDrawer={(ev) => {
+          setPopupEvento(null);
+          setDrawerEvento(ev);
+        }}
+      />
+
+      <DrawerAvaliacao
+        evento={drawerEvento}
+        checklistMap={checklistMap}
+        onToggleStep={handleToggleStepFromDrawer}
+        onCompleteAssessment={handleCompleteAssessmentFromDrawer}
+        onClose={() => setDrawerEvento(null)}
+      />
     </div>
   );
 };
@@ -1243,6 +1198,8 @@ interface KanbanCardProps {
   onStatusChange: (id: string, status: 'todo' | 'doing' | 'done') => void;
   onToggleSubtask: (taskId: string, subtaskId: string) => void;
   onDeleteTask: (taskId: string) => void;
+  onOpenDrawer: () => void;
+  onOpenResumo: () => void;
 }
 
 const KanbanCard: React.FC<KanbanCardProps> = ({
@@ -1250,6 +1207,8 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   onStatusChange,
   onToggleSubtask,
   onDeleteTask,
+  onOpenDrawer,
+  onOpenResumo,
 }) => {
   const getPriorityBadge = (p: string) => {
     switch (p) {
@@ -1296,6 +1255,26 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
           <span>Prazo: <strong>{task.dueDate}</strong></span>
           <p className="text-[11px] text-gray-500 leading-tight">{task.strategyNote}</p>
         </div>
+      </div>
+
+      {/* Ações Rápidas: Passo a Passo & Resumo */}
+      <div className="grid grid-cols-2 gap-2 pt-1">
+        <button
+          type="button"
+          onClick={onOpenResumo}
+          className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl border border-slate-200 transition flex items-center justify-center gap-1 cursor-pointer"
+        >
+          <Sparkles className="w-3 h-3 text-amber-600" />
+          <span>Resumo</span>
+        </button>
+        <button
+          type="button"
+          onClick={onOpenDrawer}
+          className="py-1.5 px-2 bg-blue-50 hover:bg-blue-100 text-blue-800 font-extrabold text-[11px] rounded-xl border border-blue-200 transition flex items-center justify-center gap-1 cursor-pointer"
+        >
+          <BookOpen className="w-3 h-3 text-blue-600" />
+          <span>Passo a Passo</span>
+        </button>
       </div>
 
       {/* Lista de Checkbox Interno */}
