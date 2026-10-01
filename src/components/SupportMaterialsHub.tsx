@@ -342,7 +342,7 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     const platformUrl = `${origin}/?disciplina=${encodeURIComponent(note.disciplina_id)}&tab=disciplina-detalhe&subtab=gemini&mat=${encodeURIComponent(note.id)}&ref=whatsapp_share`;
     const signupUrl = `${origin}/login?ref=whatsapp_invite&disciplina=${encodeURIComponent(note.disciplina_id)}`;
 
-    const text = `🎓 *SEMINÁRIO TEOLÓGICO KOINONIA*
+    const text = `🎓 *PLATAFORMA TEOLÓGICA KOINONIA LMS*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📚 *${config.emoji} ${config.label.toUpperCase()}*
 📖 *Disciplina:* ${note.disciplina_name}
@@ -363,8 +363,8 @@ ${note.gemini_url ? `📂 *Link Direto do Arquivo (Drive):*\n👉 ${note.gemini_
 • Caderno Inteligente Cornell com Resumos em IA
 • Biblioteca Digital e Cronograma Integrado 2026.2
 
-👥 *Ainda não tem cadastro ou deseja estudar no Seminário?*
-Cadastre-se ou solicite sua matrícula com sua Conta Google:
+👥 *Ainda não tem cadastro ou deseja estudar pela plataforma?*
+Solicite seu cadastro com sua Conta Google:
 👉 ${signupUrl}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 _Koinonia LMS • Excelência na Educação Teológica_`;
