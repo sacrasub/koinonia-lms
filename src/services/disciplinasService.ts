@@ -159,6 +159,15 @@ export function getAllMateriais(): Material[] {
       return fixedList;
     }
 
+    // Auto-migração e merge contínuo: se houver novos materiais em mockMateriais não presentes no cache
+    const existingIds = new Set(parsed.map((m) => m.id));
+    const missingSeeds = mockMateriais.filter((m) => !existingIds.has(m.id));
+    if (missingSeeds.length > 0) {
+      const merged = [...parsed, ...missingSeeds];
+      localStorage.setItem(MATERIAIS_STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
     return parsed;
   } catch (e) {
     console.error('Erro ao ler materiais:', e);
