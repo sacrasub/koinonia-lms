@@ -80,9 +80,95 @@ export function updateDisciplina(updated: Disciplina): void {
 }
 
 /**
+ * Retorna o índice da turma da disciplina com fallback resiliente
+ * 0: Fim de Semana (5º), 1: Turma A (7º), 2: Turma B (3º), 3: Curso Básico
+ */
+export function getDisciplinaTurmaIdx(d: Disciplina): number {
+  if (d.turma_idx !== undefined && d.turma_idx !== null) return Number(d.turma_idx);
+  if (d.id?.startsWith('disc-b-') || d.code?.startsWith('INT-') || d.code?.startsWith('HER-') || d.code?.startsWith('DIS-')) return 2;
+  if (d.id?.startsWith('disc-fds-') || d.code?.startsWith('GRE-') || d.code?.startsWith('EXE-')) return 0;
+  if (d.id?.startsWith('disc-bas-') || d.code?.startsWith('BAS-')) return 3;
+  return 1;
+}
+
+/**
+ * Retorna as disciplinas de uma turma específica com base nas matérias ativas
+ */
+export function getDisciplinasByTurmaFromService(turmaIdx: number = 1): Disciplina[] {
+  const all = getAllDisciplinas();
+  const filtered = all.filter((d) => getDisciplinaTurmaIdx(d) === turmaIdx);
+  if (filtered.length > 0) return filtered;
+  return all.filter((d) => getDisciplinaTurmaIdx(d) === 1);
+}
+
+/**
+ * Retorna as disciplinas configuradas no perfil individual de cada aluno:
+ * 1. Se o perfil possuir matérias explicitamente personalizadas (`customDisciplinas` ou `enrolledDisciplinas`), retorna essas.
+ * 2. Caso contrário, retorna estritamente as matérias da turma configurada no perfil do aluno (`turmaIdx`).
+ */
+export function getDisciplinasForStudent(userEmail?: string): Disciplina[] {
+  const all = getAllDisciplinas();
+  if (!userEmail) return all.filter((d) => getDisciplinaTurmaIdx(d) === 1);
+
+  const normalized = userEmail.toLowerCase().trim();
+  let studentTurma = 1;
+  let customDisciplinas: string[] | undefined = undefined;
+
+  const authUser = INITIAL_AUTHORIZED_USERS[normalized];
+  if (authUser && authUser.turmaIdx !== undefined) {
+    studentTurma = authUser.turmaIdx;
+  }
+
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = localStorage.getItem(`lms_profile_${normalized}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.turmaIdx !== undefined) studentTurma = Number(parsed.turmaIdx);
+        if (Array.isArray(parsed.customDisciplinas) && parsed.customDisciplinas.length > 0) {
+          customDisciplinas = parsed.customDisciplinas;
+        } else if (Array.isArray(parsed.enrolledDisciplinas) && parsed.enrolledDisciplinas.length > 0) {
+          customDisciplinas = parsed.enrolledDisciplinas;
+        }
+      }
+      const portalStored = localStorage.getItem(`lms_user_portal_profile_${normalized}`);
+      if (portalStored) {
+        const parsed = JSON.parse(portalStored);
+        if (parsed.turmaIdx !== undefined) studentTurma = Number(parsed.turmaIdx);
+        if (!customDisciplinas) {
+          if (Array.isArray(parsed.customDisciplinas) && parsed.customDisciplinas.length > 0) {
+            customDisciplinas = parsed.customDisciplinas;
+          } else if (Array.isArray(parsed.enrolledDisciplinas) && parsed.enrolledDisciplinas.length > 0) {
+            customDisciplinas = parsed.enrolledDisciplinas;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Erro ao ler perfil do aluno:', e);
+    }
+  }
+
+  if (customDisciplinas && customDisciplinas.length > 0) {
+    const customSet = new Set(customDisciplinas.map((id) => id.toLowerCase().trim()));
+    const matched = all.filter((d) => 
+      customSet.has(d.id.toLowerCase().trim()) || 
+      customSet.has(d.name.toLowerCase().trim()) ||
+      customSet.has(d.code.toLowerCase().trim())
+    );
+    if (matched.length > 0) return matched;
+  }
+
+  const turmaFiltered = all.filter((d) => getDisciplinaTurmaIdx(d) === studentTurma);
+  if (turmaFiltered.length > 0) return turmaFiltered;
+
+  return all.filter((d) => getDisciplinaTurmaIdx(d) === 1);
+}
+
+/**
  * Retorna as disciplinas filtradas para o usuário:
  * - Se for 'admin', retorna todas as disciplinas
  * - Se for 'professor', retorna apenas as disciplinas atribuídas a ele por professor_email ou correspondência de perfil
+ * - Se for 'aluno', retorna as disciplinas configuradas no perfil individual do aluno
  */
 export function getDisciplinasForUser(userEmail?: string, userRole?: UserRole): Disciplina[] {
   const all = getAllDisciplinas();
@@ -95,12 +181,17 @@ export function getDisciplinasForUser(userEmail?: string, userRole?: UserRole): 
     return all;
   }
 
+  // Se for aluno, retorna as matérias da turma/perfil individual do aluno
+  if (userRole === 'aluno') {
+    return getDisciplinasForStudent(userEmail);
+  }
+
   // Verifica se é professor
   const userProfile = INITIAL_AUTHORIZED_USERS[normalized];
   const isProf = userRole === 'professor' || (userProfile && userProfile.roles.includes('professor'));
 
   if (!isProf) {
-    return all;
+    return getDisciplinasForStudent(userEmail);
   }
 
   // Filtra por email exato do professor na disciplina
