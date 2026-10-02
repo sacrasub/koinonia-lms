@@ -41,7 +41,7 @@ export interface PlanoEstudosTurma {
   requisitos: RequisitosDisciplina[];
 }
 
-const STORAGE_PREFIX = 'lms_plano_estudos_turma_v3_';
+const STORAGE_PREFIX = 'lms_plano_estudos_turma_v2026_2_homologado_';
 
 // ============================================================
 // DADOS INICIAIS POR TURMA
@@ -269,11 +269,31 @@ function getInitialDataForTurma(turmaIdx: number): PlanoEstudosTurma {
   }
 }
 
+export function resetToOfficialPlanoEstudos(turmaIdx: number): PlanoEstudosTurma {
+  const initial = getInitialDataForTurma(turmaIdx);
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(`${STORAGE_PREFIX}${turmaIdx}`, JSON.stringify(initial));
+      window.dispatchEvent(new CustomEvent('lms_plano_estudos_updated', { detail: { turmaIdx, data: initial } }));
+    } catch (e) {
+      console.error('Erro ao resetar plano de estudos:', e);
+    }
+  }
+  return initial;
+}
+
 export function getPlanoEstudosForTurma(turmaIdx: number): PlanoEstudosTurma {
   const initial = getInitialDataForTurma(turmaIdx);
   if (typeof window === 'undefined') return initial;
 
   try {
+    // Limpeza mandatória de chaves obsoletas do storage para eliminar cronogramas legados
+    ['lms_plano_estudos_turma_', 'lms_plano_estudos_turma_v1_', 'lms_plano_estudos_turma_v2_', 'lms_plano_estudos_turma_v3_'].forEach((pfx) => {
+      [0, 1, 2, 3].forEach((idx) => {
+        try { localStorage.removeItem(`${pfx}${idx}`); } catch (e) {}
+      });
+    });
+
     const raw = localStorage.getItem(`${STORAGE_PREFIX}${turmaIdx}`);
     if (!raw) {
       localStorage.setItem(`${STORAGE_PREFIX}${turmaIdx}`, JSON.stringify(initial));

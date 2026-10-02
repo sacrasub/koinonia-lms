@@ -12,7 +12,7 @@ import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
 import {
   Entregavel, LivroRecomendado, RequisitosDisciplina,
   getPlanoEstudosForTurma, savePlanoEstudosForTurma,
-  addOrUpdateEntregavel, deleteEntregavel, updateRequisitosDisciplina
+  addOrUpdateEntregavel, deleteEntregavel, updateRequisitosDisciplina, resetToOfficialPlanoEstudos
 } from '@/services/planoEstudosService';
 import { getDisciplinasForUser } from '@/services/disciplinasService';
 import { PomodoroTimerWidget } from '@/components/PomodoroTimerWidget';
@@ -406,6 +406,19 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
               </div>
             )}
 
+            <button
+              type="button"
+              onClick={() => {
+                if (confirm('Deseja sincronizar e restaurar o cronograma oficial homologado (2026.2) para esta turma?')) {
+                  resetToOfficialPlanoEstudos(selectedTurmaIdx);
+                }
+              }}
+              className="py-2 px-3 bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-500/30 font-bold text-xs rounded-xl transition flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
+              title="Restaurar os 15 entregáveis oficiais e critérios homologados"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Sincronizar Oficial 2026.2</span>
+            </button>
             <button
               onClick={() => handleOpenNewEntregavel()}
               className="py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
