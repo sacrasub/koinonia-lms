@@ -113,7 +113,7 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   const [activeProfView, setActiveProfView] = useState<'aulas' | 'gradebook'>('aulas');
   const [leituraMessage, setLeituraMessage] = useState('');
   const [leituraData, setLeituraData] = useState('Próxima Aula');
-  const [leituraCategory, setLeituraCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar'>('durante_aula');
+  const [leituraCategory, setLeituraCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar' | 'aviso_geral' | 'suspensao_aula'>('aviso_geral');
   const [editingAnnouncementId, setEditingAnnouncementId] = useState<string | null>(null);
 
   const handleLeituraFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -445,12 +445,12 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
     setSelectedDisciplinaId(av.disciplina_id);
     setAuthorName(av.author_name);
     setLeituraTitle(av.title);
-    setLeituraUrl(av.link_url);
+    setLeituraUrl(av.link_url || '');
     setLeituraFileUrl(av.file_url || '');
     setLeituraFileName(av.file_name || '');
     setLeituraMessage(av.message || '');
     setLeituraData(av.target_date || 'Próxima Aula');
-    setLeituraCategory(av.category || 'pre_aula');
+    setLeituraCategory(av.category || 'aviso_geral');
     showNotification(`✏️ Editando: "${av.title}"`);
   };
 
@@ -468,57 +468,84 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
   // Adicionar ou Atualizar Leitura / Link de Aula
   const handleAddAnnouncement = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!leituraTitle || !leituraUrl) {
-      showNotification('Preencha o título e o link de acesso.');
+    if (!leituraTitle.trim()) {
+      showNotification('Preencha o título do comunicado ou recurso.');
       return;
     }
 
-    const discObj = userDisciplinas.find((d) => d.id === selectedDisciplinaId) || userDisciplinas[0];
-    if (!discObj) return;
+    const isAvisoOrSuspensao = leituraCategory === 'aviso_geral' || leituraCategory === 'suspensao_aula';
+    if (!isAvisoOrSuspensao && !leituraUrl.trim() && !leituraMessage.trim() && !leituraFileUrl) {
+      showNotification('Informe o link de acesso, arquivo anexo ou mensagem aos alunos.');
+      return;
+    }
+
+    let discId = 'all';
+    let discName = 'Todas as Minhas Disciplinas (Mural Geral)';
+
+    if (selectedDisciplinaId === 'ALL') {
+      discId = 'all';
+      discName = 'Todas as Minhas Disciplinas (Mural Geral)';
+    } else {
+      const discObj = userDisciplinas.find((d) => d.id === selectedDisciplinaId) || userDisciplinas[0];
+      if (discObj) {
+        discId = discObj.id;
+        discName = discObj.name;
+      }
+    }
+
+    const safeUrl = leituraUrl.trim() || 'https://koinonialms.vercel.app/';
 
     if (editingAnnouncementId) {
       const existing = announcements.find((a) => a.id === editingAnnouncementId);
       if (existing) {
         updateAnnouncement({
           ...existing,
-          disciplina_id: discObj.id,
-          disciplina_name: discObj.name,
-          author_name: authorName || discObj.professor_name,
-          title: leituraTitle,
-          link_url: leituraUrl,
+          disciplina_id: discId,
+          disciplina_name: discName,
+          author_name: authorName || (userDisciplinas[0]?.professor_name || 'Docente'),
+          title: leituraTitle.trim(),
+          link_url: safeUrl,
           file_url: leituraFileUrl || undefined,
           file_name: leituraFileName || undefined,
-          message: leituraMessage || 'Link / material de apoio compartilhado com a turma.',
+          message: leituraMessage.trim() || (isAvisoOrSuspensao ? 'Comunicado oficial docente aos alunos.' : 'Link / material de apoio compartilhado com a turma.'),
           category: leituraCategory,
-          target_date: leituraData,
+          target_date: leituraData.trim() || 'Próxima Aula',
         });
         handleCancelEditAnnouncement();
         refreshScopedData();
-        showNotification('Leitura / Link atualizado com sucesso no LMS!');
+        showNotification('Aviso / Leitura atualizado com sucesso no LMS!');
         return;
       }
     }
 
     addAnnouncement({
-      disciplina_id: discObj.id,
-      disciplina_name: discObj.name,
-      author_name: authorName || discObj.professor_name,
+      disciplina_id: discId,
+      disciplina_name: discName,
+      author_name: authorName || (userDisciplinas[0]?.professor_name || 'Docente'),
       author_role: 'professor',
       author_email: normalizedEmail,
-      title: leituraTitle,
-      link_url: leituraUrl,
+      title: leituraTitle.trim(),
+      link_url: safeUrl,
       file_url: leituraFileUrl || undefined,
       file_name: leituraFileName || undefined,
-      message: leituraMessage || (leituraCategory === 'durante_aula' ? 'Link compartilhado pelo professor durante a aula ao vivo.' : 'Textinho complementar e leitura pré-aula recomendada para nosso próximo encontro.'),
+      message: leituraMessage.trim() || (isAvisoOrSuspensao ? 'Comunicado oficial docente publicado no LMS.' : leituraCategory === 'durante_aula' ? 'Link compartilhado pelo professor durante a aula ao vivo.' : 'Textinho complementar e leitura pré-aula recomendada para nosso próximo encontro.'),
       category: leituraCategory,
-      target_date: leituraData,
+      target_date: leituraData.trim() || 'Próxima Aula',
       is_pinned: true,
       avatar_url: INITIAL_AUTHORIZED_USERS[normalizedEmail]?.avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     });
 
     handleCancelEditAnnouncement();
     refreshScopedData();
-    showNotification(leituraCategory === 'durante_aula' ? 'Link da aula ao vivo publicado com sucesso!' : 'Leitura pré-aula publicada com sucesso!');
+    showNotification(
+      leituraCategory === 'suspensao_aula'
+        ? '⚠️ Aviso de suspensão publicado com sucesso!'
+        : leituraCategory === 'aviso_geral'
+        ? '📢 Comunicado oficial publicado no mural!'
+        : leituraCategory === 'durante_aula'
+        ? 'Link da aula ao vivo publicado com sucesso!'
+        : 'Recurso publicado com sucesso no LMS!'
+    );
   };
 
   // Estado de Sub-aba para Leituras: 'active' ou 'archived', filtro por matéria e busca
@@ -971,12 +998,36 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               </div>
             )}
 
-            {/* Seletor de Categoria / Momento do Link */}
+            {/* Seletor de Categoria / Momento do Recurso */}
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Momento / Categoria do Recurso
+                Momento / Categoria do Comunicado ou Recurso
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setLeituraCategory('aviso_geral')}
+                  className={`p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    leituraCategory === 'aviso_geral'
+                      ? 'bg-indigo-50 dark:bg-indigo-950/50 border-indigo-500 text-indigo-900 dark:text-indigo-200 shadow-2xs font-extrabold ring-1 ring-indigo-400'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <span>📢 Comunicado Geral</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setLeituraCategory('suspensao_aula')}
+                  className={`p-2 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    leituraCategory === 'suspensao_aula'
+                      ? 'bg-amber-50 dark:bg-amber-950/50 border-amber-500 text-amber-900 dark:text-amber-200 shadow-2xs font-extrabold ring-1 ring-amber-400'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <span>⚠️ Sem Aula / Suspensão</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setLeituraCategory('durante_aula')}
@@ -1020,13 +1071,16 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Disciplina</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Disciplina / Destinatários</label>
                 <select
                   value={selectedDisciplinaId}
                   onChange={(e) => setSelectedDisciplinaId(e.target.value)}
                   className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
                 >
+                  <option value="ALL" className="dark:bg-slate-900 dark:text-slate-100">
+                    📢 Todas as Minhas Disciplinas (Mural Geral)
+                  </option>
                   {userDisciplinas.map((d) => (
                     <option key={d.id} value={d.id} className="dark:bg-slate-900 dark:text-slate-100">
                       {d.name} ({d.day_of_week})
@@ -1049,27 +1103,32 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Título do Link / Artigo / Recurso</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                {leituraCategory === 'aviso_geral' || leituraCategory === 'suspensao_aula'
+                  ? 'Título do Comunicado / Aviso'
+                  : 'Título do Link / Artigo / Recurso'}
+              </label>
               <input
                 type="text"
                 value={leituraTitle}
                 onChange={(e) => setLeituraTitle(e.target.value)}
-                placeholder="Ex: Slide da Apresentação, Artigo do IBGE, Vídeo Temático..."
+                placeholder="Ex: Não teremos aulas ao vivo hoje (02/10/2026)"
                 className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Link de Acesso (URL Completa)</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                Link de Acesso (URL Completa - Opcional)
+              </label>
               <div className="relative">
                 <input
                   type="url"
                   value={leituraUrl}
                   onChange={(e) => setLeituraUrl(e.target.value)}
-                  placeholder="https://..."
+                  placeholder="https://... (Opcional - deixe em branco para comunicado em texto)"
                   className="w-full p-2.5 pl-8 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-blue-800 dark:text-blue-300 font-mono placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  required
                 />
                 <ExternalLink className="w-4 h-4 text-gray-400 dark:text-slate-500 absolute left-2.5 top-3" />
               </div>
@@ -1077,14 +1136,14 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Instruções / Recado para os Alunos (Opcional)
+                Texto do Comunicado / Orientações aos Alunos
               </label>
               <textarea
-                rows={2}
+                rows={5}
                 value={leituraMessage}
                 onChange={(e) => setLeituraMessage(e.target.value)}
-                placeholder="Ex: Leiam as páginas 12 a 24 antes do início da aula..."
-                className="w-full p-2.5 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Digite ou cole aqui o comunicado oficial, situação da aula, orientações das avaliações ou leituras recomendadas..."
+                className="w-full p-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none leading-relaxed font-sans"
               />
             </div>
 
@@ -1125,18 +1184,30 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
               className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-xs transition flex items-center justify-center gap-2 cursor-pointer ${
                 editingAnnouncementId
                   ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : leituraCategory === 'suspensao_aula'
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : leituraCategory === 'aviso_geral'
+                  ? 'bg-indigo-700 hover:bg-indigo-800 text-white'
                   : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
             >
               {editingAnnouncementId ? (
                 <>
                   <Check className="w-4 h-4" />
-                  <span>Salvar Alterações do Link / Leitura</span>
+                  <span>Salvar Alterações</span>
                 </>
               ) : (
                 <>
                   <UploadCloud className="w-4 h-4" />
-                  <span>Publicar Link / Recurso no Portal do Aluno</span>
+                  <span>
+                    {leituraCategory === 'suspensao_aula'
+                      ? '⚠️ Publicar Aviso de Suspensão de Aula'
+                      : leituraCategory === 'aviso_geral'
+                      ? '📢 Publicar Comunicado no Mural'
+                      : leituraCategory === 'durante_aula'
+                      ? '🔴 Publicar Link da Aula Ao Vivo'
+                      : 'Publicar no Mural dos Alunos'}
+                  </span>
                 </>
               )}
             </button>
@@ -1276,7 +1347,15 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                             </span>
 
                             {/* Badge de Categoria / Momento */}
-                            {av.category === 'durante_aula' ? (
+                            {av.category === 'suspensao_aula' ? (
+                              <span className="text-[10px] font-black uppercase tracking-wide bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                ⚠️ Sem Aula Ao Vivo
+                              </span>
+                            ) : av.category === 'aviso_geral' ? (
+                              <span className="text-[10px] font-black uppercase tracking-wide bg-indigo-100 dark:bg-indigo-950/80 text-indigo-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                📢 Comunicado Geral
+                              </span>
+                            ) : av.category === 'durante_aula' ? (
                               <span className="text-[10px] font-black uppercase tracking-wide bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border border-rose-200 dark:border-rose-800 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
                                 🔴 Em Aula (Ao Vivo)
@@ -1299,7 +1378,9 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                           </div>
                           <h5 className="font-extrabold text-sm text-slate-900 dark:text-slate-100">{av.title}</h5>
                           {av.message && (
-                            <p className="text-xs text-slate-600 dark:text-slate-300 italic">"{av.message}"</p>
+                            <p className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed bg-slate-50 dark:bg-slate-800/80 p-2.5 rounded-xl border border-gray-100 dark:border-slate-800">
+                              {av.message}
+                            </p>
                           )}
                         </div>
 
@@ -1361,18 +1442,20 @@ export const ProfessorPanel: React.FC<ProfessorPanelProps> = ({
                       )}
 
                       <div className="flex gap-2 pt-1">
-                        <a
-                          href={av.link_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-3 bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 text-blue-800 dark:text-blue-300 font-bold text-xs rounded-xl border border-blue-200 dark:border-slate-700 transition flex items-center justify-center gap-1.5"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Abrir Link</span>
-                        </a>
+                        {av.link_url && !av.link_url.includes('koinonialms.vercel.app') && av.link_url !== '#' && (
+                          <a
+                            href={av.link_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 py-1.5 px-3 bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 text-blue-800 dark:text-blue-300 font-bold text-xs rounded-xl border border-blue-200 dark:border-slate-700 transition flex items-center justify-center gap-1.5"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>Abrir Link</span>
+                          </a>
+                        )}
                         <button
                           onClick={() => handleCopyAvisoWhatsApp(av)}
-                          className="py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                          className="flex-1 py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                         >
                           {copiedAvisoId === av.id ? (
                             <>

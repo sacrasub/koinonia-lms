@@ -5,7 +5,8 @@ import {
   GraduationCap, Printer, Award, CheckCircle2, 
   AlertCircle, BookOpen, Clock, Calendar, RefreshCw, 
   MessageSquare, ShieldCheck, ChevronRight, Sparkles, ArrowRight,
-  SlidersHorizontal, Check, X, Filter, Settings, BookCheck, RotateCcw
+  SlidersHorizontal, Check, X, Filter, Settings, BookCheck, RotateCcw,
+  Edit3, Trash2, Plus, Info, CheckCircle, Save
 } from 'lucide-react';
 import { 
   getDisciplinasForStudent, 
@@ -16,7 +17,9 @@ import {
 import { 
   getGradesForStudent, 
   calculateGradeResult, 
-  normalizeEmail 
+  normalizeEmail,
+  saveStudentGrade,
+  deleteStudentGrade
 } from '@/services/gradesService';
 import { savePortalProfile } from '@/services/studentSyncService';
 import { Disciplina, StudentGradeRecord } from '@/types';
@@ -112,6 +115,11 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  // Estados de Auto-Lançamento de Notas pelo Aluno
+  const [isEditingMode, setIsEditingMode] = useState(false);
+  const [editingModalDisc, setEditingModalDisc] = useState<Disciplina | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'synced' | 'saving' | 'offline'>('synced');
+
   // Estados do Modal de Configuração Individual de Matérias
   const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
   const [modalTurmaIdx, setModalTurmaIdx] = useState<number>(studentProfile.turmaIdx);
@@ -142,6 +150,79 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
     } finally {
       setLoading(false);
       setRefreshing(false);
+    }
+  }, [normalizedEmail]);
+
+  // Atualização instantânea e otimista de notas do aluno (Auto-Lançamento)
+  const handleUpdateStudentGrade = useCallback((
+    disciplinaId: string,
+    field: keyof StudentGradeRecord,
+    value: any
+  ) => {
+    const current = gradesMap[disciplinaId] || {
+      disciplina_id: disciplinaId,
+      student_email: normalizedEmail,
+      faltas: 0,
+    };
+
+    let parsedVal: any = value;
+    if (field === 'av1' || field === 'av2' || field === 'trabalho' || field === 'recuperacao') {
+      if (value === '' || value === null || value === undefined) {
+        parsedVal = null;
+      } else {
+        const num = parseFloat(value);
+        parsedVal = isNaN(num) ? null : Math.max(0, Math.min(10, num));
+      }
+    } else if (field === 'faltas') {
+      if (value === '' || value === null || value === undefined) {
+        parsedVal = 0;
+      } else {
+        const num = parseInt(value, 10);
+        parsedVal = isNaN(num) ? 0 : Math.max(0, Math.min(16, num));
+      }
+    }
+
+    const updated: StudentGradeRecord = {
+      ...current,
+      disciplina_id: disciplinaId,
+      student_email: normalizedEmail,
+      [field]: parsedVal,
+      updated_at: new Date().toISOString(),
+      updated_by: 'aluno',
+    };
+
+    setGradesMap((prev) => ({
+      ...prev,
+      [disciplinaId]: updated,
+    }));
+
+    setSaveStatus('saving');
+    saveStudentGrade(updated, false)
+      .then(() => {
+        setSaveStatus('synced');
+      })
+      .catch((err) => {
+        console.warn('Erro ao sincronizar nota do aluno:', err);
+        setSaveStatus('offline');
+      });
+  }, [gradesMap, normalizedEmail]);
+
+  // Limpa notas de uma disciplina
+  const handleClearStudentGrade = useCallback(async (disciplinaId: string) => {
+    if (!confirm('Deseja realmente limpar todas as notas lançadas para esta matéria?')) {
+      return;
+    }
+    setGradesMap((prev) => {
+      const copy = { ...prev };
+      delete copy[disciplinaId];
+      return copy;
+    });
+    setSaveStatus('saving');
+    try {
+      await deleteStudentGrade(disciplinaId, normalizedEmail);
+      setSaveStatus('synced');
+    } catch (e) {
+      setSaveStatus('offline');
     }
   }, [normalizedEmail]);
 
@@ -344,6 +425,34 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
 
         {/* Ações / Botões */}
         <div className="flex items-center gap-2 flex-wrap print:hidden">
+          {/* Status de Sincronização */}
+          {saveStatus === 'saving' && (
+            <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-3 py-2 rounded-xl border border-amber-200 flex items-center gap-1.5 shadow-xs">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-600" />
+              <span>Salvando notas...</span>
+            </span>
+          )}
+          {saveStatus === 'synced' && isEditingMode && (
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 flex items-center gap-1.5 shadow-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Salvo na nuvem</span>
+            </span>
+          )}
+
+          {/* Botão de Lançar / Editar Minhas Notas */}
+          <button
+            onClick={() => setIsEditingMode(!isEditingMode)}
+            className={`px-4 py-2.5 text-xs font-bold rounded-xl transition flex items-center gap-2 cursor-pointer shadow-sm ${
+              isEditingMode
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white ring-2 ring-emerald-500/20 shadow-emerald-600/20'
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20'
+            }`}
+            title={isEditingMode ? 'Concluir digitação e travar campos' : 'Digitar e alterar notas diretamente na tabela'}
+          >
+            {isEditingMode ? <Check className="w-4 h-4 stroke-[2.5]" /> : <Edit3 className="w-4 h-4" />}
+            <span>{isEditingMode ? 'Concluir Lançamento' : 'Lançar Minhas Notas'}</span>
+          </button>
+
           {/* Botão de Configurar Matérias do Perfil */}
           <button
             onClick={handleOpenConfigModal}
@@ -366,11 +475,51 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
 
           <button
             onClick={handlePrint}
-            className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md shadow-indigo-500/20 transition flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer"
             title="Imprimir boletim oficial ou salvar em PDF"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir Boletim</span>
+          </button>
+        </div>
+      </div>
+
+      {/* BANNER INFORMATIVO: AUTO-LANÇAMENTO DE NOTAS */}
+      <div className="bg-gradient-to-r from-indigo-50 via-purple-50 to-blue-50 border border-indigo-200/80 rounded-3xl p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">
+        <div className="flex items-start gap-3.5">
+          <div className="p-2.5 bg-indigo-600 text-white rounded-2xl shadow-sm shrink-0 mt-0.5">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h4 className="text-sm font-extrabold text-indigo-950">
+                Auto-Lançamento de Notas Habilitado
+              </h4>
+              <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
+                Autonomia do Aluno
+              </span>
+              {isEditingMode && (
+                <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse">
+                  Modo Edição Ativo na Tabela
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              Como nem todos os docentes lançam notas no sistema, você pode registrar diretamente suas notas obtidas nas avaliações (AV1, AV2), trabalhos semestrais e faltas para calcular sua média semestral e emitir seu boletim atualizado em tempo real.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+          <button
+            onClick={() => setIsEditingMode(!isEditingMode)}
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm ${
+              isEditingMode
+                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                : 'bg-indigo-600 text-white hover:bg-indigo-700'
+            }`}
+          >
+            {isEditingMode ? <Check className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
+            <span>{isEditingMode ? 'Visualizar Boletim' : 'Digitar Notas na Tabela'}</span>
           </button>
         </div>
       </div>
@@ -437,7 +586,7 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
             {studentMetrics.aprovadas}
           </div>
           <span className="text-[10px] text-emerald-600 mt-0.5 block">
-            Média $\ge$ 7.0
+            Média ≥ 7.0
           </span>
         </div>
 
@@ -475,28 +624,45 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
             </p>
           </div>
           <span className="text-xs text-slate-400 font-medium">
-            Critério: Média $\ge$ 7.0 e máx. 4 faltas
+            Critério: Média ≥ 7.0 e máx. 4 faltas
           </span>
         </div>
+
+        {isEditingMode && (
+          <div className="bg-emerald-50/80 border-b border-emerald-200 px-5 py-3 text-xs text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-2 print:hidden">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-extrabold">Modo de Auto-Lançamento Ativo:</span>
+              <span>Digite suas notas (0.0 a 10.0) e número de faltas. A média semestral e situação acadêmica são calculadas na hora!</span>
+            </div>
+            <button
+              onClick={() => setIsEditingMode(false)}
+              className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition self-start sm:self-auto cursor-pointer shadow-xs"
+            >
+              Concluir Digitação
+            </button>
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-slate-50 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider border-b border-slate-200">
                 <th className="p-3.5">Disciplina & Docente</th>
-                <th className="p-3.5 w-20 text-center">AV1</th>
-                <th className="p-3.5 w-20 text-center">AV2</th>
-                <th className="p-3.5 w-20 text-center">Trabalho</th>
-                <th className="p-3.5 w-20 text-center">Recup.</th>
+                <th className="p-3.5 w-24 text-center">AV1</th>
+                <th className="p-3.5 w-24 text-center">AV2</th>
+                <th className="p-3.5 w-24 text-center">Trabalho</th>
+                <th className="p-3.5 w-24 text-center">Recup.</th>
                 <th className="p-3.5 w-28 text-center">Faltas (Máx 4)</th>
                 <th className="p-3.5 w-24 text-center">Média Final</th>
                 <th className="p-3.5 w-36 text-center">Situação</th>
+                <th className="p-3.5 w-28 text-center print:hidden">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {disciplinas.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-slate-400 font-medium space-y-3">
+                  <td colSpan={9} className="p-8 text-center text-slate-400 font-medium space-y-3">
                     <p>Nenhuma disciplina configurada para o seu perfil no semestre.</p>
                     <button
                       onClick={handleOpenConfigModal}
@@ -523,40 +689,122 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
                         </td>
 
                         {/* AV1 */}
-                        <td className="p-3.5 text-center font-bold text-slate-800">
-                          {grade?.av1 !== null && grade?.av1 !== undefined ? Number(grade.av1).toFixed(1) : '-'}
+                        <td className="p-2.5 text-center">
+                          {isEditingMode ? (
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              max="10"
+                              placeholder="-"
+                              value={grade?.av1 !== null && grade?.av1 !== undefined ? grade.av1 : ''}
+                              onChange={(e) => handleUpdateStudentGrade(disc.id, 'av1', e.target.value)}
+                              className="w-16 h-8 text-center font-black text-xs text-slate-900 bg-indigo-50/50 border border-indigo-200 rounded-lg focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition mx-auto block"
+                              title="Nota da 1ª Avaliação / Prova (0.0 a 10.0)"
+                            />
+                          ) : (
+                            <span className="font-bold text-slate-800">
+                              {grade?.av1 !== null && grade?.av1 !== undefined ? Number(grade.av1).toFixed(1) : '-'}
+                            </span>
+                          )}
                         </td>
 
                         {/* AV2 */}
-                        <td className="p-3.5 text-center font-bold text-slate-800">
-                          {grade?.av2 !== null && grade?.av2 !== undefined ? Number(grade.av2).toFixed(1) : '-'}
+                        <td className="p-2.5 text-center">
+                          {isEditingMode ? (
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              max="10"
+                              placeholder="-"
+                              value={grade?.av2 !== null && grade?.av2 !== undefined ? grade.av2 : ''}
+                              onChange={(e) => handleUpdateStudentGrade(disc.id, 'av2', e.target.value)}
+                              className="w-16 h-8 text-center font-black text-xs text-slate-900 bg-indigo-50/50 border border-indigo-200 rounded-lg focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition mx-auto block"
+                              title="Nota da 2ª Avaliação / Prova (0.0 a 10.0)"
+                            />
+                          ) : (
+                            <span className="font-bold text-slate-800">
+                              {grade?.av2 !== null && grade?.av2 !== undefined ? Number(grade.av2).toFixed(1) : '-'}
+                            </span>
+                          )}
                         </td>
 
                         {/* Trabalho */}
-                        <td className="p-3.5 text-center font-bold text-slate-800">
-                          {grade?.trabalho !== null && grade?.trabalho !== undefined ? Number(grade.trabalho).toFixed(1) : '-'}
+                        <td className="p-2.5 text-center">
+                          {isEditingMode ? (
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              max="10"
+                              placeholder="-"
+                              value={grade?.trabalho !== null && grade?.trabalho !== undefined ? grade.trabalho : ''}
+                              onChange={(e) => handleUpdateStudentGrade(disc.id, 'trabalho', e.target.value)}
+                              className="w-16 h-8 text-center font-black text-xs text-slate-900 bg-indigo-50/50 border border-indigo-200 rounded-lg focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition mx-auto block"
+                              title="Nota do Trabalho Semestral (0.0 a 10.0)"
+                            />
+                          ) : (
+                            <span className="font-bold text-slate-800">
+                              {grade?.trabalho !== null && grade?.trabalho !== undefined ? Number(grade.trabalho).toFixed(1) : '-'}
+                            </span>
+                          )}
                         </td>
 
                         {/* Recuperação */}
-                        <td className="p-3.5 text-center font-bold text-amber-800">
-                          {grade?.recuperacao !== null && grade?.recuperacao !== undefined ? Number(grade.recuperacao).toFixed(1) : '-'}
+                        <td className="p-2.5 text-center">
+                          {isEditingMode ? (
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              max="10"
+                              placeholder="-"
+                              value={grade?.recuperacao !== null && grade?.recuperacao !== undefined ? grade.recuperacao : ''}
+                              onChange={(e) => handleUpdateStudentGrade(disc.id, 'recuperacao', e.target.value)}
+                              className="w-16 h-8 text-center font-black text-xs text-amber-900 bg-amber-50/60 border border-amber-200 rounded-lg focus:bg-white focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 outline-none transition mx-auto block"
+                              title="Nota da Prova de Recuperação (0.0 a 10.0)"
+                            />
+                          ) : (
+                            <span className="font-bold text-amber-800">
+                              {grade?.recuperacao !== null && grade?.recuperacao !== undefined ? Number(grade.recuperacao).toFixed(1) : '-'}
+                            </span>
+                          )}
                         </td>
 
                         {/* Faltas com barra visual */}
-                        <td className="p-3.5 text-center">
-                          <div className="flex flex-col items-center justify-center gap-1">
-                            <span className={`font-bold text-xs ${faltas > 4 ? 'text-rose-600' : 'text-slate-700'}`}>
-                              {faltas} de 4
-                            </span>
-                            <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all ${
-                                  faltas > 4 ? 'bg-rose-500' : faltas >= 3 ? 'bg-amber-500' : 'bg-emerald-500'
-                                }`}
-                                style={{ width: `${Math.min(100, (faltas / 4) * 100)}%` }}
-                              />
+                        <td className="p-2.5 text-center">
+                          {isEditingMode ? (
+                            <input
+                              type="number"
+                              step="1"
+                              min="0"
+                              max="16"
+                              placeholder="0"
+                              value={grade?.faltas ?? 0}
+                              onChange={(e) => handleUpdateStudentGrade(disc.id, 'faltas', e.target.value)}
+                              className={`w-14 h-8 text-center font-black text-xs border rounded-lg focus:bg-white focus:outline-none transition mx-auto block ${
+                                faltas > 4
+                                  ? 'text-rose-700 bg-rose-50 border-rose-300 focus:border-rose-600'
+                                  : 'text-slate-800 bg-slate-50 border-slate-200 focus:border-indigo-600'
+                              }`}
+                              title="Número de faltas (máx 4 para aprovação)"
+                            />
+                          ) : (
+                            <div className="flex flex-col items-center justify-center gap-1">
+                              <span className={`font-bold text-xs ${faltas > 4 ? 'text-rose-600' : 'text-slate-700'}`}>
+                                {faltas} de 4
+                              </span>
+                              <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full transition-all ${
+                                    faltas > 4 ? 'bg-rose-500' : faltas >= 3 ? 'bg-amber-500' : 'bg-emerald-500'
+                                  }`}
+                                  style={{ width: `${Math.min(100, (faltas / 4) * 100)}%` }}
+                                />
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </td>
 
                         {/* Média */}
@@ -570,16 +818,47 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
                             {res.situacao}
                           </span>
                         </td>
+
+                        {/* Ações (print:hidden) */}
+                        <td className="p-2.5 text-center print:hidden">
+                          {isEditingMode ? (
+                            <div className="flex items-center justify-center gap-1">
+                              <button
+                                onClick={() => setEditingModalDisc(disc)}
+                                className="p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition cursor-pointer"
+                                title="Abrir ficha detalhada com anotações e feedback"
+                              >
+                                <SlidersHorizontal className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleClearStudentGrade(disc.id)}
+                                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
+                                title="Limpar notas desta disciplina"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setEditingModalDisc(disc)}
+                              className="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-200/80 transition flex items-center justify-center gap-1 cursor-pointer mx-auto shadow-xs"
+                              title="Lançar ou editar notas desta disciplina"
+                            >
+                              <Edit3 className="w-3.5 h-3.5 text-indigo-600" />
+                              <span>Lançar</span>
+                            </button>
+                          )}
+                        </td>
                       </tr>
 
-                      {/* Observação / Feedback do Professor (se existir) */}
+                      {/* Observação / Feedback / Anotações (se existir) */}
                       {grade?.observacoes && (
                         <tr className="bg-indigo-50/40 border-b border-indigo-100/60">
-                          <td colSpan={8} className="p-3 pl-6 text-xs text-indigo-950">
+                          <td colSpan={9} className="p-3 pl-6 text-xs text-indigo-950">
                             <div className="flex items-start gap-2">
                               <MessageSquare className="w-3.5 h-3.5 text-indigo-600 mt-0.5 shrink-0" />
                               <div>
-                                <span className="font-bold text-indigo-900">Feedback do Professor: </span>
+                                <span className="font-bold text-indigo-900">Anotações / Feedback: </span>
                                 <span className="italic text-indigo-800">"{grade.observacoes}"</span>
                               </div>
                             </div>
@@ -851,6 +1130,362 @@ export const AlunoBoletim: React.FC<AlunoBoletimProps> = ({ userEmail, onTabChan
           </div>
         </div>
       )}
+
+      {/* ======================================================== */}
+      {/* MODAL: LANÇAMENTO / EDIÇÃO DE NOTAS DA DISCIPLINA */}
+      {/* ======================================================== */}
+      {editingModalDisc && (() => {
+        const currentGrade = gradesMap[editingModalDisc.id] || {
+          disciplina_id: editingModalDisc.id,
+          student_email: normalizedEmail,
+          faltas: 0,
+        };
+        const res = calculateGradeResult(currentGrade);
+        const faltas = Number(currentGrade.faltas || 0);
+        const QUICK_CHIPS = [10, 9.5, 9.0, 8.5, 8.0, 7.5, 7.0];
+
+        return (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              {/* Cabeçalho do Modal */}
+              <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-indigo-50/70 to-slate-50">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-indigo-600 text-white rounded-2xl shadow-md shadow-indigo-600/20">
+                    <Edit3 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-extrabold text-slate-900 text-base">
+                        Lançar Minhas Notas
+                      </h3>
+                      <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                        {editingModalDisc.code}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      {editingModalDisc.name} • Profº {editingModalDisc.professor_name || 'Corpo Docente'} ({editingModalDisc.day_of_week})
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setEditingModalDisc(null)}
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 rounded-xl transition cursor-pointer"
+                  title="Fechar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Corpo do Modal */}
+              <div className="p-5 sm:p-6 space-y-6 overflow-y-auto flex-1">
+                {/* Resumo Dinâmico em Tempo Real */}
+                <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+                      Resultado Atual da Disciplina
+                    </span>
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="text-3xl font-black text-white">
+                        {res.mediaDisplay}
+                      </span>
+                      <span className="text-xs text-slate-300">
+                        {res.media !== null ? 'média semestral' : 'sem notas lançadas'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Critério oficial: Média ≥ 7.0 para aprovação direta e máx. 4 faltas.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-start sm:items-end gap-2">
+                    <span className={`px-3 py-1 rounded-full text-xs font-black border ${res.badgeBg}`}>
+                      {res.situacao}
+                    </span>
+                    <span className="text-[11px] text-slate-300">
+                      {faltas} falta(s) registrada(s) ({16 - faltas} de 16 presenças)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Grade de Avaliações Principais */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* AV1 */}
+                  <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-xs font-extrabold text-slate-900 block">
+                          AV1 (1ª Avaliação / Prova)
+                        </label>
+                        <span className="text-[10px] text-slate-500">Nota bimestral inicial</span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="10"
+                        placeholder="-"
+                        value={currentGrade.av1 !== null && currentGrade.av1 !== undefined ? currentGrade.av1 : ''}
+                        onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'av1', e.target.value)}
+                        className="w-20 h-9 text-center font-black text-sm text-slate-900 bg-white border border-indigo-200 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition shadow-xs"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap pt-1 border-t border-slate-200/60">
+                      <span className="text-[10px] text-slate-400 font-bold mr-1">Rápido:</span>
+                      {QUICK_CHIPS.map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'av1', n)}
+                          className="px-1.5 py-0.5 text-[10px] font-bold bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 rounded-md transition cursor-pointer"
+                        >
+                          {n.toFixed(1)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'av1', '')}
+                        className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 hover:text-rose-600 transition ml-auto cursor-pointer"
+                      >
+                        Limpar
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* AV2 */}
+                  <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-xs font-extrabold text-slate-900 block">
+                          AV2 (2ª Avaliação / Prova)
+                        </label>
+                        <span className="text-[10px] text-slate-500">Nota bimestral final</span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="10"
+                        placeholder="-"
+                        value={currentGrade.av2 !== null && currentGrade.av2 !== undefined ? currentGrade.av2 : ''}
+                        onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'av2', e.target.value)}
+                        className="w-20 h-9 text-center font-black text-sm text-slate-900 bg-white border border-indigo-200 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition shadow-xs"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap pt-1 border-t border-slate-200/60">
+                      <span className="text-[10px] text-slate-400 font-bold mr-1">Rápido:</span>
+                      {QUICK_CHIPS.map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'av2', n)}
+                          className="px-1.5 py-0.5 text-[10px] font-bold bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 rounded-md transition cursor-pointer"
+                        >
+                          {n.toFixed(1)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'av2', '')}
+                        className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 hover:text-rose-600 transition ml-auto cursor-pointer"
+                      >
+                        Limpar
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Trabalho Semestral */}
+                  <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-xs font-extrabold text-slate-900 block">
+                          Trabalho Semestral
+                        </label>
+                        <span className="text-[10px] text-slate-500">Artigo, resenha ou seminário</span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="10"
+                        placeholder="-"
+                        value={currentGrade.trabalho !== null && currentGrade.trabalho !== undefined ? currentGrade.trabalho : ''}
+                        onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'trabalho', e.target.value)}
+                        className="w-20 h-9 text-center font-black text-sm text-slate-900 bg-white border border-indigo-200 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition shadow-xs"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap pt-1 border-t border-slate-200/60">
+                      <span className="text-[10px] text-slate-400 font-bold mr-1">Rápido:</span>
+                      {QUICK_CHIPS.map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'trabalho', n)}
+                          className="px-1.5 py-0.5 text-[10px] font-bold bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 rounded-md transition cursor-pointer"
+                        >
+                          {n.toFixed(1)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'trabalho', '')}
+                        className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 hover:text-rose-600 transition ml-auto cursor-pointer"
+                      >
+                        Limpar
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Recuperação */}
+                  <div className="bg-amber-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-xs font-extrabold text-amber-950 block">
+                          Prova de Recuperação
+                        </label>
+                        <span className="text-[10px] text-amber-800">Para médias regulares entre 5.0 e 6.9</span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="10"
+                        placeholder="-"
+                        value={currentGrade.recuperacao !== null && currentGrade.recuperacao !== undefined ? currentGrade.recuperacao : ''}
+                        onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'recuperacao', e.target.value)}
+                        className="w-20 h-9 text-center font-black text-sm text-amber-950 bg-white border border-amber-300 rounded-xl focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 outline-none transition shadow-xs"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap pt-1 border-t border-amber-200/60">
+                      <span className="text-[10px] text-amber-700 font-bold mr-1">Rápido:</span>
+                      {QUICK_CHIPS.map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'recuperacao', n)}
+                          className="px-1.5 py-0.5 text-[10px] font-bold bg-white hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-md transition cursor-pointer"
+                        >
+                          {n.toFixed(1)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'recuperacao', '')}
+                        className="px-1.5 py-0.5 text-[10px] font-semibold text-amber-600 hover:text-rose-600 transition ml-auto cursor-pointer"
+                      >
+                        Limpar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Controle de Faltas */}
+                <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 space-y-3">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <label className="text-xs font-extrabold text-slate-900 block">
+                        Controle de Faltas (Presença do Semestre)
+                      </label>
+                      <span className="text-[10px] text-slate-500">
+                        Limite máximo: 4 faltas em 16 aulas (mínimo de 75% de frequência)
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'faltas', Math.max(0, faltas - 1))}
+                        disabled={faltas <= 0}
+                        className="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-black flex items-center justify-center transition disabled:opacity-40 cursor-pointer"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        step="1"
+                        min="0"
+                        max="16"
+                        value={faltas}
+                        onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'faltas', e.target.value)}
+                        className={`w-14 h-8 text-center font-black text-sm border rounded-lg bg-white focus:outline-none transition ${
+                          faltas > 4 ? 'text-rose-700 border-rose-400' : 'text-slate-900 border-slate-300'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStudentGrade(editingModalDisc.id, 'faltas', Math.min(16, faltas + 1))}
+                        disabled={faltas >= 16}
+                        className="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-black flex items-center justify-center transition disabled:opacity-40 cursor-pointer"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Barra Visual de Faltas */}
+                  <div className="space-y-1">
+                    <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          faltas > 4 ? 'bg-rose-500' : faltas >= 3 ? 'bg-amber-500' : 'bg-emerald-500'
+                        }`}
+                        style={{ width: `${Math.min(100, (faltas / 4) * 100)}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-slate-400 font-medium">
+                      <span>0 faltas (100%)</span>
+                      <span className={faltas > 4 ? 'text-rose-600 font-bold' : faltas >= 3 ? 'text-amber-600 font-bold' : ''}>
+                        {faltas > 4 ? 'Limite de 4 faltas ultrapassado (Reprovado por faltas)' : `${faltas} de 4 faltas permitidas`}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Minhas Anotações / Observações */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <MessageSquare className="w-3.5 h-3.5 text-indigo-600" />
+                    <span>Minhas Anotações & Lembretes desta Matéria</span>
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Ex: Prova realizada no Google Forms em 10/10; Trabalho em grupo apresentado; Nota divulgada no grupo pelo professor..."
+                    value={currentGrade.observacoes || ''}
+                    onChange={(e) => handleUpdateStudentGrade(editingModalDisc.id, 'observacoes', e.target.value)}
+                    className="w-full text-xs p-3 rounded-2xl border border-slate-200 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 outline-none transition bg-slate-50/50 focus:bg-white resize-none"
+                  />
+                  <span className="text-[10px] text-slate-400 block">
+                    Suas anotações são salvas junto com as notas e exibidas no detalhamento do boletim.
+                  </span>
+                </div>
+              </div>
+
+              {/* Rodapé de Ações do Modal */}
+              <div className="p-4 sm:p-5 border-t border-slate-100 flex items-center justify-between gap-3 bg-slate-50/70">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleClearStudentGrade(editingModalDisc.id);
+                    setEditingModalDisc(null);
+                  }}
+                  className="px-3.5 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Limpar Notas</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setEditingModalDisc(null)}
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md shadow-indigo-600/20 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Check className="w-4 h-4 stroke-[2.5]" />
+                  <span>Concluir e Fechar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

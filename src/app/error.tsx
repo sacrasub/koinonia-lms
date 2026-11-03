@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { AlertTriangle, RefreshCw, Sparkles, Home } from 'lucide-react';
 
 export default function GlobalError({
@@ -20,6 +20,42 @@ export default function GlobalError({
     (typeof error?.message === 'string' && /chunk/i.test(error.message))
   );
 
+  const forceFreshReload = useCallback(async (destinationPath?: string) => {
+    setIsReloading(true);
+
+    try {
+      sessionStorage.removeItem('lms_chunk_reload_ts');
+    } catch (_) {}
+
+    const cleanupPromise = (async () => {
+      try {
+        if (typeof window !== 'undefined' && 'caches' in window) {
+          const names = await caches.keys();
+          await Promise.all(names.map((name) => caches.delete(name)));
+        }
+      } catch (_) {}
+
+      try {
+        if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(registrations.map((r) => r.unregister()));
+        }
+      } catch (_) {}
+    })();
+
+    // Timeout de salvaguarda de 700ms para evitar que a tela congele caso a API de cache trave
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 700));
+
+    await Promise.race([cleanupPromise, timeoutPromise]);
+
+    // Força cache-busting absoluto na URL para o navegador ignorar o cache HTTP antigo
+    if (typeof window !== 'undefined') {
+      const targetUrl = new URL(destinationPath || window.location.href, window.location.origin);
+      targetUrl.searchParams.set('v', String(Date.now()));
+      window.location.replace(targetUrl.toString());
+    }
+  }, []);
+
   useEffect(() => {
     console.error('[Koinonia LMS] Erro capturado pelo Error Boundary:', error);
 
@@ -29,38 +65,20 @@ export default function GlobalError({
       const lastRetry = sessionStorage.getItem(retryKey);
       const now = Date.now();
 
-      // Se ainda não tentou nos últimos 15 segundos, recarrega automaticamente
+      // Se ainda não tentou nos últimos 15 segundos, recarrega automaticamente com cache-busting
       if (!lastRetry || now - Number(lastRetry) > 15000) {
         sessionStorage.setItem(retryKey, String(now));
-        setIsReloading(true);
-
-        // Limpa o CacheStorage de assets do Service Worker para forçar download do novo build
-        if (typeof window !== 'undefined' && typeof caches !== 'undefined') {
-          caches.keys().then((names) => {
-            return Promise.all(names.map((name) => caches.delete(name)));
-          }).finally(() => {
-            window.location.reload();
-          });
-        } else if (typeof window !== 'undefined') {
-          window.location.reload();
-        }
+        forceFreshReload();
       }
     }
-  }, [error, isChunkError]);
+  }, [error, isChunkError, forceFreshReload]);
 
-  const handleReloadLatest = async () => {
-    setIsReloading(true);
-    try {
-      if (typeof window !== 'undefined' && 'caches' in window) {
-        const names = await caches.keys();
-        await Promise.all(names.map((name) => caches.delete(name)));
-      }
-    } catch (_) {}
-    window.location.reload();
+  const handleReloadLatest = () => {
+    forceFreshReload();
   };
 
   const handleGoHome = () => {
-    window.location.href = '/';
+    forceFreshReload('/');
   };
 
   return (

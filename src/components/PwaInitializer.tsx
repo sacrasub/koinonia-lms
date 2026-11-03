@@ -25,7 +25,7 @@ export const PwaInitializer = () => {
     });
 
     // 2. Interceptar erros globais de carregamento de chunk (ChunkLoadError após novos deploys na Vercel)
-    const handleChunkError = (event: ErrorEvent | PromiseRejectionEvent) => {
+    const handleChunkError = async (event: ErrorEvent | PromiseRejectionEvent) => {
       const err = 'error' in event ? event.error : ('reason' in event ? event.reason : null);
       const message = String(err?.message || ('message' in event ? event.message : '') || '');
 
@@ -44,15 +44,28 @@ export const PwaInitializer = () => {
         // Throttle de 15 segundos para evitar loops de reload se estiver sem internet
         if (!lastRetry || now - Number(lastRetry) > 15000) {
           sessionStorage.setItem(retryKey, String(now));
-          if (typeof window !== 'undefined' && typeof caches !== 'undefined') {
-            caches.keys().then((names) => {
-              return Promise.all(names.map((name) => caches.delete(name)));
-            }).finally(() => {
-              window.location.reload();
-            });
-          } else if (typeof window !== 'undefined') {
-            window.location.reload();
-          }
+          
+          const cleanupPromise = (async () => {
+            try {
+              if ('caches' in window) {
+                const names = await caches.keys();
+                await Promise.all(names.map((name) => caches.delete(name)));
+              }
+            } catch (_) {}
+            try {
+              if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(registrations.map((r) => r.unregister()));
+              }
+            } catch (_) {}
+          })();
+
+          const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 700));
+          await Promise.race([cleanupPromise, timeoutPromise]);
+
+          const targetUrl = new URL(window.location.href);
+          targetUrl.searchParams.set('v', String(Date.now()));
+          window.location.replace(targetUrl.toString());
         }
       }
     };

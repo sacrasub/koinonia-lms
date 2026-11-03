@@ -79,14 +79,48 @@ export function cleanDiscName(name: string): string {
     .replace(/[^a-z0-9]/g, '');
 }
 
+export const INITIAL_CANCELADAS_MAP: Record<string, AulaCanceladaItem> = {
+  'canc_tcc-1_02-10-2026': {
+    id: 'canc_tcc-1_02-10-2026',
+    disciplina_id: 'disc-8',
+    disciplina_name: 'TCC I',
+    data_aula: '02/10/2026',
+    motivo: 'A professora Gabriela suspendeu a aula síncrona desta sexta-feira (02/10) para que a turma pudesse dedicar o tempo aos estudos e à realização das avaliações do semestre. Próximo encontro: 09/10/2026.',
+    autor_nome: 'Profª Gabriela Leal',
+    autor_email: 'gabriela.leal@koinonia.edu.br',
+    autor_role: 'professor',
+    criado_em: '2026-10-02T12:00:00.000Z',
+    ativo: true,
+    tipo_providencia: 'cancelamento',
+  },
+  'canc_plantacao-e-revitalizacao-de-igrejas-ii_02-10-2026': {
+    id: 'canc_plantacao-e-revitalizacao-de-igrejas-ii_02-10-2026',
+    disciplina_id: 'disc-7',
+    disciplina_name: 'Plantação e Revitalização de Igrejas II',
+    data_aula: '02/10/2026',
+    motivo: 'O professor Thácyto informou que não haverá aula expositiva ao vivo nesta data. Às 19h será disponibilizado o material da AV1 (leitura + questionário), com prazo de 1 semana para envio.',
+    autor_nome: 'Profº Thácyto Lessa',
+    autor_email: 'thacyto.lessa@koinonia.edu.br',
+    autor_role: 'professor',
+    criado_em: '2026-10-02T12:00:00.000Z',
+    ativo: true,
+    tipo_providencia: 'cancelamento',
+  },
+};
+
 function getLocalCanceladas(): Record<string, AulaCanceladaItem> {
-  if (typeof window === 'undefined') return {};
+  let base: Record<string, AulaCanceladaItem> = { ...INITIAL_CANCELADAS_MAP };
+  if (typeof window === 'undefined') return base;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    return {};
-  }
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        base = { ...base, ...parsed };
+      }
+    }
+  } catch (e) {}
+  return base;
 }
 
 function saveLocalCanceladas(data: Record<string, AulaCanceladaItem>) {
@@ -328,6 +362,7 @@ export async function cancelarAula(params: {
   arquivoNome?: string;
   trabalhoInstrucoes?: string;
   trabalhoPrazo?: string;
+  existingId?: string;
 }): Promise<AulaCanceladaItem> {
   const key = buildCanceladaKey(params.disciplinaId, params.dataAula);
   const motivoFormatado = formatProvidenciaMotivo({
@@ -340,6 +375,9 @@ export async function cancelarAula(params: {
     trabalhoPrazo: params.trabalhoPrazo,
   });
 
+  const map = getLocalCanceladas();
+  const existingItem = (params.existingId && map[params.existingId]) || map[key];
+
   const item: AulaCanceladaItem = {
     id: key,
     disciplina_id: params.disciplinaId,
@@ -350,7 +388,7 @@ export async function cancelarAula(params: {
     autor_nome: params.autorNome,
     autor_email: params.autorEmail,
     autor_role: params.autorRole,
-    criado_em: new Date().toISOString(),
+    criado_em: existingItem?.criado_em || new Date().toISOString(),
     ativo: true,
     tipo_providencia: params.tipoProvidencia || 'cancelamento',
     video_url: params.videoUrl,
@@ -360,7 +398,9 @@ export async function cancelarAula(params: {
     trabalho_prazo: params.trabalhoPrazo,
   };
 
-  const map = getLocalCanceladas();
+  if (params.existingId && params.existingId !== key && map[params.existingId]) {
+    delete map[params.existingId];
+  }
   map[key] = item;
   saveLocalCanceladas(map);
 
@@ -397,21 +437,27 @@ export async function cancelarAula(params: {
 /**
  * Reativa uma aula cancelada (desfaz o cancelamento)
  */
-export async function reativarAula(disciplinaId: string, dataAula: string): Promise<void> {
+export async function reativarAula(disciplinaId: string, dataAula: string, itemId?: string): Promise<void> {
   const key = buildCanceladaKey(disciplinaId, dataAula);
   const map = getLocalCanceladas();
   if (map[key]) {
     map[key].ativo = false;
-    saveLocalCanceladas(map);
+  }
+  if (itemId && map[itemId]) {
+    map[itemId].ativo = false;
   }
 
-  // Também desativa qualquer chave pelo nome caso tenha sido gerada diferente
+  // Também desativa qualquer chave pelo nome ou ID caso tenha sido gerada diferente
   Object.values(map).forEach((item) => {
     if (
-      (item.disciplina_id === disciplinaId || normalizeDiscName(item.disciplina_name) === normalizeDiscName(disciplinaId)) &&
-      normalizeDateStr(item.data_aula) === normalizeDateStr(dataAula)
+      (itemId && item.id === itemId) ||
+      item.disciplina_id === disciplinaId ||
+      cleanDiscName(item.disciplina_name) === cleanDiscName(disciplinaId) ||
+      normalizeDiscName(item.disciplina_name) === normalizeDiscName(disciplinaId)
     ) {
-      item.ativo = false;
+      if (!dataAula || normalizeDateStr(item.data_aula) === normalizeDateStr(dataAula)) {
+        item.ativo = false;
+      }
     }
   });
   saveLocalCanceladas(map);
@@ -422,11 +468,18 @@ export async function reativarAula(disciplinaId: string, dataAula: string): Prom
       updated_at: new Date().toISOString(),
     }).eq('id', key);
 
+    if (itemId && itemId !== key) {
+      await supabase.from('lms_aulas_canceladas').update({
+        ativo: false,
+        updated_at: new Date().toISOString(),
+      }).eq('id', itemId);
+    }
+
     const channel = supabase.channel('lms_aulas_realtime');
     await channel.send({
       type: 'broadcast',
       event: 'aula_cancelada_sync',
-      payload: { key, reativada: true }
+      payload: { key, itemId, reativada: true }
     });
   } catch (e) {}
 }

@@ -262,6 +262,25 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   // Avisos e leituras filtrados para a turma do aluno
   const studentTurmaAnnouncements = useMemo(() => {
     return announcements.filter((a) => {
+      // 1. Avisos gerais, suspensões ou de escopo global vão para todas as turmas
+      if (
+        a.disciplina_id === 'all' ||
+        a.disciplina_id === 'todas' ||
+        a.disciplina_id === 'geral' ||
+        a.category === 'aviso_geral' ||
+        a.category === 'suspensao_aula' ||
+        a.disciplina_name?.toLowerCase().includes('todas as disciplinas') ||
+        a.disciplina_name?.toLowerCase().includes('mural geral')
+      ) {
+        return true;
+      }
+
+      // 2. Avisos de sextas-feiras ou dias específicos vão para os alunos de hoje
+      if (a.disciplina_id === 'sexta' || a.disciplina_name?.toLowerCase().includes('sexta')) {
+        return true;
+      }
+
+      // 3. Avisos específicos da turma do aluno
       return studentAulas.some(
         (sa) => sa.disciplina_id === a.disciplina_id || sa.disciplina_name.toLowerCase().trim() === a.disciplina_name.toLowerCase().trim()
       );
@@ -1637,7 +1656,15 @@ href={nextAulaToday.google_meet_url}
                             {av.disciplina_name}
                           </span>
                           
-                          {av.category === 'durante_aula' ? (
+                          {av.category === 'suspensao_aula' ? (
+                            <span className="text-[10px] font-black uppercase tracking-wide bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs">
+                              ⚠️ Sem Aula Ao Vivo
+                            </span>
+                          ) : av.category === 'aviso_geral' ? (
+                            <span className="text-[10px] font-black uppercase tracking-wide bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 px-2 py-0.5 rounded-md flex items-center gap-1">
+                              📢 Comunicado Oficial
+                            </span>
+                          ) : av.category === 'durante_aula' ? (
                             <span className="text-[10px] font-black uppercase tracking-wide bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-md flex items-center gap-1">
                               <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
                               🔴 Compartilhado em Aula
@@ -1672,12 +1699,12 @@ href={nextAulaToday.google_meet_url}
                         {av.title}
                       </h4>
 
-                      <div className="bg-black/25 p-3 rounded-xl border border-white/10">
-                        <p className="text-xs text-blue-100 italic">
-                          "{av.message}"
+                      <div className="bg-black/30 p-3.5 sm:p-4 rounded-xl border border-white/10">
+                        <p className="text-xs sm:text-sm text-blue-100 whitespace-pre-line leading-relaxed">
+                          {av.message}
                         </p>
-                        <span className="block text-[11px] font-semibold text-amber-200 mt-1.5">
-                          — {av.author_name} ({av.author_role === 'professor' ? 'Docente' : 'Monitor(a)'})
+                        <span className="block text-[11px] font-semibold text-amber-200 mt-2">
+                          — {av.author_name} ({av.author_role === 'professor' ? 'Docente' : av.author_role === 'monitor' ? 'Monitor(a)' : 'Coordenação'})
                         </span>
                       </div>
                     </div>
@@ -1706,15 +1733,17 @@ href={nextAulaToday.google_meet_url}
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2">
-                        <a
-                          href={av.link_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          <span>Ler Artigo / Acessar Link</span>
-                        </a>
+                        {av.link_url && !av.link_url.includes('koinonialms.vercel.app') && av.link_url !== '#' && (
+                          <a
+                            href={av.link_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 py-2 px-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            <span>Ler Artigo / Acessar Link</span>
+                          </a>
+                        )}
 
                         {av.file_url && (
                           <a

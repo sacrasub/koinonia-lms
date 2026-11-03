@@ -874,8 +874,8 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   const [formAvisoTitle, setFormAvisoTitle] = useState<string>('');
   const [formAvisoUrl, setFormAvisoUrl] = useState<string>('');
   const [formAvisoMsg, setFormAvisoMsg] = useState<string>('');
-  const [formAvisoCategory, setFormAvisoCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar'>('durante_aula');
-  const [formAvisoTargetDate, setFormAvisoTargetDate] = useState<string>('Próxima Aula');
+  const [formAvisoCategory, setFormAvisoCategory] = useState<'pre_aula' | 'durante_aula' | 'complementar' | 'aviso_geral' | 'suspensao_aula'>('aviso_geral');
+  const [formAvisoTargetDate, setFormAvisoTargetDate] = useState<string>('02/10/2026 (Hoje)');
 
   useEffect(() => {
     setAnnouncements(getAnnouncements());
@@ -892,9 +892,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     setFormAvisoDisc(av.disciplina_name);
     setFormAvisoAuthor(av.author_name);
     setFormAvisoTitle(av.title);
-    setFormAvisoUrl(av.link_url);
+    setFormAvisoUrl(av.link_url || '');
     setFormAvisoMsg(av.message || '');
-    setFormAvisoCategory(av.category || 'pre_aula');
+    setFormAvisoCategory(av.category || 'aviso_geral');
     setFormAvisoTargetDate(av.target_date || 'Próxima Aula');
     showToast(`✏️ Editando: "${av.title}"`);
     // Foca na aba de leituras
@@ -906,34 +906,64 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     setFormAvisoTitle('');
     setFormAvisoUrl('');
     setFormAvisoMsg('');
-    setFormAvisoCategory('durante_aula');
+    setFormAvisoCategory('aviso_geral');
     setFormAvisoTargetDate('Próxima Aula');
   };
 
   const handleAddAvisoMonitor = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formAvisoTitle || !formAvisoUrl) {
-      showToast('Preencha o título e o link de acesso.');
+    if (!formAvisoTitle.trim()) {
+      showToast('Preencha o título do comunicado ou recurso.');
       return;
     }
 
-    const discObj = ESCALA_DATA.find((c) => c.title === formAvisoDisc) || ESCALA_DATA[0];
+    const isAvisoOrSuspensao = formAvisoCategory === 'aviso_geral' || formAvisoCategory === 'suspensao_aula';
+    if (!isAvisoOrSuspensao && !formAvisoUrl.trim() && !formAvisoMsg.trim()) {
+      showToast('Informe o link de acesso ou uma mensagem explicativa.');
+      return;
+    }
+
+    let discId = 'all';
+    let discName = 'Todas as Disciplinas (Mural Geral)';
+
+    if (formAvisoDisc === 'ALL') {
+      discId = 'all';
+      discName = 'Todas as Disciplinas (Mural Geral)';
+    } else if (formAvisoDisc === 'SEXTA') {
+      discId = 'sexta';
+      discName = 'Disciplinas de Sexta-feira (TCC I & Plantação)';
+    } else if (formAvisoDisc === 'TERCA') {
+      discId = 'terca';
+      discName = 'Disciplinas de Terça-feira';
+    } else if (formAvisoDisc === 'QUARTA') {
+      discId = 'quarta';
+      discName = 'Disciplinas de Quarta-feira';
+    } else if (formAvisoDisc === 'QUINTA') {
+      discId = 'quinta';
+      discName = 'Disciplinas de Quinta-feira';
+    } else {
+      const discObj = ESCALA_DATA.find((c) => c.title === formAvisoDisc) || ESCALA_DATA[0];
+      discId = discObj.id;
+      discName = discObj.title;
+    }
+
+    const safeUrl = formAvisoUrl.trim() || 'https://koinonialms.vercel.app/';
 
     if (editingAvisoId) {
       const existing = announcements.find((a) => a.id === editingAvisoId);
       if (existing) {
         updateAnnouncement({
           ...existing,
-          disciplina_id: discObj.id,
-          disciplina_name: discObj.title,
+          disciplina_id: discId,
+          disciplina_name: discName,
           author_name: formAvisoAuthor,
-          title: formAvisoTitle,
-          link_url: formAvisoUrl,
-          message: formAvisoMsg || 'Link / material de apoio compartilhado com a turma.',
+          title: formAvisoTitle.trim(),
+          link_url: safeUrl,
+          message: formAvisoMsg.trim() || (isAvisoOrSuspensao ? 'Comunicado oficial aos alunos.' : 'Link / material de apoio compartilhado com a turma.'),
           category: formAvisoCategory,
-          target_date: formAvisoTargetDate || discObj.dayOfWeek,
+          target_date: formAvisoTargetDate.trim() || 'Próxima Aula',
         });
-        showToast('Leitura / Link atualizado com sucesso!');
+        showToast('Aviso / Leitura atualizado com sucesso!');
         handleCancelEdit();
         setAnnouncements(getAnnouncements());
         return;
@@ -941,22 +971,30 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     }
 
     addAnnouncement({
-      disciplina_id: discObj.id,
-      disciplina_name: discObj.title,
+      disciplina_id: discId,
+      disciplina_name: discName,
       author_name: formAvisoAuthor,
       author_role: 'monitor',
-      title: formAvisoTitle,
-      link_url: formAvisoUrl,
-      message: formAvisoMsg || (formAvisoCategory === 'durante_aula' ? 'Link compartilhado pelo professor durante a aula ao vivo.' : 'Material complementar para apoio à aula.'),
+      title: formAvisoTitle.trim(),
+      link_url: safeUrl,
+      message: formAvisoMsg.trim() || (isAvisoOrSuspensao ? 'Comunicado oficial publicado no LMS.' : formAvisoCategory === 'durante_aula' ? 'Link compartilhado pelo professor durante a aula ao vivo.' : 'Material complementar para apoio à aula.'),
       category: formAvisoCategory,
-      target_date: formAvisoTargetDate || discObj.dayOfWeek,
+      target_date: formAvisoTargetDate.trim() || 'Próxima Aula',
       is_pinned: true,
       avatar_url: getMonitorAvatar(formAvisoAuthor.split(' ')[0] || 'Camila'),
     });
 
     setAnnouncements(getAnnouncements());
     handleCancelEdit();
-    showToast(formAvisoCategory === 'durante_aula' ? 'Link da aula ao vivo compartilhado com sucesso!' : 'Leitura publicada com sucesso!');
+    showToast(
+      formAvisoCategory === 'suspensao_aula'
+        ? '⚠️ Aviso de suspensão publicado com sucesso!'
+        : formAvisoCategory === 'aviso_geral'
+        ? '📢 Comunicado publicado com sucesso no mural!'
+        : formAvisoCategory === 'durante_aula'
+        ? 'Link da aula ao vivo compartilhado com sucesso!'
+        : 'Recurso publicado com sucesso!'
+    );
   };
 
   const handleArchiveAviso = (id: string) => {
@@ -1866,10 +1904,11 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   // Abrir modal de cancelamento
   const handleOpenModalCancelamento = (item: EscalaItem, existing: AulaCanceladaItem | null) => {
     const dateForDay = getDateForDayOfWeek(item.dayOfWeek);
+    const targetDate = existing?.data_aula || dateForDay;
     setModalCancelamento({
       isOpen: true,
       aula: item,
-      currentDataAula: dateForDay,
+      currentDataAula: targetDate,
       existingCancelada: existing,
     });
     if (existing) {
@@ -1901,6 +1940,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     const normalizedEmail = (userEmail || '').toLowerCase().trim();
     const authorizedUser = INITIAL_AUTHORIZED_USERS[normalizedEmail];
     const monitorLogadoName =
+      modalCancelamento.existingCancelada?.autor_nome ||
       authorizedUser?.name ||
       (normalizedEmail.includes('camila')
         ? 'Camila Balbi'
@@ -1918,34 +1958,37 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       dataAula: modalCancelamento.currentDataAula,
       motivo: motivoFinal,
       autorNome: monitorLogadoName,
-      autorEmail: userEmail || 'monitor@uiecbead.com.br',
-      autorRole: currentRole,
+      autorEmail: modalCancelamento.existingCancelada?.autor_email || userEmail || 'monitor@uiecbead.com.br',
+      autorRole: modalCancelamento.existingCancelada?.autor_role || currentRole,
       videoUrl: cancelVideoUrl.trim() || undefined,
       arquivoUrl: cancelArquivoUrl.trim() || undefined,
       arquivoNome: cancelArquivoNome.trim() || undefined,
       trabalhoInstrucoes: cancelTrabalhoInstrucoes.trim() || undefined,
       trabalhoPrazo: cancelTrabalhoPrazo.trim() || undefined,
+      existingId: modalCancelamento.existingCancelada?.id,
     });
 
     // Se a data do dia da semana for diferente da data local de hoje, garante também na data de hoje
     const todayStr = new Date().toLocaleDateString('pt-BR');
-    if (modalCancelamento.currentDataAula !== todayStr) {
+    if (modalCancelamento.currentDataAula !== todayStr && modalCancelamento.aula.dayOfWeek === currentDayOfWeekName) {
       await cancelarAula({
         disciplinaId: modalCancelamento.aula.id,
         disciplinaName: modalCancelamento.aula.title,
         dataAula: todayStr,
         motivo: motivoFinal,
         autorNome: monitorLogadoName,
-        autorEmail: userEmail || 'monitor@uiecbead.com.br',
-        autorRole: currentRole,
+        autorEmail: modalCancelamento.existingCancelada?.autor_email || userEmail || 'monitor@uiecbead.com.br',
+        autorRole: modalCancelamento.existingCancelada?.autor_role || currentRole,
         videoUrl: cancelVideoUrl.trim() || undefined,
         arquivoUrl: cancelArquivoUrl.trim() || undefined,
         arquivoNome: cancelArquivoNome.trim() || undefined,
         trabalhoInstrucoes: cancelTrabalhoInstrucoes.trim() || undefined,
         trabalhoPrazo: cancelTrabalhoPrazo.trim() || undefined,
+        existingId: modalCancelamento.existingCancelada?.id,
       });
     }
 
+    const isEdit = Boolean(modalCancelamento.existingCancelada);
     setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
     setMotivoCancelamentoInput('');
     setCancelVideoUrl('');
@@ -1953,14 +1996,19 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
     setCancelArquivoNome('');
     setCancelTrabalhoInstrucoes('');
     setCancelTrabalhoPrazo('');
-    showToast(`🚫 Aviso registrado: Aula de "${modalCancelamento.aula.title}" atualizada em ${modalCancelamento.currentDataAula}.`);
+    showToast(
+      isEdit
+        ? `✏️ Cancelamento atualizado: Aula de "${modalCancelamento.aula.title}" alterada com sucesso.`
+        : `🚫 Aviso registrado: Aula de "${modalCancelamento.aula.title}" suspensa em ${modalCancelamento.currentDataAula}.`
+    );
   };
 
   // Reativar aula cancelada
   const handleReativarAula = async () => {
     if (!modalCancelamento.aula) return;
-    await reativarAula(modalCancelamento.aula.id, modalCancelamento.currentDataAula);
-    await reativarAula(modalCancelamento.aula.title, modalCancelamento.currentDataAula);
+    const existingId = modalCancelamento.existingCancelada?.id;
+    await reativarAula(modalCancelamento.aula.id, modalCancelamento.currentDataAula, existingId);
+    await reativarAula(modalCancelamento.aula.title, modalCancelamento.currentDataAula, existingId);
 
     setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
     setMotivoCancelamentoInput('');
@@ -1973,14 +2021,15 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
   };
 
   // Desfazer cancelamento diretamente pelo card da aula
-  const handleDesfazerCancelamentoDirect = async (item: EscalaItem) => {
+  const handleDesfazerCancelamentoDirect = async (item: EscalaItem, cancelada?: AulaCanceladaItem | null) => {
     const dateForDay = getDateForDayOfWeek(item.dayOfWeek);
+    const targetDate = cancelada?.data_aula || dateForDay;
     const todayStr = new Date().toLocaleDateString('pt-BR');
-    await reativarAula(item.id, dateForDay);
-    await reativarAula(item.title, dateForDay);
+    await reativarAula(item.id, targetDate, cancelada?.id);
+    await reativarAula(item.title, targetDate, cancelada?.id);
     if (item.dayOfWeek === currentDayOfWeekName) {
-      await reativarAula(item.id, todayStr);
-      await reativarAula(item.title, todayStr);
+      await reativarAula(item.id, todayStr, cancelada?.id);
+      await reativarAula(item.title, todayStr, cancelada?.id);
     }
     showToast(`✅ Cancelamento desfeito: Aula de "${item.title}" reativada!`);
   };
@@ -3539,12 +3588,25 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-200 uppercase tracking-wide">
                                             🚫 Aula Cancelada / Substituída
                                           </span>
-                                          <button
-                                            onClick={() => handleDesfazerCancelamentoDirect(item)}
-                                            className="text-[10px] text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline font-medium cursor-pointer"
-                                          >
-                                            Desfazer
-                                          </button>
+                                          <div className="flex items-center gap-2">
+                                            <button
+                                              type="button"
+                                              onClick={() => handleOpenModalCancelamento(item, canceladaStatus)}
+                                              className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 dark:text-amber-300 hover:text-amber-950 dark:hover:text-white bg-amber-100/90 dark:bg-amber-950/60 hover:bg-amber-200 dark:hover:bg-amber-900/80 px-2 py-0.5 rounded-md border border-amber-300 dark:border-amber-700/60 transition cursor-pointer shadow-2xs active:scale-95"
+                                              title="Editar motivo, instruções ou materiais desta aula cancelada"
+                                            >
+                                              <Edit3 className="w-3 h-3 text-amber-700 dark:text-amber-400" />
+                                              <span>Editar</span>
+                                            </button>
+                                            <button
+                                              type="button"
+                                              onClick={() => handleDesfazerCancelamentoDirect(item, canceladaStatus)}
+                                              className="text-[10px] text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 underline font-medium cursor-pointer"
+                                              title="Reativar aula e desfazer cancelamento"
+                                            >
+                                              Desfazer
+                                            </button>
+                                          </div>
                                         </div>
                                         <p className="text-xs text-red-900 dark:text-slate-100 leading-relaxed font-sans">
                                           <strong className="text-red-950 dark:text-red-300">Motivo:</strong> "{displayMotivo}"
@@ -4115,12 +4177,36 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 </div>
               )}
 
-              {/* Seletor de Categoria / Momento do Link */}
+              {/* Seletor de Categoria / Momento do Recurso */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Momento / Categoria do Recurso
+                  Momento / Categoria do Comunicado ou Recurso
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormAvisoCategory('aviso_geral')}
+                    className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                      formAvisoCategory === 'aviso_geral'
+                        ? 'bg-indigo-50 border-indigo-500 text-indigo-900 shadow-2xs font-extrabold ring-1 ring-indigo-400'
+                        : 'bg-slate-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span>📢 Comunicado Geral</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setFormAvisoCategory('suspensao_aula')}
+                    className={`p-2.5 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                      formAvisoCategory === 'suspensao_aula'
+                        ? 'bg-amber-50 border-amber-500 text-amber-900 shadow-2xs font-extrabold ring-1 ring-amber-400'
+                        : 'bg-slate-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span>⚠️ Sem Aula / Suspensão</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setFormAvisoCategory('durante_aula')}
@@ -4164,12 +4250,19 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Disciplina / Turma</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Disciplina / Destinatários</label>
                   <select
                     value={formAvisoDisc}
                     onChange={(e) => setFormAvisoDisc(e.target.value)}
                     className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
                   >
+                    <optgroup label="Escopo Amplo / Mural Coletivo">
+                      <option value="ALL">📢 Todas as Disciplinas (Mural Geral)</option>
+                      <option value="SEXTA">📅 Sexta-feira: Todas as Disciplinas de Hoje (TCC I & Plantação)</option>
+                      <option value="TERCA">📅 Terça-feira: Todas as Disciplinas</option>
+                      <option value="QUARTA">📅 Quarta-feira: Todas as Disciplinas</option>
+                      <option value="QUINTA">📅 Quinta-feira: Todas as Disciplinas</option>
+                    </optgroup>
                     <optgroup label="Turma A (7º Período)">
                       {ESCALA_DATA.filter(i => i.turma === 'Turma A' && !i.typeTag?.includes('Assíncrono')).map((c) => (
                         <option key={c.id} value={c.title}>
@@ -4193,7 +4286,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                     type="text"
                     value={formAvisoAuthor}
                     onChange={(e) => setFormAvisoAuthor(e.target.value)}
-                    placeholder="Ex: Profº Cleiton ou Cristiano (Monitor)"
+                    placeholder="Ex: Profº Cleiton ou Camila (Monitora)"
                     className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -4201,60 +4294,71 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Título do Link / Artigo / Recurso</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  {formAvisoCategory === 'aviso_geral' || formAvisoCategory === 'suspensao_aula'
+                    ? 'Título do Comunicado / Aviso'
+                    : 'Título do Link / Artigo / Recurso'}
+                </label>
                 <input
                   type="text"
                   value={formAvisoTitle}
                   onChange={(e) => setFormAvisoTitle(e.target.value)}
-                  placeholder="Ex: Slide da Apresentação, Artigo do IBGE, Vídeo Citado..."
+                  placeholder="Ex: Não teremos aulas ao vivo hoje (02/10/2026)"
                   className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Link de Acesso (URL Completa)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Link de Acesso (URL Completa - Opcional)
+                </label>
                 <div className="relative">
                   <input
                     type="url"
-                    placeholder="https://..."
+                    placeholder="https://... (Opcional - deixe em branco caso seja apenas texto)"
                     value={formAvisoUrl}
                     onChange={(e) => setFormAvisoUrl(e.target.value)}
                     className="w-full p-2.5 pl-8 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
-                    required
                   />
                   <LinkIcon className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-3" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Data / Referência da Aula</label>
-                  <input
-                    type="text"
-                    value={formAvisoTargetDate}
-                    onChange={(e) => setFormAvisoTargetDate(e.target.value)}
-                    placeholder="Ex: Aula de Quarta ou 26/08/2026"
-                    className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Data / Referência da Aula</label>
+                <input
+                  type="text"
+                  value={formAvisoTargetDate}
+                  onChange={(e) => setFormAvisoTargetDate(e.target.value)}
+                  placeholder="Ex: 02/10/2026 (Hoje) ou Próxima Aula"
+                  className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Recado / Contexto aos Alunos</label>
-                  <input
-                    type="text"
-                    value={formAvisoMsg}
-                    onChange={(e) => setFormAvisoMsg(e.target.value)}
-                    placeholder="Ex: Link compartilhado pelo professor no chat..."
-                    className="w-full p-2.5 bg-slate-50 border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Mensagem aos Alunos / Detalhamento do Comunicado
+                </label>
+                <textarea
+                  rows={6}
+                  value={formAvisoMsg}
+                  onChange={(e) => setFormAvisoMsg(e.target.value)}
+                  placeholder="Digite ou cole aqui as orientações completas para os alunos, situação de cada disciplina, avisos de suspensão ou leituras recomendadas..."
+                  className="w-full p-3 bg-slate-50 border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 leading-relaxed font-sans"
+                />
               </div>
 
               <button
                 type="submit"
                 className={`w-full py-3 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer ${
-                  editingAvisoId ? 'bg-amber-600 hover:bg-amber-700' : 'bg-blue-900 hover:bg-blue-800'
+                  editingAvisoId
+                    ? 'bg-amber-600 hover:bg-amber-700'
+                    : formAvisoCategory === 'suspensao_aula'
+                    ? 'bg-amber-600 hover:bg-amber-700'
+                    : formAvisoCategory === 'aviso_geral'
+                    ? 'bg-indigo-700 hover:bg-indigo-800'
+                    : 'bg-blue-900 hover:bg-blue-800'
                 }`}
               >
                 {editingAvisoId ? (
@@ -4264,8 +4368,16 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                   </>
                 ) : (
                   <>
-                    <Plus className="w-4 h-4 text-blue-300" />
-                    <span>{formAvisoCategory === 'durante_aula' ? 'Publicar Link da Aula Ao Vivo' : 'Publicar no LMS'}</span>
+                    <Plus className="w-4 h-4 text-white/80" />
+                    <span>
+                      {formAvisoCategory === 'suspensao_aula'
+                        ? '⚠️ Publicar Aviso de Suspensão de Aula'
+                        : formAvisoCategory === 'aviso_geral'
+                        ? '📢 Publicar Comunicado no Mural'
+                        : formAvisoCategory === 'durante_aula'
+                        ? '🔴 Publicar Link da Aula Ao Vivo'
+                        : 'Publicar no LMS'}
+                    </span>
                   </>
                 )}
               </button>
@@ -4351,7 +4463,15 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                               </span>
 
                               {/* Badge de Categoria / Momento */}
-                              {av.category === 'durante_aula' ? (
+                              {av.category === 'suspensao_aula' ? (
+                                <span className="text-[10px] font-black uppercase tracking-wide bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                  ⚠️ Sem Aula Ao Vivo
+                                </span>
+                              ) : av.category === 'aviso_geral' ? (
+                                <span className="text-[10px] font-black uppercase tracking-wide bg-indigo-100 text-indigo-900 border border-indigo-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                  📢 Comunicado Geral
+                                </span>
+                              ) : av.category === 'durante_aula' ? (
                                 <span className="text-[10px] font-black uppercase tracking-wide bg-rose-100 text-rose-900 border border-rose-200 px-2 py-0.5 rounded-md flex items-center gap-1">
                                   <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
                                   🔴 Em Aula (Ao Vivo)
@@ -4374,7 +4494,9 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                             </div>
                             <h5 className="font-extrabold text-base text-slate-900 mt-1">{av.title}</h5>
                             {av.message && (
-                              <p className="text-xs text-slate-600 italic">"{av.message}"</p>
+                              <p className="text-xs text-slate-700 whitespace-pre-line leading-relaxed bg-slate-50 p-3 rounded-2xl border border-gray-100">
+                                {av.message}
+                              </p>
                             )}
                           </div>
 
@@ -4427,18 +4549,20 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                         </div>
 
                         <div className="flex gap-2 pt-1">
-                          <a
-                            href={av.link_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs rounded-xl border border-blue-200 transition flex items-center justify-center gap-1.5"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>Abrir Link</span>
-                          </a>
+                          {av.link_url && !av.link_url.includes('koinonialms.vercel.app') && av.link_url !== '#' && (
+                            <a
+                              href={av.link_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-xs rounded-xl border border-blue-200 transition flex items-center justify-center gap-1.5"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              <span>Abrir Link</span>
+                            </a>
+                          )}
                           <button
                             onClick={() => handleCopyAvisoWhatsApp(av)}
-                            className="py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                            className="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                           >
                             {copiedAvisoId === av.id ? (
                               <>
@@ -5137,17 +5261,17 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
       {/* MODAL PARA AVISO / CANCELAMENTO DE AULA                                   */}
       {/* ========================================================================= */}
       {modalCancelamento.isOpen && modalCancelamento.aula && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 space-y-5 shadow-2xl border border-gray-200 animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl border border-gray-200 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-200 my-auto overflow-hidden">
             {/* Topo do Modal */}
-            <div className="flex items-start justify-between border-b border-gray-100 pb-3 gap-2">
+            <div className="p-5 sm:p-6 pb-3.5 border-b border-gray-100 dark:border-slate-800 flex items-start justify-between gap-2 shrink-0 bg-white dark:bg-slate-900 z-10">
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 bg-red-100 text-red-600 rounded-2xl">
-                  <Ban className="w-5 h-5" />
+                <div className={`p-2.5 rounded-2xl ${modalCancelamento.existingCancelada ? 'bg-amber-100 text-amber-600' : 'bg-red-100 text-red-600'}`}>
+                  {modalCancelamento.existingCancelada ? <Edit3 className="w-5 h-5" /> : <Ban className="w-5 h-5" />}
                 </div>
                 <div>
                   <h3 className="font-extrabold text-base sm:text-lg text-slate-900 leading-tight">
-                    {modalCancelamento.existingCancelada ? 'Gerenciar Aula Cancelada' : 'Aviso: Não Haverá Aula'}
+                    {modalCancelamento.existingCancelada ? 'Editar Aula Cancelada' : 'Aviso: Não Haverá Aula'}
                   </h3>
                   <p className="text-xs text-gray-500 font-medium mt-0.5">
                     {modalCancelamento.aula.title} ({modalCancelamento.currentDataAula})
@@ -5155,6 +5279,7 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null })}
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 font-bold flex items-center justify-center text-xs cursor-pointer"
               >
@@ -5162,46 +5287,48 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
               </button>
             </div>
 
-            {/* Informações da Aula */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-xs text-slate-700">
-              <div className="flex items-center justify-between font-bold">
-                <span>📖 Disciplina: {modalCancelamento.aula.title}</span>
-                <span className="bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md font-extrabold">
-                  {modalCancelamento.aula.turma}
-                </span>
+            {/* Conteúdo com Barra de Rolagem */}
+            <div className="p-5 sm:p-6 overflow-y-auto modal-scroll flex-1 space-y-4">
+              {/* Informações da Aula */}
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-xs text-slate-700">
+                <div className="flex items-center justify-between font-bold">
+                  <span>📖 Disciplina: {modalCancelamento.aula.title}</span>
+                  <span className="bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md font-extrabold">
+                    {modalCancelamento.aula.turma}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-slate-500 text-[11px]">
+                  <span>👨‍🏫 Docente: {modalCancelamento.aula.professor}</span>
+                  <span>👑 Monitor: {modalCancelamento.aula.monitor}</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-slate-500 text-[11px]">
-                <span>👨‍🏫 Docente: {modalCancelamento.aula.professor}</span>
-                <span>👑 Monitor: {modalCancelamento.aula.monitor}</span>
-              </div>
-            </div>
 
-            {/* Atalho inteligente para Aula Dupla / Dobradinha */}
-            <div className="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
-              <div className="text-xs text-amber-950 dark:text-amber-200">
-                <strong className="block font-black text-amber-900 dark:text-amber-100 flex items-center gap-1">
-                  <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                  Outro professor assumirá ministrando dois tempos?
-                </strong>
-                <span className="text-[11px] text-amber-800 dark:text-amber-300">
-                  Registre uma <strong>Aula Dupla</strong> para que a sala do Meet e o forms fiquem corretos.
-                </span>
+              {/* Atalho inteligente para Aula Dupla / Dobradinha */}
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                <div className="text-xs text-amber-950 dark:text-amber-200">
+                  <strong className="block font-black text-amber-900 dark:text-amber-100 flex items-center gap-1">
+                    <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    Outro professor assumirá ministrando dois tempos?
+                  </strong>
+                  <span className="text-[11px] text-amber-800 dark:text-amber-300">
+                    Registre uma <strong>Aula Dupla</strong> para que a sala do Meet e o forms fiquem corretos.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const aulaAlvo = modalCancelamento.aula;
+                    setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
+                    setModalProvidencia({ isOpen: true, aula: aulaAlvo });
+                  }}
+                  className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-xs shrink-0 cursor-pointer active:scale-95"
+                >
+                  ⚡ Registrar Aula Dupla
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const aulaAlvo = modalCancelamento.aula;
-                  setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null });
-                  setModalProvidencia({ isOpen: true, aula: aulaAlvo });
-                }}
-                className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-xs shrink-0 cursor-pointer active:scale-95"
-              >
-                ⚡ Registrar Aula Dupla
-              </button>
-            </div>
 
-            {/* Formulário de Motivo */}
-            <form onSubmit={handleSalvarCancelamento} className="space-y-4">
+              {/* Formulário de Motivo */}
+              <form id="form-cancelamento-aula" onSubmit={handleSalvarCancelamento} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-xs font-bold text-gray-700 flex items-center justify-between">
                   <span>Motivo do Cancelamento / Aviso aos Alunos:</span>
@@ -5383,39 +5510,55 @@ export const EscalaMonitoriaPage: React.FC<EscalaMonitoriaPageProps> = ({
                 </div>
               </div>
 
-              {/* Ações */}
-              <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2">
-                {modalCancelamento.existingCancelada ? (
-                  <button
-                    type="button"
-                    onClick={handleReativarAula}
-                    className="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Reativar Aula (Desfazer Cancelamento)</span>
-                  </button>
-                ) : (
-                  <div />
-                )}
+              </form>
+            </div>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null })}
-                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl cursor-pointer"
-                  >
-                    Fechar
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold rounded-xl shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <Ban className="w-3.5 h-3.5" />
-                    <span>Salvar e Avisar Alunos</span>
-                  </button>
-                </div>
+            {/* Ações (Fixas no Rodapé) */}
+            <div className="p-4 sm:p-5 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0 bg-gray-50/90 dark:bg-slate-900/90 rounded-b-3xl">
+              {modalCancelamento.existingCancelada ? (
+                <button
+                  type="button"
+                  onClick={handleReativarAula}
+                  className="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Reativar Aula (Desfazer Cancelamento)</span>
+                </button>
+              ) : (
+                <div />
+              )}
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => setModalCancelamento({ isOpen: false, aula: null, currentDataAula: '', existingCancelada: null })}
+                  className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 text-xs font-bold rounded-xl cursor-pointer transition"
+                >
+                  Fechar
+                </button>
+                <button
+                  form="form-cancelamento-aula"
+                  type="submit"
+                  className={`px-5 py-2 text-white text-xs font-extrabold rounded-xl shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition ${
+                    modalCancelamento.existingCancelada
+                      ? 'bg-amber-600 hover:bg-amber-700'
+                      : 'bg-red-600 hover:bg-red-700'
+                  }`}
+                >
+                  {modalCancelamento.existingCancelada ? (
+                    <>
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span>Salvar Alterações</span>
+                    </>
+                  ) : (
+                    <>
+                      <Ban className="w-3.5 h-3.5" />
+                      <span>Salvar e Avisar Alunos</span>
+                    </>
+                  )}
+                </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

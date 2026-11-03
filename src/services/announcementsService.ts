@@ -7,6 +7,32 @@ const CLOUD_TITLE_KEY = 'lms_leituras_preaula_cloud';
 
 export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
   {
+    id: 'aviso-sexta-02102026',
+    disciplina_id: 'all',
+    disciplina_name: 'Todas as Disciplinas (Sexta-feira)',
+    author_name: 'Camila (Monitoria Acadêmica)',
+    author_role: 'monitor',
+    author_email: 'monitoria@koinonia.edu.br',
+    avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
+    title: 'Não teremos aulas ao vivo hoje (02/10/2026)',
+    message: `A situação de cada uma das disciplinas de sexta-feira para o dia de hoje está definida da seguinte forma:
+
+1. 🎓 TCC I (Profª Gabriela Leal)
+• Sem aula ao vivo: A professora Gabriela suspendeu a aula síncrona desta sexta-feira (02/10) para que a turma pudesse dedicar o tempo aos estudos e à realização das avaliações do semestre.
+• Próximo encontro: As aulas da disciplina retornam na próxima sexta-feira, dia 09/10/2026.
+
+2. 🌱 Plantação e Revitalização de Igrejas II (Profº Thácyto Lessa)
+• Sem aula expositiva ao vivo: O professor Thácyto informou que não haverá aula ao vivo nesta data.
+• Liberado o material da AV1: Às 19h, ele disponibilizará o texto de leitura e o questionário referente à avaliação da AV1.
+• Prazo: O horário da aula foi liberado para a realização da leitura e os alunos terão o prazo de 1 semana para responder e enviar o questionário.`,
+    link_url: 'https://koinonialms.vercel.app/',
+    created_at: '2026-10-02T13:00:00Z',
+    target_date: '02/10/2026 (Sexta-feira)',
+    is_pinned: true,
+    is_archived: false,
+    category: 'suspensao_aula',
+  },
+  {
     id: 'aviso-diretoria-afro-1',
     disciplina_id: 'disc-9',
     disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
@@ -483,17 +509,26 @@ export function formatAnnouncementForWhatsApp(aviso: AvisoLeituraPreAula): strin
   } else if (aviso.category === 'complementar') {
     headerLabel = 'MATERIAL COMPLEMENTAR';
     icon = '📌';
+  } else if (aviso.category === 'suspensao_aula') {
+    headerLabel = 'AVISO IMPORTANTE • SUSPENSÃO DE AULA AO VIVO';
+    icon = '⚠️';
+  } else if (aviso.category === 'aviso_geral') {
+    headerLabel = 'COMUNICADO OFICIAL';
+    icon = '📢';
   }
 
-  const messageBlock = aviso.message ? `💬 "${aviso.message}"\n\n` : '';
   const dateBlock = aviso.target_date ? `🗓️ *Referência:* ${aviso.target_date}\n` : '';
+  const messageBlock = aviso.message ? `${aviso.message}\n\n` : '';
+  const hasExternalLink = Boolean(aviso.link_url && !aviso.link_url.includes('koinonialms.vercel.app') && aviso.link_url !== '#');
+  const linkBlock = hasExternalLink ? `🌐 *Link de Acesso:* ${aviso.link_url}\n\n` : '';
 
   return `${icon} *${headerLabel} • ${aviso.disciplina_name.toUpperCase()}*\n` +
-    `👨‍🏫 *${aviso.author_name}* (${roleLabel})\n\n` +
-    messageBlock +
-    `🔗 *Título / Recurso:* ${aviso.title}\n` +
+    `📢 *${aviso.title}*\n` +
+    `👤 *Autor:* ${aviso.author_name} (${roleLabel})\n` +
     dateBlock +
-    `🌐 *Link de Acesso:* ${aviso.link_url}\n\n` +
+    `\n` +
+    messageBlock +
+    linkBlock +
     `🏛️ *Koinonia LMS • Seminário Teológico*\n` +
     `📍 Acessar no LMS: https://koinonialms.vercel.app`;
 }

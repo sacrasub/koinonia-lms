@@ -489,13 +489,15 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
 
   const handleAddLeitura = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!disciplina || !leituraTitle.trim() || !leituraLinkUrl.trim()) return;
+    if (!disciplina || !leituraTitle.trim()) return;
+
+    const safeUrl = leituraLinkUrl.trim() || 'https://koinonialms.vercel.app/';
 
     addAnnouncement({
       disciplina_id: disciplina.id,
       disciplina_name: disciplina.name,
       title: leituraTitle.trim(),
-      link_url: leituraLinkUrl.trim(),
+      link_url: safeUrl,
       message: leituraMessage.trim(),
       category: leituraCategory,
       target_date: leituraTargetDate.trim() || undefined,
@@ -3120,15 +3122,14 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Link de Acesso (URL Externa, Google Docs ou PDF) <span className="text-red-500">*</span>
+                  Link de Acesso (URL Externa, Google Docs ou PDF - Opcional)
                 </label>
                 <input
                   type="url"
-                  placeholder="https://..."
+                  placeholder="https://... (Opcional - deixe em branco caso seja apenas texto)"
                   value={leituraLinkUrl}
                   onChange={(e) => setLeituraLinkUrl(e.target.value)}
                   className="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                  required
                 />
               </div>
 
@@ -3142,6 +3143,8 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                     onChange={(e) => setLeituraCategory(e.target.value as any)}
                     className="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white"
                   >
+                    <option value="aviso_geral">📢 Comunicado / Aviso da Disciplina</option>
+                    <option value="suspensao_aula">⚠️ Sem Aula Ao Vivo / Suspensão</option>
                     <option value="pre_aula">📖 Leitura Pré-Aula Recomendada</option>
                     <option value="durante_aula">🔴 Compartilhado em Aula</option>
                     <option value="complementar">📌 Material Complementar</option>

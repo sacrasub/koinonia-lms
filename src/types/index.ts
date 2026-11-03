@@ -129,12 +129,12 @@ export interface AvisoLeituraPreAula {
   avatar_url?: string;
   title: string;
   message: string;
-  link_url: string;
+  link_url?: string;
   file_url?: string;
   file_name?: string;
   created_at: string;
   target_date?: string;
-  category?: 'pre_aula' | 'durante_aula' | 'complementar';
+  category?: 'pre_aula' | 'durante_aula' | 'complementar' | 'aviso_geral' | 'suspensao_aula';
   is_pinned?: boolean;
   is_archived?: boolean;
   archived_at?: string;

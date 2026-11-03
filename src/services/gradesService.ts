@@ -12,6 +12,12 @@ export function normalizeEmail(email?: string): string {
   return email.toLowerCase().trim();
 }
 
+function parseOptionalNumber(val: any): number | null {
+  if (val === null || val === undefined || val === '') return null;
+  const num = Number(val);
+  return isNaN(num) ? null : num;
+}
+
 /**
  * Calcula a média aritmética/ponderada e a situação acadêmica oficial do Seminário Koinonia.
  * - Média >= 7.0: Aprovado
@@ -266,11 +272,11 @@ export async function saveStudentGrade(
   const payload = {
     disciplina_id: record.disciplina_id,
     student_email: normEmail,
-    av1: record.av1 !== null && record.av1 !== undefined ? Number(record.av1) : null,
-    av2: record.av2 !== null && record.av2 !== undefined ? Number(record.av2) : null,
-    trabalho: record.trabalho !== null && record.trabalho !== undefined ? Number(record.trabalho) : null,
-    recuperacao: record.recuperacao !== null && record.recuperacao !== undefined ? Number(record.recuperacao) : null,
-    faltas: Number(record.faltas || 0),
+    av1: parseOptionalNumber(record.av1),
+    av2: parseOptionalNumber(record.av2),
+    trabalho: parseOptionalNumber(record.trabalho),
+    recuperacao: parseOptionalNumber(record.recuperacao),
+    faltas: Math.max(0, Number(record.faltas || 0)),
     observacoes: record.observacoes || null,
     status_fechamento: record.status_fechamento || 'aberto',
     updated_at: new Date().toISOString(),
@@ -340,11 +346,11 @@ export async function saveBatchGrades(
     return {
       disciplina_id: disciplinaId,
       student_email: normEmail,
-      av1: r.av1 !== null && r.av1 !== undefined ? Number(r.av1) : null,
-      av2: r.av2 !== null && r.av2 !== undefined ? Number(r.av2) : null,
-      trabalho: r.trabalho !== null && r.trabalho !== undefined ? Number(r.trabalho) : null,
-      recuperacao: r.recuperacao !== null && r.recuperacao !== undefined ? Number(r.recuperacao) : null,
-      faltas: Number(r.faltas || 0),
+      av1: parseOptionalNumber(r.av1),
+      av2: parseOptionalNumber(r.av2),
+      trabalho: parseOptionalNumber(r.trabalho),
+      recuperacao: parseOptionalNumber(r.recuperacao),
+      faltas: Math.max(0, Number(r.faltas || 0)),
       observacoes: r.observacoes || null,
       status_fechamento: r.status_fechamento || 'aberto',
       updated_at: new Date().toISOString(),
@@ -374,7 +380,52 @@ export async function saveBatchGrades(
     }
     return { success: true, count: records.length };
   } catch (err: any) {
-    console.warn('Erro na chamada em bloco de notas:', err);
     return { success: false, count: records.length, error: err?.message };
   }
 }
+
+/**
+ * Remove/limpa o registro de notas de um aluno para uma disciplina.
+ */
+export async function deleteStudentGrade(
+  disciplinaId: string,
+  studentEmail: string
+): Promise<{ success: boolean; error?: string }> {
+  const normEmail = normalizeEmail(studentEmail);
+  if (!normEmail || !disciplinaId) return { success: false, error: 'Dados incompletos' };
+
+  const discStorageKey = `lms_gradebook_v1_${disciplinaId}`;
+  const studentStorageKey = `lms_student_grades_v1_${normEmail}`;
+
+  if (typeof window !== 'undefined') {
+    try {
+      const currentDiscMap = JSON.parse(localStorage.getItem(discStorageKey) || '{}');
+      delete currentDiscMap[normEmail];
+      localStorage.setItem(discStorageKey, JSON.stringify(currentDiscMap));
+
+      const currentStudentMap = JSON.parse(localStorage.getItem(studentStorageKey) || '{}');
+      delete currentStudentMap[disciplinaId];
+      localStorage.setItem(studentStorageKey, JSON.stringify(currentStudentMap));
+
+      window.dispatchEvent(new CustomEvent(EVENT_GRADES_UPDATED, { detail: { disciplinaId, email: normEmail } }));
+    } catch (e) {
+      console.warn('Erro ao deletar nota localmente:', e);
+    }
+  }
+
+  try {
+    const { error } = await supabase
+      .from('lms_student_grades')
+      .delete()
+      .match({ disciplina_id: disciplinaId, student_email: normEmail });
+
+    if (error) {
+      console.warn('Aviso ao deletar nota no Supabase:', error.message);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (e: any) {
+    return { success: false, error: e?.message };
+  }
+}
+
