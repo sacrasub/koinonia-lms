@@ -151,6 +151,20 @@ export default function Home() {
     return false;
   });
 
+  // Failsafe global: nenhuma checagem de sessão pode prender o usuário por mais de 3.5s
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingSession((current) => {
+        if (current) {
+          console.warn('[LMS Auth] Timeout de salvaguarda acionado: destravando interface.');
+          return false;
+        }
+        return false;
+      });
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Pull-to-refresh em dispositivos móveis / iOS PWA
   const [pulling, setPulling] = useState<boolean>(false);
   const [pullDistance, setPullDistance] = useState<number>(0);
@@ -223,114 +237,124 @@ export default function Home() {
     let isSubscribed = true;
 
     async function initAuth() {
-      // 1. Tenta recuperar sessão persistida localmente (Zero Latência)
-      let storedEmail: string | null = null;
-      if (typeof window !== 'undefined') {
-        storedEmail = localStorage.getItem('lms_active_user_email');
-      }
-
-      if (storedEmail) {
-        const authInfo = getAuthorizedUserInfo(storedEmail);
-        if (authInfo.isAuthorized && authInfo.user) {
-          setUserEmail(storedEmail);
-          setUserName(authInfo.user.name);
-          setUserAvatar(authInfo.user.avatarUrl || '');
-          setIsAuthorized(true);
-          const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
-          const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
-          setCurrentRole(initialRole);
-          if (initialRole === 'professor') setActiveTab('prof-disciplinas');
-          else if (initialRole === 'monitor') setActiveTab('monitor-escala');
-          else setActiveTab('aluno-disciplinas');
-          setLoadingSession(false); // Liberação imediata sem esperar rede
-        }
-      }
-
-      // Sincroniza RBAC global da nuvem em background
-      syncRbacFromCloud().catch(() => {});
-
-      // 2. Verifica se o Supabase tem uma sessão ativa com timeout de segurança (máx 2.5s)
-      const sessionPromise = supabase.auth.getSession();
-      const timeoutPromise = new Promise<{ data: { session: any } }>((resolve) => 
-        setTimeout(() => resolve({ data: { session: null } }), 2500)
-      );
-      const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
-
-      // 3. Fallback: Se não houver session mas houver hash com token no redirect do Google OAuth
-      let fallbackEmail: string | null = null;
-      if (!session && typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
-        const parsed = parseJwtEmailAndUser(window.location.hash);
-        if (parsed && parsed.email) fallbackEmail = parsed.email;
-      }
-
-      const email = session?.user?.email || fallbackEmail || storedEmail;
-
-      if (!email) {
-        setLoadingSession(false);
-        router.push('/login');
-        return;
-      }
-
-      // 3.1 BLOQUEIO IMEDIATO DE CONTAS BANIDAS / REVOGADAS (Status 401 / 403)
-      const normEmail = email.toLowerCase().trim();
-      const revokedList = getRevokedUsersList();
-      if (revokedList.includes(normEmail)) {
-        console.warn(`[Segurança LMS] Acesso bloqueado para conta banida: ${normEmail}`);
-        try {
-          await supabaseSignOut();
-        } catch (_) {}
+      try {
+        // 1. Tenta recuperar sessão persistida localmente (Zero Latência)
+        let storedEmail: string | null = null;
         if (typeof window !== 'undefined') {
-          localStorage.removeItem('lms_active_user_email');
-          localStorage.removeItem('lms_active_user_role');
-          localStorage.removeItem('lms_active_tab');
-        }
-        setLoadingSession(false);
-        router.push('/login?error=account_banned');
-        return;
-      }
-
-      if (isSubscribed) {
-        const name = session?.user?.user_metadata?.full_name || session?.user?.user_metadata?.name || email;
-        const avatar = session?.user?.user_metadata?.avatar_url || session?.user?.user_metadata?.picture || '';
-
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('lms_active_user_email', email);
+          storedEmail = localStorage.getItem('lms_active_user_email');
         }
 
-        const authInfo = getAuthorizedUserInfo(email);
-        setUserEmail(email);
-        setUserName(name);
-        setUserAvatar(avatar);
-
-        if (authInfo.isAuthorized && authInfo.user) {
-          setIsAuthorized(true);
-          const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
-          const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
-          setCurrentRole(initialRole);
-          if (initialRole === 'professor') setActiveTab('prof-disciplinas');
-          else if (initialRole === 'monitor') setActiveTab('monitor-escala');
-          else setActiveTab('aluno-disciplinas');
-
-          // Rastreia início da sessão apenas de usuário devidamente autorizado
-          startUserSession(email, name, initialRole, avatar);
-        } else {
-          // Conta pendente de aprovação: NÃO registra sessão como aluno nem consome banco
-          setIsAuthorized(false);
-        }
-        setLoadingSession(false);
-
-        // Sincroniza RBAC global da nuvem em background e revalida autorização reativa
-        syncRbacFromCloud().then(() => {
-          if (isSubscribed && email) {
-            const freshAuth = getAuthorizedUserInfo(email);
-            if (freshAuth.isAuthorized && freshAuth.user) {
-              setIsAuthorized(true);
-              const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
-              const role = storedRole && freshAuth.user.roles.includes(storedRole) ? storedRole : freshAuth.user.defaultRole;
-              setCurrentRole(role);
-            }
+        if (storedEmail) {
+          const authInfo = getAuthorizedUserInfo(storedEmail);
+          if (authInfo.isAuthorized && authInfo.user) {
+            setUserEmail(storedEmail);
+            setUserName(authInfo.user.name);
+            setUserAvatar(authInfo.user.avatarUrl || '');
+            setIsAuthorized(true);
+            const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
+            const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
+            setCurrentRole(initialRole);
+            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+            else setActiveTab('aluno-disciplinas');
+            setLoadingSession(false); // Liberação imediata sem esperar rede
           }
-        }).catch(() => {});
+        }
+
+        // Sincroniza RBAC global da nuvem em background
+        syncRbacFromCloud().catch(() => {});
+
+        // 2. Verifica se o Supabase tem uma sessão ativa com timeout de segurança (máx 2.5s)
+        const sessionPromise = supabase.auth.getSession().catch(() => ({ data: { session: null } }));
+        const timeoutPromise = new Promise<{ data: { session: any } }>((resolve) => 
+          setTimeout(() => resolve({ data: { session: null } }), 2500)
+        );
+        const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
+
+        // 3. Fallback: Se não houver session mas houver hash com token no redirect do Google OAuth
+        let fallbackEmail: string | null = null;
+        if (!session && typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+          const parsed = parseJwtEmailAndUser(window.location.hash);
+          if (parsed && parsed.email) fallbackEmail = parsed.email;
+        }
+
+        const email = session?.user?.email || fallbackEmail || storedEmail;
+
+        if (!email) {
+          setLoadingSession(false);
+          router.push('/login');
+          return;
+        }
+
+        // 3.1 BLOQUEIO IMEDIATO DE CONTAS BANIDAS / REVOGADAS (Status 401 / 403)
+        const normEmail = email.toLowerCase().trim();
+        const revokedList = getRevokedUsersList();
+        if (revokedList.includes(normEmail)) {
+          console.warn(`[Segurança LMS] Acesso bloqueado para conta banida: ${normEmail}`);
+          try {
+            await supabaseSignOut();
+          } catch (_) {}
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('lms_active_user_email');
+            localStorage.removeItem('lms_active_user_role');
+            localStorage.removeItem('lms_active_tab');
+          }
+          setLoadingSession(false);
+          router.push('/login?error=account_banned');
+          return;
+        }
+
+        if (isSubscribed) {
+          const name = session?.user?.user_metadata?.full_name || session?.user?.user_metadata?.name || email;
+          const avatar = session?.user?.user_metadata?.avatar_url || session?.user?.user_metadata?.picture || '';
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('lms_active_user_email', email);
+          }
+
+          const authInfo = getAuthorizedUserInfo(email);
+          setUserEmail(email);
+          setUserName(name);
+          setUserAvatar(avatar);
+
+          if (authInfo.isAuthorized && authInfo.user) {
+            setIsAuthorized(true);
+            const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
+            const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
+            setCurrentRole(initialRole);
+            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+            else setActiveTab('aluno-disciplinas');
+
+            // Rastreia início da sessão apenas de usuário devidamente autorizado
+            startUserSession(email, name, initialRole, avatar);
+          } else {
+            // Conta pendente de aprovação: NÃO registra sessão como aluno nem consome banco
+            setIsAuthorized(false);
+          }
+          setLoadingSession(false);
+
+          // Sincroniza RBAC global da nuvem em background e revalida autorização reativa
+          syncRbacFromCloud().then(() => {
+            if (isSubscribed && email) {
+              const freshAuth = getAuthorizedUserInfo(email);
+              if (freshAuth.isAuthorized && freshAuth.user) {
+                setIsAuthorized(true);
+                const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
+                const role = storedRole && freshAuth.user.roles.includes(storedRole) ? storedRole : freshAuth.user.defaultRole;
+                setCurrentRole(role);
+              }
+            }
+          }).catch(() => {});
+        }
+      } catch (err) {
+        console.error('[Koinonia LMS] Falha ao verificar autenticação inicial:', err);
+      } finally {
+        if (isSubscribed) {
+          setLoadingSession(false);
+        }
       }
     }
 
@@ -349,56 +373,68 @@ export default function Home() {
 
     // 5. Listener de estado de autenticação do Supabase
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user?.email && isSubscribed) {
-        const email = session.user.email;
-        const norm = email.toLowerCase().trim();
+      try {
+        if (session?.user?.email && isSubscribed) {
+          const email = session.user.email;
+          const norm = email.toLowerCase().trim();
 
-        // Checagem imediata de banimento no evento de autenticação
-        const revoked = getRevokedUsersList();
-        if (revoked.includes(norm)) {
-          try {
-            await supabaseSignOut();
-          } catch (_) {}
+          // Checagem imediata de banimento no evento de autenticação
+          const revoked = getRevokedUsersList();
+          if (revoked.includes(norm)) {
+            try {
+              await supabaseSignOut();
+            } catch (_) {}
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('lms_active_user_email');
+              localStorage.removeItem('lms_active_user_role');
+              localStorage.removeItem('lms_active_tab');
+            }
+            setLoadingSession(false);
+            router.push('/login?error=account_banned');
+            return;
+          }
+
+          const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || email;
+          const avatar = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '';
+
           if (typeof window !== 'undefined') {
-            localStorage.removeItem('lms_active_user_email');
-            localStorage.removeItem('lms_active_user_role');
-            localStorage.removeItem('lms_active_tab');
+            localStorage.setItem('lms_active_user_email', email);
+          }
+
+          const authInfo = getAuthorizedUserInfo(email);
+          setUserEmail(email);
+          setUserName(name);
+          setUserAvatar(avatar);
+
+          if (authInfo.isAuthorized && authInfo.user) {
+            setIsAuthorized(true);
+            const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
+            const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
+            setCurrentRole(initialRole);
+            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+            else setActiveTab('aluno-disciplinas');
+
+            // Rastreia sessão ativa
+            startUserSession(email, name, initialRole, avatar);
+          } else {
+            // Conta pendente: isolamento total de telemetria
+            setIsAuthorized(false);
           }
           setLoadingSession(false);
-          router.push('/login?error=account_banned');
-          return;
+
+          // CORREÇÃO CELULAR: Quando a sessão é restaurada (após redirect OAuth),
+          // drena upserts pendentes e notifica componentes de sync para re-buscar dados.
+          if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            onSessionRestored(email);
+          }
         }
-
-        const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || email;
-        const avatar = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '';
-
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('lms_active_user_email', email);
-        }
-
-        const authInfo = getAuthorizedUserInfo(email);
-        setUserEmail(email);
-        setUserName(name);
-        setUserAvatar(avatar);
-
-        if (authInfo.isAuthorized && authInfo.user) {
-          setIsAuthorized(true);
-          const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
-          const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
-          setCurrentRole(initialRole);
-
-          // Rastreia sessão ativa
-          startUserSession(email, name, initialRole, avatar);
-        } else {
-          // Conta pendente: isolamento total de telemetria
-          setIsAuthorized(false);
-        }
-        setLoadingSession(false);
-
-        // CORREÇÃO CELULAR: Quando a sessão é restaurada (após redirect OAuth),
-        // drena upserts pendentes e notifica componentes de sync para re-buscar dados.
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-          onSessionRestored(email);
+      } catch (e) {
+        console.error('[Koinonia LMS] Erro no onAuthStateChange:', e);
+      } finally {
+        if (isSubscribed) {
+          setLoadingSession(false);
         }
       }
     });
@@ -788,12 +824,21 @@ export default function Home() {
 
   if (loadingSession) {
     return (
-      <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#090d16] flex items-center justify-center">
-        <div className="text-center space-y-3">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 animate-pulse flex items-center justify-center text-white text-2xl font-bold mx-auto">
+      <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#090d16] flex items-center justify-center p-4">
+        <div className="text-center space-y-3 max-w-xs">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 animate-pulse flex items-center justify-center text-white text-2xl font-bold mx-auto shadow-lg shadow-blue-500/20">
             ✝
           </div>
-          <p className="text-xs font-bold text-gray-500">Validando autenticação e permissões de acesso...</p>
+          <p className="text-xs font-bold text-gray-500 dark:text-slate-400">Validando autenticação e permissões de acesso...</p>
+          <div className="pt-2 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => setLoadingSession(false)}
+              className="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+            >
+              Entrar diretamente na plataforma &rarr;
+            </button>
+          </div>
         </div>
       </div>
     );
