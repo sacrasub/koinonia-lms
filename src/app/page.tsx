@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import { AlunoPanel } from '@/components/AlunoPanel';
 import { LiveAulaGlobalBanner } from '@/components/LiveAulaGlobalBanner';
 import { getAllDisciplinas, getDisciplinasForUser } from '@/services/disciplinasService';
-import { GraduationCap, Library, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity, Award } from 'lucide-react';
+import { GraduationCap, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, Activity, Flame, Layers } from 'lucide-react';
 import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud, getRevokedUsersList } from '@/lib/authConfig';
 
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
@@ -474,6 +474,7 @@ export default function Home() {
 
   const handleTabChange = useCallback((newTab: string) => {
     setActiveTab(newTab);
+    trackEvent('navigation', 'tab_view', newTab);
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('lms_active_tab', newTab);
@@ -616,14 +617,32 @@ export default function Home() {
       });
     };
 
+    const handleOpenAv2DisciplinaEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<{ disciplinaId?: string } | string>;
+      if (customEvent.detail) {
+        const id =
+          typeof customEvent.detail === 'string'
+            ? customEvent.detail
+            : customEvent.detail.disciplinaId;
+        if (id) {
+          try {
+            localStorage.setItem('lms_pending_av2_disciplina', id);
+          } catch (_) {}
+          handleTabChange('operacao-av2');
+        }
+      }
+    };
+
     window.addEventListener('lms_change_tab', handleTabEvent);
     window.addEventListener('lms_open_disciplina_detail', handleOpenDisciplinaEvent);
     window.addEventListener('lms_open_recorder', handleOpenRecorderEvent);
+    window.addEventListener('lms_open_av2_disciplina', handleOpenAv2DisciplinaEvent);
 
     return () => {
       window.removeEventListener('lms_change_tab', handleTabEvent);
       window.removeEventListener('lms_open_disciplina_detail', handleOpenDisciplinaEvent);
       window.removeEventListener('lms_open_recorder', handleOpenRecorderEvent);
+      window.removeEventListener('lms_open_av2_disciplina', handleOpenAv2DisciplinaEvent);
     };
   }, [handleTabChange, currentRole, userEmail]);
 
@@ -939,26 +958,16 @@ export default function Home() {
               }`}
             >
               <GraduationCap className="w-5 h-5" />
-              <span>Disciplinas</span>
+              <span>Início</span>
             </button>
             <button
-              onClick={() => handleTabChange('aluno-caderno')}
+              onClick={() => handleTabChange('operacao-av2')}
               className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
-                activeTab === 'aluno-caderno' ? 'text-amber-600 bg-amber-50/80 dark:text-amber-400 dark:bg-amber-900/30' : 'text-gray-500 dark:text-slate-400'
+                activeTab === 'operacao-av2' ? 'text-amber-600 bg-amber-50/80 dark:text-amber-400 dark:bg-amber-900/30' : 'text-gray-500 dark:text-slate-400'
               }`}
             >
-              <BookOpen className="w-5 h-5" />
-              <span>Caderno</span>
-            </button>
-            <button
-              data-tour="nav-biblioteca"
-              onClick={() => handleTabChange('aluno-biblioteca')}
-              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
-                activeTab === 'aluno-biblioteca' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
-              }`}
-            >
-              <Library className="w-5 h-5" />
-              <span>Biblioteca</span>
+              <Flame className="w-5 h-5" />
+              <span>AV2</span>
             </button>
             <button
               onClick={() => handleTabChange('aluno-checklist')}
@@ -967,16 +976,25 @@ export default function Home() {
               }`}
             >
               <CheckSquare className="w-5 h-5" />
-              <span>Checklist</span>
+              <span>Prazos</span>
             </button>
             <button
-              onClick={() => handleTabChange('aluno-materiais')}
+              onClick={() => handleTabChange('aluno-caderno')}
               className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
-                activeTab === 'aluno-materiais' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+                activeTab === 'aluno-caderno' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
               }`}
             >
-              <FolderOpen className="w-5 h-5" />
-              <span>Pastas</span>
+              <BookOpen className="w-5 h-5" />
+              <span>Caderno</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('disciplina-detalhe')}
+              className={`flex flex-col items-center gap-0.5 p-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer ${
+                activeTab === 'disciplina-detalhe' ? 'text-blue-600 bg-blue-50/80 dark:text-blue-400 dark:bg-blue-900/30' : 'text-gray-500 dark:text-slate-400'
+              }`}
+            >
+              <Layers className="w-5 h-5" />
+              <span>Matérias</span>
             </button>
           </>
         )}

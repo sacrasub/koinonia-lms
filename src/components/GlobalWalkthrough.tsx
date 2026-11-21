@@ -935,49 +935,8 @@ export function GlobalWalkthrough({
     }, 400);
   };
 
-  // Inicialização no Primeiro Acesso do usuário para o perfil ativo
-  // O passo a passo só deve aparecer após a confirmação/atualização do cadastro
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    // Se já foi concluído para este perfil, NÃO roda automaticamente
-    if (isTourCompleted()) return;
-
-    // Se for perfil de aluno, só inicia automaticamente se o perfil já foi confirmado
-    if (effectiveRole === 'aluno') {
-      const isProfileConfirmed = localStorage.getItem(`lms_profile_confirmed_${normalizedEmail}`) === 'true';
-      if (!isProfileConfirmed) {
-        // Aguarda a confirmação do perfil disparar o evento 'lms_profile_confirmed'
-        return;
-      }
-    }
-
-    const timer = setTimeout(() => {
-      if (!isTourCompleted() && !isTourActive()) {
-        startTourFromBeginning(effectiveRole);
-      }
-    }, 1400);
-
-    return () => clearTimeout(timer);
-  }, [normalizedEmail, effectiveRole]);
-
-  // Listener para disparo do tour logo após confirmação do cadastro de perfil do aluno
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handleProfileConfirmed = () => {
-      if (!isTourCompleted() && !isTourActive()) {
-        setTimeout(() => {
-          startTourFromBeginning(effectiveRole);
-        }, 600);
-      }
-    };
-
-    window.addEventListener('lms_profile_confirmed', handleProfileConfirmed);
-    return () => {
-      window.removeEventListener('lms_profile_confirmed', handleProfileConfirmed);
-    };
-  }, [normalizedEmail, effectiveRole]);
+  // Tour guiado agora é 100% opt-in sob demanda (evita interromper o aluno entrando para aula ao vivo).
+  // Mantém os listeners explícitos 'koinonia_start_tour' e 'lms_start_tutorial'.
 
   // Listeners para disparo manual do Onboarding via Central de Ajuda ou Mobile Drawer
   useEffect(() => {

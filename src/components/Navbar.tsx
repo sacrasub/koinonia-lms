@@ -5,9 +5,10 @@ import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
   RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
-  ChevronRight, Sparkles, LayoutGrid, ExternalLink
+  ChevronRight, ExternalLink
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
+import { getTabLabel } from '@/config/navigationConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
 import { fetchGravacoesFromCloud } from '@/services/gravacoesService';
 import { uploadLocalSessionsToCloud } from '@/services/telemetryService';
@@ -58,8 +59,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     return false;
   });
 
-  const [experienceMode, setExperienceMode] = useState<'simple' | 'advanced'>('simple');
-
   const toggleDarkMode = () => {
     if (typeof window === 'undefined') return;
     const nextMode = !isDarkMode;
@@ -73,40 +72,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
     window.dispatchEvent(new CustomEvent('lms_theme_changed', { detail: { isDark: nextMode } }));
   };
-
-  const toggleExperienceMode = () => {
-    const next: 'simple' | 'advanced' = experienceMode === 'simple' ? 'advanced' : 'simple';
-    setExperienceMode(next);
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem(`lms_experience_mode_${normalizedEmail}`, next);
-        window.dispatchEvent(new CustomEvent('lms_experience_mode_changed', { detail: next }));
-      } catch (e) {
-        console.error('Erro ao salvar preferência de modo:', e);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const saved = localStorage.getItem(`lms_experience_mode_${normalizedEmail}`);
-      if (saved === 'advanced' || saved === 'simple') {
-        setExperienceMode(saved);
-      }
-    } catch {}
-
-    const handleModeChange = (e: CustomEvent<'simple' | 'advanced'>) => {
-      if (e.detail === 'simple' || e.detail === 'advanced') {
-        setExperienceMode(e.detail);
-      }
-    };
-
-    window.addEventListener('lms_experience_mode_changed' as any, handleModeChange);
-    return () => {
-      window.removeEventListener('lms_experience_mode_changed' as any, handleModeChange);
-    };
-  }, [normalizedEmail]);
 
   useEffect(() => {
     const updateUnread = () => {
@@ -203,35 +168,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const getTabLabel = (tab: string): string => {
-    const map: Record<string, string> = {
-      'aluno-disciplinas': 'Painel Acadêmico',
-      'disciplina-detalhe': 'Minhas Disciplinas',
-      'google-agenda': 'Agenda',
-      'aluno-materiais': 'Pastas Virtuais',
-      'aluno-caderno': 'Caderno de Anotações',
-      'aluno-checklist': 'Trabalhos e Avaliações',
-      'aluno-portal-2026': 'Portal Acadêmico',
-      'comunidade-forum': 'Koinonia',
-      'aluno-biblioteca': 'Biblioteca Digital',
-      'central-ajuda': 'Central de Ajuda (Vídeos)',
-      'aluno-plano': 'Plano de Estudos',
-      'aluno-agenda': 'Grade Semanal',
-      'aluno-ia': 'Hub de IA',
-      'aluno-homiletica': 'Estúdio de Homilética',
-      'aluno-pesquisa': 'Pesquisa de Campo',
-      'aluno-tcc': 'Banca de TCC',
-      'aluno-metaverso': 'Metaverso Bíblico',
-      'prof-disciplinas': 'Minhas Aulas',
-      'prof-notas': 'Livro de Notas',
-      'monitor-escala': 'Escala de Monitoria',
-      'monitor-gravador': 'Gravador de Aulas',
-      'monitor-incidentes': 'Incidentes',
-      'admin-painel': 'Painel Geral',
-    };
-    return map[tab] || 'Painel';
-  };
-
   const currentTabLabel = getTabLabel(activeTab);
   const roleName = currentRole === 'admin' ? 'Admin' : currentRole === 'professor' ? 'Professor' : currentRole === 'monitor' ? 'Monitor' : 'Aluno';
 
@@ -288,36 +224,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <ExternalLink className="w-3.5 h-3.5 shrink-0" />
             <span className="hidden sm:inline">Estágio Supervisionado</span>
           </a>
-
-          {/* Botão Modo Essencial / Modo Imersivo no Cabeçalho */}
-          {currentRole === 'aluno' && (
-            <button
-              type="button"
-              onClick={toggleExperienceMode}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black shadow-xs transition-all duration-300 cursor-pointer border ${
-                experienceMode === 'advanced'
-                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-violet-400/50 shadow-violet-500/25 shadow-md ring-2 ring-violet-400/30'
-                  : 'bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
-              }`}
-              title={
-                experienceMode === 'advanced'
-                  ? 'Modo Imersivo ativo — clique para alternar para Modo Essencial'
-                  : 'Modo Essencial ativo — clique para alternar para Modo Imersivo'
-              }
-            >
-              {experienceMode === 'advanced' ? (
-                <>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span className="hidden sm:inline">Modo Imersivo</span>
-                </>
-              ) : (
-                <>
-                  <LayoutGrid className="w-3.5 h-3.5 text-gray-500 dark:text-slate-400" />
-                  <span className="hidden sm:inline">Modo Essencial</span>
-                </>
-              )}
-            </button>
-          )}
 
           {/* Botão de Sincronização em Nuvem (Apenas o símbolo) */}
           <button

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     // Busca ou cria matrícula do aluno
     let { data: matricula, error } = await supabase
       .from('alunos_matriculas')
-      .select('*')
+      .select('id, aluno_email, aluno_nome, semester, assessment_mode, assessment_mode_justificativa, assessment_mode_updated_at, status, created_at')
       .eq('aluno_email', aluno_email)
       .eq('semester', semester)
       .single();
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       const { data: novoRegistro, error: insertError } = await supabase
         .from('alunos_matriculas')
         .insert({ aluno_email, semester, assessment_mode: 'SOFT_COMPENSATION' })
-        .select()
+        .select('id, aluno_email, aluno_nome, semester, assessment_mode, assessment_mode_justificativa, assessment_mode_updated_at, status, created_at')
         .single();
 
       if (insertError) throw insertError;
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     // Busca histórico de mudanças
     const { data: historico } = await supabase
       .from('historico_assessment_mode')
-      .select('*')
+      .select('id, aluno_email, aluno_nome, modo_anterior, modo_novo, justificativa, semester, changed_at')
       .eq('aluno_email', aluno_email)
       .eq('semester', semester)
       .order('changed_at', { ascending: false })

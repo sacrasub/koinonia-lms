@@ -860,7 +860,7 @@ export async function fetchAulasCanceladasFromCloud(force: boolean = false): Pro
   try {
     const { data, error } = await supabase
       .from('lms_aulas_canceladas')
-      .select('*')
+      .select('id, disciplina_id, disciplina_name, aula_num, data_aula, motivo, autor_nome, autor_email, autor_role, ativo, created_at, updated_at')
       .eq('ativo', true);
 
     lastCanceladasFetchTime = Date.now();

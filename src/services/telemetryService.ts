@@ -21,6 +21,7 @@ let currentSession: UserSessionLog | null = null;
 let heartbeatInterval: ReturnType<typeof setInterval> | null = null;
 let pendingEventsQueue: AnalyticsEvent[] = [];
 let flushTimeout: ReturnType<typeof setTimeout> | null = null;
+const visitedTabsInSession = new Set<string>();
 
 // ============================================================================
 // 1. DETECÇÃO DE DISPOSITIVO, SISTEMA OPERACIONAL E NAVEGADOR
@@ -265,6 +266,7 @@ export function startUserSession(
   }
 
   // 3. Caso NÃO haja sessão recente ativa (< 30 min), cria uma nova sessão
+  visitedTabsInSession.clear();
   const sessionId = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   currentSession = {
     id: sessionId,
@@ -374,17 +376,28 @@ export function trackEvent(
 ) {
   if (typeof window === 'undefined') return;
 
-  // Ruídos de navegação interna (ex: change_tab em cada clique) apenas incrementam visualizações de página
+  let isDeduplicatedTabView = false;
+
+  // Ruídos de navegação interna (ex: change_tab em cada clique) apenas incrementam visualizações de página,
+  // exceto tab_view deduplicado (1 evento por aba por sessão) para medir adesão real sem gerar egress extra.
   if (category === 'navigation' || action === 'change_tab') {
     if (currentSession) {
       currentSession.page_views_count = (currentSession.page_views_count || 0) + 1;
       saveSessionToLocalCache(currentSession);
     }
-    return;
+    if (category === 'navigation' && action === 'tab_view' && label) {
+      if (visitedTabsInSession.has(label)) {
+        return;
+      }
+      visitedTabsInSession.add(label);
+      isDeduplicatedTabView = true;
+    } else {
+      return;
+    }
   }
 
   // Se não for categoria de interesse do TCC ou evolução da plataforma, descarta
-  if (!PLATFORM_ANALYTICS_CATEGORIES.has(category)) {
+  if (!isDeduplicatedTabView && !PLATFORM_ANALYTICS_CATEGORIES.has(category)) {
     return;
   }
 

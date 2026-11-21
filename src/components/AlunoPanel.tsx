@@ -10,7 +10,7 @@ import {
   Cloud, Settings, GraduationCap, X, Compass, PhoneCall, Archive, ArchiveRestore, CheckCircle,
   Layers, Flame, ArrowRight, Mic, Box, Ban, RefreshCw, ChevronDown, ChevronUp,
   AlertTriangle, ExternalLink, Link as LinkIcon, Mail, Zap, Play, Download, ClipboardList,
-  LayoutGrid, Award
+  Award
 } from 'lucide-react';
 import { Aula, AvisoLeituraPreAula } from '@/types';
 import { 
@@ -54,8 +54,8 @@ import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { UserProfileModal } from '@/components/UserProfileModal';
 import { trackEvent } from '@/services/telemetryService';
 import { CalendarioAcademico } from '@/components/CalendarioAcademico';
-import { AVALIACOES_2026_2 } from '@/data/avaliacoes2026_2';
-import { OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
+import { AVALIACOES_2026_2, defaultSemesterTasks, KanbanTask } from '@/data/avaliacoes2026_2';
+import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 interface AlunoPanelProps {
   userEmail?: string;
@@ -68,20 +68,35 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   // Modo de visualização principal: 'dashboard' (Aulas & Caderno) ou 'calendario' (Agenda de Trabalhos e Avaliações)
   const [alunoMainView, setAlunoMainView] = useState<'dashboard' | 'calendario'>('dashboard');
 
-  // Modo de experiência: 'simple' (Essencial, padrão) ou 'advanced' (Imersivo com laboratórios)
+  // Modo de experiência sincronizado com a Sidebar / Drawer Mobile ('simple' padrão, 'advanced' para Laboratórios)
   const [experienceMode, setExperienceMode] = useState<'simple' | 'advanced'>(() => {
     if (typeof window === 'undefined') return 'simple';
     const saved = localStorage.getItem(`lms_experience_mode_${(userEmail || 'sacrasub@gmail.com').toLowerCase().trim()}`);
-    return (saved === 'advanced' ? 'advanced' : 'simple');
+    return saved === 'advanced' ? 'advanced' : 'simple';
   });
 
-  const toggleExperienceMode = () => {
-    const next = experienceMode === 'simple' ? 'advanced' : 'simple';
-    setExperienceMode(next);
-    localStorage.setItem(`lms_experience_mode_${normalizedEmail}`, next);
-    // Notifica o Sidebar em tempo real via evento customizado (sem prop drilling)
-    window.dispatchEvent(new CustomEvent('lms_experience_mode_changed', { detail: next }));
-  };
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const saved = localStorage.getItem(`lms_experience_mode_${normalizedEmail}`);
+    setExperienceMode(saved === 'advanced' ? 'advanced' : 'simple');
+
+    const handleModeChange = (e: Event) => {
+      const detail = (e as CustomEvent<'simple' | 'advanced'>).detail;
+      if (detail === 'simple' || detail === 'advanced') {
+        setExperienceMode(detail);
+      }
+    };
+
+    window.addEventListener('lms_experience_mode_changed', handleModeChange);
+    return () => window.removeEventListener('lms_experience_mode_changed', handleModeChange);
+  }, [normalizedEmail]);
+
+  const [checklistTasks, setChecklistTasks] = useState<KanbanTask[]>(defaultSemesterTasks);
+  const [expandedOptionsCardKey, setExpandedOptionsCardKey] = useState<string | null>(null);
+  const [studentDisplayName, setStudentDisplayName] = useState<string>(() => {
+    const authUser = INITIAL_AUTHORIZED_USERS[(userEmail || 'sacrasub@gmail.com').toLowerCase().trim()];
+    return authUser?.name?.split(' ')[0] || 'Seminarista';
+  });
 
   const semesterWeeks = getSemester2026Weeks();
   const currentWeekIdx = getCurrentWeekIndex();
@@ -331,6 +346,9 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
       setStudentNotes(data.studentNotes || {});
       setCompletedLessons(data.completedLessons || {});
       setAttendanceStatusMap(data.lessonAttendanceStatus || {});
+      if (Array.isArray(data.checklistTasks) && data.checklistTasks.length > 0) {
+        setChecklistTasks(data.checklistTasks);
+      }
 
       if (data.portalProfile) {
         const prof = data.portalProfile;
@@ -338,6 +356,10 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
         const tIdx = prof.turmaIdx !== undefined ? Number(prof.turmaIdx) : (pNum === 5 ? 0 : pNum === 7 ? 1 : pNum === 3 ? 2 : 1);
         const autoM = prof.autoMarkPrevious !== undefined ? prof.autoMarkPrevious : true;
         const compS = prof.completedSubjects || [];
+
+        if (prof.name) {
+          setStudentDisplayName(String(prof.name).split(' ')[0]);
+        }
 
         setStudentProfile({
           periodoNum: pNum,
@@ -752,20 +774,13 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const daysOfWeek = orderedDaysOfWeek;
   const activeWeek = semesterWeeks[selectedWeekIndex] || semesterWeeks[0];
 
-  // Cálculo do Progresso Geral na Semana Selecionada
-  let totalLessonsInWeek = 0;
-  let completedLessonsInWeek = 0;
-
-  studentAulas.forEach((aula) => {
-    if (aula.day_of_week) {
-      const lessonDate = getDateForLesson(selectedWeekIndex, aula.day_of_week);
-      const key = `${aula.code || aula.id}_${lessonDate}`;
-      totalLessonsInWeek++;
-      if (completedLessons[key] || isLessonAutoCompletedPrevious(aula)) completedLessonsInWeek++;
-    }
-  });
-
-  const weekProgressPercent = totalLessonsInWeek > 0 ? Math.round((completedLessonsInWeek / totalLessonsInWeek) * 100) : 0;
+  // Progresso real baseado no Checklist / Kanban de Avaliações (dados usados pelos alunos)
+  const activeAssessmentTasks = checklistTasks.filter((t) => t.status !== 'archived');
+  const completedAssessmentTasksCount = activeAssessmentTasks.filter((t) => t.status === 'done').length;
+  const assessmentProgressPercent =
+    activeAssessmentTasks.length > 0
+      ? Math.round((completedAssessmentTasksCount / activeAssessmentTasks.length) * 100)
+      : 0;
 
   const handleQuickChangeTurma = (newT: number) => {
     const newP = newT === 0 ? 5 : newT === 1 ? 7 : newT === 2 ? 3 : 0;
@@ -922,113 +937,106 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
     </div>
   );
 
-  const renderUnifiedHeader = () => (
-    <div className="bg-white p-5 sm:p-6 rounded-3xl border border-gray-200/80 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
-      <div className="space-y-2 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-            <Sparkles className="w-3.5 h-3.5" /> Semestre Letivo 2026.2
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-indigo-50 text-indigo-800 border border-indigo-200 shadow-2xs">
-            <GraduationCap className="w-3.5 h-3.5 text-indigo-600" />
-            {studentProfile.periodoNum === 0 ? 'Curso Básico de Teologia' : `${studentProfile.periodoNum}º Período`}
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Turma: <strong className="text-blue-900">{
-              ['Fim de Semana (5º)', 'Semanal Noturno A (7º)', 'Semanal Noturno B (3º)', 'Curso Básico'][studentProfile.turmaIdx ?? 1] || 'Semanal Noturno A'
-            }</strong>
-          </span>
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" title="Horários convertidos automaticamente para seu fuso">
-            <Globe className="w-3.5 h-3.5 text-gray-500" /> Fuso: <strong>{tzInfo.gmtOffset}</strong>
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              setIsFirstAccessModal(false);
-              setIsProfileModalOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition cursor-pointer"
-            title="Modificar seu período, turma oficial, foto e dados de cadastro"
-          >
-            <Settings className="w-3 h-3 text-amber-300" />
-            <span>Configuração Oficial & Perfil</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setAlunoMainView(alunoMainView === 'calendario' ? 'dashboard' : 'calendario')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition cursor-pointer active:scale-95 ${
-              alunoMainView === 'calendario'
-                ? 'bg-amber-500 hover:bg-amber-600 text-slate-950 ring-2 ring-amber-400'
-                : 'bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white border border-blue-400/40 shadow-sm'
-            }`}
-            title="Abrir o Calendário de Trabalhos e Avaliações 2026.2 no formato Agenda"
-          >
-            <Calendar className="w-3.5 h-3.5 text-amber-300" />
-            <span>{alunoMainView === 'calendario' ? 'Voltar para Aulas & Caderno' : 'Calendário de Avaliações (Agenda)'}</span>
-            <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">12</span>
-          </button>
+  const renderUnifiedHeader = () => {
+    const periodoLabel =
+      studentProfile.periodoNum === 0 ? 'Curso Básico de Teologia' : `${studentProfile.periodoNum}º Período`;
+    const turmaLabel =
+      ['Fim de Semana (5º)', 'Semanal Noturno A (7º)', 'Semanal Noturno B (3º)', 'Curso Básico'][
+        studentProfile.turmaIdx ?? 1
+      ] || 'Semanal Noturno A';
 
-          {/* BOTÃO DIRETO PARA MEU BOLETIM DE NOTAS */}
-          <button
-            type="button"
-            onClick={() => {
-              if (onTabChange) onTabChange('aluno-boletim');
-              else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-boletim' }));
-            }}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500/40 shadow-sm active:scale-95"
-            title="Consultar meu Boletim Oficial de Notas e Faltas 2026.2"
-          >
-            <Award className="w-3.5 h-3.5 text-amber-300" />
-            <span>Meu Boletim</span>
-            <span className="px-1.5 py-0.2 bg-white/20 rounded-full text-[10px] font-black">Oficial</span>
-          </button>
-
-          {/* TOGGLE DE EXPERIÊNCIA: MODO ESSENCIAL vs. MODO IMERSIVO */}
-          <button
-            type="button"
-            onClick={toggleExperienceMode}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black shadow-xs transition-all duration-300 cursor-pointer border ${
-              experienceMode === 'advanced'
-                ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-violet-400/50 shadow-violet-500/25 shadow-md ring-2 ring-violet-400/30'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-600 border-gray-200 hover:border-gray-300'
-            }`}
-            title={experienceMode === 'advanced'
-              ? 'Modo Imersivo ativo — clique para voltar ao Modo Essencial (dia a dia)'
-              : 'Ativar Modo Imersivo com laboratórios, biblioteca digital e ferramentas avançadas'
-            }
-          >
-            {experienceMode === 'advanced' ? (
-              <><Sparkles className="w-3.5 h-3.5 text-amber-300" /><span>Modo Imersivo</span></>
-            ) : (
-              <><LayoutGrid className="w-3.5 h-3.5 text-gray-500" /><span>Modo Essencial</span></>
-            )}
-          </button>
-        </div>
-        <div>
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight">Painel Acadêmico do Aluno</h2>
-          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-            Navegue pelas semanas letivas do semestre e gerencie suas anotações e conclusões por data de aula.
+    return (
+      <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-2 flex-1 min-w-0">
+          <p className="text-xs font-semibold text-gray-500 dark:text-slate-400 flex items-center gap-1.5 flex-wrap">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Semestre 2026.2</span>
+            <span>·</span>
+            <span className="text-indigo-700 dark:text-indigo-300 font-bold">{periodoLabel}</span>
+            <span>·</span>
+            <span>{turmaLabel}</span>
+            <span>·</span>
+            <span title="Horários convertidos automaticamente para seu fuso">Fuso {tzInfo.gmtOffset}</span>
           </p>
+
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+              Olá, {studentDisplayName}!
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-0.5">
+              Sua central para aula ao vivo, presença, materiais e revisões da semana.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                if (onTabChange) onTabChange('aluno-boletim');
+                else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-boletim' }));
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-extrabold shadow-xs transition cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white active:scale-95"
+              title="Consultar meu Boletim Oficial de Notas e Faltas 2026.2"
+            >
+              <Award className="w-3.5 h-3.5 text-amber-200" />
+              <span>Meu Boletim</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsFirstAccessModal(false);
+                setIsProfileModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 transition cursor-pointer"
+              title="Modificar período, turma, foto e dados cadastrais"
+            >
+              <Settings className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>Perfil &amp; Turma</span>
+            </button>
+
+            {alunoMainView === 'calendario' && (
+              <button
+                type="button"
+                onClick={() => setAlunoMainView('dashboard')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white transition cursor-pointer"
+              >
+                <ArrowRight className="w-3.5 h-3.5 rotate-180" />
+                <span>Voltar para Painel</span>
+              </button>
+            )}
+          </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (onTabChange) onTabChange('aluno-checklist');
+            else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'aluno-checklist' }));
+          }}
+          className="w-full md:w-64 text-left bg-gray-50 hover:bg-blue-50/70 dark:bg-slate-800/80 dark:hover:bg-slate-800 p-4 rounded-2xl border border-gray-200 dark:border-slate-700 flex-shrink-0 transition cursor-pointer group"
+          title="Abrir Kanban de Trabalhos e Avaliações"
+        >
+          <div className="flex justify-between items-center text-xs mb-1.5">
+            <span className="font-bold text-gray-700 dark:text-slate-200 group-hover:text-blue-700 dark:group-hover:text-blue-300">
+              Checklist AV2 &amp; Prazos
+            </span>
+            <span className="font-extrabold text-blue-600 dark:text-blue-400">{assessmentProgressPercent}%</span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
+              style={{ width: `${assessmentProgressPercent}%` }}
+            ></div>
+          </div>
+          <span className="text-[11px] text-gray-500 dark:text-slate-400 mt-1.5 flex items-center justify-between">
+            <span>{completedAssessmentTasksCount} de {activeAssessmentTasks.length} avaliações concluídas</span>
+            <ArrowRight className="w-3 h-3 opacity-60 group-hover:translate-x-0.5 transition-transform" />
+          </span>
+        </button>
       </div>
-      <div className="w-full md:w-64 bg-gray-50 p-4 rounded-2xl border border-gray-200 flex-shrink-0">
-        <div className="flex justify-between items-center text-xs mb-1.5">
-          <span className="font-bold text-gray-700">Progresso da {activeWeek.formattedStart} a {activeWeek.formattedEnd}</span>
-          <span className="font-extrabold text-blue-600">{weekProgressPercent}%</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full transition-all duration-500"
-            style={{ width: `${weekProgressPercent}%` }}
-          ></div>
-        </div>
-        <span className="text-[10px] text-gray-400 mt-1 block">
-          {completedLessonsInWeek} de {totalLessonsInWeek} aulas concluídas nesta semana
-        </span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderAulasCanceladas = () => {
     if (aulasCanceladasHoje.length === 0) return null;
@@ -2123,6 +2131,15 @@ href={nextAulaToday.google_meet_url}
                 const isAutoPaid = isLessonAutoCompletedPrevious(aula);
                 const isCompleted = isAutoPaid || !!completedLessons[itemKey];
                 const currentNote = studentNotes[itemKey] || '';
+                const currentStatus: LessonAttendanceStatus =
+                  attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
+                const isOptionsExpanded = expandedOptionsCardKey === itemKey;
+                const dossieMatch = DOSSIE_AV2_2026_2.find(
+                  (d) => d.disciplinaId === aula.disciplina_id
+                );
+                const av2ShortLabel = dossieMatch
+                  ? dossieMatch.diaLabel.replace(/^[^\d]*/, '')
+                  : datas.av2.split(' ')[0];
 
                 return (
                   <div
@@ -2134,54 +2151,74 @@ href={nextAulaToday.google_meet_url}
                     }`}
                   >
                     <div>
-                      <div className="flex justify-between items-start gap-2 mb-2">
+                      <div className="flex justify-between items-center gap-2 mb-2">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
                             {aulaCode}
                           </span>
-
-                          {(() => {
-                            const currentStatus: LessonAttendanceStatus = attendanceStatusMap[itemKey] || (isCompleted ? 'presente' : 'pendente');
-
-                            return (
-                              <div className="relative inline-flex items-center">
-                                <select
-                                  value={currentStatus}
-                                  disabled={isAutoPaid}
-                                  onChange={(e) => handleSetAttendanceStatus(itemKey, e.target.value as LessonAttendanceStatus)}
-                                  className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition border focus:outline-none focus:ring-2 cursor-pointer ${
-                                    isAutoPaid
-                                      ? 'bg-emerald-100 text-emerald-950 border-emerald-300'
-                                      : currentStatus === 'presente'
-                                      ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                                      : currentStatus === 'reposicao'
-                                      ? 'bg-purple-100 text-purple-900 border-purple-300'
-                                      : currentStatus === 'nao_houve'
-                                      ? 'bg-gray-200 text-gray-800 border-gray-300'
-                                      : 'bg-amber-100 text-amber-900 border-amber-300'
-                                  }`}
-                                >
-                                  <option value="presente">🟢 Presente na Aula</option>
-                                  <option value="reposicao">🟣 Reposição de Aula</option>
-                                  <option value="nao_houve">⚪ Não Houve Aula</option>
-                                  <option value="pendente">🟡 Pendente</option>
-                                </select>
-                              </div>
-                            );
-                          })()}
+                          {currentStatus !== 'pendente' && (
+                            <span
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                                currentStatus === 'presente'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                  : currentStatus === 'reposicao'
+                                  ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                                  : 'bg-gray-100 text-gray-600 border border-gray-200'
+                              }`}
+                            >
+                              {currentStatus === 'presente'
+                                ? 'Presente'
+                                : currentStatus === 'reposicao'
+                                ? 'Reposição'
+                                : 'Não houve'}
+                            </span>
+                          )}
                         </div>
 
-                        {/* Botão de Reposição */}
                         <button
                           type="button"
-                          onClick={() => handleCreateReposicaoRelatorio(aula, dateForDay)}
-                          className="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[10px] font-bold transition flex items-center gap-1 cursor-pointer"
-                          title="Registrar Relatório de Reposição para esta aula"
+                          onClick={() =>
+                            setExpandedOptionsCardKey(isOptionsExpanded ? null : itemKey)
+                          }
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition flex items-center gap-1 cursor-pointer border ${
+                            isOptionsExpanded
+                              ? 'bg-blue-50 text-blue-800 border-blue-200'
+                              : 'bg-gray-50 hover:bg-gray-100 text-gray-600 border-gray-200'
+                          }`}
+                          title="Registrar presença manual ou relatório de reposição"
                         >
-                          <FileText className="w-3 h-3 text-purple-600" />
-                          <span>Reposição</span>
+                          <ClipboardList className="w-3 h-3" />
+                          <span>Registro</span>
                         </button>
                       </div>
+
+                      {isOptionsExpanded && (
+                        <div className="mb-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2 animate-in fade-in duration-150">
+                          <select
+                            value={currentStatus}
+                            disabled={isAutoPaid}
+                            onChange={(e) =>
+                              handleSetAttendanceStatus(itemKey, e.target.value as LessonAttendanceStatus)
+                            }
+                            className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white border border-slate-300 text-slate-800 cursor-pointer"
+                          >
+                            <option value="presente">🟢 Presente na Aula</option>
+                            <option value="reposicao">🟣 Reposição de Aula</option>
+                            <option value="nao_houve">⚪ Não Houve Aula</option>
+                            <option value="pendente">🟡 Pendente</option>
+                          </select>
+
+                          <button
+                            type="button"
+                            onClick={() => handleCreateReposicaoRelatorio(aula, dateForDay)}
+                            className="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-lg text-[10px] font-bold transition flex items-center gap-1 cursor-pointer"
+                            title="Registrar Relatório de Reposição para esta aula"
+                          >
+                            <FileText className="w-3 h-3 text-purple-600" />
+                            <span>Relatório Reposição</span>
+                          </button>
+                        </div>
+                      )}
 
                       <h4 className="font-black text-base text-gray-900 leading-snug">
                         {aula.disciplina_name}
@@ -2312,19 +2349,34 @@ href={nextAulaToday.google_meet_url}
                           <span>Materiais & Gemini</span>
                         </button>
 
-                        {/* 4. Botão AV1 com Data */}
+                        {/* 4. Botão AV2 com atalho direto para Operação AV2 */}
                         <button
-                          onClick={() => setSelectedAvaliacao({
-                            title: `AV1: ${aula.disciplina_name}`,
-                            tipo: 'AV1',
-                            data: datas.av1,
-                            disciplina: aula.disciplina_name
-                          })}
-                          className="py-2 px-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-semibold text-xs rounded-xl flex items-center justify-center gap-1 transition cursor-pointer"
-                          title={`Ver Avaliação AV1 (${datas.av1})`}
+                          type="button"
+                          onClick={() => {
+                            if (dossieMatch && typeof window !== 'undefined') {
+                              window.dispatchEvent(
+                                new CustomEvent('lms_open_av2_disciplina', {
+                                  detail: { disciplinaId: aula.disciplina_id },
+                                })
+                              );
+                            } else {
+                              setSelectedAvaliacao({
+                                title: `AV2: ${aula.disciplina_name}`,
+                                tipo: 'AV2',
+                                data: datas.av2,
+                                disciplina: aula.disciplina_name,
+                              });
+                            }
+                          }}
+                          className="py-2 px-2.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs rounded-xl flex items-center justify-center gap-1 transition cursor-pointer"
+                          title={
+                            dossieMatch
+                              ? `Abrir guia e simulado AV2 de ${aula.disciplina_name}`
+                              : `Ver Avaliação AV2 (${datas.av2})`
+                          }
                         >
-                          <Calendar className="w-3.5 h-3.5 text-amber-600" />
-                          <span>AV1 ({datas.av1})</span>
+                          <Flame className="w-3.5 h-3.5 text-amber-600" />
+                          <span>AV2 ({av2ShortLabel})</span>
                         </button>
                       </div>
 
@@ -2342,7 +2394,7 @@ href={nextAulaToday.google_meet_url}
                         className="mt-2 w-full py-2 px-3 bg-gradient-to-r from-blue-900 to-indigo-900 hover:from-blue-800 hover:to-indigo-800 text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer border border-blue-800/40"
                       >
                         <Layers className="w-3.5 h-3.5 text-amber-300" />
-                        <span>Ver Página Completa da Matéria (Livros & Gemini IA) ➔</span>
+                        <span>Abrir Disciplina ➔</span>
                       </button>
                     </div>
                   </div>
@@ -2356,60 +2408,9 @@ href={nextAulaToday.google_meet_url}
   );
 
   return (
-    <div className="space-y-8">
-      {/* 1. CARD PRINCIPAL UNIFICADO: PAINEL ACADÊMICO DO ALUNO (COM PERÍODO, TURMA, SEMESTRE E FUSO) */}
+    <div className="space-y-6">
+      {/* 1. CABEÇALHO LIMPO E OBJETIVO DO ALUNO */}
       {renderUnifiedHeader()}
-
-      {/* BANNER OPERAÇÃO SEMANA DA AV2 (24 a 27/11) + NOTEBOOKLM OFICIAL */}
-      <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-amber-950/90 border border-amber-400/40 rounded-3xl p-4 sm:p-5 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div className="flex items-start sm:items-center gap-3.5">
-          <div className="p-3 bg-amber-400 text-slate-950 rounded-2xl shadow-lg shadow-amber-500/20 flex-shrink-0">
-            <Flame className="w-6 h-6" />
-          </div>
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-full">
-                Semana Decisiva • 24 a 27/11
-              </span>
-              <span className="text-[11px] font-bold text-amber-200">
-                40 Questões Comentadas · Mapas Mentais · NotebookLM Atualizado
-              </span>
-            </div>
-            <h3 className="text-base sm:text-lg font-black text-white leading-tight">
-              Operação Semana da AV2 &amp; TCC I (2026.2)
-            </h3>
-            <p className="text-[11px] sm:text-xs text-slate-200/90 leading-relaxed">
-              Ter 24: Congreg. (10 V/F) &amp; Pens. Cristão II · Qua 25: Aconselhamento II &amp; Dir. Humanos (sem trabalho, 52 slides) · Qui 26: Ética (sem prova) &amp; NT III · Sex 27: Plantação II (consulta livre + resumo 12p)
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={() => {
-              if (onTabChange) onTabChange('operacao-av2');
-              else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'operacao-av2' }));
-            }}
-            className="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95"
-          >
-            <Flame className="w-4 h-4" />
-            <span>Abrir Central AV2 (Guias &amp; 40 Questões)</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-
-          <a
-            href={OFFICIAL_NOTEBOOKLM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-300" />
-            <span>Abrir NotebookLM Oficial</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
-      </div>
 
       {/* RENDERIZAÇÃO CONDICIONAL: SE FOR O MODO CALENDÁRIO GOOGLE AGENDA */}
       {alunoMainView === 'calendario' ? (
@@ -2418,92 +2419,78 @@ href={nextAulaToday.google_meet_url}
         </div>
       ) : (
         <>
-          {/* AVISOS ACADÊMICOS / PROVIDÊNCIAS COMPACTOS (EXATAMENTE ENTRE O PAINEL ACADÊMICO E A AULA AO VIVO) */}
+          {/* 2. AVISOS / CANCELAMENTOS DE HOJE E LEMBRETE DE PERFIL (QUANDO HOUVER) */}
           {renderAulasCanceladas()}
-
-          {/* 2. LEMBRETE DE ATUALIZAÇÃO CADASTRO (CASO O ALUNO TENHA CLICADO EM 'LEMBRAR DEPOIS') */}
           {renderProfileReminder()}
 
-          {/* 3. QUADRO DE AULA AO VIVO OU PRÓXIMA AULA (DESTAQUE MÁXIMO EM PRIMEIRO LUGAR) */}
+          {/* 3. DESTAQUE MÁXIMO ACIMA DA DOBRA: AULA AO VIVO OU PRÓXIMA AULA + LISTA DE PRESENÇA */}
           {renderAulaAoVivoOuProxima()}
 
-          {/* BANNER DESTAQUE DO CALENDÁRIO DE AVALIAÇÕES (GOOGLE AGENDA) */}
-          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3.5 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-2xl shadow-lg shadow-blue-500/25 flex-shrink-0">
-                <Calendar className="w-7 h-7" />
+          {/* 4. BANNER COMPACTO OPERAÇÃO SEMANA DA AV2 (24 a 27/11) + NOTEBOOKLM OFICIAL */}
+          <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-amber-950/90 border border-amber-400/40 rounded-2xl p-4 text-white shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="p-2.5 bg-amber-400 text-slate-950 rounded-xl shadow-md shadow-amber-500/20 flex-shrink-0">
+                <Flame className="w-5 h-5" />
               </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
-                    Agenda 2026.2
+              <div className="space-y-0.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
+                    Semana da AV2 • 24 a 27/11
                   </span>
-                  <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
+                  <span className="text-[11px] font-bold text-amber-200">
+                    Guias · 40 Questões Comentadas · NotebookLM Oficial
+                  </span>
                 </div>
-                <h3 className="text-base sm:text-lg font-black text-white">
-                  Trabalhos e Avaliações
+                <h3 className="text-sm sm:text-base font-black text-white leading-tight">
+                  Operação Semana da AV2 &amp; TCC I (2026.2)
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Consulte a grade mensal de Agosto a Dezembro com popups de resumo, normas ABNT e checklists passo a passo para cada matéria.
-                </p>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setAlunoMainView('calendario')}
-              className="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 active:scale-98 cursor-pointer whitespace-nowrap self-start md:self-auto"
-            >
-              <span>Abrir Agenda</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  if (onTabChange) onTabChange('operacao-av2');
+                  else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'operacao-av2' }));
+                }}
+                className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+              >
+                <Flame className="w-3.5 h-3.5" />
+                <span>Abrir Central AV2</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <a
+                href={OFFICIAL_NOTEBOOKLM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-amber-300" />
+                <span>NotebookLM</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
 
-          {/* 4. SE HOUVER LEITURAS EM ABERTO: CARD EM EVIDÊNCIA MÁXIMA NO TOPO (LOGO APÓS AULA AO VIVO) */}
+          {/* 5. LEITURAS PENDENTES EM DESTAQUE (APENAS SE HOUVER PENDÊNCIAS) */}
           {pendingAnnouncementsCount > 0 && (
             <div className="animate-in fade-in slide-in-from-top-3 duration-300">
               {renderMuralRecursos(true)}
             </div>
           )}
 
-          {/* 5. SEÇÕES PRINCIPAIS (REORDENAÇÃO INTELIGENTE CONFORME HORÁRIO DE AULA) */}
-          {activeLiveAula ? (
-            <>
-              {/* GRADE DE AULAS NO TOPO DURANTE A AULA OU 15 MIN ANTES */}
-              {renderGradeAulas()}
+          {/* 6. GRADE DE AULAS DA SEMANA SEMPRE EM POSIÇÃO PRIORITÁRIA */}
+          {renderGradeAulas()}
 
-              {/* MURAL QUANDO TODAS ESTIVEREM LIDAS FICA APÓS A GRADE */}
-              {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+          {/* 7. MURAL DE RECURSOS E GRAVAÇÕES LOGO ABAIXO */}
+          {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
+          {renderAulasGravadas()}
 
-              {renderAulasGravadas()}
-
-              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA (apenas no Modo Imersivo) */}
-              {experienceMode === 'advanced' && renderCardBibliotecaDigital()}
-
-              {/* LABORATÓRIOS E METODOLOGIAS (apenas no Modo Imersivo) */}
-              {experienceMode === 'advanced' && renderCardsMetodologias(true)}
-            </>
-          ) : (
-            <>
-              {/* FORA DA AULA AO VIVO (QUANDO AS AULAS TERMINAREM NO DIA, INTERVALOS OU DIAS SEM AULA):
-                  OS CARDS VOLTAM A SER APRESENTADOS NO TOPO, ANTES DA GRADE DE AULAS! */}
-
-              {/* MURAL DE RECURSOS (SOMENTE QUANDO TODAS ESTIVEREM LIDAS OU RECOLHIDO, POIS SE HOUVER PENDENTES JÁ ESTÁ NO TOPO NO ITEM 4) */}
-              {pendingAnnouncementsCount === 0 && renderMuralRecursos(false)}
-
-              {/* 2. AULAS GRAVADAS DISPONÍVEIS */}
-              {renderAulasGravadas()}
-
-              {/* CARD DA BIBLIOTECA DIGITAL TEOLÓGICA (apenas no Modo Imersivo) */}
-              {experienceMode === 'advanced' && renderCardBibliotecaDigital()}
-
-              {/* 3. LABORATÓRIOS E METODOLOGIAS (apenas no Modo Imersivo) */}
-              {experienceMode === 'advanced' && renderCardsMetodologias(false)}
-
-              {/* 4. GRADE DE AULAS & MEU CADERNO DE ESTUDOS */}
-              {renderGradeAulas()}
-            </>
-          )}
+          {/* 8. LABORATÓRIOS & RECURSOS AVANÇADOS (APENAS NO MODO AVANÇADO) */}
+          {experienceMode === 'advanced' && renderCardBibliotecaDigital()}
+          {experienceMode === 'advanced' && renderCardsMetodologias(Boolean(activeLiveAula))}
         </>
       )}
 

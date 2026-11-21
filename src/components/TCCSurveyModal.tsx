@@ -157,31 +157,19 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
   useEffect(() => {
     if (!normalizedEmail) return;
 
-    try {
-      const isDismissedLocal = localStorage.getItem(`lms_tcc_dismissed_${normalizedEmail}`) === 'true';
-      const isOptOut = localStorage.getItem('lms_tcc_survey_optout') === 'true';
-      const isDismissedSession = sessionStorage.getItem(`lms_tcc_dismissed_${normalizedEmail}`) === 'true';
-      if (isDismissedLocal || isOptOut || isDismissedSession) {
-        return;
-      }
-    } catch (_) {}
-
-    async function checkSurvey() {
+    // Abertura 100% sob demanda (evita fetch automático em todo carregamento de página e fadiga de popups)
+    const handleOpenSurvey = async () => {
       try {
         const res = await getActiveSurveyForRole(currentRole, normalizedEmail);
-        if (res.survey && res.survey.ativa === true && !res.alreadyAnswered) {
+        if (res.survey) {
           setActiveSurvey(res.survey);
-          setTimeout(() => setIsBannerVisible(true), 2500);
-        } else {
-          setActiveSurvey(null);
           setIsBannerVisible(false);
+          setIsOpen(true);
         }
       } catch (e) {
-        console.warn('Erro ao verificar pesquisa TCC:', e);
+        console.warn('Erro ao abrir pesquisa TCC sob demanda:', e);
       }
-    }
-
-    checkSurvey();
+    };
 
     const handleStatusChange = (e: Event) => {
       const detail = (e as CustomEvent).detail;
@@ -191,8 +179,13 @@ export const TCCSurveyModal: React.FC<TCCSurveyModalProps> = ({ currentRole, use
         setIsOpen(false);
       }
     };
+
+    window.addEventListener('lms_open_tcc_survey', handleOpenSurvey);
     window.addEventListener('lms_tcc_survey_status_changed', handleStatusChange);
-    return () => window.removeEventListener('lms_tcc_survey_status_changed', handleStatusChange);
+    return () => {
+      window.removeEventListener('lms_open_tcc_survey', handleOpenSurvey);
+      window.removeEventListener('lms_tcc_survey_status_changed', handleStatusChange);
+    };
   }, [currentRole, normalizedEmail]);
 
   if (!activeSurvey || !activeSurvey.ativa || (!isBannerVisible && !isOpen)) return null;

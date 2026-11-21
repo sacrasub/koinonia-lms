@@ -116,6 +116,37 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
     } catch (_) {}
   }, [storageKey]);
 
+  // Pre-seleção direta de disciplina vinda da Home do Aluno ou deep link interno
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const applyPendingDisc = (targetId?: string | null) => {
+      if (!targetId) return;
+      const exists = DOSSIE_AV2_2026_2.some((d) => d.disciplinaId === targetId);
+      if (exists) {
+        setSelectedDia('all');
+        setSelectedDisciplinaId(targetId);
+        setInnerTab('regras');
+        try {
+          localStorage.removeItem('lms_pending_av2_disciplina');
+        } catch (_) {}
+      }
+    };
+
+    try {
+      applyPendingDisc(localStorage.getItem('lms_pending_av2_disciplina'));
+    } catch (_) {}
+
+    const onOpenDisc = (e: Event) => {
+      const detail = (e as CustomEvent<{ disciplinaId?: string } | string>).detail;
+      const id = typeof detail === 'string' ? detail : detail?.disciplinaId;
+      applyPendingDisc(id);
+    };
+
+    window.addEventListener('lms_open_av2_disciplina', onOpenDisc);
+    return () => window.removeEventListener('lms_open_av2_disciplina', onOpenDisc);
+  }, []);
+
   const persistAnswers = (next: Record<string, 'A' | 'B' | 'C' | 'D'>) => {
     setAnswers(next);
     if (typeof window !== 'undefined') {

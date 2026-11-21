@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('rubricas_feedback')
-      .select('*')
+      .select('id, portfolio_id, criterio_nome, criterio_descricao, nivel_desempenho, nota_atribuida, peso_criterio, feedback_qualitativo_tutor, monitor_email, monitor_nome, created_at')
       .eq('portfolio_id', portfolio_id)
       .order('created_at', { ascending: true });
 

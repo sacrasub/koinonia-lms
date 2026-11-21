@@ -1,14 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
-  MessageSquare, Users, Send, X, Minimize2, Maximize2, 
-  Circle, CheckCheck, Sparkles, Smile, RefreshCw, Bell, BellOff
+  MessageSquare, Send, X, RefreshCw, Bell, BellOff
 } from 'lucide-react';
 import { DirectMessage, OnlinePeer, UserRole } from '@/types';
 import { 
   getOnlinePeers, 
-  sendPresenceHeartbeat, 
   getDirectMessages, 
   sendDirectMessage, 
   getUnreadMessagesCount, 
@@ -77,8 +75,12 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
   } | null>(null);
 
   const lastNotifiedMsgIdRef = useRef<string | null>(null);
+  const unreadBaselineSetRef = useRef<boolean>(false);
+  const lastUnreadCheckRef = useRef<number>(0);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [hasLoadedPeers, setHasLoadedPeers] = useState<boolean>(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -94,94 +96,111 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
     });
   };
 
-  // Heartbeat de Presença e Atualização de Mensagens / Notificações
+  // Checagem ultra-leve (0 bytes payload via head:true) apenas no mount e ao focar janela (>= 5 min throttle)
+  const checkUnreadOnly = useCallback(async (force = false) => {
+    if (!currentUserEmail) return;
+    const now = Date.now();
+    if (!force && lastUnreadCheckRef.current > 0 && now - lastUnreadCheckRef.current < 300000) {
+      return;
+    }
+    lastUnreadCheckRef.current = now;
+
+    try {
+      const count = await getUnreadMessagesCount(currentUserEmail);
+      setUnreadCount(count);
+
+      if (count > 0) {
+        const latestUnread = await getLatestUnreadMessage(currentUserEmail);
+        if (latestUnread && latestUnread.id !== lastNotifiedMsgIdRef.current) {
+          if (unreadBaselineSetRef.current && !isDndActive) {
+            playNotificationChime();
+            setIncomingToast({
+              id: latestUnread.id,
+              senderName: latestUnread.remetente_nome || latestUnread.remetente_email.split('@')[0],
+              senderEmail: latestUnread.remetente_email,
+              conteudo: latestUnread.conteudo,
+            });
+            if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+            toastTimeoutRef.current = setTimeout(() => {
+              setIncomingToast(null);
+            }, 7000);
+          }
+          lastNotifiedMsgIdRef.current = latestUnread.id;
+        }
+      }
+      unreadBaselineSetRef.current = true;
+    } catch (e) {}
+  }, [currentUserEmail, isDndActive]);
+
   useEffect(() => {
     if (!currentUserEmail) return;
+    checkUnreadOnly(true);
 
-    // Envia presença imediatamente
-    sendPresenceHeartbeat({
-      email: currentUserEmail,
-      nome: currentUserName,
-      role: currentUserRole,
-    });
-
-    const checkNewMessagesAndPresence = async () => {
-      try {
-        const activePeers = await getOnlinePeers(currentUserEmail);
-        setPeers(activePeers);
-      } catch (e) {}
-
-      try {
-        const count = await getUnreadMessagesCount(currentUserEmail);
-        setUnreadCount(count);
-
-        if (count > 0) {
-          const latestUnread = await getLatestUnreadMessage(currentUserEmail);
-          if (latestUnread && latestUnread.id !== lastNotifiedMsgIdRef.current) {
-            // Se for primeira vez lendo, apenas registra sem tocar som para não assustar no load
-            if (lastNotifiedMsgIdRef.current !== null) {
-              // Nova mensagem real chegou!
-              if (!isDndActive) {
-                playNotificationChime();
-                setIncomingToast({
-                  id: latestUnread.id,
-                  senderName: latestUnread.remetente_nome || latestUnread.remetente_email.split('@')[0],
-                  senderEmail: latestUnread.remetente_email,
-                  conteudo: latestUnread.conteudo,
-                });
-                if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-                toastTimeoutRef.current = setTimeout(() => {
-                  setIncomingToast(null);
-                }, 7000);
-              }
-            }
-            lastNotifiedMsgIdRef.current = latestUnread.id;
-          }
-        }
-      } catch (e) {}
+    const handleFocus = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        checkUnreadOnly(false);
+      }
     };
 
-    checkNewMessagesAndPresence();
-
-    // Polling inteligente de mensagens a cada 12s quando visível
-    const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
-        sendPresenceHeartbeat({
-          email: currentUserEmail,
-          nome: currentUserName,
-          role: currentUserRole,
-        });
-        checkNewMessagesAndPresence();
-      }
-    }, 12000);
-
+    window.addEventListener('focus', handleFocus);
     return () => {
-      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
       if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     };
-  }, [currentUserEmail, currentUserName, currentUserRole, isDndActive]);
+  }, [currentUserEmail, checkUnreadOnly]);
 
-  // Carrega mensagens do colega selecionado
+  // Carrega lista de colegas sob demanda apenas quando a gaveta de chat é aberta
+  const refreshPeersAndUnread = useCallback(async () => {
+    if (!currentUserEmail) return;
+    setIsRefreshing(true);
+    try {
+      const [activePeers, count] = await Promise.all([
+        getOnlinePeers(currentUserEmail),
+        getUnreadMessagesCount(currentUserEmail),
+      ]);
+      setPeers(activePeers);
+      setUnreadCount(count);
+      setHasLoadedPeers(true);
+      lastUnreadCheckRef.current = Date.now();
+    } catch (e) {
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [currentUserEmail]);
+
   useEffect(() => {
-    if (!selectedPeer || !currentUserEmail) return;
+    if (!isOpen || !currentUserEmail) return;
+    refreshPeersAndUnread();
+  }, [isOpen, currentUserEmail, refreshPeersAndUnread]);
 
-    const loadChat = async () => {
+  // Carrega mensagens do colega selecionado sob demanda (sem polling de 5s)
+  const loadActiveChat = useCallback(async () => {
+    if (!selectedPeer || !currentUserEmail) return;
+    setIsRefreshing(true);
+    try {
       const msgs = await getDirectMessages(currentUserEmail, selectedPeer.email);
       setMessages(msgs);
-      markMessagesAsRead(selectedPeer.email, currentUserEmail);
-      getUnreadMessagesCount(currentUserEmail).then(setUnreadCount);
+      await markMessagesAsRead(selectedPeer.email, currentUserEmail);
+      const count = await getUnreadMessagesCount(currentUserEmail);
+      setUnreadCount(count);
       setTimeout(scrollToBottom, 100);
-    };
-
-    loadChat();
-    const interval = setInterval(() => {
-      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
-        loadChat();
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
+    } finally {
+      setIsRefreshing(false);
+    }
   }, [selectedPeer, currentUserEmail]);
+
+  useEffect(() => {
+    if (!isOpen || !selectedPeer || !currentUserEmail) return;
+    loadActiveChat();
+  }, [isOpen, selectedPeer, currentUserEmail, loadActiveChat]);
+
+  const handleManualRefresh = () => {
+    if (selectedPeer) {
+      loadActiveChat();
+    } else {
+      refreshPeersAndUnread();
+    }
+  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -256,9 +275,11 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
             <div className="flex items-center gap-1.5">
               <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
               <span className="text-[11px] font-bold">
-                {otherOnlineCount > 0 
-                  ? `${totalConnected} Conectados` 
-                  : 'Online'}
+                {hasLoadedPeers
+                  ? otherOnlineCount > 0
+                    ? `${totalConnected} Conectados`
+                    : 'Online'
+                  : 'Chat'}
               </span>
               {isDndActive && (
                 <span title="Modo Não Perturbe Ativo (Silenciado)">
@@ -325,6 +346,16 @@ export const PresencaChat: React.FC<PresencaChatProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5">
+              {/* Botão Atualizar Sob Demanda */}
+              <button
+                onClick={handleManualRefresh}
+                disabled={isRefreshing}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer disabled:opacity-50"
+                title="Atualizar colegas e mensagens"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-400' : ''}`} />
+              </button>
+
               {/* Botão Modo Não Perturbe (DND) */}
               <button
                 onClick={toggleDnd}

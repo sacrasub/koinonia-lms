@@ -112,7 +112,10 @@ export async function getTopics(disciplinaId?: string, userEmail?: string): Prom
   const normEmail = (userEmail || '').toLowerCase().trim();
 
   try {
-    let query = supabase.from('tcc_foruns_topicos').select('*').order('criado_em', { ascending: false });
+    let query = supabase
+      .from('tcc_foruns_topicos')
+      .select('id, disciplina_id, autor_email, autor_nome, autor_role, titulo, conteudo, tipo, fixado, criado_em')
+      .order('criado_em', { ascending: false });
     if (disciplinaId && disciplinaId !== 'todas') {
       query = query.or(`disciplina_id.eq.${disciplinaId},disciplina_id.eq.global-koinonia`);
     }
@@ -201,7 +204,7 @@ export async function getTopicReplies(
   try {
     const { data: dbReplies, error } = await supabase
       .from('tcc_foruns_respostas')
-      .select('*')
+      .select('id, topico_id, autor_email, autor_nome, autor_role, conteudo, criado_em')
       .eq('topico_id', topico.id)
       .order('criado_em', { ascending: true });
 
@@ -331,29 +334,8 @@ export async function getOnlinePeers(currentUserEmail: string): Promise<OnlinePe
       });
     }
   } catch (e) {
-    // Continua para fallback
+    // Continua com cache local e lista autorizada
   }
-
-  // Fallback: se lms_user_sessions não existir ou estiver vazia, verifica student_sync recente em materiais
-  try {
-    const { data: recentStudents } = await supabase
-      .from('materiais')
-      .select('title, file_url, created_at')
-      .ilike('title', 'student_sync_%');
-
-    if (recentStudents) {
-      recentStudents.forEach((row) => {
-        try {
-          const parsed = JSON.parse(row.file_url);
-          const rawEmail = row.title.replace('student_sync_', '').toLowerCase().trim();
-          const lastActivity = parsed.updatedAt || row.created_at;
-          if (new Date(lastActivity).getTime() >= (now - 15 * 60 * 1000)) {
-            activeOnlineEmails.add(rawEmail);
-          }
-        } catch (_) {}
-      });
-    }
-  } catch (_) {}
 
   // 2. Verifica também heartbeats locais recentes
   Object.values(presenceMap).forEach((p) => {
@@ -415,7 +397,7 @@ export async function getDirectMessages(user1Email: string, user2Email: string):
   try {
     const { data: dbMessages, error } = await supabase
       .from('tcc_mensagens')
-      .select('*')
+      .select('id, remetente_email, remetente_nome, destinatario_email, destinatario_nome, conteudo, lida, criado_em')
       .or(`and(remetente_email.eq.${u1},destinatario_email.eq.${u2}),and(remetente_email.eq.${u2},destinatario_email.eq.${u1})`)
       .order('criado_em', { ascending: true });
 
@@ -461,7 +443,7 @@ export async function getUnreadMessagesCount(userEmail: string): Promise<number>
   try {
     const { count } = await supabase
       .from('tcc_mensagens')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('destinatario_email', normEmail)
       .eq('lida', false);
 
@@ -477,7 +459,7 @@ export async function getLatestUnreadMessage(userEmail: string): Promise<DirectM
   try {
     const { data, error } = await supabase
       .from('tcc_mensagens')
-      .select('*')
+      .select('id, remetente_email, remetente_nome, destinatario_email, destinatario_nome, conteudo, lida, criado_em')
       .eq('destinatario_email', normEmail)
       .eq('lida', false)
       .order('criado_em', { ascending: false })
@@ -523,7 +505,7 @@ export async function getPrayerCards(): Promise<PedidoOracaoCard[]> {
   try {
     const { data, error } = await supabase
       .from('tcc_mural_oracoes')
-      .select('*')
+      .select('id, autor_email, autor_nome, autor_cargo, categoria, pedido_oracao, intercessores, criado_em')
       .order('criado_em', { ascending: false });
 
     if (!error && data && data.length > 0) {

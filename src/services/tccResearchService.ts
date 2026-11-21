@@ -240,13 +240,13 @@ export async function getAllSurveys(): Promise<TCCPesquisa[]> {
     // 1. Tenta buscar nas tabelas dedicadas do Supabase
     const { data: pesquisasData, error: pesqError } = await supabase
       .from('tcc_pesquisas')
-      .select('*')
+      .select('id, titulo, descricao, alvo, ativa, pilar_principal, criado_em')
       .order('criado_em', { ascending: false });
 
     if (!pesqError && pesquisasData && pesquisasData.length > 0) {
       const { data: perguntasData } = await supabase
         .from('tcc_perguntas')
-        .select('*')
+        .select('id, pesquisa_id, ordem, texto_pergunta, pilar_tcc, tipo, opcoes, obrigatoria, criado_em')
         .order('ordem', { ascending: true });
 
       const surveys: TCCPesquisa[] = pesquisasData.map((p) => ({
@@ -588,7 +588,7 @@ export async function getPlatformEngagementMetrics(): Promise<TCCPlatformMetrics
   try {
     const { count: rpgCount } = await supabase
       .from('materiais')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .ilike('id', '%rpg%');
     totalRpgSessions = rpgCount || 4;
     totalRpgFichas = (rpgCount || 4) * 3;
@@ -642,7 +642,7 @@ export async function getSurveyStats(targetSurveyId?: string): Promise<TCCSurvey
   try {
     const { data: dbResponses, error } = await supabase
       .from('tcc_respostas')
-      .select('*')
+      .select('id, pesquisa_id, pergunta_id, usuario_email, usuario_role, resposta_escala, resposta_texto, respondido_em')
       .eq('pesquisa_id', survey.id);
 
     if (!error && dbResponses && dbResponses.length > 0) {

@@ -31,8 +31,17 @@ export function WhatsNewModal({ forceOpen = false, onClose }: WhatsNewModalProps
       return;
     }
 
-    // 2. Checa versão salva no localStorage
+    // 2. Checa versão salva no localStorage (evita empilhar sobre modal de primeiro acesso de perfil)
     try {
+      const activeEmail = (localStorage.getItem('lms_active_user_email') || '').toLowerCase().trim();
+      if (activeEmail) {
+        const isProfileConfirmed = localStorage.getItem(`lms_profile_confirmed_${activeEmail}`) === 'true';
+        const isRemindLater = localStorage.getItem(`lms_remind_profile_later_${activeEmail}`) === 'true';
+        if (!isProfileConfirmed && !isRemindLater) {
+          return;
+        }
+      }
+
       const lastSeen = localStorage.getItem('lms_last_seen_version');
       if (hasNewVersion(lastSeen)) {
         // Pequeno delay de 1.2s para a página terminar de carregar antes de exibir

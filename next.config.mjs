@@ -1,9 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  typescript: {
-    // Ignora erros de tipagem durante o deploy na Vercel
-    ignoreBuildErrors: true,
-  },
-};
+const nextConfig = {};
 
 export default nextConfig;
