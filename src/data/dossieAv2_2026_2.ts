@@ -13,6 +13,7 @@ export interface AulaUnidade2Item {
   aulaNum: number;
   dataAprox: string;
   resumo: string;
+  geminiUrl?: string;
 }
 
 export interface TopicoRevisaoItem {
@@ -147,36 +148,48 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~06/10/2026',
         resumo:
           'Devolutiva e correção comentada da AV1; introdução à Unidade 2 sobre o Congregacionalismo no Brasil, conversão, formação médica e primeiras atividades de Robert Reid Kalley na Escócia.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1SMYzyOHEFRtDWfNcnfN6u274xaRfiDtZQwxOMt2T49M/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~13/10/2026',
         resumo:
           'A missão pioneira do Dr. Kalley na Ilha da Madeira, o sucesso evangelístico, as perseguições civis e religiosas de 1843 a 1846 e a fuga dramática dos convertidos.',
+        geminiUrl:
+          'https://docs.google.com/document/d/19OA-kkDNv6T02-2KmJSZU1TwBUctCEJdI1RGNTZ2Hlw/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~20/10/2026',
         resumo:
           'Chegada de Robert e Sarah Kalley ao Brasil (1855), estabelecimento em Petrópolis e a organização da histórica Igreja Evangélica Fluminense (1858).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Uix9VsejGbtSt-P30Wk8g9tVQe84pQrXax22yh3Y4Mw/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~27/10/2026',
         resumo:
           'Expansão missionária caleiana no Nordeste com a fundação da Igreja Evangélica Pernambucana (1873) e convocação da congregação para formular uma declaração de fé (1874-1875).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Kc4aCpxigVaTgRncC_YysuKmjnO9N-c0DHySAFoGpY4/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~10/11/2026',
         resumo:
           'Análise exegética e histórica dos 28 Artigos de Fé da Breve Exposição: Artigos 1 a 10 cobrindo Bibliologia, Teologia Própria, Criação e Queda (Federalismo em Adão).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Ku9I4Y1jOTe0EV4qmL3_6B2LLjfKwjcBNwJneLx8cMw/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~17/11/2026',
         resumo:
           'Conclusão dos 28 Artigos (Cristologia, Soteriologia, ritos no Artigo 24 e escatologia) e organização denominacional: Help for Brazil, UEA e convenção de 1913 ("Igrejas Indenominacionais do Brasil").',
+        geminiUrl:
+          'https://docs.google.com/document/d/1gvg7E0kf0cakBge6lHp_cKToXM86S_utejmoQ0_0X9w/edit',
       },
     ],
     guiaRevisao: [
@@ -440,36 +453,48 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~06/10/2026',
         resumo:
           'O impacto do Iluminismo e o surgimento do Liberalismo Teológico; Friedrich Schleiermacher e o sentimento de absoluta dependência de Deus.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1gwe3NgkR7EzAJ7F_GLIXwLP07oLO8KNgphP33PhfaMw/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~13/10/2026',
         resumo:
           'Os avivamentos do século XVIII (Jonathan Edwards e George Whitefield) como bastiões doutrinários e espirituais frente à secularização.',
+        geminiUrl:
+          'https://docs.google.com/document/d/11wqEdqKGnnjvKDiKhVIK3ALmeaMWUVwYuEhWa67IqKw/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~20/10/2026',
         resumo:
           'Karl Barth e o colapso do otimismo liberal na Primeira Guerra; a redescoberta da transcendência de Deus na Carta aos Romanos.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1tI3jrEMgEaMS775bKmWJSp9-hznZUKVkVrFM4mJOI1U/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~03/11/2026',
         resumo:
           'O existencialismo cristão de Søren Kierkegaard contra a frieza estatal e o documento profético da Declaração Teológica de Barmen (1934) contra a nazificação da igreja.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1I-JzKyFBGHu4c0DOEGHCjpoNKq-1pUydzAxnuieqlFI/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~10/11/2026',
         resumo:
           'Panorama comparativo dos séculos XIX e XX: ceticismo de Bultmann (desmitologização) versus a fidelidade das Confissões Reformadas e a inerrância bíblica.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1_sz99xNWRRztk760jNlwOWv_N6twhRRpyM9q8tqBfeE/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~17/11/2026',
         resumo:
           'Revisão e síntese metodológica da AV2: como correlacionar autores, épocas históricas e a preservação da autoridade soberana das Escrituras.',
+        geminiUrl:
+          'https://docs.google.com/document/d/11LmcdzMLOqeE_kro08Q10rkWrhgEkpT6jRiqFT5OSZ4/edit',
       },
     ],
     guiaRevisao: [
@@ -698,42 +723,56 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~07/10/2026',
         resumo:
           'Devolutiva comentada da AV1; metodologia da coleta de dados através de perguntas abertas, escuta atenta e cuidados contra uma postura inquisitória.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1ScuCYlpgK66clRDWEyX1UsYNgqt3RXlDz2hPp87XnGw/edit',
       },
       {
         aulaNum: 9,
         dataAprox: '~14/10/2026',
         resumo:
           'Conduta em demandas complexas de gabinete; estudo de caso sobre crises existenciais, integridade e o limite do gabinete pastoral.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1zmR8MIsk7bOJbTz9V2ttu6l-MsWeQhLKXzmtLe63mXw/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~21/10/2026',
         resumo:
           'Fundamentação bíblica sobre sexualidade e casamento à luz de Romanos 1; a centralidade do Evangelho como única força de restauração espiritual.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1pt7-izAE3LUG6ldEWG4Mwk9oklvlgRuCJkSQVW5ne40/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~28/10/2026',
         resumo:
           'O perigo das "falsas esperanças" no aconselhamento; crítica ao pensamento mágico devocional e a injeção da verdadeira esperança do Evangelho.',
+        geminiUrl:
+          'https://docs.google.com/document/d/15YRhOK7KEpH-YV0V-fkfTddxVymzA52PrZsvG_fvuis/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~04/11/2026',
         resumo:
           'Esperança bíblica versus passividade humana; refutação do erro de orar sem tomar atitudes práticas e a soberania de Deus.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Viw3fiPpgyLAFmed3ZHD475YZizI3Shbbhln4QrSViA/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~11/11/2026',
         resumo:
           'Esperança escatológica e o plano redentivo global (o "já e o ainda não"); estudos de caso em dilemas conjugais e disciplina restauradora.',
+        geminiUrl:
+          'https://docs.google.com/document/d/19JSpAgBBeapOIjkjVRL6Vy4sCes2tJt0SR9OaomudjE/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~18/11/2026',
         resumo:
           'As Escrituras Sagradas como clímax inegociável do aconselhamento (Salmo 130:5 e os discípulos de Emaús em Lc 24); encerramento do semestre.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1QWa3tF0XwKnByxdtM_a80MZYL6KZD4VEGAe5xmlSGQo/edit',
       },
     ],
     guiaRevisao: [
@@ -981,42 +1020,56 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~07/10/2026',
         resumo:
           'Devolutiva comentada da AV1; introdução à sistemática de proteção dos direitos fundamentais no Brasil pela Constituição Federal de 1988.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1-ddZB6qd2ajhKqEOHaqQG-sUqamoq_Ba8HTRdvR0orc/edit',
       },
       {
         aulaNum: 9,
         dataAprox: '~14/10/2026',
         resumo:
           'A estrutura da ONU, a Carta de 1945 e a composição do Conselho de Segurança (15 membros, com 5 membros permanentes e poder de veto).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1CjT12m6_gcTll_LqF7j6MPXpFjRP4AjWPzu-En4R0Xc/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~21/10/2026',
         resumo:
           'Direitos Humanos em espécie: o Direito à Vida em suas dimensões vertical e horizontal e a tutela jurídica do nascituro.',
+        geminiUrl:
+          'https://docs.google.com/document/d/12xr5g31EYSxe3RrlqlaVKlEwZp8aT2kHDhCGfciDMtM/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~28/10/2026',
         resumo:
           'Inviolabilidade da vida e dignidade humana perante os dilemas biomédicos da eutanásia, distanásia e cuidados paliativos.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1BteQvptuhZnjGaBG2DtSyjKXLcIrEM16gHhGg3cx7oY/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~04/11/2026',
         resumo:
           'O Direito à Igualdade (Art. 5º da CF/88); diferenciação dogmática entre igualdade formal e material (equidade); o dever de acessibilidade eclesiástica.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1YaYYHMlUoUAXW7OZ2Nk7qkXZGGwKhuIhwoMb3cszZWU/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~11/11/2026',
         resumo:
           'Integridade física e psíquica; vedação absoluta à tortura; direitos da personalidade (honra objetiva/subjetiva, imagem e privacidade) e laicidade estatal.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1mMxMeEvCuWSJTr2H3D_uD2nBQokcFedsPZ7CeJlqmvI/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~18/11/2026',
         resumo:
           'Síntese final dos 52 slides consolidados; esclarecimento das regras da AV2 (peso 10 integral na prova) e encerramento do semestre.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1MxeIKhKmGCvPiy-XN9zNGMyIdnYiPlFi1RCHUQMbpKc/edit',
       },
     ],
     guiaRevisao: [
@@ -1234,36 +1287,48 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~08/10/2026',
         resumo:
           'Alinhamento metodológico e divisão final dos grupos para os Seminários sobre o Decálogo com base no Catecismo Maior de Westminster.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1w2xGUl8Ru7sSkltPpWN34rnPLkSCF-prX-1WO8XUXDI/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~22/10/2026',
         resumo:
           '1ª Rodada dos Seminários: O 1º e o 2º Mandamentos (o culto exclusivo a Deus versus idolatria de imagens e ritos pagãos).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Z1Tf7d25ZP6oaP4cM6Oy99Iz-uGu8uKLElKrgP8X8QE/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~29/10/2026',
         resumo:
           '2ª Rodada dos Seminários: O 3º e o 4º Mandamentos (a reverência ao Nome santo de Deus e a teologia do descanso no Dia do Senhor).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1fNjlqWCj4F5N4PB_v03Q3-szv66roDyhy_nVRchv2uo/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~05/11/2026',
         resumo:
           '3ª Rodada dos Seminários: O 5º e o 6º Mandamentos (a honra a pais e autoridades civis e a santidade inegociável da vida humana contra o homicídio).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1wYqtYlp27mvSlmeRK8dx2zWI0D7QFkKQJcmtP8pKN9c/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~12/11/2026',
         resumo:
           '4ª Rodada dos Seminários: O 7º e o 8º Mandamentos (a pureza matrimonial/fidelidade e a integridade da propriedade alheia contra o furto).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1ZyK4GLfnI6nWyPRcJRbI2va4mclULoJJK6K3AtXcat4/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~19/11/2026',
         resumo:
           '5ª Rodada dos Seminários: O 9º e o 10º Mandamentos (o testemunho veraz na sociedade e o combate à cobiça interior); fechamento das avaliações práticas.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1n45zbNB16cgYba0VB3IvoeTI_PESNZbq0bvlNOsComQ/edit',
       },
     ],
     guiaRevisao: [
@@ -1516,6 +1581,8 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~08/10/2026',
         resumo:
           'Devolutiva da AV1; introdução às Epístolas de Pedro e a contextualização da perseguição sob o Império Romano.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1IiEdNvD7Pu2n9gTSQc7t2aMU_-31twD3vF0u8F9yJJM/edit',
       },
       {
         aulaNum: 9,
@@ -1528,6 +1595,8 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~22/10/2026',
         resumo:
           '1 Pedro: a teologia da "esperança viva", santidade como sacerdócio real de Deus e o testemunho ético do crente no ambiente social pagão.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Kq80omtq6u75kaI3x9nrvQfnHZBgPnfGydPMpN6XKGM/edit',
       },
       {
         aulaNum: 11,
@@ -1540,18 +1609,24 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~05/11/2026',
         resumo:
           '2 Pedro: a defesa da segunda vinda (Parusia); refutação dos escarnecedores e a demonstração de que a demora de Cristo é paciência de Deus visando ao arrependimento (2Pe 3:9).',
+        geminiUrl:
+          'https://docs.google.com/document/d/18ykCo3NYtT1JTBkWw0GLBZO9hkawUP6d9VK_S6Y6Mgo/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~12/11/2026',
         resumo:
           'A Epístola de Judas: identidade do autor (irmão de Tiago e de Jesus); combate à licenciosidade moral e alusões às tradições judaicas apócrifas.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1CzhxUexq8v-WnXg_O5Vh6N9Jdfu5yym4ohDKW_oVAUw/edit',
       },
       {
         aulaNum: 14,
         dataAprox: '~19/11/2026',
         resumo:
           'As Cartas de 1, 2 e 3 João: combate ao docetismo e proto-gnosticismo; os testes da verdadeira comunhão e o fechamento do semestre para a AV2.',
+        geminiUrl:
+          'https://docs.google.com/document/d/14pJY-VuipYA9Hkv7tRJBxsyw8S5ySzZzwHMDWK9CVRQ/edit',
       },
     ],
     guiaRevisao: [
@@ -1792,36 +1867,48 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~09/10/2026',
         resumo:
           'Devolutiva do questionário de leitura da AV1 (O Que é a Igreja?, de R. C. Sproul) e introdução ao diagnóstico das patologias de declínio eclesial.',
+        geminiUrl:
+          'https://docs.google.com/document/d/19nnfw9HsfjDxdE6yx4glueKYZW9NMqexeTvtSo8KOzw/edit',
       },
       {
         aulaNum: 9,
         dataAprox: '~16/10/2026',
         resumo:
           'Os 4 Ps da Revitalização Pastoral: Pregar (exposição bíblica vibrante), Piedade (santidade da liderança), Pastorear (cuidado individual) e Perseverar (resiliência ministerial).',
+        geminiUrl:
+          'https://docs.google.com/document/d/1p90BhDK1MudLADtl6xBSSE-K5QWr_z4QgyGk0YpAL1c/edit',
       },
       {
         aulaNum: 10,
         dataAprox: '~23/10/2026',
         resumo:
           'Modelos de governo e discipulado: a transição do pastor centralizador burocrático para uma liderança plural e capacitadora do rebanho.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1jvZb_7cO5hDhAPq_3eS5znOtkQBySC6-LqNSPOtHcU0/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~30/10/2026',
         resumo:
           'Os conceitos centrais do livro A Treliça e a Videira: como manter as estruturas eclesiásticas a serviço do ministério relacional de proclamar a Palavra de Deus.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1PRf_AE2Q6eoQKk_e_oDpNFPQ23koQSaFP9Ev0WJvdPA/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~06/11/2026',
         resumo:
           'O gerenciamento de resistências e conflitos na revitalização de igrejas tradicionais sem provocar cismas ou rupturas destrutivas.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1UFG0ufUtVOwDJEBXn72eE6xETnshS-sdu3sbWA-HZmQ/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~13/11/2026',
         resumo:
           'Organização do PDF oficial consolidado para consulta da prova da AV2 e detalhamento do formato do resumo de 12 páginas.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1jooWD7YG-2GZWIDfINg5_Ac9MWjRAspEwQsTnSk9e3o/edit',
       },
       {
         aulaNum: 14,
@@ -2056,6 +2143,8 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~09/10/2026',
         resumo:
           'Devolutiva dos pré-projetos aprovados da AV1; orientação de transição definitiva para a redação do artigo científico final.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1mANDz_crlvKLbTE-UDDX9t9GjiCu5cPfO6pqP_813bE/edit',
       },
       {
         aulaNum: 9,
@@ -2068,24 +2157,32 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
         dataAprox: '~23/10/2026',
         resumo:
           'Redação dos capítulos de Desenvolvimento: o diálogo entre autores com citações diretas curtas, diretas longas (recuo de 4 cm) e paráfrases.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1op8PfbAYUEXkMsYk05A2Wn8LGrWsVrUNIedIB5OX7ks/edit',
       },
       {
         aulaNum: 11,
         dataAprox: '~30/10/2026',
         resumo:
           'O princípio da Impessoalidade Acadêmica: eliminação de expressões devocionais pessoais ("eu penso", "meu trabalho") e o rigor semântico teológico.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1Hv7A1JHsNEQY2BhnFCZfbf_LUBu8Vpb0_NyB_T8mFSE/edit',
       },
       {
         aulaNum: 12,
         dataAprox: '~06/11/2026',
         resumo:
           'Redação das Considerações Finais: fechamento dos objetivos específicos sem introdução de citações teóricas inéditas.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1z4tSB5VQ4DyD2KWvIV4pFR_8Cdh-B7Hy1IDCxqVxFa0/edit',
       },
       {
         aulaNum: 13,
         dataAprox: '~13/11/2026',
         resumo:
           'Elaboração dos elementos pré-textuais por último: estrutura do Resumo e Abstract (150 a 500 palavras em parágrafo único) e da Introdução definitiva.',
+        geminiUrl:
+          'https://docs.google.com/document/d/1XTq-zk-3TRNqujyrpQERGI_uAlj8RYJZ3YCrhBXBqE0/edit',
       },
       {
         aulaNum: 14,

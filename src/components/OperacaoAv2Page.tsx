@@ -566,10 +566,21 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-sm font-black uppercase tracking-wider text-gray-700 dark:text-slate-200 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-indigo-500" />
-                  <span>Linha do Tempo • Aulas da Unidade 2</span>
-                </h3>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-sm font-black uppercase tracking-wider text-gray-700 dark:text-slate-200 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-indigo-500" />
+                    <span>Linha do Tempo • Aulas da Unidade 2</span>
+                  </h3>
+                  {(() => {
+                    const count = activeDisc.aulasUnidade2.filter((a) => Boolean(a.geminiUrl)).length;
+                    if (count === 0) return null;
+                    return (
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                        {count} {count === 1 ? 'transcrição Gemini' : 'transcrições Gemini'}
+                      </span>
+                    );
+                  })()}
+                </div>
                 <div className="space-y-2.5">
                   {activeDisc.aulasUnidade2.map((aula) => (
                     <div
@@ -579,10 +590,24 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                       <span className="px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-200 font-black text-[11px] shrink-0">
                         Aula {aula.aulaNum}
                       </span>
-                      <div className="min-w-0 flex-1 space-y-0.5">
-                        <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400">
-                          {aula.dataAprox}
-                        </span>
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400">
+                            {aula.dataAprox}
+                          </span>
+                          {aula.geminiUrl && (
+                            <a
+                              href={aula.geminiUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/70 text-indigo-700 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800 text-[11px] font-bold transition shrink-0"
+                            >
+                              <Sparkles className="w-3 h-3 shrink-0" />
+                              <span>Transcrição Gemini</span>
+                              <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
+                            </a>
+                          )}
+                        </div>
                         <p className="text-xs sm:text-sm text-gray-800 dark:text-slate-200 leading-relaxed">
                           {aula.resumo}
                         </p>
