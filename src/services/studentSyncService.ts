@@ -452,7 +452,12 @@ export async function fetchStudentData(
 
       // DADOS BIOGRÁFICOS / PERFIL: A nuvem tem prioridade absoluta sobre o cache antigo do celular
       const portalProfile = cloud.portalProfile !== null ? cloud.portalProfile : local.portalProfile;
-      const checklistTasks = cloud.checklistTasks !== null ? cloud.checklistTasks : local.checklistTasks;
+      const checklistTasks =
+        pendingUpserts[email]?.checklist_tasks !== undefined
+          ? pendingUpserts[email].checklist_tasks
+          : cloud.checklistTasks !== null
+          ? cloud.checklistTasks
+          : local.checklistTasks;
 
       const merged = { completedLessons, lessonAttendanceStatus, studentNotes, cornellNotes, portalProfile, checklistTasks };
       
@@ -654,6 +659,8 @@ export async function saveChecklistTasks(
 ): Promise<void> {
   const email = getNormalizedEmail(userEmail);
   if (!email) return;
+
+  pendingUpserts[email] = { ...(pendingUpserts[email] || {}), checklist_tasks: tasks };
 
   if (typeof window !== 'undefined') {
     safeLocalStorageSet(

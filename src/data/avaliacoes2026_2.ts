@@ -60,6 +60,7 @@ export interface KanbanTask {
   priority: 'Máxima' | 'Média' | 'Normal';
   type: 'Trabalho Escrito' | 'Portfólio' | 'Prova Objetiva' | 'Resumo Crítico' | 'Estudo de Caso' | 'TCC' | 'Seminário em Grupo' | 'Atividade Modular' | string;
   status: 'todo' | 'doing' | 'done';
+  manualStatus?: 'todo' | 'doing' | 'done';
   strategyNote: string;
   subtasks: { id: string; text: string; done: boolean }[];
 }

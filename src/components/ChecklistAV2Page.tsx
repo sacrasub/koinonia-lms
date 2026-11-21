@@ -56,6 +56,22 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     setTimeout(() => setNotification(null), 3500);
   };
 
+  const resolveTaskStatus = (
+    subtasks: { id: string; text: string; done: boolean }[],
+    currentStatus: 'todo' | 'doing' | 'done',
+    manualStatus?: 'todo' | 'doing' | 'done'
+  ): 'todo' | 'doing' | 'done' => {
+    if (manualStatus) return manualStatus;
+    const doneCount = subtasks.filter((st) => st.done).length;
+    if (doneCount === subtasks.length && subtasks.length > 0) {
+      return currentStatus === 'doing' ? 'doing' : 'done';
+    }
+    if (doneCount > 0 || currentStatus === 'doing') {
+      return 'doing';
+    }
+    return 'todo';
+  };
+
   // Garante que todas as avaliações oficiais da grade estejam no Kanban com metadados atualizados
   const ensureAllOfficialAssessments = (taskList: KanbanTask[]): KanbanTask[] => {
     const officialTaskMap = new Map(
@@ -68,7 +84,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       const official = officialTaskMap.get(key);
       if (!official) return task;
 
-      if (official.status === 'done') {
+      if (official.status === 'done' && !task.manualStatus) {
         return {
           ...task,
           assessmentId: official.assessmentId,
@@ -88,13 +104,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         ...st,
         done: existingDoneByText.get(st.id) ?? task.subtasks[idx]?.done ?? st.done,
       }));
-      const doneCount = mergedSubtasks.filter((st) => st.done).length;
-      const nextStatus: 'todo' | 'doing' | 'done' =
-        doneCount === mergedSubtasks.length && mergedSubtasks.length > 0
-          ? 'done'
-          : doneCount > 0
-          ? 'doing'
-          : 'todo';
+      const nextStatus = resolveTaskStatus(mergedSubtasks, task.status, task.manualStatus);
 
       return {
         ...task,
@@ -107,6 +117,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         strategyNote: official.strategyNote,
         subtasks: mergedSubtasks,
         status: nextStatus,
+        manualStatus: task.manualStatus,
       };
     });
 
@@ -152,14 +163,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
             ...st,
             done: checks[idx] !== undefined ? !!checks[idx] : st.done,
           }));
-          const doneCount = updatedSubtasks.filter((st) => st.done).length;
-          const status: 'todo' | 'doing' | 'done' =
-            doneCount === updatedSubtasks.length && updatedSubtasks.length > 0
-              ? 'done'
-              : doneCount > 0
-              ? 'doing'
-              : 'todo';
-          return { ...task, assessmentId, subtasks: updatedSubtasks, status };
+          const status = resolveTaskStatus(updatedSubtasks, task.status, task.manualStatus);
+          return { ...task, assessmentId, subtasks: updatedSubtasks, status, manualStatus: task.manualStatus };
         } else {
           // Se não há dados no localStorage, grava o estado atual das subtasks
           const initialChecks: Record<number, boolean> = {};
@@ -339,7 +344,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                 : doneCount > 0
                 ? 'doing'
                 : 'todo';
-            return { ...t, subtasks: updatedSubtasks, status };
+            return { ...t, subtasks: updatedSubtasks, status, manualStatus: undefined };
           }
           return t;
         });
@@ -386,7 +391,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
               : doneCount > 0
               ? 'doing'
               : 'todo';
-          return { ...t, subtasks: updatedSubtasks, status };
+          return { ...t, subtasks: updatedSubtasks, status, manualStatus: undefined };
         }
         return t;
       });
@@ -431,7 +436,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         if (t.assessmentId === evento.id || t.id === evento.id) {
           found = true;
           const updatedSubtasks = t.subtasks.map((st) => ({ ...st, done: true }));
-          return { ...t, status: 'done' as const, subtasks: updatedSubtasks };
+          return { ...t, status: 'done' as const, manualStatus: undefined, subtasks: updatedSubtasks };
         }
         return t;
       });
@@ -550,7 +555,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           affectedChecks = checks;
         }
 
-        return { ...t, status: newStatus, subtasks: updatedSubtasks };
+        return { ...t, status: newStatus, manualStatus: newStatus, subtasks: updatedSubtasks };
       }
       return t;
     });
@@ -576,6 +581,13 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     }
 
     saveTasks(updated);
+    const colLabel =
+      newStatus === 'doing'
+        ? 'Em Andamento (Produção)'
+        : newStatus === 'done'
+        ? 'Concluídos com Êxito'
+        : 'A Fazer (Pendentes)';
+    showNotification(`✓ Card movido para "${colLabel}"!`);
   };
 
   const handleToggleSubtask = (taskId: string, subtaskId: string) => {
@@ -603,7 +615,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           affectedNewDone = updatedSubtasks[stepIdx].done;
         }
 
-        return { ...t, subtasks: updatedSubtasks, status: newStatus };
+        return { ...t, subtasks: updatedSubtasks, status: newStatus, manualStatus: undefined };
       }
       return t;
     });
