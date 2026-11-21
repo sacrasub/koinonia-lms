@@ -41,7 +41,7 @@ export interface PlanoEstudosTurma {
   requisitos: RequisitosDisciplina[];
 }
 
-const STORAGE_PREFIX = 'lms_plano_estudos_turma_v2026_2_homologado_';
+const STORAGE_PREFIX = 'lms_plano_estudos_turma_v2026_2_av2_oficial_';
 
 // ============================================================
 // DADOS INICIAIS POR TURMA
@@ -54,16 +54,18 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
     { id: 'e-hpc-av1', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho' },
     { id: 'e-aco-av1', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV1: Prova Objetiva via Google Forms', descricao: 'Questões estritamente dos slides. Sem trabalhos escritos. Correção automática.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
     { id: 'e-dir-trabalho-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Trabalho Dissertativo AV1: Desigualdade Social & Privilégios (peso 2)', descricao: 'Redigir dissertação de até 1 lauda: "Desigualdade social e privilégios conforme vídeo da aula de 26/09/2026. Discutir a importância da igreja como agente de transformação social". Formatação: Times New Roman 12, esp. 1,5. Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de nota". Prazo encerrado: 30/09/2026 às 23:59. Valor: 2,0 pts.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
-    { id: 'e-nt-av1', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV1: Prova Objetiva via Google Forms (Hebreus a 2 Pedro)', descricao: 'Prova Objetiva Online via formulário Google Forms cobrindo as Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro. Prazo: 01/10/2026 (Qui) até às 23:59.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova' },
-    { id: 'e-dir-prova-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Prova Objetiva AV1 via Google Forms (Prorrogada para 04/10)', descricao: 'Prazo estendido oficialmente para domingo, 04/10/2026 às 23:59. Prova objetiva sem consulta via Google Forms. Valor: 8,0 pts.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'prova' },
-    { id: 'e-etc-seminario', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'Seminários em Grupo — Dez Mandamentos (22/10 a 19/11)', descricao: 'Seminários Práticos em Grupo baseados no Catecismo Maior de Westminster e Norman Geisler. Apresentação 30 min (quartetos com 10 min por orador cronometrados). Nota estritamente individual. No dia 01/10 não há avaliação (aula expositiva normal).', dataLimite: '22/10 – 19/11/2026', dataISO: '2026-10-22', tipo: 'apresentacao' },
-    { id: 'e-dam-exame', disciplinaId: 'disc-dam', disciplina: 'Exame DAM / UIECB', titulo: 'Exame DAM / UIECB — Prova Presencial (09:00 - 12:00)', descricao: 'Avaliação denominacional presencial oficial da UIECB aos sábados para estudantes dos cursos teológicos.', dataLimite: '07/11/2026 (Sáb)', dataISO: '2026-11-07', tipo: 'prova' },
-    { id: 'e-his-av2', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV2: Prova Escrita — Unidade 2 (Congregacionalismo no Brasil)', descricao: 'Prova final da segunda unidade. Mesma composição da AV1 (Prova 8,0 + Frequência 1,0 + Leitura 1,0).', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-    { id: 'e-hpc-av2', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV2: Prova Objetiva 10 Questões — Google Forms', descricao: 'Prova objetiva com 10 questões via Google Forms cobrindo Teologia Liberal e Século XX. Resultado instantâneo.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
-    { id: 'e-aco-av2', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV2: Prova Objetiva Final — Google Forms', descricao: 'Segunda prova objetiva semestral via Google Forms. Questões estritamente dos slides. Correção automática.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
-    { id: 'e-dir-av2', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'AV2: Prova Forms (peso 8) + Pesquisa Escrita (peso 2)', descricao: 'Prova objetiva via Google Forms (peso 8,0) + trabalho de pesquisa escrito individual (peso 2,0). Média final >= 7,0 para aprovação.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
-    { id: 'e-pla-resumo', disciplinaId: 'disc-7', disciplina: 'Plantação e Revitalização II', titulo: 'AV1: Resumo Digitado (12 pág) + AV2: Prova com Consulta', descricao: 'AV1: Resumo DIGITADO em editor de texto, convertido em PDF (NÃO manuscrito), exatamente 1 folha digitada por capítulo (12 capítulos = 12 páginas). Enviar para thacyto@gmail.com até 27/11/2026 às 19:00. AV2: Prova online com consulta aos slides e anotações no mesmo dia.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'resumo' },
-    { id: 'e-tcc-artigo', disciplinaId: 'disc-8', disciplina: 'TCC I', titulo: 'Entrega Final: Artigo Científico Completo (20 a 25 pág.)', descricao: 'Artigo científico final com extensão de 20 a 25 páginas no total conforme Normas ABNT e Manual da Faculdade Maciço do Baturité (FMB). Capa até Referências. Rigorosamente sem uso de IA.', dataLimite: '04/12/2026 (Sex)', dataISO: '2026-12-04', tipo: 'entrega' },
+    { id: 'e-nt-av1', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV1: Prova Objetiva via Google Forms (Hebreus a 2 Pedro)', descricao: 'Prova Objetiva Online via formulário Google Forms cobrindo as Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro. Concluído.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova' },
+    { id: 'e-dir-prova-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Prova Objetiva AV1 via Google Forms (Concluída)', descricao: 'Prova objetiva sem consulta via Google Forms aplicada na 1ª unidade. Valor: 8,0 pts. Concluído.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'prova' },
+    { id: 'e-etc-seminario', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'Seminários em Grupo — Dez Mandamentos (Concluídos)', descricao: 'Seminários Práticos em Grupo baseados no Catecismo Maior de Westminster e Norman Geisler (22/10 a 19/11). Nota individual integralizada para AV1/AV2.', dataLimite: '22/10 – 19/11/2026', dataISO: '2026-10-22', tipo: 'apresentacao' },
+    { id: 'e-dam-exame', disciplinaId: 'disc-dam', disciplina: 'Exame DAM / UIECB', titulo: 'Exame DAM / UIECB — Prova Presencial (Concluído)', descricao: 'Avaliação denominacional presencial oficial da UIECB realizada em 07/11/2026.', dataLimite: '07/11/2026 (Sáb)', dataISO: '2026-11-07', tipo: 'prova' },
+    { id: 'e-his-av2', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV2: Prova V/F (10 Afirmações) — Congregacionalismo no Brasil', descricao: '19:00–20:25 BRT (17:00–18:25 Tabatinga). 10 afirmações V/F: 2 primeiras de autodeclaração de participação e leitura dos 3 textos (2,0 pts) + 8 de conteúdo (8,0 pts). Sem consulta, câmeras abertas, sem trabalho extra.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
+    { id: 'e-hpc-av2', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV2: Prova Objetiva 10 Questões — Google Forms', descricao: '20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões via Forms (1,0 pt cada), sem consulta, correção imediata. Sem trabalho na AV2.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
+    { id: 'e-aco-av2', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV2: Prova Objetiva Final — Google Forms', descricao: '19:00–20:25 BRT (17:00–18:25 Tabatinga). Questões estritamente dos slides da Unidade 2 no Drive. Correção automática, sem trabalho escrito.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
+    { id: 'e-dir-av2', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'AV2: Prova Forms Peso 10 (Trabalho Cancelado • 52 Slides)', descricao: 'Janela 19:00–23:59 BRT (17:00–21:59 Tabatinga). Trabalho escrito de 2 pts CANCELADO: 10 questões no Forms valem 10,0 pontos integrais, sem consulta, 100% dos 52 slides pós-AV1.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
+    { id: 'e-etc-av2', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'AV2: Encerramento & Conferência de Notas (Sem Prova Escrita)', descricao: '19:00–20:25 BRT (17:00–18:25 Tabatinga). NÃO haverá prova escrita na AV2; nota semestral 100% integralizada nos Seminários dos Dez Mandamentos.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'apresentacao' },
+    { id: 'e-nt-av2', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV2: Prova Objetiva 10 Questões — Google Forms', descricao: '20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões objetivas via Google Forms, sem consulta, baseadas nos slides e Carson/Moo/Morris.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'prova' },
+    { id: 'e-pla-resumo', disciplinaId: 'disc-7', disciplina: 'Plantação e Revitalização II', titulo: 'AV2: Prova com Consulta Livre (19h) + Resumo 12 pág (até 23:59)', descricao: 'Dupla atividade em 27/11: Prova AV2 às 19:00 BRT com CONSULTA LIVRE aos slides, anotações e PDF consolidado + Resumo digitado de 12 páginas (PDF ou Word) de "A Treliça e a Videira" enviado para thacyto@gmail.com até 23:59.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'resumo' },
+    { id: 'e-tcc-artigo', disciplinaId: 'disc-8', disciplina: 'TCC I', titulo: 'Entrega Final: Artigo Científico Completo (20 a 25 pág.)', descricao: 'Até 23:59 BRT. Artigo completo ABNT / FMB (20 a 25 páginas da capa às referências), impessoal (3ª pessoa), PDF e Word, rigorosamente sem IA ou plágio.', dataLimite: '04/12/2026 (Sex)', dataISO: '2026-12-04', tipo: 'entrega' },
   ],
   requisitos: [
     {
@@ -92,34 +94,31 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
       id: 'disc-4', num: '04', nome: 'Direitos Humanos', professor: 'Profº Cleiton Barbirato', professorEmail: 'cleitonpb@gmail.com',
       cor: 'text-indigo-800', corFundo: 'bg-indigo-50', corBorda: 'border-indigo-300',
       regrasGerais: [
-        '📊 V1 e V2: Prova objetiva Forms (peso 8) + Trabalho de pesquisa individual (peso 2)',
-        '✍️ AV1: Dissertação de no máx. 1 lauda sobre Desigualdade Social e Privilégios (Times New Roman 12, esp. 1,5)',
-        '📧 Envio obrigatório para cleitonpb@gmail.com com assunto "Trabalho para composição de nota" — prazo encerrado em 30/09/2026',
-        '📢 PROVA AV1 PRORROGADA: Prazo estendido para domingo, 04/10/2026 às 23:59 via Google Forms',
-        '🚫 Prova objetiva: sem consulta (peso 8,0)',
+        '⚠️ AV2 (25/11, 19:00–23:59 BRT): Trabalho escrito CANCELADO! Prova objetiva vale 10,0 pontos integrais',
+        '📚 Base da AV2: 100% extraída do arquivo consolidado de 52 slides pós-AV1 no Drive',
+        '🚫 Prova objetiva: 10 questões no Google Forms sem consulta',
         '🎯 Média >= 7,0 para aprovação direta; abaixo, prova extra (recuperação)'
       ],
       criteriosAvaliacao: [
-        '📱 Prova objetiva múltipla escolha Google Forms — peso 8,0 — sem consulta (Prorrogada até 04/10/2026 às 23:59)',
-        '✍️ Trabalho dissertativo individual de até 1 lauda (Desigualdade Social, Privilégios e a Igreja como agente transformador) — peso 2,0 — prazo encerrado em 30/09/2026',
+        '📱 AV2 (25/11): Prova objetiva múltipla escolha Google Forms — 10 questões valendo 10,0 pontos integrais — sem consulta',
+        '✅ V1 concluída: Prova Forms (8,0) + Trabalho dissertativo 1 lauda (2,0)',
         '🏆 Média V1 e V2 >= 7,0 para aprovação direta'
       ],
       livros: [{ titulo: 'E se Jesus não tivesse nascido', autor: 'D. James Kennedy & Jerry Newcombe', tipo: 'obrigatorio' }],
-      infoExtra: 'Textos e slides gratuitos disponíveis na pasta virtual da disciplina no Google Drive. Banner de prorrogação ativo para 04/10/2026.',
+      infoExtra: 'AV2 (25/11/2026, janela 19:00–23:59 BRT): Trabalho complementar cancelado pelo professor; prova vale 10,0 pts com base nos 52 slides pós-AV1.',
     },
     {
       id: 'disc-5', num: '05', nome: 'Ética Cristã', professor: 'Profª Karoline Evangelista', professorEmail: 'karoline.leite@gmail.com',
       cor: 'text-violet-800', corFundo: 'bg-violet-50', corBorda: 'border-violet-300',
       regrasGerais: [
-        '👥 Apresentações em quartetos (30 min por grupo com 10 min cronometrados por orador)',
-        '📅 Período Oficial: 22/10 a 19/11/2026 (quintas-feiras de aula)',
-        'ℹ️ Dia 01/10/2026: Aula expositiva normal sobre pena de morte e guerras (sem avaliação ou entrega)',
-        '🎯 Nota ESTREITAMENTE INDIVIDUAL — cada orador é avaliado de forma independente na tribuna'
+        '⚠️ NÃO HAVERÁ PROVA ESCRITA NA AV2 (26/11 às 19:00 é aula de encerramento e conferência de notas)',
+        '👥 Nota semestral 100% integralizada nos Seminários Práticos dos Dez Mandamentos (22/10 a 19/11)',
+        '🎯 Nota ESTREITAMENTE INDIVIDUAL — oratória, domínio do tema e slides'
       ],
       criteriosAvaliacao: [
         '📊 Seminários Práticos em Grupo sobre os Dez Mandamentos (Catecismo Maior de Westminster e Norman Geisler)',
-        '🗣️ Dinâmica: 30 minutos por grupo (quartetos com 10 minutos cronometrados por orador)',
-        '🎯 Avaliação individual de oratória, slides e aplicação prática contemporânea'
+        '✅ Nota semestral 100% integralizada nas apresentações',
+        '📋 26/11/2026: Devolutiva final e conferência de notas ao vivo'
       ],
       livros: [{ titulo: 'Ética Cristã: Opções e Questões Contemporâneas', autor: 'Norman Geisler', tipo: 'base' }, { titulo: 'Catecismo Maior de Westminster', autor: 'Westminster Assembly (1648)', tipo: 'obrigatorio' }],
     },
@@ -127,14 +126,13 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
       id: 'disc-6', num: '06', nome: 'NT III — Epístolas Gerais', professor: 'Profº Marcio Leal', professorEmail: 'marcio.leal@uiecbead.com.br',
       cor: 'text-rose-800', corFundo: 'bg-rose-50', corBorda: 'border-rose-300',
       regrasGerais: [
-        '📷 Câmeras ligadas na orientação da prova',
-        '📱 Avaliação AV1: Prova Objetiva Online via formulário Google Forms',
-        '📅 Data e Prazo: 01/10/2026 (Quinta-feira) às 23:59',
-        '📖 Conteúdo Cobrado: Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro'
+        '📱 AV2 (26/11 às 20:35 BRT): Prova Objetiva Online via Google Forms — 10 questões (10,0 pts)',
+        '🚫 Prova individual sem consulta',
+        '📖 Conteúdo Cobrado: 1 e 2 Pedro, Judas, 1, 2 e 3 João (além de Hebreus e Tiago)'
       ],
       criteriosAvaliacao: [
-        '📱 Prova Objetiva Online via Google Forms — Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro',
-        '📚 Livro-base: Introdução ao Novo Testamento (Carson, Moo & Morris)'
+        '📱 Prova Objetiva Online via Google Forms (10 questões x 1,0 pt)',
+        '📚 Base: Slides do docente + Introdução ao Novo Testamento (Carson, Moo & Morris)'
       ],
       livros: [{ titulo: 'Introdução ao Novo Testamento', autor: 'Carson, Moo & Morris', tipo: 'base' }],
       infoExtra: 'Abrange: Hebreus, Tiago, 1 e 2 Pedro, 1, 2 e 3 João, e Judas.',
@@ -143,36 +141,35 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
       id: 'disc-7', num: '07', nome: 'Plantação e Revitalização de Igrejas II', professor: 'Profº Thácyto Lessa', professorEmail: 'thacyto@gmail.com',
       cor: 'text-orange-800', corFundo: 'bg-orange-50', corBorda: 'border-orange-300',
       regrasGerais: [
-        '⏰ Início pontual às 19:00 — sem atrasos',
-        '📷 Câmeras obrigatoriamente ligadas (avaliadas para presença/participação)',
-        '📄 Formato do Resumo: Documento DIGITADO em editor de texto, convertido em PDF (NÃO manuscrito)',
-        '📧 AV1: Enviar resumo de 12 páginas (1 folha digitada por capítulo) para thacyto@gmail.com até 27/11/2026',
-        '📱 AV2: Prova online com consulta aos slides e anotações pessoais em 27/11/2026'
+        '⏰ Data decisiva 27/11/2026: Prova AV2 a partir das 19:00 BRT',
+        '✅ PROVA AV2 COM CONSULTA LIVRE E ABERTA aos slides, anotações pessoais e PDF consolidado',
+        '📄 Trabalho AV1: Resumo DIGITADO de 12 páginas (1 pág/capítulo de "A Treliça e a Videira")',
+        '📧 Enviar arquivo (PDF ou Word) até 23:59 de 27/11/2026 para thacyto@gmail.com'
       ],
       criteriosAvaliacao: [
-        '📖 AV1: Resumo DIGITADO de "A Treliça e a Videira" — exatamente 1 folha digitada por capítulo (12 capítulos = 12 páginas em PDF) — envio até 27/11 às 19:00',
-        '📱 AV2: Prova online com consulta autorizada aos slides e anotações pessoais — 27/11/2026'
+        '📖 AV1: Resumo DIGITADO de "A Treliça e a Videira" (12 páginas em PDF ou Word) — até 27/11 às 23:59',
+        '📱 AV2: Prova online no Forms com CONSULTA LIVRE (slides, anotações e PDF consolidado) — 27/11 às 19:00'
       ],
       livros: [{ titulo: 'A Treliça e a Videira', autor: 'Colin Marshall & Tony Payne', tipo: 'obrigatorio' }],
-      infoExtra: 'FORMATO HOMOLOGADO: O resumo de 12 páginas deve ser DIGITADO em editor de texto (Word/Docs), convertido em PDF (não manuscrito). Envio para thacyto@gmail.com até 27/11/2026.',
+      infoExtra: 'Em 27/11/2026: Prova online com consulta livre às 19:00 + envio do resumo (PDF ou Word, 12 págs) para thacyto@gmail.com até 23:59.',
     },
     {
       id: 'disc-8', num: '08', nome: 'TCC I', professor: 'Profª Gabriela Leal', professorEmail: 'gabriela.leal@uiecbead.com.br',
       cor: 'text-teal-800', corFundo: 'bg-teal-50', corBorda: 'border-teal-300',
       regrasGerais: [
         '💬 Grupo WhatsApp oficial: "TCC1 - segundo semestre 2026"',
-        '🏫 Normas: Normas ABNT e Manual da Faculdade Maciço de Baturité (FMB)',
+        '🏫 Normas: ABNT (NBR 10520, 6028, 6023) e Manual da FMB/UNIMB',
         '📄 Extensão Exigida: Mínimo de 20 e máximo de 25 páginas no total (Capa até Referências)',
-        '🚫 USO DE IA É TERMINANTEMENTE PROIBIDO para geração de texto acadêmico',
-        '👨‍🏫 Orientador escolhido por afinidade temática'
+        '🚫 Linguagem 100% impessoal (3ª pessoa); USO DE IA e plágio são TERMINANTEMENTE PROIBIDOS',
+        '📧 Entrega até 04/12/2026 às 23:59 em PDF e Word'
       ],
       criteriosAvaliacao: [
         '📋 Sem provas tradicionais — avaliação contínua de participação e progresso',
         '🗓️ Etapa 1: Projeto de Pesquisa estruturado ABNT — prazo 04/09/2026 (Concluído)',
-        '📝 Etapa Final: Artigo científico monográfico completo (20 a 25 páginas) — prazo 04/12/2026'
+        '📝 Etapa Final: Artigo científico monográfico completo (20 a 25 páginas, PDF e Word) — prazo 04/12/2026 às 23:59'
       ],
       livros: [{ titulo: 'Manual de Metodologia Científica (consultar com orientador)', autor: 'A definir', tipo: 'recomendado' }],
-      infoExtra: 'Estrutura exigida: Capa, Folha de Rosto, Resumo bilíngue de 10-15 linhas com 3-4 palavras-chave, Introdução, Metodologia, Resultados/Discussão, Considerações Finais e Referências em ordem alfabética. Extensão: 20 a 25 páginas.',
+      infoExtra: 'Estrutura exigida: Capa, Folha de Rosto, Resumo/Abstract (150–500 palavras, parágrafo único, 3–5 palavras-chave), Introdução, Metodologia, Desenvolvimento, Considerações Finais e Referências em ordem alfabética. Extensão: 20 a 25 páginas.',
       whatsapp: 'TCC1 - segundo semestre 2026',
     },
   ],
@@ -288,7 +285,7 @@ export function getPlanoEstudosForTurma(turmaIdx: number): PlanoEstudosTurma {
 
   try {
     // Limpeza mandatória de chaves obsoletas do storage para eliminar cronogramas legados
-    ['lms_plano_estudos_turma_', 'lms_plano_estudos_turma_v1_', 'lms_plano_estudos_turma_v2_', 'lms_plano_estudos_turma_v3_'].forEach((pfx) => {
+    ['lms_plano_estudos_turma_', 'lms_plano_estudos_turma_v1_', 'lms_plano_estudos_turma_v2_', 'lms_plano_estudos_turma_v3_', 'lms_plano_estudos_turma_v2026_2_homologado_'].forEach((pfx) => {
       [0, 1, 2, 3].forEach((idx) => {
         try { localStorage.removeItem(`${pfx}${idx}`); } catch (e) {}
       });

@@ -54,6 +54,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
       case 'aluno':
         return [
           { id: 'aluno-disciplinas', label: 'Painel Acadêmico', icon: GraduationCap, badge: 'Principal' },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame, badge: 'AV2' },
           { id: 'disciplina-detalhe', label: 'Minhas Disciplinas', icon: Layers },
           { id: 'google-agenda', label: 'Agenda', icon: Calendar },
           { id: 'aluno-materiais', label: 'Pastas Virtuais', icon: FolderOpen },
@@ -76,6 +77,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
       case 'professor':
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen, badge: 'Principal' },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame, badge: 'AV2' },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass, badge: 'Semanal' },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'prof-avaliacoes', label: 'Avaliações (Nativas/Forms)', icon: LayoutDashboard },
@@ -94,6 +96,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
       case 'monitor':
         return [
           { id: 'monitor-escala', label: 'Grade & Links de Presença', icon: UserCheck, badge: 'Principal' },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame, badge: 'AV2' },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass, badge: 'Semanal' },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
@@ -107,6 +110,7 @@ export const MobileDrawerMenu: React.FC<MobileDrawerMenuProps> = ({
       case 'admin':
         return [
           { id: 'admin-dashboard', label: 'Painel do Administrador', icon: ShieldCheck, badge: 'Admin' },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame, badge: 'AV2' },
           { id: 'fluxo-estudos', label: 'Fluxo de Estudos (6 Fases)', icon: Compass, badge: 'Semanal' },
           { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers },
           { id: 'monitor-escala', label: 'Escala de Monitores 2026.2', icon: Calendar },

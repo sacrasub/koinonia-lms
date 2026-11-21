@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckSquare, PenTool, AlertCircle, Zap, CheckCircle2, Clock, 
   Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
-  MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight
+  MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight, Flame
 } from 'lucide-react';
 import { 
   CalendarioAcademico,
@@ -56,25 +56,81 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     setTimeout(() => setNotification(null), 3500);
   };
 
-  // Garante que todas as 13 avaliações da grade estejam sempre no Kanban
+  // Garante que todas as avaliações oficiais da grade estejam no Kanban com metadados atualizados
   const ensureAllOfficialAssessments = (taskList: KanbanTask[]): KanbanTask[] => {
-    const result = [...taskList];
+    const officialTaskMap = new Map(
+      defaultSemesterTasks.map((dt) => [dt.assessmentId || dt.id, dt])
+    );
+
+    // Atualiza metadados oficiais (título, prazo, estratégia e itens já encerrados) preservando marcações do aluno nos pendentes
+    const result: KanbanTask[] = taskList.map((task) => {
+      const key = task.assessmentId || task.id;
+      const official = officialTaskMap.get(key);
+      if (!official) return task;
+
+      if (official.status === 'done') {
+        return {
+          ...task,
+          assessmentId: official.assessmentId,
+          title: official.title,
+          subject: official.subject,
+          professor: official.professor,
+          dueDate: official.dueDate,
+          type: official.type,
+          strategyNote: official.strategyNote,
+          status: 'done',
+          subtasks: official.subtasks.map((st) => ({ ...st, done: true })),
+        };
+      }
+
+      const existingDoneByText = new Map(task.subtasks.map((st) => [st.id, st.done]));
+      const mergedSubtasks = official.subtasks.map((st, idx) => ({
+        ...st,
+        done: existingDoneByText.get(st.id) ?? task.subtasks[idx]?.done ?? st.done,
+      }));
+      const doneCount = mergedSubtasks.filter((st) => st.done).length;
+      const nextStatus: 'todo' | 'doing' | 'done' =
+        doneCount === mergedSubtasks.length && mergedSubtasks.length > 0
+          ? 'done'
+          : doneCount > 0
+          ? 'doing'
+          : 'todo';
+
+      return {
+        ...task,
+        assessmentId: official.assessmentId,
+        title: official.title,
+        subject: official.subject,
+        professor: official.professor,
+        dueDate: official.dueDate,
+        type: official.type,
+        strategyNote: official.strategyNote,
+        subtasks: mergedSubtasks,
+        status: nextStatus,
+      };
+    });
+
     AVALIACOES_2026_2.forEach((ev) => {
       const exists = result.some((t) => t.assessmentId === ev.id || t.id === ev.id);
       if (!exists) {
-        result.push({
-          id: ev.id,
-          assessmentId: ev.id,
-          title: ev.tipo,
-          subject: ev.disciplina,
-          professor: ev.professor,
-          dueDate: ev.dataLimite,
-          priority: 'Máxima',
-          type: ev.tipoBadge === 'PROVA' ? 'Prova Objetiva' : ev.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : ev.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : ev.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : ev.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
-          status: 'todo',
-          strategyNote: `${ev.dataTexto} • ${ev.horario}. ${ev.peso}`,
-          subtasks: ev.passoAPasso.map((p, idx) => ({ id: `st-${ev.id}-${idx}`, text: p, done: false })),
-        });
+        const official = officialTaskMap.get(ev.id);
+        if (official) {
+          result.push(official);
+        } else {
+          result.push({
+            id: ev.id,
+            assessmentId: ev.id,
+            title: ev.tipo,
+            subject: ev.disciplina,
+            professor: ev.professor,
+            dueDate: ev.dataLimite,
+            priority: 'Máxima',
+            type: ev.tipoBadge === 'PROVA' ? 'Prova Objetiva' : ev.tipoBadge === 'TRABALHO' ? 'Trabalho Escrito' : ev.tipoBadge === 'SEMINÁRIO' ? 'Seminário em Grupo' : ev.tipoBadge === 'RESUMO' ? 'Resumo Crítico' : ev.tipoBadge === 'ARTIGO' ? 'TCC' : 'Atividade Modular',
+            status: 'todo',
+            strategyNote: `${ev.dataTexto} • ${ev.horario}. ${ev.peso}`,
+            subtasks: ev.passoAPasso.map((p, idx) => ({ id: `st-${ev.id}-${idx}`, text: p, done: false })),
+          });
+        }
       }
     });
     return result;
@@ -688,6 +744,18 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         </div>
 
         <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'operacao-av2' }));
+              }
+            }}
+            className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-md bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950"
+          >
+            <Flame className="w-4 h-4" />
+            <span>Operação AV2 (Guias, Mapas &amp; Simulados)</span>
+          </button>
           <button
             type="button"
             onClick={() => setActiveViewTab('kanban')}

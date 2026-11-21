@@ -58,6 +58,7 @@ const PlanoEstudosPage = dynamic(() => import('@/components/PlanoEstudosPage').t
 const AttendanceAlarmModal = dynamic(() => import('@/components/AttendanceAlarmModal').then(m => m.AttendanceAlarmModal));
 const PesquisaTCCPage = dynamic(() => import('@/app/pesquisa-tcc/page'), { loading: DynamicLoadingFallback });
 const OficinaEstudosHub = dynamic(() => import('@/components/oficina-estudos/OficinaEstudosHub').then(m => m.OficinaEstudosHub), { loading: DynamicLoadingFallback });
+const OperacaoAv2Page = dynamic(() => import('@/components/OperacaoAv2Page').then(m => m.OperacaoAv2Page), { loading: DynamicLoadingFallback });
 const WhatsNewModal = dynamic(() => import('@/components/WhatsNewModal').then(m => m.WhatsNewModal));
 
 export default function Home() {
@@ -116,6 +117,9 @@ export default function Home() {
       }
       if (tabParam === 'livro-notas' || tabParam === 'gradebook' || tabParam === 'diario') {
         return 'livro-notas';
+      }
+      if (tabParam === 'av2' || tabParam === 'operacao-av2' || tabParam === 'revisao-av2' || tabParam === 'dossie-av2') {
+        return 'operacao-av2';
       }
       const discParam = params.get('disciplina');
       if (discParam) {
@@ -244,6 +248,12 @@ export default function Home() {
           storedEmail = localStorage.getItem('lms_active_user_email');
         }
 
+        const hasUrlDeepLink =
+          typeof window !== 'undefined' &&
+          ['tab', 'aba', 'livro', 'book', 'id', 'disciplina'].some((k) =>
+            new URLSearchParams(window.location.search).has(k)
+          );
+
         if (storedEmail) {
           const authInfo = getAuthorizedUserInfo(storedEmail);
           if (authInfo.isAuthorized && authInfo.user) {
@@ -254,10 +264,12 @@ export default function Home() {
             const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
             const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
             setCurrentRole(initialRole);
-            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
-            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
-            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
-            else setActiveTab('aluno-disciplinas');
+            if (!hasUrlDeepLink) {
+              if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+              else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+              else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+              else setActiveTab('aluno-disciplinas');
+            }
             setLoadingSession(false); // Liberação imediata sem esperar rede
           }
         }
@@ -323,10 +335,12 @@ export default function Home() {
             const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
             const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
             setCurrentRole(initialRole);
-            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
-            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
-            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
-            else setActiveTab('aluno-disciplinas');
+            if (!hasUrlDeepLink) {
+              if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+              else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+              else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+              else setActiveTab('aluno-disciplinas');
+            }
 
             // Rastreia início da sessão apenas de usuário devidamente autorizado
             startUserSession(email, name, initialRole, avatar);
@@ -410,11 +424,18 @@ export default function Home() {
             setIsAuthorized(true);
             const storedRole = typeof window !== 'undefined' ? (localStorage.getItem('lms_active_user_role') as UserRole) : null;
             const initialRole = storedRole && authInfo.user.roles.includes(storedRole) ? storedRole : authInfo.user.defaultRole;
+            const hasUrlDeepLinkInListener =
+              typeof window !== 'undefined' &&
+              ['tab', 'aba', 'livro', 'book', 'id', 'disciplina'].some((k) =>
+                new URLSearchParams(window.location.search).has(k)
+              );
             setCurrentRole(initialRole);
-            if (initialRole === 'professor') setActiveTab('prof-disciplinas');
-            else if (initialRole === 'monitor') setActiveTab('monitor-escala');
-            else if (initialRole === 'admin') setActiveTab('admin-dashboard');
-            else setActiveTab('aluno-disciplinas');
+            if (!hasUrlDeepLinkInListener) {
+              if (initialRole === 'professor') setActiveTab('prof-disciplinas');
+              else if (initialRole === 'monitor') setActiveTab('monitor-escala');
+              else if (initialRole === 'admin') setActiveTab('admin-dashboard');
+              else setActiveTab('aluno-disciplinas');
+            }
 
             // Rastreia sessão ativa
             startUserSession(email, name, initialRole, avatar);
@@ -632,6 +653,9 @@ export default function Home() {
     }
     if (activeTab === 'aluno-checklist' || activeTab === 'checklist') {
       return <ChecklistAV2Page userEmail={userEmail} />;
+    }
+    if (activeTab === 'operacao-av2' || activeTab === 'av2' || activeTab === 'revisao-av2' || activeTab === 'dossie-av2') {
+      return <OperacaoAv2Page userEmail={userEmail} onTabChange={handleTabChange} />;
     }
     if (activeTab === 'aluno-boletim' || activeTab === 'boletim' || activeTab === 'notas' || activeTab === 'meu-boletim') {
       return <AlunoBoletim userEmail={userEmail} onTabChange={handleTabChange} />;

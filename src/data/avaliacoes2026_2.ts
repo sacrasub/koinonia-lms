@@ -145,8 +145,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplinaId: 'disc-6',
     docente: 'Profº Marcio Leal',
     tipoAtividade: 'Prova Objetiva AV1 (Hebreus a 2 Pedro)',
-    statusPeso: 'Prazo Hoje (23:59)',
-    isHoje: true,
+    statusPeso: 'Concluído',
+    isEncerrado: true,
   },
   {
     id: 'cron-07-dir-prova-av1',
@@ -156,8 +156,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplinaId: 'disc-4',
     docente: 'Profº Cleiton Barbirato',
     tipoAtividade: 'Prova Objetiva AV1 (Google Forms)',
-    statusPeso: 'Prorrogado até 23:59 (Peso 8,0)',
-    isProrrogado: true,
+    statusPeso: 'Concluído (Peso 8,0)',
+    isEncerrado: true,
   },
   {
     id: 'cron-08-etc-seminarios',
@@ -167,7 +167,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplinaId: 'disc-5',
     docente: 'Profª Karoline Evangelista',
     tipoAtividade: 'Seminários dos Dez Mandamentos',
-    statusPeso: 'Em Breve (Individual)',
+    statusPeso: 'Concluído (Individual)',
+    isEncerrado: true,
   },
   {
     id: 'cron-09-dam-exame',
@@ -177,7 +178,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplinaId: 'disc-dam',
     docente: 'Diretoria Regional',
     tipoAtividade: 'Prova Objetiva Presencial (09:00 - 12:00)',
-    statusPeso: 'Avaliação Denominacional',
+    statusPeso: 'Concluído (UIECB)',
+    isEncerrado: true,
   },
   {
     id: 'cron-10-his-av2',
@@ -186,8 +188,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'Hist. do Congregacionalismo',
     disciplinaId: 'disc-1',
     docente: 'Profº Ary Júnior',
-    tipoAtividade: 'Prova Escrita AV2 (Brasil)',
-    statusPeso: 'Prova Final (Peso 8,0)',
+    tipoAtividade: 'Prova V/F AV2 — 10 afirmações (2 autodecl. + 8 conteúdo)',
+    statusPeso: '19:00–20:25 BRT (Sem Consulta)',
   },
   {
     id: 'cron-11-hpc-av2',
@@ -196,8 +198,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'Hist. do Pensamento Cristão II',
     disciplinaId: 'disc-2',
     docente: 'Profº Hilário Bispo',
-    tipoAtividade: 'Prova AV2 (Teologia Liberal e Século XX)',
-    statusPeso: 'Prova Final',
+    tipoAtividade: 'Prova AV2 — 10 Questões Forms (Liberalismo & Séc. XX)',
+    statusPeso: '20:35–22:00 BRT (Peso 10,0)',
   },
   {
     id: 'cron-12-aco-av2',
@@ -206,8 +208,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'Aconselhamento Bíblico II',
     disciplinaId: 'disc-3',
     docente: 'Profº Uilian Santos',
-    tipoAtividade: 'Prova Objetiva AV2 (Google Forms)',
-    statusPeso: 'Prova Final',
+    tipoAtividade: 'Prova Objetiva AV2 (Google Forms • Slides U2)',
+    statusPeso: '19:00–20:25 BRT (Sem Trabalho)',
   },
   {
     id: 'cron-13-dir-av2',
@@ -216,8 +218,28 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'Direitos Humanos',
     disciplinaId: 'disc-4',
     docente: 'Profº Cleiton Barbirato',
-    tipoAtividade: 'Prova Objetiva AV2 + Trabalho AV2',
-    statusPeso: 'Prova Final (8,0 + 2,0)',
+    tipoAtividade: 'Prova Objetiva AV2 (Peso 10,0 — Trabalho Cancelado)',
+    statusPeso: '19:00–23:59 BRT (52 Slides pós-AV1)',
+  },
+  {
+    id: 'cron-13b-etc-av2',
+    dataLimite: '26/11/2026 (Qui)',
+    dataISO: '2026-11-26',
+    disciplina: 'Ética Cristã',
+    disciplinaId: 'disc-5',
+    docente: 'Profª Karoline Evangelista',
+    tipoAtividade: 'Encerramento & Notas (Sem Prova Escrita AV2)',
+    statusPeso: '19:00–20:25 BRT (100% Seminários)',
+  },
+  {
+    id: 'cron-13c-nt3-av2',
+    dataLimite: '26/11/2026 (Qui)',
+    dataISO: '2026-11-26',
+    disciplina: 'NT III — Epístolas Gerais',
+    disciplinaId: 'disc-6',
+    docente: 'Profº Marcio Leal',
+    tipoAtividade: 'Prova Objetiva AV2 (10 Questões Forms)',
+    statusPeso: '20:35–22:00 BRT (Peso 10,0)',
   },
   {
     id: 'cron-14-pla-resumo-av2',
@@ -226,8 +248,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'Plantação e Revitalização II',
     disciplinaId: 'disc-7',
     docente: 'Profº Thácyto Lessa',
-    tipoAtividade: 'Entrega Resumo (12 pág) + Prova AV2',
-    statusPeso: 'AV1 (Resumo) + AV2 (Prova)',
+    tipoAtividade: 'Prova AV2 Consulta Livre (19h) + Resumo 12 pág até 23:59',
+    statusPeso: 'AV1 (Resumo) + AV2 (Consulta Livre)',
   },
   {
     id: 'cron-15-tcc-artigo',
@@ -236,8 +258,8 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     disciplina: 'TCC I',
     disciplinaId: 'disc-8',
     docente: 'Profª Gabriela Leal',
-    tipoAtividade: 'Entrega Final do Artigo (20 a 25 pág)',
-    statusPeso: 'Artigo Monográfico ABNT',
+    tipoAtividade: 'Entrega Final do Artigo (20 a 25 pág • PDF e Word)',
+    statusPeso: 'Até 23:59 BRT (Sem IA)',
   },
 ];
 
@@ -658,31 +680,33 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     disciplina: 'História do Congregacionalismo',
     disciplinaShort: 'Hist. Congregacionalismo (AV2)',
     professor: 'Profº Ary Júnior',
-    tipo: 'Prova Escrita AV2: Congregacionalismo no Brasil',
+    tipo: 'Prova AV2 (10 Afirmações V/F): Congregacionalismo no Brasil',
     tipoBadge: 'PROVA',
     dataLimite: '2026-11-24',
     dataTexto: '24 de Novembro de 2026 (Terça-feira)',
-    horario: '18:30 às 20:25 (Durante a aula)',
-    peso: 'Prova Final da 2ª Unidade (Peso 8,0 + 1,0 Frequência + 1,0 Leitura)',
+    horario: '19:00 – 20:25 (Brasília) • 17:00 – 18:25 (Tabatinga)',
+    peso: 'Peso 10,0: 2 afirmações de autodeclaração (participação/leitura = 2,0 pts) + 8 questões históricas/teológicas (8,0 pts)',
     regras: [
-      'Prova escrita final da segunda unidade sobre a vertente brasileira (Kalley, Igreja Fluminense e expansão).',
-      'Câmeras abertas durante a realização.',
-      'Autodeclaração de leitura obrigatória (+1 ponto).'
+      'Formato: 10 afirmações para julgamento em Verdadeiro (V) ou Falso (F) via Google Forms.',
+      '2 primeiras questões: autodeclaração de participação/frequência e leitura dos 3 textos obrigatórios (1,0 pt cada = 2,0 pts).',
+      '8 questões seguintes: conteúdo histórico e teológico (1,0 pt cada = 8,0 pts).',
+      'Prova individual SEM CONSULTA, com câmeras abertas e sem trabalho escrito complementar.'
     ],
     passoAPasso: [
-      'Revisar os textos sobre a chegada de Robert Kalley, Fundação da Igreja Evangélica Fluminense e desenvolvimento do congregacionalismo no Brasil.',
-      'Conectar-se com câmera aberta no horário da aula no dia 24/11/2026.',
-      'Preencher e submeter o formulário de avaliação.'
+      'Ler os 3 textos obrigatórios no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2) Síntese dos 28 Artigos; (3) Análise analítica ampla dos 28 Artigos.',
+      'Revisar Robert & Sarah Kalley, Igreja Fluminense (1858), Pernambucana (19/10/1873), Artigos 13-14 e 24, Help for Brazil, UEA e 1913.',
+      'Conectar-se com câmera aberta às 19:00 BRT no dia 24/11/2026 e responder às 10 afirmações V/F no Google Forms.'
     ],
     bibliografia: {
       obrigatoria: [
-        'Textos da Unidade 2 em PDF disponibilizados pelo docente',
-        'Livro sobre Congregacionalismo no Brasil'
+        '1. Síntese do Congregacionalismo Brasileiro (WhatsApp)',
+        '2. Síntese dos 28 Artigos da Breve Exposição (WhatsApp)',
+        '3. Análise analítica ampla dos 28 Artigos (WhatsApp)'
       ]
     },
     canalEnvio: {
       tipo: 'forms',
-      observacao: 'Link liberado no início da aula síncrona.'
+      observacao: 'Link oficial via Google Forms disponibilizado no início da aula (19:00 BRT).'
     },
     cor: {
       bg: 'bg-sky-500/10',
@@ -699,31 +723,30 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     disciplina: 'História do Pensamento Cristão II',
     disciplinaShort: 'Pensamento Cristão II (AV2)',
     professor: 'Profº Hilário Bispo',
-    tipo: 'Prova Objetiva AV2: Teologia Liberal e Século XX',
+    tipo: 'Prova Objetiva AV2 (10 Questões): Teologia Liberal e Século XX',
     tipoBadge: 'PROVA',
     dataLimite: '2026-11-24',
     dataTexto: '24 de Novembro de 2026 (Terça-feira)',
-    horario: '20:30 (Horário da aula)',
-    peso: 'Prova Final (0,0 a 10,0) — Resultado instantâneo',
+    horario: '20:35 – 22:00 (Brasília) • 18:35 – 20:00 (Tabatinga)',
+    peso: 'Peso 10,0: 10 questões valendo 1,0 ponto cada (correção automática e nota imediata)',
     regras: [
-      'Prova objetiva contendo 10 questões via Google Forms.',
-      'Conteúdo: Liberalismo Teológico (Schleiermacher, Ritschl), Ortodoxia e Teologia Contemporânea.',
-      'Resultado e correção instantâneos.'
+      'Prova objetiva com 10 questões de múltipla escolha via Google Forms.',
+      'Prova individual SEM CONSULTA. Não há trabalho extra na AV2.',
+      'Conteúdo: Friedrich Schleiermacher, Avivamentos séc. XVIII, Karl Barth, Declaração de Barmen (1934), Søren Kierkegaard, Rudolf Bultmann e Efeitos Noéticos do Pecado.'
     ],
     passoAPasso: [
-      'Estudar os slides e a apostila da segunda unidade.',
-      'Acessar o link do Google Forms disponibilizado no dia 24/11/2026 às 20:30.',
-      'Responder às 10 questões objetivas e submeter.'
+      'Revisar os resumos e slides das Aulas 9 a 14 sobre Liberalismo Teológico e Teologia Contemporânea.',
+      'Correlacionar autores (Schleiermacher, Barth, Kierkegaard, Bultmann, Machen) com suas teses principais.',
+      'Acessar o link do Google Forms no chat do Meet em 24/11/2026 às 20:35 BRT e submeter.'
     ],
     bibliografia: {
       obrigatoria: [
-        'Apostila oficial do Profº Hilário Bispo',
-        'Slides das aulas sobre Liberalismo e Século XX'
+        'Apostila oficial e slides das Aulas 9 a 14 (Profº Hilário Bispo)'
       ]
     },
     canalEnvio: {
       tipo: 'forms',
-      observacao: 'Formulário online com 10 questões de correção imediata.'
+      observacao: 'Link liberado no chat do Google Meet às 20:35 BRT com correção imediata.'
     },
     cor: {
       bg: 'bg-purple-500/10',
@@ -740,30 +763,30 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     disciplina: 'Aconselhamento Bíblico II',
     disciplinaShort: 'Aconselhamento Bíblico II (AV2)',
     professor: 'Profº Uilian Santos',
-    tipo: 'Prova Objetiva AV2 via Google Forms',
+    tipo: 'Prova Objetiva AV2 via Google Forms (Restrita aos Slides)',
     tipoBadge: 'PROVA',
     dataLimite: '2026-11-25',
     dataTexto: '25 de Novembro de 2026 (Quarta-feira)',
-    horario: '19:00 às 20:25 (Durante a aula)',
-    peso: 'Prova Final (0,0 a 10,0) — Sem trabalhos escritos',
+    horario: '19:00 – 20:25 (Brasília) • 17:00 – 18:25 (Tabatinga)',
+    peso: 'Peso 10,0 integrais — correção e nota automáticas (Sem trabalho escrito)',
     regras: [
-      'Segunda prova objetiva semestral via Google Forms.',
-      'Conteúdo restrito aos slides da segunda metade do semestre.',
-      'Sem exigência de trabalhos escritos; correção automática.'
+      'Prova objetiva de múltipla escolha via Google Forms baseada estritamente nos slides do Drive.',
+      'Não há trabalho acadêmico escrito.',
+      'Temas centrais: As 5 Áreas do Inventário do Coração (Físico, Recursos, Emoções, Ações, Conceitos), paralinguística, erro do "guru", falsa esperança vs. esperança bíblica e Salmo 130:5 / Lc 24:32.'
     ],
     passoAPasso: [
-      'Revisar os slides das aulas da 2ª unidade.',
-      'Acessar o Google Forms no dia 25/11/2026 às 19:00.',
-      'Submeter as respostas para obter a nota.'
+      'Estudar todos os slides das Aulas 8 a 14 disponibilizados na pasta do Drive.',
+      'Memorizar as 5 áreas do Inventário do Coração e o contraste entre falsa esperança e esperança cristã.',
+      'Acessar o Google Forms em 25/11/2026 às 19:00 BRT e submeter.'
     ],
     bibliografia: {
       obrigatoria: [
-        'Slides de aula do Profº Uilian Santos'
+        'Slides das aulas da Unidade 2 disponibilizados no Google Drive (Profº Uilian Santos)'
       ]
     },
     canalEnvio: {
       tipo: 'forms',
-      observacao: 'Link disponibilizado no Meet e grupo da turma.'
+      observacao: 'Link direto do Google Forms disponibilizado no início da aula (19:00 BRT).'
     },
     cor: {
       bg: 'bg-amber-500/10',
@@ -780,30 +803,31 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     disciplina: 'Direitos Humanos',
     disciplinaShort: 'Direitos Humanos (AV2)',
     professor: 'Profº Cleiton Barbirato',
-    tipo: 'Prova Objetiva AV2 (Peso 8,0) + Trabalho AV2 (Peso 2,0)',
+    tipo: 'Prova Objetiva AV2 via Forms (10 Questões • Trabalho Cancelado)',
     tipoBadge: 'PROVA',
     dataLimite: '2026-11-25',
     dataTexto: '25 de Novembro de 2026 (Quarta-feira)',
-    horario: '20:30 (Horário da aula)',
-    peso: 'Composição Final da V2: Prova (8,0) + Trabalho (2,0) = 10,0 pts',
+    horario: '19:00 – 23:59 (Janela Brasília) • 17:00 – 21:59 (Tabatinga)',
+    peso: 'Peso 10,0 integrais na Prova Forms (Trabalho escrito complementar de 2 pts CANCELADO)',
     regras: [
-      'Prova objetiva via Google Forms sem consulta (peso 8,0) + pesquisa escrita individual (peso 2,0).',
-      'Média semestral final >= 7,0 para aprovação direta.'
+      '⚠️ ATENÇÃO MÁXIMA: NÃO haverá trabalho escrito complementar na AV2! O professor cancelou o trabalho de 2 pontos.',
+      '10 questões de múltipla escolha via Google Forms valendo os 10,0 pontos integrais.',
+      'Prova individual SEM CONSULTA, com janela de acesso das 19:00 às 23:59 (Brasília).',
+      'Base da Prova: 100% extraída do arquivo consolidado de 52 slides pós-AV1 na pasta do Drive.'
     ],
     passoAPasso: [
-      'Revisar a apostila completa de Direitos Humanos da segunda unidade.',
-      'Elaborar e enviar a pesquisa individual para cleitonpb@gmail.com.',
-      'Realizar a prova objetiva no horário da aula em 25/11/2026.'
+      'Baixar e revisar integralmente o arquivo consolidado de 52 slides pós-AV1 no Google Drive.',
+      'Fixar: Art. 5º e § 3º da CF/88 (Emendas Constitucionais), Igualdade Formal vs. Equidade, Ações Afirmativas, Conselho de Segurança da ONU (15 / 5 com veto), Dimensão Vertical vs. Horizontal e Honra Subjetiva/Objetiva.',
+      'Acessar o Google Forms dentro da janela oficial (19:00 às 23:59 BRT) em 25/11/2026.'
     ],
     bibliografia: {
       obrigatoria: [
-        'Slides oficiais da disciplina de Direitos Humanos'
+        'Arquivo consolidado de 52 slides pós-AV1 (Google Drive da disciplina)'
       ]
     },
     canalEnvio: {
       tipo: 'forms',
-      destinatario: 'cleitonpb@gmail.com',
-      observacao: 'Prova no Forms e envio da pesquisa por e-mail.'
+      observacao: 'Janela do Google Forms aberta das 19:00 às 23:59 BRT em 25/11/2026 (sem envio de trabalho escrito).'
     },
     cor: {
       bg: 'bg-rose-500/10',
@@ -816,41 +840,120 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     }
   },
   {
+    id: 'aval-etc-av2-encerramento',
+    disciplina: 'Ética Cristã',
+    disciplinaShort: 'Ética Cristã (Encerramento)',
+    professor: 'Profª Karoline Evangelista',
+    tipo: 'Encerramento & Conferência de Notas (Sem Prova Escrita na AV2)',
+    tipoBadge: 'SEMINÁRIO',
+    dataLimite: '2026-11-26',
+    dataTexto: '26 de Novembro de 2026 (Quinta-feira)',
+    horario: '19:00 – 20:25 (Brasília) • 17:00 – 18:25 (Tabatinga)',
+    peso: 'Peso 10,0: Nota integralizada nos Seminários dos Dez Mandamentos (22/10 a 19/11)',
+    regras: [
+      '⚠️ NÃO HAVERÁ PROVA ESCRITA NA AV2.',
+      'A avaliação semestral foi 100% integralizada e unificada nos Seminários dos Dez Mandamentos.',
+      'Encontro de 26/11 às 19:00 BRT dedicado à devolutiva final dos seminários e conferência de notas.'
+    ],
+    passoAPasso: [
+      'Participar da aula de encerramento ao vivo em 26/11/2026 às 19:00 BRT.',
+      'Conferir sua nota individual dos seminários com a Profª Karoline Evangelista.',
+      'Revisar o guia do Catecismo Maior (Q. 99) e Absolutismo Graduado de Geisler caso precise de revisão.'
+    ],
+    bibliografia: {
+      obrigatoria: [
+        'Catecismo Maior de Westminster (Q. 91 a 150)',
+        'Ética Cristã: Opções e Questões Contemporâneas (Norman Geisler)'
+      ]
+    },
+    canalEnvio: {
+      tipo: 'meet',
+      observacao: 'Encontro ao vivo no Google Meet para encerramento e conferência de notas.'
+    },
+    cor: {
+      bg: 'bg-yellow-500/10',
+      text: 'text-yellow-300',
+      border: 'border-yellow-500/30',
+      pillBg: 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold',
+      dot: 'bg-amber-300',
+      badgeBg: 'bg-yellow-500/20',
+      badgeText: 'text-yellow-300'
+    }
+  },
+  {
+    id: 'aval-nt3-av2-epistolas',
+    disciplina: 'Novo Testamento III — Epístolas Gerais',
+    disciplinaShort: 'NT III — Epístolas Gerais (AV2)',
+    professor: 'Profº Marcio Leal',
+    tipo: 'Prova Objetiva AV2 (10 Questões): Epístolas Gerais',
+    tipoBadge: 'PROVA',
+    dataLimite: '2026-11-26',
+    dataTexto: '26 de Novembro de 2026 (Quinta-feira)',
+    horario: '20:35 – 22:00 (Brasília) • 18:35 – 20:00 (Tabatinga)',
+    peso: 'Peso 10,0: 10 questões objetivas valendo 1,0 ponto cada (Google Forms)',
+    regras: [
+      'Prova objetiva via Google Forms com 10 questões de múltipla escolha.',
+      'Prova individual SEM CONSULTA.',
+      'Conteúdo: 1 Pedro (Silvano, "Babilônia", esperança viva), 2 Pedro (falsos mestres, epignosis, Parusia em 2Pe 3:9), Judas, 1-3 João (combate ao docetismo) e síntese de Hebreus e Tiago.'
+    ],
+    passoAPasso: [
+      'Revisar os slides das Aulas 8 a 14 e os capítulos correspondentes em Carson, Moo e Morris.',
+      'Conferir os contrastes entre Paulo e Tiago, o significado de Babilônia (1Pe 5:13) e o combate ao docetismo em 1-3 João.',
+      'Acessar o Google Forms no horário da aula em 26/11/2026 às 20:35 BRT e responder sem consulta.'
+    ],
+    bibliografia: {
+      obrigatoria: [
+        'Slides oficiais do Profº Marcio Leal (Unidade 2)',
+        'Introdução ao Novo Testamento (D. A. Carson, Douglas J. Moo e Leon Morris)'
+      ]
+    },
+    canalEnvio: {
+      tipo: 'forms',
+      observacao: 'Link direto disponibilizado na sala virtual às 20:35 BRT em 26/11/2026.'
+    },
+    cor: {
+      bg: 'bg-indigo-500/10',
+      text: 'text-indigo-300',
+      border: 'border-indigo-500/30',
+      pillBg: 'bg-indigo-600 hover:bg-indigo-500 text-white',
+      dot: 'bg-indigo-400',
+      badgeBg: 'bg-indigo-500/20',
+      badgeText: 'text-indigo-300'
+    }
+  },
+  {
     id: 'aval-9-plantacao-resumo-livro',
     disciplina: 'Plantação e Revitalização de Igrejas II',
-    disciplinaShort: 'Plantação (Resumo Digitado + AV2)',
+    disciplinaShort: 'Plantação (Prova Consulta Livre + Resumo 12p)',
     professor: 'Profº Thácyto Lessa',
-    tipo: 'Entrega do Resumo Digitado (12 pág) + Prova AV2 com consulta',
+    tipo: 'Prova AV2 com Consulta Livre (19h) + Resumo 12 pág (até 23:59)',
     tipoBadge: 'RESUMO',
     dataLimite: '2026-11-27',
     dataTexto: '27 de Novembro de 2026 (Sexta-feira)',
-    horario: 'Até às 19:00 (Envio do Resumo) / 19:00 (Prova AV2)',
-    peso: 'AV1 (Resumo de 12 páginas, 0-10) + AV2 (Prova Online com consulta, 0-10)',
+    horario: '19:00 BRT (Prova) / Até 23:59 BRT (Envio do Resumo) • 17:00 (Tabatinga)',
+    peso: 'AV1 (Resumo 12 pág, 0-10) + AV2 (Prova Online com Consulta Livre, 0-10)',
     regras: [
-      'FORMATO OBRIGATÓRIO DO RESUMO: Documento DIGITADO em editor de texto (Word, Docs), convertido em PDF (NÃO manuscrito).',
-      'Obra exigida: Livro "A Treliça e a Videira" (Colin Marshall e Tony Payne).',
-      'Estrutura e extensão: Exatamente 1 folha digitada por capítulo, cobrindo os 12 capítulos do livro (total de 12 páginas no documento final).',
-      'Canal de Envio do Resumo: E-mail do docente (thacyto@gmail.com) impreterivelmente até 27/11/2026 às 19:00.',
-      'Prova AV2: Prova online aplicada por formulário no dia 27/11/2026 às 19:00 com 100% de consulta autorizada aos slides e anotações pessoais.'
+      'DUPLA ATIVIDADE EM 27/11/2026:',
+      '1. PROVA TEÓRICA ONLINE (AV2): Liberada via Google Forms a partir das 19:00 BRT com CONSULTA LIVRE E ABERTA aos slides, anotações pessoais e PDF consolidado oficial.',
+      '2. TRABALHO DO LIVRO (AV1): Resumo DIGITADO de 12 páginas (1 folha por capítulo de "A Treliça e a Videira", de Colin Marshall e Tony Payne).',
+      'Canal de Envio do Trabalho: Enviar arquivo (PDF ou Word) até 23:59 de 27/11/2026 para thacyto@gmail.com.'
     ],
     passoAPasso: [
-      'Realizar a leitura atenta dos 12 capítulos do livro "A Treliça e a Videira".',
-      'Sintetizar a ideia central de cada capítulo em editor de texto, respeitando o limite exato de 1 página digitada por capítulo.',
-      'Salvar e exportar o arquivo em formato PDF (documento digitado, sem páginas manuscritas).',
-      'Enviar o arquivo por e-mail para thacyto@gmail.com com assunto "Resumo Treliça e a Videira - Plantação II - [Seu Nome]" até 27/11 às 19:00.',
-      'Acessar o link do formulário da Prova AV2 às 19:00 e responder com consulta às suas anotações e aos slides.'
+      'Ler os 12 capítulos do livro "A Treliça e a Videira" e elaborar 1 página digitada por capítulo (total de 12 páginas).',
+      'Realizar a Prova AV2 online às 19:00 BRT consultando livremente slides, anotações e o PDF consolidado.',
+      'Enviar o resumo em PDF ou Word para thacyto@gmail.com até as 23:59 de 27/11/2026.'
     ],
     bibliografia: {
       obrigatoria: [
         '"A Treliça e a Videira" (Colin Marshall e Tony Payne)',
-        'Slides completos do curso do Profº Thácyto Lessa'
+        'PDF consolidado oficial e slides das Aulas 8 a 14 do Profº Thácyto Lessa'
       ]
     },
     canalEnvio: {
       tipo: 'email',
       destinatario: 'thacyto@gmail.com',
       assunto: 'Resumo Treliça e a Videira - Plantação II - [Seu Nome]',
-      observacao: 'Envio em PDF digitado para thacyto@gmail.com até 27/11/2026. Prova online com consulta no mesmo dia.'
+      observacao: 'Prova no Forms às 19:00 (consulta livre); envio do resumo (PDF ou Word) para thacyto@gmail.com até 23:59 de 27/11/2026.'
     },
     cor: {
       bg: 'bg-emerald-500/10',
@@ -871,35 +974,32 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     tipoBadge: 'ARTIGO',
     dataLimite: '2026-12-04',
     dataTexto: '04 de Dezembro de 2026 (Sexta-feira)',
-    horario: 'Até às 23:59 (Encerramento de TCC I)',
+    horario: 'Até às 23:59 BRT (21:59 Tabatinga)',
     peso: 'Artigo Monográfico ABNT / Nota Final de Conclusão de TCC I',
     regras: [
-      'EXTENSÃO OBRIGATÓRIA: Artigo científico final com extensão de 20 a 25 páginas no total (contemplando capa, folha de rosto, elementos pré e pós-textuais).',
-      'Estrutura completa: Capa, Folha de Rosto, Resumo bilíngue de 10-15 linhas com 3-4 palavras-chave, Introdução, Metodologia, Resultados/Discussão, Considerações Finais e Referências em ordem alfabética.',
-      'Normas formais: Normas rígidas da ABNT e Manual da Faculdade Maciço do Baturité (FMB).',
-      'Linguagem: Científica e impessoal (3ª pessoa: "observa-se", "analisa-se"). Proibido uso de 1ª pessoa.',
-      'Ética: Rigorosamente PROIBIDO o uso de Inteligência Artificial para geração de texto ou redação por terceiros.'
+      'EXTENSÃO ESTRITA OBRIGATÓRIA: Entre 20 e 25 páginas no total (incluindo pré-textuais, textuais e pós-textuais).',
+      'Estrutura: Capa FMB, Folha de Rosto, Resumo/Abstract (150-500 palavras, parágrafo único, 3-5 palavras-chave), Introdução, Metodologia, Desenvolvimento, Considerações Finais e Referências em ordem alfabética (NBR 6023).',
+      'Citações (NBR 10520): Direta curta (até 3 linhas entre aspas) e Direta longa (+3 linhas: recuo 4 cm, fonte 10, simples, sem aspas).',
+      'Linguagem formal e impessoal em 3ª pessoa ou voz passiva (vedada 1ª pessoa).',
+      'PROIBIÇÃO EXPRESSA do uso de Inteligência Artificial e vedação total ao plágio. Envio em PDF e Word.'
     ],
     passoAPasso: [
-      'Revisar o referencial teórico e dados metodológicos desenvolvidos com o professor orientador.',
-      'Redigir o desenvolvimento do artigo na ordem recomendada: Metodologia → Resultados/Discussão → Considerações Finais.',
-      'Escrever por último a Introdução e o Resumo bilíngue (10 a 15 linhas) com 3 a 4 palavras-chave.',
-      'Verificar a extensão total do documento garantindo que esteja entre 20 e 25 páginas.',
-      'Formatar as referências em ordem alfabética segundo o padrão ABNT / FMB.',
-      'Exportar o artigo completo em PDF e enviar para a orientadora Profa Gabriela Leal até 04/12/2026.'
+      'Concluir Metodologia, Desenvolvimento e Considerações Finais na ordem metodológica recomendada.',
+      'Redigir Introdução e Resumo/Abstract (150-500 palavras) por último, revisando extensão total (20 a 25 páginas).',
+      'Conferir impessoalidade (3ª pessoa), citações ABNT (NBR 10520) e Referências alfabéticas (NBR 6023).',
+      'Enviar o artigo completo em PDF e Word até 04/12/2026 às 23:59 para gabriela.lealg7757@gmail.com.'
     ],
     bibliografia: {
       obrigatoria: [
-        'Manual de Trabalhos Acadêmicos da Faculdade Maciço do Baturité (FMB)',
-        'Normas ABNT vigentes para Artigos Científicos (NBR 6022 e correlatas)',
-        'Obras selecionadas para a fundamentação teórica'
+        'Manual de Trabalhos Acadêmicos da Faculdade Maciço do Baturité (FMB/UNIMB)',
+        'Normas ABNT vigentes (NBR 6022, NBR 6023, NBR 6028 e NBR 10520)'
       ]
     },
     canalEnvio: {
       tipo: 'email',
       destinatario: 'gabriela.lealg7757@gmail.com',
       assunto: 'Artigo Científico Final - TCC I - [Nome do Aluno]',
-      observacao: 'Envio em PDF para a Profa Gabriela Leal até 04/12/2026.'
+      observacao: 'Envio em formato digital (PDF e Word) na plataforma/e-mail da orientadora até 04/12/2026 às 23:59.'
     },
     cor: {
       bg: 'bg-fuchsia-500/10',
@@ -1019,32 +1119,32 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-10-01',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: 'Prazo Hoje (01/10/2026 às 23:59). Prova Objetiva Online via formulário Google Forms sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.',
+    status: 'done',
+    strategyNote: 'Prazo concluído em 01/10/2026. Prova Objetiva Online via formulário Google Forms sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.',
     subtasks: [
-      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: false },
-      { id: 'st-aval-7-1', text: 'Estudar introduções especiais e propósitos das epístolas no livro de Carson/Moo/Morris.', done: false },
-      { id: 'st-aval-7-2', text: 'Acessar o formulário Google Forms disponibilizado pelo docente no dia 01/10/2026.', done: false },
-      { id: 'st-aval-7-3', text: 'Preencher a avaliação objetiva e submeter antes das 23:59.', done: false },
+      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: true },
+      { id: 'st-aval-7-1', text: 'Estudar introduções especiais e propósitos das epístolas no livro de Carson/Moo/Morris.', done: true },
+      { id: 'st-aval-7-2', text: 'Acessar o formulário Google Forms disponibilizado pelo docente no dia 01/10/2026.', done: true },
+      { id: 'st-aval-7-3', text: 'Preencher a avaliação objetiva e submeter antes das 23:59.', done: true },
     ],
   },
-  // 7. Direitos Humanos - Prova Objetiva AV1 (04/10 - Prorrogado)
+  // 7. Direitos Humanos - Prova Objetiva AV1 (04/10)
   {
     id: 'aval-6-direitos-humanos-prova',
     assessmentId: 'aval-6-direitos-humanos-prova',
-    title: 'Prova Objetiva AV1 via Google Forms (Prorrogada para 04/10)',
+    title: 'Prova Objetiva AV1 via Google Forms (Concluída)',
     subject: 'Direitos Humanos',
     professor: 'Profº Cleiton Barbirato',
     dueDate: '2026-10-04',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: 'Prazo prorrogado até domingo, 04/10/2026 às 23:59. Múltipla escolha via Google Forms, sem consulta (Peso 8,0).',
+    status: 'done',
+    strategyNote: 'Prazo concluído em 04/10/2026 às 23:59. Múltipla escolha via Google Forms, sem consulta (Peso 8,0).',
     subtasks: [
-      { id: 'st-aval-6-0', text: 'Estudar a apostila digital completa da disciplina.', done: false },
-      { id: 'st-aval-6-1', text: 'Revisar Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Kelsen.', done: false },
-      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms ativo até 04/10/2026 às 23:59.', done: false },
-      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: false },
+      { id: 'st-aval-6-0', text: 'Estudar a apostila digital completa da disciplina.', done: true },
+      { id: 'st-aval-6-1', text: 'Revisar Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Kelsen.', done: true },
+      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms ativo até 04/10/2026 às 23:59.', done: true },
+      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: true },
     ],
   },
   // 8. Ética Cristã - Seminários dos Dez Mandamentos (22/10 a 19/11)
@@ -1057,48 +1157,49 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-10-22',
     priority: 'Máxima',
     type: 'Seminário em Grupo',
-    status: 'todo',
-    strategyNote: 'Apresentações de 22/10 a 19/11 nas quintas-feiras de aula. 30 min por grupo (quartetos com 10 min por orador cronometrados). Nota estritamente individual. No dia 01/10 não há entrega.',
+    status: 'done',
+    strategyNote: 'Apresentações concluídas entre 22/10 e 19/11 nas quintas-feiras de aula. Nota individual integralizada para AV1/AV2.',
     subtasks: [
-      { id: 'st-aval-8-0', text: 'Reunir o quarteto e confirmar o mandamento sorteado para apresentação.', done: false },
-      { id: 'st-aval-8-1', text: 'Estudar o Catecismo Maior de Westminster e Norman Geisler.', done: false },
-      { id: 'st-aval-8-2', text: 'Montar os slides da apresentação em conjunto com o grupo.', done: false },
-      { id: 'st-aval-8-3', text: 'Treinar exposição oral com cronômetro para respeitar os 10 minutos por orador.', done: false },
+      { id: 'st-aval-8-0', text: 'Reunir o quarteto e confirmar o mandamento sorteado para apresentação.', done: true },
+      { id: 'st-aval-8-1', text: 'Estudar o Catecismo Maior de Westminster e Norman Geisler.', done: true },
+      { id: 'st-aval-8-2', text: 'Montar os slides da apresentação em conjunto com o grupo.', done: true },
+      { id: 'st-aval-8-3', text: 'Apresentar na tribuna respeitando os 10 minutos por orador.', done: true },
     ],
   },
   // 9. Exame DAM / UIECB (07/11)
   {
     id: 'aval-dam-exame-presencial',
     assessmentId: 'aval-dam-exame-presencial',
-    title: 'Exame DAM / UIECB — Prova Presencial (09:00 - 12:00)',
+    title: 'Exame DAM / UIECB — Prova Presencial (Concluído)',
     subject: 'Exame DAM / UIECB',
     professor: 'Diretoria Regional',
     dueDate: '2026-11-07',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'todo',
-    strategyNote: '07/11/2026 (Sábado) das 09:00 às 12:00. Avaliação denominacional presencial obrigatória.',
+    status: 'done',
+    strategyNote: '07/11/2026 (Sábado) das 09:00 às 12:00. Avaliação denominacional presencial realizada.',
     subtasks: [
-      { id: 'st-dam-0', text: 'Revisar matérias de Teologia Sistemática, Bíblia e História Congregacional.', done: false },
-      { id: 'st-dam-1', text: 'Confirmar local de realização do exame junto à Diretoria Regional.', done: false },
-      { id: 'st-dam-2', text: 'Comparecer com 30 min de antecedência portando documento com foto.', done: false },
+      { id: 'st-dam-0', text: 'Revisar matérias de Teologia Sistemática, Bíblia e História Congregacional.', done: true },
+      { id: 'st-dam-1', text: 'Confirmar local de realização do exame junto à Diretoria Regional.', done: true },
+      { id: 'st-dam-2', text: 'Realizar o exame presencial e assinar a lista oficial de presença.', done: true },
     ],
   },
   // 10. História do Congregacionalismo - AV2 (24/11)
   {
     id: 'aval-his-av2-brasil',
     assessmentId: 'aval-his-av2-brasil',
-    title: 'AV2: Prova Escrita — Unidade 2 (Congregacionalismo no Brasil)',
+    title: 'AV2: Prova V/F (10 Afirmações) — Congregacionalismo no Brasil',
     subject: 'História do Congregacionalismo',
     professor: 'Profº Ary Júnior',
     dueDate: '2026-11-24',
     priority: 'Máxima',
     type: 'Prova Objetiva',
     status: 'todo',
-    strategyNote: '24/11/2026 às 18:30. Prova final da 2ª unidade (Peso 8,0 + 1,0 frequência + 1,0 leitura obrigatória). Câmeras abertas.',
+    strategyNote: '24/11/2026 às 19:00–20:25 BRT (17:00–18:25 Tabatinga). 10 afirmações V/F: 2 de autodeclaração (participação/leitura = 2,0 pts) + 8 de conteúdo (8,0 pts). Sem consulta, câmeras abertas.',
     subtasks: [
-      { id: 'st-his2-0', text: 'Revisar os textos sobre a história do Congregacionalismo no Brasil.', done: false },
-      { id: 'st-his2-1', text: 'Acessar a avaliação escrita no horário da aula com câmera aberta.', done: false },
+      { id: 'st-his2-0', text: 'Ler os 3 textos obrigatórios enviados pelo Profº Ary no WhatsApp.', done: false },
+      { id: 'st-his2-1', text: 'Revisar Robert/Sarah Kalley, Fluminense (1858), Pernambucana (1873), 28 Artigos e 1913.', done: false },
+      { id: 'st-his2-2', text: 'Responder às 10 afirmações V/F no Google Forms às 19:00 BRT com câmera aberta.', done: false },
     ],
   },
   // 11. História do Pensamento Cristão II - AV2 (24/11)
@@ -1112,63 +1213,97 @@ export const defaultSemesterTasks: KanbanTask[] = [
     priority: 'Máxima',
     type: 'Prova Objetiva',
     status: 'todo',
-    strategyNote: '24/11/2026 às 20:30. 10 questões de múltipla escolha via Google Forms com resultado instantâneo.',
+    strategyNote: '24/11/2026 às 20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões objetivas via Google Forms (1,0 pt cada), sem consulta e correção imediata.',
     subtasks: [
-      { id: 'st-hpc2-0', text: 'Estudar a apostila oficial sobre Liberalismo e Século XX.', done: false },
-      { id: 'st-hpc2-1', text: 'Acessar o link do Google Forms no horário da aula.', done: false },
+      { id: 'st-hpc2-0', text: 'Estudar Schleiermacher, Barth, Declaração de Barmen (1934), Kierkegaard e Bultmann.', done: false },
+      { id: 'st-hpc2-1', text: 'Acessar o link do Google Forms às 20:35 BRT e responder sem consulta.', done: false },
     ],
   },
   // 12. Aconselhamento Bíblico II - AV2 (25/11)
   {
     id: 'aval-aco-av2-final',
     assessmentId: 'aval-aco-av2-final',
-    title: 'AV2: Prova Objetiva Final via Google Forms',
+    title: 'AV2: Prova Objetiva Final via Google Forms (Slides U2)',
     subject: 'Aconselhamento Bíblico II',
     professor: 'Profº Uilian Santos',
     dueDate: '2026-11-25',
     priority: 'Máxima',
     type: 'Prova Objetiva',
     status: 'todo',
-    strategyNote: '25/11/2026 às 19:00. Prova final 100% objetiva via Google Forms cobrindo os slides da 2ª unidade.',
+    strategyNote: '25/11/2026 às 19:00–20:25 BRT (17:00–18:25 Tabatinga). Prova via Forms baseada estritamente nos slides do Drive, correção automática, sem trabalho escrito.',
     subtasks: [
-      { id: 'st-aco2-0', text: 'Revisar todos os slides da segunda metade do semestre.', done: false },
-      { id: 'st-aco2-1', text: 'Responder à prova objetiva via link do formulário.', done: false },
+      { id: 'st-aco2-0', text: 'Revisar os slides das Aulas 8 a 14 (5 Áreas do Inventário, paralinguística e Esperança).', done: false },
+      { id: 'st-aco2-1', text: 'Responder à prova objetiva via link do formulário às 19:00 BRT.', done: false },
     ],
   },
   // 13. Direitos Humanos - AV2 (25/11)
   {
     id: 'aval-dir-av2-prova-trabalho',
     assessmentId: 'aval-dir-av2-prova-trabalho',
-    title: 'AV2: Prova Objetiva Forms (peso 8) + Pesquisa Escrita (peso 2)',
+    title: 'AV2: Prova Forms Peso 10 (Trabalho Cancelado • 52 Slides)',
     subject: 'Direitos Humanos',
     professor: 'Profº Cleiton Barbirato',
     dueDate: '2026-11-25',
     priority: 'Máxima',
     type: 'Prova Objetiva',
     status: 'todo',
-    strategyNote: '25/11/2026 às 20:30. Prova objetiva (peso 8,0) + trabalho de pesquisa escrito individual (peso 2,0). Média final >= 7,0.',
+    strategyNote: '25/11/2026, janela 19:00–23:59 BRT (17:00–21:59 Tabatinga). ATENÇÃO: Trabalho complementar de 2 pts CANCELADO; 10 questões valem 10,0 pts integrais, 100% dos 52 slides pós-AV1, sem consulta.',
     subtasks: [
-      { id: 'st-dir2-0', text: 'Elaborar a pesquisa escrita e enviar para cleitonpb@gmail.com.', done: false },
-      { id: 'st-dir2-1', text: 'Fazer a prova objetiva no horário da aula.', done: false },
+      { id: 'st-dir2-0', text: 'Estudar o arquivo consolidado de 52 slides pós-AV1 no Google Drive.', done: false },
+      { id: 'st-dir2-1', text: 'Revisar Art. 5º e § 3º da CF/88, Equidade, ONU/Conselho de Segurança e Honra.', done: false },
+      { id: 'st-dir2-2', text: 'Fazer a prova no Google Forms dentro da janela 19:00–23:59 BRT.', done: false },
     ],
   },
-  // 14. Plantação e Revitalização II - Resumo Digitado + Prova AV2 (27/11)
+  // 13b. Ética Cristã - Encerramento (26/11)
+  {
+    id: 'aval-etc-av2-encerramento',
+    assessmentId: 'aval-etc-av2-encerramento',
+    title: 'AV2: Encerramento & Conferência de Notas (Sem Prova Escrita)',
+    subject: 'Ética Cristã',
+    professor: 'Profª Karoline Evangelista',
+    dueDate: '2026-11-26',
+    priority: 'Normal',
+    type: 'Seminário em Grupo',
+    status: 'todo',
+    strategyNote: '26/11/2026 às 19:00–20:25 BRT. NÃO haverá prova escrita na AV2; nota semestral 100% integralizada nos Seminários dos Dez Mandamentos.',
+    subtasks: [
+      { id: 'st-etc2-0', text: 'Participar da aula de encerramento às 19:00 BRT para devolutiva e conferência de notas.', done: false },
+    ],
+  },
+  // 13c. NT III — Epístolas Gerais - AV2 (26/11)
+  {
+    id: 'aval-nt3-av2-epistolas',
+    assessmentId: 'aval-nt3-av2-epistolas',
+    title: 'AV2: Prova Objetiva 10 Questões — Epístolas Gerais',
+    subject: 'Novo Testamento III — Epístolas Gerais',
+    professor: 'Profº Marcio Leal',
+    dueDate: '2026-11-26',
+    priority: 'Máxima',
+    type: 'Prova Objetiva',
+    status: 'todo',
+    strategyNote: '26/11/2026 às 20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões via Forms (1,0 pt cada), sem consulta, slides + Carson/Moo/Morris.',
+    subtasks: [
+      { id: 'st-nt32-0', text: 'Revisar slides das Aulas 8 a 14 e Carson/Moo/Morris (1-2 Pedro, Judas, 1-3 João).', done: false },
+      { id: 'st-nt32-1', text: 'Acessar o Google Forms às 20:35 BRT e responder sem consulta.', done: false },
+    ],
+  },
+  // 14. Plantação e Revitalização II - Prova Consulta Livre + Resumo 12 pág (27/11)
   {
     id: 'aval-9-plantacao-resumo-livro',
     assessmentId: 'aval-9-plantacao-resumo-livro',
-    title: 'AV1: Resumo Digitado (12 pág) + AV2: Prova com Consulta',
+    title: 'AV2: Prova com Consulta Livre (19h) + Resumo 12 pág (até 23:59)',
     subject: 'Plantação e Revitalização de Igrejas II',
     professor: 'Profº Thácyto Lessa',
     dueDate: '2026-11-27',
     priority: 'Máxima',
     type: 'Resumo Crítico',
     status: 'todo',
-    strategyNote: '27/11/2026: Resumo DIGITADO em editor de texto (Word/Docs) convertido em PDF de "A Treliça e a Videira" (exatamente 1 folha digitada por capítulo, 12 páginas) enviado para thacyto@gmail.com até 19:00. Prova AV2 online com consulta às 19:00.',
+    strategyNote: '27/11/2026: Prova AV2 às 19:00 BRT com CONSULTA LIVRE aos slides, anotações e PDF consolidado + envio do Resumo digitado de 12 páginas (PDF ou Word) de "A Treliça e a Videira" para thacyto@gmail.com até 23:59.',
     subtasks: [
       { id: 'st-aval-9-0', text: 'Ler atentamente os 12 capítulos do livro "A Treliça e a Videira".', done: false },
-      { id: 'st-aval-9-1', text: 'Digitar o resumo em editor de texto (1 página digitada por capítulo, totalizando 12 páginas).', done: false },
-      { id: 'st-aval-9-2', text: 'Exportar o arquivo em PDF e enviar para thacyto@gmail.com até 27/11 às 19:00.', done: false },
-      { id: 'st-aval-9-3', text: 'Realizar a Prova AV2 online às 19:00 com consulta aos slides e anotações.', done: false },
+      { id: 'st-aval-9-1', text: 'Digitar o resumo (1 página digitada por capítulo = 12 páginas no total).', done: false },
+      { id: 'st-aval-9-2', text: 'Realizar a Prova AV2 online às 19:00 BRT com consulta livre aos slides, anotações e PDF consolidado.', done: false },
+      { id: 'st-aval-9-3', text: 'Enviar o resumo (PDF ou Word) para thacyto@gmail.com até as 23:59 de 27/11.', done: false },
     ],
   },
   // 15. TCC I - Entrega Final do Artigo Monográfico (04/12)
@@ -1182,13 +1317,13 @@ export const defaultSemesterTasks: KanbanTask[] = [
     priority: 'Máxima',
     type: 'TCC',
     status: 'todo',
-    strategyNote: '04/12/2026: Artigo científico final com extensão de 20 a 25 páginas no total conforme Normas ABNT e Manual da FMB. Capa até Referências. Proibido uso de IA.',
+    strategyNote: '04/12/2026 até 23:59 BRT: Artigo científico completo (20 a 25 páginas, PDF e Word) conforme ABNT e Manual FMB. Linguagem impessoal (3ª pessoa). Proibido uso de IA e plágio.',
     subtasks: [
-      { id: 'st-aval-12-0', text: 'Estruturar o corpo do artigo: Metodologia, Resultados/Discussão e Considerações Finais.', done: false },
-      { id: 'st-aval-12-1', text: 'Redigir a Introdução e Resumo bilíngue (10-15 linhas) com 3-4 palavras-chave.', done: false },
-      { id: 'st-aval-12-2', text: 'Verificar a extensão exigida de 20 a 25 páginas no total.', done: false },
-      { id: 'st-aval-12-3', text: 'Formatar as referências em ordem alfabética no padrão ABNT / FMB.', done: false },
-      { id: 'st-aval-12-4', text: 'Submeter o arquivo em PDF para gabriela.lealg7757@gmail.com até 04/12/2026.', done: false },
+      { id: 'st-aval-12-0', text: 'Estruturar o corpo do artigo: Metodologia, Desenvolvimento e Considerações Finais.', done: false },
+      { id: 'st-aval-12-1', text: 'Redigir a Introdução e Resumo/Abstract (150-500 palavras, parágrafo único) com 3-5 palavras-chave.', done: false },
+      { id: 'st-aval-12-2', text: 'Verificar extensão estrita de 20 a 25 páginas e impessoalidade (3ª pessoa, sem IA).', done: false },
+      { id: 'st-aval-12-3', text: 'Formatar citações (NBR 10520) e Referências em ordem alfabética (NBR 6023).', done: false },
+      { id: 'st-aval-12-4', text: 'Submeter os arquivos em PDF e Word para gabriela.lealg7757@gmail.com até 04/12 às 23:59.', done: false },
     ],
   },
 ];

@@ -17,6 +17,7 @@ import { getLocalTimeZoneInfo, TimeZoneInfo } from '@/lib/timeUtils';
 import { trackEvent } from '@/services/telemetryService';
 import { GoogleAgendaView } from '@/components/GoogleAgendaView';
 import { UserRole } from '@/types';
+import { OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 interface FluxoEstudosPageProps {
   userEmail?: string;
@@ -1406,13 +1407,13 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
 
               <div className="flex flex-wrap items-center gap-2">
                 <a
-                  href="https://notebooklm.google.com/"
+                  href={OFFICIAL_NOTEBOOKLM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-white font-bold text-xs hover:bg-amber-600 transition-all shadow-sm"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Abrir NotebookLM Geral</span>
+                  <span>Abrir NotebookLM Oficial (Transcrições &amp; Materiais)</span>
                 </a>
               </div>
             </div>
@@ -1421,7 +1422,7 @@ export const FluxoEstudosPage: React.FC<FluxoEstudosPageProps> = ({ userEmail, o
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {PERSONAS_CONFIG.map((p) => {
                 const customLink = customNotebookLinks[p.id];
-                const targetUrl = customLink || 'https://notebooklm.google.com/';
+                const targetUrl = customLink || OFFICIAL_NOTEBOOKLM_URL;
 
                 return (
                   <div 

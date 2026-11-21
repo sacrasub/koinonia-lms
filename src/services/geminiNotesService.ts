@@ -16,9 +16,12 @@
 
 import { GeminiNoteItem, SupportMaterialType } from '@/types';
 import { supabase } from '@/lib/supabaseClient';
+import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 const STORAGE_KEY = 'lms_gemini_notes_v3';
 const CLOUD_TITLE_KEY = 'lms_gemini_notes_cloud_v3';
+const CLOUD_LAST_SYNC_KEY = 'lms_gemini_notes_last_cloud_sync';
+const CLOUD_SYNC_TTL_MS = 5 * 60 * 1000; // 5 min throttle (Zero-Waste Egress)
 
 export const SUPPORT_MATERIAL_CONFIG: Record<
   SupportMaterialType,
@@ -1742,7 +1745,44 @@ export const INITIAL_GEMINI_NOTES: GeminiNoteItem[] = [
     author_role: "professor",
     created_at: "2026-09-28T22:45:00Z",
   },
+  ...DOSSIE_AV2_2026_2.flatMap((disc): GeminiNoteItem[] => [
+    {
+      id: `av2-guia-${disc.disciplinaId}`,
+      disciplina_id: disc.disciplinaId,
+      disciplina_name: disc.nome,
+      aula_num: 14,
+      data_aula: disc.dataExtenso,
+      title: `Guia de Revisão AV2 • ${disc.nomeCurto} (${disc.formatoCurto})`,
+      gemini_url: OFFICIAL_NOTEBOOKLM_URL,
+      tipo: 'guia_estudo',
+      summary_snippet: `${disc.alertaDestaque || disc.formatoCompleto} • Tópicos-chave: ${disc.guiaRevisao
+        .map((g) => g.titulo)
+        .join(' | ')}`,
+      tags: [disc.nomeCurto, 'AV2', 'Guia de Revisão', 'NotebookLM'],
+      author_name: disc.professor,
+      author_role: 'professor',
+      created_at: '2026-11-21T12:00:00Z',
+    },
+    {
+      id: `av2-mapa-${disc.disciplinaId}`,
+      disciplina_id: disc.disciplinaId,
+      disciplina_name: disc.nome,
+      aula_num: 14,
+      data_aula: disc.dataExtenso,
+      title: `Mapa Mental AV2 • ${disc.nomeCurto}`,
+      gemini_url: OFFICIAL_NOTEBOOKLM_URL,
+      tipo: 'mapa_mental',
+      mindmap_data: disc.mapaMental,
+      summary_snippet: `Esquema em árvore consolidado a partir das aulas da Unidade 2 e materiais do NotebookLM para revisão rápida (${disc.dataExtenso}).`,
+      tags: [disc.nomeCurto, 'AV2', 'Mapa Mental', 'NotebookLM'],
+      author_name: 'NotebookLM Oficial • Koinonia',
+      author_role: 'monitor',
+      created_at: '2026-11-21T12:05:00Z',
+    },
+  ]),
 ];
+
+const STATIC_SEED_IDS = new Set(INITIAL_GEMINI_NOTES.map((s) => s.id));
 
 export function getAllGeminiNotes(): GeminiNoteItem[] {
   if (typeof window === 'undefined') return INITIAL_GEMINI_NOTES;
@@ -1808,7 +1848,12 @@ export function saveAllGeminiNotes(list: GeminiNoteItem[]): void {
 export async function syncGeminiNotesToCloud(list: GeminiNoteItem[]): Promise<void> {
   if (typeof window === 'undefined') return;
   try {
-    const jsonStr = JSON.stringify(list);
+    // Blindagem Anti-Egress: envia à nuvem somente registros criados/editados por usuários,
+    // evitando gravar os seeds estáticos gigantes em JSON único na tabela compartilhada.
+    const userCustomOnly = list.filter((item) => !STATIC_SEED_IDS.has(item.id));
+    if (userCustomOnly.length === 0) return;
+
+    const jsonStr = JSON.stringify(userCustomOnly);
     const { data: existing } = await supabase
       .from('materiais')
       .select('id')
@@ -1836,9 +1881,15 @@ export async function syncGeminiNotesToCloud(list: GeminiNoteItem[]): Promise<vo
   }
 }
 
-export async function fetchGeminiNotesFromCloud(): Promise<GeminiNoteItem[]> {
+export async function fetchGeminiNotesFromCloud(force: boolean = false): Promise<GeminiNoteItem[]> {
   if (typeof window === 'undefined') return INITIAL_GEMINI_NOTES;
   try {
+    const lastSync = Number(localStorage.getItem(CLOUD_LAST_SYNC_KEY) || 0);
+    if (!force && Date.now() - lastSync < CLOUD_SYNC_TTL_MS) {
+      return getAllGeminiNotes();
+    }
+    localStorage.setItem(CLOUD_LAST_SYNC_KEY, String(Date.now()));
+
     const { data } = await supabase
       .from('materiais')
       .select('file_url')
@@ -1848,9 +1899,11 @@ export async function fetchGeminiNotesFromCloud(): Promise<GeminiNoteItem[]> {
     if (data && data.length > 0 && data[0].file_url) {
       const parsed = JSON.parse(data[0].file_url);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-        window.dispatchEvent(new CustomEvent('lms_gemini_notes_updated', { detail: parsed }));
-        return parsed;
+        const customCloud = parsed.filter((item: GeminiNoteItem) => item && item.id && !STATIC_SEED_IDS.has(item.id));
+        const merged = [...customCloud, ...INITIAL_GEMINI_NOTES];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('lms_gemini_notes_updated', { detail: merged }));
+        return merged;
       }
     }
   } catch (err) {
@@ -1861,11 +1914,11 @@ export async function fetchGeminiNotesFromCloud(): Promise<GeminiNoteItem[]> {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('focus', () => {
-    fetchGeminiNotesFromCloud();
+    fetchGeminiNotesFromCloud(false);
   });
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-      fetchGeminiNotesFromCloud();
+      fetchGeminiNotesFromCloud(false);
     }
   });
 }

@@ -5,7 +5,7 @@ import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
   RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
-  ChevronRight, Sparkles, LayoutGrid
+  ChevronRight, Sparkles, LayoutGrid, ExternalLink
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
@@ -279,6 +279,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* LADO DIREITO: Ações Rápidas Adaptativas */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Link direto para o Portal do Estágio Supervisionado */}
+          <a
+            href="https://estagiosupervisionado.vercel.app/"
+            title="Alternar para o Portal do Estágio Supervisionado"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/70"
+          >
+            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden sm:inline">Estágio Supervisionado</span>
+          </a>
+
           {/* Botão Modo Essencial / Modo Imersivo no Cabeçalho */}
           {currentRole === 'aluno' && (
             <button

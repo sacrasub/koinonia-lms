@@ -7,6 +7,33 @@ const CLOUD_TITLE_KEY = 'lms_leituras_preaula_cloud';
 
 export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
   {
+    id: 'aviso-semana-av2-2026-2',
+    disciplina_id: 'all',
+    disciplina_name: 'Todas as Disciplinas • Semana da AV2 (24 a 27/11)',
+    author_name: 'Coordenação & Monitoria Koinonia',
+    author_role: 'admin',
+    author_email: 'sacrasub@gmail.com',
+    avatar_url: '/cristiano_sacramento.jpg',
+    title: '🔥 Operação Semana da AV2 (24–27/11) + NotebookLM Atualizado',
+    message: `O Dossiê Oficial da AV2 com todas as transcrições da Unidade 2, regras confirmadas, mapas mentais e 40 questões de simulado comentadas já está no ar na aba "Operação AV2 & Simulados"!
+
+Alertas Críticos da Semana (Horário de Brasília):
+• Ter 24/11 (19h): Hist. Congregacionalismo — 10 afirmações V/F (2 autodeclaração + 8 conteúdo, sem consulta, 3 textos no WhatsApp).
+• Ter 24/11 (20h35): Pensamento Cristão II — 10 questões no Google Forms, sem consulta.
+• Qua 25/11 (19h): Aconselhamento Bíblico II — Google Forms restrito aos slides do Drive (sem trabalho).
+• Qua 25/11 (19h–23h59): Direitos Humanos — ⚠️ TRABALHO CANCELADO! Prova objetiva vale 10,0 pontos integrais (100% dos 52 slides pós-AV1).
+• Qui 26/11 (19h): Ética Cristã — ⚠️ SEM PROVA ESCRITA! Aula de encerramento e conferência de notas dos Seminários.
+• Qui 26/11 (20h35): NT III (Epístolas Gerais) — 10 questões no Forms, sem consulta (slides + Carson/Moo/Morris).
+• Sex 27/11 (19h): Plantação II — Prova AV2 com CONSULTA LIVRE às 19h + Resumo 12 pág (PDF ou Word) para thacyto@gmail.com até 23h59.
+• Sex 04/12 (até 23h59): TCC I — Artigo completo (20 a 25 págs, ABNT, impessoal em 3ª pessoa, PDF e Word, sem IA).`,
+    link_url: 'https://notebook.google.com/notebook/562f2cd7-e3c7-4490-a224-3fb851078d96',
+    created_at: '2026-11-21T12:00:00Z',
+    target_date: '24/11 a 27/11/2026',
+    is_pinned: true,
+    is_archived: false,
+    category: 'aviso_geral',
+  },
+  {
     id: 'aviso-sexta-02102026',
     disciplina_id: 'all',
     disciplina_name: 'Todas as Disciplinas (Sexta-feira)',
@@ -28,8 +55,8 @@ export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
     link_url: 'https://koinonialms.vercel.app/',
     created_at: '2026-10-02T13:00:00Z',
     target_date: '02/10/2026 (Sexta-feira)',
-    is_pinned: true,
-    is_archived: false,
+    is_pinned: false,
+    is_archived: true,
     category: 'suspensao_aula',
   },
   {

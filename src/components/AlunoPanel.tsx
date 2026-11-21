@@ -55,6 +55,7 @@ import { UserProfileModal } from '@/components/UserProfileModal';
 import { trackEvent } from '@/services/telemetryService';
 import { CalendarioAcademico } from '@/components/CalendarioAcademico';
 import { AVALIACOES_2026_2 } from '@/data/avaliacoes2026_2';
+import { OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 interface AlunoPanelProps {
   userEmail?: string;
@@ -2358,6 +2359,57 @@ href={nextAulaToday.google_meet_url}
     <div className="space-y-8">
       {/* 1. CARD PRINCIPAL UNIFICADO: PAINEL ACADÊMICO DO ALUNO (COM PERÍODO, TURMA, SEMESTRE E FUSO) */}
       {renderUnifiedHeader()}
+
+      {/* BANNER OPERAÇÃO SEMANA DA AV2 (24 a 27/11) + NOTEBOOKLM OFICIAL */}
+      <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-amber-950/90 border border-amber-400/40 rounded-3xl p-4 sm:p-5 text-white shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="p-3 bg-amber-400 text-slate-950 rounded-2xl shadow-lg shadow-amber-500/20 flex-shrink-0">
+            <Flame className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-full">
+                Semana Decisiva • 24 a 27/11
+              </span>
+              <span className="text-[11px] font-bold text-amber-200">
+                40 Questões Comentadas · Mapas Mentais · NotebookLM Atualizado
+              </span>
+            </div>
+            <h3 className="text-base sm:text-lg font-black text-white leading-tight">
+              Operação Semana da AV2 &amp; TCC I (2026.2)
+            </h3>
+            <p className="text-[11px] sm:text-xs text-slate-200/90 leading-relaxed">
+              Ter 24: Congreg. (10 V/F) &amp; Pens. Cristão II · Qua 25: Aconselhamento II &amp; Dir. Humanos (sem trabalho, 52 slides) · Qui 26: Ética (sem prova) &amp; NT III · Sex 27: Plantação II (consulta livre + resumo 12p)
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              if (onTabChange) onTabChange('operacao-av2');
+              else if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'operacao-av2' }));
+            }}
+            className="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+          >
+            <Flame className="w-4 h-4" />
+            <span>Abrir Central AV2 (Guias &amp; 40 Questões)</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+
+          <a
+            href={OFFICIAL_NOTEBOOKLM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-300" />
+            <span>Abrir NotebookLM Oficial</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
 
       {/* RENDERIZAÇÃO CONDICIONAL: SE FOR O MODO CALENDÁRIO GOOGLE AGENDA */}
       {alunoMainView === 'calendario' ? (

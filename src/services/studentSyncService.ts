@@ -397,10 +397,20 @@ export async function fetchStudentData(
     return { ...local, lastSyncedAt: new Date().toISOString() };
   }
 
+  const hasSyncParam =
+    typeof window !== 'undefined' && window.location.search.includes('sync=1');
+  if (hasSyncParam && typeof window !== 'undefined') {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('sync');
+      window.history.replaceState({}, '', url.toString());
+    } catch {}
+  }
+
   const lastFetchKey = `lms_student_sync_last_fetch_${email}`;
   const lastFetch = Number(localStorage.getItem(lastFetchKey) || 0);
   const now = Date.now();
-  if (!force && now - lastFetch < STUDENT_DATA_CACHE_TTL_MS) {
+  if (!force && !hasSyncParam && now - lastFetch < STUDENT_DATA_CACHE_TTL_MS) {
     return { ...local, lastSyncedAt: new Date().toISOString() };
   }
 

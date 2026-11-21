@@ -7,7 +7,7 @@ import {
   ShieldCheck, Library, CheckSquare, FolderOpen, Compass, 
   Calendar, Layers, HelpCircle, Drama, Archive, SlidersHorizontal, 
   Pin, MessageSquare, Heart, Radio, Flame, Mic, Box, Target, Bookmark,
-  Sparkles, LayoutGrid, Award
+  Sparkles, LayoutGrid, Award, ExternalLink
 } from 'lucide-react';
 
 
@@ -96,6 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'aluno':
         return [
           { id: 'aluno-disciplinas', label: 'Painel Acadêmico', icon: GraduationCap, essential: true },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame, essential: true },
           { id: 'aluno-boletim', label: 'Meu Boletim de Notas', icon: Award, essential: true },
           { id: 'disciplina-detalhe', label: 'Minhas Disciplinas', icon: Layers, essential: true },
           { id: 'google-agenda', label: 'Agenda', icon: Calendar, essential: true },
@@ -123,6 +124,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'professor':
         return [
           { id: 'prof-disciplinas', label: 'Gerenciar Minhas Matérias', icon: BookOpen },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame },
           { id: 'livro-notas', label: 'Livro de Notas & Diário', icon: GraduationCap },
           { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
           { id: 'plano-estudos', label: 'Plano de Estudos 2026.2', icon: Target },
@@ -148,6 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
       case 'monitor':
         return [
           { id: 'monitor-escala', label: '⚡ Central do Monitor', icon: UserCheck },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame },
           { id: 'livro-notas', label: 'Consulta de Diários & Faltas', icon: GraduationCap },
           { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen },
           { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar },
@@ -171,6 +174,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
         return [
           // --- GESTÃO DO SISTEMA (ADMIN) ---
           { id: 'admin-dashboard', label: '🛡 Painel do Administrador (Analytics)', icon: ShieldCheck },
+          { id: 'operacao-av2', label: '🔥 Operação AV2 & Simulados', icon: Flame },
           { id: 'livro-notas', label: '📊 Livro de Notas & Diário Geral', icon: GraduationCap },
           { id: 'admin-usuarios', label: '👥 Gerenciar Usuários & Perfis', icon: UserCheck },
           { id: 'admin-disciplinas', label: '📚 Gerenciar Disciplinas', icon: GraduationCap },
@@ -343,6 +347,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, onTabC
               </button>
             );
           })}
+
+          <div className="pt-2 mt-2 border-t border-gray-100 dark:border-slate-800/80">
+            <a
+              href="https://estagiosupervisionado.vercel.app/"
+              title={!isExpanded ? 'Estágio Supervisionado' : 'Alternar para o Portal do Estágio Supervisionado'}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all group overflow-hidden text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 ${
+                !isExpanded ? 'justify-center' : 'justify-start'
+              }`}
+            >
+              <ExternalLink className="w-4 h-4 flex-shrink-0 transition-transform group-hover:scale-110 text-emerald-600 dark:text-emerald-400" />
+              {isExpanded && (
+                <span className="truncate text-left whitespace-nowrap">
+                  Estágio Supervisionado
+                </span>
+              )}
+            </a>
+          </div>
         </nav>
       </div>
 

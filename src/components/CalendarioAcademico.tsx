@@ -102,7 +102,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
         return now.getMonth();
       }
     }
-    return 9; // Outubro (0-indexed = 9) por padrão: Semana decisiva de avaliações
+    return 10; // Novembro (0-indexed = 10) por padrão: Semana decisiva da AV2
   });
   const [currentYear] = useState<number>(2026);
   const [viewMode, setViewMode] = useState<'grade' | 'lista'>('grade');
