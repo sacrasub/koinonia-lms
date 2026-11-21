@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   CheckSquare, PenTool, AlertCircle, Zap, CheckCircle2, Clock, 
   Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
-  MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight, Flame
+  MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight, Flame,
+  Archive, GripVertical
 } from 'lucide-react';
 import { 
   CalendarioAcademico,
@@ -15,9 +16,10 @@ import {
   KanbanTask,
   defaultSemesterTasks
 } from './CalendarioAcademico';
+import type { KanbanStatus } from '@/data/avaliacoes2026_2';
 import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
 
-export type { KanbanTask };
+export type { KanbanTask, KanbanStatus };
 export { defaultSemesterTasks };
 
 interface ChecklistAV2PageProps {
@@ -31,6 +33,8 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeViewTab, setActiveViewTab] = useState<'kanban' | 'calendario'>('kanban');
+  const [draggingTaskId, setDraggingTaskId] = useState<string | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<KanbanStatus | null>(null);
 
   // Estados para os Modais Compartilhados com o Calendário Acadêmico (Dual-View)
   const [drawerEvento, setDrawerEvento] = useState<AvaliacaoEvento | null>(null);
@@ -58,10 +62,11 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
 
   const resolveTaskStatus = (
     subtasks: { id: string; text: string; done: boolean }[],
-    currentStatus: 'todo' | 'doing' | 'done',
-    manualStatus?: 'todo' | 'doing' | 'done'
-  ): 'todo' | 'doing' | 'done' => {
+    currentStatus: KanbanStatus,
+    manualStatus?: KanbanStatus
+  ): KanbanStatus => {
     if (manualStatus) return manualStatus;
+    if (currentStatus === 'archived') return 'archived';
     const doneCount = subtasks.filter((st) => st.done).length;
     if (doneCount === subtasks.length && subtasks.length > 0) {
       return currentStatus === 'doing' ? 'doing' : 'done';
@@ -84,7 +89,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       const official = officialTaskMap.get(key);
       if (!official) return task;
 
-      if (official.status === 'done' && !task.manualStatus) {
+      if (official.status === 'done' && !task.manualStatus && task.status !== 'archived') {
         return {
           ...task,
           assessmentId: official.assessmentId,
@@ -201,7 +206,14 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
         }
       }
-      const statusIcon = task.status === 'done' ? '✅' : task.status === 'doing' ? '⏳' : '📌';
+      const statusIcon =
+        task.status === 'done'
+          ? '✅'
+          : task.status === 'doing'
+          ? '⏳'
+          : task.status === 'archived'
+          ? '📦'
+          : '📌';
 
       text += `${statusIcon} *${formattedDate}* - ${task.subject}\n` +
         `📝 *${task.title}* (${task.type})\n` +
@@ -533,7 +545,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     }
   };
 
-  const handleStatusChange = (taskId: string, newStatus: 'todo' | 'doing' | 'done') => {
+  const handleStatusChange = (taskId: string, newStatus: KanbanStatus) => {
     let affectedAssessmentId: string | undefined;
     let affectedChecks: Record<number, boolean> | null = null;
 
@@ -581,13 +593,52 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     }
 
     saveTasks(updated);
-    const colLabel =
-      newStatus === 'doing'
-        ? 'Em Andamento (Produção)'
-        : newStatus === 'done'
-        ? 'Concluídos com Êxito'
-        : 'A Fazer (Pendentes)';
-    showNotification(`✓ Card movido para "${colLabel}"!`);
+    const colLabels: Record<KanbanStatus, string> = {
+      todo: 'A Fazer (Pendentes)',
+      doing: 'Em Andamento (Produção)',
+      done: 'Concluídos com Êxito',
+      archived: 'Arquivados',
+    };
+    showNotification(`✓ Card movido para "${colLabels[newStatus]}"!`);
+  };
+
+  const handleCardDragStart = (e: React.DragEvent<HTMLDivElement>, taskId: string) => {
+    e.dataTransfer.setData('text/plain', taskId);
+    e.dataTransfer.effectAllowed = 'move';
+    setDraggingTaskId(taskId);
+  };
+
+  const handleCardDragEnd = () => {
+    setDraggingTaskId(null);
+    setDragOverColumn(null);
+  };
+
+  const handleColumnDragOver = (e: React.DragEvent<HTMLDivElement>, status: KanbanStatus) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverColumn !== status) {
+      setDragOverColumn(status);
+    }
+  };
+
+  const handleColumnDragLeave = (e: React.DragEvent<HTMLDivElement>, status: KanbanStatus) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      if (dragOverColumn === status) {
+        setDragOverColumn(null);
+      }
+    }
+  };
+
+  const handleColumnDrop = (e: React.DragEvent<HTMLDivElement>, targetStatus: KanbanStatus) => {
+    e.preventDefault();
+    const droppedId = e.dataTransfer.getData('text/plain') || draggingTaskId;
+    setDraggingTaskId(null);
+    setDragOverColumn(null);
+    if (!droppedId) return;
+    const targetTask = tasks.find((t) => t.id === droppedId);
+    if (targetTask && targetTask.status !== targetStatus) {
+      handleStatusChange(droppedId, targetStatus);
+    }
   };
 
   const handleToggleSubtask = (taskId: string, subtaskId: string) => {
@@ -711,7 +762,11 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   });
 
   const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((t) => t.status === 'done').length;
+  const completedTasks = tasks.filter(
+    (t) =>
+      t.status === 'done' ||
+      (t.status === 'archived' && (t.subtasks.length === 0 || t.subtasks.every((s) => s.done)))
+  ).length;
   const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   const subjectProfMap: Record<string, string> = {
@@ -918,106 +973,122 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         </div>
       </div>
 
-      {/* Quadro Kanban de Colunas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Coluna 1: A Fazer */}
-        <div className="bg-gray-100/70 p-4 rounded-3xl border border-gray-200/80 space-y-4">
-          <div className="flex items-center justify-between font-bold text-sm text-gray-700 border-b border-gray-200 pb-2.5">
-            <span className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-gray-500" /> A Fazer (Pendentes)
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-gray-200 text-gray-700 text-xs font-black">
-              {filteredTasks.filter((t) => t.status === 'todo').length}
-            </span>
-          </div>
+      {/* Quadro Kanban de Colunas (Drag & Drop + 4 Colunas) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+        {(
+          [
+            {
+              status: 'todo',
+              title: 'A Fazer (Pendentes)',
+              Icon: Clock,
+              containerClass: 'bg-gray-100/70 border-gray-200/80',
+              dragOverClass: 'ring-2 ring-blue-500 border-blue-400 bg-blue-50/40',
+              headerClass: 'text-gray-700 border-gray-200',
+              iconClass: 'text-gray-500',
+              badgeClass: 'bg-gray-200 text-gray-700',
+              dropHintClass: 'border-blue-300 bg-blue-50/70 text-blue-700',
+              emptyText: 'Nenhuma avaliação pendente nesta coluna.',
+            },
+            {
+              status: 'doing',
+              title: 'Em Andamento (Produção)',
+              Icon: PenTool,
+              containerClass: 'bg-blue-50/40 border-blue-200/60',
+              dragOverClass: 'ring-2 ring-blue-500 border-blue-400 bg-blue-100/50',
+              headerClass: 'text-blue-900 border-blue-200',
+              iconClass: 'text-blue-600',
+              badgeClass: 'bg-blue-100 text-blue-800',
+              dropHintClass: 'border-blue-300 bg-blue-100/70 text-blue-800',
+              emptyText: 'Nenhuma avaliação em andamento nesta coluna.',
+            },
+            {
+              status: 'done',
+              title: 'Concluídos com Êxito',
+              Icon: CheckCircle2,
+              containerClass: 'bg-emerald-50/40 border-emerald-200/60',
+              dragOverClass: 'ring-2 ring-emerald-500 border-emerald-400 bg-emerald-100/50',
+              headerClass: 'text-emerald-900 border-emerald-200',
+              iconClass: 'text-emerald-600',
+              badgeClass: 'bg-emerald-100 text-emerald-800',
+              dropHintClass: 'border-emerald-300 bg-emerald-100/70 text-emerald-800',
+              emptyText: 'Nenhuma avaliação concluída nesta coluna.',
+            },
+            {
+              status: 'archived',
+              title: 'Arquivados',
+              Icon: Archive,
+              containerClass: 'bg-slate-100/80 border-slate-300/80',
+              dragOverClass: 'ring-2 ring-slate-500 border-slate-400 bg-slate-200/60',
+              headerClass: 'text-slate-700 border-slate-300',
+              iconClass: 'text-slate-600',
+              badgeClass: 'bg-slate-200 text-slate-700',
+              dropHintClass: 'border-slate-400 bg-slate-200/70 text-slate-700',
+              emptyText: 'Arraste ou mova avaliações antigas/concluídas para arquivar.',
+            },
+          ] as const
+        ).map((col) => {
+          const ColIcon = col.Icon;
+          const colTasks = filteredTasks.filter((t) => t.status === col.status);
+          const isDropActive = dragOverColumn === col.status;
 
-          <div className="space-y-4">
-            {filteredTasks
-              .filter((t) => t.status === 'todo')
-              .map((task) => (
-                <KanbanCard
-                  key={task.id}
-                  task={task}
-                  onStatusChange={handleStatusChange}
-                  onToggleSubtask={handleToggleSubtask}
-                  onDeleteTask={handleDeleteTask}
-                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
-                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
-                />
-              ))}
-            {filteredTasks.filter((t) => t.status === 'todo').length === 0 && (
-              <div className="p-8 text-center text-xs text-gray-400 italic">
-                Nenhuma avaliação pendente nesta coluna.
+          return (
+            <div
+              key={col.status}
+              onDragOver={(e) => handleColumnDragOver(e, col.status)}
+              onDragEnter={(e) => handleColumnDragOver(e, col.status)}
+              onDragLeave={(e) => handleColumnDragLeave(e, col.status)}
+              onDrop={(e) => handleColumnDrop(e, col.status)}
+              className={`p-4 rounded-3xl border space-y-4 transition-all min-h-[260px] min-w-0 ${
+                isDropActive ? col.dragOverClass : col.containerClass
+              }`}
+            >
+              <div className={`flex items-center justify-between gap-2 font-bold text-sm border-b pb-2.5 ${col.headerClass}`}>
+                <span className="flex items-center gap-2 min-w-0">
+                  <ColIcon className={`w-4 h-4 shrink-0 ${col.iconClass}`} />
+                  <span className="truncate">{col.title}</span>
+                </span>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {isDropActive && (
+                    <span className="px-2 py-0.5 rounded-full bg-white/90 text-[10px] font-black shadow-2xs">
+                      Solte aqui
+                    </span>
+                  )}
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${col.badgeClass}`}>
+                    {colTasks.length}
+                  </span>
+                </div>
               </div>
-            )}
-          </div>
-        </div>
 
-        {/* Coluna 2: Em Andamento */}
-        <div className="bg-blue-50/40 p-4 rounded-3xl border border-blue-200/60 space-y-4">
-          <div className="flex items-center justify-between font-bold text-sm text-blue-900 border-b border-blue-200 pb-2.5">
-            <span className="flex items-center gap-2">
-              <PenTool className="w-4 h-4 text-blue-600" /> Em Andamento (Produção)
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-black">
-              {filteredTasks.filter((t) => t.status === 'doing').length}
-            </span>
-          </div>
+              {isDropActive && (
+                <div className={`px-3 py-2 rounded-xl border border-dashed text-[11px] font-bold text-center ${col.dropHintClass}`}>
+                  Solte o card aqui para mover para {col.title}
+                </div>
+              )}
 
-          <div className="space-y-4">
-            {filteredTasks
-              .filter((t) => t.status === 'doing')
-              .map((task) => (
-                <KanbanCard
-                  key={task.id}
-                  task={task}
-                  onStatusChange={handleStatusChange}
-                  onToggleSubtask={handleToggleSubtask}
-                  onDeleteTask={handleDeleteTask}
-                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
-                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
-                />
-              ))}
-            {filteredTasks.filter((t) => t.status === 'doing').length === 0 && (
-              <div className="p-8 text-center text-xs text-gray-400 italic">
-                Nenhuma avaliação em andamento nesta coluna.
+              <div className="space-y-4">
+                {colTasks.map((task) => (
+                  <KanbanCard
+                    key={task.id}
+                    task={task}
+                    isDragging={draggingTaskId === task.id}
+                    onDragStart={handleCardDragStart}
+                    onDragEnd={handleCardDragEnd}
+                    onStatusChange={handleStatusChange}
+                    onToggleSubtask={handleToggleSubtask}
+                    onDeleteTask={handleDeleteTask}
+                    onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
+                    onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
+                  />
+                ))}
+                {colTasks.length === 0 && (
+                  <div className="p-8 text-center text-xs text-gray-400 italic">
+                    {col.emptyText}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Coluna 3: Concluídos */}
-        <div className="bg-emerald-50/40 p-4 rounded-3xl border border-emerald-200/60 space-y-4">
-          <div className="flex items-center justify-between font-bold text-sm text-emerald-900 border-b border-emerald-200 pb-2.5">
-            <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Concluídos com Êxito
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black">
-              {filteredTasks.filter((t) => t.status === 'done').length}
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            {filteredTasks
-              .filter((t) => t.status === 'done')
-              .map((task) => (
-                <KanbanCard
-                  key={task.id}
-                  task={task}
-                  onStatusChange={handleStatusChange}
-                  onToggleSubtask={handleToggleSubtask}
-                  onDeleteTask={handleDeleteTask}
-                  onOpenDrawer={() => setDrawerEvento(getEventoForTask(task))}
-                  onOpenResumo={() => setPopupEvento(getEventoForTask(task))}
-                />
-              ))}
-            {filteredTasks.filter((t) => t.status === 'done').length === 0 && (
-              <div className="p-8 text-center text-xs text-gray-400 italic">
-                Nenhuma avaliação concluída nesta coluna.
-              </div>
-            )}
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Modal: Adicionar Nova Avaliação */}
@@ -1275,7 +1346,10 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
 
 interface KanbanCardProps {
   task: KanbanTask;
-  onStatusChange: (id: string, status: 'todo' | 'doing' | 'done') => void;
+  isDragging: boolean;
+  onDragStart: (e: React.DragEvent<HTMLDivElement>, taskId: string) => void;
+  onDragEnd: () => void;
+  onStatusChange: (id: string, status: KanbanStatus) => void;
   onToggleSubtask: (taskId: string, subtaskId: string) => void;
   onDeleteTask: (taskId: string) => void;
   onOpenDrawer: () => void;
@@ -1284,6 +1358,9 @@ interface KanbanCardProps {
 
 const KanbanCard: React.FC<KanbanCardProps> = ({
   task,
+  isDragging,
+  onDragStart,
+  onDragEnd,
   onStatusChange,
   onToggleSubtask,
   onDeleteTask,
@@ -1305,12 +1382,30 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   const doneSub = task.subtasks.filter((s) => s.done).length;
 
   return (
-    <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm space-y-3 transition-all hover:shadow-md">
+    <div
+      draggable
+      onDragStart={(e) => onDragStart(e, task.id)}
+      onDragEnd={onDragEnd}
+      className={`bg-white p-4 rounded-2xl border shadow-sm space-y-3 transition-all cursor-grab active:cursor-grabbing select-none sm:select-auto ${
+        isDragging
+          ? 'opacity-50 scale-[0.98] border-blue-400 ring-2 ring-blue-300 shadow-lg'
+          : 'border-gray-200 hover:shadow-md hover:border-gray-300'
+      }`}
+    >
       <div className="flex justify-between items-start gap-2">
-        <h4 className="font-bold text-sm text-gray-900 leading-snug">{task.title}</h4>
+        <div className="flex items-start gap-1.5 min-w-0">
+          <span
+            className="mt-0.5 text-gray-300 hover:text-gray-500 transition shrink-0"
+            title="Arraste para mover entre colunas"
+          >
+            <GripVertical className="w-4 h-4" />
+          </span>
+          <h4 className="font-bold text-sm text-gray-900 leading-snug">{task.title}</h4>
+        </div>
         <button
           onClick={() => onDeleteTask(task.id)}
-          className="text-gray-300 hover:text-red-600 transition p-1"
+          onMouseDown={(e) => e.stopPropagation()}
+          className="text-gray-300 hover:text-red-600 transition p-1 shrink-0 cursor-pointer"
           title="Remover avaliação"
         >
           <Trash2 className="w-3.5 h-3.5" />
@@ -1378,16 +1473,18 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
         </div>
       )}
 
-      <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-xs">
+      <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-xs gap-2">
         <span className="text-gray-400 font-semibold text-[11px]">Mover de Coluna:</span>
         <select
           value={task.status}
-          onChange={(e) => onStatusChange(task.id, e.target.value as any)}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => onStatusChange(task.id, e.target.value as KanbanStatus)}
           className="p-1.5 border border-gray-200 rounded-xl text-xs bg-gray-50 font-bold text-gray-700 outline-none focus:border-blue-500 cursor-pointer"
         >
           <option value="todo">⏳ A Fazer</option>
           <option value="doing">✍️ Em Andamento</option>
           <option value="done">✅ Concluído</option>
+          <option value="archived">📦 Arquivado</option>
         </select>
       </div>
     </div>

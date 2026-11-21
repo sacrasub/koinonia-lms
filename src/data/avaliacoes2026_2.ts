@@ -50,6 +50,8 @@ export interface AvaliacaoEvento {
   };
 }
 
+export type KanbanStatus = 'todo' | 'doing' | 'done' | 'archived';
+
 export interface KanbanTask {
   id: string;
   assessmentId?: string;
@@ -59,8 +61,8 @@ export interface KanbanTask {
   dueDate: string; // YYYY-MM-DD
   priority: 'Máxima' | 'Média' | 'Normal';
   type: 'Trabalho Escrito' | 'Portfólio' | 'Prova Objetiva' | 'Resumo Crítico' | 'Estudo de Caso' | 'TCC' | 'Seminário em Grupo' | 'Atividade Modular' | string;
-  status: 'todo' | 'doing' | 'done';
-  manualStatus?: 'todo' | 'doing' | 'done';
+  status: KanbanStatus;
+  manualStatus?: KanbanStatus;
   strategyNote: string;
   subtasks: { id: string; text: string; done: boolean }[];
 }
