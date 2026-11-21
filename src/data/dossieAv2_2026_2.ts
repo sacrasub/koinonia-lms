@@ -28,6 +28,13 @@ export interface SimuladoQuestao {
   justificativa: string;
 }
 
+export interface LinkBaseAv2 {
+  label: string;
+  url: string;
+  tipo: 'texto' | 'pdf' | 'drive' | 'meet' | 'email';
+  destaque?: boolean;
+}
+
 export type DiaAv2Filtro = 'all' | 'ter-24' | 'qua-25' | 'qui-26' | 'sex-27' | 'tcc-04';
 
 export interface DossieAv2Disciplina {
@@ -49,6 +56,7 @@ export interface DossieAv2Disciplina {
   trabalhoExtra: string;
   canalEnvio: string;
   textosBase?: string;
+  linksBase?: LinkBaseAv2[];
   alertaDestaque?: string;
   cor: {
     accent: string;
@@ -84,6 +92,46 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     canalEnvio: 'Link oficial via Google Forms disponibilizado no início da aula.',
     textosBase:
       '3 textos enviados pelo professor no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2) Síntese dos 28 Artigos; (3) Análise analítica ampla dos 28 Artigos.',
+    linksBase: [
+      {
+        label: '(1) Síntese do Congregacionalismo Brasileiro',
+        url: 'https://aryqueirozjr.com.br/historia-identidade-congregacionalismo-brasileiro/',
+        tipo: 'texto',
+        destaque: true,
+      },
+      {
+        label: '(2) Síntese dos 28 Artigos (Breve Exposição)',
+        url: 'https://aryqueirozjr.com.br/vida-teologia-drkalley-parte-2/',
+        tipo: 'texto',
+        destaque: true,
+      },
+      {
+        label: '(3) Análise Analítica Ampla: 150 Anos dos 28 Artigos',
+        url: 'https://aryqueirozjr.com.br/150-anos-breve-exposicao-doutrinas-kalley/',
+        tipo: 'texto',
+        destaque: true,
+      },
+      {
+        label: 'Complementar: Vida e Teologia do Dr. Kalley (Parte 1)',
+        url: 'https://aryqueirozjr.com.br/vida-teologia-drkalley/',
+        tipo: 'texto',
+      },
+      {
+        label: 'PDF: Os 28 Artigos da Breve Exposição',
+        url: 'https://drive.google.com/open?id=1waocn4PsQ79Rw6iCxuZmueVgPnN_kcG7&usp=drive_copy',
+        tipo: 'pdf',
+      },
+      {
+        label: 'Sala da Prova (Google Meet)',
+        url: 'https://meet.google.com/sef-ggpp-bbn',
+        tipo: 'meet',
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=19Y8Nv2Yvx1V-m4E5y5fUWOo5e8DZzeji&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       '10 afirmações V/F: as 2 primeiras são autodeclaração de participação e leitura dos 3 textos obrigatórios (2,0 pts) + 8 de conteúdo (8,0 pts). Câmeras abertas e sem consulta.',
     cor: {
@@ -358,6 +406,25 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     trabalhoExtra:
       'Não há trabalho na AV2 (o trabalho de pesquisa ABNT sobre o Iluminismo integrou a nota da AV1).',
     canalEnvio: 'Link liberado no chat do Google Meet durante o horário de aula.',
+    linksBase: [
+      {
+        label: 'Sala da Prova (Google Meet — link no chat)',
+        url: 'https://meet.google.com/cxj-yetd-xpf',
+        tipo: 'meet',
+        destaque: true,
+      },
+      {
+        label: 'Pasta PWP Slides (Aulas 6 a 16)',
+        url: 'https://drive.google.com/drive/folders/1nzJ_soSOyypR47_vlR3mHLNCh0YKUTEj',
+        tipo: 'drive',
+        destaque: true,
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       '10 questões objetivas no Google Forms às 20:35 (BRT), sem consulta, com correção e nota imediatas. Foco em Schleiermacher, Karl Barth, Barmen (1934), Kierkegaard e Bultmann.',
     cor: {
@@ -597,6 +664,25 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     consulta: 'Prova individual baseada estritamente nos slides das aulas disponibilizados no Drive.',
     trabalhoExtra: 'Não há trabalho acadêmico escrito (método tradicional do professor).',
     canalEnvio: 'Link direto do Google Forms disponibilizado no início da aula.',
+    linksBase: [
+      {
+        label: 'Sala da Prova (Google Meet)',
+        url: 'https://meet.google.com/ifv-zsdd-gjx',
+        tipo: 'meet',
+        destaque: true,
+      },
+      {
+        label: 'Slides: ACONSELHAMENTO II.pptx (18/11)',
+        url: 'https://drive.google.com/file/d/1YsA-o51KHmFGMFQ0EYmM6GgniVq6kiGQ/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1BUr0R4pLQjTt01ID8XjYKIBlZhAtaWcx&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'Prova 100% restrita aos slides da Unidade 2 no Drive, sem trabalho escrito e com nota automática após o envio. Revise as 5 Áreas do Inventário, paralinguística e Esperança Bíblica.',
     cor: {
@@ -850,6 +936,36 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     canalEnvio: 'Link direto do Google Forms disponibilizado no horário oficial (janela 19:00 às 23:59 BRT).',
     textosBase:
       '100% extraída do arquivo consolidado de 52 slides pós-AV1 disponibilizado na pasta do Drive.',
+    linksBase: [
+      {
+        label: 'Aula 07 — Slides Pós-AV1 (PDF)',
+        url: 'https://drive.google.com/file/d/1wNWgudlsB0Xg5acI7qxll0h9-rfpSXAS/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Aula 08 — Slides Pós-AV1 (PDF)',
+        url: 'https://drive.google.com/file/d/1asyRutF_5tCDZqHnExfrF8l1JIiC4xcx/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Aula 09 — Slides Pós-AV1 (PDF)',
+        url: 'https://drive.google.com/file/d/1wbcEUivsqWPDsnY4DKOmxIXSEX-fiq6e/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Sala Google Meet',
+        url: 'https://meet.google.com/uva-zmav-rds',
+        tipo: 'meet',
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'ATENÇÃO MÁXIMA: O trabalho escrito complementar (peso 2) da AV2 foi CANCELADO! A prova objetiva no Forms vale os 10,0 pontos integrais (janela 19h–23:59 BRT), 100% baseada no arquivo de 52 slides pós-AV1.',
     cor: {
@@ -1090,6 +1206,19 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     consulta: 'Não aplicável (sem prova escrita na AV2).',
     trabalhoExtra: 'Seminários já apresentados entre 22/10 e 19/11/2026. Em 26/11: devolutiva final e conferência de notas.',
     canalEnvio: 'Encontro ao vivo no Google Meet (19:00 BRT) para devolutiva e conferência de notas.',
+    linksBase: [
+      {
+        label: 'Sala da Devolutiva ao Vivo (Google Meet — 19:00 BRT)',
+        url: 'https://meet.google.com/ypd-yzwg-nrw',
+        tipo: 'meet',
+        destaque: true,
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1xuOm61ul94H3kdU5psFtbl-I2KZ41QJC&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'NÃO haverá prova escrita na AV2! A nota semestral foi 100% integralizada nos Seminários dos Dez Mandamentos. O encontro de 26/11 (19:00 BRT) será para encerramento, devolutiva e conferência de notas.',
     cor: {
@@ -1337,6 +1466,41 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     canalEnvio: 'Link direto disponibilizado na sala virtual no horário de aula.',
     textosBase:
       'Slides do professor e o livro-texto Introdução ao Novo Testamento (D. A. Carson, Douglas J. Moo e Leon Morris).',
+    linksBase: [
+      {
+        label: 'Slides: Epístolas Católicas — Judas e Cartas Joaninas (PDF)',
+        url: 'https://drive.google.com/file/d/1nvzRiGitV--EW7fqpfWRHbfF5u2H1WYc/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Slides: Epístolas Católicas — Tiago, I e II Pedro (PDF)',
+        url: 'https://drive.google.com/file/d/1LKsJqGgWvgkv_A1pwL9_E1p-qV9Cdgrr/view',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Slides: Epístola aos Hebreus (PDF)',
+        url: 'https://drive.google.com/file/d/1Npvc_RTAcfHgh8cjywa091DmMMfMLoUm/view',
+        tipo: 'pdf',
+      },
+      {
+        label: 'Livro-Texto: Introdução ao NT (Carson, Moo & Morris)',
+        url: 'https://drive.google.com/open?id=1ofgq2tGJt-Lj6F2A4vgZOdVYqJKFyhgT&usp=drive_copy',
+        tipo: 'pdf',
+        destaque: true,
+      },
+      {
+        label: 'Sala da Prova (Google Meet)',
+        url: 'https://meet.google.com/nyn-xjqk-vky',
+        tipo: 'meet',
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'Prova objetiva de 10 questões no Forms às 20:35 (BRT), sem consulta. Foco nos slides + Carson/Moo/Morris: 1 e 2 Pedro, Judas e 1, 2 e 3 João (além de síntese de Hebreus e Tiago).',
     cor: {
@@ -1594,6 +1758,25 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
       'Entrega de resumo estruturado de 12 páginas no total (estritamente 1 página digitada por capítulo da obra A Treliça e a Videira, de Colin Marshall e Tony Payne).',
     canalEnvio:
       'Prova: Google Forms às 19:00 BRT. Trabalho: enviar arquivo (PDF ou Word) até 23:59 de 27/11/2026 para thacyto@gmail.com.',
+    linksBase: [
+      {
+        label: 'Sala da Prova (Google Meet — 19:00 BRT)',
+        url: 'https://meet.google.com/jwb-wpvc-pzm',
+        tipo: 'meet',
+        destaque: true,
+      },
+      {
+        label: 'Enviar Trabalho por E-mail (thacyto@gmail.com)',
+        url: 'mailto:thacyto@gmail.com?subject=Trabalho%20AV2%20-%20Planta%C3%A7%C3%A3o%20e%20Revitaliza%C3%A7%C3%A3o%20II',
+        tipo: 'email',
+        destaque: true,
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'DUPLA ENTREGA EM 27/11: Prova AV2 às 19:00 com CONSULTA LIVRE (slides, anotações e PDF consolidado) + envio do Resumo digitado de 12 páginas de "A Treliça e a Videira" (PDF ou Word) até 23:59 para thacyto@gmail.com.',
     cor: {
@@ -1840,6 +2023,24 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
       'Escrita formal e impessoal em 3ª pessoa ou voz apassivada (vedada 1ª pessoa do singular ou plural).',
     canalEnvio:
       'Envio do arquivo em formato digital (PDF e Word) na plataforma acadêmica / e-mail da orientadora (gabriela.lealg7757@gmail.com).',
+    linksBase: [
+      {
+        label: 'Enviar TCC I por E-mail (gabriela.lealg7757@gmail.com)',
+        url: 'mailto:gabriela.lealg7757@gmail.com?subject=Entrega%20Final%20TCC%20I%20-%202026.2',
+        tipo: 'email',
+        destaque: true,
+      },
+      {
+        label: 'Sala de Orientação (Google Meet)',
+        url: 'https://meet.google.com/jnz-hkqd-edc',
+        tipo: 'meet',
+      },
+      {
+        label: 'Pasta da Disciplina (Google Drive)',
+        url: 'https://drive.google.com/open?id=1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj&usp=drive_copy',
+        tipo: 'drive',
+      },
+    ],
     alertaDestaque:
       'Entrega final em 04/12/2026 até 23:59: Artigo com extensão estrita de 20 a 25 páginas (da capa às referências), em PDF e Word, 100% impessoal (3ª pessoa) e rigorosamente SEM uso de IA ou plágio.',
     cor: {

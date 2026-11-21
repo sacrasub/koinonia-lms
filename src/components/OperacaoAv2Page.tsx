@@ -23,13 +23,57 @@ import {
   PenTool,
   Award,
   CheckSquare,
+  Video,
+  Mail,
 } from 'lucide-react';
 import {
   DOSSIE_AV2_2026_2,
   OFFICIAL_NOTEBOOKLM_URL,
   DiaAv2Filtro,
   DossieAv2Disciplina,
+  LinkBaseAv2,
 } from '@/data/dossieAv2_2026_2';
+
+const LINK_BASE_STYLES: Record<
+  LinkBaseAv2['tipo'],
+  { Icon: React.ComponentType<{ className?: string }>; baseClass: string; destaqueClass: string }
+> = {
+  texto: {
+    Icon: BookOpen,
+    baseClass:
+      'bg-slate-200/70 hover:bg-slate-200 dark:bg-slate-700/70 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border-slate-300 dark:border-slate-600',
+    destaqueClass:
+      'bg-sky-100 hover:bg-sky-200 dark:bg-sky-900/60 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-100 border-sky-300 dark:border-sky-700',
+  },
+  pdf: {
+    Icon: FileText,
+    baseClass:
+      'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/70 text-rose-800 dark:text-rose-200 border-rose-200 dark:border-rose-800',
+    destaqueClass:
+      'bg-rose-100 hover:bg-rose-200 dark:bg-rose-900/60 dark:hover:bg-rose-900 text-rose-900 dark:text-rose-100 border-rose-300 dark:border-rose-700',
+  },
+  meet: {
+    Icon: Video,
+    baseClass:
+      'bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/70 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800',
+    destaqueClass:
+      'bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-900 text-emerald-900 dark:text-emerald-100 border-emerald-300 dark:border-emerald-700',
+  },
+  drive: {
+    Icon: FolderOpen,
+    baseClass:
+      'bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/70 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-800',
+    destaqueClass:
+      'bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/60 dark:hover:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-300 dark:border-blue-700',
+  },
+  email: {
+    Icon: Mail,
+    baseClass:
+      'bg-violet-50 hover:bg-violet-100 dark:bg-violet-950/60 dark:hover:bg-violet-900/70 text-violet-800 dark:text-violet-200 border-violet-200 dark:border-violet-800',
+    destaqueClass:
+      'bg-violet-100 hover:bg-violet-200 dark:bg-violet-900/60 dark:hover:bg-violet-900 text-violet-900 dark:text-violet-100 border-violet-300 dark:border-violet-700',
+  },
+};
 
 interface OperacaoAv2PageProps {
   userEmail?: string;
@@ -487,13 +531,36 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                   <p className="text-xs text-slate-600 dark:text-slate-300">{activeDisc.trabalhoExtra}</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 space-y-1">
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 space-y-2">
                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
                     Canal de Envio &amp; Base da Prova
                   </span>
                   <p className="text-xs font-bold text-slate-900 dark:text-white">{activeDisc.canalEnvio}</p>
                   {activeDisc.textosBase && (
                     <p className="text-xs text-slate-600 dark:text-slate-300">{activeDisc.textosBase}</p>
+                  )}
+                  {activeDisc.linksBase && activeDisc.linksBase.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {activeDisc.linksBase.map((link) => {
+                        const styleCfg = LINK_BASE_STYLES[link.tipo];
+                        const IconComp = styleCfg.Icon;
+                        const colorClass = link.destaque ? styleCfg.destaqueClass : styleCfg.baseClass;
+                        const isEmail = link.tipo === 'email';
+                        return (
+                          <a
+                            key={`${activeDisc.disciplinaId}-${link.url}`}
+                            href={link.url}
+                            target={isEmail ? undefined : '_blank'}
+                            rel={isEmail ? undefined : 'noopener noreferrer'}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition ${colorClass}`}
+                          >
+                            <IconComp className="w-3 h-3 shrink-0" />
+                            <span>{link.label}</span>
+                            <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
+                          </a>
+                        );
+                      })}
+                    </div>
                   )}
                 </div>
               </div>
