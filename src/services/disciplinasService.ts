@@ -31,12 +31,21 @@ export function getAllDisciplinas(): Disciplina[] {
     const seedDisc9 = mockDisciplinas.find(d => d.id === 'disc-9');
     let hasLegacyData = false;
     const synced = parsed.map(item => {
-      if (item.id === 'disc-9' && seedDisc9 && (item.professor_name?.includes('Emerson') || item.name?.includes('Emerson'))) {
+      if (
+        item.id === 'disc-9' &&
+        seedDisc9 &&
+        (item.professor_name?.includes('Emerson') ||
+          item.name?.includes('Emerson') ||
+          item.professor_email !== seedDisc9.professor_email ||
+          item.description !== seedDisc9.description)
+      ) {
         hasLegacyData = true;
         return {
           ...item,
           name: seedDisc9.name,
+          description: seedDisc9.description,
           professor_name: seedDisc9.professor_name,
+          professor_email: seedDisc9.professor_email,
           google_drive_url: seedDisc9.google_drive_url,
           code: seedDisc9.code,
         };

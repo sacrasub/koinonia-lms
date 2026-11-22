@@ -68,13 +68,13 @@ export const CURRENT_RELEASE_NOTES: ReleaseNote = {
   version: APP_VERSION,
   versionName: APP_VERSION_NAME,
   date: APP_RELEASE_DATE,
-  summary: 'Chegou a Central Operação Semana da AV2 (24 a 27/11) integrada ao NotebookLM oficial com transcrições da Unidade 2, mapas mentais e 40 questões de simulado comentadas.',
+  summary: 'Chegou a Central Operação Semana da AV2 (24 a 28/11) integrada ao NotebookLM oficial com transcrições da Unidade 2, mapas mentais e 45 questões de simulado comentadas.',
   dataProtectionNotice: '🛡️ Todas as atualizações da Unidade 2 rodam em modo Zero-Egress, preservando suas notas, presenças e anotações do Caderno Cornell.',
   items: [
     {
       id: 'operacao-av2-hub',
       title: 'Nova Central: Operação Semana da AV2 & Simulados',
-      description: 'Filtre por dia de prova (Ter 24/11 a Sex 27/11 + TCC 04/12), confira os horários de Brasília/Tabatinga, revise os guias express e pratique 40 questões comentadas no estilo de cada docente.',
+      description: 'Filtre por dia de prova (Ter 24/11 a Sáb 28/11 + TCC 04/12), confira os horários de Brasília/Tabatinga, revise os guias express e pratique 45 questões comentadas no estilo de cada docente.',
       category: 'novidade',
       badge: 'Semana AV2'
     },

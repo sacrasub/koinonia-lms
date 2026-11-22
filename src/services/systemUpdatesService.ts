@@ -7,13 +7,13 @@ export const INITIAL_SYSTEM_UPDATES: SystemUpdate[] = [
   {
     id: 'upd-2026-11-21-v1-1-0-operacao-av2',
     version: 'v1.1.0 • Semana AV2',
-    title: '🔥 Operação Semana da AV2 (24–27/11) + NotebookLM Oficial',
+    title: '🔥 Operação Semana da AV2 (24–28/11) + NotebookLM Oficial',
     description: 'Plataforma atualizada com o Dossiê Completo da Unidade 2 e regras homologadas para a semana de provas finais e entrega do TCC I.',
     date: '21/11/2026',
     category: 'novidade',
     badge: 'Operação AV2',
     highlights: [
-      '🔥 Nova aba Operação AV2 & Simulados com 40 questões comentadas no estilo dos docentes, guias express e mapas mentais copiáveis.',
+      '🔥 Nova aba Operação AV2 & Simulados com 45 questões comentadas no estilo dos docentes, guias express e mapas mentais copiáveis.',
       '📓 Integração direta com o NotebookLM Oficial atualizado com todas as transcrições da Unidade 2 e materiais de aula.',
       '⚠️ Alertas críticos atualizados: Direitos Humanos com prova peso 10 integral (trabalho cancelado, 52 slides) e Ética Cristã sem prova escrita (conferência em 26/11).',
       '📚 Plantação e Revitalização II em 27/11 com prova às 19h (consulta livre) e resumo de 12 págs até 23h59 para thacyto@gmail.com.'

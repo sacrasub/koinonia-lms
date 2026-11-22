@@ -19,13 +19,13 @@ export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
   {
     id: 'aviso-semana-av2-2026-2',
     disciplina_id: 'all',
-    disciplina_name: 'Todas as Disciplinas • Semana da AV2 (24 a 27/11)',
+    disciplina_name: 'Todas as Disciplinas • Semana da AV2 (24 a 28/11)',
     author_name: 'Coordenação & Monitoria Koinonia',
     author_role: 'admin',
     author_email: 'sacrasub@gmail.com',
     avatar_url: '/cristiano_sacramento.jpg',
-    title: '🔥 Operação Semana da AV2 (24–27/11) + NotebookLM Atualizado',
-    message: `O Dossiê Oficial da AV2 com todas as transcrições da Unidade 2, regras confirmadas, mapas mentais e 40 questões de simulado comentadas já está no ar na aba "Operação AV2 & Simulados"!
+    title: '🔥 Operação Semana da AV2 (24–28/11) + NotebookLM Atualizado',
+    message: `O Dossiê Oficial da AV2 com todas as transcrições da Unidade 2, regras confirmadas, mapas mentais e 45 questões de simulado comentadas já está no ar na aba "Operação AV2 & Simulados"!
 
 Alertas Críticos da Semana (Horário de Brasília):
 • Ter 24/11 (19h): Hist. Congregacionalismo — 10 afirmações V/F (2 autodeclaração + 8 conteúdo, sem consulta, 3 textos no WhatsApp).
@@ -35,10 +35,11 @@ Alertas Críticos da Semana (Horário de Brasília):
 • Qui 26/11 (19h): Ética Cristã — ⚠️ SEM PROVA ESCRITA! Aula de encerramento e conferência de notas dos Seminários.
 • Qui 26/11 (20h35): NT III (Epístolas Gerais) — 10 questões no Forms, sem consulta (slides + Carson/Moo/Morris).
 • Sex 27/11 (19h): Plantação II — Prova AV2 com CONSULTA LIVRE às 19h + Resumo 12 pág (PDF ou Word) para thacyto@gmail.com até 23h59.
+• Sáb 28/11 (até 23h59): Cultura Afro & Indígena (AFR-101) — ⚠️ SEM PROVA ESCRITA! Assistir às 4 videoaulas + Trabalho Final Aplicado (exatamente 2 laudas, 3 partes, Bíblia + mínimo 2 autores) para prof.alexsandro@gmail.com.
 • Sex 04/12 (até 23h59): TCC I — Artigo completo (20 a 25 págs, ABNT, impessoal em 3ª pessoa, PDF e Word, sem IA).`,
     link_url: 'https://notebook.google.com/notebook/562f2cd7-e3c7-4490-a224-3fb851078d96',
     created_at: '2026-11-21T12:00:00Z',
-    target_date: '24/11 a 27/11/2026',
+    target_date: '24/11 a 28/11/2026',
     is_pinned: true,
     is_archived: false,
     category: 'aviso_geral',
@@ -106,16 +107,21 @@ Alertas Críticos da Semana (Horário de Brasília):
   {
     id: 'aviso-diretoria-afro-1',
     disciplina_id: 'disc-9',
-    disciplina_name: 'História da Cultura Afro Brasileira e Indígena',
-    author_name: 'STC Diretora Karla (Direção)',
+    disciplina_name: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)',
+    author_name: 'STC Diretora Karla & Profº Alexsandro Silva',
     author_role: 'admin',
-    author_email: 'diretoria@koinonia.edu.br',
+    author_email: 'prof.alexsandro@gmail.com',
     avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
-    title: 'Aulas e Materiais: Matéria Modular de Cultura Afro-brasileira e Indígena',
-    message: 'Queridos, segue a pasta com as aulas e demais materiais da matéria História da Cultura Afro-brasileira e Indígena. Conforme combinamos, a matéria será modular, contendo quatro aulas. Na quarta aula, o Prof. Alexsandro apresenta e explica a atividade que deve ser produzida e enviada para o seu e-mail, como forma de avaliação. Vocês terão até o final do período (28 de novembro) para assistir às aulas, produzir e enviar a atividade.',
+    title: 'AFR-101 (Sem Prova Escrita): 4 Videoaulas + Trabalho Final 2 Laudas até 28/11',
+    message: `Disciplina modular gravada ministrada pelo Profº Alexsandro de Oliveira Silva (4 videoaulas de ~1h20 na pasta oficial do Google Drive). NÃO há prova escrita convencional (nem AV1 nem AV2 por formulário).
+
+Avaliação Única — Trabalho Final Aplicado (até 28/11/2026):
+• Produção individual textual com EXATAMENTE 2 laudas (duas páginas);
+• Estrutura em 3 partes: (1) Descrição/contextualização de situação-problema étnico-racial concreta; (2) Análise fundamentada na Bíblia (Gn 1:26-28, At 17:26, Gl 3:28, Tg 2:1-9) e em pelo menos 2 autores estudados no curso (Silvio Almeida, Gersem Baniwa, Esau McCaulley, Marco Davi de Oliveira, Nilma Lino Gomes, Ailton Krenak ou John Piper); (3) Proposta de ação pastoral/eclesial concreta;
+• Canal de envio exclusivo: prof.alexsandro@gmail.com até 28/11/2026 (Sábado).`,
     link_url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
     created_at: '2026-09-09T13:29:00Z',
-    target_date: 'Entrega da Atividade até 28/11/2026',
+    target_date: 'Entrega do Trabalho até 28/11/2026 (Sábado)',
     is_pinned: true,
     is_archived: false,
     category: 'complementar',
@@ -298,6 +304,8 @@ function normalizeAnnouncementsForAv2(list: AvisoLeituraPreAula[]): {
 } {
   let changed = false;
   const thacytoSeed = INITIAL_ANNOUNCEMENTS.find((s) => s.id === 'aviso-thacyto-1');
+  const semanaAv2Seed = INITIAL_ANNOUNCEMENTS.find((s) => s.id === 'aviso-semana-av2-2026-2');
+  const afroSeed = INITIAL_ANNOUNCEMENTS.find((s) => s.id === 'aviso-diretoria-afro-1');
 
   const mapped = list.map((item) => {
     if (ARCHIVED_AV1_ANNOUNCEMENT_IDS.has(item.id) && (!item.is_archived || item.is_pinned)) {
@@ -315,6 +323,36 @@ function normalizeAnnouncementsForAv2(list: AvisoLeituraPreAula[]): {
         message: thacytoSeed.message,
         target_date: thacytoSeed.target_date,
         is_archived: false,
+      };
+    }
+    if (
+      item.id === 'aviso-semana-av2-2026-2' &&
+      semanaAv2Seed &&
+      !item.message?.includes('prof.alexsandro@gmail.com')
+    ) {
+      changed = true;
+      return {
+        ...item,
+        disciplina_name: semanaAv2Seed.disciplina_name,
+        title: semanaAv2Seed.title,
+        message: semanaAv2Seed.message,
+        target_date: semanaAv2Seed.target_date,
+      };
+    }
+    if (
+      item.id === 'aviso-diretoria-afro-1' &&
+      afroSeed &&
+      !item.message?.includes('prof.alexsandro@gmail.com')
+    ) {
+      changed = true;
+      return {
+        ...item,
+        disciplina_name: afroSeed.disciplina_name,
+        author_name: afroSeed.author_name,
+        author_email: afroSeed.author_email,
+        title: afroSeed.title,
+        message: afroSeed.message,
+        target_date: afroSeed.target_date,
       };
     }
     return item;

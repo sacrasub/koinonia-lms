@@ -66,6 +66,7 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
     { id: 'e-etc-av2', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'AV2: Encerramento & Conferência de Notas (Sem Prova Escrita)', descricao: '19:00–20:25 BRT (17:00–18:25 Tabatinga). NÃO haverá prova escrita na AV2; nota semestral 100% integralizada nos Seminários dos Dez Mandamentos.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'apresentacao' },
     { id: 'e-nt-av2', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV2: Prova Objetiva 10 Questões — Google Forms', descricao: '20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões objetivas via Google Forms, sem consulta, baseadas nos slides e Carson/Moo/Morris.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'prova' },
     { id: 'e-pla-resumo', disciplinaId: 'disc-7', disciplina: 'Plantação e Revitalização II', titulo: 'AV2: Prova com Consulta Livre (19h) + Resumo 12 pág (até 23:59)', descricao: 'Dupla atividade em 27/11: Prova AV2 às 19:00 BRT com CONSULTA LIVRE aos slides, anotações e PDF consolidado + Resumo digitado de 12 páginas (PDF ou Word) de "A Treliça e a Videira" enviado para thacyto@gmail.com até 23:59.', dataLimite: '27/11/2026 (Sex)', dataISO: '2026-11-27', tipo: 'resumo' },
+    { id: 'e-afro-av2', disciplinaId: 'disc-9', disciplina: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)', titulo: 'AV2 (Avaliação Única): Trabalho Final Aplicado (2 laudas • Sem Prova)', descricao: 'Disciplina modular gravada (4 videoaulas ~1h20 cada, sem prova escrita). Produção individual de exatamente 2 laudas em 3 partes (contextualização de situação-problema étnico-racial, análise com Bíblia + mínimo 2 autores do curso e proposta de ação pastoral/eclesial). Enviar exclusivamente para prof.alexsandro@gmail.com até 28/11/2026.', dataLimite: '28/11/2026 (Sáb)', dataISO: '2026-11-28', tipo: 'trabalho' },
     { id: 'e-tcc-artigo', disciplinaId: 'disc-8', disciplina: 'TCC I', titulo: 'Entrega Final: Artigo Científico Completo (20 a 25 pág.)', descricao: 'Até 23:59 BRT. Artigo completo ABNT / FMB (20 a 25 páginas da capa às referências), impessoal (3ª pessoa), PDF e Word, rigorosamente sem IA ou plágio.', dataLimite: '04/12/2026 (Sex)', dataISO: '2026-12-04', tipo: 'entrega' },
   ],
   requisitos: [
@@ -172,6 +173,30 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
       livros: [{ titulo: 'Manual de Metodologia Científica (consultar com orientador)', autor: 'A definir', tipo: 'recomendado' }],
       infoExtra: 'Estrutura exigida: Capa, Folha de Rosto, Resumo/Abstract (150–500 palavras, parágrafo único, 3–5 palavras-chave), Introdução, Metodologia, Desenvolvimento, Considerações Finais e Referências em ordem alfabética. Extensão: 20 a 25 páginas.',
       whatsapp: 'TCC1 - segundo semestre 2026',
+    },
+    {
+      id: 'disc-9', num: '09', nome: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)', professor: 'Profº Alexsandro de Oliveira Silva', professorEmail: 'prof.alexsandro@gmail.com',
+      cor: 'text-teal-800', corFundo: 'bg-teal-50', corBorda: 'border-teal-300',
+      regrasGerais: [
+        '🎬 Disciplina modular gravada: assistir integralmente às 4 videoaulas (~1h20 cada) na pasta do Drive',
+        '⚠️ NÃO possui prova escrita convencional (nem AV1 nem AV2 por formulário)',
+        '📄 Trabalho Final Aplicado individual com EXATAMENTE 2 laudas (duas páginas) em 3 partes obrigatórias',
+        '📧 Enviar exclusivamente para prof.alexsandro@gmail.com até 28/11/2026 (Sábado)'
+      ],
+      criteriosAvaliacao: [
+        '🎬 Etapa 1: Assistir às 4 videoaulas (Teologia & Leis 10.639/03 e 11.645/08; Áfricas/Diáspora; Povos Indígenas/CF-88; Análise Cristã Confessional)',
+        '📝 Etapa 2 (Avaliação Única): Trabalho de 2 laudas — (1) Situação-problema étnico-racial concreta; (2) Análise com Bíblia (Gn 1:26-28, At 17:26, Gl 3:28, Tg 2:1-9) + mínimo 2 autores do curso; (3) Proposta de ação pastoral/eclesial concreta'
+      ],
+      livros: [
+        { titulo: 'Racismo Estrutural', autor: 'Silvio Almeida', tipo: 'base' },
+        { titulo: 'O Índio Brasileiro', autor: 'Gersem dos Santos Luciano Baniwa', tipo: 'base' },
+        { titulo: 'Uma Leitura Negra', autor: 'Esau McCaulley', tipo: 'base' },
+        { titulo: 'A Religião Mais Negra do Brasil', autor: 'Marco Davi de Oliveira', tipo: 'base' },
+        { titulo: 'Movimento Negro Educador', autor: 'Nilma Lino Gomes', tipo: 'base' },
+        { titulo: 'Ideias para Adiar o Fim do Mundo', autor: 'Ailton Krenak', tipo: 'base' },
+        { titulo: 'O Racismo, a Cruz e o Cristão', autor: 'John Piper', tipo: 'base' }
+      ],
+      infoExtra: 'Prazo final: 28/11/2026 (Sábado) exclusivamente para prof.alexsandro@gmail.com. Extensão exata: 2 laudas. Citar Bíblia e pelo menos 2 autores estudados.',
     },
   ],
 };

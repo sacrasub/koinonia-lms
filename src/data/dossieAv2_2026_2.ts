@@ -14,6 +14,7 @@ export interface AulaUnidade2Item {
   dataAprox: string;
   resumo: string;
   geminiUrl?: string;
+  videoUrl?: string;
 }
 
 export interface TopicoRevisaoItem {
@@ -36,7 +37,7 @@ export interface LinkBaseAv2 {
   destaque?: boolean;
 }
 
-export type DiaAv2Filtro = 'all' | 'ter-24' | 'qua-25' | 'qui-26' | 'sex-27' | 'tcc-04';
+export type DiaAv2Filtro = 'all' | 'ter-24' | 'qua-25' | 'qui-26' | 'sex-27' | 'sab-28' | 'tcc-04';
 
 export interface DossieAv2Disciplina {
   disciplinaId: string;
@@ -2090,8 +2091,276 @@ export const DOSSIE_AV2_2026_2: DossieAv2Disciplina[] = [
     ],
   },
   {
-    disciplinaId: 'disc-8',
+    disciplinaId: 'disc-9',
     ordem: 8,
+    nome: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)',
+    nomeCurto: 'Cultura Afro & Indígena',
+    professor: 'Profº Alexsandro de Oliveira Silva',
+    diaGrupo: 'sab-28',
+    diaLabel: 'Sábado • 28/11',
+    dataISO: '2026-11-28',
+    dataExtenso: '28/11/2026 (Sábado)',
+    horarioBRT: 'Até às 23:59 (Brasília)',
+    horarioTabatinga: 'Até às 21:59 (Tabatinga)',
+    formatoCurto: 'Trabalho 2 laudas',
+    formatoCompleto:
+      'Disciplina modular gravada (4 videoaulas de ~1h20 cada) + Trabalho Final Aplicado individual (exatamente 2 laudas / 2 páginas) — SEM prova escrita convencional (nem AV1 nem AV2 por formulário).',
+    peso: 'Avaliação Única (100% da nota semestral): assistir integralmente às 4 videoaulas gravadas e entregar o Trabalho Final Aplicado individual de 2 laudas.',
+    consulta:
+      'Produção textual autoral fundamentada nas 4 videoaulas, em textos bíblicos (Gn 1:26-28, At 17:26, Gl 3:28, Tg 2:1-9) e em pelo menos 2 autores estudados no curso.',
+    trabalhoExtra:
+      'Estrutura interna obrigatória (3 partes em exatamente 2 laudas): (1) Descrição da situação e contextualização étnico-racial concreta; (2) Análise fundamentada (Bíblia + mínimo 2 autores); (3) Proposta de ação pastoral/eclesial concreta.',
+    canalEnvio:
+      'Envio exclusivo por e-mail para prof.alexsandro@gmail.com até 28/11/2026 (Sábado — último dia da semana oficial de avaliações de 2026.2).',
+    textosBase:
+      'Pasta compartilhada oficial no Google Drive com as 4 videoaulas gravadas e Plano de Curso. Autores estudados: Silvio Almeida, Gersem Baniwa, Esau McCaulley, Marco Davi de Oliveira, Nilma Lino Gomes, Ailton Krenak e John Piper.',
+    linksBase: [
+      {
+        label: 'Enviar Trabalho por E-mail (prof.alexsandro@gmail.com)',
+        url: 'mailto:prof.alexsandro@gmail.com?subject=Trabalho%20Final%20Aplicado%20-%20AFR-101%20-%202026.2',
+        tipo: 'email',
+        destaque: true,
+      },
+      {
+        label: 'Pasta Oficial do Módulo (Google Drive)',
+        url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link',
+        tipo: 'drive',
+        destaque: true,
+      },
+      {
+        label: 'Videoaula 1 (~1h20) — Necessidade à Teologia',
+        url: 'https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link',
+        tipo: 'meet',
+      },
+      {
+        label: 'Videoaula 2 (~1h20) — Áfricas & Cultura Afro',
+        url: 'https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link',
+        tipo: 'meet',
+      },
+      {
+        label: 'Videoaula 3 (~1h20) — Povos Indígenas & CF/88',
+        url: 'https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link',
+        tipo: 'meet',
+      },
+      {
+        label: 'Videoaula 4 (~1h20) — Religiões & Avaliação Final',
+        url: 'https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link',
+        tipo: 'meet',
+      },
+    ],
+    alertaDestaque:
+      'ATENÇÃO: Esta disciplina NÃO possui prova escrita (nem AV1 nem AV2 por formulário). A nota semestral depende de assistir às 4 videoaulas gravadas e enviar o Trabalho Final Aplicado individual de EXATAMENTE 2 laudas (3 partes obrigatórias + Bíblia + mínimo 2 autores do curso) exclusivamente para prof.alexsandro@gmail.com até 28/11/2026 (Sábado).',
+    cor: {
+      accent: 'bg-teal-600',
+      bg: 'bg-teal-500/10 dark:bg-teal-950/30',
+      border: 'border-teal-300 dark:border-teal-800',
+      badge: 'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200',
+      text: 'text-teal-700 dark:text-teal-300',
+    },
+    aulasUnidade2: [
+      {
+        aulaNum: 1,
+        dataAprox: 'Módulo Gravado (~1h20)',
+        resumo:
+          'Por que esta disciplina é necessária à Teologia? Fundamentação legal (Leis 10.639/03, 11.645/08 e Resolução CNE/CES 4/2016) e conceitos de raça, etnia, preconceito e racismo institucional/estrutural.',
+        videoUrl:
+          'https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link',
+      },
+      {
+        aulaNum: 2,
+        dataAprox: 'Módulo Gravado (~1h20)',
+        resumo:
+          'Áfricas, Diáspora e Cultura Afro-Brasileira: história africana pré-colonial, escravização, resistência nos quilombos, movimento negro, saberes estético-corpóreos e hermenêutica bíblica negra.',
+        videoUrl:
+          'https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link',
+      },
+      {
+        aulaNum: 3,
+        dataAprox: 'Módulo Gravado (~1h20)',
+        resumo:
+          'Povos Indígenas: Histórias, Culturas, Missão e Direitos — pluralidade e autodefinição indígena, dados do Censo, direitos constitucionais nos Arts. 215, 231 e 232 da CF/88 e superação de estereótipos na missão transcultural.',
+        videoUrl:
+          'https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link',
+      },
+      {
+        aulaNum: 4,
+        dataAprox: 'Módulo Gravado (~1h20)',
+        resumo:
+          'Religiões, Análise Cristã Confessional e Prática da Igreja: espiritualidades indígenas e de matriz africana, liberdade de consciência e culto, os 3 passos (descrever, compreender e avaliar com fidelidade cristã) e explicação detalhada da avaliação final.',
+        videoUrl:
+          'https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link',
+      },
+    ],
+    guiaRevisao: [
+      {
+        titulo: 'Base Legal & Conceitos Fundamentais (Aula 1)',
+        detalhe:
+          'Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia). Distinção entre raça (construção sócio-histórica), etnia, preconceito, racismo institucional e racismo estrutural.',
+      },
+      {
+        titulo: 'Áfricas, Diáspora, Quilombos & Hermenêutica Negra (Aula 2)',
+        detalhe:
+          'Valorização da história africana pré-colonial (reinos e tradições), trauma e diáspora da escravização, resistência histórica nos quilombos, atuação do movimento negro, saberes estético-corpóreos e chaves da hermenêutica bíblica negra.',
+      },
+      {
+        titulo: 'Povos Indígenas, CF/88 & Missão Transcultural (Aula 3)',
+        detalhe:
+          'Pluralidade étnica e autodefinição dos povos originários conforme o Censo; garantia de direitos culturais e territoriais nos Arts. 215, 231 e 232 da Constituição Federal de 1988; superação de estereótipos paternalistas ou colonizadores na missão transcultural.',
+      },
+      {
+        titulo: 'Análise Cristã Confessional — Os 3 Passos (Aula 4)',
+        detalhe:
+          'Diante das espiritualidades indígenas e religiões de matriz africana, defender a liberdade de consciência e culto aplicando o método em 3 passos com fidelidade bíblica e respeito: (1) Descrever sem caricaturas; (2) Compreender no seu contexto; (3) Avaliar confessionalmente à luz das Escrituras.',
+      },
+      {
+        titulo: 'Estrutura Obrigatória do Trabalho Final (2 Laudas / 3 Partes)',
+        detalhe:
+          'Produção individual textual de EXATAMENTE 2 laudas (duas páginas) dividida em 3 partes: (1) Descrição da situação-problema étnico-racial concreta e impacto na igreja/missão (ex.: imposição cultural em comunidade quilombola ou indígena sem ouvir lideranças locais); (2) Análise fundamentada (Bíblia + pelo menos 2 autores); (3) Proposta de ação concreta aplicável por pastores, igrejas locais ou missionários.',
+      },
+      {
+        titulo: 'Fundamentação Bíblica Sugerida pelo Docente',
+        detalhe:
+          'Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9.',
+      },
+      {
+        titulo: 'Autores Estudados no Curso (Citar no Mínimo 2)',
+        detalhe:
+          'Silvio Almeida ("Racismo Estrutural"); Gersem dos Santos Luciano Baniwa ("O Índio Brasileiro"); Esau McCaulley ("Uma Leitura Negra"); Marco Davi de Oliveira ("A Religião Mais Negra do Brasil"); Nilma Lino Gomes ("Movimento Negro Educador"); Ailton Krenak ("Ideias para Adiar o Fim do Mundo"); John Piper ("O Racismo, a Cruz e o Cristão").',
+      },
+    ],
+    mapaMental: `HISTÓRIA E CULTURA AFRO-BRASILEIRA E INDÍGENA (AFR-101 — PROFº ALEXSANDRO)
+├── Formato Modular (SEM Prova Escrita AV1/AV2)
+│   ├── Assistir às 4 Videoaulas Gravadas (~1h20 cada no Google Drive)
+│   │   ├── Aula 1: Necessidade à Teologia (Leis 10.639/03, 11.645/08, CNE/CES 4/2016)
+│   │   ├── Aula 2: Áfricas, Diáspora, Quilombos e Hermenêutica Bíblica Negra
+│   │   ├── Aula 3: Povos Indígenas, Arts. 215/231/232 CF/88 e Missão Transcultural
+│   │   └── Aula 4: Religiões, Liberdade de Culto e 3 Passos (Descrever → Compreender → Avaliar)
+│   └── Avaliação Única: Trabalho Final Aplicado (Envio: prof.alexsandro@gmail.com até 28/11/2026)
+└── Regras Rígidas do Trabalho Individual (EXATAMENTE 2 Laudas / 3 Partes)
+    ├── 1. Descrição & Contextualização: Situação-problema étnico-racial real na igreja/missão
+    ├── 2. Análise Fundamentada (Bíblia + Mínimo 2 Autores do Curso)
+    │   ├── Bíblia: Gn 1:26-28 | At 17:26 | Gl 3:28 | Tg 2:1-9
+    │   └── Autores: Silvio Almeida | Gersem Baniwa | Esau McCaulley | Marco Davi | Nilma Lino | Ailton Krenak | John Piper
+    └── 3. Proposta de Ação Concreta: Prática realista para pastores, igrejas locais ou missionários`,
+    simulado: [
+      {
+        id: 'sim-disc9-q1',
+        enunciado:
+          'Na Aula 1, o Profº Alexsandro fundamenta a obrigatoriedade do ensino das temáticas afro-brasileira e indígena inclusive no contexto da formação teológica superior com base em marcos legais específicos. Assinale a alternativa que reúne corretamente esses dispositivos legais:',
+        alternativas: [
+          {
+            letra: 'A',
+            texto: 'Apenas decretos municipais facultativos voltados exclusivamente às escolas privadas de ensino infantil.',
+          },
+          {
+            letra: 'B',
+            texto: 'Leis 10.639/03 e 11.645/08, combinadas com a Resolução CNE/CES 4/2016 para os cursos de Teologia.',
+          },
+          {
+            letra: 'C',
+            texto: 'Exclusivamente o Código Civil de 1916 e tratados internacionais não ratificados pelo Brasil.',
+          },
+          {
+            letra: 'D',
+            texto: 'Normas administrativas internas sem qualquer relação com as diretrizes curriculares nacionais.',
+          },
+        ],
+        gabarito: 'B',
+        justificativa:
+          'A Aula 1 destaca as Leis 10.639/03 (afro-brasileira), 11.645/08 (inclusão indígena) e a Resolução CNE/CES 4/2016 (diretrizes curriculares da graduação em Teologia) como base legal da disciplina.',
+      },
+      {
+        id: 'sim-disc9-q2',
+        enunciado:
+          'Ao abordar os Povos Indígenas na Aula 3 (histórias, culturas, missão e direitos), quais artigos da Constituição Federal de 1988 são destacados para assegurar proteção às manifestações culturais indígenas e aos direitos originários sobre suas terras?',
+        alternativas: [
+          { letra: 'A', texto: 'Arts. 1º, 2º e 3º apenas no âmbito trabalhista urbano.' },
+          { letra: 'B', texto: 'Arts. 142, 143 e 144 sobre segurança viária.' },
+          {
+            letra: 'C',
+            texto: 'Arts. 215, 231 e 232 da CF/88, garantindo proteção cultural, reconhecimento territorial e capacidade processual.',
+          },
+          { letra: 'D', texto: 'Arts. 240 a 242 sobre sistema tributário estadual.' },
+        ],
+        gabarito: 'C',
+        justificativa:
+          'A Aula 3 analisa diretamente os Arts. 215, 231 e 232 da Constituição Federal de 1988, aliados à autodefinição e aos dados censitários, superando estereótipos na missão transcultural.',
+      },
+      {
+        id: 'sim-disc9-q3',
+        enunciado:
+          'Na Aula 4, ao tratar da análise cristã confessional diante das espiritualidades indígenas e das religiões de matriz africana, qual sequência metodológica em três passos é ensinada pelo professor?',
+        alternativas: [
+          {
+            letra: 'A',
+            texto: 'Descrever, compreender e avaliar com fidelidade cristã, respeitando a liberdade de consciência e culto.',
+          },
+          {
+            letra: 'B',
+            texto: 'Ignorar, proibir civilmente e substituir os rituais locais sem diálogo ou escuta comunitária.',
+          },
+          {
+            letra: 'C',
+            texto: 'Fundir sincreticamente todas as doutrinas ou abster-se de qualquer posicionamento bíblico.',
+          },
+          {
+            letra: 'D',
+            texto: 'Aplicar somente questionários demográficos sem considerar cosmovisão ou teologia.',
+          },
+        ],
+        gabarito: 'A',
+        justificativa:
+          'O método confessional apresentado na Aula 4 segue os 3 passos responsáveis: descrever fielmente, compreender no contexto histórico-cultural e avaliar à luz das Escrituras, sem violar a liberdade de consciência.',
+      },
+      {
+        id: 'sim-disc9-q4',
+        enunciado:
+          'De acordo com o Plano de Curso oficial e as orientações finais da Aula 4 de AFR-101, como é composta a avaliação única e quais são os requisitos obrigatórios do Trabalho Final Aplicado?',
+        alternativas: [
+          {
+            letra: 'A',
+            texto: 'Prova objetiva de 10 questões no Google Forms valendo 8,0 pts + seminário em grupo de 10 laudas.',
+          },
+          {
+            letra: 'B',
+            texto: 'Trabalho em trio com mínimo de 15 páginas ABNT entregue no dia 04/12/2026 para gabriela.leal.',
+          },
+          {
+            letra: 'C',
+            texto: 'Prova oral síncrona de 30 minutos sobre a história colonial sem exigência de produção textual.',
+          },
+          {
+            letra: 'D',
+            texto:
+              'Sem prova escrita: assistir às 4 videoaulas e enviar trabalho individual de exatamente 2 laudas em 3 partes (situação-problema, Bíblia + mínimo 2 autores do curso, proposta concreta) para prof.alexsandro@gmail.com até 28/11/2026.',
+          },
+        ],
+        gabarito: 'D',
+        justificativa:
+          'Não há prova escrita convencional em AFR-101. A avaliação consiste em assistir às 4 videoaulas e enviar individualmente o trabalho de exatamente 2 laudas (3 partes) para prof.alexsandro@gmail.com até 28/11/2026.',
+      },
+      {
+        id: 'sim-disc9-q5',
+        enunciado:
+          'Na Parte 2 do Trabalho Final Aplicado (análise fundamentada na Bíblia e em pelo menos 2 autores estudados), quais referências bíblicas são expressamente recomendadas para tratar da Imago Dei, origem comum dos povos e rejeição à parcialidade étnico-racial?',
+        alternativas: [
+          { letra: 'A', texto: 'Apenas genealogias dos reis de Judá em Crônicas sem ligação com gentios.' },
+          {
+            letra: 'B',
+            texto: 'Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9 (em diálogo com autores como Silvio Almeida, Gersem Baniwa, Esau McCaulley ou John Piper).',
+          },
+          { letra: 'C', texto: 'Somente provérbios agrários descontextualizados sobre colheita.' },
+          { letra: 'D', texto: 'É vedado citar textos bíblicos na Parte 2 do trabalho final.' },
+        ],
+        gabarito: 'B',
+        justificativa:
+          'A fundamentação bíblica indicada inclui Gn 1:26-28 (Imagem de Deus), At 17:26 (uma só humanidade), Gl 3:28 (unidade em Cristo) e Tg 2:1-9 (proibição de acepção de pessoas), articulada com pelo menos 2 autores do curso.',
+      },
+    ],
+  },
+  {
+    disciplinaId: 'disc-8',
+    ordem: 9,
     nome: 'TCC I — Trabalho de Conclusão de Curso I',
     nomeCurto: 'TCC I (Artigo Final)',
     professor: 'Profª Gabriela Leal',

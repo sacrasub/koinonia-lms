@@ -2432,7 +2432,7 @@ href={nextAulaToday.google_meet_url}
           {/* 3. DESTAQUE MÁXIMO ACIMA DA DOBRA: AULA AO VIVO OU PRÓXIMA AULA + LISTA DE PRESENÇA */}
           {renderAulaAoVivoOuProxima()}
 
-          {/* 4. BANNER COMPACTO OPERAÇÃO SEMANA DA AV2 (24 a 27/11) + NOTEBOOKLM OFICIAL */}
+          {/* 4. BANNER COMPACTO OPERAÇÃO SEMANA DA AV2 (24 a 28/11) + NOTEBOOKLM OFICIAL */}
           <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-amber-950/90 border border-amber-400/40 rounded-2xl p-4 text-white shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <div className="flex items-start sm:items-center gap-3">
               <div className="p-2.5 bg-amber-400 text-slate-950 rounded-xl shadow-md shadow-amber-500/20 flex-shrink-0">
@@ -2441,10 +2441,10 @@ href={nextAulaToday.google_meet_url}
               <div className="space-y-0.5">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
-                    Semana da AV2 • 24 a 27/11
+                    Semana da AV2 • 24 a 28/11
                   </span>
                   <span className="text-[11px] font-bold text-amber-200">
-                    Guias · 40 Questões Comentadas · NotebookLM Oficial
+                    Guias · 45 Questões Comentadas · NotebookLM Oficial
                   </span>
                 </div>
                 <h3 className="text-sm sm:text-base font-black text-white leading-tight">

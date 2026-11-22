@@ -274,6 +274,16 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     statusPeso: 'AV1 (Resumo) + AV2 (Consulta Livre)',
   },
   {
+    id: 'cron-14b-afro-av2',
+    dataLimite: '28/11/2026 (Sáb)',
+    dataISO: '2026-11-28',
+    disciplina: 'Cultura Afro-Brasileira e Indígena (AFR-101)',
+    disciplinaId: 'disc-9',
+    docente: 'Profº Alexsandro de Oliveira Silva',
+    tipoAtividade: 'Trabalho Final Aplicado (2 laudas • Sem Prova Escrita)',
+    statusPeso: 'Até 23:59 BRT (prof.alexsandro@gmail.com)',
+  },
+  {
     id: 'cron-15-tcc-artigo',
     dataLimite: '04/12/2026 (Sex)',
     dataISO: '2026-12-04',
@@ -995,6 +1005,53 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
     }
   },
   {
+    id: 'aval-afro-av2-trabalho',
+    disciplina: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)',
+    disciplinaShort: 'Cultura Afro & Indígena (2 Laudas)',
+    professor: 'Profº Alexsandro de Oliveira Silva',
+    tipo: 'Avaliação Única — Trabalho Final Aplicado (2 laudas • Sem Prova Escrita)',
+    tipoBadge: 'TRABALHO',
+    dataLimite: '2026-11-28',
+    dataTexto: '28 de Novembro de 2026 (Sábado)',
+    horario: 'Até às 23:59 BRT (21:59 Tabatinga)',
+    peso: 'Avaliação Única (100% da nota semestral: assistir às 4 videoaulas + Trabalho Individual de 2 laudas — sem prova escrita)',
+    regras: [
+      'DISCIPLINA MODULAR GRAVADA (4 videoaulas de ~1h20 cada): NÃO possui prova escrita convencional (nem AV1 nem AV2 por formulário).',
+      'Extensão obrigatória: Produção individual textual de EXATAMENTE 2 laudas (duas páginas).',
+      'Tema/Proposta: Analisar uma questão ou situação-problema étnico-racial concreta e propor uma aplicação pastoral ou eclesial responsável.',
+      'Estrutura interna obrigatória (3 partes): (1) Descrição da situação e contextualização; (2) Análise fundamentada (Bíblia: Gn 1:26-28, At 17:26, Gl 3:28 ou Tg 2:1-9 + pelo menos 2 autores estudados no curso); (3) Proposta de ação concreta aplicável por pastores, igrejas locais ou missionários.',
+      'Canal exclusivo e prazo final: Enviar para prof.alexsandro@gmail.com até 28/11/2026 (Sábado).'
+    ],
+    passoAPasso: [
+      'Assistir integralmente às 4 videoaulas gravadas na pasta oficial do Google Drive (~1h20 cada).',
+      'Parte 1: Escolher uma questão ou situação-problema étnico-racial concreta (ex.: equipe missionária que impõe padrões externos em comunidade quilombola ou indígena) e descrever seu impacto para a igreja local/missão.',
+      'Partes 2 e 3: Redigir em exatamente 2 laudas a análise fundamentada na Bíblia (Gn 1:26-28, At 17:26, Gl 3:28, Tg 2:1-9) e em pelo menos 2 autores do curso, concluindo com uma proposta de ação pastoral/eclesial realista.',
+      'Enviar o trabalho individual exclusivamente para prof.alexsandro@gmail.com até 28/11/2026.'
+    ],
+    bibliografia: {
+      obrigatoria: [
+        '4 Videoaulas Gravadas na Pasta Oficial do Google Drive (Profº Alexsandro de Oliveira Silva)',
+        'Textos Bíblicos de referência: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9',
+        'Citar pelo menos 2 autores estudados: Silvio Almeida (Racismo Estrutural); Gersem dos Santos Luciano Baniwa (O Índio Brasileiro); Esau McCaulley (Uma Leitura Negra); Marco Davi de Oliveira (A Religião Mais Negra do Brasil); Nilma Lino Gomes (Movimento Negro Educador); Ailton Krenak (Ideias para Adiar o Fim do Mundo); John Piper (O Racismo, a Cruz e o Cristão)'
+      ]
+    },
+    canalEnvio: {
+      tipo: 'email',
+      destinatario: 'prof.alexsandro@gmail.com',
+      assunto: 'Trabalho Final Aplicado (AFR-101) - [Seu Nome]',
+      observacao: 'Envio individual exclusivo para prof.alexsandro@gmail.com até 28/11/2026 (Sábado) — 2 laudas.'
+    },
+    cor: {
+      bg: 'bg-teal-500/10',
+      text: 'text-teal-300',
+      border: 'border-teal-500/30',
+      pillBg: 'bg-teal-700 hover:bg-teal-600 text-white',
+      dot: 'bg-teal-300',
+      badgeBg: 'bg-teal-500/20',
+      badgeText: 'text-teal-300'
+    }
+  },
+  {
     id: 'aval-12-tcc1-artigo-final',
     disciplina: 'TCC I - Trabalho de Conclusão de Curso I',
     disciplinaShort: 'TCC I (Artigo Científico ABNT)',
@@ -1333,6 +1390,25 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-9-1', text: 'Digitar o resumo (1 página digitada por capítulo = 12 páginas no total).', done: false },
       { id: 'st-aval-9-2', text: 'Realizar a Prova AV2 online às 19:00 BRT com consulta livre aos slides, anotações e PDF consolidado.', done: false },
       { id: 'st-aval-9-3', text: 'Enviar o resumo (PDF ou Word) para thacyto@gmail.com até as 23:59 de 27/11.', done: false },
+    ],
+  },
+  // 14b. Cultura Afro-Brasileira e Indígena (AFR-101) - Trabalho Final Aplicado (28/11)
+  {
+    id: 'aval-afro-av2-trabalho',
+    assessmentId: 'aval-afro-av2-trabalho',
+    title: 'AV2 (Única): Trabalho Final Aplicado — 2 Laudas (Sem Prova)',
+    subject: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)',
+    professor: 'Profº Alexsandro de Oliveira Silva',
+    dueDate: '2026-11-28',
+    priority: 'Máxima',
+    type: 'Trabalho Escrito',
+    status: 'todo',
+    strategyNote: '28/11/2026 (Sábado) até 23:59 BRT: SEM prova escrita. Assistir às 4 videoaulas (~1h20 cada) e enviar trabalho individual de EXATAMENTE 2 laudas (3 partes: situação-problema, Bíblia + mínimo 2 autores do curso, proposta concreta) para prof.alexsandro@gmail.com.',
+    subtasks: [
+      { id: 'st-afro-0', text: 'Assistir integralmente às 4 videoaulas gravadas na pasta oficial do Google Drive.', done: false },
+      { id: 'st-afro-1', text: 'Descrever e contextualizar uma situação-problema étnico-racial concreta (Parte 1).', done: false },
+      { id: 'st-afro-2', text: 'Redigir análise (Bíblia + mínimo 2 autores estudados) e proposta pastoral/eclesial concreta em exatamente 2 laudas (Partes 2 e 3).', done: false },
+      { id: 'st-afro-3', text: 'Enviar exclusivamente para prof.alexsandro@gmail.com até 28/11/2026.', done: false },
     ],
   },
   // 15. TCC I - Entrega Final do Artigo Monográfico (04/12)

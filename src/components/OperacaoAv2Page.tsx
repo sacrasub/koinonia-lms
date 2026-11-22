@@ -88,6 +88,7 @@ const DIA_FILTERS: { id: DiaAv2Filtro; label: string; count: number }[] = [
   { id: 'qua-25', label: 'Qua 25/11', count: DOSSIE_AV2_2026_2.filter((d) => d.diaGrupo === 'qua-25').length },
   { id: 'qui-26', label: 'Qui 26/11', count: DOSSIE_AV2_2026_2.filter((d) => d.diaGrupo === 'qui-26').length },
   { id: 'sex-27', label: 'Sex 27/11', count: DOSSIE_AV2_2026_2.filter((d) => d.diaGrupo === 'sex-27').length },
+  { id: 'sab-28', label: 'Sáb 28/11', count: DOSSIE_AV2_2026_2.filter((d) => d.diaGrupo === 'sab-28').length },
   { id: 'tcc-04', label: 'TCC 04/12', count: DOSSIE_AV2_2026_2.filter((d) => d.diaGrupo === 'tcc-04').length },
 ];
 
@@ -172,7 +173,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
     return DOSSIE_AV2_2026_2.find((d) => d.disciplinaId === selectedDisciplinaId) || DOSSIE_AV2_2026_2[0];
   }, [selectedDisciplinaId]);
 
-  // Estatísticas globais (40 questões)
+  // Estatísticas globais dos simulados
   const globalStats = useMemo(() => {
     let total = 0;
     let answered = 0;
@@ -241,7 +242,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
   const buildWhatsappSummary = () => {
     return (
       `🔥 *OPERAÇÃO SEMANA DA AV2 & TCC I (2026.2) — KOINONIA LMS*\n\n` +
-      `Turma A (7º Período), o guia completo com regras oficiais, aulas da Unidade 2, mapas mentais e simulados comentados (40 questões) já está no ar!\n\n` +
+      `Turma A (7º Período), o guia completo com regras oficiais, aulas da Unidade 2, mapas mentais e simulados comentados (${globalStats.total} questões) já está no ar!\n\n` +
       `📅 *CALENDÁRIO CONFIRMADO (Horário de Brasília):*\n` +
       `• *Ter 24/11 (19h):* Hist. Congregacionalismo (10 V/F: 2 autodecl. + 8 conteúdo, sem consulta)\n` +
       `• *Ter 24/11 (20h35):* Pensamento Cristão II (10 questões Forms, sem consulta)\n` +
@@ -250,6 +251,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
       `• *Qui 26/11 (19h):* Ética Cristã (⚠️ *Sem prova escrita* — encerramento e notas dos Seminários)\n` +
       `• *Qui 26/11 (20h35):* NT III — Epístolas Gerais (10 questões Forms, sem consulta)\n` +
       `• *Sex 27/11 (19h):* Plantação II (Prova com *consulta livre* + Resumo 12 pág para thacyto@gmail.com até 23h59)\n` +
+      `• *Sáb 28/11 (até 23h59):* Cultura Afro & Indígena (AFR-101) — ⚠️ *Sem prova escrita!* Assistir às 4 videoaulas + Trabalho Final Aplicado (exatamente 2 laudas, 3 partes, Bíblia + 2 autores) para prof.alexsandro@gmail.com\n` +
       `• *Sex 04/12 (até 23h59):* TCC I (Artigo 20–25 págs ABNT, PDF e Word, sem IA)\n\n` +
       `🚀 *Acesse a Central AV2 (Guias, Mapas & Simulados):*\n` +
       `https://koinonialms.vercel.app/?tab=av2\n\n` +
@@ -291,7 +293,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-sm">
                 <Flame className="w-3.5 h-3.5" />
-                24/11 a 27/11/2026 • TCC I: 04/12
+                24/11 a 28/11/2026 • TCC I: 04/12
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white/10 text-indigo-100 border border-white/15">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -302,7 +304,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
               Operação Semana da AV2 &amp; TCC I (2026.2)
             </h1>
             <p className="text-xs sm:text-sm text-indigo-100/85 max-w-3xl leading-relaxed">
-              Central unificada com as regras confirmadas pelos docentes, resumos das aulas da Unidade 2, guias de revisão express, mapas mentais em árvore e 40 questões de simulado comentadas — sincronizada ao NotebookLM oficial.
+              Central unificada com as regras confirmadas pelos docentes, resumos das aulas da Unidade 2, guias de revisão express, mapas mentais em árvore e {globalStats.total} questões de simulado comentadas — sincronizada ao NotebookLM oficial.
             </p>
           </div>
         </div>
@@ -600,16 +602,30 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="text-sm font-black uppercase tracking-wider text-gray-700 dark:text-slate-200 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-indigo-500" />
-                    <span>Linha do Tempo • Aulas da Unidade 2</span>
+                    <span>
+                      {activeDisc.disciplinaId === 'disc-9'
+                        ? 'Linha do Tempo • 4 Videoaulas do Módulo Gravado'
+                        : 'Linha do Tempo • Aulas da Unidade 2'}
+                    </span>
                   </h3>
                   {(() => {
-                    const count = activeDisc.aulasUnidade2.filter((a) => Boolean(a.geminiUrl)).length;
-                    if (count === 0) return null;
-                    return (
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                        {count} {count === 1 ? 'transcrição Gemini' : 'transcrições Gemini'}
-                      </span>
-                    );
+                    const geminiCount = activeDisc.aulasUnidade2.filter((a) => Boolean(a.geminiUrl)).length;
+                    const videoCount = activeDisc.aulasUnidade2.filter((a) => Boolean(a.videoUrl)).length;
+                    if (geminiCount > 0) {
+                      return (
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                          {geminiCount} {geminiCount === 1 ? 'transcrição Gemini' : 'transcrições Gemini'}
+                        </span>
+                      );
+                    }
+                    if (videoCount > 0) {
+                      return (
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                          {videoCount} {videoCount === 1 ? 'videoaula gravada (Drive)' : 'videoaulas gravadas (Drive)'}
+                        </span>
+                      );
+                    }
+                    return null;
                   })()}
                 </div>
                 <div className="space-y-2.5">
@@ -626,18 +642,32 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                           <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400">
                             {aula.dataAprox}
                           </span>
-                          {aula.geminiUrl && (
-                            <a
-                              href={aula.geminiUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/70 text-indigo-700 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800 text-[11px] font-bold transition shrink-0"
-                            >
-                              <Sparkles className="w-3 h-3 shrink-0" />
-                              <span>Transcrição Gemini</span>
-                              <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
-                            </a>
-                          )}
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            {aula.geminiUrl && (
+                              <a
+                                href={aula.geminiUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/70 text-indigo-700 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-800 text-[11px] font-bold transition shrink-0"
+                              >
+                                <Sparkles className="w-3 h-3 shrink-0" />
+                                <span>Transcrição Gemini</span>
+                                <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
+                              </a>
+                            )}
+                            {aula.videoUrl && (
+                              <a
+                                href={aula.videoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/70 text-emerald-700 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold transition shrink-0"
+                              >
+                                <Video className="w-3 h-3 shrink-0" />
+                                <span>Assistir Videoaula (Drive)</span>
+                                <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
+                              </a>
+                            )}
+                          </div>
                         </div>
                         <p className="text-xs sm:text-sm text-gray-800 dark:text-slate-200 leading-relaxed">
                           {aula.resumo}
