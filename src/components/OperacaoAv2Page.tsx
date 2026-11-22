@@ -140,9 +140,10 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
     };
 
     try {
+      const urlParams = new URLSearchParams(window.location.search);
       applyPendingDisc(
-        localStorage.getItem('lms_pending_av2_disciplina'),
-        localStorage.getItem('lms_pending_av2_subtab')
+        urlParams.get('disciplina') || localStorage.getItem('lms_pending_av2_disciplina'),
+        urlParams.get('subtab') || localStorage.getItem('lms_pending_av2_subtab')
       );
     } catch (_) {}
 

@@ -5,7 +5,7 @@ import {
   CheckSquare, PenTool, AlertCircle, Zap, CheckCircle2, Clock, 
   Sparkles, Plus, Trash2, BookOpen, User, Calendar, Filter, X, RotateCcw,
   MessageCircle, Share2, Copy, Check, ExternalLink, ArrowRight, Flame,
-  Archive, GripVertical
+  Archive, GripVertical, FolderOpen, Video, Layers, Mail
 } from 'lucide-react';
 import { 
   CalendarioAcademico,
@@ -16,7 +16,8 @@ import {
   KanbanTask,
   defaultSemesterTasks
 } from './CalendarioAcademico';
-import type { KanbanStatus } from '@/data/avaliacoes2026_2';
+import { resolvePassoAcaoHref } from '@/data/avaliacoes2026_2';
+import type { KanbanStatus, PassoAcao } from '@/data/avaliacoes2026_2';
 import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
 
 export type { KanbanTask, KanbanStatus };
@@ -1472,26 +1473,82 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
         </button>
       </div>
 
-      {/* Lista de Checkbox Interno */}
-      {task.subtasks.length > 0 && (
-        <div className="space-y-1.5 pt-1 border-t border-gray-100">
-          <div className="flex justify-between text-[11px] text-gray-400 font-bold mb-1">
-            <span>Etapas do Trabalho</span>
-            <span>{doneSub}/{totalSub}</span>
+      {/* Lista de Checkbox Interno (SSOT idêntica ao Passo a Passo + Ações Diretas) */}
+      {task.subtasks.length > 0 && (() => {
+        const officialEv = AVALIACOES_2026_2.find((ev) => ev.id === (task.assessmentId || task.id));
+
+        const getChipMeta = (variant?: PassoAcao['variant']) => {
+          switch (variant) {
+            case 'pdf':
+              return { Icon: BookOpen, cls: 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-200' };
+            case 'drive':
+              return { Icon: FolderOpen, cls: 'bg-sky-50 hover:bg-sky-100 text-sky-700 border-sky-200' };
+            case 'meet':
+              return { Icon: Video, cls: 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200' };
+            case 'av2':
+              return { Icon: Flame, cls: 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-300' };
+            case 'hub':
+              return { Icon: Layers, cls: 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200' };
+            case 'abnt':
+              return { Icon: PenTool, cls: 'bg-teal-50 hover:bg-teal-100 text-teal-700 border-teal-200' };
+            case 'email':
+              return { Icon: Mail, cls: 'bg-violet-50 hover:bg-violet-100 text-violet-700 border-violet-200' };
+            default:
+              return { Icon: BookOpen, cls: 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200' };
+          }
+        };
+
+        return (
+          <div className="space-y-2 pt-1 border-t border-gray-100">
+            <div className="flex justify-between text-[11px] text-gray-400 font-bold mb-1">
+              <span>Etapas do Trabalho</span>
+              <span>{doneSub}/{totalSub}</span>
+            </div>
+            {task.subtasks.map((st, sIdx) => {
+              const stepActions = officialEv?.passoAcoes?.[sIdx];
+              return (
+                <div key={st.id} className="space-y-1">
+                  <label className="flex items-start gap-2 text-xs text-gray-700 cursor-pointer hover:text-blue-700">
+                    <input
+                      type="checkbox"
+                      checked={st.done}
+                      onChange={() => onToggleSubtask(task.id, st.id)}
+                      className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    />
+                    <span className={st.done ? 'line-through text-gray-400' : 'font-medium'}>{st.text}</span>
+                  </label>
+                  {stepActions && stepActions.length > 0 && (
+                    <div className="pl-5 flex flex-wrap gap-1">
+                      {stepActions.map((acao, aIdx) => {
+                        const href = resolvePassoAcaoHref(acao, officialEv?.disciplinaId);
+                        if (!href) return null;
+                        const { Icon, cls } = getChipMeta(acao.variant);
+                        const isMailto = acao.kind === 'email' || href.startsWith('mailto:');
+                        return (
+                          <a
+                            key={aIdx}
+                            href={href}
+                            target={isMailto ? undefined : '_blank'}
+                            rel={isMailto ? undefined : 'noopener noreferrer'}
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
+                            title={isMailto ? acao.label : 'Abrir em nova aba'}
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold transition ${cls}`}
+                          >
+                            <Icon className="w-2.5 h-2.5 shrink-0" />
+                            <span>{acao.label}</span>
+                            {!isMailto && <ExternalLink className="w-2.5 h-2.5 opacity-70 shrink-0" />}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-          {task.subtasks.map((st) => (
-            <label key={st.id} className="flex items-start gap-2 text-xs text-gray-700 cursor-pointer hover:text-blue-700">
-              <input
-                type="checkbox"
-                checked={st.done}
-                onChange={() => onToggleSubtask(task.id, st.id)}
-                className="mt-0.5 w-3.5 h-3.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-              />
-              <span className={st.done ? 'line-through text-gray-400' : 'font-medium'}>{st.text}</span>
-            </label>
-          ))}
-        </div>
-      )}
+        );
+      })()}
 
       <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-xs gap-2">
         <span className="text-gray-400 font-semibold text-[11px]">Mover de Coluna:</span>

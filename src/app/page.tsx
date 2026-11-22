@@ -543,13 +543,22 @@ export default function Home() {
     initialMode?: 'screen' | 'file' | 'link' | 'autopilot';
   }>({ isOpen: false });
 
-  // Detecção de parâmetros de compartilhamento do WhatsApp / Captação de Usuários
+  // Detecção de parâmetros de compartilhamento do WhatsApp / Captação de Usuários / Deep-Links em Nova Aba
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') || params.get('aba');
       const discParam = params.get('disciplina');
       const subtabParam = params.get('subtab') || (params.get('mat') ? 'gemini' : null);
-      if (discParam) {
+      const isAv2Tab =
+        tabParam === 'av2' ||
+        tabParam === 'operacao-av2' ||
+        tabParam === 'revisao-av2' ||
+        tabParam === 'dossie-av2';
+
+      if (isAv2Tab) {
+        setActiveTab('operacao-av2');
+      } else if (discParam) {
         setSelectedDisciplinaId(discParam);
         setActiveTab('disciplina-detalhe');
         if (subtabParam) {

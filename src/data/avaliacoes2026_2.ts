@@ -24,6 +24,26 @@ export interface PassoAcao {
   variant?: 'pdf' | 'drive' | 'meet' | 'texto' | 'av2' | 'hub' | 'abnt' | 'email';
 }
 
+export function resolvePassoAcaoHref(
+  acao: PassoAcao,
+  fallbackDisciplinaId?: string
+): string | null {
+  const targetDiscId = acao.disciplinaId || fallbackDisciplinaId;
+  if (acao.kind === 'av2' && targetDiscId) {
+    return `/?tab=operacao-av2&disciplina=${encodeURIComponent(targetDiscId)}&subtab=${encodeURIComponent(acao.av2SubTab || 'guia')}`;
+  }
+  if (acao.kind === 'hub' && targetDiscId) {
+    return `/?tab=disciplina-detalhe&disciplina=${encodeURIComponent(targetDiscId)}`;
+  }
+  if (acao.kind === 'abnt') {
+    return '/artigos-abnt';
+  }
+  if (acao.url) {
+    return acao.url;
+  }
+  return null;
+}
+
 export interface AvaliacaoEvento {
   id: string;
   disciplinaId?: string;
@@ -1251,6 +1271,23 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
 ];
 
 /**
+ * Constrói a lista de subtarefas diretamente a partir do `passoAPasso` oficial (SSOT),
+ * garantindo 100% de identidade entre Card Kanban, Drawer e Calendário.
+ */
+function buildOfficialSubtasks(
+  assessmentId: string,
+  doneByDefault = false
+): { id: string; text: string; done: boolean }[] {
+  const ev = AVALIACOES_2026_2.find((item) => item.id === assessmentId);
+  if (!ev) return [];
+  return ev.passoAPasso.map((text, idx) => ({
+    id: `st-${assessmentId}-${idx}`,
+    text,
+    done: doneByDefault,
+  }));
+}
+
+/**
  * TAREFAS KANBAN PADRÃO DO SEMESTRE 2026.2 (CHECKLIST ACADÊMICO)
  */
 export const defaultSemesterTasks: KanbanTask[] = [
@@ -1266,11 +1303,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'TCC',
     status: 'archived',
     strategyNote: 'Prazo encerrado em 04/09/2026. Capa, Sumário, Objetivos, Justificativa, Referencial Teórico e Cronograma. Sem IA.',
-    subtasks: [
-      { id: 'st-aval-0-0', text: 'Definir título provisório, justificativa e objetivos no infinitivo.', done: true },
-      { id: 'st-aval-0-1', text: 'Construir referencial teórico com normas ABNT e cronograma em tabela.', done: true },
-      { id: 'st-aval-0-2', text: 'Revisar impessoalidade (3ª pessoa), ausência de IA e anexos.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-0-tcc1-projeto-pesquisa', true),
   },
   // 2. História do Congregacionalismo - AV1 (29/09 - Arquivado)
   {
@@ -1284,12 +1317,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'archived',
     strategyNote: 'Prazo concluído em 29/09/2026. Prova: 8,0 | Câmera aberta: 1,0 | Leitura obrigatória autodeclarada: 1,0.',
-    subtasks: [
-      { id: 'st-aval-2-0', text: 'Acessar os textos em PDF compartilhados pelo professor.', done: true },
-      { id: 'st-aval-2-1', text: 'Realizar a leitura integral sobre Reforma Inglesa e Puritanos.', done: true },
-      { id: 'st-aval-2-2', text: 'Conectar-se com câmera aberta na aula de 29/09/2026.', done: true },
-      { id: 'st-aval-2-3', text: 'Preencher a avaliação escrita e confirmação de leitura.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-2-congregacionalismo-av1', true),
   },
   // 3. História do Pensamento Cristão II - AV1 (29/09 - Arquivado)
   {
@@ -1303,12 +1331,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Trabalho Escrito',
     status: 'archived',
     strategyNote: 'Prazo concluído em 29/09/2026. Mínimo de 5 a 6 páginas nas normas ABNT. Individual ou grupos de até 3.',
-    subtasks: [
-      { id: 'st-aval-3-0', text: 'Definir a composição do trabalho (individual ou grupo até 3).', done: true },
-      { id: 'st-aval-3-1', text: 'Revisar os slides sobre Iluminismo e Modernidade.', done: true },
-      { id: 'st-aval-3-2', text: 'Redigir a pesquisa de 5-6 páginas no padrão ABNT.', done: true },
-      { id: 'st-aval-3-3', text: 'Entregar o trabalho por e-mail para hilario.graca@catolica.edu.br.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-3-pensamento-cristao-av1', true),
   },
   // 4. Aconselhamento Bíblico II - AV1 (30/09 - Arquivado)
   {
@@ -1322,11 +1345,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'archived',
     strategyNote: 'Prazo concluído em 30/09/2026. Múltipla escolha via Forms restrita aos slides 1 a 6. Sem trabalhos escritos.',
-    subtasks: [
-      { id: 'st-aval-4-0', text: 'Estudar os slides das aulas 1 a 6 da disciplina.', done: true },
-      { id: 'st-aval-4-1', text: 'Fixar tópicos: Suficiência Bíblica, Jó, Pecado/Ídolos e Inventário.', done: true },
-      { id: 'st-aval-4-2', text: 'Acessar o link do Google Forms e responder às questões.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-4-aconselhamento-av1', true),
   },
   // 5. Direitos Humanos - Trabalho AV1 (30/09 - Arquivado)
   {
@@ -1340,11 +1359,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Trabalho Escrito',
     status: 'archived',
     strategyNote: 'Prazo encerrado em 30/09/2026 às 23:59. Máximo 1 lauda, Times 12, esp. 1,5. Envio por e-mail (cleitonpb@gmail.com). Vale 2,0 pts.',
-    subtasks: [
-      { id: 'st-aval-5-0', text: 'Assistir ao vídeo da aula de 26/09 sobre desigualdade social e privilégios.', done: true },
-      { id: 'st-aval-5-1', text: 'Redigir dissertação de até 1 lauda em Times New Roman 12, esp. 1,5.', done: true },
-      { id: 'st-aval-5-2', text: 'Enviar arquivo para cleitonpb@gmail.com com assunto "Trabalho para composição de nota".', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-5-direitos-humanos-trabalho', true),
   },
   // 6. NT III — Epístolas Gerais - Prova AV1 (01/10 - Arquivado)
   {
@@ -1358,12 +1373,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'archived',
     strategyNote: 'Prazo concluído em 01/10/2026. Prova Objetiva Online via formulário Google Forms sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.',
-    subtasks: [
-      { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: true },
-      { id: 'st-aval-7-1', text: 'Estudar introduções especiais e propósitos das epístolas no livro de Carson/Moo/Morris.', done: true },
-      { id: 'st-aval-7-2', text: 'Acessar o formulário Google Forms disponibilizado pelo docente no dia 01/10/2026.', done: true },
-      { id: 'st-aval-7-3', text: 'Preencher a avaliação objetiva e submeter antes das 23:59.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-7-nt3-epistolas-av1', true),
   },
   // 7. Direitos Humanos - Prova Objetiva AV1 (04/10 - Arquivado)
   {
@@ -1377,12 +1387,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'archived',
     strategyNote: 'Prazo concluído em 04/10/2026 às 23:59. Múltipla escolha via Google Forms, sem consulta (Peso 8,0).',
-    subtasks: [
-      { id: 'st-aval-6-0', text: 'Estudar a apostila digital completa da disciplina.', done: true },
-      { id: 'st-aval-6-1', text: 'Revisar Dignidade da Pessoa Humana, Declaração de 1948, Gerações de Direitos e Kelsen.', done: true },
-      { id: 'st-aval-6-2', text: 'Acessar o formulário do Google Forms ativo até 04/10/2026 às 23:59.', done: true },
-      { id: 'st-aval-6-3', text: 'Responder às questões sem consulta e submeter.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-6-direitos-humanos-prova', true),
   },
   // 8. Ética Cristã - Seminários dos Dez Mandamentos (22/10 a 19/11)
   {
@@ -1396,12 +1401,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Seminário em Grupo',
     status: 'done',
     strategyNote: 'Apresentações concluídas entre 22/10 e 19/11 nas quintas-feiras de aula. Nota individual integralizada para AV1/AV2.',
-    subtasks: [
-      { id: 'st-aval-8-0', text: 'Reunir o quarteto e confirmar o mandamento sorteado para apresentação.', done: true },
-      { id: 'st-aval-8-1', text: 'Estudar o Catecismo Maior de Westminster e Norman Geisler.', done: true },
-      { id: 'st-aval-8-2', text: 'Montar os slides da apresentação em conjunto com o grupo.', done: true },
-      { id: 'st-aval-8-3', text: 'Apresentar na tribuna respeitando os 10 minutos por orador.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-8-etica-crista-seminario', true),
   },
   // 9. Exame DAM / UIECB (07/11)
   {
@@ -1415,11 +1415,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'done',
     strategyNote: '07/11/2026 (Sábado) das 09:00 às 12:00. Avaliação denominacional presencial realizada.',
-    subtasks: [
-      { id: 'st-dam-0', text: 'Revisar matérias de Teologia Sistemática, Bíblia e História Congregacional.', done: true },
-      { id: 'st-dam-1', text: 'Confirmar local de realização do exame junto à Diretoria Regional.', done: true },
-      { id: 'st-dam-2', text: 'Realizar o exame presencial e assinar a lista oficial de presença.', done: true },
-    ],
+    subtasks: buildOfficialSubtasks('aval-dam-exame-presencial', true),
   },
   // 10. História do Congregacionalismo - AV2 (24/11)
   {
@@ -1433,11 +1429,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'todo',
     strategyNote: '24/11/2026 às 19:00–20:25 BRT (17:00–18:25 Tabatinga). 10 afirmações V/F: 2 de autodeclaração (participação/leitura = 2,0 pts) + 8 de conteúdo (8,0 pts). Sem consulta, câmeras abertas.',
-    subtasks: [
-      { id: 'st-his2-0', text: 'Ler os 3 textos obrigatórios enviados pelo Profº Ary no WhatsApp.', done: false },
-      { id: 'st-his2-1', text: 'Revisar Robert/Sarah Kalley, Fluminense (1858), Pernambucana (1873), 28 Artigos e 1913.', done: false },
-      { id: 'st-his2-2', text: 'Responder às 10 afirmações V/F no Google Forms às 19:00 BRT com câmera aberta.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-his-av2-brasil', false),
   },
   // 11. História do Pensamento Cristão II - AV2 (24/11)
   {
@@ -1451,10 +1443,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'todo',
     strategyNote: '24/11/2026 às 20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões objetivas via Google Forms (1,0 pt cada), sem consulta e correção imediata.',
-    subtasks: [
-      { id: 'st-hpc2-0', text: 'Estudar Schleiermacher, Barth, Declaração de Barmen (1934), Kierkegaard e Bultmann.', done: false },
-      { id: 'st-hpc2-1', text: 'Acessar o link do Google Forms às 20:35 BRT e responder sem consulta.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-hpc-av2-liberalismo', false),
   },
   // 12. Aconselhamento Bíblico II - AV2 (25/11)
   {
@@ -1468,10 +1457,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'todo',
     strategyNote: '25/11/2026 às 19:00–20:25 BRT (17:00–18:25 Tabatinga). Prova via Forms baseada estritamente nos slides do Drive, correção automática, sem trabalho escrito.',
-    subtasks: [
-      { id: 'st-aco2-0', text: 'Revisar os slides das Aulas 8 a 14 (5 Áreas do Inventário, paralinguística e Esperança).', done: false },
-      { id: 'st-aco2-1', text: 'Responder à prova objetiva via link do formulário às 19:00 BRT.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-aco-av2-final', false),
   },
   // 13. Direitos Humanos - AV2 (25/11)
   {
@@ -1485,11 +1471,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'todo',
     strategyNote: '25/11/2026, janela 19:00–23:59 BRT (17:00–21:59 Tabatinga). ATENÇÃO: Trabalho complementar de 2 pts CANCELADO; 10 questões valem 10,0 pts integrais, 100% dos 52 slides pós-AV1, sem consulta.',
-    subtasks: [
-      { id: 'st-dir2-0', text: 'Estudar o arquivo consolidado de 52 slides pós-AV1 no Google Drive.', done: false },
-      { id: 'st-dir2-1', text: 'Revisar Art. 5º e § 3º da CF/88, Equidade, ONU/Conselho de Segurança e Honra.', done: false },
-      { id: 'st-dir2-2', text: 'Fazer a prova no Google Forms dentro da janela 19:00–23:59 BRT.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-dir-av2-prova-trabalho', false),
   },
   // 13b. Ética Cristã - Encerramento (26/11)
   {
@@ -1503,9 +1485,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Seminário em Grupo',
     status: 'todo',
     strategyNote: '26/11/2026 às 19:00–20:25 BRT. NÃO haverá prova escrita na AV2; nota semestral 100% integralizada nos Seminários dos Dez Mandamentos.',
-    subtasks: [
-      { id: 'st-etc2-0', text: 'Participar da aula de encerramento às 19:00 BRT para devolutiva e conferência de notas.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-etc-av2-encerramento', false),
   },
   // 13c. NT III — Epístolas Gerais - AV2 (26/11)
   {
@@ -1519,10 +1499,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Prova Objetiva',
     status: 'todo',
     strategyNote: '26/11/2026 às 20:35–22:00 BRT (18:35–20:00 Tabatinga). 10 questões via Forms (1,0 pt cada), sem consulta, slides + Carson/Moo/Morris.',
-    subtasks: [
-      { id: 'st-nt32-0', text: 'Revisar slides das Aulas 8 a 14 e Carson/Moo/Morris (1-2 Pedro, Judas, 1-3 João).', done: false },
-      { id: 'st-nt32-1', text: 'Acessar o Google Forms às 20:35 BRT e responder sem consulta.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-nt3-av2-epistolas', false),
   },
   // 14. Plantação e Revitalização II - Prova Consulta Livre + Resumo 12 pág (27/11)
   {
@@ -1536,12 +1513,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Resumo Crítico',
     status: 'todo',
     strategyNote: '27/11/2026: Prova AV2 às 19:00 BRT com CONSULTA LIVRE aos slides, anotações e PDF consolidado + envio do Resumo digitado de 12 páginas (PDF ou Word) de "A Treliça e a Videira" para thacyto@gmail.com até 23:59.',
-    subtasks: [
-      { id: 'st-aval-9-0', text: 'Ler atentamente os 12 capítulos do livro "A Treliça e a Videira".', done: false },
-      { id: 'st-aval-9-1', text: 'Digitar o resumo (1 página digitada por capítulo = 12 páginas no total).', done: false },
-      { id: 'st-aval-9-2', text: 'Realizar a Prova AV2 online às 19:00 BRT com consulta livre aos slides, anotações e PDF consolidado.', done: false },
-      { id: 'st-aval-9-3', text: 'Enviar o resumo (PDF ou Word) para thacyto@gmail.com até as 23:59 de 27/11.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-9-plantacao-resumo-livro', false),
   },
   // 14b. Cultura Afro-Brasileira e Indígena (AFR-101) - Trabalho Final Aplicado (28/11)
   {
@@ -1555,12 +1527,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'Trabalho Escrito',
     status: 'todo',
     strategyNote: '28/11/2026 (Sábado) até 23:59 BRT: SEM prova escrita. Assistir às 4 videoaulas (~1h20 cada) e enviar trabalho individual de EXATAMENTE 2 laudas (3 partes: situação-problema, Bíblia + mínimo 2 autores do curso, proposta concreta) para prof.alexsandro@gmail.com.',
-    subtasks: [
-      { id: 'st-afro-0', text: 'Assistir integralmente às 4 videoaulas gravadas na pasta oficial do Google Drive.', done: false },
-      { id: 'st-afro-1', text: 'Descrever e contextualizar uma situação-problema étnico-racial concreta (Parte 1).', done: false },
-      { id: 'st-afro-2', text: 'Redigir análise (Bíblia + mínimo 2 autores estudados) e proposta pastoral/eclesial concreta em exatamente 2 laudas (Partes 2 e 3).', done: false },
-      { id: 'st-afro-3', text: 'Enviar exclusivamente para prof.alexsandro@gmail.com até 28/11/2026.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-afro-av2-trabalho', false),
   },
   // 15. TCC I - Entrega Final do Artigo Monográfico (04/12)
   {
@@ -1574,12 +1541,6 @@ export const defaultSemesterTasks: KanbanTask[] = [
     type: 'TCC',
     status: 'todo',
     strategyNote: '04/12/2026 até 23:59 BRT: Artigo científico completo (20 a 25 páginas, PDF e Word) conforme ABNT e Manual FMB. Linguagem impessoal (3ª pessoa). Proibido uso de IA e plágio.',
-    subtasks: [
-      { id: 'st-aval-12-0', text: 'Estruturar o corpo do artigo: Metodologia, Desenvolvimento e Considerações Finais.', done: false },
-      { id: 'st-aval-12-1', text: 'Redigir a Introdução e Resumo/Abstract (150-500 palavras, parágrafo único) com 3-5 palavras-chave.', done: false },
-      { id: 'st-aval-12-2', text: 'Verificar extensão estrita de 20 a 25 páginas e impessoalidade (3ª pessoa, sem IA).', done: false },
-      { id: 'st-aval-12-3', text: 'Formatar citações (NBR 10520) e Referências em ordem alfabética (NBR 6023).', done: false },
-      { id: 'st-aval-12-4', text: 'Submeter os arquivos em PDF e Word para gabriela.lealg7757@gmail.com até 04/12 às 23:59.', done: false },
-    ],
+    subtasks: buildOfficialSubtasks('aval-12-tcc1-artigo-final', false),
   },
 ];
