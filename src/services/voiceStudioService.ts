@@ -331,7 +331,7 @@ function detectCorsOrMixedContentHint(serverUrl: string): string | undefined {
   const normalizedTarget = normalizeServerUrl(serverUrl);
   if (pageOrigin.startsWith('https://') && normalizedTarget.startsWith('http://')) {
     if (isLoopbackServerUrl(normalizedTarget)) {
-      return `Se o VoiceStudio já está rodando localmente, inicie-o com OMNIVOICE_ALLOWED_ORIGINS="${pageOrigin},http://localhost:3000" para liberar requisições CORS desta página.`;
+      return `Se o VoiceStudio já está instalado, defina OMNIVOICE_ALLOWED_ORIGINS="${pageOrigin},https://koinonialms.vercel.app,http://localhost:3902,http://127.0.0.1:3902,app://voicestudio" nas variáveis do usuário e abra o app VoiceStudio.`;
     }
     return 'Navegadores bloqueiam HTTP remoto dentro de páginas HTTPS (Mixed Content). Use uma URL HTTPS (Tailscale Funnel, Cloudflare Tunnel ou Nginx TLS) ou ative "Usar Proxy do Servidor".';
   }

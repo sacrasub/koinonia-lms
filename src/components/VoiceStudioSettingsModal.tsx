@@ -62,7 +62,7 @@ export const VoiceStudioSettingsModal: React.FC = () => {
   const [showHelpCmds, setShowHelpCmds] = useState(false);
   const [customVoiceMode, setCustomVoiceMode] = useState(false);
   const [testPhrase, setTestPhrase] = useState(TEST_PHRASE_DEFAULT);
-  const [copiedCmd, setCopiedCmd] = useState<'ps' | 'sh' | null>(null);
+  const [copiedCmd, setCopiedCmd] = useState<'install' | 'cors' | 'sh' | null>(null);
 
   if (!isSettingsOpen) return null;
 
@@ -71,12 +71,23 @@ export const VoiceStudioSettingsModal: React.FC = () => {
     typeof window !== 'undefined'
       ? window.location.origin
       : 'https://koinonialms.vercel.app';
-  const corsAllowedList = `${originForCors},https://koinonialms.vercel.app,https://uiecblms.vercel.app,http://localhost:3000`;
+  const corsAllowedList = Array.from(
+    new Set([
+      originForCors,
+      'https://koinonialms.vercel.app',
+      'https://uiecblms.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:3902',
+      'http://127.0.0.1:3902',
+      'app://voicestudio',
+    ])
+  ).join(',');
 
-  const psCommand = `$env:OMNIVOICE_ALLOWED_ORIGINS="${corsAllowedList}"\nuv run uvicorn backend.main:app --host 127.0.0.1 --port 3900`;
+  const winInstallCommand = `irm https://voicestudio.sh/install.ps1 | iex`;
+  const winCorsEnvCommand = `[Environment]::SetEnvironmentVariable('OMNIVOICE_ALLOWED_ORIGINS', '${corsAllowedList}', 'User')`;
   const bashCommand = `OMNIVOICE_ALLOWED_ORIGINS="${corsAllowedList}" uv run uvicorn backend.main:app --host 127.0.0.1 --port 3900`;
 
-  const handleCopyCmd = (which: 'ps' | 'sh', cmd: string) => {
+  const handleCopyCmd = (which: 'install' | 'cors' | 'sh', cmd: string) => {
     navigator.clipboard.writeText(cmd);
     setCopiedCmd(which);
     setTimeout(() => setCopiedCmd(null), 2000);
@@ -366,26 +377,58 @@ export const VoiceStudioSettingsModal: React.FC = () => {
               </button>
 
               {showHelpCmds && (
-                <div className="mt-2 p-3 rounded-xl bg-slate-900 text-slate-100 text-[11px] space-y-2.5 border border-slate-700">
+                <div className="mt-2 p-3.5 rounded-xl bg-slate-900 text-slate-100 text-[11px] space-y-3 border border-slate-700">
                   <div>
-                    <div className="flex items-center justify-between text-slate-400 font-bold mb-1">
-                      <span>Windows PowerShell:</span>
+                    <div className="flex items-center justify-between text-emerald-300 font-bold mb-1">
+                      <span>Passo 1 — Instalar VoiceStudio Desktop no Windows (1 vez):</span>
+                      <div className="flex items-center gap-2">
+                        <a
+                          href="https://github.com/debpalash/VoiceStudio/releases/latest"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sky-300 hover:text-white underline inline-flex items-center gap-0.5"
+                        >
+                          <span>Baixar .exe</span>
+                          <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyCmd('install', winInstallCommand)}
+                          className="inline-flex items-center gap-1 text-indigo-300 hover:text-white cursor-pointer"
+                        >
+                          {copiedCmd === 'install' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          <span>{copiedCmd === 'install' ? 'Copiado!' : 'Copiar'}</span>
+                        </button>
+                      </div>
+                    </div>
+                    <pre className="p-2 rounded-lg bg-slate-950 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
+                      {winInstallCommand}
+                    </pre>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between text-amber-300 font-bold mb-1">
+                      <span>Passo 2 — Liberar CORS permanentemente (Windows PowerShell):</span>
                       <button
                         type="button"
-                        onClick={() => handleCopyCmd('ps', psCommand)}
+                        onClick={() => handleCopyCmd('cors', winCorsEnvCommand)}
                         className="inline-flex items-center gap-1 text-indigo-300 hover:text-white cursor-pointer"
                       >
-                        {copiedCmd === 'ps' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                        <span>{copiedCmd === 'ps' ? 'Copiado!' : 'Copiar'}</span>
+                        {copiedCmd === 'cors' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        <span>{copiedCmd === 'cors' ? 'Copiado!' : 'Copiar'}</span>
                       </button>
                     </div>
                     <pre className="p-2 rounded-lg bg-slate-950 font-mono text-[10px] overflow-x-auto whitespace-pre-wrap">
-                      {psCommand}
+                      {winCorsEnvCommand}
                     </pre>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      Depois é só abrir o app <strong className="text-white">VoiceStudio</strong> no Menu Iniciar — não precisa rodar comandos <code className="text-indigo-300">uvicorn</code> na pasta do LMS.
+                    </p>
                   </div>
+
                   <div>
                     <div className="flex items-center justify-between text-slate-400 font-bold mb-1">
-                      <span>macOS / Linux:</span>
+                      <span>Alternativa (código-fonte — rodar DENTRO da pasta clonada do VoiceStudio após uv sync):</span>
                       <button
                         type="button"
                         onClick={() => handleCopyCmd('sh', bashCommand)}
