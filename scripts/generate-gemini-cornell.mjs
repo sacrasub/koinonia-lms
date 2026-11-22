@@ -237,6 +237,7 @@ function scrubText(text) {
     .replace(/\bconvidad[oa]s?\b/gi, '')
     .replace(/--\s*\d+\s+of\s+\d+\s*--/gi, '')
     .replace(/📝\s*Observações/gi, '')
+    .replace(/[{}]/g, '')
     .replace(/\s{2,}/g, ' ')
     .replace(/\s+([,.;:!?])/g, '$1')
     .trim();
@@ -275,11 +276,55 @@ function isAdminNoise(str) {
 
 function isAdminActionItem(str) {
   const low = str.toLowerCase();
-  return (
-    /(lista de presença|assinar lista|formulário de presença|preencher presença|compartilhar slides|enviar slides|publicar notas|subir gravação|disponibilizar gravação|link da gravação)/i.test(
-      low
-    ) && !/(ler|estudar|pesquisar|revisar|redigir|analisar|preparar|ler o livro|capitulo|capítulo)/i.test(low)
-  );
+  const personalOrOffTopicPatterns = [
+    /\bapartamentos?\b/,
+    /\baluguel\b/,
+    /\bcamar[ãa]o\b/,
+    /\bpreparar refei[çc][ãa]o\b/,
+    /\bpassagem a[ée]rea\b/,
+    /\balarme da igreja\b/,
+    /\bmanter alarme\b/,
+    /\bchamar o marido\b/,
+    /\bindica[çc][ãa]o de camila\b|\bindicar camila\b/,
+    /\bimpress[ãa]o de envelopes\b/,
+    /\bcirurgia de jo[ãa]o\b/,
+    /\bquadro de sa[úu]de\b/,
+    /\bassuntos pendentes\b/,
+    /\binstalar google agenda\b/,
+  ];
+  if (personalOrOffTopicPatterns.some((rx) => rx.test(low))) {
+    return true;
+  }
+
+  const logisticsPatterns = [
+    /^postar material:/,
+    /subir o conte[úu]do da aula na pasta/,
+    /^disponibilizar (material|materiais|arquivo|slides)/,
+    /disponibilizar materiais did[áa]ticos:\s*upload dos slides/,
+    /publicar slides:/,
+    /adicionar espaco no drive|liberar espaco/,
+    /configurar transcri[çc][ãa]o/,
+    /assinar presen[çc]a|registre sua presen[çc]a|lista de presen[çc]a|assinar lista|formul[áa]rio de presen[çc]a|preencher presen[çc]a/,
+    /enviar lista acad[êe]mica/,
+    /coletar assinatura/,
+    /enviar notas:\s*encaminhar as notas/,
+    /liberar prova:/,
+    /^enviar pdf:/,
+    /confirmar aula:\s*confirmar.*haver[áa] aula/,
+    /^organizar materiais:\s*acessar o aplicativo/,
+    /^compartilhar link de v[íi]deo:/,
+    /enviar contato do autor|divulgar contato/,
+    /solicitar isen[çc][ãa]o:\s*entrar em contato diretamente com a diretora/,
+    /endere[çc]o de e-mail estudantil/,
+    /corrigir material did[áa]tico/,
+    /preparar slides:\s*elaborar novos materiais de apresenta[çc][ãa]o/,
+    /entregar todos os slides da disciplina/,
+    /incluir o conte[úu]do da aula na plataforma/,
+    /carregar o material da aula na plataforma/,
+    /subir grava[çc][ãa]o|disponibilizar grava[çc][ãa]o|link da grava[çc][ãa]o/,
+    /^comparar|^conferir.*haver[áa] aula/,
+  ];
+  return logisticsPatterns.some((rx) => rx.test(low));
 }
 
 function extractBiblicalReferences(text, fallback = '') {
@@ -927,16 +972,17 @@ export function buildCornellNoteFromGeminiAula(aula: GeminiAulaCornellData): Cor
     \`Resumo Gemini IA • Aula \${aula.aulaNum} (\${aula.dateBr})\`,
     \`Disciplina: \${meta?.shortName || aula.disciplinaId} • \${meta?.prof || ''}\`,
     '',
-    '1. VISÃO GERAL:',
+    'Resumo:',
     aula.resumoGeral,
   ];
   if (aula.topicos.length > 0) {
-    aiTextLines.push('', '2. TÓPICOS ESTRUTURADOS:');
-    aula.topicos.forEach((t) => aiTextLines.push(\`• \${t.titulo}: \${t.texto}\`));
+    aula.topicos.forEach((t) => {
+      aiTextLines.push('', \`\${t.titulo}:\`, t.texto);
+    });
   }
   if (aula.proximasEtapas.length > 0) {
-    aiTextLines.push('', '3. ENCAMINHAMENTOS DE ESTUDO:');
-    aula.proximasEtapas.forEach((p) => aiTextLines.push(\`- \${p}\`));
+    aiTextLines.push('', 'Próximas Etapas & Leituras Orientadas:');
+    aula.proximasEtapas.forEach((p) => aiTextLines.push(\`• \${p}\`));
   }
 
   return {

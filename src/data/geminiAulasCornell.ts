@@ -343,9 +343,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Enviar textos: Disponibilize a sequência dos textos de apoio no chat para garantir que todos os alunos tenham acesso ao material de leitura obrigatória.",
-      "Divulgar contato: Compartilhe o contato do autor do livro mencionado no grupo para que os alunos interessados possam adquiri-lo.",
-      "Celebrar Ação Graças: Converse com o pastor local sobre a possibilidade de realizar a celebração oficial do Dia Nacional de Ação de Graças na igreja.",
-      "Enviar contato do autor: Disponibilizar para os irmãos o contato do pastor Thomas Wagner para a aquisição do livro."
+      "Celebrar Ação Graças: Converse com o pastor local sobre a possibilidade de realizar a celebração oficial do Dia Nacional de Ação de Graças na igreja."
     ],
     "referenciasBiblicas": "Mateus 18:15-20; Atos 15:1-29; 1 Pedro 2:9",
     "geminiUrl": "/gemini-notes/his_aula4_2026-09-01.pdf",
@@ -657,9 +655,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Coletar assinatura: Solicitar a assinatura da participante no documento após a entrega do material.",
       "Iniciar estudo bíblico: Utilizar a revista do pastor Vanderlei para iniciar estudos bíblicos estruturados com os membros da igreja.",
-      "Adicionar espaco no drive: Liberar espaco de armazenamento no Drive para que os slides das aulas sejam disponibilizados.",
       "Ler livros recomendados: Adquirir e ler as obras A missao de Deus e A missao do povo de Deus de Christopher Wright."
     ],
     "referenciasBiblicas": "1 Coríntios 4:2; Mateus 24",
@@ -706,9 +702,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Pesquisar Iluminismo: Realizar a pesquisa sobre o tema, organizar grupos de trabalho e consultar os slides da primeira aula para preparar a avaliação AV1.",
-      "Corrigir material didático: Realizar correções nas datas e séculos mencionadas no material da aula.",
-      "Disponibilizar materiais didáticos: Upload dos slides corrigidos no Google Drive para os alunos."
+      "Pesquisar Iluminismo: Realizar a pesquisa sobre o tema, organizar grupos de trabalho e consultar os slides da primeira aula para preparar a avaliação AV1."
     ],
     "referenciasBiblicas": "2 Timóteo 4:2-4; Jeremias 17:9; Filipenses 4:6-7; Isaías 55; Filipenses 4",
     "geminiUrl": "/gemini-notes/hpc_aula3_2026-08-25.pdf",
@@ -829,8 +823,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Estudar Redes Sociais: Pesquisar e investir em métodos para utilizar meios digitais de forma intencional na evangelização e integração da igreja.",
-      "Pesquisar David Bran: Realizar estudos sobre a vida e a obra missionária de David Bran. Aprofundar o conhecimento sobre sua influência no despertamento missionário.",
-      "Enviar notas: Encaminhar as notas dos trabalhos realizados aos estudantes. Realizar o envio durante a semana."
+      "Pesquisar David Bran: Realizar estudos sobre a vida e a obra missionária de David Bran. Aprofundar o conhecimento sobre sua influência no despertamento missionário."
     ],
     "referenciasBiblicas": "Atos 19; Apocalipse 2; Lucas 12; Gênesis 12; Atos 18",
     "geminiUrl": "https://docs.google.com/document/d/11wqEdqKGnnjvKDiKhVIK3ALmeaMWUVwYuEhWa67IqKw/edit",
@@ -1090,9 +1083,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
         "texto": "Camila Vieira levantou a dificuldade de aconselhar e discipular amigas não cristãs sem pressupor crenças na Bíblia ou transformar interações cotidianas em púlpitos. uilian santos respondeu recomendando uma postura intencional, sugerindo marcar cafés e criar vínculos de confiança antes de introduzir gradualmente conceitos cristãos como ..."
       }
     ],
-    "proximasEtapas": [
-      "Disponibilizar material: Incluir o conteúdo da aula na plataforma para que os alunos possam realizar a leitura."
-    ],
+    "proximasEtapas": [],
     "referenciasBiblicas": "Lucas 18",
     "geminiUrl": "/gemini-notes/acon_aula3_2026-08-26.pdf",
     "sourceType": "pdf"
@@ -1136,10 +1127,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
         "texto": "Rosiane Lima (Rosi) ressaltou a necessidade de equilíbrio ao interpretar o sofrimento, distinguindo ações divinas, consequências de escolhas humanas, e eventos naturais que fazem parte da vida. Rosiane Lima (Rosi) utilizou exemplos como a vida de José e a saúde de Timóteo para ilustrar que nem toda dor é um castigo ou uma lição direta,..."
       }
     ],
-    "proximasEtapas": [
-      "Disponibilizar arquivo: Carregar o material da aula na plataforma do curso após o encerramento da sessão.",
-      "Contatar João: Entrar em contato com João após esta semana para tratar de assuntos pendentes."
-    ],
+    "proximasEtapas": [],
     "referenciasBiblicas": "1 Coríntios 11; Romanos 5",
     "geminiUrl": "/gemini-notes/acon_aula4_2026-09-02.pdf",
     "sourceType": "pdf"
@@ -1240,8 +1228,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Pesquisar carta: Pesquisar na internet a carta fictícia escrita por Augusto Nicodemos sobre aconselhamento cristão relacionada à luta contra desejos.",
-      "Confirmar aula: Confirmar com o responsável Robert se haverá aula amanhã devido ao feriado do Dia do Professor."
+      "Pesquisar carta: Pesquisar na internet a carta fictícia escrita por Augusto Nicodemos sobre aconselhamento cristão relacionada à luta contra desejos."
     ],
     "referenciasBiblicas": "Gênesis 1 e 2; Gênesis 1; Gênesis 2; Hebreus 12; Romanos 1",
     "geminiUrl": "https://docs.google.com/document/d/1zmR8MIsk7bOJbTz9V2ttu6l-MsWeQhLKXzmtLe63mXw/edit",
@@ -1318,10 +1305,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
         "texto": "A verdadeira esperança foi definida como fruto direto do novo nascimento e da união com Cristo Jesus. O encontro concluiu com orientações sobre a avaliação final e a disponibilização de materiais."
       }
     ],
-    "proximasEtapas": [
-      "Pesquisar apartamentos: Pesquisar opções de aluguel e encaminhar as informações para o William.",
-      "Postar Material: Subir o conteúdo da aula na pasta compartilhada após a reunião."
-    ],
+    "proximasEtapas": [],
     "referenciasBiblicas": "Mateus 6; Romanos 4:18; Romanos 8:24; 1 Pedro 1:3; Colossenses 1:4-5; Romanos 8",
     "geminiUrl": "https://docs.google.com/document/d/1Viw3fiPpgyLAFmed3ZHD475YZizI3Shbbhln4QrSViA/edit",
     "sourceType": "gdoc"
@@ -1420,7 +1404,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Disponibilizar materiais: Disponibilizar todo o material bibliográfico e os slides da disciplina na pasta compartilhada para auxílio nos estudos.",
       "Enviar trabalhos: Enviar os dois trabalhos acadêmicos propostos ao longo do semestre para o endereço de e-mail fornecido pelo professor.",
       "Pesquisar autor livro: Pesquisar o autor da obra E se Jesus não tivesse nascido para divulgar no grupo.",
       "Identificar universidade histórica: Identificar o nome da universidade fundada por pastores congregacionais para compartilhar no grupo."
@@ -1519,8 +1502,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Baixar materiais de estudo: Realizar o download dos slides da aula passada e da aula atual disponíveis na pasta compartilhada para compor o material de estudo.",
-      "Assistir vídeo: Assista ao vídeo sobre a corrida da vida para refletir sobre as diferentes condições iniciais das pessoas e melhorar a forma de se relacionar com quem teve menos acesso a oportunidades.",
-      "Assinar presença: Registre sua presença na aula acessando o link disponibilizado no chat."
+      "Assistir vídeo: Assista ao vídeo sobre a corrida da vida para refletir sobre as diferentes condições iniciais das pessoas e melhorar a forma de se relacionar com quem teve menos acesso a oportunidades."
     ],
     "referenciasBiblicas": "Gênesis 3:16; Gálatas 3:28",
     "geminiUrl": "/gemini-notes/dh_aula3_2026-08-26.pdf",
@@ -1566,9 +1548,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Configurar Transcrição: Realizar a configuração da ferramenta de transcrição antes de iniciar a próxima aula.",
       "Produzir trabalho AV1: Redigir um texto de até uma lauda sobre desigualdade social e privilégios. Enviar o arquivo para o email indicado pelo professor utilizando o assunto trabalho para composição de notas.",
-      "Solicitar isenção: Entrar em contato diretamente com a diretora Carla Janaína para tratar da documentação de isenção da disciplina.",
       "Solicitar link: Enviar uma mensagem ao professor solicitando o link do vídeo de 26 de setembro caso ainda não o tenham assistido."
     ],
     "referenciasBiblicas": "Gênesis 1:26-27; Miqueias 6:8; Deuteronômio 10:18-19",
@@ -1617,8 +1597,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     "proximasEtapas": [
       "Relatar história: Compartilhar os detalhes do ocorrido mencionado durante a aula com o professor.",
       "Enviar trabalho: Produzir um trabalho de no máximo uma lauda sobre o vídeo de desigualdade social e privilégio, discutindo a importância da igreja como agente de transformação social.",
-      "Entregar tarefa: Enviar o trabalho finalizado por e-mail até o dia 30 de setembro de 2026, às 23:59.",
-      "Orar por Eglésia: Apresentar a jovem Eglésia em oração devido ao seu quadro de saúde e situação mencionada durante a aula."
+      "Entregar tarefa: Enviar o trabalho finalizado por e-mail até o dia 30 de setembro de 2026, às 23:59."
     ],
     "referenciasBiblicas": "Salmo 139",
     "geminiUrl": "/gemini-notes/dh_aula5_2026-09-09.pdf",
@@ -1786,9 +1765,8 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Realizar Avaliação: Realizar a segunda prova da disciplina focada na matéria iniciada após a primeira avaliação.",
-      "{Publicar slides}: {Disponibilizar os slides da aula na plataforma digital.}",
-      "{Estudar slides}: {Revisar o material didático disponibilizado para a preparação da prova.}",
-      "{Preparar revisão}: {Conduzir uma sessão de revisão sobre o conteúdo estudado na próxima semana.}"
+      "Estudar slides: Revisar o material didático disponibilizado para a preparação da prova.",
+      "Preparar revisão: Conduzir uma sessão de revisão sobre o conteúdo estudado na próxima semana."
     ],
     "referenciasBiblicas": "Gênesis 1:26-27; Miqueias 6:8; Deuteronômio 10:18-19",
     "geminiUrl": "https://docs.google.com/document/d/1mMxMeEvCuWSJTr2H3D_uD2nBQokcFedsPZ7CeJlqmvI/edit",
@@ -1815,8 +1793,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Comunicar colegas: Informe os colegas ausentes sobre o cronograma e os detalhes da prova objetiva.",
-      "Solicitar segunda chamada: Entre em contato com o professor após a segunda avaliação caso tenha perdido a prova um ou a prova dois para receber orientações sobre a segunda chamada.",
-      "Contatar aluno: Envie uma mensagem para Salatiel para tratar de assuntos pendentes."
+      "Solicitar segunda chamada: Entre em contato com o professor após a segunda avaliação caso tenha perdido a prova um ou a prova dois para receber orientações sobre a segunda chamada."
     ],
     "referenciasBiblicas": "Gênesis 1:26-27; Miqueias 6:8; Deuteronômio 10:18-19",
     "geminiUrl": "https://docs.google.com/document/d/1MxeIKhKmGCvPiy-XN9zNGMyIdnYiPlFi1RCHUQMbpKc/edit",
@@ -1962,8 +1939,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     "proximasEtapas": [
       "Confirmar membro: Localizar o nome do aluno pendente e confirmar a participação no grupo após a reunião.",
       "Organizar apresentação: Realizar a pesquisa sobre os mandamentos atribuídos e marcar uma reunião entre os integrantes para dividir as tarefas de apresentação e elaboração dos slides.",
-      "Estudar aborto: Preparar o conteúdo sobre aborto para a discussão na próxima semana.",
-      "Convidar participante: Chamar o marido para contribuir com a discussão sobre o tema da próxima aula."
+      "Estudar aborto: Preparar o conteúdo sobre aborto para a discussão na próxima semana."
     ],
     "referenciasBiblicas": "Êxodo 20:1-17; Mateus 5:17-48; Romanos 12:1-2",
     "geminiUrl": "/gemini-notes/eti_aula3_2026-08-27.pdf",
@@ -2009,7 +1985,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Organizar Materiais: Acessar o aplicativo para visualizar e organizar os materiais para os alunos.",
       "Analisar Êxodo 21: Verificar em diferentes traduções da Bíblia o texto de Êxodo 21 22 a 23 e identificar o termo utilizado para descrever a situação.",
       "Continuar debate: Retomar a reflexão teológica e ética sobre o aborto na próxima aula para aprofundar o assunto."
     ],
@@ -2232,8 +2207,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     "proximasEtapas": [
       "Realizar anotações: Registrar os pontos abordados nas aulas para estudo posterior pois as apresentações servem apenas como roteiro de tópicos.",
       "Adquirir livro: Providenciar o exemplar de Introdução ao Novo Testamento de Carson Douglas e Morris para aprofundamento do conteúdo.",
-      "Testar ferramenta: Tentar utilizar novamente o Notebook LM para a elaboração de futuras apresentações de slides.",
-      "Compartilhar email: Informar aos demais colegas caso a secretaria responda à solicitação de fornecimento do endereço de e-mail estudantil."
+      "Testar ferramenta: Tentar utilizar novamente o Notebook LM para a elaboração de futuras apresentações de slides."
     ],
     "referenciasBiblicas": "Atos 4:36; Atos 18:24 e 18:28",
     "geminiUrl": "/gemini-notes/nt3_aula1_2026-08-13.pdf",
@@ -2328,7 +2302,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     ],
     "proximasEtapas": [
       "Verificar Divisões: Analisar as divisões de capítulos e aplicações da epístola aos Hebreus. Apresentar a estrutura correta na próxima aula.",
-      "Preparar Slides: Elaborar novos materiais de apresentação para as próximas aulas sobre as epístolas gerais. Melhorar a qualidade visual do conteúdo didático.",
       "Ler Tiago: Realizar a leitura da epístola de Tiago durante a semana. Explorar o conteúdo bíblico para a discussão posterior.",
       "Apresentar data e local: Apresentar a data e o local da escrita da Epístola de Tiago na próxima reunião."
     ],
@@ -2459,8 +2432,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Ler cartas joaninas: Realizar a leitura dos livros de primeira, segunda e terceira João. Utilizar o horário da aula suspensa da próxima semana para concluir esta tarefa.",
-      "Orar por João: Dedicar momentos de oração pelo sucesso da cirurgia de João. Manter-se em espírito de oração para o procedimento médico agendado para amanhã."
+      "Ler cartas joaninas: Realizar a leitura dos livros de primeira, segunda e terceira João. Utilizar o horário da aula suspensa da próxima semana para concluir esta tarefa."
     ],
     "referenciasBiblicas": "Judas 5; Judas 9; Judas 3",
     "geminiUrl": "https://docs.google.com/document/d/1Kq80omtq6u75kaI3x9nrvQfnHZBgPnfGydPMpN6XKGM/edit",
@@ -2523,8 +2495,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Comprar passagem: Adquirir a passagem aérea para Gabriela acompanhar o pastor Márcio no encontro na Argentina.",
-      "Preparar refeição: Cozinhar pratos de camarão sem pimenta nas próximas ocasiões de alimentação.",
       "Estudar Segunda João: Estudar a segunda carta de João durante o próximo encontro."
     ],
     "referenciasBiblicas": "1 João 5:11-13; João 20:30-31; 1 João 5:13; João 14:16; João 16:13; João 3",
@@ -2547,9 +2517,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Manter alarme: Chamar um técnico para verificar e consertar o sistema de alarme da igreja.",
       "Revisar matéria: Estudar todo o conteúdo da disciplina para a segunda prova e preparar dúvidas para a próxima aula.",
-      "Indicar Camila: Realizar a indicação de Camila para o curso na PUC.",
       "Estudar referências: Verificar as referências bibliográficas e iniciar a leitura dos livros necessários para o curso."
     ],
     "referenciasBiblicas": "João 1",
@@ -2572,7 +2540,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Liberar Prova: Disponibilizar a avaliacao na proxima quinta-feira as 19 horas com prazo de entrega ate a meia-noite.",
       "Realizar Avaliacao: Responder a prova de multipla escolha disponibilizada pelo professor ate a meia-noite da proxima quinta-feira."
     ],
     "referenciasBiblicas": "Tiago 1–5; 1 Pedro 1–5; 2 Pedro 1–3; 1–3 João; Judas",
@@ -2621,8 +2588,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     "proximasEtapas": [
       "Resumir livro: Resumir o livro A treliça e a videira capítulo por capítulo, com limite de uma folha por capítulo, e enviar para o e-mail do professor até o dia 27 de novembro de 2026.",
       "Realizar prova: Realizar a prova da disciplina no dia 27 de novembro de 2026.",
-      "Enviar resumo: Enviar o resumo do livro para o e-mail do professor conforme disponibilidade.",
-      "Disponibilizar slides: Entregar todos os slides da disciplina antes da realização da prova. O material servirá como fonte de consulta para os alunos."
+      "Enviar resumo: Enviar o resumo do livro para o e-mail do professor conforme disponibilidade."
     ],
     "referenciasBiblicas": "Apocalipse 2 e 3",
     "geminiUrl": "/gemini-notes/pri_aula1_2026-08-14.pdf",
@@ -2890,10 +2856,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
       }
     ],
     "proximasEtapas": [
-      "Disponibilizar materiais: Converter as apresentações de aula em formato PDF e enviar o conteúdo aos alunos como material de consulta para a prova.",
-      "Enviar PDF: Disponibilizar o arquivo em PDF com o conteúdo da aula para a turma.",
-      "Entregar Avaliações: Realizar a prova de consulta e entregar o trabalho sobre o livro Treliça e a Videira até o dia 28.",
-      "Solicitar Informações: Contatar o pastor por mensagem para obter detalhes sobre a impressão de envelopes da igreja."
+      "Entregar Avaliações: Realizar a prova de consulta e entregar o trabalho sobre o livro Treliça e a Videira até o dia 28."
     ],
     "referenciasBiblicas": "Gênesis 11; Gênesis 12; Efésios 5:25",
     "geminiUrl": "https://docs.google.com/document/d/1jooWD7YG-2GZWIDfINg5_Ac9MWjRAspEwQsTnSk9e3o/edit",
@@ -3013,7 +2976,6 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
     "proximasEtapas": [
       "Criar projeto: Desenvolver o projeto de pesquisa seguindo os tópicos apresentados em aula no prazo de 2 semanas.",
       "Publicar itens: Disponibilizar no grupo os itens detalhados que compoem o projeto de pesquisa para consulta dos alunos.",
-      "Instalar Google Agenda: Instalar o aplicativo Google Agenda no celular ou computador para melhorar a organização e o acesso aos convites das aulas.",
       "Procurar orientador: Entrar em contato com o orientador acadêmico para auxiliar na estruturação e no direcionamento da pesquisa."
     ],
     "referenciasBiblicas": "Eclesiastes 12:9-12; Lucas 1:1-4; 2 Timóteo 2:15",
@@ -3179,10 +3141,7 @@ export const GEMINI_AULAS_CORNELL: GeminiAulaCornellData[] = [
         "texto": "Capacidade de conteúdo foi elogiada. Viagens de carro foram discutidas antes das despedidas finais."
       }
     ],
-    "proximasEtapas": [
-      "Compartilhar link de vídeo: Enviar o vídeo da professora Gabriela no grupo da turma.",
-      "Enviar lista acadêmica: Encaminhar a lista de alunos para o Robert."
-    ],
+    "proximasEtapas": [],
     "referenciasBiblicas": "Eclesiastes 12:9-12; Lucas 1:1-4; 2 Timóteo 2:15",
     "geminiUrl": "https://docs.google.com/document/d/1Hv7A1JHsNEQY2BhnFCZfbf_LUBu8Vpb0_NyB_T8mFSE/edit",
     "sourceType": "gdoc"
@@ -3501,16 +3460,17 @@ export function buildCornellNoteFromGeminiAula(aula: GeminiAulaCornellData): Cor
     `Resumo Gemini IA • Aula ${aula.aulaNum} (${aula.dateBr})`,
     `Disciplina: ${meta?.shortName || aula.disciplinaId} • ${meta?.prof || ''}`,
     '',
-    '1. VISÃO GERAL:',
+    'Resumo:',
     aula.resumoGeral,
   ];
   if (aula.topicos.length > 0) {
-    aiTextLines.push('', '2. TÓPICOS ESTRUTURADOS:');
-    aula.topicos.forEach((t) => aiTextLines.push(`• ${t.titulo}: ${t.texto}`));
+    aula.topicos.forEach((t) => {
+      aiTextLines.push('', `${t.titulo}:`, t.texto);
+    });
   }
   if (aula.proximasEtapas.length > 0) {
-    aiTextLines.push('', '3. ENCAMINHAMENTOS DE ESTUDO:');
-    aula.proximasEtapas.forEach((p) => aiTextLines.push(`- ${p}`));
+    aiTextLines.push('', 'Próximas Etapas & Leituras Orientadas:');
+    aula.proximasEtapas.forEach((p) => aiTextLines.push(`• ${p}`));
   }
 
   return {

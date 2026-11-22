@@ -338,6 +338,96 @@ function resolveCanonicalDiscForNote(note: CornellNote): DisciplinaConfigItem | 
   return disciplinasList.find((d) => doesNoteMatchDisciplina(note, d));
 }
 
+function cleanCornellThemeCandidate(raw?: string): string {
+  return (raw || '')
+    .replace(/^(?:📌\s*)?(?:\d+[\.\)]\s*)+/g, '')
+    .replace(/^[\.\-:;•*\s]+/, '')
+    .replace(/[:#]+$/, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function isGenericOrCorruptedTheme(raw?: string): boolean {
+  const trimmed = (raw || '').trim();
+  if (!trimmed || trimmed.length < 4) return true;
+  if (/^\.\s*/.test(trimmed)) return true;
+  const norm = cleanCornellThemeCandidate(trimmed)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+  if (!norm || norm.length < 4) return true;
+  return (
+    norm === 'visao geral' ||
+    norm === 'resumo' ||
+    norm === 'resumo executivo' ||
+    norm === 'resumo geral' ||
+    norm === 'sintese' ||
+    norm === 'topicos estruturados' ||
+    norm === 'topicos abordados' ||
+    norm === 'topicos' ||
+    norm.startsWith('encaminhamento') ||
+    norm.startsWith('proximas etapas') ||
+    norm === 'detalhes' ||
+    norm === 'observacoes' ||
+    norm.startsWith('aula de ') ||
+    norm.startsWith('conteudo tematico de ')
+  );
+}
+
+function hasCorruptedAiVisaoGeralOutput(note: CornellNote): boolean {
+  const notesStr = note.notes || '';
+  const cuesStr = note.cues || '';
+  if (isGenericOrCorruptedTheme(note.theme) && note.id.startsWith('gemini-')) {
+    return true;
+  }
+  return (
+    /📌\s*\d+\.\s*\.\s*VIS[ÃA]O GERAL/i.test(notesStr) ||
+    /📌\s*\d+\.\s*\.\s*T[ÓO]PICOS ESTRUTURADOS/i.test(notesStr) ||
+    /a respeito de "\.\s*VIS[ÃA]O GERAL"/i.test(cuesStr)
+  );
+}
+
+const NOISY_PROXIMA_ETAPA_PATTERNS: RegExp[] = [
+  /pesquisar apartamentos/i,
+  /opções de aluguel/i,
+  /postar material:\s*subir o conteúdo/i,
+  /camarão sem pimenta/i,
+  /passagem aérea para gabriela/i,
+  /sistema de alarme da igreja/i,
+  /impressão de envelopes/i,
+  /disponibilizar slides:\s*entregar todos os slides/i,
+  /disponibilizar materiais:\s*disponibilizar todo o material/i,
+  /disponibilizar arquivo:\s*carregar o material/i,
+  /disponibilizar material:\s*incluir o conteúdo/i,
+  /adicionar espaco no drive/i,
+  /solicitar isenção:\s*entrar em contato diretamente com a diretora/i,
+  /assinar presença:\s*registre sua presença/i,
+  /organizar materiais:\s*acessar o aplicativo/i,
+  /liberar prova:\s*disponibilizar a avaliacao/i,
+];
+
+function stripLegacyNoisyActionLines(notesText?: string): string | undefined {
+  if (!notesText) return notesText;
+  const hasAnyNoise = NOISY_PROXIMA_ETAPA_PATTERNS.some((rx) => rx.test(notesText));
+  if (!hasAnyNoise && !notesText.includes('{Estudar slides}')) {
+    return notesText;
+  }
+
+  let updated = notesText.replace(/\{([^}]+)\}/g, '$1');
+  const lines = updated.split('\n');
+  const filteredLines = lines.filter((line) => !NOISY_PROXIMA_ETAPA_PATTERNS.some((rx) => rx.test(line)));
+  updated = filteredLines.join('\n');
+
+  // Remove o cabeçalho de Próximas Etapas caso todos os seus bullets tenham sido removidos
+  updated = updated
+    .replace(/\n*📌\s*PRÓXIMAS ETAPAS & LEITURAS ORIENTADAS\s*(?=\n*(?:📌|$))/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  return updated;
+}
+
 function getDeletedSeedIds(email: string): Set<string> {
   if (typeof window === 'undefined') return new Set();
   try {
@@ -378,13 +468,51 @@ function mergeWithAutoGeminiNotes(
     const existingForSlot = slotKey ? existingBySlot.get(slotKey) : undefined;
 
     if (existingForSlot) {
-      // Nunca sobrescreve anotações do aluno; apenas complementa resumo da IA caso vazio
-      if (!existingForSlot.ai_summary_text || !existingForSlot.ai_summary_url) {
+      if (hasCorruptedAiVisaoGeralOutput(existingForSlot)) {
+        // Recupera folhas corrompidas anteriormente pelo bug de parser (ex: ". VISÃO GERAL")
         result[existingForSlot.id] = {
           ...existingForSlot,
+          theme: autoNote.theme,
+          cues: autoNote.cues,
+          notes: autoNote.notes,
+          summary: autoNote.summary,
+          biblical_references: existingForSlot.biblical_references || autoNote.biblical_references,
           ai_summary_url: existingForSlot.ai_summary_url || autoNote.ai_summary_url,
-          ai_summary_text: existingForSlot.ai_summary_text || autoNote.ai_summary_text,
+          ai_summary_text: autoNote.ai_summary_text,
         };
+        continue;
+      }
+
+      let updatedExisting = existingForSlot;
+      let changed = false;
+
+      if (isGenericOrCorruptedTheme(existingForSlot.theme) && autoNote.theme) {
+        updatedExisting = { ...updatedExisting, theme: autoNote.theme };
+        changed = true;
+      }
+
+      if (
+        !existingForSlot.ai_summary_text ||
+        !existingForSlot.ai_summary_url ||
+        (existingForSlot.ai_summary_text.startsWith('Resumo Gemini IA •') &&
+          existingForSlot.ai_summary_text.includes('1. VISÃO GERAL:'))
+      ) {
+        updatedExisting = {
+          ...updatedExisting,
+          ai_summary_url: existingForSlot.ai_summary_url || autoNote.ai_summary_url,
+          ai_summary_text: autoNote.ai_summary_text,
+        };
+        changed = true;
+      }
+
+      const cleanedNotes = stripLegacyNoisyActionLines(updatedExisting.notes);
+      if (cleanedNotes !== undefined && cleanedNotes !== updatedExisting.notes) {
+        updatedExisting = { ...updatedExisting, notes: cleanedNotes };
+        changed = true;
+      }
+
+      if (changed) {
+        result[existingForSlot.id] = updatedExisting;
       }
       continue;
     }
@@ -963,6 +1091,7 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       disciplina_code: currentNote.disciplina_code,
       professor_name: currentNote.professor_name,
       date: currentNote.date,
+      current_theme: currentNote.theme,
       provider: aiProvider,
       openai_api_key: openAiApiKey.trim() || undefined,
       openai_model: openAiModel,
@@ -1009,8 +1138,15 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
       ai_summary_text: tempAiText || data.sourceText || currentNote.ai_summary_text,
     };
 
-    if (data.theme && data.theme.trim().length > 3) {
-      patch.theme = data.theme;
+    const candidateTheme = cleanCornellThemeCandidate(data.theme);
+    const shouldReplaceTheme =
+      Boolean(candidateTheme) &&
+      !isGenericOrCorruptedTheme(candidateTheme) &&
+      (isGenericOrCorruptedTheme(currentNote.theme) ||
+        (Boolean(data.usedProvider) && data.usedProvider !== 'native'));
+
+    if (shouldReplaceTheme) {
+      patch.theme = candidateTheme;
     }
     if (data.biblical_references && data.biblical_references.trim().length > 2) {
       patch.biblical_references = data.biblical_references;
@@ -3248,7 +3384,9 @@ export const CadernoCornellPage: React.FC<CadernoCornellPageProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
                     <div className="p-2.5 bg-white rounded-xl border border-emerald-200">
                       <strong className="text-[10px] text-gray-500 uppercase block">Tema Identificado:</strong>
-                      <span className="font-bold text-gray-900">{aiTransformResult.theme}</span>
+                      <span className="font-bold text-gray-900">
+                        {(!isGenericOrCorruptedTheme(aiTransformResult.theme) ? aiTransformResult.theme : '') || currentNote.theme}
+                      </span>
                     </div>
                     <div className="p-2.5 bg-white rounded-xl border border-emerald-200">
                       <strong className="text-[10px] text-gray-500 uppercase block">Textos Bíblicos & Apoio:</strong>

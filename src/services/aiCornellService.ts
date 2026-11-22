@@ -10,6 +10,7 @@ export interface CornellTransformRequest {
   disciplina_code?: string;
   professor_name?: string;
   date?: string;
+  current_theme?: string;
   provider?: AIProvider;
   openai_api_key?: string;
   openai_model?: string;

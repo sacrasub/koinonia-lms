@@ -10,6 +10,7 @@ interface TransformRequestBody {
   disciplina_code?: string;
   professor_name?: string;
   date?: string;
+  current_theme?: string;
   provider?: 'auto' | 'openai' | 'gemini' | 'native';
   openai_api_key?: string;
   openai_model?: string;
@@ -134,14 +135,23 @@ function cleanMeetNoise(raw: string): string[] {
     if (lower.startsWith('convidado') || lower.startsWith('convidados') || lower.includes('professor virtual')) {
       continue;
     }
-    // Filtra cabeçalhos técnicos do Google Docs / Meet
+    // Filtra cabeçalhos técnicos do Google Docs / Meet e metadados pré-montados do Koinonia
     if (lower.includes('registros da reunião') || (lower.includes('transcrição') && lower.includes('gravação'))) {
+      continue;
+    }
+    if (lower.startsWith('resumo gemini ia')) {
+      continue;
+    }
+    if (lower.startsWith('disciplina:') && (lower.includes('prof') || lower.includes('•'))) {
+      continue;
+    }
+    if (lower.startsWith('tema:') && line.length < 140) {
       continue;
     }
     if (lower.startsWith('anexos') && line.length < 50) {
       continue;
     }
-    if (lower.startsWith('criado por:') || lower.startsWith('data:') && line.length < 20) {
+    if (lower.startsWith('criado por:') || (lower.startsWith('data:') && line.length < 20)) {
       continue;
     }
 
@@ -149,6 +159,85 @@ function cleanMeetNoise(raw: string): string[] {
   }
 
   return cleaned;
+}
+
+function cleanHeadingTitle(raw: string): string {
+  return raw
+    .replace(/^(?:📌\s*)?(?:[-•*→]+\s*|\d+[\.\)]\s*)+/g, '')
+    .replace(/^[\.\-:;•*\s]+/, '')
+    .replace(/[:#]/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function normalizeHeadingForCheck(title: string): string {
+  return cleanHeadingTitle(title)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function isActionSectionTitle(title: string): boolean {
+  const norm = normalizeHeadingForCheck(title);
+  return (
+    norm.startsWith('encaminhamento') ||
+    norm.startsWith('proximas etapa') ||
+    norm === 'tarefas' ||
+    norm === 'action items'
+  );
+}
+
+function isTopicContainerTitle(title: string): boolean {
+  const norm = normalizeHeadingForCheck(title);
+  return (
+    norm === 'topicos' ||
+    norm === 'topicos estruturados' ||
+    norm === 'topicos abordados' ||
+    norm === 'topicos centrais' ||
+    norm === 'topicos da aula' ||
+    norm === 'detalhes' ||
+    norm === 'conteudo'
+  );
+}
+
+function isGenericStructuralTitle(title: string): boolean {
+  const norm = normalizeHeadingForCheck(title);
+  if (!norm || norm.length < 3) return true;
+  if (
+    norm === 'visao geral' ||
+    norm === 'resumo' ||
+    norm === 'resumo executivo' ||
+    norm === 'resumo geral' ||
+    norm.startsWith('resumo gemini') ||
+    norm === 'sintese' ||
+    norm === 'sintese da aula' ||
+    norm === 'topicos' ||
+    norm === 'topicos estruturados' ||
+    norm === 'topicos abordados' ||
+    norm === 'topicos centrais' ||
+    norm === 'topicos da aula' ||
+    norm === 'encaminhamentos' ||
+    norm === 'encaminhamentos de estudo' ||
+    norm.startsWith('proximas etapas') ||
+    norm === 'detalhes' ||
+    norm === 'observacoes' ||
+    norm === 'anotacoes' ||
+    norm === 'anotacoes de aula' ||
+    norm === 'introducao' ||
+    norm === 'conclusao' ||
+    norm === 'conteudo' ||
+    norm.startsWith('conteudo tematico') ||
+    norm === 'contexto' ||
+    norm === 'tarefas' ||
+    norm === 'action items' ||
+    norm.startsWith('disciplina') ||
+    norm === 'tema' ||
+    norm.startsWith('aula de ')
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -162,30 +251,67 @@ interface SectionBlock {
 function parseBlocksFromCleanLines(lines: string[]): SectionBlock[] {
   const blocks: SectionBlock[] = [];
   let currentBlock: SectionBlock | null = null;
+  let inExpandableTopicContainer = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const isBullet = line.startsWith('-') || line.startsWith('•') || line.startsWith('*') || line.startsWith('→');
-    const isNumbered = /^\d+[\.\)]\s+/.test(line);
-    const isShortHeader = line.length <= 65 && !line.endsWith('.') && !isBullet && !isNumbered;
-    const isSpecialHeader = /^(resumo|planejamento|metodologia|estrutura|debate|tópicos|impacto|próximas etapas|tarefas|bibliografia|ação|action items|conteúdo|contexto)/i.test(line);
+    const isNumbered = !isBullet && /^\d+[\.\)]\s+/.test(line);
+    const isShortHeader = !isBullet && !isNumbered && line.length <= 65 && !line.endsWith('.');
+    const isSpecialHeader =
+      !isBullet &&
+      /^(?:\d+[\.\)]\s*)?(visão geral|visao geral|resumo|planejamento|metodologia|estrutura|debate|tópicos|topicos|impacto|próximas etapas|proximas etapas|encaminhamentos|tarefas|bibliografia|ação|acao|action items|conteúdo|conteudo|contexto|detalhes)/i.test(
+        line
+      );
 
-    if (isNumbered || isShortHeader || isSpecialHeader) {
-      if (currentBlock && currentBlock.items.length > 0) {
-        blocks.push(currentBlock);
+    const isHeaderCandidate =
+      !isBullet &&
+      (isNumbered ||
+        isSpecialHeader ||
+        (isShortHeader && (line.endsWith(':') || !currentBlock || currentBlock.items.length > 0)));
+
+    if (isHeaderCandidate) {
+      const cleanedTitle = cleanHeadingTitle(line);
+      if (cleanedTitle.length >= 2) {
+        if (currentBlock && currentBlock.items.length > 0) {
+          blocks.push(currentBlock);
+        }
+        inExpandableTopicContainer = isTopicContainerTitle(cleanedTitle);
+        currentBlock = {
+          title: cleanedTitle,
+          items: [],
+        };
+        continue;
       }
-      currentBlock = {
-        title: line.replace(/^[-•*\d\.\)]\s*/, '').replace(/[:#]/g, '').trim(),
-        items: [],
-      };
-    } else {
-      if (!currentBlock) {
-        currentBlock = { title: 'Tópicos Abordados', items: [] };
+    }
+
+    if (isBullet && (inExpandableTopicContainer || !currentBlock)) {
+      const cleanBullet = line.replace(/^[-•*→]\s*/, '').trim();
+      const colonMatch = cleanBullet.match(/^([^:]{3,85}):\s+(.{10,})$/);
+      if (colonMatch) {
+        const subTitle = cleanHeadingTitle(colonMatch[1]);
+        const subBody = colonMatch[2].trim();
+        if (subTitle.length >= 3 && !isGenericStructuralTitle(subTitle)) {
+          if (currentBlock && currentBlock.items.length > 0) {
+            blocks.push(currentBlock);
+          }
+          currentBlock = {
+            title: subTitle,
+            items: [subBody],
+          };
+          inExpandableTopicContainer = true;
+          continue;
+        }
       }
-      const cleanItem = line.replace(/^[-•*]\s*/, '').trim();
-      if (cleanItem.length > 0) {
-        currentBlock.items.push(cleanItem);
-      }
+    }
+
+    if (!currentBlock) {
+      currentBlock = { title: 'Tópicos Abordados', items: [] };
+      inExpandableTopicContainer = true;
+    }
+    const cleanItem = line.replace(/^[-•*→]\s*/, '').trim();
+    if (cleanItem.length > 0) {
+      currentBlock.items.push(cleanItem);
     }
   }
 
@@ -206,7 +332,10 @@ function sanitizeAndFormatCornellOutput(data: any): {
   notes: string;
   summary: string;
 } {
-  let theme = (data.theme || '').trim();
+  let theme = cleanHeadingTitle(data.theme || '');
+  if (isGenericStructuralTitle(theme)) {
+    theme = '';
+  }
   let biblical = (data.biblical_references || '').trim();
   let cues = (data.cues || '').trim();
   let notes = (data.notes || '').trim();
@@ -288,7 +417,7 @@ A leitura, visualização e estudo devem ser EXTREMAMENTE AGRADÁVEIS, com espa�
 
 DIRETRIZES DE FORMATAÇÃO E ESPAÇAMENTO:
 
-1. THEME: Título temático acadêmico, específico e robusto da matéria ministrada.
+1. THEME: Título temático acadêmico, específico e robusto da matéria ministrada. NUNCA use títulos genéricos como "Visão Geral", "Resumo", "Tópicos Estruturados" ou "Detalhes".
 
 2. BIBLICAL_REFERENCES: Todos os textos bíblicos citados ou que fundamentam a matéria (ex: "Atos 1:15; Atos 6:2-5; 1 Coríntios 5; Atos 20:17, 28; Filipenses 1:1").
 
@@ -397,7 +526,7 @@ A leitura, visualização e estudo devem ser EXTREMAMENTE AGRADÁVEIS, com espa�
 
 DIRETRIZES DE FORMATAÇÃO E ESPAÇAMENTO:
 
-1. THEME: Título temático acadêmico, claro e robusto da aula.
+1. THEME: Título temático acadêmico, claro e robusto da aula. NUNCA use títulos genéricos como "Visão Geral", "Resumo", "Tópicos Estruturados" ou "Detalhes".
 
 2. BIBLICAL_REFERENCES: Todos os textos bíblicos citados ou que fundamentam a matéria (ex: "Atos 1:15; Atos 6:2-5; 1 Coríntios 5; Atos 20:17, 28; Filipenses 1:1").
 
@@ -492,7 +621,8 @@ function transformWithTheologicalParser(
   rawText: string,
   disciplina: string,
   professor: string,
-  date: string
+  date: string,
+  currentTheme?: string
 ) {
   const cleanedLines = cleanMeetNoise(rawText);
   const blocks = parseBlocksFromCleanLines(cleanedLines);
@@ -506,18 +636,25 @@ function transformWithTheologicalParser(
 
   // 2. Extração e Elaboração do Resumo Executivo (Summary)
   let executiveSummary = '';
-  const summaryBlock = blocks.find((b) =>
-    b.title.toLowerCase().includes('resumo executivo') ||
-    b.title.toLowerCase().includes('resumo') ||
-    b.title.toLowerCase().includes('síntese')
-  );
+  const summaryBlock = blocks.find((b) => {
+    const norm = normalizeHeadingForCheck(b.title);
+    return (
+      norm.includes('resumo executivo') ||
+      norm === 'resumo' ||
+      norm === 'resumo geral' ||
+      norm === 'visao geral' ||
+      norm.includes('sintese')
+    );
+  });
 
   if (summaryBlock && summaryBlock.items.length > 0) {
     executiveSummary = summaryBlock.items.join(' ');
   }
 
   if (!executiveSummary || executiveSummary.length < 30) {
-    const firstParagraphs = cleanedLines.filter(l => l.length > 30 && !l.toLowerCase().includes('resumo')).slice(0, 3);
+    const firstParagraphs = cleanedLines
+      .filter((l) => l.length > 30 && !isGenericStructuralTitle(l))
+      .slice(0, 3);
     if (firstParagraphs.length > 0) {
       executiveSummary = firstParagraphs.join(' ');
     } else {
@@ -525,14 +662,28 @@ function transformWithTheologicalParser(
     }
   }
 
+  const thematicBlocks = blocks.filter(
+    (b) => !isGenericStructuralTitle(b.title) && !isActionSectionTitle(b.title) && b.items.length > 0
+  );
+
   // 3. Montagem das Anotações de Aula Estruturadas (Notes - 70%) com Espaçamento e Indicadores
   const notesSections: string[] = [];
   let sectionIndex = 1;
 
   for (const block of blocks) {
-    if (block.title.toLowerCase().includes('resumo executivo')) continue;
+    const norm = normalizeHeadingForCheck(block.title);
+    const isSummaryOnlyBlock =
+      norm === 'visao geral' ||
+      norm === 'resumo' ||
+      norm === 'resumo executivo' ||
+      norm === 'resumo geral' ||
+      norm === 'sintese';
+    if (isSummaryOnlyBlock && thematicBlocks.length > 0) continue;
 
-    const formattedTitle = `📌 ${sectionIndex}. ${block.title.toUpperCase()}`;
+    const displayTitle = cleanHeadingTitle(block.title);
+    if (!displayTitle) continue;
+
+    const formattedTitle = `📌 ${sectionIndex}. ${displayTitle.toUpperCase()}`;
     const itemsFormatted = block.items.map((item, idx) => {
       if (idx === 0) {
         return `• ${item}`;
@@ -558,13 +709,14 @@ function transformWithTheologicalParser(
     }
   }
 
-  // 4. Criação Dinâmica de Pistas & Perguntas de Auto-Teste (Cues - 30%) a partir dos blocos reais
+  // 4. Criação Dinâmica de Pistas & Perguntas de Auto-Teste (Cues - 30%) a partir dos blocos temáticos reais
   const cues: string[] = [];
   let cueCount = 1;
 
-  blocks.forEach((block) => {
-    if (cueCount <= 6 && block.title && !block.title.toLowerCase().includes('resumo')) {
-      cues.push(`❓ ${cueCount}. O que foi discutido a respeito de "${block.title}"?`);
+  thematicBlocks.forEach((block) => {
+    const cleanTitle = cleanHeadingTitle(block.title);
+    if (cueCount <= 6 && cleanTitle && !isGenericStructuralTitle(cleanTitle)) {
+      cues.push(`❓ ${cueCount}. O que foi discutido a respeito de "${cleanTitle}"?`);
       cueCount++;
       if (block.items.length > 0 && cueCount <= 6) {
         cues.push(`💡 ${cueCount}. Conceito-Chave: ${block.items[0].substring(0, 120)}`);
@@ -580,14 +732,16 @@ function transformWithTheologicalParser(
     cues.push(`❓ 4. Pergunta de Auto-Teste: Explique com suas próprias palavras o conteúdo debatido nesta aula.`);
   }
 
-  // 5. Identificação do Tema
+  // 5. Identificação do Tema (preservando tema válido já existente e nunca escolhendo título genérico)
   let theme = '';
-  const firstSignificantBlock = blocks.find(b => b.title && b.title.length > 5 && !b.title.toLowerCase().includes('resumo'));
-  if (firstSignificantBlock) {
-    theme = firstSignificantBlock.title;
-  }
-  if (!theme || theme.length < 6) {
-    theme = `Conteúdo Temático de ${disciplina} (${date})`;
+  const trimmedCurrentTheme = (currentTheme || '').trim();
+  if (trimmedCurrentTheme.length > 4 && !isGenericStructuralTitle(trimmedCurrentTheme)) {
+    theme = trimmedCurrentTheme;
+  } else {
+    const firstSignificantBlock = thematicBlocks.find((b) => cleanHeadingTitle(b.title).length > 5);
+    if (firstSignificantBlock) {
+      theme = cleanHeadingTitle(firstSignificantBlock.title);
+    }
   }
 
   return {
@@ -734,6 +888,7 @@ export async function POST(req: NextRequest) {
       disciplina_code = 'TEO-2026',
       professor_name = 'Corpo Docente',
       date = new Date().toISOString().split('T')[0],
+      current_theme = '',
       provider = 'auto',
       openai_api_key,
       openai_model = 'gpt-4o',
@@ -822,7 +977,8 @@ export async function POST(req: NextRequest) {
         contentToProcess,
         disciplina_name,
         professor_name,
-        date
+        date,
+        current_theme
       );
       usedProvider = 'native';
       usedModel = 'Deep Theological Cornell Engine';
@@ -833,10 +989,23 @@ export async function POST(req: NextRequest) {
     const formattedNotes = formatNotesText(result.notes);
     const formattedSummary = formatSummaryText(result.summary);
 
+    const trimmedCurrentTheme = (current_theme || '').trim();
+    const hasValidCurrentTheme =
+      trimmedCurrentTheme.length > 4 && !isGenericStructuralTitle(trimmedCurrentTheme);
+    const candidateTheme = cleanHeadingTitle(result.theme || '');
+    let safeTheme = '';
+    if (usedProvider === 'native' && hasValidCurrentTheme) {
+      safeTheme = trimmedCurrentTheme;
+    } else if (candidateTheme && !isGenericStructuralTitle(candidateTheme)) {
+      safeTheme = candidateTheme;
+    } else if (hasValidCurrentTheme) {
+      safeTheme = trimmedCurrentTheme;
+    }
+
     return NextResponse.json({
       success: true,
       data: {
-        theme: result.theme || `Aula de ${disciplina_name} (${date})`,
+        theme: safeTheme,
         biblical_references: result.biblical_references || '',
         cues: formattedCues,
         notes: formattedNotes,
