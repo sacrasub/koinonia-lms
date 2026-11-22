@@ -2933,7 +2933,7 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Ex: Leitura obrigatória dos capítulos 1 e 2 para a AV1..."
+                  placeholder="Ex: Leitura obrigatória dos capítulos 1 e 2 para a AV2..."
                   value={bookNotes}
                   onChange={(e) => setBookNotes(e.target.value)}
                   className="w-full p-2.5 border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"

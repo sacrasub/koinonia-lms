@@ -83,11 +83,26 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       defaultSemesterTasks.map((dt) => [dt.assessmentId || dt.id, dt])
     );
 
-    // Atualiza metadados oficiais (título, prazo, estratégia e itens já encerrados) preservando marcações do aluno nos pendentes
+    // Atualiza metadados oficiais (título, prazo, estratégia e itens já encerrados/arquivados) preservando marcações manuais do aluno
     const result: KanbanTask[] = taskList.map((task) => {
       const key = task.assessmentId || task.id;
       const official = officialTaskMap.get(key);
       if (!official) return task;
+
+      if (official.status === 'archived' && !task.manualStatus) {
+        return {
+          ...task,
+          assessmentId: official.assessmentId,
+          title: official.title,
+          subject: official.subject,
+          professor: official.professor,
+          dueDate: official.dueDate,
+          type: official.type,
+          strategyNote: official.strategyNote,
+          status: 'archived',
+          subtasks: official.subtasks.map((st) => ({ ...st, done: true })),
+        };
+      }
 
       if (official.status === 'done' && !task.manualStatus && task.status !== 'archived') {
         return {
@@ -187,16 +202,18 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://koinonialms.vercel.app';
     const checklistUrl = `${origin}/?tab=checklist`;
 
-    // Ordena cronologicamente por prazo
-    const sorted = [...tasks].sort((a, b) => {
-      if (!a.dueDate) return 1;
-      if (!b.dueDate) return -1;
-      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-    });
+    // Ordena cronologicamente por prazo, enviando apenas avaliações ativas (AV2 & TCC I)
+    const sorted = tasks
+      .filter((t) => t.status !== 'archived')
+      .sort((a, b) => {
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      });
 
-    let text = `📚 *SEMINÁRIO KOINONIA - CALENDÁRIO DE AVALIAÇÕES E TRABALHOS 2026.2*\n\n` +
-      `Olá, irmãos e colegas de turma! Segue o cronograma oficial de trabalhos acadêmicos, seminários e avaliações previstos para este semestre:\n\n` +
-      `🗓️ *CRONOGRAMA DE TRABALHOS E PRAZOS:*\n\n`;
+    let text = `📚 *SEMINÁRIO KOINONIA - CRONOGRAMA AV2 & TCC I (2026.2)*\n\n` +
+      `Olá, irmãos e colegas de turma! Segue o cronograma ativo da AV2 e TCC I para este semestre:\n\n` +
+      `🗓️ *CRONOGRAMA ATIVO DE PROVAS E ENTREGAS:*\n\n`;
 
     sorted.forEach((task, index) => {
       let formattedDate = 'A definir';
@@ -761,12 +778,10 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     return t.type === selectedTypeFilter;
   });
 
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(
-    (t) =>
-      t.status === 'done' ||
-      (t.status === 'archived' && (t.subtasks.length === 0 || t.subtasks.every((s) => s.done)))
-  ).length;
+  const activeTasks = tasks.filter((t) => t.status !== 'archived');
+  const archivedTasksCount = tasks.filter((t) => t.status === 'archived').length;
+  const totalTasks = activeTasks.length;
+  const completedTasks = activeTasks.filter((t) => t.status === 'done').length;
   const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   const subjectProfMap: Record<string, string> = {
@@ -799,7 +814,9 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
               <span className="text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-500/30">
                 Agenda 2026.2
               </span>
-              <span className="text-xs text-amber-300 font-bold">12 Prazos Oficiais</span>
+              <span className="text-xs text-amber-300 font-bold">
+                {activeTasks.length} Ativos (AV2 &amp; TCC) · {archivedTasksCount} Arquivados (AV1)
+              </span>
             </div>
             <h3 className="text-base sm:text-lg font-black text-white">
               Trabalhos e Avaliações
@@ -833,7 +850,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
             }`}
           >
             <CheckSquare className="w-4 h-4" />
-            <span>Quadro Kanban ({tasks.length})</span>
+            <span>Quadro Kanban ({activeTasks.length} ativos)</span>
           </button>
           <button
             type="button"
@@ -885,7 +902,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
           <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200 min-w-[220px]">
             <div className="flex justify-between items-center text-xs mb-1.5">
-              <span className="font-bold text-gray-700">Progresso Geral</span>
+              <span className="font-bold text-gray-700">Progresso AV2 &amp; TCC</span>
               <span className="font-black text-blue-600">{progressPercent}% ({completedTasks}/{totalTasks})</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
@@ -894,6 +911,9 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
+            <span className="text-[10px] text-gray-500 mt-1 block">
+              {archivedTasksCount} itens da AV1 arquivados
+            </span>
           </div>
 
           <button
@@ -907,7 +927,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
 
           <button
             onClick={handleResetToOfficialSemester}
-            title="Sincroniza e restaura todos os 15 prazos e marcos oficiais do semestre 2026.2"
+            title="Sincroniza e restaura os prazos oficiais do semestre 2026.2 (AV2 ativa e AV1 arquivada)"
             className="px-3.5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-2xl border border-gray-300 transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-2xs"
           >
             <RotateCcw className="w-3.5 h-3.5 text-gray-500" />
@@ -950,7 +970,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
             <Filter className="w-3.5 h-3.5" /> Filtrar por Tipo:
           </span>
           {[
-            { id: 'all', label: `Todos (${totalTasks})` },
+            { id: 'all', label: `Todos (${tasks.length})` },
             { id: 'Trabalho Escrito', label: '📝 Trabalhos Escritos' },
             { id: 'Resumo Crítico', label: '📖 Resumos Críticos' },
             { id: 'Portfólio', label: '📁 Portfólios' },

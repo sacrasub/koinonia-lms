@@ -54,7 +54,7 @@ import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { UserProfileModal } from '@/components/UserProfileModal';
 import { trackEvent } from '@/services/telemetryService';
 import { CalendarioAcademico } from '@/components/CalendarioAcademico';
-import { AVALIACOES_2026_2, defaultSemesterTasks, KanbanTask } from '@/data/avaliacoes2026_2';
+import { AVALIACOES_2026_2, defaultSemesterTasks, KanbanTask, ARCHIVED_AV1_ASSESSMENT_IDS } from '@/data/avaliacoes2026_2';
 import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 interface AlunoPanelProps {
@@ -774,8 +774,14 @@ export const AlunoPanel: React.FC<AlunoPanelProps> = ({ userEmail, onTabChange }
   const daysOfWeek = orderedDaysOfWeek;
   const activeWeek = semesterWeeks[selectedWeekIndex] || semesterWeeks[0];
 
-  // Progresso real baseado no Checklist / Kanban de Avaliações (dados usados pelos alunos)
-  const activeAssessmentTasks = checklistTasks.filter((t) => t.status !== 'archived');
+  // Progresso real baseado no Checklist / Kanban de Avaliações ativas (exclui itens AV1 arquivados)
+  const activeAssessmentTasks = checklistTasks.filter((t) => {
+    if (t.status === 'archived') return false;
+    if (!t.manualStatus && ARCHIVED_AV1_ASSESSMENT_IDS.has(t.assessmentId || t.id)) {
+      return false;
+    }
+    return true;
+  });
   const completedAssessmentTasksCount = activeAssessmentTasks.filter((t) => t.status === 'done').length;
   const assessmentProgressPercent =
     activeAssessmentTasks.length > 0
@@ -2516,86 +2522,17 @@ href={nextAulaToday.google_meet_url}
             </div>
 
             <div className="p-6 space-y-4 bg-white max-h-[80vh] overflow-y-auto">
-              {selectedAvaliacao.disciplina.toLowerCase().includes('direitos humanos') && selectedAvaliacao.tipo === 'AV1' ? (
-                <div className="space-y-4">
-                  {/* BANNER 1: PROVA OBJETIVA PRORROGADA (PESO 8,0) */}
-                  <div className="p-4 rounded-xl bg-amber-500/15 border-2 border-amber-500 text-amber-950 text-xs space-y-2 shadow-sm">
-                    <div className="flex justify-between items-center flex-wrap gap-2">
-                      <span className="font-extrabold text-sm text-amber-900 flex items-center gap-1.5">
-                        <AlertCircle className="w-4 h-4 text-amber-600" />
-                        📢 PROVA OBJETIVA AV1 — PRAZO PRORROGADO!
-                      </span>
-                      <span className="px-2.5 py-1 bg-amber-600 text-white font-black text-xs rounded-lg shadow-xs">
-                        Valor: 08 Pontos (Forms)
-                      </span>
-                    </div>
-                    <p className="text-amber-950 leading-relaxed font-semibold">
-                      O prazo oficial para a Prova Objetiva AV1 via Google Forms foi estendido! Prova 100% de múltipla escolha e rigorosamente sem consulta.
-                    </p>
-                    <div className="flex items-center justify-between pt-2 border-t border-amber-300 text-xs font-bold text-amber-950">
-                      <span>Novo Prazo Limite:</span>
-                      <span className="px-2.5 py-1 bg-white border border-amber-400 rounded-lg text-emerald-800 font-black">
-                        🗓️ 04/10/2026 (Domingo) às 23:59
-                      </span>
-                    </div>
-                  </div>
+              {(() => {
+                const matchByDisc = (ev: (typeof AVALIACOES_2026_2)[number]) =>
+                  Boolean(
+                    selectedAvaliacao.disciplina &&
+                      (ev.disciplina.toLowerCase().includes(selectedAvaliacao.disciplina.toLowerCase()) ||
+                        selectedAvaliacao.disciplina.toLowerCase().includes(ev.disciplinaShort.toLowerCase()))
+                  );
 
-                  {/* BANNER 2: TRABALHO DISSERTATIVO AV1 (PESO 2,0) */}
-                  <div className="p-4 rounded-xl bg-slate-100 border border-slate-300 text-slate-800 text-xs space-y-2">
-                    <div className="flex justify-between items-center flex-wrap gap-2">
-                      <span className="font-extrabold text-sm text-slate-800 flex items-center gap-1.5">
-                        <FileText className="w-4 h-4 text-slate-600" />
-                        Trabalho Dissertativo AV1 (1 lauda)
-                      </span>
-                      <span className="px-2.5 py-0.5 bg-slate-200 text-slate-700 font-bold text-xs rounded border border-slate-300">
-                        Status: Encerrado (Peso 2,0)
-                      </span>
-                    </div>
-                    <p className="text-slate-600 leading-relaxed font-medium">
-                      Tema: "Desigualdade social e privilégios e o papel da igreja". Máximo 1 lauda, Times New Roman 12, espaçamento 1,5.
-                    </p>
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-200 text-xs font-medium text-slate-700">
-                      <span>Prazo de Entrega:</span>
-                      <span className="px-2 py-0.5 bg-white border border-slate-300 rounded text-slate-600 font-bold">
-                        🗓️ 30/09/2026 às 23:59 (Encerrado)
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Instruções de Envio por E-mail do Trabalho */}
-                  <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-950 space-y-2.5 text-xs">
-                    <h5 className="font-bold text-blue-950 flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-blue-600" />
-                      Canal Oficial de Envio do Trabalho:
-                    </h5>
-
-                    <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-blue-200">
-                      <div>
-                        <span className="text-[10px] text-gray-500 block">Enviar para o endereço de e-mail:</span>
-                        <span className="font-mono font-bold text-blue-900">cleitonpb@gmail.com</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText('cleitonpb@gmail.com');
-                          setCopiedId('email-cleiton');
-                          setTimeout(() => setCopiedId(null), 2000);
-                        }}
-                        className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
-                      >
-                        {copiedId === 'email-cleiton' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                        <span>{copiedId === 'email-cleiton' ? 'Copiado' : 'Copiar'}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : (() => {
-                const ssot = AVALIACOES_2026_2.find(ev => 
-                  selectedAvaliacao.disciplina && (
-                    ev.disciplina.toLowerCase().includes(selectedAvaliacao.disciplina.toLowerCase()) ||
-                    selectedAvaliacao.disciplina.toLowerCase().includes(ev.disciplinaShort.toLowerCase())
-                  )
-                );
+                const ssot =
+                  AVALIACOES_2026_2.find((ev) => !ev.isArchived && matchByDisc(ev)) ||
+                  AVALIACOES_2026_2.find(matchByDisc);
 
                 if (ssot) {
                   return (

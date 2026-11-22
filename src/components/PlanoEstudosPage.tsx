@@ -5,7 +5,7 @@ import {
   BookOpen, Calendar, AlertTriangle,
   ChevronDown, ChevronUp, Target,
   FileText, GraduationCap,
-  Info, MessageSquare, Check, Plus, Edit3, Trash2, X, Sparkles, ShieldCheck, UserCheck, Layers
+  Info, MessageSquare, Check, Plus, Edit3, Trash2, X, Sparkles, ShieldCheck, UserCheck, Layers, Archive
 } from 'lucide-react';
 import { UserRole } from '@/types';
 import { INITIAL_AUTHORIZED_USERS } from '@/lib/authConfig';
@@ -187,6 +187,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
 
   const [expandedDisciplina, setExpandedDisciplina] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'cronograma' | 'requisitos' | 'livros'>('cronograma');
+  const [showArchivedAv1, setShowArchivedAv1] = useState<boolean>(false);
 
   // Estado dos Modais de Edição
   const [editingEntregavel, setEditingEntregavel] = useState<Entregavel | null>(null);
@@ -228,8 +229,18 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
     );
   }, [planoData.entregaveis]);
 
-  const completados = planoData.entregaveis.filter(e => checkedIds.has(e.id)).length;
-  const totalEntregaveis = planoData.entregaveis.length;
+  const entregaveisAtivos = useMemo(
+    () => entregaveisOrdenados.filter((e) => !e.arquivado),
+    [entregaveisOrdenados]
+  );
+
+  const entregaveisArquivados = useMemo(
+    () => entregaveisOrdenados.filter((e) => !!e.arquivado),
+    [entregaveisOrdenados]
+  );
+
+  const completados = entregaveisAtivos.filter((e) => checkedIds.has(e.id)).length;
+  const totalEntregaveis = entregaveisAtivos.length;
   const progresso = totalEntregaveis > 0 ? Math.round((completados / totalEntregaveis) * 100) : 0;
 
   // Abertura do Modal de Novo Entregável
@@ -493,7 +504,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
       {/* SELETOR DE SEÇÃO */}
       <div className="flex bg-slate-100 p-1 rounded-xl gap-1">
         {[
-          { id: 'cronograma', emoji: '📅', label: `Cronograma (${planoData.entregaveis.length})` },
+          { id: 'cronograma', emoji: '📅', label: `Cronograma (${entregaveisAtivos.length})` },
           { id: 'requisitos', emoji: '📋', label: `Requisitos (${planoData.requisitos.length})` },
           { id: 'livros', emoji: '📚', label: 'Livros' },
         ].map(s => (
@@ -510,92 +521,137 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
       </div>
 
       {/* ── SEÇÃO: CRONOGRAMA & CHECKLIST ── */}
-      {activeSection === 'cronograma' && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-slate-500 text-xs">
-              Marque os itens conforme for concluindo. O progresso é salvo automaticamente para a sua turma ({turmaNome}).
-            </p>
-            {(isMonitorOrAdmin || isProfessor) && (
-              <button
-                onClick={() => handleOpenNewEntregavel()}
-                className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer"
-              >
-                <Plus className="w-3.5 h-3.5" /> Adicionar Avaliação / Trabalho
-              </button>
-            )}
-          </div>
+      {activeSection === 'cronograma' && (() => {
+        const renderEntregavelCard = (e: Entregavel, isArchivedSection = false) => {
+          const dias = getDiasRestantes(e.dataISO);
+          const done = checkedIds.has(e.id);
+          const badge = getBadgeTipo(e.tipo);
+          const urgente = !isArchivedSection && !done && dias >= 0 && dias <= 14;
+          const vencido = !isArchivedSection && !done && dias < 0;
+          const userCanEdit = canEditEntregavel(e);
 
-          {entregaveisOrdenados.length === 0 ? (
-            <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-500 text-xs">
-              Nenhum entregável cadastrado para esta turma até o momento.
-            </div>
-          ) : (
-            entregaveisOrdenados.map(e => {
-              const dias = getDiasRestantes(e.dataISO);
-              const done = checkedIds.has(e.id);
-              const badge = getBadgeTipo(e.tipo);
-              const urgente = !done && dias >= 0 && dias <= 14;
-              const vencido = !done && dias < 0;
-              const userCanEdit = canEditEntregavel(e);
+          return (
+            <div
+              key={e.id}
+              className={`rounded-xl border p-4 transition-all shadow-sm group ${
+                isArchivedSection
+                  ? 'bg-slate-50 border-slate-200 opacity-75'
+                  : done
+                  ? 'bg-green-50 border-green-200 opacity-70'
+                  : vencido
+                  ? 'bg-red-50 border-red-200'
+                  : urgente
+                  ? 'bg-amber-50 border-amber-300'
+                  : 'bg-white border-slate-200'
+              }`}
+            >
+              <div className="flex items-start gap-3">
+                <button
+                  onClick={() => toggleCheck(e.id)}
+                  className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer ${
+                    done || isArchivedSection
+                      ? 'border-green-500 bg-green-500 text-white'
+                      : 'border-slate-300 hover:border-green-400'
+                  }`}
+                >
+                  {(done || isArchivedSection) && <Check className="w-3.5 h-3.5" />}
+                </button>
 
-              return (
-                <div key={e.id} className={`rounded-xl border p-4 transition-all shadow-sm group ${done ? 'bg-green-50 border-green-200 opacity-70' : vencido ? 'bg-red-50 border-red-200' : urgente ? 'bg-amber-50 border-amber-300' : 'bg-white border-slate-200'}`}>
-                  <div className="flex items-start gap-3">
-                    <button
-                      onClick={() => toggleCheck(e.id)}
-                      className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer ${
-                        done ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-green-400'
-                      }`}
-                    >
-                      {done && <Check className="w-3.5 h-3.5" />}
-                    </button>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge.cls}`}>{badge.label}</span>
-                          {urgente && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 border border-amber-300">⚡ {dias === 0 ? 'Hoje!' : `${dias}d restantes`}</span>}
-                          {vencido && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-800 border border-red-300">⚠️ Vencido</span>}
-                          {!urgente && !vencido && !done && dias > 0 && <span className="text-xs text-slate-400">{dias}d restantes</span>}
-                        </div>
-
-                        {/* Botões de Ação de Edição / Exclusão */}
-                        {userCanEdit && (
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => handleOpenEditEntregavel(e)}
-                              title="Editar este entregável"
-                              className="p-1.5 text-gray-500 hover:text-blue-700 bg-gray-100 hover:bg-blue-50 rounded-lg transition cursor-pointer"
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteEntregavel(e.id)}
-                              title="Excluir este entregável"
-                              className="p-1.5 text-gray-500 hover:text-red-700 bg-gray-100 hover:bg-red-50 rounded-lg transition cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-
-                      <p className="text-xs font-semibold text-slate-500">{e.disciplina}</p>
-                      <p className={`text-sm font-bold ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}>{e.titulo}</p>
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">{e.descricao}</p>
-                      <div className="flex items-center gap-1 mt-2">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                        <span className="text-xs font-medium text-slate-600">{e.dataLimite}</span>
-                      </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge.cls}`}>{badge.label}</span>
+                      {isArchivedSection && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 border border-slate-300 font-bold">
+                          Arquivado • AV1
+                        </span>
+                      )}
+                      {urgente && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-200 text-amber-800 border border-amber-300">⚡ {dias === 0 ? 'Hoje!' : `${dias}d restantes`}</span>}
+                      {vencido && <span className="text-xs px-2 py-0.5 rounded-full bg-red-200 text-red-800 border border-red-300">⚠️ Vencido</span>}
+                      {!isArchivedSection && !urgente && !vencido && !done && dias > 0 && <span className="text-xs text-slate-400">{dias}d restantes</span>}
                     </div>
+
+                    {userCanEdit && (
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => handleOpenEditEntregavel(e)}
+                          title="Editar este entregável"
+                          className="p-1.5 text-gray-500 hover:text-blue-700 bg-gray-100 hover:bg-blue-50 rounded-lg transition cursor-pointer"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteEntregavel(e.id)}
+                          title="Excluir este entregável"
+                          className="p-1.5 text-gray-500 hover:text-red-700 bg-gray-100 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="text-xs font-semibold text-slate-500">{e.disciplina}</p>
+                  <p className={`text-sm font-bold ${done && !isArchivedSection ? 'line-through text-slate-400' : 'text-slate-800'}`}>{e.titulo}</p>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">{e.descricao}</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="text-xs font-medium text-slate-600">{e.dataLimite}</span>
                   </div>
                 </div>
-              );
-            })
-          )}
-        </div>
-      )}
+              </div>
+            </div>
+          );
+        };
+
+        return (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-slate-500 text-xs">
+                Marque os itens conforme for concluindo. O progresso é salvo automaticamente para a sua turma ({turmaNome}).
+              </p>
+              {(isMonitorOrAdmin || isProfessor) && (
+                <button
+                  onClick={() => handleOpenNewEntregavel()}
+                  className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Adicionar Avaliação / Trabalho
+                </button>
+              )}
+            </div>
+
+            {entregaveisAtivos.length === 0 ? (
+              <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-500 text-xs">
+                Nenhum entregável ativo cadastrado para esta turma até o momento.
+              </div>
+            ) : (
+              entregaveisAtivos.map((e) => renderEntregavelCard(e, false))
+            )}
+
+            {entregaveisArquivados.length > 0 && (
+              <div className="pt-3 border-t border-slate-200 space-y-2.5">
+                <button
+                  type="button"
+                  onClick={() => setShowArchivedAv1((prev) => !prev)}
+                  className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-bold transition cursor-pointer"
+                >
+                  <span className="flex items-center gap-2">
+                    <Archive className="w-4 h-4 text-slate-500" />
+                    <span>Arquivados — AV1 ({entregaveisArquivados.length})</span>
+                  </span>
+                  {showArchivedAv1 ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+
+                {showArchivedAv1 && (
+                  <div className="space-y-2.5">
+                    {entregaveisArquivados.map((e) => renderEntregavelCard(e, true))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* ── SEÇÃO: REQUISITOS POR MATÉRIA ── */}
       {activeSection === 'requisitos' && (
@@ -1005,7 +1061,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                   type="text"
                   value={formTitulo}
                   onChange={(e) => setFormTitulo(e.target.value)}
-                  placeholder="Ex: AV1: Prova Escrita — Unidade 1"
+                  placeholder="Ex: AV2: Prova Objetiva — Unidade 2"
                   className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   required
                 />
@@ -1133,7 +1189,7 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
                 <textarea
                   value={formCriteriosAvaliacao}
                   onChange={(e) => setFormCriteriosAvaliacao(e.target.value)}
-                  placeholder="Ex: AV1: Prova escrita até 8 pontos&#10;+1 ponto de frequência ativa&#10;+1 ponto de leitura obrigatória"
+                  placeholder="Ex: AV2: Prova objetiva (10 questões via Forms)&#10;+ Sem consulta"
                   rows={3}
                   className="w-full p-2.5 bg-white border border-gray-300 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 />

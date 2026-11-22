@@ -5,6 +5,16 @@ const STORAGE_KEY = 'lms_leituras_preaula_v1';
 const READ_STORAGE_PREFIX = 'lms_read_announcements_';
 const CLOUD_TITLE_KEY = 'lms_leituras_preaula_cloud';
 
+export const ARCHIVED_AV1_ANNOUNCEMENT_IDS = new Set<string>([
+  'aviso-sexta-02102026',
+  'aviso-ary-1',
+  'aviso-hilario-1',
+  'aviso-uilian-1',
+  'aviso-cleiton-1',
+  'aviso-marcio-1',
+  'aviso-gabriela-1',
+]);
+
 export const INITIAL_ANNOUNCEMENTS: AvisoLeituraPreAula[] = [
   {
     id: 'aviso-semana-av2-2026-2',
@@ -32,6 +42,40 @@ Alertas Críticos da Semana (Horário de Brasília):
     is_pinned: true,
     is_archived: false,
     category: 'aviso_geral',
+  },
+  {
+    id: 'aviso-ary-av2-2026',
+    disciplina_id: 'disc-1',
+    disciplina_name: 'História do Congregacionalismo',
+    author_name: 'Profº Ary Júnior',
+    author_role: 'professor',
+    author_email: 'queiroz.aryjr@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    title: 'AV2 (24/11 às 19h): 3 Textos Obrigatórios — Congregacionalismo no Brasil & 28 Artigos',
+    message: 'Prova com 10 afirmações V/F (2 de autodeclaração de frequência e leitura dos 3 textos = 2,0 pts + 8 de conteúdo histórico-teológico = 8,0 pts), sem consulta e com câmeras abertas.',
+    link_url: 'https://aryqueirozjr.com.br/sintese-da-historia-do-congregacionalismo-brasileiro/',
+    created_at: '2026-11-21T12:10:00Z',
+    target_date: '24/11/2026 (Terça-feira)',
+    is_pinned: true,
+    is_archived: false,
+    category: 'pre_aula',
+  },
+  {
+    id: 'aviso-cleiton-av2-2026',
+    disciplina_id: 'disc-4',
+    disciplina_name: 'Direitos Humanos',
+    author_name: 'Profº Cleiton Barbirato',
+    author_role: 'professor',
+    author_email: 'cleitonpb@gmail.com',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    title: 'AV2 (25/11, 19h–23h59): Trabalho Cancelado — Prova Vale 10,0 pts (52 Slides pós-AV1)',
+    message: 'O trabalho complementar de 2 pontos foi cancelado pelo docente; as 10 questões objetivas no Forms valem 10,0 pontos integrais com base nos 52 slides pós-AV1 da pasta no Drive.',
+    link_url: 'https://drive.google.com/open?id=1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7&usp=drive_copy',
+    created_at: '2026-11-21T12:20:00Z',
+    target_date: '25/11/2026 (Quarta-feira)',
+    is_pinned: true,
+    is_archived: false,
+    category: 'pre_aula',
   },
   {
     id: 'aviso-sexta-02102026',
@@ -89,8 +133,8 @@ Alertas Críticos da Semana (Horário de Brasília):
     link_url: 'https://aryqueirozjr.com.br/igreja-estado-e-autonomia/',
     created_at: '2026-08-18T16:04:00Z',
     target_date: '18/08/2026 (Terça-feira)',
-    is_pinned: true,
-    is_archived: false,
+    is_pinned: false,
+    is_archived: true,
     category: 'pre_aula',
   },
   {
@@ -107,7 +151,7 @@ Alertas Críticos da Semana (Horário de Brasília):
     created_at: '2026-08-18T18:00:00Z',
     target_date: 'Terça-feira às 20:35',
     is_pinned: false,
-    is_archived: false,
+    is_archived: true,
     category: 'pre_aula',
   },
   {
@@ -124,7 +168,7 @@ Alertas Críticos da Semana (Horário de Brasília):
     created_at: '2026-08-19T17:30:00Z',
     target_date: 'Quarta-feira às 19:00',
     is_pinned: false,
-    is_archived: false,
+    is_archived: true,
     category: 'pre_aula',
   },
   {
@@ -141,7 +185,7 @@ Alertas Críticos da Semana (Horário de Brasília):
     created_at: '2026-08-19T19:00:00Z',
     target_date: 'Quarta-feira às 20:35',
     is_pinned: false,
-    is_archived: false,
+    is_archived: true,
     category: 'pre_aula',
   },
   {
@@ -175,7 +219,7 @@ Alertas Críticos da Semana (Horário de Brasília):
     created_at: '2026-08-20T19:00:00Z',
     target_date: 'Quinta-feira às 20:35',
     is_pinned: false,
-    is_archived: false,
+    is_archived: true,
     category: 'pre_aula',
   },
   {
@@ -187,10 +231,10 @@ Alertas Críticos da Semana (Horário de Brasília):
     author_email: 'thacyto@gmail.com',
     avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
     title: 'Leitura Obrigatória: A Treliça e a Videira (Colin Marshall & Tony Payne)',
-    message: 'Base da AV1: leitura dos 12 capítulos para elaboração do resumo reflexivo com entrega até 27/11.',
+    message: 'AV2 (27/11): Prova online às 19h com consulta livre + envio do resumo digitado de 12 páginas de "A Treliça e a Videira" (PDF ou Word) para thacyto@gmail.com até 23:59.',
     link_url: 'https://drive.google.com/open?id=1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8&usp=drive_copy',
     created_at: '2026-08-21T17:00:00Z',
-    target_date: 'Sexta-feira às 19:00',
+    target_date: '27/11/2026 (Sexta-feira)',
     is_pinned: false,
     is_archived: false,
     category: 'pre_aula',
@@ -209,7 +253,7 @@ Alertas Críticos da Semana (Horário de Brasília):
     created_at: '2026-08-21T18:30:00Z',
     target_date: 'Sexta-feira às 20:00',
     is_pinned: false,
-    is_archived: false,
+    is_archived: true,
     category: 'complementar',
   },
   {
@@ -248,6 +292,46 @@ Alertas Críticos da Semana (Horário de Brasília):
   }
 ];
 
+function normalizeAnnouncementsForAv2(list: AvisoLeituraPreAula[]): {
+  normalized: AvisoLeituraPreAula[];
+  changed: boolean;
+} {
+  let changed = false;
+  const thacytoSeed = INITIAL_ANNOUNCEMENTS.find((s) => s.id === 'aviso-thacyto-1');
+
+  const mapped = list.map((item) => {
+    if (ARCHIVED_AV1_ANNOUNCEMENT_IDS.has(item.id) && (!item.is_archived || item.is_pinned)) {
+      changed = true;
+      return { ...item, is_archived: true, is_pinned: false };
+    }
+    if (
+      item.id === 'aviso-thacyto-1' &&
+      thacytoSeed &&
+      item.message?.includes('Base da AV1')
+    ) {
+      changed = true;
+      return {
+        ...item,
+        message: thacytoSeed.message,
+        target_date: thacytoSeed.target_date,
+        is_archived: false,
+      };
+    }
+    return item;
+  });
+
+  const existingIds = new Set(mapped.map((item) => item.id));
+  const merged = [...mapped];
+  for (const seed of INITIAL_ANNOUNCEMENTS) {
+    if (!existingIds.has(seed.id)) {
+      merged.unshift(seed);
+      changed = true;
+    }
+  }
+
+  return { normalized: merged, changed };
+}
+
 export function getAnnouncements(): AvisoLeituraPreAula[] {
   if (typeof window === 'undefined') {
     return INITIAL_ANNOUNCEMENTS;
@@ -265,25 +349,12 @@ export function getAnnouncements(): AvisoLeituraPreAula[] {
       return INITIAL_ANNOUNCEMENTS;
     }
 
-    // Auto-merge inteligente: garante que as leituras oficiais de todas as matérias/professores estejam presentes
-    // mesmo que o localStorage local tenha sido salvo previamente com apenas 2 registros
-    const existingIds = new Set(parsed.map((item) => item.id));
-    let hasNewSeeds = false;
-    const merged = [...parsed];
-
-    for (const seed of INITIAL_ANNOUNCEMENTS) {
-      if (!existingIds.has(seed.id)) {
-        merged.push(seed);
-        hasNewSeeds = true;
-      }
+    const { normalized, changed } = normalizeAnnouncementsForAv2(parsed);
+    if (changed) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
     }
 
-    if (hasNewSeeds) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-      return merged;
-    }
-
-    return parsed;
+    return normalized;
   } catch (err) {
     console.error('Erro ao ler avisos de leituras pré-aula:', err);
     return INITIAL_ANNOUNCEMENTS;
@@ -364,9 +435,10 @@ export async function fetchAnnouncementsFromCloud(force: boolean = false): Promi
       try {
         const cloudList: AvisoLeituraPreAula[] = JSON.parse(data[0].file_url);
         if (Array.isArray(cloudList) && cloudList.length > 0) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudList));
-          window.dispatchEvent(new CustomEvent('lms_announcements_updated', { detail: cloudList }));
-          return cloudList;
+          const { normalized } = normalizeAnnouncementsForAv2(cloudList);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+          window.dispatchEvent(new CustomEvent('lms_announcements_updated', { detail: normalized }));
+          return normalized;
         }
       } catch (e) {}
     }

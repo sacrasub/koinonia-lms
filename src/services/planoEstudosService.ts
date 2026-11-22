@@ -9,6 +9,7 @@ export interface Entregavel {
   dataLimite: string;
   dataISO: string;
   tipo: 'prova' | 'trabalho' | 'resumo' | 'apresentacao' | 'entrega';
+  arquivado?: boolean;
   isCustomStudentItem?: boolean;
   createdBy?: string;
 }
@@ -49,13 +50,13 @@ const STORAGE_PREFIX = 'lms_plano_estudos_turma_v2026_2_av2_oficial_';
 
 const INITIAL_TURMA_A: PlanoEstudosTurma = {
   entregaveis: [
-    { id: 'e-tcc-projeto', disciplinaId: 'disc-8', disciplina: 'TCC I', titulo: 'Projeto de Pesquisa Estruturado ABNT', descricao: 'Estrutura: Capa, Sumário, Objetivos (geral + 2-3 específicos), Justificativa, Referencial Teórico, Cronograma. Linguagem científica impessoal. Proibido uso de IA.', dataLimite: '04/09/2026 (Sex)', dataISO: '2026-09-04', tipo: 'entrega' },
-    { id: 'e-his-av1', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV1: Prova Escrita — Unidade 1 (Congregacionalismo Mundial)', descricao: '0-8 pts prova + 1 pt frequência + 1 pt leitura obrigatória. Câmeras obrigatórias.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-    { id: 'e-hpc-av1', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho' },
-    { id: 'e-aco-av1', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV1: Prova Objetiva via Google Forms', descricao: 'Questões estritamente dos slides. Sem trabalhos escritos. Correção automática.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova' },
-    { id: 'e-dir-trabalho-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Trabalho Dissertativo AV1: Desigualdade Social & Privilégios (peso 2)', descricao: 'Redigir dissertação de até 1 lauda: "Desigualdade social e privilégios conforme vídeo da aula de 26/09/2026. Discutir a importância da igreja como agente de transformação social". Formatação: Times New Roman 12, esp. 1,5. Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de nota". Prazo encerrado: 30/09/2026 às 23:59. Valor: 2,0 pts.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
-    { id: 'e-nt-av1', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV1: Prova Objetiva via Google Forms (Hebreus a 2 Pedro)', descricao: 'Prova Objetiva Online via formulário Google Forms cobrindo as Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro. Concluído.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova' },
-    { id: 'e-dir-prova-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Prova Objetiva AV1 via Google Forms (Concluída)', descricao: 'Prova objetiva sem consulta via Google Forms aplicada na 1ª unidade. Valor: 8,0 pts. Concluído.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'prova' },
+    { id: 'e-tcc-projeto', disciplinaId: 'disc-8', disciplina: 'TCC I', titulo: 'Projeto de Pesquisa Estruturado ABNT', descricao: 'Estrutura: Capa, Sumário, Objetivos (geral + 2-3 específicos), Justificativa, Referencial Teórico, Cronograma. Linguagem científica impessoal. Proibido uso de IA.', dataLimite: '04/09/2026 (Sex)', dataISO: '2026-09-04', tipo: 'entrega', arquivado: true },
+    { id: 'e-his-av1', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV1: Prova Escrita — Unidade 1 (Congregacionalismo Mundial)', descricao: '0-8 pts prova + 1 pt frequência + 1 pt leitura obrigatória. Câmeras obrigatórias.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova', arquivado: true },
+    { id: 'e-hpc-av1', disciplinaId: 'disc-2', disciplina: 'História do Pensamento Cristão II', titulo: 'AV1: Trabalho Acadêmico ABNT — Iluminismo & Modernidade', descricao: 'Pesquisa sob normas ABNT. Individual ou grupos de até 3 alunos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'trabalho', arquivado: true },
+    { id: 'e-aco-av1', disciplinaId: 'disc-3', disciplina: 'Aconselhamento Bíblico II', titulo: 'AV1: Prova Objetiva via Google Forms', descricao: 'Questões estritamente dos slides. Sem trabalhos escritos. Correção automática.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'prova', arquivado: true },
+    { id: 'e-dir-trabalho-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Trabalho Dissertativo AV1: Desigualdade Social & Privilégios (peso 2)', descricao: 'Redigir dissertação de até 1 lauda: "Desigualdade social e privilégios conforme vídeo da aula de 26/09/2026. Discutir a importância da igreja como agente de transformação social". Formatação: Times New Roman 12, esp. 1,5. Enviar para cleitonpb@gmail.com com assunto "Trabalho para composição de nota". Prazo encerrado: 30/09/2026 às 23:59. Valor: 2,0 pts.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho', arquivado: true },
+    { id: 'e-nt-av1', disciplinaId: 'disc-6', disciplina: 'NT III — Epístolas Gerais', titulo: 'AV1: Prova Objetiva via Google Forms (Hebreus a 2 Pedro)', descricao: 'Prova Objetiva Online via formulário Google Forms cobrindo as Epístolas de Hebreus, Tiago, 1 Pedro e 2 Pedro. Concluído.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'prova', arquivado: true },
+    { id: 'e-dir-prova-av1', disciplinaId: 'disc-4', disciplina: 'Direitos Humanos', titulo: 'Prova Objetiva AV1 via Google Forms (Concluída)', descricao: 'Prova objetiva sem consulta via Google Forms aplicada na 1ª unidade. Valor: 8,0 pts. Concluído.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'prova', arquivado: true },
     { id: 'e-etc-seminario', disciplinaId: 'disc-5', disciplina: 'Ética Cristã', titulo: 'Seminários em Grupo — Dez Mandamentos (Concluídos)', descricao: 'Seminários Práticos em Grupo baseados no Catecismo Maior de Westminster e Norman Geisler (22/10 a 19/11). Nota individual integralizada para AV1/AV2.', dataLimite: '22/10 – 19/11/2026', dataISO: '2026-10-22', tipo: 'apresentacao' },
     { id: 'e-dam-exame', disciplinaId: 'disc-dam', disciplina: 'Exame DAM / UIECB', titulo: 'Exame DAM / UIECB — Prova Presencial (Concluído)', descricao: 'Avaliação denominacional presencial oficial da UIECB realizada em 07/11/2026.', dataLimite: '07/11/2026 (Sáb)', dataISO: '2026-11-07', tipo: 'prova' },
     { id: 'e-his-av2', disciplinaId: 'disc-1', disciplina: 'História do Congregacionalismo', titulo: 'AV2: Prova V/F (10 Afirmações) — Congregacionalismo no Brasil', descricao: '19:00–20:25 BRT (17:00–18:25 Tabatinga). 10 afirmações V/F: 2 primeiras de autodeclaração de participação e leitura dos 3 textos (2,0 pts) + 8 de conteúdo (8,0 pts). Sem consulta, câmeras abertas, sem trabalho extra.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
@@ -71,23 +72,23 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
     {
       id: 'disc-1', num: '01', nome: 'História do Congregacionalismo', professor: 'Profº Ary Júnior', professorEmail: 'queiroz.aryjr@gmail.com',
       cor: 'text-amber-800', corFundo: 'bg-amber-50', corBorda: 'border-amber-300',
-      regrasGerais: ['📷 Câmeras obrigatoriamente abertas durante toda a aula', '📅 16 encontros em 2 unidades: Unidade 1 (Congregacionalismo Mundial) e Unidade 2 (Congregacionalismo Brasileiro)', '📚 Leitura obrigatória dos textos indicados — verificada por autodeclaração na prova (+1 ponto)'],
-      criteriosAvaliacao: ['✍️ AV1 e AV2: Provas escritas ao final de cada unidade — até 8 pontos', '👥 +1 ponto de frequência e participação ativa', '📖 +1 ponto pela leitura obrigatória (autodeclaração)', '🏆 Total: 10 pontos por avaliação'],
+      regrasGerais: ['📷 Câmeras obrigatoriamente abertas durante toda a aula', '📅 Unidade 2 (AV2 — 24/11 às 19h): Congregacionalismo Brasileiro & 28 Artigos', '📚 Leitura obrigatória dos 3 textos indicados no WhatsApp — verificada por autodeclaração na prova (+2,0 pts)'],
+      criteriosAvaliacao: ['✍️ AV2 (24/11): 10 afirmações V/F (2 autodeclaração + 8 conteúdo, sem consulta)', '✅ AV1 (Concluída): Prova escrita Unidade 1 (até 8 pts) + participação e leitura', '🏆 Total: 10 pontos por avaliação'],
       livros: [{ titulo: 'Livro sobre Congregacionalismo (Origens)', autor: 'Profº Idauro Campos', tipo: 'obrigatorio' }, { titulo: 'Quem eram os Puritanos', autor: 'Erroll Hulse', tipo: 'recomendado' }, { titulo: 'Santos no Mundo', autor: 'Leland Ryken', tipo: 'recomendado' }, { titulo: 'Os Puritanos: suas origens e sucessores', autor: 'D. Martin Lloyd-Jones', tipo: 'recomendado' }, { titulo: 'A Verdadeira Natureza de uma Igreja Evangélica', autor: 'John Owen', tipo: 'recomendado' }],
     },
     {
       id: 'disc-2', num: '02', nome: 'História do Pensamento Cristão II', professor: 'Profº Hilário Bispo', professorEmail: 'hilario.graca@catolica.edu.br',
       cor: 'text-blue-800', corFundo: 'bg-blue-50', corBorda: 'border-blue-300',
-      regrasGerais: ['📝 AV1: Trabalho acadêmico ABNT (individual ou grupos de até 3 alunos)', '📊 AV2: Prova objetiva com 10 questões Google Forms', '🎤 AV3 (apenas recuperação): Exame oral temático com o professor'],
-      criteriosAvaliacao: ['📄 AV1: Pesquisa científica ABNT — Iluminismo & Modernidade (Razão vs Revelação)', '📱 AV2: 10 questões objetivas Google Forms — resultado instantâneo', '🗣️ AV3 (somente recuperação): Exame oral temático'],
+      regrasGerais: ['📊 AV2 (24/11 às 20h35): Prova objetiva com 10 questões Google Forms (sem consulta)', '✅ AV1 (Concluída): Trabalho acadêmico ABNT (Iluminismo & Modernidade)', '🎤 AV3 (apenas recuperação): Exame oral temático com o professor'],
+      criteriosAvaliacao: ['📱 AV2: 10 questões objetivas Google Forms — resultado instantâneo', '✅ AV1 (Concluída): Pesquisa científica ABNT — Iluminismo & Modernidade', '🗣️ AV3 (somente recuperação): Exame oral temático'],
       livros: [{ titulo: 'Material de aula (apostila)', autor: 'Profº Hilário Bispo', tipo: 'base' }],
       infoExtra: 'Temas centrais: Escolástica (Anselmo, Aquino), Nominalismo de Ockham, Humanismo Renascentista, Iluminismo (Kant), Liberalismo Teológico (Schleiermacher) e Ortodoxia Contemporânea.',
     },
     {
       id: 'disc-3', num: '03', nome: 'Aconselhamento Bíblico II', professor: 'Profº Uilian Santos', professorEmail: 'uiliansantos@gmail.com',
       cor: 'text-emerald-800', corFundo: 'bg-emerald-50', corBorda: 'border-emerald-300',
-      regrasGerais: ['📋 Avaliação EXCLUSIVA por 2 provas objetivas Google Forms — sem trabalhos escritos', '🎯 Conteúdo RESTRITO aos slides apresentados em aula', '✅ Lista de presença ao final de cada aula'],
-      criteriosAvaliacao: ['📱 AV1: Prova objetiva Google Forms — questões dos slides — correção automática', '📱 AV2: Prova objetiva Google Forms — questões dos slides — correção automática', '⚠️ Nenhum trabalho escrito é exigido'],
+      regrasGerais: ['📋 Avaliação EXCLUSIVA por provas objetivas Google Forms — sem trabalhos escritos', '🎯 Conteúdo AV2 (25/11 às 19h): RESTRITO aos slides da Unidade 2 no Drive', '✅ Lista de presença ao final de cada aula'],
+      criteriosAvaliacao: ['📱 AV2 (25/11): Prova objetiva Google Forms — questões dos slides U2 — correção automática', '✅ AV1 (Concluída): Prova objetiva Google Forms — Unidade 1', '⚠️ Nenhum trabalho escrito é exigido'],
       livros: [{ titulo: 'Lutero como Conselheiro Espiritual', autor: 'Theodore Tappert', tipo: 'recomendado' }, { titulo: 'Aconselhamento Cristão', autor: 'Gary Collins', tipo: 'recomendado' }, { titulo: 'Aconselhamento a partir da Cruz', autor: 'Elyse Fitzpatrick', tipo: 'recomendado' }, { titulo: 'Ego Transformado', autor: 'Timothy Keller', tipo: 'recomendado' }],
     },
     {
@@ -177,10 +178,10 @@ const INITIAL_TURMA_A: PlanoEstudosTurma = {
 
 const INITIAL_TURMA_B: PlanoEstudosTurma = {
   entregaveis: [
-    { id: 'e-tb-int-av1', disciplinaId: 'disc-b1', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV1: Prova Escrita — Contexto Histórico e Canonicidade', descricao: 'Avaliação sobre formação do cânon e evangelhos sinóticos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-    { id: 'e-tb-her-av1', disciplinaId: 'disc-b2', disciplina: 'Hermenêutica Bíblica', titulo: 'AV1: Trabalho de Exegese e Interpretação de Texto', descricao: 'Aplicação dos princípios hermenêuticos histórico-gramaticais.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
-    { id: 'e-tb-dis-av1', disciplinaId: 'disc-b3', disciplina: 'Fundamentos e Prática do Discipulado', titulo: 'AV1: Projeto de Discipulado na Igreja Local', descricao: 'Elaboração de um guia prático de mentoria e acompanhamento espiritual.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega' },
-    { id: 'e-tb-mis-av1', disciplinaId: 'disc-b4', disciplina: 'Teologia da Missão', titulo: 'AV1: Resenha Crítica de Missiologia Contemporânea', descricao: 'Análise teológica dos desafios missionários urbanos e transculturais.', dataLimite: '02/10/2026 (Sex)', dataISO: '2026-10-02', tipo: 'resumo' },
+    { id: 'e-tb-int-av1', disciplinaId: 'disc-b1', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV1: Prova Escrita — Contexto Histórico e Canonicidade', descricao: 'Avaliação sobre formação do cânon e evangelhos sinóticos.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova', arquivado: true },
+    { id: 'e-tb-her-av1', disciplinaId: 'disc-b2', disciplina: 'Hermenêutica Bíblica', titulo: 'AV1: Trabalho de Exegese e Interpretação de Texto', descricao: 'Aplicação dos princípios hermenêuticos histórico-gramaticais.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho', arquivado: true },
+    { id: 'e-tb-dis-av1', disciplinaId: 'disc-b3', disciplina: 'Fundamentos e Prática do Discipulado', titulo: 'AV1: Projeto de Discipulado na Igreja Local', descricao: 'Elaboração de um guia prático de mentoria e acompanhamento espiritual.', dataLimite: '01/10/2026 (Qui)', dataISO: '2026-10-01', tipo: 'entrega', arquivado: true },
+    { id: 'e-tb-mis-av1', disciplinaId: 'disc-b4', disciplina: 'Teologia da Missão', titulo: 'AV1: Resenha Crítica de Missiologia Contemporânea', descricao: 'Análise teológica dos desafios missionários urbanos e transculturais.', dataLimite: '02/10/2026 (Sex)', dataISO: '2026-10-02', tipo: 'resumo', arquivado: true },
     { id: 'e-tb-int-av2', disciplinaId: 'disc-b1', disciplina: 'Introdução ao Novo Testamento', titulo: 'AV2: Prova Objetiva Final — Cartas Paulinas e Gerais', descricao: 'Prova final via Google Forms abrangendo todo o conteúdo semestral.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
     { id: 'e-tb-her-av2', disciplinaId: 'disc-b2', disciplina: 'Hermenêutica Bíblica', titulo: 'AV2: Prova Prática de Interpretação', descricao: 'Análise e resolução de passagens bíblicas complexas.', dataLimite: '25/11/2026 (Qua)', dataISO: '2026-11-25', tipo: 'prova' },
     { id: 'e-tb-ts-av2', disciplinaId: 'disc-b5', disciplina: 'Teologia Sistemática III', titulo: 'AV2: Artigo de Cristologia e Pneumatologia', descricao: 'Síntese doutrinária das naturezas de Cristo e obra do Espírito Santo.', dataLimite: '26/11/2026 (Qui)', dataISO: '2026-11-26', tipo: 'entrega' },
@@ -220,8 +221,8 @@ const INITIAL_TURMA_B: PlanoEstudosTurma = {
 
 const INITIAL_FDS: PlanoEstudosTurma = {
   entregaveis: [
-    { id: 'e-fds-at-av1', disciplinaId: 'disc-fds-1', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV1: Prova Escrita — Alianças e Lei Mosaica', descricao: 'Avaliação das narrativas de Gênesis a Deuteronômio.', dataLimite: '03/10/2026 (Sáb)', dataISO: '2026-10-03', tipo: 'prova' },
-    { id: 'e-fds-edu-av1', disciplinaId: 'disc-fds-2', disciplina: 'Educação Cristã', titulo: 'AV1: Plano Pedagógico para Escola Bíblica', descricao: 'Elaboração de currículo e didática para igreja local.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'trabalho' },
+    { id: 'e-fds-at-av1', disciplinaId: 'disc-fds-1', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV1: Prova Escrita — Alianças e Lei Mosaica', descricao: 'Avaliação das narrativas de Gênesis a Deuteronômio.', dataLimite: '03/10/2026 (Sáb)', dataISO: '2026-10-03', tipo: 'prova', arquivado: true },
+    { id: 'e-fds-edu-av1', disciplinaId: 'disc-fds-2', disciplina: 'Educação Cristã', titulo: 'AV1: Plano Pedagógico para Escola Bíblica', descricao: 'Elaboração de currículo e didática para igreja local.', dataLimite: '04/10/2026 (Dom)', dataISO: '2026-10-04', tipo: 'trabalho', arquivado: true },
     { id: 'e-fds-at-av2', disciplinaId: 'disc-fds-1', disciplina: 'Antigo Testamento I — Pentateuco', titulo: 'AV2: Prova Final de Teologia do Pentateuco', descricao: 'Exame online e síntese temática.', dataLimite: '28/11/2026 (Sáb)', dataISO: '2026-11-28', tipo: 'prova' },
   ],
   requisitos: [
@@ -237,8 +238,8 @@ const INITIAL_FDS: PlanoEstudosTurma = {
 
 const INITIAL_BASICO: PlanoEstudosTurma = {
   entregaveis: [
-    { id: 'e-bas-pan-av1', disciplinaId: 'disc-bas-1', disciplina: 'Panorama Bíblico', titulo: 'AV1: Prova Objetiva — Linha do Tempo Bíblica', descricao: 'Avaliação das grandes épocas da história bíblica.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova' },
-    { id: 'e-bas-dout-av1', disciplinaId: 'disc-bas-2', disciplina: 'Doutrinas Fundamentais', titulo: 'AV1: Questionário Doutrinário', descricao: 'Respostas fundamentadas sobre os pilares da fé cristã.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho' },
+    { id: 'e-bas-pan-av1', disciplinaId: 'disc-bas-1', disciplina: 'Panorama Bíblico', titulo: 'AV1: Prova Objetiva — Linha do Tempo Bíblica', descricao: 'Avaliação das grandes épocas da história bíblica.', dataLimite: '29/09/2026 (Ter)', dataISO: '2026-09-29', tipo: 'prova', arquivado: true },
+    { id: 'e-bas-dout-av1', disciplinaId: 'disc-bas-2', disciplina: 'Doutrinas Fundamentais', titulo: 'AV1: Questionário Doutrinário', descricao: 'Respostas fundamentadas sobre os pilares da fé cristã.', dataLimite: '30/09/2026 (Qua)', dataISO: '2026-09-30', tipo: 'trabalho', arquivado: true },
     { id: 'e-bas-pan-av2', disciplinaId: 'disc-bas-1', disciplina: 'Panorama Bíblico', titulo: 'AV2: Exame Final de Panorama Bíblico', descricao: 'Exame de conclusão da disciplina.', dataLimite: '24/11/2026 (Ter)', dataISO: '2026-11-24', tipo: 'prova' },
   ],
   requisitos: [

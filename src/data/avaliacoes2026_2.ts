@@ -26,6 +26,7 @@ export interface AvaliacaoEvento {
   dataTexto: string;
   horario: string;
   peso: string;
+  isArchived?: boolean;
   regras: string[];
   passoAPasso: string[];
   bibliografia: {
@@ -77,9 +78,20 @@ export interface CronogramaConsolidadoItem {
   tipoAtividade: string;
   statusPeso: string;
   isEncerrado?: boolean;
+  isArchived?: boolean;
   isHoje?: boolean;
   isProrrogado?: boolean;
 }
+
+export const ARCHIVED_AV1_ASSESSMENT_IDS = new Set<string>([
+  'aval-0-tcc1-projeto-pesquisa',
+  'aval-2-congregacionalismo-av1',
+  'aval-3-pensamento-cristao-av1',
+  'aval-4-aconselhamento-av1',
+  'aval-5-direitos-humanos-trabalho',
+  'aval-7-nt3-epistolas-av1',
+  'aval-6-direitos-humanos-prova',
+]);
 
 /**
  * 15 ITENS DO CRONOGRAMA OFICIAL CONSOLIDADO (BASE DE DADOS HOMOLOGADA 2026.2)
@@ -95,6 +107,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Entrega do Projeto de Pesquisa Estruturado ABNT',
     statusPeso: 'Concluído',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-02-his-av1',
@@ -106,6 +119,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Prova Escrita AV1 (Origem Mundial)',
     statusPeso: 'Concluído (Peso 8,0)',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-03-hpc-av1',
@@ -117,6 +131,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Trabalho Acadêmico AV1 (Iluminismo & Modernidade)',
     statusPeso: 'Concluído',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-04-aco-av1',
@@ -128,6 +143,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Prova Objetiva AV1 (Google Forms)',
     statusPeso: 'Concluído',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-05-dir-trabalho-av1',
@@ -139,6 +155,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Trabalho Dissertativo AV1 (1 lauda)',
     statusPeso: 'Concluído (Peso 2,0)',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-06-nt3-av1',
@@ -150,6 +167,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Prova Objetiva AV1 (Hebreus a 2 Pedro)',
     statusPeso: 'Concluído',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-07-dir-prova-av1',
@@ -161,6 +179,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
     tipoAtividade: 'Prova Objetiva AV1 (Google Forms)',
     statusPeso: 'Concluído (Peso 8,0)',
     isEncerrado: true,
+    isArchived: true,
   },
   {
     id: 'cron-08-etc-seminarios',
@@ -272,6 +291,7 @@ export const CRONOGRAMA_OFICIAL_2026_2: CronogramaConsolidadoItem[] = [
 export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   {
     id: 'aval-0-tcc1-projeto-pesquisa',
+    isArchived: true,
     disciplina: 'Trabalho de Conclusão de Curso I (TCC I)',
     disciplinaShort: 'TCC I (Projeto de Pesquisa)',
     professor: 'Profª Gabriela Leal',
@@ -315,6 +335,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-2-congregacionalismo-av1',
+    isArchived: true,
     disciplina: 'História do Congregacionalismo',
     disciplinaShort: 'História Congregacionalismo',
     professor: 'Profº Ary Júnior',
@@ -359,6 +380,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-3-pensamento-cristao-av1',
+    isArchived: true,
     disciplina: 'História do Pensamento Cristão II',
     disciplinaShort: 'Pensamento Cristão II',
     professor: 'Profº Hilário Bispo',
@@ -409,6 +431,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-4-aconselhamento-av1',
+    isArchived: true,
     disciplina: 'Aconselhamento Bíblico II',
     disciplinaShort: 'Aconselhamento Bíblico II',
     professor: 'Profº Uilian Santos',
@@ -457,6 +480,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-5-direitos-humanos-trabalho',
+    isArchived: true,
     disciplina: 'Direitos Humanos',
     disciplinaShort: 'Direitos Humanos (Trabalho)',
     professor: 'Profº Cleiton Barbirato',
@@ -505,6 +529,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-7-nt3-epistolas-av1',
+    isArchived: true,
     disciplina: 'Novo Testamento III — Epístolas Gerais',
     disciplinaShort: 'NT III (Prova Objetiva)',
     professor: 'Profº Marcio Leal',
@@ -548,6 +573,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-6-direitos-humanos-prova',
+    isArchived: true,
     disciplina: 'Direitos Humanos',
     disciplinaShort: 'Direitos Humanos (Prova Forms)',
     professor: 'Profº Cleiton Barbirato',
@@ -1020,7 +1046,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
  * TAREFAS KANBAN PADRÃO DO SEMESTRE 2026.2 (CHECKLIST ACADÊMICO)
  */
 export const defaultSemesterTasks: KanbanTask[] = [
-  // 1. TCC I - Projeto de Pesquisa (04/09)
+  // 1. TCC I - Projeto de Pesquisa (04/09 - AV1 Arquivado)
   {
     id: 'aval-0-tcc1-projeto-pesquisa',
     assessmentId: 'aval-0-tcc1-projeto-pesquisa',
@@ -1030,7 +1056,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-09-04',
     priority: 'Máxima',
     type: 'TCC',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo encerrado em 04/09/2026. Capa, Sumário, Objetivos, Justificativa, Referencial Teórico e Cronograma. Sem IA.',
     subtasks: [
       { id: 'st-aval-0-0', text: 'Definir título provisório, justificativa e objetivos no infinitivo.', done: true },
@@ -1038,7 +1064,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-0-2', text: 'Revisar impessoalidade (3ª pessoa), ausência de IA e anexos.', done: true },
     ],
   },
-  // 2. História do Congregacionalismo - AV1 (29/09)
+  // 2. História do Congregacionalismo - AV1 (29/09 - Arquivado)
   {
     id: 'aval-2-congregacionalismo-av1',
     assessmentId: 'aval-2-congregacionalismo-av1',
@@ -1048,7 +1074,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-09-29',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo concluído em 29/09/2026. Prova: 8,0 | Câmera aberta: 1,0 | Leitura obrigatória autodeclarada: 1,0.',
     subtasks: [
       { id: 'st-aval-2-0', text: 'Acessar os textos em PDF compartilhados pelo professor.', done: true },
@@ -1057,7 +1083,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-2-3', text: 'Preencher a avaliação escrita e confirmação de leitura.', done: true },
     ],
   },
-  // 3. História do Pensamento Cristão II - AV1 (29/09)
+  // 3. História do Pensamento Cristão II - AV1 (29/09 - Arquivado)
   {
     id: 'aval-3-pensamento-cristao-av1',
     assessmentId: 'aval-3-pensamento-cristao-av1',
@@ -1067,7 +1093,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-09-29',
     priority: 'Máxima',
     type: 'Trabalho Escrito',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo concluído em 29/09/2026. Mínimo de 5 a 6 páginas nas normas ABNT. Individual ou grupos de até 3.',
     subtasks: [
       { id: 'st-aval-3-0', text: 'Definir a composição do trabalho (individual ou grupo até 3).', done: true },
@@ -1076,7 +1102,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-3-3', text: 'Entregar o trabalho por e-mail para hilario.graca@catolica.edu.br.', done: true },
     ],
   },
-  // 4. Aconselhamento Bíblico II - AV1 (30/09)
+  // 4. Aconselhamento Bíblico II - AV1 (30/09 - Arquivado)
   {
     id: 'aval-4-aconselhamento-av1',
     assessmentId: 'aval-4-aconselhamento-av1',
@@ -1086,7 +1112,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-09-30',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo concluído em 30/09/2026. Múltipla escolha via Forms restrita aos slides 1 a 6. Sem trabalhos escritos.',
     subtasks: [
       { id: 'st-aval-4-0', text: 'Estudar os slides das aulas 1 a 6 da disciplina.', done: true },
@@ -1094,7 +1120,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-4-2', text: 'Acessar o link do Google Forms e responder às questões.', done: true },
     ],
   },
-  // 5. Direitos Humanos - Trabalho AV1 (30/09)
+  // 5. Direitos Humanos - Trabalho AV1 (30/09 - Arquivado)
   {
     id: 'aval-5-direitos-humanos-trabalho',
     assessmentId: 'aval-5-direitos-humanos-trabalho',
@@ -1104,7 +1130,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-09-30',
     priority: 'Máxima',
     type: 'Trabalho Escrito',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo encerrado em 30/09/2026 às 23:59. Máximo 1 lauda, Times 12, esp. 1,5. Envio por e-mail (cleitonpb@gmail.com). Vale 2,0 pts.',
     subtasks: [
       { id: 'st-aval-5-0', text: 'Assistir ao vídeo da aula de 26/09 sobre desigualdade social e privilégios.', done: true },
@@ -1112,7 +1138,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-5-2', text: 'Enviar arquivo para cleitonpb@gmail.com com assunto "Trabalho para composição de nota".', done: true },
     ],
   },
-  // 6. NT III — Epístolas Gerais - Prova AV1 (01/10)
+  // 6. NT III — Epístolas Gerais - Prova AV1 (01/10 - Arquivado)
   {
     id: 'aval-7-nt3-epistolas-av1',
     assessmentId: 'aval-7-nt3-epistolas-av1',
@@ -1122,7 +1148,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-10-01',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo concluído em 01/10/2026. Prova Objetiva Online via formulário Google Forms sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.',
     subtasks: [
       { id: 'st-aval-7-0', text: 'Revisar anotações de aula e slides sobre Hebreus, Tiago, 1 Pedro e 2 Pedro.', done: true },
@@ -1131,7 +1157,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
       { id: 'st-aval-7-3', text: 'Preencher a avaliação objetiva e submeter antes das 23:59.', done: true },
     ],
   },
-  // 7. Direitos Humanos - Prova Objetiva AV1 (04/10)
+  // 7. Direitos Humanos - Prova Objetiva AV1 (04/10 - Arquivado)
   {
     id: 'aval-6-direitos-humanos-prova',
     assessmentId: 'aval-6-direitos-humanos-prova',
@@ -1141,7 +1167,7 @@ export const defaultSemesterTasks: KanbanTask[] = [
     dueDate: '2026-10-04',
     priority: 'Máxima',
     type: 'Prova Objetiva',
-    status: 'done',
+    status: 'archived',
     strategyNote: 'Prazo concluído em 04/10/2026 às 23:59. Múltipla escolha via Google Forms, sem consulta (Peso 8,0).',
     subtasks: [
       { id: 'st-aval-6-0', text: 'Estudar a apostila digital completa da disciplina.', done: true },

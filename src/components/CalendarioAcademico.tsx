@@ -6,14 +6,15 @@ import {
   CheckCircle2, Circle, AlertTriangle, FileText, 
   ChevronLeft, ChevronRight, X, ExternalLink, 
   Mail, Copy, Check, Sparkles, Filter, List, 
-  Grid, ArrowRight, Share2, Award, Info, AlertCircle
+  Grid, ArrowRight, Share2, Award, Info, AlertCircle, Archive
 } from 'lucide-react';
 import { saveChecklistTasks } from '@/services/studentSyncService';
 
 import { 
   AVALIACOES_2026_2 as SSOT_AVALIACOES_2026_2, 
   defaultSemesterTasks as SSOT_defaultSemesterTasks,
-  CRONOGRAMA_OFICIAL_2026_2
+  CRONOGRAMA_OFICIAL_2026_2,
+  ARCHIVED_AV1_ASSESSMENT_IDS
 } from '@/data/avaliacoes2026_2';
 import type { 
   AvaliacaoEvento, 
@@ -107,6 +108,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   const [currentYear] = useState<number>(2026);
   const [viewMode, setViewMode] = useState<'grade' | 'lista'>('grade');
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>('all');
+  const [showArchivedAv1, setShowArchivedAv1] = useState<boolean>(false);
 
   // Clique 1: Modal com Todos os Prazos do Dia Selecionado
   const [selectedDayModal, setSelectedDayModal] = useState<{
@@ -170,6 +172,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
               dataTexto: dataTextoFormatted,
               horario: 'Consulte orientações da disciplina',
               peso: t.priority === 'Máxima' ? 'Prioridade Máxima' : 'Prioridade Normal',
+              isArchived: t.status === 'archived',
               regras: t.strategyNote ? [t.strategyNote] : ['Seguir as orientações docentes.'],
               passoAPasso: t.subtasks && t.subtasks.length > 0 ? t.subtasks.map((st: any) => st.text) : ['Planejamento', 'Execução', 'Revisão', 'Entrega'],
               bibliografia: {},
@@ -205,6 +208,21 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     const combined = [...AVALIACOES_2026_2, ...extraKanbanEvents];
     return combined.sort((a, b) => (a.dataLimite || '').localeCompare(b.dataLimite || ''));
   }, [extraKanbanEvents]);
+
+  const archivedEventsCount = useMemo(
+    () =>
+      allCalendarEvents.filter(
+        (ev) => ev.isArchived || ARCHIVED_AV1_ASSESSMENT_IDS.has(ev.id)
+      ).length,
+    [allCalendarEvents]
+  );
+
+  const visibleCalendarEvents = useMemo(() => {
+    if (showArchivedAv1) return allCalendarEvents;
+    return allCalendarEvents.filter(
+      (ev) => !ev.isArchived && !ARCHIVED_AV1_ASSESSMENT_IDS.has(ev.id)
+    );
+  }, [allCalendarEvents, showArchivedAv1]);
 
   // Carregar checklists do localStorage
   useEffect(() => {
@@ -464,17 +482,17 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
   // Lista única de disciplinas para filtro
   const disciplinasList = useMemo(() => {
     const map = new Map<string, string>();
-    allCalendarEvents.forEach((ev) => {
+    visibleCalendarEvents.forEach((ev) => {
       map.set(ev.disciplina, ev.disciplinaShort);
     });
     return Array.from(map.entries()).map(([full, short]) => ({ full, short }));
-  }, [allCalendarEvents]);
+  }, [visibleCalendarEvents]);
 
   // Eventos filtrados
   const filteredEvents = useMemo(() => {
-    if (selectedDiscipline === 'all') return allCalendarEvents;
-    return allCalendarEvents.filter((ev) => ev.disciplina === selectedDiscipline);
-  }, [selectedDiscipline, allCalendarEvents]);
+    if (selectedDiscipline === 'all') return visibleCalendarEvents;
+    return visibleCalendarEvents.filter((ev) => ev.disciplina === selectedDiscipline);
+  }, [selectedDiscipline, visibleCalendarEvents]);
 
   // Navegação entre meses
   const handlePrevMonth = () => {
@@ -491,7 +509,7 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     if (m >= 7 && m <= 11) {
       setCurrentMonthIndex(m);
     } else {
-      setCurrentMonthIndex(8); // Default Setembro
+      setCurrentMonthIndex(10); // Default Novembro (Semana AV2)
     }
   };
 
@@ -729,14 +747,30 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
             })}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowArchivedAv1((prev) => !prev)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 cursor-pointer ${
+                showArchivedAv1
+                  ? 'bg-amber-500/20 text-amber-200 border-amber-500/50'
+                  : 'bg-slate-800/80 hover:bg-slate-800 text-slate-300 border-slate-700'
+              }`}
+              title="Exibir ou ocultar avaliações encerradas da AV1"
+            >
+              <Archive className="w-3.5 h-3.5" />
+              <span>
+                {showArchivedAv1 ? 'Ocultar' : 'Mostrar'} Arquivados AV1 ({archivedEventsCount})
+              </span>
+            </button>
+
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={selectedDiscipline}
               onChange={(e) => setSelectedDiscipline(e.target.value)}
               className="bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-700 rounded-xl px-3 py-1.5 focus:outline-hidden focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
-              <option value="all">Todas as Disciplinas (12 Avaliações)</option>
+              <option value="all">Todas as Disciplinas ({visibleCalendarEvents.length} Avaliações)</option>
               {disciplinasList.map((d) => (
                 <option key={d.full} value={d.full}>
                   {d.short}
@@ -1169,8 +1203,8 @@ export const PopupResumoAvaliacao: React.FC<PopupResumoAvaliacaoProps> = ({
 
         {/* CONTEÚDO PRINCIPAL DO RESUMO */}
         <div className="p-5 sm:p-6 space-y-4 text-sm">
-          {/* BANNER DE PRORROGAÇÃO SE APLICÁVEL */}
-          {(evento.id === 'aval-6-direitos-humanos-prova' || evento.dataLimite === '2026-10-04') && (
+          {/* BANNER DE PRORROGAÇÃO SE APLICÁVEL (EXCLUSIVO AV1 ARQUIVADA) */}
+          {evento.id === 'aval-6-direitos-humanos-prova' && (
             <div className="p-3.5 bg-amber-500/20 border-2 border-amber-500/50 rounded-2xl flex items-start gap-3 text-xs text-amber-200 shadow-sm">
               <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
               <div>
@@ -1342,8 +1376,8 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
 
         {/* CORPO DO DRAWER COM SCROLL */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
-          {/* BANNER DE PRORROGAÇÃO SE APLICÁVEL */}
-          {(evento.id === 'aval-6-direitos-humanos-prova' || evento.dataLimite === '2026-10-04') && (
+          {/* BANNER DE PRORROGAÇÃO SE APLICÁVEL (EXCLUSIVO AV1 ARQUIVADA) */}
+          {evento.id === 'aval-6-direitos-humanos-prova' && (
             <div className="p-4 bg-amber-500/20 border-2 border-amber-500/50 rounded-2xl flex items-start gap-3 text-xs text-amber-200 shadow-sm">
               <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
               <div>
