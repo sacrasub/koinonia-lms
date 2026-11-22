@@ -68,6 +68,7 @@ import {
 import { saveCornellNote } from '@/services/studentSyncService';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
 import { MobilePdfReaderModal } from '@/components/MobilePdfReaderModal';
+import { ReadAloudButton } from '@/components/ReadAloudButton';
 import { trackEvent } from '@/services/telemetryService';
 
 interface DisciplinaDetailPageProps {
@@ -1540,6 +1541,20 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                       isoDate,
                       note.aula_num
                     );
+                    const geminiRecForAudio = getGeminiAulaRecord(
+                      disciplina.id,
+                      note.aula_num,
+                      isoDate
+                    );
+                    const audioSummaryText = geminiRecForAudio
+                      ? [
+                          note.title,
+                          geminiRecForAudio.resumoGeral,
+                          ...geminiRecForAudio.topicos.map((t) => `${t.titulo}. ${t.texto}`),
+                        ]
+                          .filter(Boolean)
+                          .join('\n\n')
+                      : `${note.title}. ${note.summary_snippet || ''}`;
 
                     return (
                       <div
@@ -1586,6 +1601,14 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                         <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
                           <span className="text-[10px] text-gray-500">Por: {note.author_name}</span>
                           <div className="flex flex-wrap items-center gap-2">
+                            <ReadAloudButton
+                              variant="pill"
+                              size="xs"
+                              label="Ouvir Resumo"
+                              sourceId={`disc-gemini-${note.id}`}
+                              title={note.title}
+                              text={audioSummaryText}
+                            />
                             {currentRole !== 'professor' && (
                               <a
                                 href={cornellUrl}

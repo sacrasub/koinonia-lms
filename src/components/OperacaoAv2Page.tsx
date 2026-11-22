@@ -34,6 +34,7 @@ import {
   LinkBaseAv2,
 } from '@/data/dossieAv2_2026_2';
 import { getGeminiAulaRecord, buildCornellDeepLinkUrl } from '@/data/geminiAulasCornell';
+import { ReadAloudButton } from '@/components/ReadAloudButton';
 
 const LINK_BASE_STYLES: Record<
   LinkBaseAv2['tipo'],
@@ -683,6 +684,22 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                           </div>
 
                           <div className="flex flex-wrap items-center gap-1.5">
+                            <ReadAloudButton
+                              variant="pill"
+                              size="xs"
+                              label="Ouvir Aula"
+                              sourceId={`av2-aula-${activeDisc.disciplinaId}-${aula.aulaNum}`}
+                              title={`Aula ${aula.aulaNum}: ${geminiRec?.theme || activeDisc.nomeCurto}`}
+                              text={[
+                                `Aula ${aula.aulaNum} de ${activeDisc.nomeCurto}.`,
+                                geminiRec?.theme,
+                                aula.resumo,
+                                geminiRec?.resumoGeral,
+                                ...(geminiRec?.topicos || []).map((t) => `${t.titulo}. ${t.texto}`),
+                              ]
+                                .filter(Boolean)
+                                .join('\n\n')}
+                            />
                             <a
                               href={cornellHref}
                               target="_blank"
@@ -795,14 +812,26 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                   <Award className="w-4 h-4 text-amber-500" />
                   <span>Pontos de Maior Incidência na Prova</span>
                 </h3>
-                <button
-                  type="button"
-                  onClick={() => setInnerTab('simulado')}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
-                >
-                  <span>Ir para o Simulado desta Matéria</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <ReadAloudButton
+                    variant="pill"
+                    size="xs"
+                    label="Ouvir Guia Completo"
+                    sourceId={`av2-guia-all-${activeDisc.disciplinaId}`}
+                    title={`Guia de Revisão: ${activeDisc.nomeCurto}`}
+                    text={activeDisc.guiaRevisao
+                      .map((g, i) => `Ponto ${i + 1}. ${g.titulo}. ${g.detalhe}`)
+                      .join('\n\n')}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setInnerTab('simulado')}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                  >
+                    <span>Ir para o Simulado desta Matéria</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-3">
@@ -814,8 +843,17 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                     <span className="w-7 h-7 rounded-xl bg-indigo-600 text-white font-black text-xs flex items-center justify-center shrink-0">
                       {idx + 1}
                     </span>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-black text-gray-900 dark:text-white">{item.titulo}</h4>
+                    <div className="space-y-1 flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="text-sm font-black text-gray-900 dark:text-white">{item.titulo}</h4>
+                        <ReadAloudButton
+                          variant="icon"
+                          size="xs"
+                          sourceId={`av2-guia-item-${activeDisc.disciplinaId}-${idx}`}
+                          title={item.titulo}
+                          text={`${item.titulo}. ${item.detalhe}`}
+                        />
+                      </div>
                       <p className="text-xs sm:text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
                         {item.detalhe}
                       </p>
@@ -900,9 +938,23 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                         <span className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-black text-xs shrink-0">
                           Q{qIdx + 1}
                         </span>
-                        <p className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-relaxed">
+                        <p className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-relaxed flex-1">
                           {q.enunciado}
                         </p>
+                        <ReadAloudButton
+                          variant="pill"
+                          size="xs"
+                          label="Ouvir"
+                          sourceId={`av2-q-${q.id}`}
+                          title={`Questão ${qIdx + 1} — ${activeDisc.nomeCurto}`}
+                          text={[
+                            `Questão ${qIdx + 1}. ${q.enunciado}`,
+                            ...q.alternativas.map((a) => `Alternativa ${a.letra}: ${a.texto}`),
+                            hasAnswered ? `Gabarito oficial: Alternativa ${q.gabarito}. ${q.justificativa}` : '',
+                          ]
+                            .filter(Boolean)
+                            .join('. ')}
+                        />
                       </div>
 
                       <div className="space-y-2">

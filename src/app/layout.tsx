@@ -55,6 +55,8 @@ export const viewport: Viewport = {
 };
 
 import { PwaInitializer } from '@/components/PwaInitializer';
+import { VoiceStudioProvider } from '@/contexts/VoiceStudioContext';
+import { VoiceStudioDock } from '@/components/VoiceStudioDock';
 
 export default function RootLayout({
   children,
@@ -93,8 +95,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-full bg-[#F5F5F7] dark:bg-[#090d16] text-gray-900 dark:text-slate-100 overflow-x-hidden selection:bg-blue-500 selection:text-white transition-colors duration-200">
-        <PwaInitializer />
-        {children}
+        <VoiceStudioProvider>
+          <PwaInitializer />
+          {children}
+          <VoiceStudioDock />
+        </VoiceStudioProvider>
       </body>
     </html>
   );

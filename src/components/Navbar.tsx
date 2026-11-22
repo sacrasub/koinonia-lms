@@ -5,7 +5,7 @@ import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
   RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
-  ChevronRight, ExternalLink
+  ChevronRight, ExternalLink, AudioLines
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { getTabLabel } from '@/config/navigationConfig';
@@ -17,6 +17,7 @@ import { UserProfileModal } from '@/components/UserProfileModal';
 import { SystemUpdatesModal } from '@/components/SystemUpdatesModal';
 import { MobileDrawerMenu } from '@/components/MobileDrawerMenu';
 import { useDeviceMode } from '@/hooks/useDeviceMode';
+import { useVoiceStudio } from '@/contexts/VoiceStudioContext';
 
 interface NavbarProps {
   currentRole: UserRole;
@@ -38,6 +39,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab = 'aluno-disciplinas'
 }) => {
   const { isMobile, isTablet } = useDeviceMode();
+  const {
+    openSettings: openVoiceSettings,
+    isSpeaking: isVoiceSpeaking,
+    isLoading: isVoiceLoading,
+  } = useVoiceStudio();
 
   const normalizedEmail = (userEmail || 'sacrasub@gmail.com').toLowerCase().trim();
   const authInfo = getAuthorizedUserInfo(normalizedEmail);
@@ -258,6 +264,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             aria-label={isDarkMode ? 'Modo Claro' : 'Modo Escuro'}
           >
             {isDarkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+          </button>
+
+          {/* Botão Estúdio de Voz / VoiceStudio (TTS) */}
+          <button
+            type="button"
+            onClick={openVoiceSettings}
+            className={`relative p-2 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 flex items-center justify-center ${
+              isVoiceSpeaking || isVoiceLoading
+                ? 'bg-indigo-600 text-white border-indigo-500 ring-2 ring-indigo-400/40 animate-pulse'
+                : 'bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/50 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800'
+            }`}
+            title="Estúdio de Voz sobre Texto (VoiceStudio TTS) — Ajustar voz, modelo e velocidade"
+            aria-label="Estúdio de Voz (VoiceStudio TTS)"
+          >
+            <AudioLines className="w-3.5 h-3.5" />
           </button>
 
           {/* Seletor de Perfil do Usuário Autenticado (Visível apenas em Desktop) */}

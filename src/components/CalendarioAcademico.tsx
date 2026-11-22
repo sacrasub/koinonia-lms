@@ -25,6 +25,7 @@ import type {
   PassoAcao
 } from '@/data/avaliacoes2026_2';
 import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
+import { ReadAloudButton } from '@/components/ReadAloudButton';
 
 export type { AvaliacaoEvento, KanbanTask, CronogramaConsolidadoItem };
 export { CRONOGRAMA_OFICIAL_2026_2 };
@@ -1774,7 +1775,25 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
         </div>
 
         {/* RODAPÉ DO DRAWER COM AÇÕES */}
-        <div className="p-5 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center gap-2.5">
+        <div className="p-5 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center gap-2.5 flex-wrap">
+          <ReadAloudButton
+            variant="dark"
+            size="sm"
+            label="Ouvir Guia"
+            sourceId={`drawer-av-${evento.id}`}
+            title={evento.disciplina}
+            text={[
+              `${evento.disciplina}. ${professorDisplay}. Prazo: ${evento.dataTexto}, horário ${evento.horario}. ${evento.peso}.`,
+              'Passo a passo de execução:',
+              ...evento.passoAPasso.map((p, idx) => `Etapa ${idx + 1}. ${p}`),
+              'Regras e critérios:',
+              ...evento.regras,
+            ]
+              .filter(Boolean)
+              .join('\n\n')}
+            className="w-full sm:w-auto py-3 px-4"
+          />
+
           <button
             type="button"
             onClick={() => handleCopyResumo(evento)}

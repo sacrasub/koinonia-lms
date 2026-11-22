@@ -75,6 +75,7 @@ import { printAbntArticleAsPdf } from '@/lib/abntPrintExporter';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { AbntPreviewDocument } from './AbntPreviewDocument';
 import { AbntAiAssistModal } from './AbntAiAssistModal';
+import { ReadAloudButton } from '@/components/ReadAloudButton';
 
 interface CriadorArtigosAbntPageProps {
   userEmail?: string;
@@ -752,6 +753,33 @@ export const CriadorArtigosAbntPage: React.FC<CriadorArtigosAbntPageProps> = ({
           >
             <Upload className="w-3.5 h-3.5" />
           </button>
+
+          <ReadAloudButton
+            variant="pill"
+            size="xs"
+            label="Ouvir Artigo"
+            sourceId={`abnt-article-${activeDoc.id}`}
+            title={activeDoc.title || 'Artigo Acadêmico ABNT'}
+            text={[
+              activeDoc.title,
+              activeDoc.subtitle,
+              activeDoc.resumo ? `Resumo. ${activeDoc.resumo}` : '',
+              ...activeDoc.sections.flatMap((sec) => [
+                `${sec.numberLabel} ${sec.title}.`,
+                ...sec.blocks.map((blk) => {
+                  if (blk.type === 'paragraph') return blk.text;
+                  if (blk.type === 'long_quote') return `${blk.text} ${blk.citation}`;
+                  if (blk.type === 'subheading') return `${blk.numberLabel} ${blk.title}.`;
+                  if (blk.type === 'table') return `Tabela: ${blk.title}.`;
+                  if (blk.type === 'figure') return `Figura: ${blk.title}.`;
+                  return '';
+                }),
+              ]),
+            ]
+              .filter(Boolean)
+              .join('\n\n')}
+          />
+
           <input
             ref={fileImportRef}
             type="file"
