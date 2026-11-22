@@ -57,7 +57,7 @@ export const DEFAULT_VOICESTUDIO_SETTINGS: VoiceStudioSettings = {
   useServerProxy: false,
   apiKey: '',
   sharePin: '',
-  model: 'omnivoice',
+  model: 'tts-1',
   voice: 'default',
   language: 'pt',
   speed: 1.0,
@@ -76,13 +76,16 @@ export const DEFAULT_VOICESTUDIO_SETTINGS: VoiceStudioSettings = {
 };
 
 export const DEFAULT_VOICESTUDIO_MODELS: VoiceStudioModelItem[] = [
-  { id: 'omnivoice', owned_by: 'VoiceStudio (Padrão)' },
+  { id: 'tts-1', owned_by: 'Automático → Engine Ativa no VoiceStudio' },
+  { id: 'sherpa-onnx', owned_by: 'Sherpa-ONNX / Piper pt-BR (Ultra-rápido CPU)' },
+  { id: 'omnivoice-gguf', owned_by: 'OmniVoice GGUF (Vulkan AMD/Intel & CPU leve)' },
+  { id: 'supertonic3', owned_by: 'Supertonic-3 (ONNX Leve CPU)' },
+  { id: 'omnivoice', owned_by: 'VoiceStudio PyTorch (Padrão)' },
   { id: 'voxcpm2', owned_by: 'VoiceStudio Engine' },
   { id: 'cosyvoice', owned_by: 'VoiceStudio Engine' },
   { id: 'kittentts', owned_by: 'VoiceStudio Engine (Leve/CPU)' },
   { id: 'moss-tts-nano', owned_by: 'VoiceStudio Engine' },
   { id: 'mlx-audio', owned_by: 'VoiceStudio Apple Silicon' },
-  { id: 'tts-1', owned_by: 'Alias OpenAI → Engine Ativa' },
   { id: 'tts-1-hd', owned_by: 'Alias OpenAI HD → Engine Ativa' },
 ];
 
@@ -446,7 +449,7 @@ export async function testVoiceStudioConnection(
 
 export function buildSpeechRequestPayload(text: string, settings: VoiceStudioSettings): Record<string, unknown> {
   const payload: Record<string, unknown> = {
-    model: (settings.model || 'omnivoice').trim(),
+    model: (settings.model || 'tts-1').trim(),
     input: text.slice(0, 4096),
     voice: (settings.voice || 'default').trim(),
     response_format: settings.responseFormat || 'mp3',
