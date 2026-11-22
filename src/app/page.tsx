@@ -59,6 +59,7 @@ const AttendanceAlarmModal = dynamic(() => import('@/components/AttendanceAlarmM
 const PesquisaTCCPage = dynamic(() => import('@/app/pesquisa-tcc/page'), { loading: DynamicLoadingFallback });
 const OficinaEstudosHub = dynamic(() => import('@/components/oficina-estudos/OficinaEstudosHub').then(m => m.OficinaEstudosHub), { loading: DynamicLoadingFallback });
 const OperacaoAv2Page = dynamic(() => import('@/components/OperacaoAv2Page').then(m => m.OperacaoAv2Page), { loading: DynamicLoadingFallback });
+const CriadorArtigosAbntPage = dynamic(() => import('@/components/abnt/CriadorArtigosAbntPage').then(m => m.CriadorArtigosAbntPage), { loading: DynamicLoadingFallback });
 const WhatsNewModal = dynamic(() => import('@/components/WhatsNewModal').then(m => m.WhatsNewModal));
 
 export default function Home() {
@@ -120,6 +121,9 @@ export default function Home() {
       }
       if (tabParam === 'av2' || tabParam === 'operacao-av2' || tabParam === 'revisao-av2' || tabParam === 'dossie-av2') {
         return 'operacao-av2';
+      }
+      if (tabParam === 'artigos-abnt' || tabParam === 'criador-abnt' || tabParam === 'abnt' || tabParam === 'artigos') {
+        return 'artigos-abnt';
       }
       const discParam = params.get('disciplina');
       if (discParam) {
@@ -675,6 +679,9 @@ export default function Home() {
     }
     if (activeTab === 'operacao-av2' || activeTab === 'av2' || activeTab === 'revisao-av2' || activeTab === 'dossie-av2') {
       return <OperacaoAv2Page userEmail={userEmail} onTabChange={handleTabChange} />;
+    }
+    if (activeTab === 'artigos-abnt' || activeTab === 'criador-abnt' || activeTab === 'abnt' || activeTab === 'artigos') {
+      return <CriadorArtigosAbntPage userEmail={userEmail} userName={userName} onTabChange={handleTabChange} />;
     }
     if (activeTab === 'aluno-boletim' || activeTab === 'boletim' || activeTab === 'notas' || activeTab === 'meu-boletim') {
       return <AlunoBoletim userEmail={userEmail} onTabChange={handleTabChange} />;

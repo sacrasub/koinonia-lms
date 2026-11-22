@@ -25,6 +25,7 @@ import {
   Target,
   Bookmark,
   Award,
+  FileText,
 } from 'lucide-react';
 
 export type NavGroup = 'primary' | 'secondary' | 'labs';
@@ -48,6 +49,10 @@ const TAB_LABEL_MAP: Record<string, string> = {
   'dossie-av2': 'Operação AV2 & Simulados',
   'aluno-checklist': 'Trabalhos & Prazos',
   'checklist': 'Trabalhos & Prazos',
+  'artigos-abnt': 'Criador de Artigos ABNT',
+  'criador-abnt': 'Criador de Artigos ABNT',
+  'abnt': 'Criador de Artigos ABNT',
+  'artigos': 'Criador de Artigos ABNT',
   'disciplina-detalhe': 'Disciplinas & Materiais',
   'aluno-caderno': 'Caderno Cornell',
   'caderno': 'Caderno Cornell',
@@ -162,6 +167,7 @@ export function getNavItemsForRole(
         { id: 'aluno-disciplinas', label: 'Início & Aulas Ao Vivo', icon: GraduationCap, group: 'primary', badge: 'Hoje', dataTour: 'nav-disciplinas' },
         { id: 'operacao-av2', label: 'Operação AV2 & Simulados', icon: Flame, group: 'primary', badge: 'AV2' },
         { id: 'aluno-checklist', label: 'Trabalhos & Prazos', icon: CheckSquare, group: 'primary' },
+        { id: 'artigos-abnt', label: 'Criador de Artigos ABNT', icon: FileText, group: 'primary', badge: 'ABNT' },
         { id: 'disciplina-detalhe', label: 'Disciplinas & Materiais', icon: Layers, group: 'primary' },
         { id: 'aluno-caderno', label: 'Caderno Cornell', icon: BookOpen, group: 'primary', dataTour: 'nav-caderno' },
         { id: 'aluno-boletim', label: 'Meu Boletim', icon: Award, group: 'primary' },
@@ -200,6 +206,7 @@ export function getNavItemsForRole(
 
         { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar, group: 'secondary', dataTour: 'nav-agenda' },
         { id: 'aluno-checklist', label: 'Trabalhos e Avaliações', icon: CheckSquare, group: 'secondary' },
+        { id: 'artigos-abnt', label: 'Criador de Artigos ABNT', icon: FileText, group: 'secondary', badge: 'ABNT' },
         { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare, group: 'secondary', dataTour: 'nav-comunidade-forum' },
         { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart, group: 'secondary' },
         { id: 'aluno-biblioteca', label: 'Biblioteca Digital', icon: Library, group: 'secondary', dataTour: 'nav-biblioteca' },
@@ -225,6 +232,7 @@ export function getNavItemsForRole(
         { id: 'livro-notas', label: 'Consulta de Diários & Faltas', icon: GraduationCap, group: 'primary' },
         { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen, group: 'primary' },
         { id: 'disciplina-detalhe', label: 'Hub da Disciplina', icon: Layers, group: 'primary' },
+        { id: 'artigos-abnt', label: 'Criador de Artigos ABNT', icon: FileText, group: 'secondary', badge: 'ABNT' },
 
         { id: 'google-agenda', label: 'Agenda & Meet (Grade)', icon: Calendar, group: 'secondary', dataTour: 'nav-agenda' },
         { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare, group: 'secondary', dataTour: 'nav-comunidade-forum' },
@@ -259,6 +267,7 @@ export function getNavItemsForRole(
         { id: 'aluno-materiais', label: 'Pastas Virtuais & Aulas', icon: FolderOpen, group: 'secondary' },
         { id: 'aluno-caderno', label: 'Caderno Cornell (Notas)', icon: BookOpen, group: 'secondary', dataTour: 'nav-caderno' },
         { id: 'aluno-checklist', label: 'Trabalhos e Avaliações', icon: CheckSquare, group: 'secondary' },
+        { id: 'artigos-abnt', label: 'Criador de Artigos ABNT', icon: FileText, group: 'secondary', badge: 'ABNT' },
         { id: 'aluno-portal-2026', label: 'Portal Acadêmico (Consulta)', icon: Calendar, group: 'secondary' },
         { id: 'comunidade-forum', label: 'Fóruns & Koinonia', icon: MessageSquare, group: 'secondary', dataTour: 'nav-comunidade-forum' },
         { id: 'mural-oracao', label: 'Mural de Oração', icon: Heart, group: 'secondary' },
