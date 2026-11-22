@@ -103,7 +103,7 @@ export const DEFAULT_VOICESTUDIO_MODELS: VoiceStudioModelItem[] = [
   { id: 'voxcpm2', owned_by: 'VoiceStudio Engine' },
   { id: 'cosyvoice', owned_by: 'VoiceStudio Engine' },
   { id: 'kittentts', owned_by: 'VoiceStudio Engine (Leve/CPU)' },
-  { id: 'moss-tts-nano', owned_by: 'VoiceStudio Engine' },
+  { id: 'moss-tts-nano', owned_by: 'MOSS-TTS-Nano (Clonagem de Voz • pt-BR • CPU)' },
   { id: 'mlx-audio', owned_by: 'VoiceStudio Apple Silicon' },
   { id: 'tts-1-hd', owned_by: 'Alias OpenAI HD → Engine Ativa' },
 ];
@@ -743,7 +743,10 @@ async function callVoiceStudioJson<T>(
   }
 }
 
-const healthProbeCache = new Map<string, { ok: boolean; checkedAt: number }>();
+const healthProbeCache = new Map<
+  string,
+  { ok: boolean; activeEngine?: string; checkedAt: number }
+>();
 
 export function invalidateVoiceStudioHealthProbe(serverUrl?: string): void {
   if (serverUrl) {
@@ -753,23 +756,34 @@ export function invalidateVoiceStudioHealthProbe(serverUrl?: string): void {
   }
 }
 
-export async function probeVoiceStudioHealth(
+export async function probeVoiceStudioStatus(
   settings: VoiceStudioSettings,
   timeoutMs = 1200
-): Promise<boolean> {
+): Promise<{ ok: boolean; activeEngine?: string }> {
   const key = normalizeServerUrl(settings.serverUrl);
   const cached = healthProbeCache.get(key);
   const now = Date.now();
   if (cached) {
     const ttl = cached.ok ? 30_000 : 60_000;
     if (now - cached.checkedAt < ttl) {
-      return cached.ok;
+      return { ok: cached.ok, activeEngine: cached.activeEngine };
     }
   }
 
   const health = await callVoiceStudioJson<Record<string, unknown>>('health', '/health', settings, timeoutMs);
-  healthProbeCache.set(key, { ok: health.ok, checkedAt: Date.now() });
-  return health.ok;
+  const activeEngine = health.ok
+    ? String(health.data?.engine || health.data?.active_engine || '')
+    : undefined;
+  healthProbeCache.set(key, { ok: health.ok, activeEngine, checkedAt: Date.now() });
+  return { ok: health.ok, activeEngine };
+}
+
+export async function probeVoiceStudioHealth(
+  settings: VoiceStudioSettings,
+  timeoutMs = 1200
+): Promise<boolean> {
+  const status = await probeVoiceStudioStatus(settings, timeoutMs);
+  return status.ok;
 }
 
 export async function testVoiceStudioConnection(
@@ -777,7 +791,10 @@ export async function testVoiceStudioConnection(
 ): Promise<VoiceStudioConnectionResult> {
   const baseUrl = normalizeServerUrl(settings.serverUrl);
   const health = await callVoiceStudioJson<Record<string, unknown>>('health', '/health', settings, 5000);
-  healthProbeCache.set(baseUrl, { ok: health.ok, checkedAt: Date.now() });
+  const probedEngine = health.ok
+    ? String(health.data?.engine || health.data?.active_engine || '')
+    : undefined;
+  healthProbeCache.set(baseUrl, { ok: health.ok, activeEngine: probedEngine, checkedAt: Date.now() });
 
   if (!health.ok) {
     return {
@@ -875,7 +892,7 @@ export async function synthesizeVoiceStudioChunk(
   text: string,
   settings: VoiceStudioSettings,
   externalSignal?: AbortSignal,
-  timeoutMs = 20000
+  timeoutMs = 180000
 ): Promise<{ blob: Blob; mimeType: string }> {
   const baseUrl = normalizeServerUrl(settings.serverUrl);
   const payload = buildSpeechRequestPayload(text, settings);

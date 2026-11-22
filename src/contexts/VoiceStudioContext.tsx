@@ -20,7 +20,7 @@ import {
   loadPlatformDefaultsCache,
   loadUserVoiceOverrides,
   normalizeTextForSpeech,
-  probeVoiceStudioHealth,
+  probeVoiceStudioStatus,
   publishPlatformDefaultsToCloud,
   resolveEffectiveVoiceStudioSettings,
   saveUserVoiceOverrides,
@@ -431,22 +431,22 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
       try {
         if (index === 0 && effectiveSettings.engineMode === 'auto') {
-          const online = await probeVoiceStudioHealth(effectiveSettings, 1200);
+          const status = await probeVoiceStudioStatus(effectiveSettings, 1200);
           if (sessionIdRef.current !== sessionId) return;
-          if (!online) {
+          if (!status.ok) {
             setFallbackNotice('Usando voz neural do navegador (pt-BR).');
             playBrowserChunkAt(index, sessionId, effectiveSettings);
             return;
           }
         }
 
-        const { blob } = await getChunkPromise(index, 30000);
+        const { blob } = await getChunkPromise(index, 180000);
 
         if (sessionIdRef.current !== sessionId) return;
 
         // Pré-carrega o próximo bloco em background enquanto este toca
         if (index + 1 < list.length) {
-          void getChunkPromise(index + 1, 30000).catch(() => {
+          void getChunkPromise(index + 1, 180000).catch(() => {
             prefetchCacheRef.current.delete(index + 1);
           });
         }
@@ -494,10 +494,8 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
         await audio.play();
       } catch (err: unknown) {
         if (sessionIdRef.current !== sessionId) return;
-        const aborted =
-          (err instanceof Error && err.name === 'AbortError') ||
-          abortControllerRef.current?.signal.aborted;
-        if (aborted) return;
+        const userAborted = Boolean(abortControllerRef.current?.signal.aborted);
+        if (userAborted) return;
 
         const msg = err instanceof Error ? err.message : 'VoiceStudio indisponível.';
         if (effectiveSettings.engineMode === 'auto') {
@@ -527,19 +525,11 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
         return;
       }
 
-      const nextChunks = splitTextIntoSpeechChunks(
-        normalized,
-        mergedSettings.engineMode === 'browser' ? 650 : 1200
-      );
-      if (nextChunks.length === 0) return;
-
       const nextSession = sessionIdRef.current + 1;
       sessionIdRef.current = nextSession;
       cleanupPlaybackResources();
       abortControllerRef.current = new AbortController();
 
-      activeChunksRef.current = nextChunks;
-      setChunks(nextChunks);
       setCurrentChunkIndex(0);
       setActiveSourceId(id);
       setActiveTitle(title || 'Leitura em Voz Alta');
@@ -548,10 +538,50 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
       setIsPaused(false);
 
       if (mergedSettings.engineMode === 'browser') {
+        const nextChunks = splitTextIntoSpeechChunks(normalized, 650);
+        if (nextChunks.length === 0) return;
+        activeChunksRef.current = nextChunks;
+        setChunks(nextChunks);
         playBrowserChunkAt(0, nextSession, mergedSettings);
-      } else {
-        await playVoiceStudioChunkAt(0, nextSession, mergedSettings);
+        return;
       }
+
+      setIsLoading(true);
+      const status = await probeVoiceStudioStatus(mergedSettings, 1200).catch(() => ({
+        ok: false,
+        activeEngine: undefined,
+      }));
+      if (sessionIdRef.current !== nextSession) return;
+
+      if (!status.ok && mergedSettings.engineMode === 'auto') {
+        const browserChunks = splitTextIntoSpeechChunks(normalized, 650);
+        if (browserChunks.length === 0) {
+          setIsLoading(false);
+          return;
+        }
+        activeChunksRef.current = browserChunks;
+        setChunks(browserChunks);
+        setFallbackNotice('Usando voz neural do navegador (pt-BR).');
+        playBrowserChunkAt(0, nextSession, mergedSettings);
+        return;
+      }
+
+      const modelId = (mergedSettings.model || '').trim().toLowerCase();
+      const isOpenAiAlias =
+        !modelId || modelId === 'tts-1' || modelId === 'tts-1-hd' || modelId.startsWith('gpt-4o');
+      const resolvedEngine = (isOpenAiAlias ? status.activeEngine || '' : modelId).toLowerCase();
+      const isFastCpuEngine = resolvedEngine === 'sherpa-onnx' || resolvedEngine === 'kittentts';
+      const chunkSize = isFastCpuEngine ? 950 : 280;
+
+      const nextChunks = splitTextIntoSpeechChunks(normalized, chunkSize);
+      if (nextChunks.length === 0) {
+        setIsLoading(false);
+        return;
+      }
+
+      activeChunksRef.current = nextChunks;
+      setChunks(nextChunks);
+      await playVoiceStudioChunkAt(0, nextSession, mergedSettings);
     },
     [cleanupPlaybackResources, playBrowserChunkAt, playVoiceStudioChunkAt]
   );
