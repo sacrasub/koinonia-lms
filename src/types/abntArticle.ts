@@ -95,6 +95,8 @@ export interface AbntFormattingOptions {
   fontFamily: 'Arial' | 'Times New Roman';
   firstLineIndentCm: 1.25 | 0;
   showLogo: boolean;
+  logoLayout?: 'both' | 'unimb' | 'stc';
+  showDisciplinaOnCover?: boolean;
   institutionPreset: AbntInstitutionPreset;
   showCover: boolean;
   showTitlePage: boolean;

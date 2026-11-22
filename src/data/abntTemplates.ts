@@ -6,6 +6,9 @@ import {
 } from '@/types/abntArticle';
 import { Disciplina } from '@/types';
 
+export const SEMINARIO_LOGO_PATH = '/logo-seminario-congregacional.png';
+export const UNIMB_LOGO_PATH = '/brasao-unimb.png';
+
 export interface AbntInstitutionPresetConfig {
   id: AbntInstitutionPreset;
   label: string;
@@ -313,6 +316,7 @@ export function createArticleFromTemplate(
       showTitlePage: boolean;
       showToc: boolean;
       showAbstract: boolean;
+      showDisciplinaOnCover: boolean;
       targetMinPages?: number;
       targetMaxPages?: number;
       restrictFirstPerson: boolean;
@@ -325,6 +329,7 @@ export function createArticleFromTemplate(
       showTitlePage: true,
       showToc: true,
       showAbstract: true,
+      showDisciplinaOnCover: false,
       targetMinPages: 20,
       targetMaxPages: 25,
       restrictFirstPerson: true,
@@ -336,6 +341,7 @@ export function createArticleFromTemplate(
       showTitlePage: true,
       showToc: true,
       showAbstract: false,
+      showDisciplinaOnCover: true,
       targetMinPages: 5,
       targetMaxPages: 10,
       restrictFirstPerson: true,
@@ -347,6 +353,7 @@ export function createArticleFromTemplate(
       showTitlePage: false,
       showToc: false,
       showAbstract: false,
+      showDisciplinaOnCover: true,
       targetMinPages: 2,
       targetMaxPages: 3,
       restrictFirstPerson: false,
@@ -358,6 +365,7 @@ export function createArticleFromTemplate(
       showTitlePage: true,
       showToc: true,
       showAbstract: false,
+      showDisciplinaOnCover: true,
       targetMinPages: 10,
       targetMaxPages: 14,
       restrictFirstPerson: false,
@@ -369,6 +377,7 @@ export function createArticleFromTemplate(
       showTitlePage: true,
       showToc: true,
       showAbstract: false,
+      showDisciplinaOnCover: false,
       targetMinPages: 6,
       targetMaxPages: 12,
       restrictFirstPerson: true,
@@ -411,6 +420,8 @@ export function createArticleFromTemplate(
       fontFamily: 'Arial',
       firstLineIndentCm: 1.25,
       showLogo: true,
+      logoLayout: 'both',
+      showDisciplinaOnCover: meta.showDisciplinaOnCover,
       institutionPreset: 'unimb',
       showCover: meta.showCover,
       showTitlePage: meta.showTitlePage,

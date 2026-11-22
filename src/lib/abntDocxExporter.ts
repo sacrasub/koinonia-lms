@@ -16,12 +16,20 @@ import {
   convertMillimetersToTwip,
 } from 'docx';
 import { AbntArticleDocument } from '@/types/abntArticle';
-import { INSTITUTION_PRESETS } from '@/data/abntTemplates';
+import {
+  SEMINARIO_LOGO_PATH,
+  UNIMB_LOGO_PATH,
+} from '@/data/abntTemplates';
 import {
   parseBoldSegments,
   slugifyFileName,
   sortReferencesAlphabetically,
 } from '@/lib/abntFormatter';
+
+export interface AbntDocxLogos {
+  unimb?: Uint8Array;
+  seminario?: Uint8Array;
+}
 
 const A4_WIDTH_TWIP = convertMillimetersToTwip(210);
 const A4_HEIGHT_TWIP = convertMillimetersToTwip(297);
@@ -83,10 +91,15 @@ function makeBoldTextRuns(text: string, font: string, sizeHalfPts = 24): TextRun
  */
 export function buildAbntDocxDocument(
   doc: AbntArticleDocument,
-  logoBytes?: Uint8Array
+  logoInput?: Uint8Array | AbntDocxLogos
 ): Document {
   const font = doc.formatting.fontFamily === 'Times New Roman' ? 'Times New Roman' : 'Arial';
   const firstLineIndent = doc.formatting.firstLineIndentCm === 1.25 ? INDENT_125_TWIP : 0;
+  const logoLayout = doc.formatting.logoLayout || 'both';
+  const logos: AbntDocxLogos =
+    logoInput instanceof Uint8Array
+      ? { unimb: logoInput }
+      : logoInput || {};
 
   const sortedAuthors = doc.authors
     .map((a) => a.fullName.trim().toUpperCase())
@@ -120,26 +133,101 @@ export function buildAbntDocxDocument(
   // 1. CAPA
   if (doc.formatting.showCover) {
     pushPageBreakBeforeNext();
-    if (doc.formatting.showLogo && logoBytes && logoBytes.length > 0) {
-      preTextualChildren.push(
-        new Paragraph({
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 140 },
-          children: [
-            new ImageRun({
-              type: detectImageTypeFromBytes(logoBytes),
-              data: logoBytes,
-              transformation: { width: 88, height: 76 },
-            }),
-          ],
-        })
-      );
+
+    if (doc.formatting.showLogo) {
+      const noBorder = {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: 'FFFFFF',
+      };
+
+      if (logoLayout === 'both' && logos.seminario && logos.unimb) {
+        preTextualChildren.push(
+          new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            borders: {
+              top: noBorder,
+              bottom: noBorder,
+              left: noBorder,
+              right: noBorder,
+              insideHorizontal: noBorder,
+              insideVertical: noBorder,
+            },
+            rows: [
+              new TableRow({
+                children: [
+                  new TableCell({
+                    width: { size: 50, type: WidthType.PERCENTAGE },
+                    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.LEFT,
+                        spacing: { after: 180 },
+                        children: [
+                          new ImageRun({
+                            type: detectImageTypeFromBytes(logos.seminario),
+                            data: logos.seminario,
+                            transformation: { width: 132, height: 96 },
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                  new TableCell({
+                    width: { size: 50, type: WidthType.PERCENTAGE },
+                    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.RIGHT,
+                        spacing: { after: 180 },
+                        children: [
+                          new ImageRun({
+                            type: detectImageTypeFromBytes(logos.unimb),
+                            data: logos.unimb,
+                            transformation: { width: 110, height: 101 },
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          })
+        );
+      } else {
+        const singleLogo =
+          logoLayout === 'stc'
+            ? logos.seminario || logos.unimb
+            : logos.unimb || logos.seminario;
+        if (singleLogo && singleLogo.length > 0) {
+          preTextualChildren.push(
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 180 },
+              children: [
+                new ImageRun({
+                  type: detectImageTypeFromBytes(singleLogo),
+                  data: singleLogo,
+                  transformation:
+                    logoLayout === 'stc'
+                      ? { width: 132, height: 96 }
+                      : { width: 110, height: 101 },
+                }),
+              ],
+            })
+          );
+        }
+      }
     }
+
+    const cleanDiscCover = (doc.disciplinaName || '').replace(/^\d+\s*-\s*/, '').trim();
+    const showDiscBlock = Boolean(doc.formatting.showDisciplinaOnCover && cleanDiscCover);
 
     preTextualChildren.push(
       new Paragraph({
         alignment: AlignmentType.CENTER,
-        spacing: { line: 300, after: 60 },
+        spacing: { line: 300, before: 240, after: 60 },
         children: [
           new TextRun({
             text: (doc.institutionName || 'CENTRO UNIVERSITÁRIO MACIÇO DE BATURITÉ – UNIMB').toUpperCase(),
@@ -152,7 +240,7 @@ export function buildAbntDocxDocument(
       }),
       new Paragraph({
         alignment: AlignmentType.CENTER,
-        spacing: { line: 300, after: 1800 },
+        spacing: { line: 300, after: showDiscBlock ? 900 : 1600 },
         children: [
           new TextRun({
             text: (doc.courseName || 'CURSO DE BACHARELADO EM TEOLOGIA').toUpperCase(),
@@ -165,15 +253,54 @@ export function buildAbntDocxDocument(
       })
     );
 
-    safeAuthors.forEach((author, idx) => {
-      const isLast = idx === safeAuthors.length - 1;
+    if (showDiscBlock) {
       preTextualChildren.push(
         new Paragraph({
           alignment: AlignmentType.CENTER,
-          spacing: { line: 300, after: isLast ? 2600 : 80 },
+          spacing: { line: 300, after: doc.professorName?.trim() ? 60 : 900 },
           children: [
             new TextRun({
-              text: author,
+              text: cleanDiscCover.toUpperCase(),
+              bold: true,
+              font,
+              size: 24,
+              color: '000000',
+            }),
+          ],
+        })
+      );
+      if (doc.professorName?.trim()) {
+        preTextualChildren.push(
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            spacing: { line: 300, after: 900 },
+            children: [
+              new TextRun({
+                text: doc.professorName.trim().toUpperCase(),
+                bold: true,
+                font,
+                size: 24,
+                color: '000000',
+              }),
+            ],
+          })
+        );
+      }
+    }
+
+    safeAuthors.forEach((author, idx) => {
+      const isLast = idx === safeAuthors.length - 1;
+      const authorText =
+        showDiscBlock && idx === 0
+          ? `${safeAuthors.length > 1 ? 'ALUNOS' : 'ALUNO'}: ${author}`
+          : author;
+      preTextualChildren.push(
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { line: 300, after: isLast ? (showDiscBlock ? 1800 : 2400) : 80 },
+          children: [
+            new TextRun({
+              text: authorText,
               bold: true,
               font,
               size: 24,
@@ -949,23 +1076,29 @@ export function buildAbntDocxDocument(
   });
 }
 
+async function fetchLogoBytes(path: string): Promise<Uint8Array | undefined> {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) return undefined;
+    return new Uint8Array(await res.arrayBuffer());
+  } catch {
+    return undefined;
+  }
+}
+
 export async function downloadAbntDocx(doc: AbntArticleDocument): Promise<void> {
-  let logoBytes: Uint8Array | undefined;
+  const logos: AbntDocxLogos = {};
   if (doc.formatting.showLogo) {
-    try {
-      const logoPath =
-        INSTITUTION_PRESETS[doc.formatting.institutionPreset]?.logoPath || '/brasao-unimb.png';
-      const res = await fetch(logoPath);
-      if (res.ok) {
-        const buf = await res.arrayBuffer();
-        logoBytes = new Uint8Array(buf);
-      }
-    } catch {
-      // Ignora silenciosamente se logo offline
-    }
+    const layout = doc.formatting.logoLayout || 'both';
+    const [unimb, seminario] = await Promise.all([
+      layout === 'both' || layout === 'unimb' ? fetchLogoBytes(UNIMB_LOGO_PATH) : Promise.resolve(undefined),
+      layout === 'both' || layout === 'stc' ? fetchLogoBytes(SEMINARIO_LOGO_PATH) : Promise.resolve(undefined),
+    ]);
+    logos.unimb = unimb;
+    logos.seminario = seminario;
   }
 
-  const wordDoc = buildAbntDocxDocument(doc, logoBytes);
+  const wordDoc = buildAbntDocxDocument(doc, logos);
   const blob = await Packer.toBlob(wordDoc);
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

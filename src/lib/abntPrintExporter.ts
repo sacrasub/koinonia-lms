@@ -1,5 +1,8 @@
 import { AbntArticleDocument } from '@/types/abntArticle';
-import { INSTITUTION_PRESETS } from '@/data/abntTemplates';
+import {
+  SEMINARIO_LOGO_PATH,
+  UNIMB_LOGO_PATH,
+} from '@/data/abntTemplates';
 import {
   parseBoldSegments,
   sortReferencesAlphabetically,
@@ -20,9 +23,7 @@ function renderBoldHtml(text: string): string {
     .join('');
 }
 
-function resolveAbsoluteLogoUrl(doc: AbntArticleDocument): string {
-  const relPath =
-    INSTITUTION_PRESETS[doc.formatting.institutionPreset]?.logoPath || '/brasao-unimb.png';
+function resolveAbsoluteUrl(relPath: string): string {
   if (typeof window !== 'undefined' && window.location?.origin) {
     return `${window.location.origin}${relPath}`;
   }
@@ -47,25 +48,49 @@ export async function printAbntArticleAsPdf(doc: AbntArticleDocument): Promise<v
   const authorsDisplay =
     sortedAuthors.length > 0 ? sortedAuthors : ['SEMINARISTA AUTOR'];
   const sortedRefs = sortReferencesAlphabetically(doc.references);
-  const logoSrc = resolveAbsoluteLogoUrl(doc);
+  const logoLayout = doc.formatting.logoLayout || 'both';
+  const seminarioLogoSrc = resolveAbsoluteUrl(SEMINARIO_LOGO_PATH);
+  const unimbLogoSrc = resolveAbsoluteUrl(UNIMB_LOGO_PATH);
+
+  const coverLogosHtml = !doc.formatting.showLogo
+    ? ''
+    : logoLayout === 'both'
+    ? `<div class="dual-logos">
+         <img src="${escapeHtml(seminarioLogoSrc)}" alt="Seminário Teológico Congregacional" />
+         <img src="${escapeHtml(unimbLogoSrc)}" alt="UniMB" />
+       </div>`
+    : `<img src="${escapeHtml(logoLayout === 'stc' ? seminarioLogoSrc : unimbLogoSrc)}" alt="Brasão Institucional" class="inst-logo" />`;
 
   const pagesHtml: string[] = [];
 
   // 1. CAPA
   if (doc.formatting.showCover) {
+    const cleanDisc = (doc.disciplinaName || '').replace(/^\d+\s*-\s*/, '').trim();
     pagesHtml.push(`
       <section class="abnt-page page-break cover-page">
         <div class="cover-top">
-          ${
-            doc.formatting.showLogo
-              ? `<img src="${escapeHtml(logoSrc)}" alt="Brasão Institucional" class="inst-logo" />`
-              : ''
-          }
+          ${coverLogosHtml}
           <p class="inst-line"><strong>${escapeHtml(doc.institutionName.toUpperCase())}</strong></p>
           <p class="inst-line"><strong>${escapeHtml(doc.courseName.toUpperCase())}</strong></p>
         </div>
+        ${
+          doc.formatting.showDisciplinaOnCover && cleanDisc
+            ? `<div class="cover-disc">
+                 <p><strong>${escapeHtml(cleanDisc.toUpperCase())}</strong></p>
+                 ${doc.professorName?.trim() ? `<p><strong>${escapeHtml(doc.professorName.trim().toUpperCase())}</strong></p>` : ''}
+               </div>`
+            : ''
+        }
         <div class="cover-authors">
-          ${authorsDisplay.map((name) => `<p class="author-line"><strong>${escapeHtml(name)}</strong></p>`).join('')}
+          ${authorsDisplay
+            .map((name, i) => {
+              const display =
+                doc.formatting.showDisciplinaOnCover && i === 0
+                  ? `${authorsDisplay.length > 1 ? 'ALUNOS' : 'ALUNO'}: ${name}`
+                  : name;
+              return `<p class="author-line"><strong>${escapeHtml(display)}</strong></p>`;
+            })
+            .join('')}
         </div>
         <div class="cover-title">
           <p class="title-main"><strong>${escapeHtml(doc.title.toUpperCase())}</strong>${doc.subtitle?.trim() ? `: ${escapeHtml(doc.subtitle.trim())}` : ''}</p>
@@ -313,10 +338,22 @@ export async function printAbntArticleAsPdf(doc: AbntArticleDocument): Promise<v
       justify-content: space-between;
       text-align: center;
     }
-    .inst-logo {
-      max-height: 78px;
+    .dual-logos {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18pt;
+      gap: 16pt;
+    }
+    .dual-logos img {
+      max-height: 92px;
       width: auto;
-      margin: 0 auto 10pt auto;
+      object-fit: contain;
+    }
+    .inst-logo {
+      max-height: 88px;
+      width: auto;
+      margin: 0 auto 12pt auto;
       display: block;
     }
     .inst-line {
@@ -324,8 +361,16 @@ export async function printAbntArticleAsPdf(doc: AbntArticleDocument): Promise<v
       font-size: 12pt;
       line-height: 1.35;
     }
+    .cover-disc {
+      margin: 1.2cm 0;
+    }
+    .cover-disc p {
+      margin: 0 0 3pt 0;
+      font-size: 12pt;
+      line-height: 1.35;
+    }
     .cover-authors {
-      margin-top: 2.5cm;
+      margin-top: 1.5cm;
     }
     .author-line {
       margin: 0 0 4pt 0;

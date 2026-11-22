@@ -47,6 +47,8 @@ import {
 import {
   ABNT_TEMPLATE_CARDS,
   INSTITUTION_PRESETS,
+  SEMINARIO_LOGO_PATH,
+  UNIMB_LOGO_PATH,
   createArticleFromTemplate,
 } from '@/data/abntTemplates';
 import {
@@ -492,8 +494,7 @@ export const CriadorArtigosAbntPage: React.FC<CriadorArtigosAbntPageProps> = ({
   }
 
   const isLocked = activeDoc.isLocked;
-  const headerLogoPath =
-    INSTITUTION_PRESETS[activeDoc.formatting.institutionPreset]?.logoPath || '/brasao-unimb.png';
+  const logoLayout = activeDoc.formatting.logoLayout || 'both';
 
   const aiSectionTarget = activeDoc.sections.find((s) => s.id === aiModalSectionId) || null;
 
@@ -627,11 +628,18 @@ export const CriadorArtigosAbntPage: React.FC<CriadorArtigosAbntPageProps> = ({
       {/* CABEÇALHO SUPERIOR ESTILO ESTÁGIO SUPERVISIONADO */}
       <header className="no-print bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl px-4 sm:px-6 py-3.5 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <img
-            src={headerLogoPath}
-            alt="Brasão Institucional"
-            className="h-10 w-10 rounded-xl object-contain bg-white border border-slate-200 p-0.5 shrink-0"
-          />
+          <div className="flex items-center gap-1.5 shrink-0">
+            <img
+              src={SEMINARIO_LOGO_PATH}
+              alt="Seminário Teológico Congregacional"
+              className="h-9 w-auto rounded-lg object-contain bg-white border border-slate-200 p-0.5"
+            />
+            <img
+              src={UNIMB_LOGO_PATH}
+              alt="UniMB"
+              className="h-9 w-auto rounded-lg object-contain bg-white border border-slate-200 p-0.5"
+            />
+          </div>
           <div className="min-w-0">
             <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-white truncate">
               Criador de Artigos ABNT
@@ -1169,6 +1177,7 @@ export const CriadorArtigosAbntPage: React.FC<CriadorArtigosAbntPageProps> = ({
             <div className="flex flex-wrap gap-3 pt-1">
               {[
                 { key: 'showCover', label: 'Incluir Capa' },
+                { key: 'showDisciplinaOnCover', label: 'Disciplina & Professor na Capa' },
                 { key: 'showTitlePage', label: 'Incluir Folha de Rosto' },
                 { key: 'showToc', label: 'Incluir Sumário' },
                 { key: 'showAbstract', label: 'Incluir Resumo & Abstract' },
@@ -2210,12 +2219,31 @@ export const CriadorArtigosAbntPage: React.FC<CriadorArtigosAbntPageProps> = ({
                     )
                   }
                 />
-                <span>
-                  {activeDoc.formatting.institutionPreset === 'koinonia'
-                    ? 'Logo Koinonia'
-                    : 'Brasão UniMB'}
-                </span>
+                <span>Logos na Capa</span>
               </label>
+
+              {activeDoc.formatting.showLogo && (
+                <select
+                  value={logoLayout}
+                  onChange={(e) =>
+                    updateActiveDoc(
+                      (d) => ({
+                        ...d,
+                        formatting: {
+                          ...d.formatting,
+                          logoLayout: e.target.value as 'both' | 'unimb' | 'stc',
+                        },
+                      }),
+                      true
+                    )
+                  }
+                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold"
+                >
+                  <option value="both">Seminário + UniMB (2 Logos)</option>
+                  <option value="unimb">Somente Brasão UniMB</option>
+                  <option value="stc">Somente Logo Seminário</option>
+                </select>
+              )}
             </div>
 
             {/* Checklist ABNT em Pílulas */}

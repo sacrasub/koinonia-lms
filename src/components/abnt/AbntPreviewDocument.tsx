@@ -2,7 +2,10 @@
 
 import React from 'react';
 import { AbntArticleDocument } from '@/types/abntArticle';
-import { INSTITUTION_PRESETS } from '@/data/abntTemplates';
+import {
+  SEMINARIO_LOGO_PATH,
+  UNIMB_LOGO_PATH,
+} from '@/data/abntTemplates';
 import { parseBoldSegments, sortReferencesAlphabetically } from '@/lib/abntFormatter';
 
 interface AbntPreviewDocumentProps {
@@ -26,8 +29,7 @@ export const AbntPreviewDocument: React.FC<AbntPreviewDocumentProps> = ({ doc })
       ? '"Times New Roman", Times, serif'
       : 'Arial, Helvetica, sans-serif';
   const indentCss = `${doc.formatting.firstLineIndentCm}cm`;
-  const logoSrc =
-    INSTITUTION_PRESETS[doc.formatting.institutionPreset]?.logoPath || '/brasao-unimb.png';
+  const logoLayout = doc.formatting.logoLayout || 'both';
 
   const authorsDisplay = doc.authors
     .map((a) => a.fullName.trim().toUpperCase())
@@ -62,11 +64,32 @@ export const AbntPreviewDocument: React.FC<AbntPreviewDocumentProps> = ({ doc })
           className="bg-white text-black border border-slate-300 shadow-sm mx-auto max-w-[210mm] min-h-[260mm] px-[12mm] sm:px-[25mm] py-[20mm] flex flex-col justify-between text-center rounded-sm"
         >
           <div className="space-y-1.5">
-            {doc.formatting.showLogo && (
+            {doc.formatting.showLogo && logoLayout === 'both' && (
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <img
+                  src={SEMINARIO_LOGO_PATH}
+                  alt="Seminário Teológico Congregacional"
+                  className="h-20 sm:h-24 w-auto object-contain"
+                />
+                <img
+                  src={UNIMB_LOGO_PATH}
+                  alt="UniMB — Centro Universitário Maciço de Baturité"
+                  className="h-20 sm:h-24 w-auto object-contain"
+                />
+              </div>
+            )}
+            {doc.formatting.showLogo && logoLayout === 'unimb' && (
               <img
-                src={logoSrc}
-                alt="Brasão Institucional"
-                className="h-20 w-auto mx-auto mb-3 object-contain"
+                src={UNIMB_LOGO_PATH}
+                alt="Brasão UniMB"
+                className="h-20 sm:h-24 w-auto mx-auto mb-4 object-contain"
+              />
+            )}
+            {doc.formatting.showLogo && logoLayout === 'stc' && (
+              <img
+                src={SEMINARIO_LOGO_PATH}
+                alt="Seminário Teológico Congregacional"
+                className="h-20 sm:h-24 w-auto mx-auto mb-4 object-contain"
               />
             )}
             <p style={{ color: '#000000' }} className="font-bold uppercase tracking-wide text-[12pt] leading-snug">
@@ -77,15 +100,30 @@ export const AbntPreviewDocument: React.FC<AbntPreviewDocumentProps> = ({ doc })
             </p>
           </div>
 
-          <div className="space-y-1 my-10">
+          {doc.formatting.showDisciplinaOnCover && doc.disciplinaName?.trim() && (
+            <div className="space-y-1 my-4">
+              <p style={{ color: '#000000' }} className="font-bold uppercase text-[12pt]">
+                {doc.disciplinaName.replace(/^\d+\s*-\s*/, '').trim()}
+              </p>
+              {doc.professorName?.trim() && (
+                <p style={{ color: '#000000' }} className="font-bold uppercase text-[12pt]">
+                  {doc.professorName.trim()}
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="space-y-1 my-8">
             {safeAuthors.map((name, i) => (
               <p key={i} style={{ color: '#000000' }} className="font-bold uppercase text-[12pt]">
-                {name}
+                {doc.formatting.showDisciplinaOnCover && i === 0
+                  ? `${safeAuthors.length > 1 ? 'ALUNOS' : 'ALUNO'}: ${name}`
+                  : name}
               </p>
             ))}
           </div>
 
-          <div className="my-12">
+          <div className="my-10">
             <p style={{ color: '#000000' }} className="font-bold uppercase text-[13pt] leading-snug">
               {doc.title || 'TÍTULO DO TRABALHO'}
               {doc.subtitle?.trim() ? (
