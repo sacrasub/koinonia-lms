@@ -1,16 +1,29 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import { getAuthorizedUserInfo } from '@/lib/authConfig';
 import {
   DEFAULT_VOICESTUDIO_MODELS,
   DEFAULT_VOICESTUDIO_SETTINGS,
   DEFAULT_VOICESTUDIO_VOICES,
+  VOICESTUDIO_OVERRIDE_KEY,
   VoiceStudioConnectionResult,
   VoiceStudioModelItem,
+  VoiceStudioPlatformDefaults,
   VoiceStudioSettings,
   VoiceStudioVoiceItem,
-  loadVoiceStudioSettings,
+  clearUserVoiceOverrides,
+  fetchPlatformDefaultsFromCloud,
+  getFactoryPlatformDefaults,
+  invalidateVoiceStudioHealthProbe,
+  loadPlatformDefaultsCache,
+  loadUserVoiceOverrides,
   normalizeTextForSpeech,
+  probeVoiceStudioHealth,
+  publishPlatformDefaultsToCloud,
+  resolveEffectiveVoiceStudioSettings,
+  saveUserVoiceOverrides,
   saveVoiceStudioSettings,
   splitTextIntoSpeechChunks,
   synthesizeVoiceStudioChunk,
@@ -24,10 +37,23 @@ export interface SpeakOptions {
   overrideSettings?: Partial<VoiceStudioSettings>;
 }
 
+export interface PlatformSaveStatus {
+  type: 'success' | 'error';
+  message: string;
+}
+
 interface VoiceStudioContextValue {
   settings: VoiceStudioSettings;
+  platformDefaults: VoiceStudioPlatformDefaults;
+  hasCustomOverrides: boolean;
+  isAdminUser: boolean;
+  isSavingPlatformDefaults: boolean;
+  platformSaveStatus: PlatformSaveStatus | null;
   updateSettings: (patch: Partial<VoiceStudioSettings>) => void;
   resetSettings: () => void;
+  saveCurrentAsPlatformDefaults: () => Promise<boolean>;
+  syncPlatformDefaults: (force?: boolean) => Promise<void>;
+  clearPlatformSaveStatus: () => void;
   isSettingsOpen: boolean;
   openSettings: () => void;
   closeSettings: () => void;
@@ -62,8 +88,50 @@ const VoiceStudioContext = createContext<VoiceStudioContextValue | null>(null);
 
 const SPEED_STEPS = [0.85, 1.0, 1.15, 1.3, 1.5];
 
+const MASTER_ADMIN_EMAILS = new Set([
+  'sacrasub@gmail.com',
+  'sacrasub03@gmail.com',
+  'riffocristianmision@gmail.com',
+]);
+
+function detectAdminFromStorage(fallbackEmail?: string | null): boolean {
+  if (typeof window === 'undefined') return false;
+  const email = (fallbackEmail || localStorage.getItem('lms_active_user_email') || '')
+    .toLowerCase()
+    .trim();
+  if (!email) return false;
+  if (MASTER_ADMIN_EMAILS.has(email)) return true;
+  const authInfo = getAuthorizedUserInfo(email);
+  return Boolean(authInfo.isAuthorized && authInfo.user?.roles?.includes('admin'));
+}
+
+function computeHasCustomOverrides(
+  defaults: VoiceStudioPlatformDefaults,
+  overrides: Partial<VoiceStudioSettings>
+): boolean {
+  for (const [rawKey, val] of Object.entries(overrides)) {
+    if (val === undefined) continue;
+    const key = rawKey as keyof VoiceStudioSettings;
+    if (key === 'apiKey' || key === 'sharePin') {
+      if (typeof val === 'string' && val.trim().length > 0) return true;
+      continue;
+    }
+    const baseVal = defaults.settings[key as keyof typeof defaults.settings];
+    if (val !== baseVal) return true;
+  }
+  return false;
+}
+
 export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [platformDefaults, setPlatformDefaults] = useState<VoiceStudioPlatformDefaults>(() =>
+    getFactoryPlatformDefaults()
+  );
   const [settings, setSettings] = useState<VoiceStudioSettings>(DEFAULT_VOICESTUDIO_SETTINGS);
+  const [hasCustomOverrides, setHasCustomOverrides] = useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
+  const [isSavingPlatformDefaults, setIsSavingPlatformDefaults] = useState(false);
+  const [platformSaveStatus, setPlatformSaveStatus] = useState<PlatformSaveStatus | null>(null);
+
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<VoiceStudioConnectionResult | null>(null);
   const [isTestingConnection, setIsTestingConnection] = useState(false);
@@ -88,27 +156,82 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const audioObjectUrlRef = useRef<string | null>(null);
   const prefetchCacheRef = useRef<Map<number, Promise<{ blob: Blob; mimeType: string }>>>(new Map());
   const activeChunksRef = useRef<string[]>([]);
+  const platformDefaultsRef = useRef<VoiceStudioPlatformDefaults>(getFactoryPlatformDefaults());
+  const userOverridesRef = useRef<Partial<VoiceStudioSettings>>({});
   const activeSettingsRef = useRef<VoiceStudioSettings>(DEFAULT_VOICESTUDIO_SETTINGS);
   const currentModeRef = useRef<'voicestudio' | 'browser' | null>(null);
   const browserChunkIdxRef = useRef(0);
 
-  useEffect(() => {
-    const loaded = loadVoiceStudioSettings();
-    setSettings(loaded);
-    activeSettingsRef.current = loaded;
+  const applyResolvedState = useCallback(
+    (nextDefaults: VoiceStudioPlatformDefaults, nextOverrides: Partial<VoiceStudioSettings>) => {
+      platformDefaultsRef.current = nextDefaults;
+      userOverridesRef.current = nextOverrides;
+      const effective = resolveEffectiveVoiceStudioSettings(nextDefaults, nextOverrides);
+      activeSettingsRef.current = effective;
+      setPlatformDefaults(nextDefaults);
+      setSettings(effective);
+      setHasCustomOverrides(computeHasCustomOverrides(nextDefaults, nextOverrides));
+      saveVoiceStudioSettings(effective);
+      return effective;
+    },
+    []
+  );
 
-    const handleExternalUpdate = (e: Event) => {
-      const detail = (e as CustomEvent<VoiceStudioSettings>).detail;
+  const syncPlatformDefaults = useCallback(
+    async (force = false) => {
+      const fresh = await fetchPlatformDefaultsFromCloud(force);
+      applyResolvedState(fresh, userOverridesRef.current);
+    },
+    [applyResolvedState]
+  );
+
+  useEffect(() => {
+    const cachedDefaults = loadPlatformDefaultsCache();
+    const loadedOverrides = loadUserVoiceOverrides();
+    applyResolvedState(cachedDefaults, loadedOverrides);
+    setIsAdminUser(detectAdminFromStorage());
+
+    let mounted = true;
+    fetchPlatformDefaultsFromCloud(false).then((fresh) => {
+      if (!mounted) return;
+      applyResolvedState(fresh, userOverridesRef.current);
+    });
+
+    const handleGlobalUpdated = (e: Event) => {
+      const detail = (e as CustomEvent<VoiceStudioPlatformDefaults>).detail;
       if (detail) {
-        setSettings(detail);
-        activeSettingsRef.current = detail;
+        applyResolvedState(detail, userOverridesRef.current);
       }
     };
-    window.addEventListener('lms_voicestudio_settings_updated', handleExternalUpdate);
-    return () => {
-      window.removeEventListener('lms_voicestudio_settings_updated', handleExternalUpdate);
+
+    const handleRbacUpdated = () => {
+      setIsAdminUser(detectAdminFromStorage());
     };
-  }, []);
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === VOICESTUDIO_OVERRIDE_KEY) {
+        applyResolvedState(platformDefaultsRef.current, loadUserVoiceOverrides());
+      } else if (e.key === 'lms_active_user_email' || e.key === 'lms_authorized_users_db') {
+        setIsAdminUser(detectAdminFromStorage());
+      }
+    };
+
+    const { data: authSub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAdminUser(detectAdminFromStorage(session?.user?.email));
+    });
+
+    window.addEventListener('lms_voicestudio_platform_defaults_updated', handleGlobalUpdated);
+    window.addEventListener('lms_rbac_updated', handleRbacUpdated);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      mounted = false;
+      authSub?.subscription?.unsubscribe();
+      window.removeEventListener('lms_voicestudio_platform_defaults_updated', handleGlobalUpdated);
+      window.removeEventListener('lms_rbac_updated', handleRbacUpdated);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [applyResolvedState]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
@@ -307,9 +430,17 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
       };
 
       try {
-        const timeoutMs =
-          index === 0 && effectiveSettings.engineMode === 'auto' ? 7500 : 30000;
-        const { blob } = await getChunkPromise(index, timeoutMs);
+        if (index === 0 && effectiveSettings.engineMode === 'auto') {
+          const online = await probeVoiceStudioHealth(effectiveSettings, 1200);
+          if (sessionIdRef.current !== sessionId) return;
+          if (!online) {
+            setFallbackNotice('Usando voz neural do navegador (pt-BR).');
+            playBrowserChunkAt(index, sessionId, effectiveSettings);
+            return;
+          }
+        }
+
+        const { blob } = await getChunkPromise(index, 30000);
 
         if (sessionIdRef.current !== sessionId) return;
 
@@ -485,21 +616,91 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, [currentChunkIndex, playBrowserChunkAt, playVoiceStudioChunkAt]);
 
-  const updateSettings = useCallback((patch: Partial<VoiceStudioSettings>) => {
-    setSettings((prev) => {
-      const next = { ...prev, ...patch };
-      activeSettingsRef.current = next;
-      saveVoiceStudioSettings(next);
-      return next;
-    });
-  }, []);
+  const updateSettings = useCallback(
+    (patch: Partial<VoiceStudioSettings>) => {
+      const nextOverrides: Partial<VoiceStudioSettings> = {
+        ...userOverridesRef.current,
+        ...patch,
+      };
+      if (nextOverrides.apiKey === '') delete nextOverrides.apiKey;
+      if (nextOverrides.sharePin === '') delete nextOverrides.sharePin;
+
+      saveUserVoiceOverrides(nextOverrides);
+      applyResolvedState(platformDefaultsRef.current, nextOverrides);
+
+      if (
+        patch.serverUrl !== undefined ||
+        patch.useServerProxy !== undefined ||
+        patch.apiKey !== undefined ||
+        patch.sharePin !== undefined
+      ) {
+        invalidateVoiceStudioHealthProbe();
+      }
+    },
+    [applyResolvedState]
+  );
 
   const resetSettings = useCallback(() => {
-    const fresh = { ...DEFAULT_VOICESTUDIO_SETTINGS };
-    setSettings(fresh);
-    activeSettingsRef.current = fresh;
-    saveVoiceStudioSettings(fresh);
-  }, []);
+    clearUserVoiceOverrides();
+    applyResolvedState(platformDefaultsRef.current, {});
+    setPlatformSaveStatus(null);
+    invalidateVoiceStudioHealthProbe();
+  }, [applyResolvedState]);
+
+  const saveCurrentAsPlatformDefaults = useCallback(async (): Promise<boolean> => {
+    setIsSavingPlatformDefaults(true);
+    setPlatformSaveStatus(null);
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.access_token) {
+        setPlatformSaveStatus({
+          type: 'error',
+          message:
+            'Sessão expirada. Faça login novamente com sua conta Admin para atualizar o padrão global.',
+        });
+        return false;
+      }
+
+      const actorName =
+        session.user?.user_metadata?.full_name ||
+        session.user?.user_metadata?.name ||
+        session.user?.email;
+
+      const res = await publishPlatformDefaultsToCloud(
+        activeSettingsRef.current,
+        session.access_token,
+        actorName
+      );
+
+      if (!res.ok || !res.defaults) {
+        setPlatformSaveStatus({
+          type: 'error',
+          message: res.error || 'Não foi possível salvar o padrão global.',
+        });
+        return false;
+      }
+
+      const keptSecrets: Partial<VoiceStudioSettings> = {};
+      if (userOverridesRef.current.apiKey) keptSecrets.apiKey = userOverridesRef.current.apiKey;
+      if (userOverridesRef.current.sharePin) keptSecrets.sharePin = userOverridesRef.current.sharePin;
+
+      saveUserVoiceOverrides(keptSecrets);
+      applyResolvedState(res.defaults, keptSecrets);
+      setPlatformSaveStatus({
+        type: 'success',
+        message:
+          'Padrão global atualizado! Todos os usuários herdarão esta configuração automaticamente.',
+      });
+      return true;
+    } finally {
+      setIsSavingPlatformDefaults(false);
+    }
+  }, [applyResolvedState]);
+
+  const clearPlatformSaveStatus = useCallback(() => setPlatformSaveStatus(null), []);
 
   const cycleSpeed = useCallback(() => {
     const cur = settings.speed || 1.0;
@@ -515,6 +716,7 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const refreshConnection = useCallback(
     async (customSettings?: VoiceStudioSettings) => {
       const targetSettings = customSettings || activeSettingsRef.current;
+      invalidateVoiceStudioHealthProbe(targetSettings.serverUrl);
       setIsTestingConnection(true);
       try {
         const res = await testVoiceStudioConnection(targetSettings);
@@ -529,7 +731,17 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
     []
   );
 
-  const openSettings = useCallback(() => setIsSettingsOpen(true), []);
+  const openSettings = useCallback(() => {
+    setIsSettingsOpen(true);
+    setPlatformSaveStatus(null);
+    setIsAdminUser(detectAdminFromStorage());
+    void syncPlatformDefaults(false);
+    const cur = activeSettingsRef.current;
+    if (!connectionStatus && cur.engineMode !== 'browser') {
+      void refreshConnection(cur);
+    }
+  }, [connectionStatus, refreshConnection, syncPlatformDefaults]);
+
   const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
   const clearMessages = useCallback(() => {
     setFallbackNotice(null);
@@ -540,8 +752,16 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
     <VoiceStudioContext.Provider
       value={{
         settings,
+        platformDefaults,
+        hasCustomOverrides,
+        isAdminUser,
+        isSavingPlatformDefaults,
+        platformSaveStatus,
         updateSettings,
         resetSettings,
+        saveCurrentAsPlatformDefaults,
+        syncPlatformDefaults,
+        clearPlatformSaveStatus,
         isSettingsOpen,
         openSettings,
         closeSettings,

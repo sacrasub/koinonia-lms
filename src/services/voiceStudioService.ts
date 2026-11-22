@@ -49,7 +49,26 @@ export interface VoiceStudioConnectionResult {
   corsHint?: string;
 }
 
+export type VoiceStudioSharedSettings = Omit<VoiceStudioSettings, 'apiKey' | 'sharePin'>;
+
+export interface VoiceStudioPlatformDefaults {
+  version: number;
+  updatedAt: string;
+  updatedBy?: string;
+  settings: VoiceStudioSharedSettings;
+}
+
+export interface VoiceStudioUserOverridesState {
+  overrides: Partial<VoiceStudioSettings>;
+  updatedAt?: string;
+  migratedFromV1?: boolean;
+}
+
 export const VOICESTUDIO_STORAGE_KEY = 'lms_voicestudio_settings_v1';
+export const VOICESTUDIO_GLOBAL_CACHE_KEY = 'lms_voicestudio_platform_defaults_v1';
+export const VOICESTUDIO_GLOBAL_FETCH_TS_KEY = 'lms_voicestudio_platform_defaults_ts';
+export const VOICESTUDIO_OVERRIDE_KEY = 'lms_voicestudio_user_overrides_v2';
+export const PLATFORM_DEFAULTS_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 horas (Blindagem de Egress)
 
 export const DEFAULT_VOICESTUDIO_SETTINGS: VoiceStudioSettings = {
   engineMode: 'auto',
@@ -152,32 +171,360 @@ export function shouldUseRemoteProxy(settings: VoiceStudioSettings): boolean {
   return settings.useServerProxy && !isLoopbackServerUrl(settings.serverUrl);
 }
 
-export function loadVoiceStudioSettings(): VoiceStudioSettings {
-  if (typeof window === 'undefined') return { ...DEFAULT_VOICESTUDIO_SETTINGS };
+export function sanitizePlatformVoiceDefaults(raw: unknown): VoiceStudioSharedSettings {
+  const src = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+  const validMode: VoiceStudioEngineMode =
+    src.engineMode === 'auto' || src.engineMode === 'voicestudio' || src.engineMode === 'browser'
+      ? src.engineMode
+      : DEFAULT_VOICESTUDIO_SETTINGS.engineMode;
+
+  const validFormat: VoiceStudioResponseFormat =
+    src.responseFormat === 'mp3' || src.responseFormat === 'wav' || src.responseFormat === 'opus'
+      ? src.responseFormat
+      : DEFAULT_VOICESTUDIO_SETTINGS.responseFormat;
+
+  let serverUrl = DEFAULT_VOICESTUDIO_SETTINGS.serverUrl;
+  if (typeof src.serverUrl === 'string' && src.serverUrl.trim()) {
+    try {
+      const parsed = new URL(normalizeServerUrl(src.serverUrl));
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        serverUrl = `${parsed.protocol}//${parsed.host}${parsed.pathname}`.replace(/\/+$/, '');
+      }
+    } catch {
+      serverUrl = DEFAULT_VOICESTUDIO_SETTINGS.serverUrl;
+    }
+  }
+
+  const useServerProxy = isLoopbackServerUrl(serverUrl) ? false : Boolean(src.useServerProxy);
+  const rawModel = typeof src.model === 'string' ? src.model.trim() : '';
+  const model = rawModel || DEFAULT_VOICESTUDIO_SETTINGS.model;
+  const rawVoice = typeof src.voice === 'string' ? src.voice.trim() : '';
+  const voice = rawVoice || DEFAULT_VOICESTUDIO_SETTINGS.voice;
+  const rawLang = typeof src.language === 'string' ? src.language.trim() : '';
+  const language = rawLang || DEFAULT_VOICESTUDIO_SETTINGS.language;
+
+  const parseNullableInt = (v: unknown, min: number, max: number): number | null => {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    if (!Number.isFinite(n)) return null;
+    return Math.min(max, Math.max(min, Math.trunc(n)));
+  };
+
+  const parseNullableFloat = (v: unknown, min: number, max: number): number | null => {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    if (!Number.isFinite(n)) return null;
+    return Math.min(max, Math.max(min, n));
+  };
+
+  return {
+    engineMode: validMode,
+    serverUrl,
+    useServerProxy,
+    model,
+    voice,
+    language,
+    speed: clampNumber(src.speed, 0.5, 2.0, DEFAULT_VOICESTUDIO_SETTINGS.speed),
+    responseFormat: validFormat,
+    instruct: typeof src.instruct === 'string' ? src.instruct.trim().slice(0, 500) : '',
+    voiceDescription: typeof src.voiceDescription === 'string' ? src.voiceDescription.trim().slice(0, 500) : '',
+    denoise: Boolean(src.denoise),
+    seed: parseNullableInt(src.seed, 0, 2147483647),
+    guidanceScale: parseNullableFloat(src.guidanceScale, 0.1, 20),
+    numStep: parseNullableInt(src.numStep, 1, 64),
+    browserVoiceURI: typeof src.browserVoiceURI === 'string' ? src.browserVoiceURI.slice(0, 240) : '',
+    browserPitch: clampNumber(src.browserPitch, 0.5, 2.0, DEFAULT_VOICESTUDIO_SETTINGS.browserPitch),
+    browserVolume: clampNumber(src.browserVolume, 0.1, 1.0, DEFAULT_VOICESTUDIO_SETTINGS.browserVolume),
+    cleanMarkdownBeforeRead:
+      typeof src.cleanMarkdownBeforeRead === 'boolean'
+        ? src.cleanMarkdownBeforeRead
+        : DEFAULT_VOICESTUDIO_SETTINGS.cleanMarkdownBeforeRead,
+    enableSelectionPopup:
+      typeof src.enableSelectionPopup === 'boolean'
+        ? src.enableSelectionPopup
+        : DEFAULT_VOICESTUDIO_SETTINGS.enableSelectionPopup,
+  };
+}
+
+function sanitizeUserOverrides(raw: unknown): Partial<VoiceStudioSettings> {
+  if (!raw || typeof raw !== 'object') return {};
+  const src = raw as Record<string, unknown>;
+  const out: Partial<VoiceStudioSettings> = {};
+
+  if (src.engineMode === 'auto' || src.engineMode === 'voicestudio' || src.engineMode === 'browser') {
+    out.engineMode = src.engineMode;
+  }
+  if (typeof src.serverUrl === 'string' && src.serverUrl.trim()) {
+    out.serverUrl = normalizeServerUrl(src.serverUrl);
+  }
+  if (typeof src.useServerProxy === 'boolean') {
+    out.useServerProxy = src.useServerProxy;
+  }
+  if (typeof src.apiKey === 'string') out.apiKey = src.apiKey;
+  if (typeof src.sharePin === 'string') out.sharePin = src.sharePin;
+  if (typeof src.model === 'string' && src.model.trim()) out.model = src.model.trim();
+  if (typeof src.voice === 'string' && src.voice.trim()) out.voice = src.voice.trim();
+  if (typeof src.language === 'string' && src.language.trim()) out.language = src.language.trim();
+  if (src.speed !== undefined) out.speed = clampNumber(src.speed, 0.25, 4.0, 1.0);
+  if (src.responseFormat === 'mp3' || src.responseFormat === 'wav' || src.responseFormat === 'opus') {
+    out.responseFormat = src.responseFormat;
+  }
+  if (typeof src.instruct === 'string') out.instruct = src.instruct.slice(0, 500);
+  if (typeof src.voiceDescription === 'string') out.voiceDescription = src.voiceDescription.slice(0, 500);
+  if (typeof src.denoise === 'boolean') out.denoise = src.denoise;
+  if ('seed' in src) {
+    out.seed = src.seed !== null && src.seed !== undefined && src.seed !== '' ? Number(src.seed) : null;
+  }
+  if ('guidanceScale' in src) {
+    out.guidanceScale =
+      src.guidanceScale !== null && src.guidanceScale !== undefined && src.guidanceScale !== ''
+        ? Number(src.guidanceScale)
+        : null;
+  }
+  if ('numStep' in src) {
+    out.numStep =
+      src.numStep !== null && src.numStep !== undefined && src.numStep !== '' ? Number(src.numStep) : null;
+  }
+  if (typeof src.browserVoiceURI === 'string') out.browserVoiceURI = src.browserVoiceURI.slice(0, 240);
+  if (src.browserPitch !== undefined) out.browserPitch = clampNumber(src.browserPitch, 0.5, 2.0, 1.0);
+  if (src.browserVolume !== undefined) out.browserVolume = clampNumber(src.browserVolume, 0.1, 1.0, 1.0);
+  if (typeof src.cleanMarkdownBeforeRead === 'boolean') {
+    out.cleanMarkdownBeforeRead = src.cleanMarkdownBeforeRead;
+  }
+  if (typeof src.enableSelectionPopup === 'boolean') {
+    out.enableSelectionPopup = src.enableSelectionPopup;
+  }
+
+  return out;
+}
+
+export function getFactoryPlatformDefaults(): VoiceStudioPlatformDefaults {
+  return {
+    version: 1,
+    updatedAt: '',
+    updatedBy: 'Padrão Oficial da Plataforma',
+    settings: sanitizePlatformVoiceDefaults(DEFAULT_VOICESTUDIO_SETTINGS),
+  };
+}
+
+export function loadPlatformDefaultsCache(): VoiceStudioPlatformDefaults {
+  const factory = getFactoryPlatformDefaults();
+  if (typeof window === 'undefined') return factory;
   try {
-    const raw = localStorage.getItem(VOICESTUDIO_STORAGE_KEY);
-    if (!raw) return { ...DEFAULT_VOICESTUDIO_SETTINGS };
+    const raw = localStorage.getItem(VOICESTUDIO_GLOBAL_CACHE_KEY);
+    if (!raw) return factory;
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_VOICESTUDIO_SETTINGS };
+    if (!parsed || typeof parsed !== 'object') return factory;
     return {
-      ...DEFAULT_VOICESTUDIO_SETTINGS,
-      ...parsed,
-      speed: clampNumber(parsed.speed, 0.25, 4.0, DEFAULT_VOICESTUDIO_SETTINGS.speed),
-      browserPitch: clampNumber(parsed.browserPitch, 0.5, 2.0, 1.0),
-      browserVolume: clampNumber(parsed.browserVolume, 0.1, 1.0, 1.0),
-      seed: parsed.seed !== null && parsed.seed !== undefined && parsed.seed !== '' ? Number(parsed.seed) : null,
-      guidanceScale:
-        parsed.guidanceScale !== null && parsed.guidanceScale !== undefined && parsed.guidanceScale !== ''
-          ? Number(parsed.guidanceScale)
-          : null,
-      numStep:
-        parsed.numStep !== null && parsed.numStep !== undefined && parsed.numStep !== ''
-          ? Number(parsed.numStep)
-          : null,
+      version: Number(parsed.version) || 1,
+      updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : '',
+      updatedBy: typeof parsed.updatedBy === 'string' ? parsed.updatedBy : factory.updatedBy,
+      settings: sanitizePlatformVoiceDefaults(parsed.settings || parsed),
     };
   } catch {
-    return { ...DEFAULT_VOICESTUDIO_SETTINGS };
+    return factory;
   }
+}
+
+export function savePlatformDefaultsCache(defaults: VoiceStudioPlatformDefaults): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const sanitized: VoiceStudioPlatformDefaults = {
+      version: Number(defaults.version) || Date.now(),
+      updatedAt: defaults.updatedAt || new Date().toISOString(),
+      updatedBy: defaults.updatedBy || 'Administração Koinonia',
+      settings: sanitizePlatformVoiceDefaults(defaults.settings),
+    };
+    localStorage.setItem(VOICESTUDIO_GLOBAL_CACHE_KEY, JSON.stringify(sanitized));
+    localStorage.setItem(VOICESTUDIO_GLOBAL_FETCH_TS_KEY, String(Date.now()));
+  } catch {
+    // ignora quota de localStorage
+  }
+}
+
+export async function fetchPlatformDefaultsFromCloud(force = false): Promise<VoiceStudioPlatformDefaults> {
+  const cached = loadPlatformDefaultsCache();
+  if (typeof window === 'undefined') return cached;
+
+  if (!force) {
+    const lastFetch = Number(localStorage.getItem(VOICESTUDIO_GLOBAL_FETCH_TS_KEY) || 0);
+    if (lastFetch > 0 && Date.now() - lastFetch < PLATFORM_DEFAULTS_CACHE_TTL_MS) {
+      return cached;
+    }
+  }
+
+  try {
+    const endpoint = force ? '/api/tts/voicestudio/defaults?fresh=1' : '/api/tts/voicestudio/defaults';
+    const res = await fetch(endpoint, { method: 'GET', cache: force ? 'no-store' : 'default' });
+    if (!res.ok) return cached;
+    const json = await res.json().catch(() => null);
+    if (!json?.defaults) return cached;
+
+    const normalized: VoiceStudioPlatformDefaults = {
+      version: Number(json.defaults.version) || 1,
+      updatedAt: typeof json.defaults.updatedAt === 'string' ? json.defaults.updatedAt : '',
+      updatedBy:
+        typeof json.defaults.updatedBy === 'string'
+          ? json.defaults.updatedBy
+          : 'Padrão Oficial da Plataforma',
+      settings: sanitizePlatformVoiceDefaults(json.defaults.settings),
+    };
+    savePlatformDefaultsCache(normalized);
+    return normalized;
+  } catch {
+    return cached;
+  }
+}
+
+export async function publishPlatformDefaultsToCloud(
+  settings: VoiceStudioSettings,
+  accessToken: string,
+  updatedByName?: string
+): Promise<{ ok: boolean; defaults?: VoiceStudioPlatformDefaults; error?: string }> {
+  try {
+    const res = await fetch('/api/tts/voicestudio/defaults', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        settings: sanitizePlatformVoiceDefaults(settings),
+        updatedByName,
+      }),
+    });
+    const json = await res.json().catch(() => null);
+    if (!res.ok || !json?.defaults) {
+      return {
+        ok: false,
+        error: json?.error || `Erro HTTP ${res.status} ao salvar padrão global.`,
+      };
+    }
+
+    const saved: VoiceStudioPlatformDefaults = {
+      version: Number(json.defaults.version) || Date.now(),
+      updatedAt: typeof json.defaults.updatedAt === 'string' ? json.defaults.updatedAt : new Date().toISOString(),
+      updatedBy:
+        typeof json.defaults.updatedBy === 'string' ? json.defaults.updatedBy : updatedByName || 'Admin',
+      settings: sanitizePlatformVoiceDefaults(json.defaults.settings),
+    };
+    savePlatformDefaultsCache(saved);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('lms_voicestudio_platform_defaults_updated', { detail: saved }));
+    }
+    return { ok: true, defaults: saved };
+  } catch (err: unknown) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : 'Falha de rede ao publicar padrão global.',
+    };
+  }
+}
+
+export function saveUserVoiceOverrides(overrides: Partial<VoiceStudioSettings>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const clean = sanitizeUserOverrides(overrides);
+    const state: VoiceStudioUserOverridesState = {
+      overrides: clean,
+      updatedAt: new Date().toISOString(),
+      migratedFromV1: true,
+    };
+    localStorage.setItem(VOICESTUDIO_OVERRIDE_KEY, JSON.stringify(state));
+  } catch (err) {
+    console.warn('[VoiceStudio] Não foi possível salvar sobrescritas do usuário:', err);
+  }
+}
+
+export function clearUserVoiceOverrides(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const state: VoiceStudioUserOverridesState = {
+      overrides: {},
+      updatedAt: new Date().toISOString(),
+      migratedFromV1: true,
+    };
+    localStorage.setItem(VOICESTUDIO_OVERRIDE_KEY, JSON.stringify(state));
+  } catch {
+    // ignora
+  }
+}
+
+export function loadUserVoiceOverrides(): Partial<VoiceStudioSettings> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const rawV2 = localStorage.getItem(VOICESTUDIO_OVERRIDE_KEY);
+    if (rawV2) {
+      const parsed = JSON.parse(rawV2) as VoiceStudioUserOverridesState;
+      if (parsed && typeof parsed === 'object' && parsed.overrides) {
+        return sanitizeUserOverrides(parsed.overrides);
+      }
+      return {};
+    }
+
+    // Migração única de lms_voicestudio_settings_v1 para v2:
+    // Preserva URL customizada, credenciais, estilo e voz escolhida no navegador,
+    // mas descarta model:'omnivoice' e speed legados para herdar o padrão global oficial.
+    const rawV1 = localStorage.getItem(VOICESTUDIO_STORAGE_KEY);
+    const migrated: Partial<VoiceStudioSettings> = {};
+    if (rawV1) {
+      try {
+        const v1 = JSON.parse(rawV1) as Record<string, unknown>;
+        if (v1 && typeof v1 === 'object') {
+          if (typeof v1.serverUrl === 'string' && v1.serverUrl.trim()) {
+            const normUrl = normalizeServerUrl(v1.serverUrl);
+            if (normUrl !== DEFAULT_VOICESTUDIO_SETTINGS.serverUrl) {
+              migrated.serverUrl = normUrl;
+              migrated.useServerProxy = isLoopbackServerUrl(normUrl) ? false : Boolean(v1.useServerProxy);
+            }
+          }
+          if (typeof v1.apiKey === 'string' && v1.apiKey.trim()) migrated.apiKey = v1.apiKey;
+          if (typeof v1.sharePin === 'string' && v1.sharePin.trim()) migrated.sharePin = v1.sharePin;
+          if (typeof v1.instruct === 'string' && v1.instruct.trim()) migrated.instruct = v1.instruct.slice(0, 500);
+          if (typeof v1.voiceDescription === 'string' && v1.voiceDescription.trim()) {
+            migrated.voiceDescription = v1.voiceDescription.slice(0, 500);
+          }
+          if (typeof v1.browserVoiceURI === 'string' && v1.browserVoiceURI.trim()) {
+            migrated.browserVoiceURI = v1.browserVoiceURI;
+          }
+          if (v1.engineMode === 'browser' || v1.engineMode === 'voicestudio') {
+            migrated.engineMode = v1.engineMode;
+          }
+        }
+      } catch {
+        // ignora V1 inválido
+      }
+    }
+    saveUserVoiceOverrides(migrated);
+    return migrated;
+  } catch {
+    return {};
+  }
+}
+
+export function resolveEffectiveVoiceStudioSettings(
+  platformDefaults: VoiceStudioPlatformDefaults,
+  overrides: Partial<VoiceStudioSettings>
+): VoiceStudioSettings {
+  const merged = {
+    ...DEFAULT_VOICESTUDIO_SETTINGS,
+    ...platformDefaults.settings,
+    ...overrides,
+  };
+  const normUrl = normalizeServerUrl(merged.serverUrl);
+  return {
+    ...merged,
+    serverUrl: normUrl,
+    useServerProxy: isLoopbackServerUrl(normUrl) ? false : Boolean(merged.useServerProxy),
+    speed: clampNumber(merged.speed, 0.25, 4.0, DEFAULT_VOICESTUDIO_SETTINGS.speed),
+    browserPitch: clampNumber(merged.browserPitch, 0.5, 2.0, DEFAULT_VOICESTUDIO_SETTINGS.browserPitch),
+    browserVolume: clampNumber(merged.browserVolume, 0.1, 1.0, DEFAULT_VOICESTUDIO_SETTINGS.browserVolume),
+  };
+}
+
+export function loadVoiceStudioSettings(): VoiceStudioSettings {
+  if (typeof window === 'undefined') return { ...DEFAULT_VOICESTUDIO_SETTINGS };
+  return resolveEffectiveVoiceStudioSettings(loadPlatformDefaultsCache(), loadUserVoiceOverrides());
 }
 
 export function saveVoiceStudioSettings(settings: VoiceStudioSettings): void {
@@ -396,11 +743,41 @@ async function callVoiceStudioJson<T>(
   }
 }
 
+const healthProbeCache = new Map<string, { ok: boolean; checkedAt: number }>();
+
+export function invalidateVoiceStudioHealthProbe(serverUrl?: string): void {
+  if (serverUrl) {
+    healthProbeCache.delete(normalizeServerUrl(serverUrl));
+  } else {
+    healthProbeCache.clear();
+  }
+}
+
+export async function probeVoiceStudioHealth(
+  settings: VoiceStudioSettings,
+  timeoutMs = 1200
+): Promise<boolean> {
+  const key = normalizeServerUrl(settings.serverUrl);
+  const cached = healthProbeCache.get(key);
+  const now = Date.now();
+  if (cached) {
+    const ttl = cached.ok ? 30_000 : 60_000;
+    if (now - cached.checkedAt < ttl) {
+      return cached.ok;
+    }
+  }
+
+  const health = await callVoiceStudioJson<Record<string, unknown>>('health', '/health', settings, timeoutMs);
+  healthProbeCache.set(key, { ok: health.ok, checkedAt: Date.now() });
+  return health.ok;
+}
+
 export async function testVoiceStudioConnection(
   settings: VoiceStudioSettings
 ): Promise<VoiceStudioConnectionResult> {
   const baseUrl = normalizeServerUrl(settings.serverUrl);
   const health = await callVoiceStudioJson<Record<string, unknown>>('health', '/health', settings, 5000);
+  healthProbeCache.set(baseUrl, { ok: health.ok, checkedAt: Date.now() });
 
   if (!health.ok) {
     return {
@@ -437,13 +814,22 @@ export async function testVoiceStudioConnection(
     ? modelsRes.data.data
     : [];
 
+  // Filtra IDs exclusivos de ASR/STT retornados por /v1/models e preserva descrições amigáveis
+  const defaultMeta = new Map(DEFAULT_VOICESTUDIO_MODELS.map((m) => [m.id, m.owned_by]));
+  const filteredServerModels = rawModels
+    .filter((m) => m && typeof m.id === 'string' && !/^(whisper|gpt-4o-.*transcribe)/i.test(m.id))
+    .map((m) => ({
+      id: m.id,
+      owned_by: defaultMeta.get(m.id) || m.owned_by,
+    }));
+
   return {
     ok: true,
     statusCode: health.status,
     activeEngine: String(health.data?.engine || health.data?.active_engine || 'VoiceStudio'),
     device: health.data?.device ? String(health.data.device) : undefined,
     voices: rawVoices.length > 0 ? rawVoices : DEFAULT_VOICESTUDIO_VOICES,
-    models: rawModels.length > 0 ? rawModels : DEFAULT_VOICESTUDIO_MODELS,
+    models: filteredServerModels.length > 0 ? filteredServerModels : DEFAULT_VOICESTUDIO_MODELS,
   };
 }
 
