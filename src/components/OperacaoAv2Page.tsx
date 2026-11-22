@@ -121,27 +121,36 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const applyPendingDisc = (targetId?: string | null) => {
+    const applyPendingDisc = (targetId?: string | null, targetSubTab?: string | null) => {
       if (!targetId) return;
       const exists = DOSSIE_AV2_2026_2.some((d) => d.disciplinaId === targetId);
       if (exists) {
         setSelectedDia('all');
         setSelectedDisciplinaId(targetId);
-        setInnerTab('regras');
+        const validSubTab =
+          targetSubTab && ['regras', 'guia', 'mapa', 'simulado'].includes(targetSubTab)
+            ? (targetSubTab as InnerSubTab)
+            : 'regras';
+        setInnerTab(validSubTab);
         try {
           localStorage.removeItem('lms_pending_av2_disciplina');
+          localStorage.removeItem('lms_pending_av2_subtab');
         } catch (_) {}
       }
     };
 
     try {
-      applyPendingDisc(localStorage.getItem('lms_pending_av2_disciplina'));
+      applyPendingDisc(
+        localStorage.getItem('lms_pending_av2_disciplina'),
+        localStorage.getItem('lms_pending_av2_subtab')
+      );
     } catch (_) {}
 
     const onOpenDisc = (e: Event) => {
-      const detail = (e as CustomEvent<{ disciplinaId?: string } | string>).detail;
+      const detail = (e as CustomEvent<{ disciplinaId?: string; subTab?: string } | string>).detail;
       const id = typeof detail === 'string' ? detail : detail?.disciplinaId;
-      applyPendingDisc(id);
+      const subTab = typeof detail === 'object' ? detail?.subTab : undefined;
+      applyPendingDisc(id, subTab);
     };
 
     window.addEventListener('lms_open_av2_disciplina', onOpenDisc);

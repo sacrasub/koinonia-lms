@@ -622,15 +622,22 @@ export default function Home() {
     };
 
     const handleOpenAv2DisciplinaEvent = (e: Event) => {
-      const customEvent = e as CustomEvent<{ disciplinaId?: string } | string>;
+      const customEvent = e as CustomEvent<{ disciplinaId?: string; subTab?: string } | string>;
       if (customEvent.detail) {
         const id =
           typeof customEvent.detail === 'string'
             ? customEvent.detail
             : customEvent.detail.disciplinaId;
+        const subTab =
+          typeof customEvent.detail === 'object' ? customEvent.detail.subTab : undefined;
         if (id) {
           try {
             localStorage.setItem('lms_pending_av2_disciplina', id);
+            if (subTab) {
+              localStorage.setItem('lms_pending_av2_subtab', subTab);
+            } else {
+              localStorage.removeItem('lms_pending_av2_subtab');
+            }
           } catch (_) {}
           handleTabChange('operacao-av2');
         }

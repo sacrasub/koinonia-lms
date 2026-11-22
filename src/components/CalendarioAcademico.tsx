@@ -6,7 +6,8 @@ import {
   CheckCircle2, Circle, AlertTriangle, FileText, 
   ChevronLeft, ChevronRight, X, ExternalLink, 
   Mail, Copy, Check, Sparkles, Filter, List, 
-  Grid, ArrowRight, Share2, Award, Info, AlertCircle, Archive
+  Grid, ArrowRight, Share2, Award, Info, AlertCircle, Archive,
+  Flame, FolderOpen, Video, Layers, PenTool
 } from 'lucide-react';
 import { saveChecklistTasks } from '@/services/studentSyncService';
 
@@ -19,8 +20,10 @@ import {
 import type { 
   AvaliacaoEvento, 
   KanbanTask, 
-  CronogramaConsolidadoItem 
+  CronogramaConsolidadoItem,
+  PassoAcao
 } from '@/data/avaliacoes2026_2';
+import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
 
 export type { AvaliacaoEvento, KanbanTask, CronogramaConsolidadoItem };
 export { CRONOGRAMA_OFICIAL_2026_2 };
@@ -1311,6 +1314,126 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
 
   if (!evento) return null;
 
+  const resolvedDisciplinaId = (() => {
+    if (evento.disciplinaId) return evento.disciplinaId;
+    const normEv = evento.disciplina
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    const matched = DOSSIE_AV2_2026_2.find((d) => {
+      const normD = d.nome
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      const normCurto = d.nomeCurto
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      return (
+        normEv.includes(normD) ||
+        normD.includes(normEv) ||
+        normEv.includes(normCurto) ||
+        (normEv.includes('novo testamento iii') && d.disciplinaId === 'disc-6') ||
+        (normEv.includes('plantacao') && d.disciplinaId === 'disc-7') ||
+        (normEv.includes('tcc') && d.disciplinaId === 'disc-8') ||
+        ((normEv.includes('afro') || normEv.includes('afr-101')) && d.disciplinaId === 'disc-9')
+      );
+    });
+    return matched?.disciplinaId;
+  })();
+
+  const dossieDisc = resolvedDisciplinaId
+    ? DOSSIE_AV2_2026_2.find((d) => d.disciplinaId === resolvedDisciplinaId)
+    : undefined;
+  const driveLink = dossieDisc?.linksBase?.find((l) => l.tipo === 'drive');
+  const professorDisplay = evento.professor?.trim().toLowerCase().startsWith('prof')
+    ? evento.professor
+    : `Profº ${evento.professor}`;
+
+  const handlePassoAcaoClick = (e: React.MouseEvent, acao: PassoAcao) => {
+    e.stopPropagation();
+    const targetDiscId = acao.disciplinaId || resolvedDisciplinaId;
+    if (acao.kind === 'av2' && targetDiscId) {
+      onClose();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('lms_open_av2_disciplina', {
+            detail: { disciplinaId: targetDiscId, subTab: acao.av2SubTab || 'guia' },
+          })
+        );
+      }
+      return;
+    }
+    if (acao.kind === 'hub' && targetDiscId) {
+      onClose();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('lms_open_disciplina_detail', { detail: targetDiscId })
+        );
+      }
+      return;
+    }
+    if (acao.kind === 'abnt') {
+      onClose();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lms_change_tab', { detail: 'artigos-abnt' }));
+      }
+      return;
+    }
+    if (acao.url && typeof window !== 'undefined') {
+      if (acao.kind === 'email' || acao.url.startsWith('mailto:')) {
+        window.location.href = acao.url;
+      } else {
+        window.open(acao.url, '_blank', 'noopener,noreferrer');
+      }
+    }
+  };
+
+  const getPassoAcaoStyle = (variant?: PassoAcao['variant']) => {
+    switch (variant) {
+      case 'pdf':
+        return {
+          Icon: FileText,
+          cls: 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-200 border-rose-500/40',
+        };
+      case 'drive':
+        return {
+          Icon: FolderOpen,
+          cls: 'bg-sky-500/15 hover:bg-sky-500/25 text-sky-200 border-sky-500/40',
+        };
+      case 'meet':
+        return {
+          Icon: Video,
+          cls: 'bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 border-emerald-500/40',
+        };
+      case 'av2':
+        return {
+          Icon: Flame,
+          cls: 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border-amber-400/50',
+        };
+      case 'hub':
+        return {
+          Icon: Layers,
+          cls: 'bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border-indigo-400/50',
+        };
+      case 'abnt':
+        return {
+          Icon: PenTool,
+          cls: 'bg-teal-500/20 hover:bg-teal-500/30 text-teal-200 border-teal-400/50',
+        };
+      case 'email':
+        return {
+          Icon: Mail,
+          cls: 'bg-violet-500/20 hover:bg-violet-500/30 text-violet-200 border-violet-400/50',
+        };
+      default:
+        return {
+          Icon: BookOpen,
+          cls: 'bg-blue-500/15 hover:bg-blue-500/25 text-blue-200 border-blue-500/40',
+        };
+    }
+  };
+
   const checks = checklistMap[evento.id] || {};
   const total = evento.passoAPasso.length;
   let completed = 0;
@@ -1360,7 +1483,7 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
               {evento.disciplina}
             </h2>
             <p className="text-xs text-slate-300 mt-1">
-              Profº <strong className="text-white">{evento.professor}</strong> • {evento.tipo}
+              <strong className="text-white">{professorDisplay}</strong> • {evento.tipo}
             </p>
           </div>
 
@@ -1412,6 +1535,105 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
             </div>
           </div>
 
+          {/* ATALHO PRINCIPAL PARA ESTUDAR NA DISCIPLINA (OPERAÇÃO AV2 + HUB + DRIVE) */}
+          {(dossieDisc || resolvedDisciplinaId || ['TRABALHO', 'RESUMO', 'ARTIGO'].includes(evento.tipoBadge)) && (
+            <div className="bg-gradient-to-br from-indigo-950/80 via-slate-900 to-amber-950/40 border border-amber-400/35 rounded-2xl p-4 space-y-2.5 shadow-md">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Melhor Link para Estudar Esta Disciplina
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {dossieDisc && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (typeof window !== 'undefined') {
+                        window.dispatchEvent(
+                          new CustomEvent('lms_open_av2_disciplina', {
+                            detail: {
+                              disciplinaId: dossieDisc.disciplinaId,
+                              subTab: evento.tipoBadge === 'SEMINÁRIO' ? 'regras' : 'guia',
+                            },
+                          })
+                        );
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-sm transition cursor-pointer active:scale-95"
+                  >
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>Estudar na Operação AV2 ({dossieDisc.nomeCurto})</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                )}
+
+                {resolvedDisciplinaId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (typeof window !== 'undefined') {
+                        window.dispatchEvent(
+                          new CustomEvent('lms_open_disciplina_detail', {
+                            detail: resolvedDisciplinaId,
+                          })
+                        );
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-500 text-white font-bold text-xs border border-indigo-400/40 transition cursor-pointer"
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Hub da Disciplina</span>
+                  </button>
+                )}
+
+                {driveLink && (
+                  <a
+                    href={driveLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-200 border border-sky-500/30 font-bold text-xs transition"
+                  >
+                    <FolderOpen className="w-3.5 h-3.5" />
+                    <span>Pasta no Drive</span>
+                    <ExternalLink className="w-3 h-3 opacity-75" />
+                  </a>
+                )}
+
+                <a
+                  href={OFFICIAL_NOTEBOOKLM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-200 border border-amber-500/30 font-bold text-xs transition"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>NotebookLM</span>
+                  <ExternalLink className="w-3 h-3 opacity-75" />
+                </a>
+
+                {['TRABALHO', 'RESUMO', 'ARTIGO'].includes(evento.tipoBadge) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (typeof window !== 'undefined') {
+                        window.dispatchEvent(
+                          new CustomEvent('lms_change_tab', { detail: 'artigos-abnt' })
+                        );
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-600/80 hover:bg-teal-500 text-white font-bold text-xs border border-teal-400/40 transition cursor-pointer"
+                  >
+                    <PenTool className="w-3.5 h-3.5" />
+                    <span>Criador ABNT</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* 1. GUIA PASSO A PASSO COM CHECKLIST INTERATIVO */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -1447,13 +1669,33 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
                         <Circle className="w-5 h-5 text-slate-500 hover:text-slate-300" />
                       )}
                     </button>
-                    <div className="space-y-0.5">
+                    <div className="space-y-1.5 flex-1 min-w-0">
                       <span className="text-[11px] font-black uppercase text-slate-400 block">
                         Etapa {sIdx + 1}
                       </span>
                       <p className={`text-xs sm:text-sm leading-relaxed ${isChecked ? 'line-through opacity-80' : 'font-medium'}`}>
                         {passo}
                       </p>
+                      {evento.passoAcoes?.[sIdx] && evento.passoAcoes[sIdx].length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                          {evento.passoAcoes[sIdx].map((acao, aIdx) => {
+                            const { Icon, cls } = getPassoAcaoStyle(acao.variant);
+                            const isExternal = acao.kind === 'external';
+                            return (
+                              <button
+                                key={aIdx}
+                                type="button"
+                                onClick={(e) => handlePassoAcaoClick(e, acao)}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition cursor-pointer ${cls}`}
+                              >
+                                <Icon className="w-3 h-3 shrink-0" />
+                                <span>{acao.label}</span>
+                                {isExternal && <ExternalLink className="w-3 h-3 opacity-75 shrink-0" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -1533,21 +1775,33 @@ export const DrawerAvaliacao: React.FC<DrawerAvaliacaoProps> = ({
                       {evento.canalEnvio.destinatario}
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyEmail(evento.canalEnvio.destinatario!)}
-                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-extrabold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
-                  >
-                    {copiedEmail === evento.canalEnvio.destinatario ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-300" /> E-mail Copiado!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" /> Copiar E-mail
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href={`mailto:${evento.canalEnvio.destinatario}${
+                        evento.canalEnvio.assunto
+                          ? `?subject=${encodeURIComponent(evento.canalEnvio.assunto)}`
+                          : ''
+                      }`}
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-extrabold text-xs transition flex items-center justify-center gap-1.5"
+                    >
+                      <Mail className="w-3.5 h-3.5" /> Abrir E-mail
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyEmail(evento.canalEnvio.destinatario!)}
+                      className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-extrabold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    >
+                      {copiedEmail === evento.canalEnvio.destinatario ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-300" /> E-mail Copiado!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" /> Copiar E-mail
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               )}
 

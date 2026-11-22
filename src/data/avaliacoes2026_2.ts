@@ -15,8 +15,18 @@
  * - PlanoEstudosPage.tsx e planoEstudosService.ts
  */
 
+export interface PassoAcao {
+  label: string;
+  kind: 'external' | 'av2' | 'hub' | 'abnt' | 'email';
+  url?: string;
+  disciplinaId?: string;
+  av2SubTab?: 'regras' | 'guia' | 'mapa' | 'simulado';
+  variant?: 'pdf' | 'drive' | 'meet' | 'texto' | 'av2' | 'hub' | 'abnt' | 'email';
+}
+
 export interface AvaliacaoEvento {
   id: string;
+  disciplinaId?: string;
   disciplina: string;
   disciplinaShort: string;
   professor: string;
@@ -29,6 +39,7 @@ export interface AvaliacaoEvento {
   isArchived?: boolean;
   regras: string[];
   passoAPasso: string[];
+  passoAcoes?: Record<number, PassoAcao[]>;
   bibliografia: {
     obrigatoria?: string[];
     recomendada?: string[];
@@ -716,6 +727,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-his-av2-brasil',
+    disciplinaId: 'disc-1',
     disciplina: 'História do Congregacionalismo',
     disciplinaShort: 'Hist. Congregacionalismo (AV2)',
     professor: 'Profº Ary Júnior',
@@ -736,6 +748,21 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Revisar Robert & Sarah Kalley, Igreja Fluminense (1858), Pernambucana (19/10/1873), Artigos 13-14 e 24, Help for Brazil, UEA e 1913.',
       'Conectar-se com câmera aberta às 19:00 BRT no dia 24/11/2026 e responder às 10 afirmações V/F no Google Forms.'
     ],
+    passoAcoes: {
+      0: [
+        { label: '(1) Síntese Congregacionalismo', kind: 'external', url: 'https://aryqueirozjr.com.br/historia-identidade-congregacionalismo-brasileiro/', variant: 'texto' },
+        { label: '(2) Síntese 28 Artigos', kind: 'external', url: 'https://aryqueirozjr.com.br/vida-teologia-drkalley-parte-2/', variant: 'texto' },
+        { label: '(3) Análise 150 Anos 28 Artigos', kind: 'external', url: 'https://aryqueirozjr.com.br/150-anos-breve-exposicao-doutrinas-kalley/', variant: 'texto' },
+        { label: 'PDF: 28 Artigos', kind: 'external', url: 'https://drive.google.com/open?id=1waocn4PsQ79Rw6iCxuZmueVgPnN_kcG7&usp=drive_copy', variant: 'pdf' },
+      ],
+      1: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-1', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Simulado AV2 (V/F e Questões)', kind: 'av2', disciplinaId: 'disc-1', av2SubTab: 'simulado', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Sala da Prova (Google Meet)', kind: 'external', url: 'https://meet.google.com/sef-ggpp-bbn', variant: 'meet' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         '1. Síntese do Congregacionalismo Brasileiro (WhatsApp)',
@@ -759,6 +786,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-hpc-av2-liberalismo',
+    disciplinaId: 'disc-2',
     disciplina: 'História do Pensamento Cristão II',
     disciplinaShort: 'Pensamento Cristão II (AV2)',
     professor: 'Profº Hilário Bispo',
@@ -778,6 +806,19 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Correlacionar autores (Schleiermacher, Barth, Kierkegaard, Bultmann, Machen) com suas teses principais.',
       'Acessar o link do Google Forms no chat do Meet em 24/11/2026 às 20:35 BRT e submeter.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Pasta PWP Slides (Aulas 6–16)', kind: 'external', url: 'https://drive.google.com/drive/folders/1nzJ_soSOyypR47_vlR3mHLNCh0YKUTEj', variant: 'drive' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1iKwbRf-oLpyphrFnM-Km5TWOo2UCU1Me&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-2', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Mapa Mental AV2', kind: 'av2', disciplinaId: 'disc-2', av2SubTab: 'mapa', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Sala da Prova (Google Meet)', kind: 'external', url: 'https://meet.google.com/cxj-yetd-xpf', variant: 'meet' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Apostila oficial e slides das Aulas 9 a 14 (Profº Hilário Bispo)'
@@ -799,6 +840,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-aco-av2-final',
+    disciplinaId: 'disc-3',
     disciplina: 'Aconselhamento Bíblico II',
     disciplinaShort: 'Aconselhamento Bíblico II (AV2)',
     professor: 'Profº Uilian Santos',
@@ -818,6 +860,19 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Memorizar as 5 áreas do Inventário do Coração e o contraste entre falsa esperança e esperança cristã.',
       'Acessar o Google Forms em 25/11/2026 às 19:00 BRT e submeter.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Slides: ACONSELHAMENTO II.pptx', kind: 'external', url: 'https://drive.google.com/file/d/1YsA-o51KHmFGMFQ0EYmM6GgniVq6kiGQ/view', variant: 'pdf' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1BUr0R4pLQjTt01ID8XjYKIBlZhAtaWcx&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-3', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Simulado AV2', kind: 'av2', disciplinaId: 'disc-3', av2SubTab: 'simulado', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Sala da Prova (Google Meet)', kind: 'external', url: 'https://meet.google.com/ifv-zsdd-gjx', variant: 'meet' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Slides das aulas da Unidade 2 disponibilizados no Google Drive (Profº Uilian Santos)'
@@ -839,6 +894,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-dir-av2-prova-trabalho',
+    disciplinaId: 'disc-4',
     disciplina: 'Direitos Humanos',
     disciplinaShort: 'Direitos Humanos (AV2)',
     professor: 'Profº Cleiton Barbirato',
@@ -859,6 +915,22 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Fixar: Art. 5º e § 3º da CF/88 (Emendas Constitucionais), Igualdade Formal vs. Equidade, Ações Afirmativas, Conselho de Segurança da ONU (15 / 5 com veto), Dimensão Vertical vs. Horizontal e Honra Subjetiva/Objetiva.',
       'Acessar o Google Forms dentro da janela oficial (19:00 às 23:59 BRT) em 25/11/2026.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Aula 07 Slides (PDF)', kind: 'external', url: 'https://drive.google.com/file/d/1wNWgudlsB0Xg5acI7qxll0h9-rfpSXAS/view', variant: 'pdf' },
+        { label: 'Aula 08 Slides (PDF)', kind: 'external', url: 'https://drive.google.com/file/d/1asyRutF_5tCDZqHnExfrF8l1JIiC4xcx/view', variant: 'pdf' },
+        { label: 'Aula 09 Slides (PDF)', kind: 'external', url: 'https://drive.google.com/file/d/1wbcEUivsqWPDsnY4DKOmxIXSEX-fiq6e/view', variant: 'pdf' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1fPSmFUBNzrzK--n3NDKOdMR5HWk25AV7&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-4', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Simulado AV2', kind: 'av2', disciplinaId: 'disc-4', av2SubTab: 'simulado', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Sala Google Meet', kind: 'external', url: 'https://meet.google.com/uva-zmav-rds', variant: 'meet' },
+        { label: 'Regras & Janela AV2', kind: 'av2', disciplinaId: 'disc-4', av2SubTab: 'regras', variant: 'av2' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Arquivo consolidado de 52 slides pós-AV1 (Google Drive da disciplina)'
@@ -880,6 +952,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-etc-av2-encerramento',
+    disciplinaId: 'disc-5',
     disciplina: 'Ética Cristã',
     disciplinaShort: 'Ética Cristã (Encerramento)',
     professor: 'Profª Karoline Evangelista',
@@ -899,6 +972,18 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Conferir sua nota individual dos seminários com a Profª Karoline Evangelista.',
       'Revisar o guia do Catecismo Maior (Q. 99) e Absolutismo Graduado de Geisler caso precise de revisão.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Sala da Devolutiva (Google Meet)', kind: 'external', url: 'https://meet.google.com/ypd-yzwg-nrw', variant: 'meet' },
+      ],
+      1: [
+        { label: 'Hub da Disciplina', kind: 'hub', disciplinaId: 'disc-5', variant: 'hub' },
+      ],
+      2: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-5', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1xuOm61ul94H3kdU5psFtbl-I2KZ41QJC&usp=drive_copy', variant: 'drive' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Catecismo Maior de Westminster (Q. 91 a 150)',
@@ -921,6 +1006,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-nt3-av2-epistolas',
+    disciplinaId: 'disc-6',
     disciplina: 'Novo Testamento III — Epístolas Gerais',
     disciplinaShort: 'NT III — Epístolas Gerais (AV2)',
     professor: 'Profº Marcio Leal',
@@ -940,6 +1026,21 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Conferir os contrastes entre Paulo e Tiago, o significado de Babilônia (1Pe 5:13) e o combate ao docetismo em 1-3 João.',
       'Acessar o Google Forms no horário da aula em 26/11/2026 às 20:35 BRT e responder sem consulta.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Slides: Judas & Joaninas (PDF)', kind: 'external', url: 'https://drive.google.com/file/d/1nvzRiGitV--EW7fqpfWRHbfF5u2H1WYc/view', variant: 'pdf' },
+        { label: 'Slides: Tiago, 1-2 Pedro (PDF)', kind: 'external', url: 'https://drive.google.com/file/d/1LKsJqGgWvgkv_A1pwL9_E1p-qV9Cdgrr/view', variant: 'pdf' },
+        { label: 'Livro Carson, Moo & Morris', kind: 'external', url: 'https://drive.google.com/open?id=1ofgq2tGJt-Lj6F2A4vgZOdVYqJKFyhgT&usp=drive_copy', variant: 'pdf' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1ppsv5caJVbHw-1RwhHu8nxBmqFT9Wm9P&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-6', av2SubTab: 'guia', variant: 'av2' },
+        { label: 'Simulado AV2', kind: 'av2', disciplinaId: 'disc-6', av2SubTab: 'simulado', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Sala da Prova (Google Meet)', kind: 'external', url: 'https://meet.google.com/nyn-xjqk-vky', variant: 'meet' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Slides oficiais do Profº Marcio Leal (Unidade 2)',
@@ -962,6 +1063,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-9-plantacao-resumo-livro',
+    disciplinaId: 'disc-7',
     disciplina: 'Plantação e Revitalização de Igrejas II',
     disciplinaShort: 'Plantação (Prova Consulta Livre + Resumo 12p)',
     professor: 'Profº Thácyto Lessa',
@@ -982,6 +1084,19 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Realizar a Prova AV2 online às 19:00 BRT consultando livremente slides, anotações e o PDF consolidado.',
       'Enviar o resumo em PDF ou Word para thacyto@gmail.com até as 23:59 de 27/11/2026.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Redigir no Criador ABNT', kind: 'abnt', variant: 'abnt' },
+        { label: 'Pasta da Disciplina (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1nzXIDnWvvrxSgXQULaSvDGdVr32L_xP8&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Sala da Prova (Google Meet)', kind: 'external', url: 'https://meet.google.com/jwb-wpvc-pzm', variant: 'meet' },
+        { label: 'Guia de Revisão AV2', kind: 'av2', disciplinaId: 'disc-7', av2SubTab: 'guia', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Enviar E-mail (thacyto@gmail.com)', kind: 'email', url: 'mailto:thacyto@gmail.com?subject=Resumo%20Trelica%20e%20a%20Videira%20-%20Plantacao%20II', variant: 'email' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         '"A Treliça e a Videira" (Colin Marshall e Tony Payne)',
@@ -1006,6 +1121,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-afro-av2-trabalho',
+    disciplinaId: 'disc-9',
     disciplina: 'História e Cultura Afro-Brasileira e Indígena (AFR-101)',
     disciplinaShort: 'Cultura Afro & Indígena (2 Laudas)',
     professor: 'Profº Alexsandro de Oliveira Silva',
@@ -1028,6 +1144,24 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Partes 2 e 3: Redigir em exatamente 2 laudas a análise fundamentada na Bíblia (Gn 1:26-28, At 17:26, Gl 3:28, Tg 2:1-9) e em pelo menos 2 autores do curso, concluindo com uma proposta de ação pastoral/eclesial realista.',
       'Enviar o trabalho individual exclusivamente para prof.alexsandro@gmail.com até 28/11/2026.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Pasta Oficial do Módulo (Drive)', kind: 'external', url: 'https://drive.google.com/drive/folders/1mCp4ZCawhIekLJl3_bcoPiThAqwdzlty?usp=drive_link', variant: 'drive' },
+        { label: 'Videoaula 1', kind: 'external', url: 'https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link', variant: 'meet' },
+        { label: 'Videoaula 2', kind: 'external', url: 'https://drive.google.com/file/d/1zMrGk_T-658PSVDXk14qb4VsFcqNtfzq/view?usp=drive_link', variant: 'meet' },
+        { label: 'Videoaula 3', kind: 'external', url: 'https://drive.google.com/file/d/1cdcDrVmHoPmet3oA2Bib6hhz_ugzBxaK/view?usp=drive_link', variant: 'meet' },
+        { label: 'Videoaula 4', kind: 'external', url: 'https://drive.google.com/file/d/1gSk3mjti0WC5PCDDpv0DRdtQ0x2hB_yw/view?usp=drive_link', variant: 'meet' },
+      ],
+      1: [
+        { label: 'Guia & Autores na Operação AV2', kind: 'av2', disciplinaId: 'disc-9', av2SubTab: 'guia', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Redigir no Criador ABNT (2 laudas)', kind: 'abnt', variant: 'abnt' },
+      ],
+      3: [
+        { label: 'Enviar E-mail (prof.alexsandro@gmail.com)', kind: 'email', url: 'mailto:prof.alexsandro@gmail.com?subject=Trabalho%20Final%20Aplicado%20(AFR-101)', variant: 'email' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         '4 Videoaulas Gravadas na Pasta Oficial do Google Drive (Profº Alexsandro de Oliveira Silva)',
@@ -1053,6 +1187,7 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
   },
   {
     id: 'aval-12-tcc1-artigo-final',
+    disciplinaId: 'disc-8',
     disciplina: 'TCC I - Trabalho de Conclusão de Curso I',
     disciplinaShort: 'TCC I (Artigo Científico ABNT)',
     professor: 'Profª Gabriela Leal',
@@ -1075,6 +1210,22 @@ export const AVALIACOES_2026_2: AvaliacaoEvento[] = [
       'Conferir impessoalidade (3ª pessoa), citações ABNT (NBR 10520) e Referências alfabéticas (NBR 6023).',
       'Enviar o artigo completo em PDF e Word até 04/12/2026 às 23:59 para gabriela.lealg7757@gmail.com.'
     ],
+    passoAcoes: {
+      0: [
+        { label: 'Abrir Criador de Artigos ABNT', kind: 'abnt', variant: 'abnt' },
+        { label: 'Pasta TCC I (Drive)', kind: 'external', url: 'https://drive.google.com/open?id=1f-9i-TpqaZhzoLyrxg6flM6CHTsAOWPj&usp=drive_copy', variant: 'drive' },
+      ],
+      1: [
+        { label: 'Guia de Normas ABNT (AV2)', kind: 'av2', disciplinaId: 'disc-8', av2SubTab: 'guia', variant: 'av2' },
+      ],
+      2: [
+        { label: 'Simulado & Checklist ABNT', kind: 'av2', disciplinaId: 'disc-8', av2SubTab: 'simulado', variant: 'av2' },
+        { label: 'Sala de Orientação (Meet)', kind: 'external', url: 'https://meet.google.com/jnz-hkqd-edc', variant: 'meet' },
+      ],
+      3: [
+        { label: 'Enviar E-mail (gabriela.lealg7757@gmail.com)', kind: 'email', url: 'mailto:gabriela.lealg7757@gmail.com?subject=Artigo%20Cientifico%20Final%20-%20TCC%20I', variant: 'email' },
+      ],
+    },
     bibliografia: {
       obrigatoria: [
         'Manual de Trabalhos Acadêmicos da Faculdade Maciço do Baturité (FMB/UNIMB)',
