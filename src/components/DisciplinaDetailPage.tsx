@@ -25,6 +25,11 @@ import {
   deleteGeminiNote,
   updateGeminiNote
 } from '@/services/geminiNotesService';
+import {
+  buildCornellDeepLinkUrl,
+  buildCornellNoteFromGeminiAula,
+  getGeminiAulaRecord,
+} from '@/data/geminiAulasCornell';
 import { 
   getGravacoesForDisciplina, 
   getGravacaoForAula, 
@@ -286,10 +291,10 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
     description?: string; 
   } | null>(null);
 
-  // Carregar dados da disciplina
-  const refreshData = () => {
+  // Carregar dados da disciplina com isolamento estrito por ID
+  const refreshData = (targetId: string = disciplinaId) => {
     const allDisc = getAllDisciplinas();
-    let found = allDisc.find((d) => d.id === disciplinaId);
+    let found = allDisc.find((d) => d.id === targetId);
 
     // Se for aluno, garante que a matéria selecionada pertence à sua turma configurada
     if (currentRole === 'aluno') {
@@ -316,15 +321,22 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   };
 
   useEffect(() => {
-    refreshData();
+    let isCancelled = false;
+    refreshData(disciplinaId);
 
-    // Sincroniza dados frescos de gravações da nuvem
-    fetchGravacoesFromCloud().then(() => refreshData());
+    // Sincroniza dados frescos de gravações da nuvem sem contaminar após troca de matéria
+    fetchGravacoesFromCloud().then(() => {
+      if (!isCancelled) refreshData(disciplinaId);
+    });
 
-    const handleUpd = () => refreshData();
+    const handleUpd = () => {
+      if (!isCancelled) refreshData(disciplinaId);
+    };
     const handleVisibilitySync = () => {
       if (document.visibilityState === 'visible') {
-        fetchGravacoesFromCloud().then(() => refreshData());
+        fetchGravacoesFromCloud().then(() => {
+          if (!isCancelled) refreshData(disciplinaId);
+        });
       }
     };
 
@@ -339,6 +351,7 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
     document.addEventListener('visibilitychange', handleVisibilitySync);
 
     return () => {
+      isCancelled = true;
       window.removeEventListener('lms_disciplinas_updated', handleUpd);
       window.removeEventListener('lms_livros_recomendados_updated', handleUpd);
       window.removeEventListener('lms_gemini_notes_updated', handleUpd);
@@ -349,7 +362,7 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
       window.removeEventListener('lms_slides_updated', handleUpd);
       document.removeEventListener('visibilitychange', handleVisibilitySync);
     };
-  }, [disciplinaId, normalizedEmail]);
+  }, [disciplinaId, normalizedEmail, currentRole, studentTurmaIdx]);
 
   const showToast = (text: string) => {
     setToastMessage(text);
@@ -852,33 +865,51 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
   // Importar Resumo do Gemini diretamente para o Caderno Cornell do Aluno
   const handleImportGeminiToCornell = (note: GeminiNoteItem) => {
     const defaultStudentEmail = normalizedEmail || 'sacrasub@gmail.com';
-    const noteId = `note-${disciplina?.code?.toLowerCase() || 'disc'}-${(note.data_aula || '').replace(/[^0-9]/g, '-') || Date.now()}`;
-    
-    saveCornellNote(defaultStudentEmail, {
-      id: noteId,
-      user_email: defaultStudentEmail,
-      date: note.data_aula || new Date().toISOString().slice(0, 10),
-      disciplina_code: disciplina?.code || 'MAT',
-      disciplina_name: disciplina?.name || 'Disciplina',
-      theme: note.title || `Anotações Gemini • Aula ${note.aula_num || 1} • ${disciplina?.name}`,
-      professor_name: disciplina?.professor_name || 'Corpo Docente',
-      biblical_references: 'Consulte as referências da matéria no plano de ensino',
-      cues: `• Quais os conceitos fundamentais da Aula ${note.aula_num || 1} de ${disciplina?.name}?
+    const rawDate = (note.data_aula || '').trim();
+    const brMatch = rawDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    const isoDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate)
+      ? rawDate
+      : brMatch
+      ? `${brMatch[3]}-${brMatch[2]}-${brMatch[1]}`
+      : new Date().toISOString().slice(0, 10);
+
+    const targetDiscId = disciplina?.id || note.disciplina_id;
+    const matchedAula = getGeminiAulaRecord(targetDiscId, note.aula_num, isoDate);
+
+    if (matchedAula && (note.tipo || 'anotacao') === 'anotacao') {
+      const generated = buildCornellNoteFromGeminiAula(matchedAula);
+      saveCornellNote(defaultStudentEmail, {
+        ...generated,
+        user_email: defaultStudentEmail,
+      });
+    } else {
+      const noteId = `note-${disciplina?.code?.toLowerCase() || 'disc'}-${isoDate}-${note.tipo || 'gemini'}`;
+      saveCornellNote(defaultStudentEmail, {
+        id: noteId,
+        user_email: defaultStudentEmail,
+        date: isoDate,
+        disciplina_code: disciplina?.code || 'MAT',
+        disciplina_name: disciplina?.name || 'Disciplina',
+        theme: note.title || `Anotações Gemini • Aula ${note.aula_num || 1} • ${disciplina?.name}`,
+        professor_name: disciplina?.professor_name || 'Corpo Docente',
+        biblical_references: 'Consulte as referências da matéria no plano de ensino',
+        cues: `• Quais os conceitos fundamentais da Aula ${note.aula_num || 1} de ${disciplina?.name}?
 • Síntese da discussão teológica e exegética
 • Aplicação prática e ministerial`,
-      notes: note.summary_snippet || `Resumo estruturado gerado pelo Gemini na aula:\n${note.title}`,
-      summary: `Síntese da Aula ${note.aula_num || 1}: ${note.summary_snippet ? note.summary_snippet.slice(0, 180) + '...' : 'Anotações da aula vinculadas com sucesso.'}`,
-      ai_summary_url: note.gemini_url,
-      ai_summary_text: note.summary_snippet,
-      tags: [disciplina?.name || 'Matéria', `Aula ${note.aula_num || 1}`, 'Gemini IA'],
-    });
+        notes: note.summary_snippet || `Resumo estruturado gerado pelo Gemini na aula:\n${note.title}`,
+        summary: `Síntese da Aula ${note.aula_num || 1}: ${note.summary_snippet ? note.summary_snippet.slice(0, 220) : 'Anotações da aula vinculadas com sucesso.'}`,
+        ai_summary_url: note.gemini_url,
+        ai_summary_text: note.summary_snippet,
+        tags: [disciplina?.name || 'Matéria', `Aula ${note.aula_num || 1}`, 'Gemini IA'],
+      });
+    }
 
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('lms_student_sync_updated', { detail: { email: defaultStudentEmail } }));
       window.dispatchEvent(new CustomEvent('lms_cornell_updated'));
     }
 
-    showToast(`✨ Resumo Gemini da Aula ${note.aula_num || 1} introduzido com sucesso no seu Caderno Cornell!`);
+    showToast(`✨ Resumo Gemini da Aula ${note.aula_num || 1} salvo e organizado no seu Caderno Cornell!`);
   };
 
   // Importar Conteúdo de Slides diretamente para o Caderno Cornell
@@ -1440,16 +1471,23 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
             )}
           </div>
 
-          {/* SEÇÃO 2: ANOTAÇÕES DA IA GEMINI EM DESTAQUE */}
+          {/* SEÇÃO 2: ANOTAÇÕES DA IA GEMINI EM DESTAQUE (ESTRITAMENTE ISOLADA POR DISCIPLINA) */}
           <div className="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs space-y-4">
-            <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 bg-indigo-100 text-indigo-900 rounded-xl">
                   <Sparkles className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-gray-900 text-base">Anotações & Resumos da IA Gemini</h3>
-                  <p className="text-xs text-gray-500">Resumos estruturados das aulas e debates gravados.</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-extrabold text-gray-900 text-base">Anotações &amp; Resumos da IA Gemini</h3>
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200">
+                      {disciplina.code || disciplina.id} • {disciplina.name}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    Resumos estruturados exclusivos desta matéria e integração direta com o Caderno Cornell.
+                  </p>
                 </div>
               </div>
 
@@ -1464,91 +1502,121 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
               )}
             </div>
 
-            {geminiNotes.length === 0 ? (
-              <div className="p-8 text-center bg-slate-50 rounded-2xl border border-gray-200 text-xs text-gray-500 space-y-2">
-                <Sparkles className="w-8 h-8 text-gray-300 mx-auto" />
-                <p className="font-semibold text-gray-700">Nenhum resumo do Gemini anexado a esta matéria.</p>
-                {canManage && (
-                  <button
-                    onClick={() => setIsAddGeminiModalOpen(true)}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
-                  >
-                    + Inserir Link do Gemini Docs
-                  </button>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {geminiNotes.map((note) => (
-                  <div
-                    key={note.id}
-                    className="p-5 rounded-2xl border border-indigo-200/90 bg-indigo-50/20 hover:bg-white hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between space-y-3"
-                  >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wide bg-indigo-100 text-indigo-900 px-2.5 py-0.5 rounded-md">
-                          Aula {note.aula_num || 1} • {note.data_aula}
-                        </span>
-                        {canManage && (
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => handleOpenEditGemini(note)}
-                              className="px-2 py-1 bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold flex items-center gap-1 transition cursor-pointer shadow-2xs"
-                              title="Editar Aula / Matéria da Nota"
-                            >
-                              <Edit3 className="w-3 h-3 text-indigo-600" />
-                              <span>Editar</span>
-                            </button>
-                            <button
-                              onClick={() => handleDeleteGemini(note.id)}
-                              className="text-gray-400 hover:text-red-600 p-1 transition cursor-pointer"
-                              title="Remover nota"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-
-                      <h4 className="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">
-                        {note.title}
-                      </h4>
-
-                      {note.summary_snippet && (
-                        <p className="text-xs text-slate-600 line-clamp-3 bg-white p-3 rounded-xl border border-indigo-100 font-medium">
-                          {note.summary_snippet}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
-                      <span className="text-[10px] text-gray-500">Por: {note.author_name}</span>
-                      <div className="flex items-center gap-2">
-                        {currentRole !== 'professor' && (
-                          <button
-                            onClick={() => handleImportGeminiToCornell(note)}
-                            className="py-1.5 px-3 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                            title="Introduzir este resumo no seu Caderno Cornell"
-                          >
-                            <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                            <span>Introduzir no Caderno Cornell</span>
-                          </button>
-                        )}
-                        <a
-                          href={note.gemini_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
-                        >
-                          <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
-                          <span>Abrir Documento Gemini</span>
-                        </a>
-                      </div>
-                    </div>
+            {(() => {
+              const discGeminiNotes = geminiNotes.filter(
+                (n) =>
+                  n.disciplina_id === disciplina.id &&
+                  (n.tipo || 'anotacao') !== 'slide' &&
+                  (n.tipo || 'anotacao') !== 'video'
+              );
+              if (discGeminiNotes.length === 0) {
+                return (
+                  <div className="p-8 text-center bg-slate-50 rounded-2xl border border-gray-200 text-xs text-gray-500 space-y-2">
+                    <Sparkles className="w-8 h-8 text-gray-300 mx-auto" />
+                    <p className="font-semibold text-gray-700">Nenhum resumo do Gemini anexado a esta matéria.</p>
+                    {canManage && (
+                      <button
+                        onClick={() => setIsAddGeminiModalOpen(true)}
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
+                      >
+                        + Inserir Link do Gemini Docs
+                      </button>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              }
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {discGeminiNotes.map((note) => {
+                    const rawDate = (note.data_aula || '').trim();
+                    const brMatch = rawDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+                    const isoDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate)
+                      ? rawDate
+                      : brMatch
+                      ? `${brMatch[3]}-${brMatch[2]}-${brMatch[1]}`
+                      : undefined;
+                    const cornellUrl = buildCornellDeepLinkUrl(
+                      disciplina.id,
+                      isoDate,
+                      note.aula_num
+                    );
+
+                    return (
+                      <div
+                        key={note.id}
+                        className="p-5 rounded-2xl border border-indigo-200/90 bg-indigo-50/20 hover:bg-white hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between space-y-3"
+                      >
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wide bg-indigo-100 text-indigo-900 px-2.5 py-0.5 rounded-md">
+                              Aula {note.aula_num || 1} • {note.data_aula}
+                            </span>
+                            {canManage && (
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleOpenEditGemini(note)}
+                                  className="px-2 py-1 bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold flex items-center gap-1 transition cursor-pointer shadow-2xs"
+                                  title="Editar Aula / Matéria da Nota"
+                                >
+                                  <Edit3 className="w-3 h-3 text-indigo-600" />
+                                  <span>Editar</span>
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteGemini(note.id)}
+                                  className="text-gray-400 hover:text-red-600 p-1 transition cursor-pointer"
+                                  title="Remover nota"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+
+                          <h4 className="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">
+                            {note.title}
+                          </h4>
+
+                          {note.summary_snippet && (
+                            <p className="text-xs text-slate-700 line-clamp-5 bg-white p-3.5 rounded-xl border border-indigo-100 font-medium leading-relaxed">
+                              {note.summary_snippet}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-[10px] text-gray-500">Por: {note.author_name}</span>
+                          <div className="flex flex-wrap items-center gap-2">
+                            {currentRole !== 'professor' && (
+                              <a
+                                href={cornellUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-1.5 px-3 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95"
+                                title="Abrir esta aula já organizada no Caderno Cornell em nova aba"
+                              >
+                                <PenTool className="w-3.5 h-3.5 text-purple-600" />
+                                <span>Abrir no Caderno Cornell</span>
+                                <ExternalLink className="w-3 h-3 opacity-70" />
+                              </a>
+                            )}
+                            <a
+                              href={note.gemini_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95"
+                            >
+                              <Sparkles className="w-3.5 h-3.5 text-indigo-200" />
+                              <span>Abrir Documento Gemini</span>
+                              <ExternalLink className="w-3 h-3 opacity-75" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}

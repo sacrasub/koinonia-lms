@@ -13,9 +13,15 @@ import {
   getAllGeminiNotes, 
   addGeminiNote, 
   updateGeminiNote, 
-  deleteGeminiNote, 
+  deleteGeminiNote,
+  belongsStrictlyToDisciplina,
   SUPPORT_MATERIAL_CONFIG 
 } from '@/services/geminiNotesService';
+import {
+  buildCornellDeepLinkUrl,
+  buildCornellNoteFromGeminiAula,
+  getGeminiAulaRecord,
+} from '@/data/geminiAulasCornell';
 import { getAllDisciplinas } from '@/services/disciplinasService';
 import { saveCornellNote } from '@/services/studentSyncService';
 
@@ -130,6 +136,10 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
   const scopedBaseNotes = useMemo(() => {
     if (!isRestrictedScope) return allNotes;
 
+    if (disciplinaId) {
+      return allNotes.filter((note) => belongsStrictlyToDisciplina(note, disciplinaId));
+    }
+
     const allowedIds = new Set(userDisciplinas.map((d) => d.id));
     const allowedNames = new Set(
       userDisciplinas.map((d) => (d.name || '').toLowerCase().trim()).filter(Boolean)
@@ -139,16 +149,15 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     );
 
     return allNotes.filter((note) => {
-      if (disciplinaId) {
-        return note.disciplina_id === disciplinaId;
-      }
       const noteDiscId = note.disciplina_id;
+      if (allowedIds.has(noteDiscId)) {
+        return belongsStrictlyToDisciplina(note, noteDiscId);
+      }
       const noteDiscName = (note.disciplina_name || '').toLowerCase().trim();
+      if (!noteDiscName) return false;
 
-      // Correspondência por ID, código ou nome
       return (
-        allowedIds.has(noteDiscId) ||
-        Array.from(allowedNames).some((name) => noteDiscName.includes(name) || name.includes(noteDiscName)) ||
+        Array.from(allowedNames).some((name) => noteDiscName === name) ||
         Array.from(allowedCodes).some((code) => noteDiscName.includes(code))
       );
     });
@@ -291,44 +300,56 @@ export const SupportMaterialsHub: React.FC<SupportMaterialsHubProps> = ({
     setExpandedMindmaps((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const normalizeDateToIso = (rawDate?: string): string => {
+    if (!rawDate) return new Date().toISOString().slice(0, 10);
+    const clean = rawDate.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(clean)) return clean;
+    const br = clean.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    if (br) return `${br[3]}-${br[2]}-${br[1]}`;
+    return new Date().toISOString().slice(0, 10);
+  };
+
   // Importar para o Caderno Cornell
   const handleImportToCornell = (note: GeminiNoteItem) => {
     const defaultStudentEmail = normalizedEmail || 'sacrasub@gmail.com';
     const disc = allDisciplinasList.find((d) => d.id === note.disciplina_id);
-    const noteId = `note-${disc?.code?.toLowerCase() || 'disc'}-${(note.data_aula || '').replace(/[^0-9]/g, '-') || Date.now()}`;
-
+    const isoDate = normalizeDateToIso(note.data_aula);
+    const matchedAula = getGeminiAulaRecord(note.disciplina_id, note.aula_num, isoDate);
     const config = SUPPORT_MATERIAL_CONFIG[note.tipo || 'anotacao'];
 
-    saveCornellNote(defaultStudentEmail, {
-      id: noteId,
-      user_email: defaultStudentEmail,
-      date: note.data_aula || new Date().toISOString().slice(0, 10),
-      disciplina_code: disc?.code || 'MAT',
-      disciplina_name: note.disciplina_name || disc?.name || 'Disciplina',
-      theme: note.title || `Material de Apoio • Aula ${note.aula_num || 1}`,
-      professor_name: disc?.professor_name || 'Corpo Docente',
-      biblical_references: 'Consulte o plano de ensino da disciplina',
-      cues: `• Quais as teses e conceitos centrais deste material (${config.label})?
-• Como este conteúdo se relaciona com o ministério pastoral e a hermenêutica?
-• Principais desdobramentos práticos e perguntas para auto-teste.`,
-      notes: `${note.summary_snippet || 'Síntese do material de apoio gerado via Gemini/NotebookLM.'}\n\n${
-        note.mindmap_data ? `ESQUEMA DO MAPA MENTAL:\n${note.mindmap_data}` : ''
-      }`,
-      summary: `Síntese ${config.label} • Aula ${note.aula_num || 1}: ${
-        note.summary_snippet ? note.summary_snippet.slice(0, 200) + '...' : 'Material registrado no LMS.'
-      }`,
-      ai_summary_url: note.gemini_url,
-      ai_summary_text: note.summary_snippet,
-      tags: [note.disciplina_name || 'Matéria', `Aula ${note.aula_num || 1}`, config.label, 'NotebookLM'],
-    });
+    if (matchedAula && (note.tipo || 'anotacao') === 'anotacao') {
+      const generated = buildCornellNoteFromGeminiAula(matchedAula);
+      saveCornellNote(defaultStudentEmail, {
+        ...generated,
+        user_email: defaultStudentEmail,
+      });
+    } else {
+      const noteId = `note-${(disc?.code || 'disc').toLowerCase()}-${isoDate}-${note.tipo || 'mat'}`;
+      saveCornellNote(defaultStudentEmail, {
+        id: noteId,
+        user_email: defaultStudentEmail,
+        date: isoDate,
+        disciplina_code: disc?.code || 'MAT',
+        disciplina_name: disc?.name || note.disciplina_name || 'Disciplina',
+        theme: note.title || `Material de Apoio • Aula ${note.aula_num || 1}`,
+        professor_name: disc?.professor_name || 'Corpo Docente',
+        biblical_references: 'Consulte o plano de ensino da disciplina',
+        cues: `• Quais as teses e conceitos centrais deste material (${config.label})?\n• Como este conteúdo se relaciona com o ministério pastoral e a hermenêutica?\n• Principais desdobramentos práticos e perguntas para auto-teste.`,
+        notes: `${note.summary_snippet || 'Síntese do material de apoio gerado via Gemini/NotebookLM.'}\n\n${
+          note.mindmap_data ? `ESQUEMA DO MAPA MENTAL:\n${note.mindmap_data}` : ''
+        }`,
+        summary: `Síntese ${config.label} • Aula ${note.aula_num || 1}: ${
+          note.summary_snippet ? note.summary_snippet.slice(0, 220) : 'Material registrado no LMS.'
+        }`,
+        ai_summary_url: note.gemini_url,
+        ai_summary_text: note.summary_snippet,
+        tags: [disc?.name || note.disciplina_name || 'Matéria', `Aula ${note.aula_num || 1}`, config.label, 'NotebookLM'],
+      });
+    }
 
     setImportedCornellId(note.id);
     showToast('Material importado com sucesso para o seu Caderno Cornell!');
     setTimeout(() => setImportedCornellId(null), 3000);
-
-    if (onImportToCornellCallback) {
-      onImportToCornellCallback(note);
-    }
   };
 
   // Compartilhar no WhatsApp com Captação de Usuários para a Plataforma
@@ -861,10 +882,26 @@ _Koinonia LMS • Excelência na Educação Teológica_`;
                       ) : (
                         <>
                           <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                          <span>Caderno Cornell</span>
+                          <span>Introduzir no Cornell</span>
                         </>
                       )}
                     </button>
+
+                    <a
+                      href={buildCornellDeepLinkUrl(
+                        note.disciplina_id,
+                        normalizeDateToIso(note.data_aula),
+                        note.aula_num
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Abrir esta aula diretamente no Caderno Cornell em nova aba"
+                      className="py-2 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-2xs"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Abrir Cornell</span>
+                      <ExternalLink className="w-3 h-3 opacity-70" />
+                    </a>
 
                     {/* Compartilhar no WhatsApp / Captação de Usuários */}
                     <button

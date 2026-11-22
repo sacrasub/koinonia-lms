@@ -17,6 +17,12 @@
 import { GeminiNoteItem, SupportMaterialType } from '@/types';
 import { supabase } from '@/lib/supabaseClient';
 import { DOSSIE_AV2_2026_2, OFFICIAL_NOTEBOOKLM_URL } from '@/data/dossieAv2_2026_2';
+import {
+  GEMINI_AULAS_CORNELL,
+  CANONICAL_DISCIPLINAS,
+  getCanonicalDisciplinaMeta,
+  getGeminiAulaRecord,
+} from '@/data/geminiAulasCornell';
 
 const STORAGE_KEY = 'lms_gemini_notes_v3';
 const CLOUD_TITLE_KEY = 'lms_gemini_notes_cloud_v3';
@@ -71,7 +77,7 @@ export const SUPPORT_MATERIAL_CONFIG: Record<
   },
 };
 
-export const INITIAL_GEMINI_NOTES: GeminiNoteItem[] = [
+const RAW_INITIAL_GEMINI_NOTES: GeminiNoteItem[] = [
   {
     id: "gemini-real-his-aula1",
     disciplina_id: "disc-1",
@@ -1782,6 +1788,113 @@ export const INITIAL_GEMINI_NOTES: GeminiNoteItem[] = [
   ]),
 ];
 
+const DISCIPLINE_EXCLUSIVE_KEYWORDS: Record<string, string[]> = {
+  'disc-1': ['congregacionalismo', 'congregacional', 'kalley', 'ary júnior', 'ary junior'],
+  'disc-2': ['pensamento cristão', 'pensamento cristao', 'schleiermacher', 'barmen', 'bultmann', 'hilário bispo', 'hilario bispo'],
+  'disc-3': ['aconselhamento bíblico', 'aconselhamento biblico', 'uilian santos'],
+  'disc-4': ['direitos humanos', 'cleiton barbirato'],
+  'disc-5': ['ética cristã', 'etica crista', 'karoline evangelista'],
+  'disc-6': ['novo testamento iii', 'epístolas gerais', 'epistolas gerais', 'marcio leal'],
+  'disc-7': ['plantação e revitalização', 'plantacao e revitalizacao', 'thácyto lessa', 'thacyto lessa'],
+  'disc-8': ['tcc i', 'trabalho de conclusão', 'gabriela leal'],
+  'disc-9': ['cultura afro', 'afro-brasileira', 'indígena', 'indigena', 'afr-101', 'alexsandro'],
+};
+
+const CORRECTED_ITEM_AUTHORS: Record<string, string> = {
+  'gemini-pod-1': 'Profº Ary Júnior',
+  'gemini-pod-3': 'Profº Uilian Santos',
+  'gemini-guia-4': 'Profº Cleiton Barbirato',
+  'gemini-pod-6': 'Profº Marcio Leal',
+};
+
+export function belongsStrictlyToDisciplina(item: GeminiNoteItem, disciplinaId: string): boolean {
+  if (!item || !disciplinaId) return false;
+  if (item.disciplina_id !== disciplinaId) return false;
+
+  const haystack = `${item.disciplina_name || ''} ${item.title || ''}`.toLowerCase();
+  const targetKeys = DISCIPLINE_EXCLUSIVE_KEYWORDS[disciplinaId];
+  if (targetKeys) {
+    for (const [otherId, otherKeys] of Object.entries(DISCIPLINE_EXCLUSIVE_KEYWORDS)) {
+      if (otherId === disciplinaId) continue;
+      const matchesOther = otherKeys.some((k) => haystack.includes(k));
+      const matchesTarget = targetKeys.some((k) => haystack.includes(k));
+      if (matchesOther && !matchesTarget) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function buildInitialGeminiNotes(): GeminiNoteItem[] {
+  // 1. Limpa e corrige seeds legados (autores trocados, Profº Emerson em disc-9, snippets com cabeçalhos de e-mail)
+  const sanitizedRaw = RAW_INITIAL_GEMINI_NOTES.map((item): GeminiNoteItem => {
+    const fixed: GeminiNoteItem = { ...item };
+
+    if (CORRECTED_ITEM_AUTHORS[fixed.id]) {
+      fixed.author_name = CORRECTED_ITEM_AUTHORS[fixed.id];
+    }
+
+    if (fixed.disciplina_id === 'disc-9') {
+      const targetProf = 'Profº Alexsandro de Oliveira Silva';
+      if (fixed.author_name?.includes('Emerson')) fixed.author_name = targetProf;
+      if (fixed.title?.includes('Emerson Silva')) {
+        fixed.title = fixed.title.replace(/Profº?\s*Emerson Silva/gi, targetProf);
+      }
+      if (fixed.summary_snippet?.includes('Emerson Silva')) {
+        fixed.summary_snippet = fixed.summary_snippet.replace(/Profº?\s*Emerson Silva/gi, targetProf);
+      }
+    }
+
+    if ((fixed.tipo || 'anotacao') === 'anotacao' && fixed.id.startsWith('gemini-real-')) {
+      const rec = getGeminiAulaRecord(fixed.disciplina_id, fixed.aula_num);
+      const meta = getCanonicalDisciplinaMeta(fixed.disciplina_id);
+      if (rec) {
+        fixed.summary_snippet = rec.resumoGeral;
+        fixed.title = rec.theme || fixed.title;
+        fixed.disciplina_name = meta?.shortName || fixed.disciplina_name;
+        if (meta?.prof) fixed.author_name = meta.prof;
+      }
+    }
+
+    return fixed;
+  });
+
+  // 2. Insere anotações estruturadas da Unidade 2 e das 4 videoaulas de AFR-101 (cada uma estritamente em sua disciplina)
+  const existingU2Keys = new Set(
+    sanitizedRaw
+      .filter((i) => (i.tipo || 'anotacao') === 'anotacao')
+      .map((i) => `${i.disciplina_id}::${i.aula_num}`)
+  );
+
+  const u2GeminiNotes: GeminiNoteItem[] = [];
+  for (const aula of GEMINI_AULAS_CORNELL) {
+    if (aula.unidade !== 2 && aula.disciplinaId !== 'disc-9') continue;
+    const key = `${aula.disciplinaId}::${aula.aulaNum}`;
+    if (existingU2Keys.has(key)) continue;
+    const meta = getCanonicalDisciplinaMeta(aula.disciplinaId);
+    u2GeminiNotes.push({
+      id: `gemini-u2-${aula.disciplinaId}-a${aula.aulaNum}`,
+      disciplina_id: aula.disciplinaId,
+      disciplina_name: meta?.shortName || aula.disciplinaId,
+      aula_num: aula.aulaNum,
+      data_aula: aula.dateBr,
+      title: aula.theme,
+      gemini_url: aula.geminiUrl || aula.videoUrl || OFFICIAL_NOTEBOOKLM_URL,
+      tipo: 'anotacao',
+      summary_snippet: aula.resumoGeral,
+      tags: [meta?.shortName || 'Disciplina', `Aula ${aula.aulaNum}`, 'Gemini IA', 'Unidade 2'],
+      author_name: meta?.prof || 'Corpo Docente',
+      author_role: 'professor',
+      created_at: `${aula.dateIso}T21:00:00Z`,
+    });
+  }
+
+  return [...sanitizedRaw, ...u2GeminiNotes];
+}
+
+export const INITIAL_GEMINI_NOTES: GeminiNoteItem[] = buildInitialGeminiNotes();
+
 const STATIC_SEED_IDS = new Set(INITIAL_GEMINI_NOTES.map((s) => s.id));
 
 export function getAllGeminiNotes(): GeminiNoteItem[] {
@@ -1796,24 +1909,38 @@ export function getAllGeminiNotes(): GeminiNoteItem[] {
     if (Array.isArray(parsed) && parsed.length > 0) {
       const seedMap = new Map(INITIAL_GEMINI_NOTES.map((s) => [s.id, s]));
       let hasChanges = false;
-      const updatedList = parsed.map((item: GeminiNoteItem) => {
+      const updatedList: GeminiNoteItem[] = [];
+
+      for (const item of parsed as GeminiNoteItem[]) {
+        if (!item || !item.id) continue;
         if (seedMap.has(item.id)) {
           const seed = seedMap.get(item.id)!;
           if (
             seed.gemini_url !== item.gemini_url ||
             seed.title !== item.title ||
             seed.tipo !== item.tipo ||
-            seed.audio_url !== item.audio_url
+            seed.audio_url !== item.audio_url ||
+            seed.disciplina_id !== item.disciplina_id ||
+            seed.disciplina_name !== item.disciplina_name ||
+            seed.author_name !== item.author_name ||
+            seed.summary_snippet !== item.summary_snippet ||
+            seed.aula_num !== item.aula_num ||
+            seed.data_aula !== item.data_aula
           ) {
             hasChanges = true;
-            return {
+            updatedList.push({
               ...item,
               ...seed,
-            };
+            });
+          } else {
+            updatedList.push(item);
           }
+        } else if (belongsStrictlyToDisciplina(item, item.disciplina_id)) {
+          updatedList.push(item);
+        } else {
+          hasChanges = true;
         }
-        return item;
-      });
+      }
 
       const existingIds = new Set(updatedList.map((item: GeminiNoteItem) => item.id));
       const missingSeeds = INITIAL_GEMINI_NOTES.filter((seed) => !existingIds.has(seed.id));
@@ -1899,7 +2026,13 @@ export async function fetchGeminiNotesFromCloud(force: boolean = false): Promise
     if (data && data.length > 0 && data[0].file_url) {
       const parsed = JSON.parse(data[0].file_url);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const customCloud = parsed.filter((item: GeminiNoteItem) => item && item.id && !STATIC_SEED_IDS.has(item.id));
+        const customCloud = parsed.filter(
+          (item: GeminiNoteItem) =>
+            item &&
+            item.id &&
+            !STATIC_SEED_IDS.has(item.id) &&
+            belongsStrictlyToDisciplina(item, item.disciplina_id)
+        );
         const merged = [...customCloud, ...INITIAL_GEMINI_NOTES];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         window.dispatchEvent(new CustomEvent('lms_gemini_notes_updated', { detail: merged }));
@@ -1924,9 +2057,17 @@ if (typeof window !== 'undefined') {
 }
 
 export function getGeminiNotesForDisciplina(disciplinaId: string): GeminiNoteItem[] {
+  if (!disciplinaId || !disciplinaId.trim()) return [];
   const all = getAllGeminiNotes();
-  if (!disciplinaId) return all;
-  return all.filter((item) => item.disciplina_id === disciplinaId);
+  const seenIds = new Set<string>();
+  return all
+    .filter((item) => {
+      if (!belongsStrictlyToDisciplina(item, disciplinaId)) return false;
+      if (seenIds.has(item.id)) return false;
+      seenIds.add(item.id);
+      return true;
+    })
+    .sort((a, b) => (a.aula_num || 999) - (b.aula_num || 999));
 }
 
 export function addGeminiNote(

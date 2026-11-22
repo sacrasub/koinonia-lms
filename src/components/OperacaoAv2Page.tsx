@@ -33,6 +33,7 @@ import {
   DossieAv2Disciplina,
   LinkBaseAv2,
 } from '@/data/dossieAv2_2026_2';
+import { getGeminiAulaRecord, buildCornellDeepLinkUrl } from '@/data/geminiAulasCornell';
 
 const LINK_BASE_STYLES: Record<
   LinkBaseAv2['tipo'],
@@ -102,6 +103,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
   const [answers, setAnswers] = useState<Record<string, 'A' | 'B' | 'C' | 'D'>>({});
   const [copiedMap, setCopiedMap] = useState<boolean>(false);
   const [copiedWhatsapp, setCopiedWhatsapp] = useState<boolean>(false);
+  const [expandedTimelineAulas, setExpandedTimelineAulas] = useState<Record<string, boolean>>({});
 
   // Carrega progresso do simulado localmente (Zero Egress no Supabase)
   useEffect(() => {
@@ -462,14 +464,17 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
               <FolderOpen className="w-3.5 h-3.5" />
               <span>Abrir Pasta / Hub</span>
             </button>
-            <button
-              type="button"
-              onClick={() => navigateTo('aluno-caderno')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs transition cursor-pointer"
+            <a
+              href={buildCornellDeepLinkUrl(activeDisc.disciplinaId)}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Abrir Caderno Cornell desta disciplina em nova aba"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs transition"
             >
               <PenTool className="w-3.5 h-3.5" />
               <span>Caderno Cornell</span>
-            </button>
+              <ExternalLink className="w-3 h-3 opacity-70" />
+            </a>
           </div>
         </div>
 
@@ -638,21 +643,57 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                     return null;
                   })()}
                 </div>
-                <div className="space-y-2.5">
-                  {activeDisc.aulasUnidade2.map((aula) => (
-                    <div
-                      key={aula.aulaNum}
-                      className="p-3.5 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 flex items-start gap-3"
-                    >
-                      <span className="px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-200 font-black text-[11px] shrink-0">
-                        Aula {aula.aulaNum}
-                      </span>
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400">
-                            {aula.dataAprox}
-                          </span>
+                <div className="space-y-3">
+                  {activeDisc.aulasUnidade2.map((aula) => {
+                    const geminiRec = getGeminiAulaRecord(activeDisc.disciplinaId, aula.aulaNum, aula.dataAprox);
+                    const cornellHref = buildCornellDeepLinkUrl(
+                      activeDisc.disciplinaId,
+                      geminiRec?.dateIso,
+                      aula.aulaNum
+                    );
+                    const aulaKey = `${activeDisc.disciplinaId}-${aula.aulaNum}`;
+                    const isExpanded = Boolean(expandedTimelineAulas[aulaKey]);
+                    const topicos = geminiRec?.topicos || [];
+                    const visibleTopicos = isExpanded ? topicos : topicos.slice(0, 3);
+                    const hasExtendedResumo =
+                      Boolean(geminiRec?.resumoGeral) &&
+                      geminiRec!.resumoGeral.trim().length > (aula.resumo?.trim().length || 0) + 30 &&
+                      !geminiRec!.resumoGeral.trim().startsWith(aula.resumo.slice(0, 40));
+
+                    return (
+                      <div
+                        key={aula.aulaNum}
+                        className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 shadow-2xs space-y-3"
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-2.5">
+                          <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                            <span className="px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-200 font-black text-[11px] shrink-0">
+                              Aula {aula.aulaNum}
+                            </span>
+                            <div className="min-w-0">
+                              <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400 block">
+                                {geminiRec?.dateBr || aula.dataAprox}
+                              </span>
+                              {geminiRec?.theme && (
+                                <h4 className="text-xs sm:text-sm font-black text-gray-900 dark:text-white leading-snug mt-0.5">
+                                  {geminiRec.theme}
+                                </h4>
+                              )}
+                            </div>
+                          </div>
+
                           <div className="flex flex-wrap items-center gap-1.5">
+                            <a
+                              href={cornellHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Abrir Caderno Cornell desta aula já preenchido com as anotações do Gemini (nova aba)"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/60 dark:hover:bg-purple-900/70 text-purple-800 dark:text-purple-200 border border-purple-200 dark:border-purple-800 text-[11px] font-extrabold transition shrink-0"
+                            >
+                              <PenTool className="w-3 h-3 shrink-0" />
+                              <span>Abrir no Caderno Cornell (Gemini)</span>
+                              <ExternalLink className="w-3 h-3 opacity-70 shrink-0" />
+                            </a>
                             {aula.geminiUrl && (
                               <a
                                 href={aula.geminiUrl}
@@ -679,12 +720,68 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                             )}
                           </div>
                         </div>
-                        <p className="text-xs sm:text-sm text-gray-800 dark:text-slate-200 leading-relaxed">
-                          {aula.resumo}
-                        </p>
+
+                        {/* Resumo expandido da aula */}
+                        <div className="space-y-2">
+                          <p className="text-xs sm:text-sm font-semibold text-gray-800 dark:text-slate-100 leading-relaxed">
+                            {aula.resumo}
+                          </p>
+                          {hasExtendedResumo && geminiRec?.resumoGeral && (
+                            <p className="text-xs text-gray-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/60">
+                              <strong className="text-indigo-700 dark:text-indigo-300">Síntese Gemini: </strong>
+                              {geminiRec.resumoGeral}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Tópicos estruturados da aula */}
+                        {visibleTopicos.length > 0 && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 pt-1">
+                            {visibleTopicos.map((top, tIdx) => (
+                              <div
+                                key={tIdx}
+                                className="p-2.5 rounded-xl bg-indigo-50/40 dark:bg-indigo-950/25 border border-indigo-100 dark:border-indigo-900/50 space-y-1"
+                              >
+                                <div className="text-[11px] font-extrabold text-indigo-900 dark:text-indigo-200 leading-snug">
+                                  • {top.titulo}
+                                </div>
+                                <p className="text-[11px] text-gray-600 dark:text-slate-300 leading-relaxed">
+                                  {top.texto}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {(geminiRec?.referenciasBiblicas || topicos.length > 3) && (
+                          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                            {geminiRec?.referenciasBiblicas ? (
+                              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 px-2.5 py-1 rounded-lg">
+                                <BookOpen className="w-3 h-3 shrink-0" />
+                                <span>Referências citadas: {geminiRec.referenciasBiblicas}</span>
+                              </span>
+                            ) : (
+                              <span />
+                            )}
+
+                            {topicos.length > 3 && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setExpandedTimelineAulas((prev) => ({ ...prev, [aulaKey]: !isExpanded }))
+                                }
+                                className="text-[11px] font-extrabold text-indigo-600 dark:text-indigo-300 hover:underline cursor-pointer"
+                              >
+                                {isExpanded
+                                  ? 'Recolher tópicos'
+                                  : `Ver mais ${topicos.length - 3} tópicos da aula`}
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

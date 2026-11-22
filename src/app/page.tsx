@@ -122,6 +122,15 @@ export default function Home() {
       if (tabParam === 'av2' || tabParam === 'operacao-av2' || tabParam === 'revisao-av2' || tabParam === 'dossie-av2') {
         return 'operacao-av2';
       }
+      if (
+        tabParam === 'aluno-caderno' ||
+        tabParam === 'caderno' ||
+        tabParam === 'aluno-anotacoes' ||
+        tabParam === 'anotacoes' ||
+        tabParam === 'cornell'
+      ) {
+        return 'aluno-caderno';
+      }
       if (tabParam === 'artigos-abnt' || tabParam === 'criador-abnt' || tabParam === 'abnt' || tabParam === 'artigos') {
         return 'artigos-abnt';
       }
@@ -555,9 +564,17 @@ export default function Home() {
         tabParam === 'operacao-av2' ||
         tabParam === 'revisao-av2' ||
         tabParam === 'dossie-av2';
+      const isCornellTab =
+        tabParam === 'aluno-caderno' ||
+        tabParam === 'caderno' ||
+        tabParam === 'aluno-anotacoes' ||
+        tabParam === 'anotacoes' ||
+        tabParam === 'cornell';
 
       if (isAv2Tab) {
         setActiveTab('operacao-av2');
+      } else if (isCornellTab) {
+        setActiveTab('aluno-caderno');
       } else if (discParam) {
         setSelectedDisciplinaId(discParam);
         setActiveTab('disciplina-detalhe');
@@ -670,6 +687,7 @@ export default function Home() {
     if (activeTab === 'disciplina-detalhe') {
       return (
         <DisciplinaDetailPage
+          key={selectedDisciplinaId}
           disciplinaId={selectedDisciplinaId}
           userEmail={userEmail}
           currentRole={currentRole}
