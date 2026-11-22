@@ -1,0 +1,444 @@
+{
+  "id": "disc-2-aula-14",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 14,
+  "unidade": 2,
+  "dateIso": "2026-11-17",
+  "dateBr": "17/11/2026",
+  "theme": "Aula 14 • Pensamento cristão contemporâneo",
+  "geminiUrl": "https://docs.google.com/document/d/11LmcdzMLOqeE_kro08Q10rkWrhgEkpT6jRiqFT5OSZ4/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Revisão e síntese metodológica da AV2: como correlacionar autores, épocas históricas e a preservação da autoridade soberana das Escrituras.",
+    "sinteseGeral": "Estudo do pensamento cristão cobriu teólogos do século XX e a relevância da missão integral para a igreja. Pensamento cristão contemporâneo O estudo abordou a trajetória do pensamento cristão e a importância de associar a evangelização à responsabilidade social, evitando o uso político da assistência. Teólogos como John Stott e J. I. Packer foram destacados por unirem profundidade bíblica e vida devocional. Teologias da libertação e esperança Jürgen Moltmann e Gustavo Gutiérrez trouxeram contribuições sobre a esperança escatológica e o foco nos pobres, gerando debates fundamentais na América Latina. A teologia contextualizada e a missão integral consolidaram a relevância social da igreja. Encerramento da disciplina A aula finalizou com a revisão de movimentos como o pentecostalismo e a neo-ortodoxia, preparando os alunos para as avaliações. O estudo desses pensadores protege a igreja contra modismos e doutrinas equivocadas.",
+    "mapaRapido": [
+      "Viagem Missionária em Tabatinga e Povos Indígenas: Cristiano Sacramento e Salatiel Rodrigues conversam sobre a localização de Cristiano Sacramento em Tabatinga, Amazonas, na tríplice fronteira entre Brasil, Peru e Colômbia, região que abriga uma grande comunidade de povos originários no Vale do Javari.",
+      "Considerações Iniciais sobre a Disciplina e Pensamento Cristão: HILARIO JOSE BISPO GRACA inicia a última aula da disciplina destacando que o grupo conseguiu cumprir todo o conteúdo sem ficar em dívida com os estudantes.",
+      "Atuação Social e Influência Política da Igreja Católica: HILARIO JOSE BISPO GRACA aponta que, no século passado, movimentos católicos da América Latina, como as comunidades eclesiais de base (CEBs), influenciaram a política por meio da assistência social a pessoas carentes e vulneráveis.",
+      "O Caso de Interrupção de Trabalho Social em Brasília: HILARIO JOSE BISPO GRACA compartilha uma experiência pessoal em Brasília, onde coordenava um trabalho voluntário de visitação a presos e jovens infratores aos finais de semana, fornecendo itens necessários como tênis e pasta de dente.",
+      "A Contribuição de John Stott ao Pensamento Cristão: HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas.",
+      "Contextualização e Compreensão do Mundo na Visão de John Stott: HILARIO JOSE BISPO GRACA defende que, segundo John Stott, a igreja deve ouvir atentamente a palavra de Deus e compreender o mundo ao qual anuncia o evangelho, adaptando a linguagem às necessidades reais das pessoas, assim como Jesus fez ao dialogar com Nicodemos e com a samaritana."
+    ],
+    "duracaoEstimada": "~1h12min",
+    "totalBlocos": 23
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:00:15",
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Viagem Missionária em Tabatinga e Povos Indígenas",
+      "resumoCurto": "Cristiano Sacramento e Salatiel Rodrigues conversam sobre a localização de Cristiano Sacramento em Tabatinga, Amazonas, na tríplice fronteira entre Brasil, Peru e Colômbia, região que abriga uma grande comunidade de povos originários no Vale do Javari.",
+      "detalhamento": "Cristiano Sacramento e Salatiel Rodrigues conversam sobre a localização de Cristiano Sacramento em Tabatinga, Amazonas, na tríplice fronteira entre Brasil, Peru e Colômbia, região que abriga uma grande comunidade de povos originários no Vale do Javari. Salatiel Rodrigues menciona que um grupo da Igreja Assembleia de Deus de Nova Venécia está visitando a região e as tribos indígenas há cerca de quinze dias.",
+      "pontosChave": [
+        "Cristiano Sacramento e Salatiel Rodrigues conversam sobre a localização de Cristiano Sacramento em Tabatinga, Amazonas, na tríplice fronteira entre Brasil, Peru e Colômbia, região que abriga uma grande comunidade de povos originários no Vale do Javari.",
+        "Salatiel Rodrigues menciona que um grupo da Igreja Assembleia de Deus de Nova Venécia está visitando a região e as tribos indígenas há cerca de quinze dias."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:02:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Considerações Iniciais sobre a Disciplina e Pensamento Cristão",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA inicia a última aula da disciplina destacando que o grupo conseguiu cumprir todo o conteúdo sem ficar em dívida com os estudantes.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA inicia a última aula da disciplina destacando que o grupo conseguiu cumprir todo o conteúdo sem ficar em dívida com os estudantes. HILARIO JOSE BISPO GRACA introduz o estudo dos personagens da história do pensamento cristão do século XX, ressaltando que o pensamento cristão abrange correntes além da tradição reformada protestante, incluindo movimentos protagonizados pela Igreja Católica, como a Contrarreforma iniciada no Concílio de Trento.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA inicia a última aula da disciplina destacando que o grupo conseguiu cumprir todo o conteúdo sem ficar em dívida com os estudantes.",
+        "HILARIO JOSE BISPO GRACA introduz o estudo dos personagens da história do pensamento cristão do século XX, ressaltando que o pensamento cristão abrange correntes além da tradição reformada protestante, incluindo movimentos protagonizados pela Igreja Católica, como a Contrarreforma iniciada no Concílio de Trento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:04:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Atuação Social e Influência Política da Igreja Católica",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aponta que, no século passado, movimentos católicos da América Latina, como as comunidades eclesiais de base (CEBs), influenciaram a política por meio da assistência social a pessoas carentes e vulneráveis.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aponta que, no século passado, movimentos católicos da América Latina, como as comunidades eclesiais de base (CEBs), influenciaram a política por meio da assistência social a pessoas carentes e vulneráveis. HILARIO JOSE BISPO GRACA relata que, embora as igrejas protestantes tenham se engajado em questões sociais nas últimas três ou quatro décadas, o trabalho social frequentemente sofre com a contaminação de interesses políticos e eleitorais.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aponta que, no século passado, movimentos católicos da América Latina, como as comunidades eclesiais de base (CEBs), influenciaram a política por meio da assistência social a pessoas carentes e vulneráveis.",
+        "HILARIO JOSE BISPO GRACA relata que, embora as igrejas protestantes tenham se engajado em questões sociais nas últimas três ou quatro décadas, o trabalho social frequentemente sofre com a contaminação de interesses políticos e eleitorais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:07:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Caso de Interrupção de Trabalho Social em Brasília",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA compartilha uma experiência pessoal em Brasília, onde coordenava um trabalho voluntário de visitação a presos e jovens infratores aos finais de semana, fornecendo itens necessários como tênis e pasta de dente.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA compartilha uma experiência pessoal em Brasília, onde coordenava um trabalho voluntário de visitação a presos e jovens infratores aos finais de semana, fornecendo itens necessários como tênis e pasta de dente. HILARIO JOSE BISPO GRACA relata que a autorização foi bloqueada por negativas estranhas próximas às eleições, quando políticos interessados em destaque na assistência social passaram a instrumentalizar o espaço que era ocupado pela igreja. HILARIO JOSE BISPO GRACA conclui que a igreja não deve ser ingênua em relação ao uso político-eleitoral da assistência social.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA compartilha uma experiência pessoal em Brasília, onde coordenava um trabalho voluntário de visitação a presos e jovens infratores aos finais de semana, fornecendo itens necessários como tênis e pasta de dente.",
+        "HILARIO JOSE BISPO GRACA relata que a autorização foi bloqueada por negativas estranhas próximas às eleições, quando políticos interessados em destaque na assistência social passaram a instrumentalizar o espaço que era ocupado pela igreja.",
+        "HILARIO JOSE BISPO GRACA conclui que a igreja não deve ser ingênua em relação ao uso político-eleitoral da assistência social."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:10:22",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Contribuição de John Stott ao Pensamento Cristão",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas. HILARIO JOSE BISPO GRACA menciona que o último livro de John Stott, *O Discípulo Radical*, sintetiza o pensamento de John Stott, além de citar obras importantes como *Ouça o Espírito, Ouça o Mundo* e *A Cruz de Cristo*. HILARIO JOSE BISPO GRACA aponta que a obra de John Stott enfatiza a autoridade das escrituras, a centralidade da cruz e o discipulado cristão.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas.",
+        "HILARIO JOSE BISPO GRACA menciona que o último livro de John Stott, *O Discípulo Radical*, sintetiza o pensamento de John Stott, além de citar obras importantes como *Ouça o Espírito, Ouça o Mundo* e *A Cruz de Cristo*.",
+        "HILARIO JOSE BISPO GRACA aponta que a obra de John Stott enfatiza a autoridade das escrituras, a centralidade da cruz e o discipulado cristão."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:14:55",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Contextualização e Compreensão do Mundo na Visão de John Stott",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA defende que, segundo John Stott, a igreja deve ouvir atentamente a palavra de Deus e compreender o mundo ao qual anuncia o evangelho, adaptando a linguagem às necessidades reais das pessoas, assim como Jesus fez ao dialogar com Nicodemos e com a samaritana.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA defende que, segundo John Stott, a igreja deve ouvir atentamente a palavra de Deus e compreender o mundo ao qual anuncia o evangelho, adaptando a linguagem às necessidades reais das pessoas, assim como Jesus fez ao dialogar com Nicodemos e com a samaritana. HILARIO JOSE BISPO GRACA argumenta que lideranças religiosas não podem exercer o ministério de forma alheia à realidade política, econômica e social do país, como o Brasil, sob o risco de não alcançarem as necessidades diárias das pessoas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA defende que, segundo John Stott, a igreja deve ouvir atentamente a palavra de Deus e compreender o mundo ao qual anuncia o evangelho, adaptando a linguagem às necessidades reais das pessoas, assim como Jesus fez ao dialogar com Nicodemos e com a samaritana.",
+        "HILARIO JOSE BISPO GRACA argumenta que lideranças religiosas não podem exercer o ministério de forma alheia à realidade política, econômica e social do país, como o Brasil, sob o risco de não alcançarem as necessidades diárias das pessoas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:17:12",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Relação entre Evangelização e Responsabilidade Social",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explica que John Stott relacionou a evangelização à responsabilidade social, preservando a importância da conversão e da proclamação de Cristo, conforme exemplificado no episódio em que Jesus alimentou a multidão, mas evitou um evangelho utilitarista focado apenas na satisfação de necessidades materiais.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explica que John Stott relacionou a evangelização à responsabilidade social, preservando a importância da conversão e da proclamação de Cristo, conforme exemplificado no episódio em que Jesus alimentou a multidão, mas evitou um evangelho utilitarista focado apenas na satisfação de necessidades materiais.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explica que John Stott relacionou a evangelização à responsabilidade social, preservando a importância da conversão e da proclamação de Cristo, conforme exemplificado no episódio em que Jesus alimentou a multidão, mas evitou um evangelho utilitarista focado apenas na satisfação de necessidades materiais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:21:26",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Áreas de Impacto de John Stott e o Pacto de Lausanne",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destaca três áreas de impacto de John Stott: pregação expositiva, teologia da cruz e missão mundial.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destaca três áreas de impacto de John Stott: pregação expositiva, teologia da cruz e missão mundial. HILARIO JOSE BISPO GRACA enfatiza a importância de estudar o Pacto de Lausanne, elaborado em 1974 sob a presidência de John Stott, como uma declaração fundamental para compreender a missão global da igreja, recomendando o uso do site oficial do Movimento Lausanne para atualização.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destaca três áreas de impacto de John Stott: pregação expositiva, teologia da cruz e missão mundial.",
+        "HILARIO JOSE BISPO GRACA enfatiza a importância de estudar o Pacto de Lausanne, elaborado em 1974 sob a presidência de John Stott, como uma declaração fundamental para compreender a missão global da igreja, recomendando o uso do site oficial do Movimento Lausanne para atualização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:24:47",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Obras de Christopher Wright e Recomendações de Leitura",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA sugere os livros *A Missão de Deus* e *A Missão do Povo de Deus*, de Christopher Wright, além de obras de John Stott como *Cristianismo Básico*, recomendando adquirir livros com orientação de pessoas experientes para evitar gastos com literatura de baixa qualidade e destacando a editora Ultimato.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA sugere os livros *A Missão de Deus* e *A Missão do Povo de Deus*, de Christopher Wright, além de obras de John Stott como *Cristianismo Básico*, recomendando adquirir livros com orientação de pessoas experientes para evitar gastos com literatura de baixa qualidade e destacando a editora Ultimato.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA sugere os livros *A Missão de Deus* e *A Missão do Povo de Deus*, de Christopher Wright, além de obras de John Stott como *Cristianismo Básico*, recomendando adquirir livros com orientação de pessoas experientes para evitar gastos com literatura de baixa qualidade e destacando a editora Ultimato."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:28:13",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Contribuição Histórica de John Stott e a Introdução a J. I. Packer",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA resume a contribuição histórica de John Stott como a união de profundidade bíblica, clareza na comunicação e compromisso missionário.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA resume a contribuição histórica de John Stott como a união de profundidade bíblica, clareza na comunicação e compromisso missionário. Em seguida, HILARIO JOSE BISPO GRACA apresenta J. I. Packer, outro teólogo e pastor anglicano reformado de referência, cujas obras associam doutrina, conhecimento de Deus e santidade.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA resume a contribuição histórica de John Stott como a união de profundidade bíblica, clareza na comunicação e compromisso missionário.",
+        "Em seguida, HILARIO JOSE BISPO GRACA apresenta J.",
+        "Packer, outro teólogo e pastor anglicano reformado de referência, cujas obras associam doutrina, conhecimento de Deus e santidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:33:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "O Conhecimento de Deus e a Vida Devocional segundo J. I. Packer",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explica que, para J.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explica que, para J. I. Packer, o estudo da teologia deve conduzir à adoração, à obediência e a um relacionamento de confiança e amor com Deus, promovendo o autoconhecimento humano através do contraste com o Criador. HILARIO JOSE BISPO GRACA lista as três áreas de impacto de J. I. Packer: formação doutrinária (teologia reformada acessível), espiritualidade (adoção, oração e santificação) e herança puritana, recomendando o livro *O Conhecimento de Deus*.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explica que, para J.",
+        "Packer, o estudo da teologia deve conduzir à adoração, à obediência e a um relacionamento de confiança e amor com Deus, promovendo o autoconhecimento humano através do contraste com o Criador.",
+        "HILARIO JOSE BISPO GRACA lista as três áreas de impacto de J.",
+        "Packer: formação doutrinária (teologia reformada acessível), espiritualidade (adoção, oração e santificação) e herança puritana, recomendando o livro *O Conhecimento de Deus*."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:36:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Teologia da Esperança de Jürgen Moltmann",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA introduz Jürgen Moltmann, teólogo protestante alemão da tradição reformada, cuja obra foca na teologia da esperança, influenciada pelo cenário da Segunda Guerra Mundial.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA introduz Jürgen Moltmann, teólogo protestante alemão da tradição reformada, cuja obra foca na teologia da esperança, influenciada pelo cenário da Segunda Guerra Mundial. HILARIO JOSE BISPO GRACA destaca que a esperança está intrinsecamente ligada à ressurreição de Cristo (1 Coríntios 15:19-20) e à solidariedade de Deus com os que sofrem.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA introduz Jürgen Moltmann, teólogo protestante alemão da tradição reformada, cuja obra foca na teologia da esperança, influenciada pelo cenário da Segunda Guerra Mundial.",
+        "HILARIO JOSE BISPO GRACA destaca que a esperança está intrinsecamente ligada à ressurreição de Cristo (1 Coríntios 15:19-20) e à solidariedade de Deus com os que sofrem."
+      ],
+      "referenciasNoBloco": [
+        "1 Coríntios 15:19-20"
+      ]
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:42:40",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Ênfases e Obras de Jürgen Moltmann",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aponta as três principais ênfases de Jürgen Moltmann: escatologia (que produz esperança e aponta para a glória, embora negligenciada pelas igrejas modernas), teologia do sofrimento (refletida a partir do sofrimento de Cristo e do Apocalipse) e responsabilidade cristã (associando esperança, justiça e cuidado com a criação).",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aponta as três principais ênfases de Jürgen Moltmann: escatologia (que produz esperança e aponta para a glória, embora negligenciada pelas igrejas modernas), teologia do sofrimento (refletida a partir do sofrimento de Cristo e do Apocalipse) e responsabilidade cristã (associando esperança, justiça e cuidado com a criação). HILARIO JOSE BISPO GRACA cita obras de referência como *Teologia da Esperança*, *O Deus Crucificado* e *Deus na Criação*.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aponta as três principais ênfases de Jürgen Moltmann: escatologia (que produz esperança e aponta para a glória, embora negligenciada pelas igrejas modernas), teologia do sofrimento (refletida a partir do sofrimento de Cristo e do Apocalipse) e responsabilidade cristã (associando esperança, justiça e cuidado com a criação).",
+        "HILARIO JOSE BISPO GRACA cita obras de referência como *Teologia da Esperança*, *O Deus Crucificado* e *Deus na Criação*."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:47:31",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Gustavo Gutiérrez e a Teologia da Libertação",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA apresenta Gustavo Gutiérrez, padre dominicano peruano e cofundador da teologia da libertação, explicando que o pensamento de Gustavo Gutiérrez reflete sobre a fé a partir da realidade dos pobres e oprimidos, fundamentando-se em textos bíblicos como Mateus 25.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA apresenta Gustavo Gutiérrez, padre dominicano peruano e cofundador da teologia da libertação, explicando que o pensamento de Gustavo Gutiérrez reflete sobre a fé a partir da realidade dos pobres e oprimidos, fundamentando-se em textos bíblicos como Mateus 25. HILARIO JOSE BISPO GRACA menciona que o impacto de Gustavo Gutiérrez abrange a visibilidade da pobreza na América Latina, a ética social e uma espiritualidade que une piedade e compromisso com os que sofrem.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA apresenta Gustavo Gutiérrez, padre dominicano peruano e cofundador da teologia da libertação, explicando que o pensamento de Gustavo Gutiérrez reflete sobre a fé a partir da realidade dos pobres e oprimidos, fundamentando-se em textos bíblicos como Mateus 25.",
+        "HILARIO JOSE BISPO GRACA menciona que o impacto de Gustavo Gutiérrez abrange a visibilidade da pobreza na América Latina, a ética social e uma espiritualidade que une piedade e compromisso com os que sofrem."
+      ],
+      "referenciasNoBloco": [
+        "Mateus 25"
+      ]
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:51:11",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Debates e Contribuição Histórica de Gustavo Gutiérrez",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aborda os debates gerados pela teologia da libertação sobre o uso de categorias marxistas na análise social e a distinção entre salvação e emancipação política, recomendando fontes católicas como a editora Paulinas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aborda os debates gerados pela teologia da libertação sobre o uso de categorias marxistas na análise social e a distinção entre salvação e emancipação política, recomendando fontes católicas como a editora Paulinas. HILARIO JOSE BISPO GRACA conclui que a contribuição histórica de Gustavo Gutiérrez foi colocar a experiência dos pobres no centro dos debates teológicos contemporâneos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aborda os debates gerados pela teologia da libertação sobre o uso de categorias marxistas na análise social e a distinção entre salvação e emancipação política, recomendando fontes católicas como a editora Paulinas.",
+        "HILARIO JOSE BISPO GRACA conclui que a contribuição histórica de Gustavo Gutiérrez foi colocar a experiência dos pobres no centro dos debates teológicos contemporâneos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:53:55",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "René Padilla e a Missão Integral",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA apresenta René Padilla, teólogo e missiólogo evangélico equatoriano, como o principal expoente da \"Missão Integral\", que propõe a salvação e o cuidado de toda a pessoa e de suas necessidades, com forte identificação no contexto da América Latina pobre.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA apresenta René Padilla, teólogo e missiólogo evangélico equatoriano, como o principal expoente da \"Missão Integral\", que propõe a salvação e o cuidado de toda a pessoa e de suas necessidades, com forte identificação no contexto da América Latina pobre. HILARIO JOSE BISPO GRACA destaca o impacto de René Padilla na missiologia, na contextualização cultural e na contribuição para o Pacto de Lausanne de 1974, citando obras como *Missão Integral* e *Ensaios sobre o Reino e a Igreja*.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA apresenta René Padilla, teólogo e missiólogo evangélico equatoriano, como o principal expoente da \"Missão Integral\", que propõe a salvação e o cuidado de toda a pessoa e de suas necessidades, com forte identificação no contexto da América Latina pobre.",
+        "HILARIO JOSE BISPO GRACA destaca o impacto de René Padilla na missiologia, na contextualização cultural e na contribuição para o Pacto de Lausanne de 1974, citando obras como *Missão Integral* e *Ensaios sobre o Reino e a Igreja*."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:57:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Timothy Keller e o Ministério Urbano",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA finaliza apresentando Timothy Keller, pastor presbiteriano de Nova Iorque, como referência em missões urbanas em ambientes secularizados.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA finaliza apresentando Timothy Keller, pastor presbiteriano de Nova Iorque, como referência em missões urbanas em ambientes secularizados. HILARIO JOSE BISPO GRACA destaca que o pensamento de Timothy Keller une teologia reformada, centralidade do evangelho e diálogo com a cultura contemporânea, gerando impacto nas áreas de apologética, ministério urbano, plantação de igrejas e formação de líderes, além de citar o livro *Não Somos Profissionais*.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA finaliza apresentando Timothy Keller, pastor presbiteriano de Nova Iorque, como referência em missões urbanas em ambientes secularizados.",
+        "HILARIO JOSE BISPO GRACA destaca que o pensamento de Timothy Keller une teologia reformada, centralidade do evangelho e diálogo com a cultura contemporânea, gerando impacto nas áreas de apologética, ministério urbano, plantação de igrejas e formação de líderes, além de citar o livro *Não Somos Profissionais*."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:01:29",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Referências Teológicas e Movimentos Históricos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA apresenta Timothy Keller como referência teológica relevante para a realidade atual, destacando o trabalho sobre discipulado, evangelho relacionado ao trabalho, dinheiro, casamento e justiça social, além de citar obras como \"A Fé na Era do Ceticismo\", \"O Deus Pródigo\", \"Igreja Centrada\" e \"Deuses Falsos\".",
+      "detalhamento": "HILARIO JOSE BISPO GRACA apresenta Timothy Keller como referência teológica relevante para a realidade atual, destacando o trabalho sobre discipulado, evangelho relacionado ao trabalho, dinheiro, casamento e justiça social, além de citar obras como \"A Fé na Era do Ceticismo\", \"O Deus Pródigo\", \"Igreja Centrada\" e \"Deuses Falsos\". HILARIO JOSE BISPO GRACA aponta que diversos pensadores influenciaram e originaram correntes de pensamento transformadas em movimentos nos séculos XX e XXI, destacando seis questões principais que marcaram a teologia e a vida da igreja no período recente.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA apresenta Timothy Keller como referência teológica relevante para a realidade atual, destacando o trabalho sobre discipulado, evangelho relacionado ao trabalho, dinheiro, casamento e justiça social, além de citar obras como \"A Fé na Era do Ceticismo\", \"O Deus Pródigo\", \"Igreja Centrada\" e \"Deuses Falsos\".",
+        "HILARIO JOSE BISPO GRACA aponta que diversos pensadores influenciaram e originaram correntes de pensamento transformadas em movimentos nos séculos XX e XXI, destacando seis questões principais que marcaram a teologia e a vida da igreja no período recente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:02:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Teologia Dialética e Neo-ortodoxia",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aborda a teologia dialética e a neo-ortodoxia, mencionando a reação ao liberalismo teológico, o comentário de Romanos, a distância entre Deus e o ser humano, e a iniciativa divina de revelação em Cristo Jesus.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aborda a teologia dialética e a neo-ortodoxia, mencionando a reação ao liberalismo teológico, o comentário de Romanos, a distância entre Deus e o ser humano, e a iniciativa divina de revelação em Cristo Jesus. HILARIO JOSE BISPO GRACA explica que as guerras serviram para questionar o otimismo do Iluminismo e das filosofias modernas centradas na razão e na capacidade intelectual humana.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aborda a teologia dialética e a neo-ortodoxia, mencionando a reação ao liberalismo teológico, o comentário de Romanos, a distância entre Deus e o ser humano, e a iniciativa divina de revelação em Cristo Jesus.",
+        "HILARIO JOSE BISPO GRACA explica que as guerras serviram para questionar o otimismo do Iluminismo e das filosofias modernas centradas na razão e na capacidade intelectual humana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:05:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Teologia Existencial, Diálogo com a Modernidade e Renovação Católica",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA discute a teologia existencial voltada ao diálogo com a modernidade, a proposta de desmitologização na interpretação da linguagem do Novo Testamento e a reação contra as pretensões nazistas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA discute a teologia existencial voltada ao diálogo com a modernidade, a proposta de desmitologização na interpretação da linguagem do Novo Testamento e a reação contra as pretensões nazistas. HILARIO JOSE BISPO GRACA também menciona a renovação católica ocorrida nos últimos 80 anos, impulsionada pelo Concílio Vaticano II para atualizar a igreja e melhorar a liturgia.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA discute a teologia existencial voltada ao diálogo com a modernidade, a proposta de desmitologização na interpretação da linguagem do Novo Testamento e a reação contra as pretensões nazistas.",
+        "HILARIO JOSE BISPO GRACA também menciona a renovação católica ocorrida nos últimos 80 anos, impulsionada pelo Concílio Vaticano II para atualizar a igreja e melhorar a liturgia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:07:11",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Evangelিক্যালismo, Renovação Reformada e Pentecostalismo",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destaca o evangelicalismo e a renovação reformada, apontando John Stott como pensador e sistematizador, e Billy Graham como a figura central na evangelização mundial após a Segunda Guerra Mundial, originando a Fundação Billy Graham e o Congresso de Lausanne.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destaca o evangelicalismo e a renovação reformada, apontando John Stott como pensador e sistematizador, e Billy Graham como a figura central na evangelização mundial após a Segunda Guerra Mundial, originando a Fundação Billy Graham e o Congresso de Lausanne. HILARIO JOSE BISPO GRACA aborda o pentecostalismo como realidade iniciada na Rua Azusa, em Los Angeles, em 1906, por William Seymour, expandindo-se no Brasil por meio da Assembleia de Deus em 1911 e da Congregação Cristã no Brasil em 1910, com ênfase no batismo com o Espírito Santo, dons espirituais e testemunho missionário.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destaca o evangelicalismo e a renovação reformada, apontando John Stott como pensador e sistematizador, e Billy Graham como a figura central na evangelização mundial após a Segunda Guerra Mundial, originando a Fundação Billy Graham e o Congresso de Lausanne.",
+        "HILARIO JOSE BISPO GRACA aborda o pentecostalismo como realidade iniciada na Rua Azusa, em Los Angeles, em 1906, por William Seymour, expandindo-se no Brasil por meio da Assembleia de Deus em 1911 e da Congregação Cristã no Brasil em 1910, com ênfase no batismo com o Espírito Santo, dons espirituais e testemunho missionário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:08:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Teologias Contextualizadas e Missão Integral",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA examina as teologias contextualizadas e a reflexão missionária dos últimos 40 a 50 anos, destacando o foco em ações sociais, como departamentos de ação social e projetos de sopão nas igrejas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA examina as teologias contextualizadas e a reflexão missionária dos últimos 40 a 50 anos, destacando o foco em ações sociais, como departamentos de ação social e projetos de sopão nas igrejas. HILARIO JOSE BISPO GRACA cita Gustavo Gutierrez, René Padilha e Samuel Escobar como defensores da missão integral, levantando a questão central de como as igrejas podem ser relevantes e anunciar o evangelho em diferentes contextos culturais e sociais.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA examina as teologias contextualizadas e a reflexão missionária dos últimos 40 a 50 anos, destacando o foco em ações sociais, como departamentos de ação social e projetos de sopão nas igrejas.",
+        "HILARIO JOSE BISPO GRACA cita Gustavo Gutierrez, René Padilha e Samuel Escobar como defensores da missão integral, levantando a questão central de como as igrejas podem ser relevantes e anunciar o evangelho em diferentes contextos culturais e sociais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:11:38",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Encerramento da Disciplina e Orientações Pastorais",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA encerra a aula 15 minutos antes do tempo previsto, informando que a semana seguinte será dedicada às avaliações (AV) de todas as disciplinas e que os dois últimos arquivos de slides serão disponibilizados para consulta.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA encerra a aula 15 minutos antes do tempo previsto, informando que a semana seguinte será dedicada às avaliações (AV) de todas as disciplinas e que os dois últimos arquivos de slides serão disponibilizados para consulta. HILARIO JOSE BISPO GRACA enfatiza a importância de estudar o desenvolvimento do pensamento cristão para evitar o desconhecimento da realidade no ministério local, citando as orientações de Paulo aos Efésios (a partir do capítulo 4, verso 11) sobre pastores, mestres, evangelistas e profetas para a unidade, fortalecimento da igreja e proteção contra modismos e doutrinas equivocadas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA encerra a aula 15 minutos antes do tempo previsto, informando que a semana seguinte será dedicada às avaliações (AV) de todas as disciplinas e que os dois últimos arquivos de slides serão disponibilizados para consulta.",
+        "HILARIO JOSE BISPO GRACA enfatiza a importância de estudar o desenvolvimento do pensamento cristão para evitar o desconhecimento da realidade no ministério local, citando as orientações de Paulo aos Efésios (a partir do capítulo 4, verso 11) sobre pastores, mestres, evangelistas e profetas para a unidade, fortalecimento da igreja e proteção contra modismos e doutrinas equivocadas."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "A Contribuição de John Stott ao Pensamento Cristão",
+      "relato": "HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas. HILARIO JOSE BISPO GRACA menciona que o último livro de John Stott, *O Discípulo Radical*, sintetiza o pensamento de John Stott, além de citar obras importantes como *Ouça o Espírito, Ouça o Mundo* e *A Cruz de Cristo*. HILARIO JOSE BISPO GRACA aponta que a obra de John Stott enfatiza a autoridade das escrituras, a centralidade da cruz e o discipulado cristão.",
+      "timestamp": "00:10:22"
+    },
+    {
+      "titulo": "Relação entre Evangelização e Responsabilidade Social",
+      "relato": "HILARIO JOSE BISPO GRACA explica que John Stott relacionou a evangelização à responsabilidade social, preservando a importância da conversão e da proclamação de Cristo, conforme exemplificado no episódio em que Jesus alimentou a multidão, mas evitou um evangelho utilitarista focado apenas na satisfação de necessidades materiais.",
+      "timestamp": "00:17:12"
+    },
+    {
+      "titulo": "A Contribuição Histórica de John Stott e a Introdução a J. I. Packer",
+      "relato": "HILARIO JOSE BISPO GRACA resume a contribuição histórica de John Stott como a união de profundidade bíblica, clareza na comunicação e compromisso missionário. Em seguida, HILARIO JOSE BISPO GRACA apresenta J. I. Packer, outro teólogo e pastor anglicano reformado de referência, cujas obras associam doutrina, conhecimento de Deus e santidade.",
+      "timestamp": "00:28:13"
+    },
+    {
+      "titulo": "Debates e Contribuição Histórica de Gustavo Gutiérrez",
+      "relato": "HILARIO JOSE BISPO GRACA aborda os debates gerados pela teologia da libertação sobre o uso de categorias marxistas na análise social e a distinção entre salvação e emancipação política, recomendando fontes católicas como a editora Paulinas. HILARIO JOSE BISPO GRACA conclui que a contribuição histórica de Gustavo Gutiérrez foi colocar a experiência dos pobres no centro dos debates teológicos contemporâneos.",
+      "timestamp": "00:51:11"
+    },
+    {
+      "titulo": "René Padilla e a Missão Integral",
+      "relato": "HILARIO JOSE BISPO GRACA apresenta René Padilla, teólogo e missiólogo evangélico equatoriano, como o principal expoente da \"Missão Integral\", que propõe a salvação e o cuidado de toda a pessoa e de suas necessidades, com forte identificação no contexto da América Latina pobre. HILARIO JOSE BISPO GRACA destaca o impacto de René Padilla na missiologia, na contextualização cultural e na contribuição para o Pacto de Lausanne de 1974, citando obras como *Missão Integral* e *Ensaios sobre o Reino e a Igreja*.",
+      "timestamp": "00:53:55"
+    },
+    {
+      "titulo": "Evangelিক্যালismo, Renovação Reformada e Pentecostalismo",
+      "relato": "HILARIO JOSE BISPO GRACA destaca o evangelicalismo e a renovação reformada, apontando John Stott como pensador e sistematizador, e Billy Graham como a figura central na evangelização mundial após a Segunda Guerra Mundial, originando a Fundação Billy Graham e o Congresso de Lausanne. HILARIO JOSE BISPO GRACA aborda o pentecostalismo como realidade iniciada na Rua Azusa, em Los Angeles, em 1906, por William Seymour, expandindo-se no Brasil por meio da Assembleia de Deus em 1911 e da Congregação Cristã no Brasil em 1910, com ênfase no batismo com o Espírito Santo, dons espirituais e testemunho missionário.",
+      "timestamp": "01:07:11"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "1 Coríntios 15:19-20",
+      "contexto": "HILARIO JOSE BISPO GRACA destaca que a esperança está intrinsecamente ligada à ressurreição de Cristo (1 Coríntios 15:19-20) e à solidariedade de Deus com os que sofrem."
+    },
+    {
+      "referencia": "Mateus 25",
+      "contexto": "HILARIO JOSE BISPO GRACA apresenta Gustavo Gutiérrez, padre dominicano peruano e cofundador da teologia da libertação, explicando que o pensamento de Gustavo Gutiérrez reflete sobre a fé a partir da realidade dos pobres e oprimidos, fundamentando-se em textos bíblicos como Mateus 25."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Karl Barth (1886–1968)",
+      "detalhe": "Teólogo da Neo-ortodoxia / Teologia Dialética; rompeu com o liberalismo alemão ao constatar o apoio de seus professores ao militarismo imperial; recolocou a revelação de Deus e a cristologia no centro."
+    },
+    {
+      "titulo": "Søren Kierkegaard (1813–1855)",
+      "detalhe": "Crítico implacável da Igreja da Dinamarca; ensinou que a fé cristã exige angústia, decisão existencial e discipulado autêntico, e não mero pertencimento social."
+    },
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Viagem Missionária em Tabatinga e Povos Indígenas\" nesta aula?",
+      "dicaResposta": "Cristiano Sacramento e Salatiel Rodrigues conversam sobre a localização de Cristiano Sacramento em Tabatinga, Amazonas, na tríplice fronteira entre Brasil, Peru e Colômbia, região que abriga uma grande comunidade de povos originários no Vale do Javari. Salatiel Rodrigues menciona que um grupo da Igreja Assembleia de Deus de Nova Venécia está visitando a região e as tribos indígenas há cerca de quinze dias."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Considerações Iniciais sobre a Disciplina e Pensamento Cristão\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA inicia a última aula da disciplina destacando que o grupo conseguiu cumprir todo o conteúdo sem ficar em dívida com os estudantes. HILARIO JOSE BISPO GRACA introduz o estudo dos personagens da história do pensamento cristão do século XX, ressaltando que o pensamento cristão abrange correntes além da tradição reformada protestante, incluindo movimentos protagonizados pela Igreja Católica, como a Contrarreforma iniciada no Concílio de Trento."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atuação Social e Influência Política da Igreja Católica\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA aponta que, no século passado, movimentos católicos da América Latina, como as comunidades eclesiais de base (CEBs), influenciaram a política por meio da assistência social a pessoas carentes e vulneráveis. HILARIO JOSE BISPO GRACA relata que, embora as igrejas protestantes tenham se engajado em questões sociais nas últimas três ou quatro décadas, o trabalho social frequentemente sofre com a contaminação de interesses políticos e eleitorais."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"O Caso de Interrupção de Trabalho Social em Brasília\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA compartilha uma experiência pessoal em Brasília, onde coordenava um trabalho voluntário de visitação a presos e jovens infratores aos finais de semana, fornecendo itens necessários como tênis e pasta de dente. HILARIO JOSE BISPO GRACA relata que a autorização foi bloqueada por negativas estranhas próximas às eleições, quando políticos interessados em destaque na assistência social passaram a instrumentalizar o espaço que era ocupado pela igreja."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Contribuição de John Stott ao Pensamento Cristão\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA destaca a relevância de John Stott, pastor anglicano britânico e teólogo que faleceu em 2011 aos noventa e poucos anos, cuja leitura é essencial para seminaristas. HILARIO JOSE BISPO GRACA menciona que o último livro de John Stott, *O Discípulo Radical*, sintetiza o pensamento de John Stott, além de citar obras importantes como *Ouça o Espírito, Ouça o Mundo* e *A Cruz de Cristo*."
+    }
+  ],
+  "encaminhamentos": [
+    "Estudar o Pacto de Lausanne: Estudar o Pacto de Lausanne de 1974 para compreender a declaração dos evangélicos mundiais sobre evangelização.",
+    "Ler John Stott: Ler as obras recomendadas de John Stott, especificamente A Cruz de Cristo, Cristianismo Básico e O Discípulo Radical.",
+    "Ler J.I. Packer: Adquirir e ler as obras mencionadas de J.I. Packer, como Conhecimento de Deus, para aprofundamento teológico e devocional.",
+    "Estudar Teologia da Libertação: Estudar a Teologia da Libertação e autores como Gustavo Gutierrez para compreender o contexto da pobreza e o debate teológico latino americano."
+  ]
+}

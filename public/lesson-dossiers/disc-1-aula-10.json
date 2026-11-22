@@ -1,0 +1,144 @@
+{
+  "id": "disc-1-aula-10",
+  "disciplinaId": "disc-1",
+  "disciplinaName": "01 - História do Congregacionalismo - Ary Júnior",
+  "disciplinaShortName": "História do Congregacionalismo",
+  "disciplinaCode": "HIS-202",
+  "professor": "Profº Ary Júnior",
+  "aulaNum": 10,
+  "unidade": 2,
+  "dateIso": "2026-10-13",
+  "dateBr": "13/10/2026",
+  "theme": "Aula 10 • Dr. Robert Reid Kalley (1809–1888)",
+  "geminiUrl": "https://docs.google.com/document/d/19OA-kkDNv6T02-2KmJSZU1TwBUctCEJdI1RGNTZ2Hlw/edit",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "A missão pioneira do Dr. Kalley na Ilha da Madeira, o sucesso evangelístico, as perseguições civis e religiosas de 1843 a 1846 e a fuga dramática dos convertidos.",
+    "sinteseGeral": "A missão pioneira do Dr. Kalley na Ilha da Madeira, o sucesso evangelístico, as perseguições civis e religiosas de 1843 a 1846 e a fuga dramática dos convertidos. Pontos de aprofundamento vinculados à unidade: Dr. Robert Reid Kalley (1809–1888) (Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária.) Sarah Poulton Wilson Kalley (Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local.) Base documental da avaliação: 3 textos enviados pelo professor no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2...",
+    "mapaRapido": [
+      "Dr. Robert Reid Kalley (1809–1888): Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária.",
+      "Sarah Poulton Wilson Kalley: Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local.",
+      "Igreja Evangélica Pernambucana (19/10/1873): Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste.",
+      "A Gênese dos 28 Artigos (1874–1876): Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "Help for Brazil e UEA: Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+    ],
+    "totalBlocos": 5
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Contexto Histórico",
+      "titulo": "Dr. Robert Reid Kalley (1809–1888)",
+      "resumoCurto": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária.",
+      "detalhamento": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária.",
+      "pontosChave": [
+        "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Sarah Poulton Wilson Kalley",
+      "resumoCurto": "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local.",
+      "detalhamento": "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local.",
+      "pontosChave": [
+        "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Igreja Evangélica Pernambucana (19/10/1873)",
+      "resumoCurto": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste.",
+      "detalhamento": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste.",
+      "pontosChave": [
+        "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Gênese dos 28 Artigos (1874–1876)",
+      "resumoCurto": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "detalhamento": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia.",
+      "pontosChave": [
+        "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+        "O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Contexto Histórico",
+      "titulo": "Help for Brazil e UEA",
+      "resumoCurto": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.",
+      "detalhamento": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.",
+      "pontosChave": [
+        "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 18:15-20",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "Atos 15:1-29",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "1 Pedro 2:9",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Sarah Poulton Wilson Kalley",
+      "detalhe": "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local."
+    },
+    {
+      "titulo": "Dr. Robert Reid Kalley (1809–1888)",
+      "detalhe": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária."
+    },
+    {
+      "titulo": "Igreja Evangélica Pernambucana (19/10/1873)",
+      "detalhe": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Dr. Robert Reid Kalley (1809–1888)\" nesta aula?",
+      "dicaResposta": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Sarah Poulton Wilson Kalley\" nesta aula?",
+      "dicaResposta": "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Igreja Evangélica Pernambucana (19/10/1873)\" nesta aula?",
+      "dicaResposta": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Gênese dos 28 Artigos (1874–1876)\" nesta aula?",
+      "dicaResposta": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Help for Brazil e UEA\" nesta aula?",
+      "dicaResposta": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar: 3 textos enviados pelo professor no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2) Síntese dos 28 Artigos; (3) Análise analítica ampla dos 28 Artigos."
+  ]
+}

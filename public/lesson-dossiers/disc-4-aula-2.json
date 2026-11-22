@@ -1,0 +1,449 @@
+{
+  "id": "disc-4-aula-2",
+  "disciplinaId": "disc-4",
+  "disciplinaName": "04 - Direitos Humanos - Cleiton Barbirato",
+  "disciplinaShortName": "Direitos Humanos",
+  "disciplinaCode": "DIR-101",
+  "professor": "Profº Cleiton Barbirato",
+  "aulaNum": 2,
+  "unidade": 1,
+  "dateIso": "2026-08-19",
+  "dateBr": "19/08/2026",
+  "theme": "Aula 2 • Desafios Estruturais do País",
+  "geminiUrl": "/gemini-notes/dh_aula2_2026-08-19.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A discussão explorou a fé cristã e direitos humanos, analisando tensões jurídicas, abusos judiciários e sistemas políticos. Fé e Direitos Humanos A interseção entre o compromisso cristão com o próximo e as construções seculares de direitos humanos orientou a reflexão inicial. Valores éticos fundamentam a necessidade de cuidado social nas comunidades. Críticas ao Sistema Judiciário A análise avançou pelas 3 gerações de direitos e críticas ao Supremo Tribunal Federal. Preocupações sobre impunidade seletiva e a politização do judiciário foram destacadas.",
+    "sinteseGeral": "A discussão explorou a fé cristã e direitos humanos, analisando tensões jurídicas, abusos judiciários e sistemas políticos. Fé e Direitos Humanos A interseção entre o compromisso cristão com o próximo e as construções seculares de direitos humanos orientou a reflexão inicial. Valores éticos fundamentam a necessidade de cuidado social nas comunidades. Críticas ao Sistema Judiciário A análise avançou pelas 3 gerações de direitos e críticas ao Supremo Tribunal Federal. Preocupações sobre impunidade seletiva e a politização do judiciário foram destacadas. Desafios Estruturais do País Reflexões sobre a influência do poder econômico na política e o atraso histórico na garantia de direitos concluíram o debate. Tratados internacionais funcionam como mecanismos essenciais para monitorar violações.",
+    "mapaRapido": [
+      "Abertura e Oração Inicial: Profº Cleiton Barbirato inicia a sessão com uma oração, pedindo força e renovação para os estudantes, destacando a resiliência e persistência deles para aprender e servir ao reino de Deus, mesmo sendo o último período da aula.",
+      "Cristianismo e Direitos Humanos: Profº Cleiton Barbirato introduz a relação entre os direitos humanos, que são construções jurídicas seculares, e a carreira ministerial.",
+      "Conceito de Próximo: Profº Cleiton Barbirato e Rosiane Lima (Rosi) discutem quem é o \"próximo\".",
+      "A Missão Integral da Igreja: Profº Cleiton Barbirato argumenta que a igreja não é uma organização não governamental (ONG), mas sua missão de proclamar o evangelho deve ser acompanhada pelo cuidado com o próximo.",
+      "Cuidado Social como Parte do Evangelho: Profº Cleiton Barbirato reforça que a igreja deve atentar para as necessidades físicas das pessoas, mencionando o exemplo de William Booth, fundador do Exército da Salvação, com o lema \"Sopa, sabão e salvação\".",
+      "Fé e Obras: Profº Cleiton Barbirato explica que, embora a salvação ocorra pela graça, a fé verdadeira manifesta-se através de boas obras."
+    ],
+    "totalBlocos": 27
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Abertura e Oração Inicial",
+      "resumoCurto": "Profº Cleiton Barbirato inicia a sessão com uma oração, pedindo força e renovação para os estudantes, destacando a resiliência e persistência deles para aprender e servir ao reino de Deus, mesmo sendo o último período da aula.",
+      "detalhamento": "Profº Cleiton Barbirato inicia a sessão com uma oração, pedindo força e renovação para os estudantes, destacando a resiliência e persistência deles para aprender e servir ao reino de Deus, mesmo sendo o último período da aula.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato inicia a sessão com uma oração, pedindo força e renovação para os estudantes, destacando a resiliência e persistência deles para aprender e servir ao reino de Deus, mesmo sendo o último período da aula."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Cristianismo e Direitos Humanos",
+      "resumoCurto": "Profº Cleiton Barbirato introduz a relação entre os direitos humanos, que são construções jurídicas seculares, e a carreira ministerial.",
+      "detalhamento": "Profº Cleiton Barbirato introduz a relação entre os direitos humanos, que são construções jurídicas seculares, e a carreira ministerial. Ele enfatiza, citando John Wesley, que não se deve dissociar o cuidado espiritual das necessidades físicas e materiais das pessoas.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato introduz a relação entre os direitos humanos, que são construções jurídicas seculares, e a carreira ministerial.",
+        "Ele enfatiza, citando John Wesley, que não se deve dissociar o cuidado espiritual das necessidades físicas e materiais das pessoas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conceito de Próximo",
+      "resumoCurto": "Profº Cleiton Barbirato e Rosiane Lima (Rosi) discutem quem é o \"próximo\".",
+      "detalhamento": "Profº Cleiton Barbirato e Rosiane Lima (Rosi) discutem quem é o \"próximo\". O consenso é que o próximo engloba todas as pessoas com quem se tem contato e a oportunidade de praticar o bem, indo além de um grupo religioso específico.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato e Rosiane Lima (Rosi) discutem quem é o \"próximo\".",
+        "O consenso é que o próximo engloba todas as pessoas com quem se tem contato e a oportunidade de praticar o bem, indo além de um grupo religioso específico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Missão Integral da Igreja",
+      "resumoCurto": "Profº Cleiton Barbirato argumenta que a igreja não é uma organização não governamental (ONG), mas sua missão de proclamar o evangelho deve ser acompanhada pelo cuidado com o próximo.",
+      "detalhamento": "Profº Cleiton Barbirato argumenta que a igreja não é uma organização não governamental (ONG), mas sua missão de proclamar o evangelho deve ser acompanhada pelo cuidado com o próximo. Ele utiliza Tiago 2:15-16 para explicar que pregar o evangelho sem suprir necessidades básicas como alimento e vestimenta é insuficiente.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato argumenta que a igreja não é uma organização não governamental (ONG), mas sua missão de proclamar o evangelho deve ser acompanhada pelo cuidado com o próximo.",
+        "Ele utiliza Tiago 2:15-16 para explicar que pregar o evangelho sem suprir necessidades básicas como alimento e vestimenta é insuficiente."
+      ],
+      "referenciasNoBloco": [
+        "Tiago 2:15-16"
+      ]
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Cuidado Social como Parte do Evangelho",
+      "resumoCurto": "Profº Cleiton Barbirato reforça que a igreja deve atentar para as necessidades físicas das pessoas, mencionando o exemplo de William Booth, fundador do Exército da Salvação, com o lema \"Sopa, sabão e salvação\".",
+      "detalhamento": "Profº Cleiton Barbirato reforça que a igreja deve atentar para as necessidades físicas das pessoas, mencionando o exemplo de William Booth, fundador do Exército da Salvação, com o lema \"Sopa, sabão e salvação\". O objetivo é amar e cuidar, não usar a ajuda social como moeda de troca por frequência na igreja.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato reforça que a igreja deve atentar para as necessidades físicas das pessoas, mencionando o exemplo de William Booth, fundador do Exército da Salvação, com o lema \"Sopa, sabão e salvação\".",
+        "O objetivo é amar e cuidar, não usar a ajuda social como moeda de troca por frequência na igreja."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Fé e Obras",
+      "resumoCurto": "Profº Cleiton Barbirato explica que, embora a salvação ocorra pela graça, a fé verdadeira manifesta-se através de boas obras.",
+      "detalhamento": "Profº Cleiton Barbirato explica que, embora a salvação ocorra pela graça, a fé verdadeira manifesta-se através de boas obras. Essa transformação mental leva o cristão a preocupar-se com o bem-estar e as condições de vida do próximo.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explica que, embora a salvação ocorra pela graça, a fé verdadeira manifesta-se através de boas obras.",
+        "Essa transformação mental leva o cristão a preocupar-se com o bem-estar e as condições de vida do próximo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relevância Comunitária da Igreja",
+      "resumoCurto": "Profº Cleiton Barbirato incentiva os alunos a refletirem sobre o impacto de suas igrejas locais na vizinhança.",
+      "detalhamento": "Profº Cleiton Barbirato incentiva os alunos a refletirem sobre o impacto de suas igrejas locais na vizinhança. Ele sugere que a igreja deve buscar ser útil à comunidade, citando exemplos de igrejas que melhoraram a infraestrutura local, como a pintura de casas vizinhas.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato incentiva os alunos a refletirem sobre o impacto de suas igrejas locais na vizinhança.",
+        "Ele sugere que a igreja deve buscar ser útil à comunidade, citando exemplos de igrejas que melhoraram a infraestrutura local, como a pintura de casas vizinhas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Mandato Bíblico para o Bem",
+      "resumoCurto": "Com base em 1 Timóteo, Profº Cleiton Barbirato orienta que cristãos com recursos devem ser acessíveis e generosos, promovendo o bem coletivo.",
+      "detalhamento": "Com base em 1 Timóteo, Profº Cleiton Barbirato orienta que cristãos com recursos devem ser acessíveis e generosos, promovendo o bem coletivo. A ideia é que a igreja, ao influenciar a sociedade, contribui para a garantia de direitos humanos fundamentais.",
+      "pontosChave": [
+        "Com base em 1 Timóteo, Profº Cleiton Barbirato orienta que cristãos com recursos devem ser acessíveis e generosos, promovendo o bem coletivo.",
+        "A ideia é que a igreja, ao influenciar a sociedade, contribui para a garantia de direitos humanos fundamentais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Exemplos Históricos de Cristãos e Direitos Humanos",
+      "resumoCurto": "Profº Cleiton Barbirato cita figuras como Martin Luther King Júnior na luta contra a discriminação racial, o arcebispo anglicano que combateu o Apartheid na África do Sul, e o teólogo Dietrich Bonhoeffer, que participou da resistência ao nazismo, demonstrando como o evangelho motiva a luta contra a desumanização.",
+      "detalhamento": "Profº Cleiton Barbirato cita figuras como Martin Luther King Júnior na luta contra a discriminação racial, o arcebispo anglicano que combateu o Apartheid na África do Sul, e o teólogo Dietrich Bonhoeffer, que participou da resistência ao nazismo, demonstrando como o evangelho motiva a luta contra a desumanização.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato cita figuras como Martin Luther King Júnior na luta contra a discriminação racial, o arcebispo anglicano que combateu o Apartheid na África do Sul, e o teólogo Dietrich Bonhoeffer, que participou da resistência ao nazismo, demonstrando como o evangelho motiva a luta contra a desumanização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Origem das Normas de Direitos Humanos",
+      "resumoCurto": "As normas internacionais de proteção aos direitos humanos surgiram como resposta a atrocidades históricas, incluindo o assassinato de 6 milhões de judeus pelo Partido Nazista e a violência durante guerras e regimes totalitários, como o período da ditadura no Brasil, onde o Estado agia de forma arbitrária.",
+      "detalhamento": "As normas internacionais de proteção aos direitos humanos surgiram como resposta a atrocidades históricas, incluindo o assassinato de 6 milhões de judeus pelo Partido Nazista e a violência durante guerras e regimes totalitários, como o período da ditadura no Brasil, onde o Estado agia de forma arbitrária.",
+      "pontosChave": [
+        "As normas internacionais de proteção aos direitos humanos surgiram como resposta a atrocidades históricas, incluindo o assassinato de 6 milhões de judeus pelo Partido Nazista e a violência durante guerras e regimes totalitários, como o período da ditadura no Brasil, onde o Estado agia de forma arbitrária."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Limites do Poder Estatal e o Judiciário",
+      "resumoCurto": "Profº Cleiton Barbirato aborda o conceito jurídico de ius puniend (direito de punir) do Estado e a necessidade de limites para proteger o indivíduo.",
+      "detalhamento": "Profº Cleiton Barbirato aborda o conceito jurídico de ius puniend (direito de punir) do Estado e a necessidade de limites para proteger o indivíduo. Alcimar Luiz da Silva comenta que, na prática, direitos são restringidos diariamente, e Profº Cleiton Barbirato concorda que, atualmente, observa-se um período nebuloso no Brasil, com o Supremo Federal Tribunal (STF) por vezes usurpando atribuições do Legislativo.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato aborda o conceito jurídico de ius puniend (direito de punir) do Estado e a necessidade de limites para proteger o indivíduo.",
+        "Alcimar Luiz da Silva comenta que, na prática, direitos são restringidos diariamente, e Profº Cleiton Barbirato concorda que, atualmente, observa-se um período nebuloso no Brasil, com o Supremo Federal Tribunal (STF) por vezes usurpando atribuições do Legislativo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos Humanos de Primeira Geração",
+      "resumoCurto": "Profº Cleiton Barbirato explica que a primeira geração ou dimensão dos direitos humanos, marcada pela Revolução Francesa, foca na liberdade, direitos civis, direitos políticos e na limitação do poder do Estado sobre o indivíduo.",
+      "detalhamento": "Profº Cleiton Barbirato explica que a primeira geração ou dimensão dos direitos humanos, marcada pela Revolução Francesa, foca na liberdade, direitos civis, direitos políticos e na limitação do poder do Estado sobre o indivíduo.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explica que a primeira geração ou dimensão dos direitos humanos, marcada pela Revolução Francesa, foca na liberdade, direitos civis, direitos políticos e na limitação do poder do Estado sobre o indivíduo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos Humanos de Segunda Geração",
+      "resumoCurto": "Surgidos com a Revolução Industrial e o constitucionalismo social, esses direitos focam na igualdade material, abrangendo direitos econômicos, sociais e culturais.",
+      "detalhamento": "Surgidos com a Revolução Industrial e o constitucionalismo social, esses direitos focam na igualdade material, abrangendo direitos econômicos, sociais e culturais. O Estado passa a ter a obrigação de agir positivamente para garantir bem-estar, saúde e educação.",
+      "pontosChave": [
+        "Surgidos com a Revolução Industrial e o constitucionalismo social, esses direitos focam na igualdade material, abrangendo direitos econômicos, sociais e culturais.",
+        "O Estado passa a ter a obrigação de agir positivamente para garantir bem-estar, saúde e educação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Censura e Liberdade de Expressão",
+      "resumoCurto": "Profº Cleiton Barbirato discute os riscos da censura estatal, mencionando experiências passadas no Brasil.",
+      "detalhamento": "Profº Cleiton Barbirato discute os riscos da censura estatal, mencionando experiências passadas no Brasil. Ele argumenta que o controle sobre o que a família consome deve ser responsabilidade individual dos pais, e não do Estado, ressaltando o perigo de dar ao governo o poder de definir o que pode ou não circular.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato discute os riscos da censura estatal, mencionando experiências passadas no Brasil.",
+        "Ele argumenta que o controle sobre o que a família consome deve ser responsabilidade individual dos pais, e não do Estado, ressaltando o perigo de dar ao governo o poder de definir o que pode ou não circular."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Constitucionalismo e Direitos Fundamentais",
+      "resumoCurto": "Profº Cleiton Barbirato destaca que legislações modernas, como a Constituição do México de 1917 e a Constituição de 1988 do Brasil, institucionalizaram a garantia dos direitos humanos, obrigando o Estado a implementar políticas públicas de inclusão e acesso a direitos básicos.",
+      "detalhamento": "Profº Cleiton Barbirato destaca que legislações modernas, como a Constituição do México de 1917 e a Constituição de 1988 do Brasil, institucionalizaram a garantia dos direitos humanos, obrigando o Estado a implementar políticas públicas de inclusão e acesso a direitos básicos.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato destaca que legislações modernas, como a Constituição do México de 1917 e a Constituição de 1988 do Brasil, institucionalizaram a garantia dos direitos humanos, obrigando o Estado a implementar políticas públicas de inclusão e acesso a direitos básicos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Direitos Humanos de Terceira Geração",
+      "resumoCurto": "Esta dimensão, com o marco no pós-Segunda Guerra Mundial e globalização, foca na fraternidade e solidariedade.",
+      "detalhamento": "Esta dimensão, com o marco no pós-Segunda Guerra Mundial e globalização, foca na fraternidade e solidariedade. Inclui direitos difusos e coletivos, como o direito ao meio ambiente equilibrado, ao desenvolvimento, à autodeterminação dos povos e à proteção do patrimônio cultural e histórico.",
+      "pontosChave": [
+        "Esta dimensão, com o marco no pós-Segunda Guerra Mundial e globalização, foca na fraternidade e solidariedade.",
+        "Inclui direitos difusos e coletivos, como o direito ao meio ambiente equilibrado, ao desenvolvimento, à autodeterminação dos povos e à proteção do patrimônio cultural e histórico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Declaração Universal dos Direitos Humanos",
+      "resumoCurto": "Profº Cleiton Barbirato conclui mencionando a Declaração Universal dos Direitos Humanos de 1948 como o documento marco para a Organização das Nações Unidas, estabelecendo que 193 países signatários devem garantir o respeito aos direitos básicos em seus territórios.",
+      "detalhamento": "Profº Cleiton Barbirato conclui mencionando a Declaração Universal dos Direitos Humanos de 1948 como o documento marco para a Organização das Nações Unidas, estabelecendo que 193 países signatários devem garantir o respeito aos direitos básicos em seus territórios.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato conclui mencionando a Declaração Universal dos Direitos Humanos de 1948 como o documento marco para a Organização das Nações Unidas, estabelecendo que 193 países signatários devem garantir o respeito aos direitos básicos em seus territórios."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos Humanos e o Sistema Prisional Brasileiro",
+      "resumoCurto": "Profº Cleiton Barbirato enfatiza o foco na Declaração Universal dos Direitos Humanos e explica que o Brasil proíbe a pena de morte por ser signatário do Pacto de São José da Costa Rica.",
+      "detalhamento": "Profº Cleiton Barbirato enfatiza o foco na Declaração Universal dos Direitos Humanos e explica que o Brasil proíbe a pena de morte por ser signatário do Pacto de São José da Costa Rica. A pessoa destaca falhas graves no sistema penal brasileiro, mencionando prisões indevidas por erros processuais e investigativos, além de classificar o sistema prisional como monstruoso, onde as condições de encarceramento frequentemente deterioram a situação das pessoas detidas.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato enfatiza o foco na Declaração Universal dos Direitos Humanos e explica que o Brasil proíbe a pena de morte por ser signatário do Pacto de São José da Costa Rica.",
+        "A pessoa destaca falhas graves no sistema penal brasileiro, mencionando prisões indevidas por erros processuais e investigativos, além de classificar o sistema prisional como monstruoso, onde as condições de encarceramento frequentemente deterioram a situação das pessoas detidas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Abusos do Judiciário e o Caso Cleriston Pereira",
+      "resumoCurto": "Alcimar Luiz da Silva discute o caso de Cleriston Pereira, que faleceu sob custódia estatal enquanto aguardava julgamento, apesar de seus problemas de saúde e dos pedidos de tratamento negados pela defesa.",
+      "detalhamento": "Alcimar Luiz da Silva discute o caso de Cleriston Pereira, que faleceu sob custódia estatal enquanto aguardava julgamento, apesar de seus problemas de saúde e dos pedidos de tratamento negados pela defesa. A pessoa aponta a falta de revisão obrigatória da prisão preventiva a cada 90 dias pelos juízes. Adicionalmente, Alcimar questiona a disparidade de tratamento, comparando os privilégios concedidos a pessoas como Suzane von Richthofen, que recebe autorizações de saída, com a restrição de direitos básicos de visita familiar imposta a um ex-Presidente da República.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva discute o caso de Cleriston Pereira, que faleceu sob custódia estatal enquanto aguardava julgamento, apesar de seus problemas de saúde e dos pedidos de tratamento negados pela defesa.",
+        "A pessoa aponta a falta de revisão obrigatória da prisão preventiva a cada 90 dias pelos juízes.",
+        "Adicionalmente, Alcimar questiona a disparidade de tratamento, comparando os privilégios concedidos a pessoas como Suzane von Richthofen, que recebe autorizações de saída, com a restrição de direitos básicos de visita familiar imposta a um ex-Presidente da República."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desigualdade de Tratamento no Sistema Judiciário",
+      "resumoCurto": "Alcimar Luiz da Silva contrasta a condenação de 14 anos de Débora do Batom com a leniência concedida à esposa de Sérgio Cabral, que obteve abrandamento da pena para cuidar dos filhos.",
+      "detalhamento": "Alcimar Luiz da Silva contrasta a condenação de 14 anos de Débora do Batom com a leniência concedida à esposa de Sérgio Cabral, que obteve abrandamento da pena para cuidar dos filhos. Profº Cleiton Barbirato corrobora essa observação, criticando a falta de isonomia no sistema e a manutenção da liberdade de figuras como Sérgio Cabral, que, segundo a pessoa, não devolveu os valores desviados, caracterizando a situação como uma preocupante vingança judicial.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva contrasta a condenação de 14 anos de Débora do Batom com a leniência concedida à esposa de Sérgio Cabral, que obteve abrandamento da pena para cuidar dos filhos.",
+        "Profº Cleiton Barbirato corrobora essa observação, criticando a falta de isonomia no sistema e a manutenção da liberdade de figuras como Sérgio Cabral, que, segundo a pessoa, não devolveu os valores desviados, caracterizando a situação como uma preocupante vingança judicial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Inquérito das Fake News e Sigilo Jornalístico",
+      "resumoCurto": "Alcimar Luiz da Silva critica o inquérito das fake news, mencionando que o ministro Marco Aurélio Melo afirmou que o processo, aberto de ofício, tramita há sete anos.",
+      "detalhamento": "Alcimar Luiz da Silva critica o inquérito das fake news, mencionando que o ministro Marco Aurélio Melo afirmou que o processo, aberto de ofício, tramita há sete anos. A pessoa ressalta o perigo do precedente aberto com a quebra de sigilo da fonte de um jornalista no Ceará, alertando para os riscos à liberdade de imprensa. Profº Cleiton Barbirato concorda com a análise de que o inquérito possui uma natureza inquisitorial.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva critica o inquérito das fake news, mencionando que o ministro Marco Aurélio Melo afirmou que o processo, aberto de ofício, tramita há sete anos.",
+        "A pessoa ressalta o perigo do precedente aberto com a quebra de sigilo da fonte de um jornalista no Ceará, alertando para os riscos à liberdade de imprensa.",
+        "Profº Cleiton Barbirato concorda com a análise de que o inquérito possui uma natureza inquisitorial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Críticas ao Poder Judiciário e ao Sistema Político Brasileiro",
+      "resumoCurto": "Rodrigo Oliveira argumenta que o abuso de poder e a corrupção no judiciário não são problemas atuais, mas sim questões históricas de uma justiça que descrevem como racista e classista.",
+      "detalhamento": "Rodrigo Oliveira argumenta que o abuso de poder e a corrupção no judiciário não são problemas atuais, mas sim questões históricas de uma justiça que descrevem como racista e classista. A pessoa menciona avanços recentes do Conselho Nacional de Justiça (CNJ) sobre a punição de magistrados, mas critica a politização das cortes superiores e dos outros poderes, afirmando que o abuso de poder é sistêmico em todas as esferas.",
+      "pontosChave": [
+        "Rodrigo Oliveira argumenta que o abuso de poder e a corrupção no judiciário não são problemas atuais, mas sim questões históricas de uma justiça que descrevem como racista e classista.",
+        "A pessoa menciona avanços recentes do Conselho Nacional de Justiça (CNJ) sobre a punição de magistrados, mas critica a politização das cortes superiores e dos outros poderes, afirmando que o abuso de poder é sistêmico em todas as esferas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Conceitos de Ditadura e Abuso de Poder",
+      "resumoCurto": "Rodrigo Oliveira contesta a utilização do termo \"ditadura\" para descrever o cenário atual, classificando-o como um exagero impulsionado por narrativas políticas, diferentemente dos períodos históricos de tortura e desaparecimentos.",
+      "detalhamento": "Rodrigo Oliveira contesta a utilização do termo \"ditadura\" para descrever o cenário atual, classificando-o como um exagero impulsionado por narrativas políticas, diferentemente dos períodos históricos de tortura e desaparecimentos. Profº Cleiton Barbirato esclarece que, embora \"ditadura\" possa ser um exagero terminológico, existe um regime de abusos, impunidade seletiva e perseguição contra quem critica os ministros do Supremo Tribunal Federal.",
+      "pontosChave": [
+        "Rodrigo Oliveira contesta a utilização do termo \"ditadura\" para descrever o cenário atual, classificando-o como um exagero impulsionado por narrativas políticas, diferentemente dos períodos históricos de tortura e desaparecimentos.",
+        "Profº Cleiton Barbirato esclarece que, embora \"ditadura\" possa ser um exagero terminológico, existe um regime de abusos, impunidade seletiva e perseguição contra quem critica os ministros do Supremo Tribunal Federal."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Reforma do Judiciário e Seleção de Ministros",
+      "resumoCurto": "Rodrigo Oliveira sugere a necessidade de uma reforma profunda, que incluiria a implementação de mandatos para ministros do STF e a possibilidade de eleição de juízes, citando modelos como os do México ou dos Estados Unidos como alternativas para aumentar a legitimidade.",
+      "detalhamento": "Rodrigo Oliveira sugere a necessidade de uma reforma profunda, que incluiria a implementação de mandatos para ministros do STF e a possibilidade de eleição de juízes, citando modelos como os do México ou dos Estados Unidos como alternativas para aumentar a legitimidade. Profº Cleiton Barbirato expressa ceticismo sobre a eficácia do voto para resolver o problema, destacando o papel contra-majoritário do STF na proteção de minorias, embora concordem que o atual processo de indicação pelo Executivo seja problemático.",
+      "pontosChave": [
+        "Rodrigo Oliveira sugere a necessidade de uma reforma profunda, que incluiria a implementação de mandatos para ministros do STF e a possibilidade de eleição de juízes, citando modelos como os do México ou dos Estados Unidos como alternativas para aumentar a legitimidade.",
+        "Profº Cleiton Barbirato expressa ceticismo sobre a eficácia do voto para resolver o problema, destacando o papel contra-majoritário do STF na proteção de minorias, embora concordem que o atual processo de indicação pelo Executivo seja problemático."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Atraso Histórico nos Direitos Humanos no Brasil",
+      "resumoCurto": "João Alexandre Souza Lemos questiona as causas do atraso crônico do Brasil na resposta às violações de direitos humanos, citando o histórico pós-abolição da escravatura e a atual polarização política que afeta a liberdade de expressão.",
+      "detalhamento": "João Alexandre Souza Lemos questiona as causas do atraso crônico do Brasil na resposta às violações de direitos humanos, citando o histórico pós-abolição da escravatura e a atual polarização política que afeta a liberdade de expressão. Profº Cleiton Barbirato atribui essa lentidão à influência da elite econômica que controla o país desde a colonização e que mantém o poder independentemente das mudanças governamentais.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos questiona as causas do atraso crônico do Brasil na resposta às violações de direitos humanos, citando o histórico pós-abolição da escravatura e a atual polarização política que afeta a liberdade de expressão.",
+        "Profº Cleiton Barbirato atribui essa lentidão à influência da elite econômica que controla o país desde a colonização e que mantém o poder independentemente das mudanças governamentais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 26,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Poder Econômico e Sistemas Eleitorais",
+      "resumoCurto": "Profº Cleiton Barbirato sustenta que os problemas sistêmicos do Brasil derivam da concentração de poder econômico, que influencia diretamente o Poder Legislativo por meio de financiamento de campanhas e lobby.",
+      "detalhamento": "Profº Cleiton Barbirato sustenta que os problemas sistêmicos do Brasil derivam da concentração de poder econômico, que influencia diretamente o Poder Legislativo por meio de financiamento de campanhas e lobby. A pessoa afirma que o atual sistema eleitoral privilegia quem detém recursos financeiros, tornando candidaturas independentes inviáveis, e defende a retirada do poder econômico do processo eleitoral como solução para promover mudanças estruturais.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato sustenta que os problemas sistêmicos do Brasil derivam da concentração de poder econômico, que influencia diretamente o Poder Legislativo por meio de financiamento de campanhas e lobby.",
+        "A pessoa afirma que o atual sistema eleitoral privilegia quem detém recursos financeiros, tornando candidaturas independentes inviáveis, e defende a retirada do poder econômico do processo eleitoral como solução para promover mudanças estruturais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 27,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Propósito dos Tratados Internacionais de Direitos Humanos",
+      "resumoCurto": "Profº Cleiton Barbirato encerra a discussão definindo o papel dos tratados internacionais de direitos humanos, que não garantem a ausência de abusos, mas estabelecem mecanismos para classificar esses abusos como violações passíveis de investigação.",
+      "detalhamento": "Profº Cleiton Barbirato encerra a discussão definindo o papel dos tratados internacionais de direitos humanos, que não garantem a ausência de abusos, mas estabelecem mecanismos para classificar esses abusos como violações passíveis de investigação. A pessoa menciona conflitos atuais, como a guerra na Ucrânia, as tensões entre Estados Unidos e Irã, e a situação em Gaza, como exemplos onde tais violações são identificadas e monitoradas internacionalmente.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato encerra a discussão definindo o papel dos tratados internacionais de direitos humanos, que não garantem a ausência de abusos, mas estabelecem mecanismos para classificar esses abusos como violações passíveis de investigação.",
+        "A pessoa menciona conflitos atuais, como a guerra na Ucrânia, as tensões entre Estados Unidos e Irã, e a situação em Gaza, como exemplos onde tais violações são identificadas e monitoradas internacionalmente."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Mandato Bíblico para o Bem",
+      "relato": "Com base em 1 Timóteo, Profº Cleiton Barbirato orienta que cristãos com recursos devem ser acessíveis e generosos, promovendo o bem coletivo. A ideia é que a igreja, ao influenciar a sociedade, contribui para a garantia de direitos humanos fundamentais."
+    },
+    {
+      "titulo": "Limites do Poder Estatal e o Judiciário",
+      "relato": "Profº Cleiton Barbirato aborda o conceito jurídico de ius puniend (direito de punir) do Estado e a necessidade de limites para proteger o indivíduo. Alcimar Luiz da Silva comenta que, na prática, direitos são restringidos diariamente, e Profº Cleiton Barbirato concorda que, atualmente, observa-se um período nebuloso no Brasil, com o Supremo Federal Tribunal (STF) por vezes usurpando atribuições do Legislativo."
+    },
+    {
+      "titulo": "Inquérito das Fake News e Sigilo Jornalístico",
+      "relato": "Alcimar Luiz da Silva critica o inquérito das fake news, mencionando que o ministro Marco Aurélio Melo afirmou que o processo, aberto de ofício, tramita há sete anos. A pessoa ressalta o perigo do precedente aberto com a quebra de sigilo da fonte de um jornalista no Ceará, alertando para os riscos à liberdade de imprensa. Profº Cleiton Barbirato concorda com a análise de que o inquérito possui uma natureza inquisitorial."
+    },
+    {
+      "titulo": "Críticas ao Poder Judiciário e ao Sistema Político Brasileiro",
+      "relato": "Rodrigo Oliveira argumenta que o abuso de poder e a corrupção no judiciário não são problemas atuais, mas sim questões históricas de uma justiça que descrevem como racista e classista. A pessoa menciona avanços recentes do Conselho Nacional de Justiça (CNJ) sobre a punição de magistrados, mas critica a politização das cortes superiores e dos outros poderes, afirmando que o abuso de poder é sistêmico em todas as esferas."
+    },
+    {
+      "titulo": "Propósito dos Tratados Internacionais de Direitos Humanos",
+      "relato": "Profº Cleiton Barbirato encerra a discussão definindo o papel dos tratados internacionais de direitos humanos, que não garantem a ausência de abusos, mas estabelecem mecanismos para classificar esses abusos como violações passíveis de investigação. A pessoa menciona conflitos atuais, como a guerra na Ucrânia, as tensões entre Estados Unidos e Irã, e a situação em Gaza, como exemplos onde tais violações são identificadas e monitoradas internacionalmente."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Tiago 2:15-16",
+      "contexto": "Ele utiliza Tiago 2:15-16 para explicar que pregar o evangelho sem suprir necessidades básicas como alimento e vestimenta é insuficiente."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Incorporação de Tratados Internacionais (Art. 5º, § 3º da CF/88)",
+      "detalhe": "Tratados sobre direitos humanos aprovados em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos, equivalem a Emendas Constitucionais no ápice da Pirâmide de Kelsen."
+    },
+    {
+      "titulo": "Artigo 5º da Constituição Federal de 1988",
+      "detalhe": "Garante a brasileiros e estrangeiros residentes a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade (Cláusula Pétrea imutável por emenda)."
+    },
+    {
+      "titulo": "Dimensão Vertical vs. Horizontal",
+      "detalhe": "Vertical: o indivíduo buscando proteção contra os arbítrios e o poder punitivo do Estado (jus puniendi). Horizontal: aplicação dos direitos fundamentais nas relações entre particulares e instituições privadas."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Oração Inicial\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato inicia a sessão com uma oração, pedindo força e renovação para os estudantes, destacando a resiliência e persistência deles para aprender e servir ao reino de Deus, mesmo sendo o último período da aula."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Cristianismo e Direitos Humanos\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato introduz a relação entre os direitos humanos, que são construções jurídicas seculares, e a carreira ministerial. Ele enfatiza, citando John Wesley, que não se deve dissociar o cuidado espiritual das necessidades físicas e materiais das pessoas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Conceito de Próximo\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato e Rosiane Lima (Rosi) discutem quem é o \"próximo\". O consenso é que o próximo engloba todas as pessoas com quem se tem contato e a oportunidade de praticar o bem, indo além de um grupo religioso específico."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Missão Integral da Igreja\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato argumenta que a igreja não é uma organização não governamental (ONG), mas sua missão de proclamar o evangelho deve ser acompanhada pelo cuidado com o próximo. Ele utiliza Tiago 2:15-16 para explicar que pregar o evangelho sem suprir necessidades básicas como alimento e vestimenta é insuficiente."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Cuidado Social como Parte do Evangelho\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato reforça que a igreja deve atentar para as necessidades físicas das pessoas, mencionando o exemplo de William Booth, fundador do Exército da Salvação, com o lema \"Sopa, sabão e salvação\". O objetivo é amar e cuidar, não usar a ajuda social como moeda de troca por frequência na igreja."
+    }
+  ],
+  "encaminhamentos": [
+    "Ler livro: Ler o livro E se Jesus não tivesse nascido para compreender o impacto do cristianismo no bem-estar social.",
+    "Realizar ação social: Realizar ações sociais na igreja local focadas em amar e cuidar das necessidades físicas das pessoas sem condicionar o apoio à conversão.",
+    "Avaliar relevância comunitária: Refletir sobre a relevância da igreja na comunidade local e identificar formas de ser útil aos vizinhos.",
+    "Confirmar abolição escravatura: Confirmar se o Brasil foi o último país da América do Sul a abolir a escravidão."
+  ]
+}

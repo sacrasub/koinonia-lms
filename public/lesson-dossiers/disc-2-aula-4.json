@@ -1,0 +1,427 @@
+{
+  "id": "disc-2-aula-4",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 4,
+  "unidade": 1,
+  "dateIso": "2026-09-01",
+  "dateBr": "01/09/2026",
+  "theme": "Aula 4 • Abertura e Oração",
+  "geminiUrl": "/gemini-notes/hpc_aula4_2026-09-01.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A aula abordou a história dos reformadores, as controvérsias teológicas entre calvinismo e arminianismo e diretrizes acadêmicas. História da Reforma Protestante A reunião revisou os legados dos reformadores e a sistematização da fé através de confissões históricas. O período destacou a formação das tradições confessionais",
+    "sinteseGeral": "A aula abordou a história dos reformadores, as controvérsias teológicas entre calvinismo e arminianismo e diretrizes acadêmicas. História da Reforma Protestante A reunião revisou os legados dos reformadores e a sistematização da fé através de confissões históricas. O período destacou a formação das tradições confessionais e a resposta católica. Debates Teológicos da Reforma O encontro explorou o embate histórico entre calvinismo e arminianismo, culminando na definição dos 5 pontos do calvinismo no Sínodo de Dort. Discutiu-se também a persistência de tradições teológicas. Confissões e Instruções Acadêmicas Foi estabelecida a importância da Confissão de Fé de Westminster como base curricular. Foi definido que trabalhos acadêmicos devem conter pelo menos 5 páginas para garantir qualidade.",
+    "mapaRapido": [
+      "Abertura e Oração: O encontro teve início com saudações entre os participantes.",
+      "Recapitulação sobre Reformadores: HILARIO JOSE BISPO GRACA revisou os papéis de Martinho Lutero, Ulrico Zuínglio e João Calvino.",
+      "Formação das Tradições Confessionais: Foi discutido que o período da Reforma foi crucial para a criação de grandes famílias confessionais.",
+      "Concílio de Trento e Reação Católica: HILARIO JOSE BISPO GRACA mencionou que a Igreja Católica respondeu à Reforma com o Concílio de Trento.",
+      "Ortodoxia Protestante e Documentos Confessionais: Após a primeira geração de reformadores, houve um movimento de sistematização doutrinária, resultando em confissões e catecismos.",
+      "Controvérsia entre Calvinismo e Arminianismo: O facilitador abordou o embate histórico entre calvinistas e arminianos, citando Jacobus Arminius."
+    ],
+    "duracaoEstimada": "~1h19min",
+    "totalBlocos": 23
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura e Oração",
+      "resumoCurto": "O encontro teve início com saudações entre os participantes.",
+      "detalhamento": "O encontro teve início com saudações entre os participantes. O facilitador HILARIO JOSE BISPO GRACA solicitou ao participante Salatiel Rodrigues que realizasse uma oração inicial, buscando sabedoria divina para a condução e o aprendizado do curso.",
+      "pontosChave": [
+        "O encontro teve início com saudações entre os participantes.",
+        "O facilitador HILARIO JOSE BISPO GRACA solicitou ao participante Salatiel Rodrigues que realizasse uma oração inicial, buscando sabedoria divina para a condução e o aprendizado do curso."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:00:37",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Recapitulação sobre Reformadores",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA revisou os papéis de Martinho Lutero, Ulrico Zuínglio e João Calvino.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA revisou os papéis de Martinho Lutero, Ulrico Zuínglio e João Calvino. Lutero, autor das 95 Teses, é apontado como o pioneiro do rompimento e das controvérsias iniciais. Zuínglio destacou-se pela ênfase na autoridade das escrituras e pela reforma do culto, enquanto Calvino, na Suíça, consolidou a teologia reformada através da obra \"As Institutas da Religião Cristã\", abordando soberania de Deus, união com Cristo, eleição e providência.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA revisou os papéis de Martinho Lutero, Ulrico Zuínglio e João Calvino.",
+        "Lutero, autor das 95 Teses, é apontado como o pioneiro do rompimento e das controvérsias iniciais.",
+        "Zuínglio destacou-se pela ênfase na autoridade das escrituras e pela reforma do culto, enquanto Calvino, na Suíça, consolidou a teologia reformada através da obra \"As Institutas da Religião Cristã\", abordando soberania de Deus, união com Cristo, eleição e providência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:05:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Formação das Tradições Confessionais",
+      "resumoCurto": "Foi discutido que o período da Reforma foi crucial para a criação de grandes famílias confessionais.",
+      "detalhamento": "Foi discutido que o período da Reforma foi crucial para a criação de grandes famílias confessionais. O facilitador citou documentos fundamentais, como a Confissão de Augsburgo e o Livro da Concórdia para a tradição luterana, e a Confissão Helvética para a tradição reformada, destacando a importância desses documentos para a sistematização da fé protestante.",
+      "pontosChave": [
+        "Foi discutido que o período da Reforma foi crucial para a criação de grandes famílias confessionais.",
+        "O facilitador citou documentos fundamentais, como a Confissão de Augsburgo e o Livro da Concórdia para a tradição luterana, e a Confissão Helvética para a tradição reformada, destacando a importância desses documentos para a sistematização da fé protestante."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:07:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Concílio de Trento e Reação Católica",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA mencionou que a Igreja Católica respondeu à Reforma com o Concílio de Trento.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA mencionou que a Igreja Católica respondeu à Reforma com o Concílio de Trento. O facilitador observou que, ao longo dos séculos, incluindo o Concílio Vaticano II e o movimento de renovação carismática no final da década de 70 e início da década de 80, a instituição católica buscou se adaptar para preservar seus fiéis diante do crescimento das igrejas evangélicas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA mencionou que a Igreja Católica respondeu à Reforma com o Concílio de Trento.",
+        "O facilitador observou que, ao longo dos séculos, incluindo o Concílio Vaticano II e o movimento de renovação carismática no final da década de 70 e início da década de 80, a instituição católica buscou se adaptar para preservar seus fiéis diante do crescimento das igrejas evangélicas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:10:25",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Ortodoxia Protestante e Documentos Confessionais",
+      "resumoCurto": "Após a primeira geração de reformadores, houve um movimento de sistematização doutrinária, resultando em confissões e catecismos.",
+      "detalhamento": "Após a primeira geração de reformadores, houve um movimento de sistematização doutrinária, resultando em confissões e catecismos. Foram citados o Catecismo de Heidelberg, a Confissão Helvética, os Cânones de Dort, a Confissão de Fé de Westminster, o Catecismo Maior de Westminster e a Declaração de Savoy, esta última sendo uma adaptação congregacional da Confissão de Westminster.",
+      "pontosChave": [
+        "Após a primeira geração de reformadores, houve um movimento de sistematização doutrinária, resultando em confissões e catecismos.",
+        "Foram citados o Catecismo de Heidelberg, a Confissão Helvética, os Cânones de Dort, a Confissão de Fé de Westminster, o Catecismo Maior de Westminster e a Declaração de Savoy, esta última sendo uma adaptação congregacional da Confissão de Westminster."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:12:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Controvérsia entre Calvinismo e Arminianismo",
+      "resumoCurto": "O facilitador abordou o embate histórico entre calvinistas e arminianos, citando Jacobus Arminius.",
+      "detalhamento": "O facilitador abordou o embate histórico entre calvinistas e arminianos, citando Jacobus Arminius. Após o falecimento de Arminius, seus seguidores apresentaram a \"Remonstrância\" em 1610, questionando aspectos da predestinação calvinista e propondo uma revisão teológica baseada na Bíblia sobre a soberania divina e a responsabilidade humana.",
+      "pontosChave": [
+        "O facilitador abordou o embate histórico entre calvinistas e arminianos, citando Jacobus Arminius.",
+        "Após o falecimento de Arminius, seus seguidores apresentaram a \"Remonstrância\" em 1610, questionando aspectos da predestinação calvinista e propondo uma revisão teológica baseada na Bíblia sobre a soberania divina e a responsabilidade humana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:19:47",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Pressupostos Filosóficos da Disputa",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explicou que os remonstrantes argumentavam que a soberania absoluta de Deus, se interpretada de forma estrita, poderia anular o livre-arbítrio humano e fragilizar a responsabilidade moral.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explicou que os remonstrantes argumentavam que a soberania absoluta de Deus, se interpretada de forma estrita, poderia anular o livre-arbítrio humano e fragilizar a responsabilidade moral. Em contrapartida, discutiu-se como diferentes vertentes teológicas tentam conciliar a soberania divina com a responsabilidade humana, muitas vezes recorrendo a debates lógicos que podem ser complexos para a compreensão geral.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explicou que os remonstrantes argumentavam que a soberania absoluta de Deus, se interpretada de forma estrita, poderia anular o livre-arbítrio humano e fragilizar a responsabilidade moral.",
+        "Em contrapartida, discutiu-se como diferentes vertentes teológicas tentam conciliar a soberania divina com a responsabilidade humana, muitas vezes recorrendo a debates lógicos que podem ser complexos para a compreensão geral."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:22:40",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Ilustração da Ressurreição de Lázaro",
+      "resumoCurto": "Utilizando o milagre da ressurreição de Lázaro, conforme narrado no Evangelho de João, o facilitador ilustrou a complexidade teológica da salvação.",
+      "detalhamento": "Utilizando o milagre da ressurreição de Lázaro, conforme narrado no Evangelho de João, o facilitador ilustrou a complexidade teológica da salvação. O argumento é que Lázaro não teve participação ativa em sua própria ressurreição, dependendo inteiramente da ação de Cristo, o que serve como ponto de reflexão sobre a obra divina na conversão e o chamado eficaz.",
+      "pontosChave": [
+        "Utilizando o milagre da ressurreição de Lázaro, conforme narrado no Evangelho de João, o facilitador ilustrou a complexidade teológica da salvação.",
+        "O argumento é que Lázaro não teve participação ativa em sua própria ressurreição, dependendo inteiramente da ação de Cristo, o que serve como ponto de reflexão sobre a obra divina na conversão e o chamado eficaz."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:23:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Os Cinco Pontos da Remonstrância",
+      "resumoCurto": "Os remonstrantes propuseram cinco pontos que contestavam a doutrina calvinista: a natureza humana não totalmente corrompida, o chamado gracioso que pode ser rejeitado, a eleição baseada na presciência divina, a morte de Cristo para todos (sem garantir a salvação individualmente) e a possibilidade de perda da salvação caso o crente não conserve sua fé.",
+      "detalhamento": "Os remonstrantes propuseram cinco pontos que contestavam a doutrina calvinista: a natureza humana não totalmente corrompida, o chamado gracioso que pode ser rejeitado, a eleição baseada na presciência divina, a morte de Cristo para todos (sem garantir a salvação individualmente) e a possibilidade de perda da salvação caso o crente não conserve sua fé.",
+      "pontosChave": [
+        "Os remonstrantes propuseram cinco pontos que contestavam a doutrina calvinista: a natureza humana não totalmente corrompida, o chamado gracioso que pode ser rejeitado, a eleição baseada na presciência divina, a morte de Cristo para todos (sem garantir a salvação individualmente) e a possibilidade de perda da salvação caso o crente não conserve sua fé."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:28:02",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre a Perda da Salvação",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA expressou sua opinião pessoal sobre a doutrina da perda da salvação defendida por alguns arminianos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA expressou sua opinião pessoal sobre a doutrina da perda da salvação defendida por alguns arminianos. O facilitador questionou a viabilidade prática de um crente manter sua própria salvação através de seus atos, dada a fragilidade humana diante do pecado, enfatizando que esse ponto é um dos que mais distancia sua visão da perspectiva arminiana.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA expressou sua opinião pessoal sobre a doutrina da perda da salvação defendida por alguns arminianos.",
+        "O facilitador questionou a viabilidade prática de um crente manter sua própria salvação através de seus atos, dada a fragilidade humana diante do pecado, enfatizando que esse ponto é um dos que mais distancia sua visão da perspectiva arminiana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:30:37",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "O Sínodo de Dort",
+      "resumoCurto": "Para responder à Remonstrância, o Sínodo de Dort foi convocado em 1619, reunindo representantes de diversos países europeus durante 154 sessões ao longo de 7 meses.",
+      "detalhamento": "Para responder à Remonstrância, o Sínodo de Dort foi convocado em 1619, reunindo representantes de diversos países europeus durante 154 sessões ao longo de 7 meses. O Sínodo endossou documentos como a Confissão Belga e o Catecismo de Heidelberg, declarou os remonstrantes como heréticos e baniu o arminianismo da Holanda temporariamente, estabelecendo os Cânones de Dort.",
+      "pontosChave": [
+        "Para responder à Remonstrância, o Sínodo de Dort foi convocado em 1619, reunindo representantes de diversos países europeus durante 154 sessões ao longo de 7 meses.",
+        "O Sínodo endossou documentos como a Confissão Belga e o Catecismo de Heidelberg, declarou os remonstrantes como heréticos e baniu o arminianismo da Holanda temporariamente, estabelecendo os Cânones de Dort."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:40:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Os Cinco Pontos do Calvinismo (TULIP)",
+      "resumoCurto": "Como resposta aos pontos dos remonstrantes, consolidaram-se os cinco pontos do calvinismo: Depravação Total (corrupção humana), Eleição Incondicional (escolha divina sem mérito humano), Expiação Limitada (Cristo morreu pelos eleitos), Graça Irresistível (o chamado de Deus é eficaz) e Perseverança dos Santos (os eleitos permanecem fiéis até o fim).",
+      "detalhamento": "Como resposta aos pontos dos remonstrantes, consolidaram-se os cinco pontos do calvinismo: Depravação Total (corrupção humana), Eleição Incondicional (escolha divina sem mérito humano), Expiação Limitada (Cristo morreu pelos eleitos), Graça Irresistível (o chamado de Deus é eficaz) e Perseverança dos Santos (os eleitos permanecem fiéis até o fim).",
+      "pontosChave": [
+        "Como resposta aos pontos dos remonstrantes, consolidaram-se os cinco pontos do calvinismo: Depravação Total (corrupção humana), Eleição Incondicional (escolha divina sem mérito humano), Expiação Limitada (Cristo morreu pelos eleitos), Graça Irresistível (o chamado de Deus é eficaz) e Perseverança dos Santos (os eleitos permanecem fiéis até o fim)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:45:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Influência de John Wesley e Movimentos de Avivamento",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destacou que, apesar da condenação no Sínodo de Dort, o arminianismo persistiu e ganhou força com John Wesley e movimentos de avivamento no século XVIII, influenciando o pentecostalismo clássico.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destacou que, apesar da condenação no Sínodo de Dort, o arminianismo persistiu e ganhou força com John Wesley e movimentos de avivamento no século XVIII, influenciando o pentecostalismo clássico. Foi mencionado que Wesley sintetizou diversas vertentes, como a piedade anglicana, o misticismo e a teologia prática puritana.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destacou que, apesar da condenação no Sínodo de Dort, o arminianismo persistiu e ganhou força com John Wesley e movimentos de avivamento no século XVIII, influenciando o pentecostalismo clássico.",
+        "Foi mencionado que Wesley sintetizou diversas vertentes, como a piedade anglicana, o misticismo e a teologia prática puritana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:52:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Puritanismo e Pietismo",
+      "resumoCurto": "Foram citados movimentos como o puritanismo e o pietismo como focados na vida prática, devoção, ética, oração e renovação da igreja.",
+      "detalhamento": "Foram citados movimentos como o puritanismo e o pietismo como focados na vida prática, devoção, ética, oração e renovação da igreja. Enquanto o puritanismo enfatizava a aplicação dos princípios da reforma no cotidiano, o pietismo, surgido no luteranismo, focava na conversão e santidade, deixando um legado importante para as missões e a educação cristã.",
+      "pontosChave": [
+        "Foram citados movimentos como o puritanismo e o pietismo como focados na vida prática, devoção, ética, oração e renovação da igreja.",
+        "Enquanto o puritanismo enfatizava a aplicação dos princípios da reforma no cotidiano, o pietismo, surgido no luteranismo, focava na conversão e santidade, deixando um legado importante para as missões e a educação cristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:53:58",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Confissão de Fé de Westminster",
+      "resumoCurto": "O facilitador apresentou a Confissão de Fé de Westminster como um documento central para a tradição reformada e presbiteriana.",
+      "detalhamento": "O facilitador apresentou a Confissão de Fé de Westminster como um documento central para a tradição reformada e presbiteriana. Elaborada entre 1643 e 1649, em um contexto de guerra civil inglesa e conflitos entre parlamento e monarquia, a confissão sistematizou temas teológicos essenciais que servem de referência doutrinária até os dias atuais.",
+      "pontosChave": [
+        "O facilitador apresentou a Confissão de Fé de Westminster como um documento central para a tradição reformada e presbiteriana.",
+        "Elaborada entre 1643 e 1649, em um contexto de guerra civil inglesa e conflitos entre parlamento e monarquia, a confissão sistematizou temas teológicos essenciais que servem de referência doutrinária até os dias atuais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:02:58",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Visão Geral da Confissão de Westminster",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA analisa o equilíbrio entre a teologia, o puritanismo e os aspectos devocionais presentes no documento, criado pelos escoceses em 1646 para estabelecer diretrizes de doutrina, culto e governo.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA analisa o equilíbrio entre a teologia, o puritanismo e os aspectos devocionais presentes no documento, criado pelos escoceses em 1646 para estabelecer diretrizes de doutrina, culto e governo. A Confissão, que inclui o catecismo e o diretório para o culto público, é descrita como uma síntese madura da teologia reformada, focando na glória de Deus, na autoridade da Bíblia e na salvação pela graça.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA analisa o equilíbrio entre a teologia, o puritanismo e os aspectos devocionais presentes no documento, criado pelos escoceses em 1646 para estabelecer diretrizes de doutrina, culto e governo.",
+        "A Confissão, que inclui o catecismo e o diretório para o culto público, é descrita como uma síntese madura da teologia reformada, focando na glória de Deus, na autoridade da Bíblia e na salvação pela graça."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:01:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Importância do Ensino Teológico",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA argumenta que a igreja deve ser alimentada com temas centrais da fé, como a soberania de Deus, a centralidade de Cristo e a justificação pela fé, em vez de despender tempo com assuntos acessórios.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA argumenta que a igreja deve ser alimentada com temas centrais da fé, como a soberania de Deus, a centralidade de Cristo e a justificação pela fé, em vez de despender tempo com assuntos acessórios. Esses documentos confessionais facilitam esse processo, servindo como instrumentos de balizamento para a pregação e para manter a congregação alinhada à fé protestante e à palavra de Deus.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA argumenta que a igreja deve ser alimentada com temas centrais da fé, como a soberania de Deus, a centralidade de Cristo e a justificação pela fé, em vez de despender tempo com assuntos acessórios.",
+        "Esses documentos confessionais facilitam esse processo, servindo como instrumentos de balizamento para a pregação e para manter a congregação alinhada à fé protestante e à palavra de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:04:35",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Viagem",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explica o atraso e o cansaço acumulado devido a complicações em um voo com destino ao aeroporto Santos Dumont, que envolveu uma arremetida e uma espera de 40 minutos em decorrência das condições climáticas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explica o atraso e o cansaço acumulado devido a complicações em um voo com destino ao aeroporto Santos Dumont, que envolveu uma arremetida e uma espera de 40 minutos em decorrência das condições climáticas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explica o atraso e o cansaço acumulado devido a complicações em um voo com destino ao aeroporto Santos Dumont, que envolveu uma arremetida e uma espera de 40 minutos em decorrência das condições climáticas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:05:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Confissão de Westminster no Contexto Congregacional",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aborda a relação entre o documento e o congregacionalismo, mencionando que o Sínodo de Savoi adaptou a Confissão de Westminster às convicções congregacionais.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aborda a relação entre o documento e o congregacionalismo, mencionando que o Sínodo de Savoi adaptou a Confissão de Westminster às convicções congregacionais. Embora os documentos possuam grande proximidade doutrinária, as variações ocorrem principalmente na interpretação bíblica quanto ao governo da igreja, diferenciando regimes como o presbiteriano do congregacional.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aborda a relação entre o documento e o congregacionalismo, mencionando que o Sínodo de Savoi adaptou a Confissão de Westminster às convicções congregacionais.",
+        "Embora os documentos possuam grande proximidade doutrinária, as variações ocorrem principalmente na interpretação bíblica quanto ao governo da igreja, diferenciando regimes como o presbiteriano do congregacional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:07:19",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Confissão como Ferramenta Curricular",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA sugere a utilização da Confissão de Westminster para estruturar currículos de seminários e a formação pastoral, permitindo que os estudantes abordem temas como criação, vocação, justificação, fé salvadora e sacramentos de maneira organizada e fundamentada.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA sugere a utilização da Confissão de Westminster para estruturar currículos de seminários e a formação pastoral, permitindo que os estudantes abordem temas como criação, vocação, justificação, fé salvadora e sacramentos de maneira organizada e fundamentada.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA sugere a utilização da Confissão de Westminster para estruturar currículos de seminários e a formação pastoral, permitindo que os estudantes abordem temas como criação, vocação, justificação, fé salvadora e sacramentos de maneira organizada e fundamentada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:09:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Objetivo das Confissões de Fé",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA discute a necessidade de uma confissão de fé, esclarecendo que ela não substitui a Bíblia, mas atua como um sistema que declara o entendimento da igreja sobre o ensino bíblico, sendo um elemento essencial para a identidade confessional.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA discute a necessidade de uma confissão de fé, esclarecendo que ela não substitui a Bíblia, mas atua como um sistema que declara o entendimento da igreja sobre o ensino bíblico, sendo um elemento essencial para a identidade confessional.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA discute a necessidade de uma confissão de fé, esclarecendo que ela não substitui a Bíblia, mas atua como um sistema que declara o entendimento da igreja sobre o ensino bíblico, sendo um elemento essencial para a identidade confessional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:15:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Importância da Escola Dominical",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA ressalta a relevância da estruturação da área de ensino na igreja, citando a experiência de uma professora que, embora subestimada, tornou-se essencial na educação da congregação.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA ressalta a relevância da estruturação da área de ensino na igreja, citando a experiência de uma professora que, embora subestimada, tornou-se essencial na educação da congregação. HILARIO JOSE BISPO GRACA enfatiza que as igrejas devem priorizar a escola dominical como um pilar fundamental, independentemente das nomenclaturas utilizadas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA ressalta a relevância da estruturação da área de ensino na igreja, citando a experiência de uma professora que, embora subestimada, tornou-se essencial na educação da congregação.",
+        "HILARIO JOSE BISPO GRACA enfatiza que as igrejas devem priorizar a escola dominical como um pilar fundamental, independentemente das nomenclaturas utilizadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:19:24",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Instruções para Trabalhos Acadêmicos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA estabelece as diretrizes para os trabalhos da turma, proibindo o uso de \"copia e cola\" e destacando a importância da organização do pensamento para a capacitação necessária para futuros trabalhos de conclusão de curso (TCC).",
+      "detalhamento": "HILARIO JOSE BISPO GRACA estabelece as diretrizes para os trabalhos da turma, proibindo o uso de \"copia e cola\" e destacando a importância da organização do pensamento para a capacitação necessária para futuros trabalhos de conclusão de curso (TCC). Sobre a extensão, HILARIO JOSE BISPO GRACA indica um mínimo de 5 a 6 páginas, mas Daniel Rodrigues esclarece que o trabalho do grupo está com 13 laudas; HILARIO JOSE BISPO GRACA aceita essa extensão, reforçando que o foco principal é a estruturação e a qualidade do conteúdo apresentado.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA estabelece as diretrizes para os trabalhos da turma, proibindo o uso de \"copia e cola\" e destacando a importância da organização do pensamento para a capacitação necessária para futuros trabalhos de conclusão de curso (TCC).",
+        "Sobre a extensão, HILARIO JOSE BISPO GRACA indica um mínimo de 5 a 6 páginas, mas Daniel Rodrigues esclarece que o trabalho do grupo está com 13 laudas; HILARIO JOSE BISPO GRACA aceita essa extensão, reforçando que o foco principal é a estruturação e a qualidade do conteúdo apresentado."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura e Oração",
+      "relato": "O encontro teve início com saudações entre os participantes. O facilitador HILARIO JOSE BISPO GRACA solicitou ao participante Salatiel Rodrigues que realizasse uma oração inicial, buscando sabedoria divina para a condução e o aprendizado do curso."
+    },
+    {
+      "titulo": "Pressupostos Filosóficos da Disputa",
+      "relato": "HILARIO JOSE BISPO GRACA explicou que os remonstrantes argumentavam que a soberania absoluta de Deus, se interpretada de forma estrita, poderia anular o livre-arbítrio humano e fragilizar a responsabilidade moral. Em contrapartida, discutiu-se como diferentes vertentes teológicas tentam conciliar a soberania divina com a responsabilidade humana, muitas vezes recorrendo a debates lógicos que podem ser complexos para a compreensão geral.",
+      "timestamp": "00:19:47"
+    },
+    {
+      "titulo": "Ilustração da Ressurreição de Lázaro",
+      "relato": "Utilizando o milagre da ressurreição de Lázaro, conforme narrado no Evangelho de João, o facilitador ilustrou a complexidade teológica da salvação. O argumento é que Lázaro não teve participação ativa em sua própria ressurreição, dependendo inteiramente da ação de Cristo, o que serve como ponto de reflexão sobre a obra divina na conversão e o chamado eficaz.",
+      "timestamp": "00:22:40"
+    },
+    {
+      "titulo": "Discussão sobre a Perda da Salvação",
+      "relato": "HILARIO JOSE BISPO GRACA expressou sua opinião pessoal sobre a doutrina da perda da salvação defendida por alguns arminianos. O facilitador questionou a viabilidade prática de um crente manter sua própria salvação através de seus atos, dada a fragilidade humana diante do pecado, enfatizando que esse ponto é um dos que mais distancia sua visão da perspectiva arminiana.",
+      "timestamp": "00:28:02"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "1 Timóteo 4:16",
+      "contexto": "Base bíblica trabalhada na disciplina História do Pensamento Cristão II."
+    },
+    {
+      "referencia": "Tito 1:9",
+      "contexto": "Base bíblica trabalhada na disciplina História do Pensamento Cristão II."
+    },
+    {
+      "referencia": "Romanos 1:16-17",
+      "contexto": "Base bíblica trabalhada na disciplina História do Pensamento Cristão II."
+    },
+    {
+      "referencia": "Judas 1:3",
+      "contexto": "Base bíblica trabalhada na disciplina História do Pensamento Cristão II."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Efeitos Noéticos do Pecado",
+      "detalhe": "Ensino reformado de que a mente e a razão humana foram corrompidas pela Queda, necessitando da iluminação soberana do Espírito Santo para compreender a revelação."
+    },
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    },
+    {
+      "titulo": "Karl Barth (1886–1968)",
+      "detalhe": "Teólogo da Neo-ortodoxia / Teologia Dialética; rompeu com o liberalismo alemão ao constatar o apoio de seus professores ao militarismo imperial; recolocou a revelação de Deus e a cristologia no centro."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Oração\" nesta aula?",
+      "dicaResposta": "O encontro teve início com saudações entre os participantes. O facilitador HILARIO JOSE BISPO GRACA solicitou ao participante Salatiel Rodrigues que realizasse uma oração inicial, buscando sabedoria divina para a condução e o aprendizado do curso."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Recapitulação sobre Reformadores\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA revisou os papéis de Martinho Lutero, Ulrico Zuínglio e João Calvino. Lutero, autor das 95 Teses, é apontado como o pioneiro do rompimento e das controvérsias iniciais."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Formação das Tradições Confessionais\" nesta aula?",
+      "dicaResposta": "Foi discutido que o período da Reforma foi crucial para a criação de grandes famílias confessionais. O facilitador citou documentos fundamentais, como a Confissão de Augsburgo e o Livro da Concórdia para a tradição luterana, e a Confissão Helvética para a tradição reformada, destacando a importância desses documentos para a sistematização da fé protestante."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Concílio de Trento e Reação Católica\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA mencionou que a Igreja Católica respondeu à Reforma com o Concílio de Trento. O facilitador observou que, ao longo dos séculos, incluindo o Concílio Vaticano II e o movimento de renovação carismática no final da década de 70 e início da década de 80, a instituição católica buscou se adaptar para preservar seus fiéis diante do crescimento das igrejas evangélicas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Ortodoxia Protestante e Documentos Confessionais\" nesta aula?",
+      "dicaResposta": "Após a primeira geração de reformadores, houve um movimento de sistematização doutrinária, resultando em confissões e catecismos. Foram citados o Catecismo de Heidelberg, a Confissão Helvética, os Cânones de Dort, a Confissão de Fé de Westminster, o Catecismo Maior de Westminster e a Declaração de Savoy, esta última sendo uma adaptação congregacional da Confissão de Westminster."
+    }
+  ],
+  "encaminhamentos": [
+    "Disponibilizar textos teológicos: Enviar materiais de apoio sobre as diferenças doutrinárias entre calvinismo e arminianismo para os alunos que pedirem.",
+    "Realizar trabalho acadêmico: Desenvolver um texto organizado, com cerca de 5 a 6 páginas, demonstrando síntese e sistematização de ideias sobre o tema proposto."
+  ]
+}

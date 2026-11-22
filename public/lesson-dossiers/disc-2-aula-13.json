@@ -1,0 +1,409 @@
+{
+  "id": "disc-2-aula-13",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 13,
+  "unidade": 2,
+  "dateIso": "2026-11-10",
+  "dateBr": "10/11/2026",
+  "theme": "Aula 13 • Contexto e Reforma Protestante",
+  "geminiUrl": "https://docs.google.com/document/d/1_sz99xNWRRztk760jNlwOWv_N6twhRRpyM9q8tqBfeE/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Panorama comparativo dos séculos XIX e XX: ceticismo de Bultmann (desmitologização) versus a fidelidade das Confissões Reformadas e a inerrância bíblica.",
+    "sinteseGeral": "Estudo teológico abordou a reforma protestante com o pensamento moderno e as oportunidades missionárias. Contexto e Reforma Protestante A aula destacou a importância de viver o evangelho na sociedade. Pensadores como Martin Lutero e João Calvino estruturaram bases da teologia reformada. Teologia Moderna e Contemporânea Filósofos modernos e teólogos discutiram a fé diante da razão e da cultura. O discipulado prático foi enfatizado por meio de figuras históricas. Desafios e Missões Transculturais Debate abordou a necessidade de cooperação interdenominacional e missões. Oportunidades em Portugal e regiões do Brasil foram avaliadas.",
+    "mapaRapido": [
+      "Abertura e Histórico com a Igreja Evangélica Fluminense: HILARIO JOSE BISPO GRACA comentou sobre as turmas que se formam em dezembro, informando que estaria presente no Rio de Janeiro para o aniversário de sua mãe e na Igreja Evangélica Fluminense.",
+      "Oração Inicial: A aula teve início com uma oração conduzida por carla p dos s de almeida, que solicitou o cuidado divino sobre as mentes, corações e atenção do grupo, além de direcionamento para HILARIO JOSE BISPO GRACA na condução da matéria.",
+      "Contextualização e o Papel Prático da Teologia: HILARIO JOSE BISPO GRACA relatou os transtornos enfrentados em seu voo de retorno de Florianópolis para Brasília devido a um cancelamento.",
+      "A Realidade da Luta Espiritual: HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo.",
+      "Martin Lutero e a Reforma Protestante: HILARIO JOSE BISPO GRACA iniciou a revisão histórica destacando Martin Lutero, responsável por introduzir a justificação pela graça mediante a fé, contestar as indulgências por meio de teses e afirmar a autoridade das escrituras, embora tenha mantido posições controversas sobre a presença real na ceia, estabelecendo marcos para a tradição reformada e luterana.",
+      "Huldrych Zuinglio e João Calvino na Reforma Suíça: HILARIO JOSE BISPO GRACA abordou a contribuição de Huldrych Zuinglio, atuante na Suíça no século XVI, que divergiu de Lutero ao defender a ceia estritamente como um memorial e ajudou a estruturar as bases da tradição reformada."
+    ],
+    "duracaoEstimada": "~1h26min",
+    "totalBlocos": 20
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Contexto Histórico",
+      "titulo": "Abertura e Histórico com a Igreja Evangélica Fluminense",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA comentou sobre as turmas que se formam em dezembro, informando que estaria presente no Rio de Janeiro para o aniversário de sua mãe e na Igreja Evangélica Fluminense.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA comentou sobre as turmas que se formam em dezembro, informando que estaria presente no Rio de Janeiro para o aniversário de sua mãe e na Igreja Evangélica Fluminense. Daniel Rodrigues manifestou o desejo de realizar a formatura do ano seguinte na mesma igreja e relembrou laços familiares com Misael e Samuel, descritos por HILARIO JOSE BISPO GRACA como frequentadores da rotina do seminário no edifício Ceny e na Alexandre Mackenzie.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA comentou sobre as turmas que se formam em dezembro, informando que estaria presente no Rio de Janeiro para o aniversário de sua mãe e na Igreja Evangélica Fluminense.",
+        "Daniel Rodrigues manifestou o desejo de realizar a formatura do ano seguinte na mesma igreja e relembrou laços familiares com Misael e Samuel, descritos por HILARIO JOSE BISPO GRACA como frequentadores da rotina do seminário no edifício Ceny e na Alexandre Mackenzie."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:03:05",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Oração Inicial",
+      "resumoCurto": "A aula teve início com uma oração conduzida por carla p dos s de almeida, que solicitou o cuidado divino sobre as mentes, corações e atenção do grupo, além de direcionamento para HILARIO JOSE BISPO GRACA na condução da matéria.",
+      "detalhamento": "A aula teve início com uma oração conduzida por carla p dos s de almeida, que solicitou o cuidado divino sobre as mentes, corações e atenção do grupo, além de direcionamento para HILARIO JOSE BISPO GRACA na condução da matéria.",
+      "pontosChave": [
+        "A aula teve início com uma oração conduzida por carla p dos s de almeida, que solicitou o cuidado divino sobre as mentes, corações e atenção do grupo, além de direcionamento para HILARIO JOSE BISPO GRACA na condução da matéria."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:04:15",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Contextualização e o Papel Prático da Teologia",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA relatou os transtornos enfrentados em seu voo de retorno de Florianópolis para Brasília devido a um cancelamento.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA relatou os transtornos enfrentados em seu voo de retorno de Florianópolis para Brasília devido a um cancelamento. A partir dessa introdução, a exposição centrou-se na exortação para que os crentes vivam o evangelho como luz e sal da terra (Mateus 5 e Filipenses 2), argumentando que o estudo teológico não deve se limitar a uma adesão intelectual, mas transformar-se em uma prática aplicada ao contexto de vida, família e sociedade para responder às necessidades reais da história.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA relatou os transtornos enfrentados em seu voo de retorno de Florianópolis para Brasília devido a um cancelamento.",
+        "A partir dessa introdução, a exposição centrou-se na exortação para que os crentes vivam o evangelho como luz e sal da terra (Mateus 5 e Filipenses 2), argumentando que o estudo teológico não deve se limitar a uma adesão intelectual, mas transformar-se em uma prática aplicada ao contexto de vida, família e sociedade para responder às necessidades reais da história."
+      ],
+      "referenciasNoBloco": [
+        "Mateus 5",
+        "Filipenses 2"
+      ]
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:13:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Realidade da Luta Espiritual",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo."
+      ],
+      "referenciasNoBloco": [
+        "Mateus 16:18",
+        "Efésios 6:10",
+        "Colossenses 2:8 e 2"
+      ]
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:21:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Martin Lutero e a Reforma Protestante",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA iniciou a revisão histórica destacando Martin Lutero, responsável por introduzir a justificação pela graça mediante a fé, contestar as indulgências por meio de teses e afirmar a autoridade das escrituras, embora tenha mantido posições controversas sobre a presença real na ceia, estabelecendo marcos para a tradição reformada e luterana.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA iniciou a revisão histórica destacando Martin Lutero, responsável por introduzir a justificação pela graça mediante a fé, contestar as indulgências por meio de teses e afirmar a autoridade das escrituras, embora tenha mantido posições controversas sobre a presença real na ceia, estabelecendo marcos para a tradição reformada e luterana.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA iniciou a revisão histórica destacando Martin Lutero, responsável por introduzir a justificação pela graça mediante a fé, contestar as indulgências por meio de teses e afirmar a autoridade das escrituras, embora tenha mantido posições controversas sobre a presença real na ceia, estabelecendo marcos para a tradição reformada e luterana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:25:40",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Huldrych Zuinglio e João Calvino na Reforma Suíça",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA abordou a contribuição de Huldrych Zuinglio, atuante na Suíça no século XVI, que divergiu de Lutero ao defender a ceia estritamente como um memorial e ajudou a estruturar as bases da tradição reformada.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA abordou a contribuição de Huldrych Zuinglio, atuante na Suíça no século XVI, que divergiu de Lutero ao defender a ceia estritamente como um memorial e ajudou a estruturar as bases da tradição reformada. Em seguida, destacou João Calvino, expoente da segunda geração da reforma, que sistematizou a doutrina nas \"Institutas\", enfatizou a soberania de Deus na graça e na eleição, e promoveu um centro de formação em Genebra voltado à organização eclesiástica e ao ensino sistemático.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA abordou a contribuição de Huldrych Zuinglio, atuante na Suíça no século XVI, que divergiu de Lutero ao defender a ceia estritamente como um memorial e ajudou a estruturar as bases da tradição reformada.",
+        "Em seguida, destacou João Calvino, expoente da segunda geração da reforma, que sistematizou a doutrina nas \"Institutas\", enfatizou a soberania de Deus na graça e na eleição, e promoveu um centro de formação em Genebra voltado à organização eclesiástica e ao ensino sistemático."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:33:05",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Filósofos Modernos",
+      "resumoCurto": "René Descartes, John Locke e David Hume: HILARIO JOSE BISPO GRACA examinou a influência de pensadores modernos na relação entre razão e fé.",
+      "detalhamento": "René Descartes, John Locke e David Hume: HILARIO JOSE BISPO GRACA examinou a influência de pensadores modernos na relação entre razão e fé. René Descartes empregou a dúvida metódica para buscar certezas e distinguir mente e corpo, alterando os termos do diálogo entre filosofia e teologia. John Locke introduziu o método experimental fundamentado na experiência e defendeu a tolerância religiosa. David Hume utilizou o ceticismo para questionar argumentos sobre Deus e milagres, desafiando os critérios de evidência da defesa da fé cristã e da teologia natural.",
+      "pontosChave": [
+        "René Descartes, John Locke e David Hume: HILARIO JOSE BISPO GRACA examinou a influência de pensadores modernos na relação entre razão e fé.",
+        "René Descartes empregou a dúvida metódica para buscar certezas e distinguir mente e corpo, alterando os termos do diálogo entre filosofia e teologia.",
+        "John Locke introduziu o método experimental fundamentado na experiência e defendeu a tolerância religiosa.",
+        "David Hume utilizou o ceticismo para questionar argumentos sobre Deus e milagres, desafiando os critérios de evidência da defesa da fé cristã e da teologia natural."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:39:40",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "George Whitefield e a Primazia da Pregação",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destacou a atuação de George Whitefield em um reavivamento transatlântico, enfatizando o novo nascimento e a iniciativa divina na salvação por meio de pregações itinerantes e ao ar livre.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destacou a atuação de George Whitefield em um reavivamento transatlântico, enfatizando o novo nascimento e a iniciativa divina na salvação por meio de pregações itinerantes e ao ar livre. Foi defendido que a pregação autêntica da palavra é insubstituível por palestras ou ensaios, constituindo o meio pelo qual a fé se apoia no poder de Deus conforme 1 Coríntios 2. Também foi mencionada a divergência de Whitefield em relação a John Wesley em pautas soteriológicas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destacou a atuação de George Whitefield em um reavivamento transatlântico, enfatizando o novo nascimento e a iniciativa divina na salvação por meio de pregações itinerantes e ao ar livre.",
+        "Foi defendido que a pregação autêntica da palavra é insubstituível por palestras ou ensaios, constituindo o meio pelo qual a fé se apoia no poder de Deus conforme 1 Coríntios 2.",
+        "Também foi mencionada a divergência de Whitefield em relação a John Wesley em pautas soteriológicas."
+      ],
+      "referenciasNoBloco": [
+        "1 Coríntios 2"
+      ]
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:41:13",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Immanuel Kant e Friedrich Schleiermacher",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA analisou a contribuição de Immanuel Kant, que delimitou a razão teórica, criticou provas tradicionais da existência de Deus e associou a religião estritamente à moral, influenciando leituras éticas do cristianismo.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA analisou a contribuição de Immanuel Kant, que delimitou a razão teórica, criticou provas tradicionais da existência de Deus e associou a religião estritamente à moral, influenciando leituras éticas do cristianismo. Na sequência, abordou Friedrich Schleiermacher, apontado como o pai da teologia liberal, que articulou a doutrina a partir da experiência da fé e da consciência religiosa da comunidade cristã.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA analisou a contribuição de Immanuel Kant, que delimitou a razão teórica, criticou provas tradicionais da existência de Deus e associou a religião estritamente à moral, influenciando leituras éticas do cristianismo.",
+        "Na sequência, abordou Friedrich Schleiermacher, apontado como o pai da teologia liberal, que articulou a doutrina a partir da experiência da fé e da consciência religiosa da comunidade cristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:43:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Sören Kierkegaard e Karl Barth",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destacou Sören Kierkegaard, que enfatizou a fé como um compromisso pessoal diante de Cristo, criticou a identificação automática com a pertença à igreja e valorizou o discipulado.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destacou Sören Kierkegaard, que enfatizou a fé como um compromisso pessoal diante de Cristo, criticou a identificação automática com a pertença à igreja e valorizou o discipulado. Em oposição ao liberalismo teológico, Karl Barth recolocou a soberania de Deus e a autoridade das Escrituras no centro, escrevendo sobre a dogmática eclesiástica e renovando a reflexão sobre a revelação e a Trindade.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destacou Sören Kierkegaard, que enfatizou a fé como um compromisso pessoal diante de Cristo, criticou a identificação automática com a pertença à igreja e valorizou o discipulado.",
+        "Em oposição ao liberalismo teológico, Karl Barth recolocou a soberania de Deus e a autoridade das Escrituras no centro, escrevendo sobre a dogmática eclesiástica e renovando a reflexão sobre a revelação e a Trindade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:48:04",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Dietrich Bonhoeffer e o Discipulado no Século XX",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA apresentou Dietrich Bonhoeffer, teólogo luterano preso e executado pelo regime nazista em 1945, cuja trajetória foi complementada por Grazi Guimarães com a menção a um filme recente de 2024 intitulado \"Redenção\".",
+      "detalhamento": "HILARIO JOSE BISPO GRACA apresentou Dietrich Bonhoeffer, teólogo luterano preso e executado pelo regime nazista em 1945, cuja trajetória foi complementada por Grazi Guimarães com a menção a um filme recente de 2024 intitulado \"Redenção\". Bonhoeffer criticou a graça barata, defendeu o discipulado pautado na obediência e no compromisso prático com o próximo, e destacou em seus escritos carcerários a importância da oração, da ética e da responsabilidade pública da igreja diante da opressão e da injustiça.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA apresentou Dietrich Bonhoeffer, teólogo luterano preso e executado pelo regime nazista em 1945, cuja trajetória foi complementada por Grazi Guimarães com a menção a um filme recente de 2024 intitulado \"Redenção\".",
+        "Bonhoeffer criticou a graça barata, defendeu o discipulado pautado na obediência e no compromisso prático com o próximo, e destacou em seus escritos carcerários a importância da oração, da ética e da responsabilidade pública da igreja diante da opressão e da injustiça."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:53:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "C.S. Lewis e a Apologética Cristã",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA abordou C.S.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA abordou C.S. Lewis, escritor, professor e ex-ateu que utilizou a apologética e a ficção literária para expor a fé cristã, a moralidade e o sofrimento com clareza e argumentos racionais, alcançando leitores seculares por meio de um cristianismo simples e essencial.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA abordou C.S.",
+        "Lewis, escritor, professor e ex-ateu que utilizou a apologética e a ficção literária para expor a fé cristã, a moralidade e o sofrimento com clareza e argumentos racionais, alcançando leitores seculares por meio de um cristianismo simples e essencial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:58:10",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Rudolf Bultmann e os Desafios de Interpretação Textual",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA encerrou citando Rudolf Bultmann, teólogo influente do século passado que interpretou a mensagem cristã em diálogo com o existencialismo, buscando aplicar a pregação à existência humana.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA encerrou citando Rudolf Bultmann, teólogo influente do século passado que interpretou a mensagem cristã em diálogo com o existencialismo, buscando aplicar a pregação à existência humana. HILARIO JOSE BISPO GRACA ressaltou a necessidade de contextualizar a palavra de Deus superando os distanciamentos históricos, linguísticos, culturais, temporais e espirituais inerentes ao texto bíblico.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA encerrou citando Rudolf Bultmann, teólogo influente do século passado que interpretou a mensagem cristã em diálogo com o existencialismo, buscando aplicar a pregação à existência humana.",
+        "HILARIO JOSE BISPO GRACA ressaltou a necessidade de contextualizar a palavra de Deus superando os distanciamentos históricos, linguísticos, culturais, temporais e espirituais inerentes ao texto bíblico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:01:00",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Topic 1",
+      "resumoCurto": "Hermenêutica e Comunicação da Mensagem Cristã: HILARIO JOSE BISPO GRACA abordou a necessidade de considerar as distâncias históricas e aplicar corretamente a interpretação hermenêutica aos tempos modernos, utilizando exemplos bíblicos como a conversa de Jesus com Nicodemos e com a samaritana para tornar o chamado à fé acessível.",
+      "detalhamento": "Hermenêutica e Comunicação da Mensagem Cristã: HILARIO JOSE BISPO GRACA abordou a necessidade de considerar as distâncias históricas e aplicar corretamente a interpretação hermenêutica aos tempos modernos, utilizando exemplos bíblicos como a conversa de Jesus com Nicodemos e com a samaritana para tornar o chamado à fé acessível. HILARIO JOSE BISPO GRACA destacou que a fé verdadeira deve retirar a pessoa da incredulidade, contrastando o conhecimento bíblico aprofundado com a simplificação excessiva observada nas igrejas atuais.",
+      "pontosChave": [
+        "Hermenêutica e Comunicação da Mensagem Cristã: HILARIO JOSE BISPO GRACA abordou a necessidade de considerar as distâncias históricas e aplicar corretamente a interpretação hermenêutica aos tempos modernos, utilizando exemplos bíblicos como a conversa de Jesus com Nicodemos e com a samaritana para tornar o chamado à fé acessível.",
+        "HILARIO JOSE BISPO GRACA destacou que a fé verdadeira deve retirar a pessoa da incredulidade, contrastando o conhecimento bíblico aprofundado com a simplificação excessiva observada nas igrejas atuais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:02:29",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Topic 2",
+      "resumoCurto": "Crítica Histórica e Ressurreição na Teologia: HILARIO JOSE BISPO GRACA discutiu o debate entre história e revelação, apontando as críticas liberais aos relatos sobrenaturais e à ressurreição, enquanto contrapôs com a perspectiva reformada tradicional que afirma a ressurreição de Cristo como um acontecimento real e fundamento do evangelho conforme o primeiro livro de Coríntios.",
+      "detalhamento": "Crítica Histórica e Ressurreição na Teologia: HILARIO JOSE BISPO GRACA discutiu o debate entre história e revelação, apontando as críticas liberais aos relatos sobrenaturais e à ressurreição, enquanto contrapôs com a perspectiva reformada tradicional que afirma a ressurreição de Cristo como um acontecimento real e fundamento do evangelho conforme o primeiro livro de Coríntios. HILARIO JOSE BISPO GRACA indicou o slide 13 como material de leitura complementar sobre o pensamento de Adolf von Harnack e as abordagens liberais.",
+      "pontosChave": [
+        "Crítica Histórica e Ressurreição na Teologia: HILARIO JOSE BISPO GRACA discutiu o debate entre história e revelação, apontando as críticas liberais aos relatos sobrenaturais e à ressurreição, enquanto contrapôs com a perspectiva reformada tradicional que afirma a ressurreição de Cristo como um acontecimento real e fundamento do evangelho conforme o primeiro livro de Coríntios.",
+        "HILARIO JOSE BISPO GRACA indicou o slide 13 como material de leitura complementar sobre o pensamento de Adolf von Harnack e as abordagens liberais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:06:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Topic 3",
+      "resumoCurto": "O Pensamento Teológico e Filosófico de Paul Tillich: HILARIO JOSE BISPO GRACA abordou as obras e a complexidade de leitura do filósofo e teólogo Paul Tillich, cuja proposta era aproximar a mensagem cristã das indagações da cultura moderna, lidando com temas existenciais como sofrimento, culpa, morte e o sentido da vida.",
+      "detalhamento": "O Pensamento Teológico e Filosófico de Paul Tillich: HILARIO JOSE BISPO GRACA abordou as obras e a complexidade de leitura do filósofo e teólogo Paul Tillich, cuja proposta era aproximar a mensagem cristã das indagações da cultura moderna, lidando com temas existenciais como sofrimento, culpa, morte e o sentido da vida. HILARIO JOSE BISPO GRACA explicou que Paul Tillich via a incredulidade como o problema fundamental e tratava Cristo como a manifestação de um novo ser e nova identidade, utilizando símbolos e uma linguagem altamente filosófica e psicológica.",
+      "pontosChave": [
+        "O Pensamento Teológico e Filosófico de Paul Tillich: HILARIO JOSE BISPO GRACA abordou as obras e a complexidade de leitura do filósofo e teólogo Paul Tillich, cuja proposta era aproximar a mensagem cristã das indagações da cultura moderna, lidando com temas existenciais como sofrimento, culpa, morte e o sentido da vida.",
+        "HILARIO JOSE BISPO GRACA explicou que Paul Tillich via a incredulidade como o problema fundamental e tratava Cristo como a manifestação de um novo ser e nova identidade, utilizando símbolos e uma linguagem altamente filosófica e psicológica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:12:41",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Topic 4",
+      "resumoCurto": "Movimentos Históricos e Panorama de Teólogos Contemporâneos: HILARIO JOSE BISPO GRACA apresentou diversos pensadores e teólogos da metade do século passado em diante, incluindo John Stott, Gustavo Gutiérrez, René Padilla, Tim Keller, Wayne Grudem, Christopher Wright e Russell Shedd, além de citar movimentos como neoortodoxia, teologia dialética, teologia existencial, o Concílio do Vaticano II, o movimento carismático e o ressurgimento da tradição reformada nas faculdades e seminários.",
+      "detalhamento": "Movimentos Históricos e Panorama de Teólogos Contemporâneos: HILARIO JOSE BISPO GRACA apresentou diversos pensadores e teólogos da metade do século passado em diante, incluindo John Stott, Gustavo Gutiérrez, René Padilla, Tim Keller, Wayne Grudem, Christopher Wright e Russell Shedd, além de citar movimentos como neoortodoxia, teologia dialética, teologia existencial, o Concílio do Vaticano II, o movimento carismático e o ressurgimento da tradição reformada nas faculdades e seminários. HILARIO JOSE BISPO GRACA contextualizou que a retomada da tradição reformada ocorre em resposta à perda de identidade e ao crescimento do pentecostalismo e neopentecostalismo nas últimas quatro a cinco décadas.",
+      "pontosChave": [
+        "Movimentos Históricos e Panorama de Teólogos Contemporâneos: HILARIO JOSE BISPO GRACA apresentou diversos pensadores e teólogos da metade do século passado em diante, incluindo John Stott, Gustavo Gutiérrez, René Padilla, Tim Keller, Wayne Grudem, Christopher Wright e Russell Shedd, além de citar movimentos como neoortodoxia, teologia dialética, teologia existencial, o Concílio do Vaticano II, o movimento carismático e o ressurgimento da tradição reformada nas faculdades e seminários.",
+        "HILARIO JOSE BISPO GRACA contextualizou que a retomada da tradição reformada ocorre em resposta à perda de identidade e ao crescimento do pentecostalismo e neopentecostalismo nas últimas quatro a cinco décadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:15:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Topic 5",
+      "resumoCurto": "Contextualização e Isolamento Institucional das Denominações Protestantes: HILARIO JOSE BISPO GRACA analisou as teologias contextualizadas, apontando que as denominações evangélicas e protestantes operam de forma isolada e individualista, o que causa dispersão de esforços e sobreposição de atividades, em contraste com a força institucional centralizada da Igreja Católica.",
+      "detalhamento": "Contextualização e Isolamento Institucional das Denominações Protestantes: HILARIO JOSE BISPO GRACA analisou as teologias contextualizadas, apontando que as denominações evangélicas e protestantes operam de forma isolada e individualista, o que causa dispersão de esforços e sobreposição de atividades, em contraste com a força institucional centralizada da Igreja Católica. HILARIO JOSE BISPO GRACA relembrou que há quarenta e cinco a cinquenta anos havia maior comunhão e cooperação interdenominacional em cultos ao ar livre, enfatizando que a igreja atual frequentemente acompanha passivamente as evoluções sociais em vez de liderar com respostas direcionadas.",
+      "pontosChave": [
+        "Contextualização e Isolamento Institucional das Denominações Protestantes: HILARIO JOSE BISPO GRACA analisou as teologias contextualizadas, apontando que as denominações evangélicas e protestantes operam de forma isolada e individualista, o que causa dispersão de esforços e sobreposição de atividades, em contraste com a força institucional centralizada da Igreja Católica.",
+        "HILARIO JOSE BISPO GRACA relembrou que há quarenta e cinco a cinquenta anos havia maior comunhão e cooperação interdenominacional em cultos ao ar livre, enfatizando que a igreja atual frequentemente acompanha passivamente as evoluções sociais em vez de liderar com respostas direcionadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:22:56",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Topic 6",
+      "resumoCurto": "Oportunidades Missionárias em Portugal: HILARIO JOSE BISPO GRACA relatou uma reunião com um chefe de departamento da Missão Evangélica Portuguesa, destacando o interesse e as oportunidades em Portugal para formação ministerial, aconselhamento bíblico e evangelismo, apoiando-se em uma base de cerca de duas mil igrejas da aliança evangélica portuguesa.",
+      "detalhamento": "Oportunidades Missionárias em Portugal: HILARIO JOSE BISPO GRACA relatou uma reunião com um chefe de departamento da Missão Evangélica Portuguesa, destacando o interesse e as oportunidades em Portugal para formação ministerial, aconselhamento bíblico e evangelismo, apoiando-se em uma base de cerca de duas mil igrejas da aliança evangélica portuguesa. HILARIO JOSE BISPO GRACA incentivou a participação das igrejas brasileiras nesse propósito missionário transcultural, enquanto Salatiel Rodrigues ponderou que também existem muitas regiões no Brasil necessitando de investimentos missionários.",
+      "pontosChave": [
+        "Oportunidades Missionárias em Portugal: HILARIO JOSE BISPO GRACA relatou uma reunião com um chefe de departamento da Missão Evangélica Portuguesa, destacando o interesse e as oportunidades em Portugal para formação ministerial, aconselhamento bíblico e evangelismo, apoiando-se em uma base de cerca de duas mil igrejas da aliança evangélica portuguesa.",
+        "HILARIO JOSE BISPO GRACA incentivou a participação das igrejas brasileiras nesse propósito missionário transcultural, enquanto Salatiel Rodrigues ponderou que também existem muitas regiões no Brasil necessitando de investimentos missionários."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:26:04",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Topic 7",
+      "resumoCurto": "Debate sobre Missões Transculturais no Brasil e no Exterior: Salatiel Rodrigues argumentou que, embora Portugal e missões transculturais sejam importantes, há muito espaço e necessidade de exploração missionária dentro do próprio Brasil, citando o Mato Grosso do Sul e a alta concentração de igrejas no Rio de Janeiro, São Paulo e Recife.",
+      "detalhamento": "Debate sobre Missões Transculturais no Brasil e no Exterior: Salatiel Rodrigues argumentou que, embora Portugal e missões transculturais sejam importantes, há muito espaço e necessidade de exploração missionária dentro do próprio Brasil, citando o Mato Grosso do Sul e a alta concentração de igrejas no Rio de Janeiro, São Paulo e Recife. HILARIO JOSE BISPO GRACA respondeu detalhando projetos de missões transculturais já iniciados na fronteira com o Paraguai (em Guaíra, voltados para o atendimento de necessidades de mulheres paraguaias afetadas historicamente pelas consequências demográficas da Guerra do Paraguai, onde 70% a 80% dos homens morreram), além de trabalhos no Amazonas com indígenas e ribeirinhos, no sertão nordestino com quilombolas e no sul do país. HILARIO JOSE BISPO GRACA concluiu o debate reforçando o modelo bíblico de Jerusalém, Judeia, Samaria e confins da terra, encerrando a aula por volta das 22h01 ou 22h02.",
+      "pontosChave": [
+        "Debate sobre Missões Transculturais no Brasil e no Exterior: Salatiel Rodrigues argumentou que, embora Portugal e missões transculturais sejam importantes, há muito espaço e necessidade de exploração missionária dentro do próprio Brasil, citando o Mato Grosso do Sul e a alta concentração de igrejas no Rio de Janeiro, São Paulo e Recife.",
+        "HILARIO JOSE BISPO GRACA respondeu detalhando projetos de missões transculturais já iniciados na fronteira com o Paraguai (em Guaíra, voltados para o atendimento de necessidades de mulheres paraguaias afetadas historicamente pelas consequências demográficas da Guerra do Paraguai, onde 70% a 80% dos homens morreram), além de trabalhos no Amazonas com indígenas e ribeirinhos, no sertão nordestino com quilombolas e no sul do país.",
+        "HILARIO JOSE BISPO GRACA concluiu o debate reforçando o modelo bíblico de Jerusalém, Judeia, Samaria e confins da terra, encerrando a aula por volta das 22h01 ou 22h02."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Huldrych Zuinglio e João Calvino na Reforma Suíça",
+      "relato": "HILARIO JOSE BISPO GRACA abordou a contribuição de Huldrych Zuinglio, atuante na Suíça no século XVI, que divergiu de Lutero ao defender a ceia estritamente como um memorial e ajudou a estruturar as bases da tradição reformada. Em seguida, destacou João Calvino, expoente da segunda geração da reforma, que sistematizou a doutrina nas \"Institutas\", enfatizou a soberania de Deus na graça e na eleição, e promoveu um centro de formação em Genebra voltado à organização eclesiástica e ao ensino sistemático.",
+      "timestamp": "00:25:40"
+    },
+    {
+      "titulo": "Immanuel Kant e Friedrich Schleiermacher",
+      "relato": "HILARIO JOSE BISPO GRACA analisou a contribuição de Immanuel Kant, que delimitou a razão teórica, criticou provas tradicionais da existência de Deus e associou a religião estritamente à moral, influenciando leituras éticas do cristianismo. Na sequência, abordou Friedrich Schleiermacher, apontado como o pai da teologia liberal, que articulou a doutrina a partir da experiência da fé e da consciência religiosa da comunidade cristã.",
+      "timestamp": "00:41:13"
+    },
+    {
+      "titulo": "Topic 2",
+      "relato": "Crítica Histórica e Ressurreição na Teologia: HILARIO JOSE BISPO GRACA discutiu o debate entre história e revelação, apontando as críticas liberais aos relatos sobrenaturais e à ressurreição, enquanto contrapôs com a perspectiva reformada tradicional que afirma a ressurreição de Cristo como um acontecimento real e fundamento do evangelho conforme o primeiro livro de Coríntios. HILARIO JOSE BISPO GRACA indicou o slide 13 como material de leitura complementar sobre o pensamento de Adolf von Harnack e as abordagens liberais.",
+      "timestamp": "01:02:29"
+    },
+    {
+      "titulo": "Topic 7",
+      "relato": "Debate sobre Missões Transculturais no Brasil e no Exterior: Salatiel Rodrigues argumentou que, embora Portugal e missões transculturais sejam importantes, há muito espaço e necessidade de exploração missionária dentro do próprio Brasil, citando o Mato Grosso do Sul e a alta concentração de igrejas no Rio de Janeiro, São Paulo e Recife. HILARIO JOSE BISPO GRACA respondeu detalhando projetos de missões transculturais já iniciados na fronteira com o Paraguai (em Guaíra, voltados para o atendimento de necessidades de mulheres paraguaias afetadas historicamente pelas consequências demográficas da Guerra do Paraguai, onde 70% a 80% dos homens morreram), além de trabalhos no Amazonas com indígenas e ribeirinhos, no sertão nordestino com quilombolas e no sul do país. HILARIO JOSE BISPO GRACA concluiu o debate reforçando o modelo bíblico de Jerusalém, Judeia, Samaria e confins da terra, encerrando a aula por volta das 22h01 ou 22h02.",
+      "timestamp": "01:26:04"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 5",
+      "contexto": "A partir dessa introdução, a exposição centrou-se na exortação para que os crentes vivam o evangelho como luz e sal da terra (Mateus 5 e Filipenses 2), argumentando que o estudo teológico não deve se limitar a uma adesão intelectual, mas transformar-se em uma prática aplicada ao contexto de vida, família e sociedade para responder às necessidades reais da história."
+    },
+    {
+      "referencia": "Filipenses 2",
+      "contexto": "A partir dessa introdução, a exposição centrou-se na exortação para que os crentes vivam o evangelho como luz e sal da terra (Mateus 5 e Filipenses 2), argumentando que o estudo teológico não deve se limitar a uma adesão intelectual, mas transformar-se em uma prática aplicada ao contexto de vida, família e sociedade para responder às necessidades reais da história."
+    },
+    {
+      "referencia": "Mateus 16:18",
+      "contexto": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo."
+    },
+    {
+      "referencia": "Efésios 6:10",
+      "contexto": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo."
+    },
+    {
+      "referencia": "Colossenses 2:8 e 2",
+      "contexto": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo."
+    },
+    {
+      "referencia": "1 Coríntios 2",
+      "contexto": "Foi defendido que a pregação autêntica da palavra é insubstituível por palestras ou ensaios, constituindo o meio pelo qual a fé se apoia no poder de Deus conforme 1 Coríntios 2."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    },
+    {
+      "titulo": "Søren Kierkegaard (1813–1855)",
+      "detalhe": "Crítico implacável da Igreja da Dinamarca; ensinou que a fé cristã exige angústia, decisão existencial e discipulado autêntico, e não mero pertencimento social."
+    },
+    {
+      "titulo": "Friedrich Schleiermacher (1768–1834)",
+      "detalhe": "O \"pai da teologia liberal\"; definiu a religião não como dogma ou moralidade, mas como a consciência/sentimento de absoluta dependência do Infinito (Gefühl)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Histórico com a Igreja Evangélica Fluminense\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA comentou sobre as turmas que se formam em dezembro, informando que estaria presente no Rio de Janeiro para o aniversário de sua mãe e na Igreja Evangélica Fluminense. Daniel Rodrigues manifestou o desejo de realizar a formatura do ano seguinte na mesma igreja e relembrou laços familiares com Misael e Samuel, descritos por HILARIO JOSE BISPO GRACA como frequentadores da rotina do seminário no edifício Ceny e na Alexandre Mackenzie."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Oração Inicial\" nesta aula?",
+      "dicaResposta": "A aula teve início com uma oração conduzida por carla p dos s de almeida, que solicitou o cuidado divino sobre as mentes, corações e atenção do grupo, além de direcionamento para HILARIO JOSE BISPO GRACA na condução da matéria."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Contextualização e o Papel Prático da Teologia\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA relatou os transtornos enfrentados em seu voo de retorno de Florianópolis para Brasília devido a um cancelamento. A partir dessa introdução, a exposição centrou-se na exortação para que os crentes vivam o evangelho como luz e sal da terra (Mateus 5 e Filipenses 2), argumentando que o estudo teológico não deve se limitar a uma adesão intelectual, mas transformar-se em uma prática aplicada ao contexto de vida, família e sociedade para responder às necessidades reais da história."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Realidade da Luta Espiritual\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA discutiu o cenário de conflito espiritual presente nas escrituras conforme apontado por Paulo, Pedro, João e Jesus (incluindo Mateus 16:18 e Efésios 6:10), argumentando que o oponente espiritual atua para cegar o entendimento e distorcer a verdade por meio de filosofias vãs (Colossenses 2:8 e 2 Coríntios 10:4-5), o que exige da igreja a submissão de todo pensamento à obediência a Cristo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Martin Lutero e a Reforma Protestante\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA iniciou a revisão histórica destacando Martin Lutero, responsável por introduzir a justificação pela graça mediante a fé, contestar as indulgências por meio de teses e afirmar a autoridade das escrituras, embora tenha mantido posições controversas sobre a presença real na ceia, estabelecendo marcos para a tradição reformada e luterana."
+    }
+  ],
+  "encaminhamentos": [
+    "Preparar para AV2: Revisar os personagens históricos abordados em aula e o material de estudo disponibilizado na pasta. Garantir o domínio dos conteúdos para a realização da segunda avaliação.",
+    "Orar por missões: Orar pelas oportunidades missionárias em Portugal para ajudar na formação ministerial, aconselhamento bíblico e evangelismo.",
+    "Buscar formação missionária: Buscar formação específica para o propósito missionário nas igrejas locais."
+  ]
+}

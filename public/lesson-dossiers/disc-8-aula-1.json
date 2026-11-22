@@ -1,0 +1,283 @@
+{
+  "id": "disc-8-aula-1",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 1,
+  "unidade": 1,
+  "dateIso": "2026-08-14",
+  "dateBr": "14/08/2026",
+  "theme": "Aula 1 • Abertura da disciplina e objetivos",
+  "geminiUrl": "/gemini-notes/tcc_aula1_2026-08-14.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A disciplina de Trabalho de Conclusão de Curso 1 iniciou focada no avanço da escrita e ética. Objetivos da disciplina A disciplina visa acelerar a escrita do artigo científico. Foi decidido criar um grupo de WhatsApp para facilitar a comunicação acadêmica. Critérios e integridade acadêmica A nota final considerará a participação e o progresso contínuo. É proibido o uso de ferramentas de inteligência artificial ou terceiros para a redação do trabalho. Metodologia e planejamento futuro O foco deve ser a pesquisa bibliográfica para sustentar os dados. Recomenda-se aproveitar o período de férias para concluir o trabalho antes do próximo semestre.",
+    "sinteseGeral": "A disciplina de Trabalho de Conclusão de Curso 1 iniciou focada no avanço da escrita e ética. Objetivos da disciplina A disciplina visa acelerar a escrita do artigo científico. Foi decidido criar um grupo de WhatsApp para facilitar a comunicação acadêmica. Critérios e integridade acadêmica A nota final considerará a participação e o progresso contínuo. É proibido o uso de ferramentas de inteligência artificial ou terceiros para a redação do trabalho. Metodologia e planejamento futuro O foco deve ser a pesquisa bibliográfica para sustentar os dados. Recomenda-se aproveitar o período de férias para concluir o trabalho antes do próximo semestre.",
+    "mapaRapido": [
+      "Abertura da disciplina e objetivos: A disciplina de TCC1 foi iniciada pelo docente Profº Profº Marcio Leal, que estabeleceu como objetivo principal o adiantamento significativo do trabalho acadêmico.",
+      "Organização administrativa e comunicação: Ficou decidido que será criado um grupo de WhatsApp, denominado \"TCC1 - segundo semestre 2026\", para facilitar a comunicação fora do horário de aula e o envio de informações pertinentes.",
+      "Coleta de dados da turma: Para organizar a disciplina, cada estudante deverá fornecer no grupo de WhatsApp o nome completo, o período do curso em que está matriculado, o tema da pesquisa (ou título provisório), o nome do orientador (caso já definido), o status do projeto (se já existe um pronto) e o estágio atual de desenvolvimento da escrita.",
+      "Definição de orientadores e projetos: O docente enfatizou a necessidade de buscar um orientador com afinidade na área do tema escolhido e verificar a viabilidade da orientação.",
+      "Mapeamento do estágio de escrita: O docente ressaltou a importância de cada pessoa identificar claramente em que ponto do desenvolvimento do artigo se encontra, seja apenas na fase de pesquisa bibliográfica, leitura ou início da redação, para que o docente possa oferecer o suporte adequado.",
+      "Critérios de avaliação: Foi esclarecido que a disciplina não terá avaliações tradicionais, como provas."
+    ],
+    "totalBlocos": 15
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Abertura da disciplina e objetivos",
+      "resumoCurto": "A disciplina de TCC1 foi iniciada pelo docente Profº Profº Marcio Leal, que estabeleceu como objetivo principal o adiantamento significativo do trabalho acadêmico.",
+      "detalhamento": "A disciplina de TCC1 foi iniciada pelo docente Profº Profº Marcio Leal, que estabeleceu como objetivo principal o adiantamento significativo do trabalho acadêmico. A meta é que, ao término desta disciplina, a turma já tenha avançado na escrita do artigo científico, independente do período em que cada pessoa se encontre no curso.",
+      "pontosChave": [
+        "A disciplina de TCC1 foi iniciada pelo docente Profº Profº Marcio Leal, que estabeleceu como objetivo principal o adiantamento significativo do trabalho acadêmico.",
+        "A meta é que, ao término desta disciplina, a turma já tenha avançado na escrita do artigo científico, independente do período em que cada pessoa se encontre no curso."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Organização administrativa e comunicação",
+      "resumoCurto": "Ficou decidido que será criado um grupo de WhatsApp, denominado \"TCC1 - segundo semestre 2026\", para facilitar a comunicação fora do horário de aula e o envio de informações pertinentes.",
+      "detalhamento": "Ficou decidido que será criado um grupo de WhatsApp, denominado \"TCC1 - segundo semestre 2026\", para facilitar a comunicação fora do horário de aula e o envio de informações pertinentes. O grupo será gerenciado por representantes da turma e incluirá o docente para acompanhamento.",
+      "pontosChave": [
+        "Ficou decidido que será criado um grupo de WhatsApp, denominado \"TCC1 - segundo semestre 2026\", para facilitar a comunicação fora do horário de aula e o envio de informações pertinentes.",
+        "O grupo será gerenciado por representantes da turma e incluirá o docente para acompanhamento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Coleta de dados da turma",
+      "resumoCurto": "Para organizar a disciplina, cada estudante deverá fornecer no grupo de WhatsApp o nome completo, o período do curso em que está matriculado, o tema da pesquisa (ou título provisório), o nome do orientador (caso já definido), o status do projeto (se já existe um pronto) e o estágio atual de desenvolvimento da escrita.",
+      "detalhamento": "Para organizar a disciplina, cada estudante deverá fornecer no grupo de WhatsApp o nome completo, o período do curso em que está matriculado, o tema da pesquisa (ou título provisório), o nome do orientador (caso já definido), o status do projeto (se já existe um pronto) e o estágio atual de desenvolvimento da escrita.",
+      "pontosChave": [
+        "Para organizar a disciplina, cada estudante deverá fornecer no grupo de WhatsApp o nome completo, o período do curso em que está matriculado, o tema da pesquisa (ou título provisório), o nome do orientador (caso já definido), o status do projeto (se já existe um pronto) e o estágio atual de desenvolvimento da escrita."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Definição de orientadores e projetos",
+      "resumoCurto": "O docente enfatizou a necessidade de buscar um orientador com afinidade na área do tema escolhido e verificar a viabilidade da orientação.",
+      "detalhamento": "O docente enfatizou a necessidade de buscar um orientador com afinidade na área do tema escolhido e verificar a viabilidade da orientação. Caso o projeto de pesquisa tenha sido alterado desde a disciplina de Metodologia, o estudante deve elaborar um novo projeto para servir de base ao artigo.",
+      "pontosChave": [
+        "O docente enfatizou a necessidade de buscar um orientador com afinidade na área do tema escolhido e verificar a viabilidade da orientação.",
+        "Caso o projeto de pesquisa tenha sido alterado desde a disciplina de Metodologia, o estudante deve elaborar um novo projeto para servir de base ao artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Mapeamento do estágio de escrita",
+      "resumoCurto": "O docente ressaltou a importância de cada pessoa identificar claramente em que ponto do desenvolvimento do artigo se encontra, seja apenas na fase de pesquisa bibliográfica, leitura ou início da redação, para que o docente possa oferecer o suporte adequado.",
+      "detalhamento": "O docente ressaltou a importância de cada pessoa identificar claramente em que ponto do desenvolvimento do artigo se encontra, seja apenas na fase de pesquisa bibliográfica, leitura ou início da redação, para que o docente possa oferecer o suporte adequado.",
+      "pontosChave": [
+        "O docente ressaltou a importância de cada pessoa identificar claramente em que ponto do desenvolvimento do artigo se encontra, seja apenas na fase de pesquisa bibliográfica, leitura ou início da redação, para que o docente possa oferecer o suporte adequado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Critérios de avaliação",
+      "resumoCurto": "Foi esclarecido que a disciplina não terá avaliações tradicionais, como provas.",
+      "detalhamento": "Foi esclarecido que a disciplina não terá avaliações tradicionais, como provas. A nota final será composta pela participação e, principalmente, pelo desenvolvimento contínuo do trabalho final de cada estudante.",
+      "pontosChave": [
+        "Foi esclarecido que a disciplina não terá avaliações tradicionais, como provas.",
+        "A nota final será composta pela participação e, principalmente, pelo desenvolvimento contínuo do trabalho final de cada estudante."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Ética e autorização para entrevistas",
+      "resumoCurto": "Em resposta a dúvidas sobre pesquisas de campo com fontes primárias, o docente orientou que, ao citar nomes de pessoas entrevistadas, o estudante deve obter uma autorização por escrito da pessoa.",
+      "detalhamento": "Em resposta a dúvidas sobre pesquisas de campo com fontes primárias, o docente orientou que, ao citar nomes de pessoas entrevistadas, o estudante deve obter uma autorização por escrito da pessoa. Caso o estudante opte por não citar nomes reais, utilizando pseudônimos ou descrições genéricas, a autorização formal não é exigida.",
+      "pontosChave": [
+        "Em resposta a dúvidas sobre pesquisas de campo com fontes primárias, o docente orientou que, ao citar nomes de pessoas entrevistadas, o estudante deve obter uma autorização por escrito da pessoa.",
+        "Caso o estudante opte por não citar nomes reais, utilizando pseudônimos ou descrições genéricas, a autorização formal não é exigida."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Normas acadêmicas e autoria",
+      "resumoCurto": "Foi reforçada a necessidade de adequação às normas da ABNT.",
+      "detalhamento": "Foi reforçada a necessidade de adequação às normas da ABNT. O docente permitiu a contratação de serviços terceirizados para formatação e revisão ortográfica do texto, porém, proibiu terminantemente que o conteúdo do artigo seja escrito por terceiros ou por ferramentas de inteligência artificial, exigindo esforço intelectual autoral.",
+      "pontosChave": [
+        "Foi reforçada a necessidade de adequação às normas da ABNT.",
+        "O docente permitiu a contratação de serviços terceirizados para formatação e revisão ortográfica do texto, porém, proibiu terminantemente que o conteúdo do artigo seja escrito por terceiros ou por ferramentas de inteligência artificial, exigindo esforço intelectual autoral."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pesquisa bibliográfica como alicerce",
+      "resumoCurto": "O docente orientou que, mesmo para quem já possui um grande volume de material coletado em pesquisas de campo, é imprescindível dedicar-se à pesquisa bibliográfica.",
+      "detalhamento": "O docente orientou que, mesmo para quem já possui um grande volume de material coletado em pesquisas de campo, é imprescindível dedicar-se à pesquisa bibliográfica. Essa etapa é fundamental para sustentar e analisar os dados coletados nas entrevistas durante a escrita do artigo.",
+      "pontosChave": [
+        "O docente orientou que, mesmo para quem já possui um grande volume de material coletado em pesquisas de campo, é imprescindível dedicar-se à pesquisa bibliográfica.",
+        "Essa etapa é fundamental para sustentar e analisar os dados coletados nas entrevistas durante a escrita do artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estratégia para turmas com diferentes níveis de progresso",
+      "resumoCurto": "Reconhecendo a diversidade de períodos e níveis de progresso da turma, o docente planeja analisar as respostas enviadas ao grupo de WhatsApp para possivelmente dividir a turma em subgrupos em certas aulas.",
+      "detalhamento": "Reconhecendo a diversidade de períodos e níveis de progresso da turma, o docente planeja analisar as respostas enviadas ao grupo de WhatsApp para possivelmente dividir a turma em subgrupos em certas aulas. Isso permitirá atender simultaneamente quem precisa elaborar o projeto e quem já está na fase de escrita do artigo, evitando ociosidade.",
+      "pontosChave": [
+        "Reconhecendo a diversidade de períodos e níveis de progresso da turma, o docente planeja analisar as respostas enviadas ao grupo de WhatsApp para possivelmente dividir a turma em subgrupos em certas aulas.",
+        "Isso permitirá atender simultaneamente quem precisa elaborar o projeto e quem já está na fase de escrita do artigo, evitando ociosidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Planejamento para o TCC2",
+      "resumoCurto": "O docente recomendou que a turma aproveite o período de férias para ler e escrever, visando chegar ao TCC2 com o trabalho praticamente finalizado.",
+      "detalhamento": "O docente recomendou que a turma aproveite o período de férias para ler e escrever, visando chegar ao TCC2 com o trabalho praticamente finalizado. O objetivo para o TCC2 é realizar apenas os ajustes finais e preparar a apresentação da banca, reduzindo a carga de trabalho no semestre de conclusão.",
+      "pontosChave": [
+        "O docente recomendou que a turma aproveite o período de férias para ler e escrever, visando chegar ao TCC2 com o trabalho praticamente finalizado.",
+        "O objetivo para o TCC2 é realizar apenas os ajustes finais e preparar a apresentação da banca, reduzindo a carga de trabalho no semestre de conclusão."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pesquisa envolvendo pessoas jurídicas",
+      "resumoCurto": "Sobre a necessidade de autorização ao pesquisar instituições como igrejas, o docente explicou que não há uma exigência formal estrita, mas sugeriu que, por segurança jurídica, o estudante pode solicitar uma autorização simples de próprio punho ao responsável legal caso haja receio de contestações futuras ou críticas no texto.",
+      "detalhamento": "Sobre a necessidade de autorização ao pesquisar instituições como igrejas, o docente explicou que não há uma exigência formal estrita, mas sugeriu que, por segurança jurídica, o estudante pode solicitar uma autorização simples de próprio punho ao responsável legal caso haja receio de contestações futuras ou críticas no texto.",
+      "pontosChave": [
+        "Sobre a necessidade de autorização ao pesquisar instituições como igrejas, o docente explicou que não há uma exigência formal estrita, mas sugeriu que, por segurança jurídica, o estudante pode solicitar uma autorização simples de próprio punho ao responsável legal caso haja receio de contestações futuras ou críticas no texto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Qualidade e Publicação dos Trabalhos do Seminário",
+      "resumoCurto": "Profº Profº Marcio Leal destacou a alta qualidade dos trabalhos produzidos no seminário, mencionando que alguns artigos já foram publicados.",
+      "detalhamento": "Profº Profº Marcio Leal destacou a alta qualidade dos trabalhos produzidos no seminário, mencionando que alguns artigos já foram publicados. Foi relatado que a Faculdade Maciço do Batorit elogiou os trabalhos do grupo e selecionou alguns deles para publicação em sua revista acadêmica. Profº Profº Marcio Leal expressou confiança na capacidade dos alunos de continuarem produzindo trabalhos excelentes no futuro. Alcimar Luiz da Silva comentou sobre a pressão dessas expectativas, ao que Profº Profº Marcio Leal esclareceu que o objetivo era apenas oferecer incentivo e reconhecimento.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal destacou a alta qualidade dos trabalhos produzidos no seminário, mencionando que alguns artigos já foram publicados.",
+        "Foi relatado que a Faculdade Maciço do Batorit elogiou os trabalhos do grupo e selecionou alguns deles para publicação em sua revista acadêmica.",
+        "Profº Profº Marcio Leal expressou confiança na capacidade dos alunos de continuarem produzindo trabalhos excelentes no futuro.",
+        "Alcimar Luiz da Silva comentou sobre a pressão dessas expectativas, ao que Profº Profº Marcio Leal esclareceu que o objetivo era apenas oferecer incentivo e reconhecimento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Cronograma das Próximas Aulas e Encerramento",
+      "resumoCurto": "Cristiano Sacramento agradeceu pelo incentivo e informou aos colegas que estavam liberados após aquela sessão, explicando que a próxima aula seria gravada e só teria início em setembro.",
+      "detalhamento": "Cristiano Sacramento agradeceu pelo incentivo e informou aos colegas que estavam liberados após aquela sessão, explicando que a próxima aula seria gravada e só teria início em setembro. Profº Profº Marcio Leal concordou com o encerramento da sessão e desejou um excelente fim de semana a todos. Rosiane Lima (Rosi) esclareceu que não haveria aula especificamente de História da Cultura Afro-Brasileira, orientando os alunos da turma B a seguirem para a sua próxima aula caso necessário.",
+      "pontosChave": [
+        "Cristiano Sacramento agradeceu pelo incentivo e informou aos colegas que estavam liberados após aquela sessão, explicando que a próxima aula seria gravada e só teria início em setembro.",
+        "Profº Profº Marcio Leal concordou com o encerramento da sessão e desejou um excelente fim de semana a todos.",
+        "Rosiane Lima (Rosi) esclareceu que não haveria aula especificamente de História da Cultura Afro-Brasileira, orientando os alunos da turma B a seguirem para a sua próxima aula caso necessário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Planejamento Pedagógico e Encerramento do Encontro",
+      "resumoCurto": "Profº Profº Marcio Leal informou que postaria questões no grupo para que os alunos respondessem.",
+      "detalhamento": "Profº Profº Marcio Leal informou que postaria questões no grupo para que os alunos respondessem. Foi prometido que essas respostas seriam lidas com atenção e que, durante a semana, seriam fornecidas orientações sobre como a turma se organizaria para a próxima sexta-feira. Profº Profº Marcio Leal solicitou que os alunos orassem para que houvesse sabedoria na condução da disciplina e finalizou o encontro desejando que Deus abençoasse a todos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal informou que postaria questões no grupo para que os alunos respondessem.",
+        "Foi prometido que essas respostas seriam lidas com atenção e que, durante a semana, seriam fornecidas orientações sobre como a turma se organizaria para a próxima sexta-feira.",
+        "Profº Profº Marcio Leal solicitou que os alunos orassem para que houvesse sabedoria na condução da disciplina e finalizou o encontro desejando que Deus abençoasse a todos."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    },
+    {
+      "titulo": "Normas de Referências Bibliográficas (NBR 6023)",
+      "detalhe": "Alinhadas estritamente à margem esquerda, espaçamento simples interno, separadas por 1 espaço em branco, ordenadas em ordem alfabética pelo sobrenome do autor e com título da obra em negrito."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura da disciplina e objetivos\" nesta aula?",
+      "dicaResposta": "A disciplina de TCC1 foi iniciada pelo docente Profº Profº Marcio Leal, que estabeleceu como objetivo principal o adiantamento significativo do trabalho acadêmico. A meta é que, ao término desta disciplina, a turma já tenha avançado na escrita do artigo científico, independente do período em que cada pessoa se encontre no curso."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Organização administrativa e comunicação\" nesta aula?",
+      "dicaResposta": "Ficou decidido que será criado um grupo de WhatsApp, denominado \"TCC1 - segundo semestre 2026\", para facilitar a comunicação fora do horário de aula e o envio de informações pertinentes. O grupo será gerenciado por representantes da turma e incluirá o docente para acompanhamento."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Coleta de dados da turma\" nesta aula?",
+      "dicaResposta": "Para organizar a disciplina, cada estudante deverá fornecer no grupo de WhatsApp o nome completo, o período do curso em que está matriculado, o tema da pesquisa (ou título provisório), o nome do orientador (caso já definido), o status do projeto (se já existe um pronto) e o estágio atual de desenvolvimento da escrita."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Definição de orientadores e projetos\" nesta aula?",
+      "dicaResposta": "O docente enfatizou a necessidade de buscar um orientador com afinidade na área do tema escolhido e verificar a viabilidade da orientação. Caso o projeto de pesquisa tenha sido alterado desde a disciplina de Metodologia, o estudante deve elaborar um novo projeto para servir de base ao artigo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Mapeamento do estágio de escrita\" nesta aula?",
+      "dicaResposta": "O docente ressaltou a importância de cada pessoa identificar claramente em que ponto do desenvolvimento do artigo se encontra, seja apenas na fase de pesquisa bibliográfica, leitura ou início da redação, para que o docente possa oferecer o suporte adequado."
+    }
+  ],
+  "encaminhamentos": [
+    "Criar Grupo WhatsApp: Criar um grupo no WhatsApp nomeado TCC1 segundo semestre 2026 e incluir todos os alunos e a professora.",
+    "Responder Questionário: Enviar no grupo de WhatsApp as informações sobre nome, período, tema, orientador, status do projeto e estágio do desenvolvimento do artigo.",
+    "Pesquisar Normas ABNT: Buscar as regras de formatação da Associação Brasileira de Normas Técnicas para aplicar ao artigo científico.",
+    "Definir Orientador: Verificar a afinidade dos professores com o tema escolhido e contatá-los para confirmar a disponibilidade de orientação."
+  ]
+}

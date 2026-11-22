@@ -1,0 +1,381 @@
+{
+  "id": "disc-2-aula-10",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 10,
+  "unidade": 2,
+  "dateIso": "2026-10-13",
+  "dateBr": "13/10/2026",
+  "theme": "Aula 10 • Liberalismo Teológico e Avivamentos",
+  "geminiUrl": "https://docs.google.com/document/d/11wqEdqKGnnjvKDiKhVIK3ALmeaMWUVwYuEhWa67IqKw/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Os avivamentos do século XVIII (Jonathan Edwards e George Whitefield) como bastiões doutrinários e espirituais frente à secularização.",
+    "sinteseGeral": "Aula abordou avivamentos espirituais e teologia moderna com foco na soberania divina e pregação cristocêntrica. Liberalismo Teológico e Avivamentos A aula debateu o liberalismo teológico de Friedrich Schleiermacher e a soberania divina nos despertamentos históricos mundiais. Despertamentos e Oração Diária O encontro analisou o impacto de Jonathan Edwards e John Wesley, destacando a necessidade de oração contínua e conversão genuína. Legado Missionário e Conclusão A sessão concluiu ressaltando a importância da pregação expositiva e da expansão missionária para evitar o declínio espiritual.",
+    "mapaRapido": [
+      "Abertura e Recapitulação sobre o Liberalismo Teológico: HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial.",
+      "Conceito de Avivamento e Chamado Missionário: HILARIO JOSE BISPO GRACA argumentou que os grandes despertamentos espirituais ocorrem por vontade divina e estão diretamente atrelados à obra missionária e à obediência à Palavra de Deus.",
+      "Exemplos Históricos de Avivamentos e a Igreja de Éfeso: HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2.",
+      "A Importância da Oração Permanente: HILARIO JOSE BISPO GRACA defendeu que o avivamento exige um movimento de oração contínuo e estruturado na rotina da comunidade, e não apenas ações temporais.",
+      "Contribuições dos Primeiros Despertamentos e Inovações Tecnológicas: HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas.",
+      "Charles Finney, D.L. Moody e Billy Graham: HILARIO JOSE BISPO GRACA analisou a atuação de Charles Finney, pontuando suas tendências semipelagianas e narrando episódios inusitados de pregações sobre Sodoma e Gomorra que resultaram em conversões espontâneas."
+    ],
+    "duracaoEstimada": "~1h16min",
+    "totalBlocos": 19
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura e Recapitulação sobre o Liberalismo Teológico",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial. Em seguida, HILARIO JOSE BISPO GRACA recapitulou a discussão da semana anterior sobre o liberalismo teológico dos séculos XVI ao XIX, destacando o esforço de Friedrich Schleiermacher em adaptar a fé cristã aos métodos de compreensão da modernidade, ciência e investigação histórica.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial.",
+        "Em seguida, HILARIO JOSE BISPO GRACA recapitulou a discussão da semana anterior sobre o liberalismo teológico dos séculos XVI ao XIX, destacando o esforço de Friedrich Schleiermacher em adaptar a fé cristã aos métodos de compreensão da modernidade, ciência e investigação histórica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:07:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conceito de Avivamento e Chamado Missionário",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA argumentou que os grandes despertamentos espirituais ocorrem por vontade divina e estão diretamente atrelados à obra missionária e à obediência à Palavra de Deus.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA argumentou que os grandes despertamentos espirituais ocorrem por vontade divina e estão diretamente atrelados à obra missionária e à obediência à Palavra de Deus. relatou memórias de sua juventude pregando em trens que faziam o trajeto entre Central e Odoro no Rio de Janeiro, enfatizando que o abandono da evangelização conduz ao declínio e à morte espiritual da igreja.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA argumentou que os grandes despertamentos espirituais ocorrem por vontade divina e estão diretamente atrelados à obra missionária e à obediência à Palavra de Deus.",
+        "relatou memórias de sua juventude pregando em trens que faziam o trajeto entre Central e Odoro no Rio de Janeiro, enfatizando que o abandono da evangelização conduz ao declínio e à morte espiritual da igreja."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:12:41",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Exemplos Históricos de Avivamentos e a Igreja de Éfeso",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2. A pessoa oradora destacou que esses despertamentos não constituíram reações planejadas contra o liberalismo teológico, mas iniciativas soberanas de Deus.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2.",
+        "A pessoa oradora destacou que esses despertamentos não constituíram reações planejadas contra o liberalismo teológico, mas iniciativas soberanas de Deus."
+      ],
+      "referenciasNoBloco": [
+        "Atos 19",
+        "Apocalipse 2"
+      ]
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:15:25",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A Importância da Oração Permanente",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA defendeu que o avivamento exige um movimento de oração contínuo e estruturado na rotina da comunidade, e não apenas ações temporais.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA defendeu que o avivamento exige um movimento de oração contínuo e estruturado na rotina da comunidade, e não apenas ações temporais. Como medida prática adotada em seu primeiro pastorado para unir os membros distantes, HILARIO JOSE BISPO GRACA instituiu a convocação para que toda a igreja orasse conjuntamente durante apenas 10 minutos diários, exatamente às 3 horas da madrugada, gerando transformações na vida particular e coletiva.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA defendeu que o avivamento exige um movimento de oração contínuo e estruturado na rotina da comunidade, e não apenas ações temporais.",
+        "Como medida prática adotada em seu primeiro pastorado para unir os membros distantes, HILARIO JOSE BISPO GRACA instituiu a convocação para que toda a igreja orasse conjuntamente durante apenas 10 minutos diários, exatamente às 3 horas da madrugada, gerando transformações na vida particular e coletiva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:19:23",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Contribuições dos Primeiros Despertamentos e Inovações Tecnológicas",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas. A pessoa palestrante comparou a eficácia histórica das epístolas de Paulo com o uso intencional da tecnologia e das redes sociais na atualidade.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas.",
+        "A pessoa palestrante comparou a eficácia histórica das epístolas de Paulo com o uso intencional da tecnologia e das redes sociais na atualidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:23:08",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Charles Finney, D.L. Moody e Billy Graham",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA analisou a atuação de Charles Finney, pontuando suas tendências semipelagianas e narrando episódios inusitados de pregações sobre Sodoma e Gomorra que resultaram em conversões espontâneas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA analisou a atuação de Charles Finney, pontuando suas tendências semipelagianas e narrando episódios inusitados de pregações sobre Sodoma e Gomorra que resultaram em conversões espontâneas. Adicionalmente, HILARIO JOSE BISPO GRACA mencionou D.L. Moody no século XIX e Billy Graham, que lotou o estádio do Maracanã no início da década de 70 e na década de 60.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA analisou a atuação de Charles Finney, pontuando suas tendências semipelagianas e narrando episódios inusitados de pregações sobre Sodoma e Gomorra que resultaram em conversões espontâneas.",
+        "Adicionalmente, HILARIO JOSE BISPO GRACA mencionou D.L.",
+        "Moody no século XIX e Billy Graham, que lotou o estádio do Maracanã no início da década de 70 e na década de 60."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:24:26",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Obra e o Legado de Martyn Lloyd-Jones",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA recomendou entusiasticamente a leitura do livro \"Pregação e Pregadores\" de Martyn Lloyd-Jones, obra lida sete vezes pela pessoa oradora, e destacou a trajetória do autor, que recusou o convite para atuar como médico da rainha da Inglaterra para dedicar-se ao evangelho, além de citar seu livro sobre conselhos bíblicos e \"Depressão Espiritual\".",
+      "detalhamento": "HILARIO JOSE BISPO GRACA recomendou entusiasticamente a leitura do livro \"Pregação e Pregadores\" de Martyn Lloyd-Jones, obra lida sete vezes pela pessoa oradora, e destacou a trajetória do autor, que recusou o convite para atuar como médico da rainha da Inglaterra para dedicar-se ao evangelho, além de citar seu livro sobre conselhos bíblicos e \"Depressão Espiritual\".",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA recomendou entusiasticamente a leitura do livro \"Pregação e Pregadores\" de Martyn Lloyd-Jones, obra lida sete vezes pela pessoa oradora, e destacou a trajetória do autor, que recusou o convite para atuar como médico da rainha da Inglaterra para dedicar-se ao evangelho, além de citar seu livro sobre conselhos bíblicos e \"Depressão Espiritual\"."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:31:42",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Influência dos Avivamentos no Pensamento Cristão e a Conversão Real",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explicou que os avivamentos transformam o pensamento cristão ao exigirem conversão pessoal, arrependimento genuíno e novo nascimento, superando a mera frequência ritualística a denominações.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explicou que os avivamentos transformam o pensamento cristão ao exigirem conversão pessoal, arrependimento genuíno e novo nascimento, superando a mera frequência ritualística a denominações. A pessoa palestrante referenciou os dez equívocos apontados por Paul Washer sobre o ensino inadequado acerca da verdadeira vida cristã.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explicou que os avivamentos transformam o pensamento cristão ao exigirem conversão pessoal, arrependimento genuíno e novo nascimento, superando a mera frequência ritualística a denominações.",
+        "A pessoa palestrante referenciou os dez equívocos apontados por Paul Washer sobre o ensino inadequado acerca da verdadeira vida cristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:34:46",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Mobilização Missionária e Ação Social",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA afirmou que uma igreja próspera necessita de mobilização missionária e responsabilidade social, exemplificando com o trabalho assistencial e médico realizado por projetos missionários no Amazonas, onde a presença do Estado é ausente.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA afirmou que uma igreja próspera necessita de mobilização missionária e responsabilidade social, exemplificando com o trabalho assistencial e médico realizado por projetos missionários no Amazonas, onde a presença do Estado é ausente. A pessoa oradora criticou atitudes cínicas de fiéis que prejudicam a credibilidade moral do testemunho cristão na sociedade.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA afirmou que uma igreja próspera necessita de mobilização missionária e responsabilidade social, exemplificando com o trabalho assistencial e médico realizado por projetos missionários no Amazonas, onde a presença do Estado é ausente.",
+        "A pessoa oradora criticou atitudes cínicas de fiéis que prejudicam a credibilidade moral do testemunho cristão na sociedade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:42:25",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Discernimento das Emoções e Afeições Religiosas",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA analisou a obra \"Afeições Religiosas\" de Jonathan Edwards, ressaltando a importância de discernir entre reações emocionais genuínas promovidas pelo Espírito Santo e o mero emocionalismo superficial ou histeria.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA analisou a obra \"Afeições Religiosas\" de Jonathan Edwards, ressaltando a importância de discernir entre reações emocionais genuínas promovidas pelo Espírito Santo e o mero emocionalismo superficial ou histeria. Utilizando o exemplo bíblico de Zaqueu, HILARIO JOSE BISPO GRACA enfatizou que a fé verdadeira resulta em ações práticas, amor, humildade e reparação de danos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA analisou a obra \"Afeições Religiosas\" de Jonathan Edwards, ressaltando a importância de discernir entre reações emocionais genuínas promovidas pelo Espírito Santo e o mero emocionalismo superficial ou histeria.",
+        "Utilizando o exemplo bíblico de Zaqueu, HILARIO JOSE BISPO GRACA enfatizou que a fé verdadeira resulta em ações práticas, amor, humildade e reparação de danos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:47:01",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Debate Teológico sobre Charles Finney e Relatos de Seminário",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA pontuou que a ênfase de Charles Finney na responsabilidade humana entra em conflito com a compreensão reformada da ação soberana de Deus.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA pontuou que a ênfase de Charles Finney na responsabilidade humana entra em conflito com a compreensão reformada da ação soberana de Deus. Em seguida, HILARIO JOSE BISPO GRACA rememorou os tempos de seminário ao lado de Salatiel Rodrigues e de um colega apelidado de \"fogo puro\", reconhecido pela vitalidade espiritual e leitura intensiva da Bíblia.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA pontuou que a ênfase de Charles Finney na responsabilidade humana entra em conflito com a compreensão reformada da ação soberana de Deus.",
+        "Em seguida, HILARIO JOSE BISPO GRACA rememorou os tempos de seminário ao lado de Salatiel Rodrigues e de um colega apelidado de \"fogo puro\", reconhecido pela vitalidade espiritual e leitura intensiva da Bíblia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:52:05",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Valorização da Pregação Cristocêntrica e Expositiva",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA sublinhou a importância de uma pregação expositiva, cristocêntrica e sistemática, argumentando que a preparação zelosa da Palavra de Deus conduz os ouvintes ao arrependimento genuíno sem a necessidade de apelos emocionais artificiais.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA sublinhou a importância de uma pregação expositiva, cristocêntrica e sistemática, argumentando que a preparação zelosa da Palavra de Deus conduz os ouvintes ao arrependimento genuíno sem a necessidade de apelos emocionais artificiais. A pessoa palestrante observou que o poder da mensagem atrai naturalmente as pessoas aos gabinetes pastorais.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA sublinhou a importância de uma pregação expositiva, cristocêntrica e sistemática, argumentando que a preparação zelosa da Palavra de Deus conduz os ouvintes ao arrependimento genuíno sem a necessidade de apelos emocionais artificiais.",
+        "A pessoa palestrante observou que o poder da mensagem atrai naturalmente as pessoas aos gabinetes pastorais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:53:13",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto Histórico do Primeiro Despertamento nos Estados Unidos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA abordou a influência histórica dos congregacionais e presbiterianos que migraram para as colônias americanas nos séculos XVI e XVII, estabelecendo raízes culturais e protestantes profundas na sociedade e nas instituições políticas dos Estados Unidos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA abordou a influência histórica dos congregacionais e presbiterianos que migraram para as colônias americanas nos séculos XVI e XVII, estabelecendo raízes culturais e protestantes profundas na sociedade e nas instituições políticas dos Estados Unidos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA abordou a influência histórica dos congregacionais e presbiterianos que migraram para as colônias americanas nos séculos XVI e XVII, estabelecendo raízes culturais e protestantes profundas na sociedade e nas instituições políticas dos Estados Unidos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:57:30",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "O Impacto das Guerras no Declínio Espiritual",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA concluiu discutindo os fatores associados ao declínio de igrejas historicamente avivadas, relatando o testemunho de um presbítero galeso centenário sobrevivente das duas guerras mundiais que atribuiu a perda de vigor espiritual à morte de gerações jovens nos conflitos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA concluiu discutindo os fatores associados ao declínio de igrejas historicamente avivadas, relatando o testemunho de um presbítero galeso centenário sobrevivente das duas guerras mundiais que atribuiu a perda de vigor espiritual à morte de gerações jovens nos conflitos. A pessoa oradora também mencionou as estimativas de cerca de 1 milhão de mortes em cada lado na guerra entre Ucrânia e Rússia.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA concluiu discutindo os fatores associados ao declínio de igrejas historicamente avivadas, relatando o testemunho de um presbítero galeso centenário sobrevivente das duas guerras mundiais que atribuiu a perda de vigor espiritual à morte de gerações jovens nos conflitos.",
+        "A pessoa oradora também mencionou as estimativas de cerca de 1 milhão de mortes em cada lado na guerra entre Ucrânia e Rússia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:00:13",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Fatores Históricos e Sociais no Declínio Espiritual e Apoio no Paraguai",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA relata que, segundo avaliações sobre o País de Gales, guerras e perdas humanas significativas — comparando com a Guerra do Paraguai, onde o Paraguai perdeu cerca de 70% dos homens — geraram repercussões sociais e a desvalorização de mulheres.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA relata que, segundo avaliações sobre o País de Gales, guerras e perdas humanas significativas — comparando com a Guerra do Paraguai, onde o Paraguai perdeu cerca de 70% dos homens — geraram repercussões sociais e a desvalorização de mulheres. Como resposta a esse contexto de vulnerabilidade social, HILARIO JOSE BISPO GRACA destaca a implementação de um projeto iniciado em setembro do ano anterior para prestar assistência a mulheres no Paraguai, onde a violência doméstica muitas vezes ocorre sem intervenção pública.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA relata que, segundo avaliações sobre o País de Gales, guerras e perdas humanas significativas — comparando com a Guerra do Paraguai, onde o Paraguai perdeu cerca de 70% dos homens — geraram repercussões sociais e a desvalorização de mulheres.",
+        "Como resposta a esse contexto de vulnerabilidade social, HILARIO JOSE BISPO GRACA destaca a implementação de um projeto iniciado em setembro do ano anterior para prestar assistência a mulheres no Paraguai, onde a violência doméstica muitas vezes ocorre sem intervenção pública."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:01:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Influência Puritana e o Despertamento na América do Norte",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aponta que a colonização inglesa na América do Norte foi fortemente influenciada por puritanos congregacionais em busca de liberdade religiosa, os quais buscavam construir uma sociedade cristã expressada na ideia de \"Cidade sobre o Monte\".",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aponta que a colonização inglesa na América do Norte foi fortemente influenciada por puritanos congregacionais em busca de liberdade religiosa, os quais buscavam construir uma sociedade cristã expressada na ideia de \"Cidade sobre o Monte\". A lidença participante destaca líderes importantes desse período, como John Cotton, Thomas Hooker e John Eliot, além da fundação de instituições como Harvard em 1636 e outra em 1701, culminando no despertamento espiritual liderado por figuras como o pastor congregacional Jonathan Edwards em Northampton, Massachusetts, que defendia a centralidade das Escrituras e a soberania de Deus.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aponta que a colonização inglesa na América do Norte foi fortemente influenciada por puritanos congregacionais em busca de liberdade religiosa, os quais buscavam construir uma sociedade cristã expressada na ideia de \"Cidade sobre o Monte\".",
+        "A lidença participante destaca líderes importantes desse período, como John Cotton, Thomas Hooker e John Eliot, além da fundação de instituições como Harvard em 1636 e outra em 1701, culminando no despertamento espiritual liderado por figuras como o pastor congregacional Jonathan Edwards em Northampton, Massachusetts, que defendia a centralidade das Escrituras e a soberania de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:07:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Impacto da Pregação de Jonathan Edwards e a Controvérsia da Ceia do Senhor",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA descreve o impacto da pregação de Jonathan Edwards, citando o famoso sermão \"Pecadores nas Mãos de um Deus Irado\", o qual provocava reações intensas nos ouvintes devido à ênfase no juízo divino.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA descreve o impacto da pregação de Jonathan Edwards, citando o famoso sermão \"Pecadores nas Mãos de um Deus Irado\", o qual provocava reações intensas nos ouvintes devido à ênfase no juízo divino. HILARIO JOSE BISPO GRACA explica que Edwards distinguia manifestações emocionais de evidências genuínas da ação do Espírito Santo, tendo sido posteriormente afastado de seu pastorado devido a uma controvérsia sobre a Ceia do Senhor, pois Edwards exigia uma profissão de fé para a participação, opondo-se à prática anterior que não cobrava tal exigência. Após o afastamento, Edwards assumiu a presidência do colégio que hoje é a Universidade de Princeton antes de falecer.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA descreve o impacto da pregação de Jonathan Edwards, citando o famoso sermão \"Pecadores nas Mãos de um Deus Irado\", o qual provocava reações intensas nos ouvintes devido à ênfase no juízo divino.",
+        "HILARIO JOSE BISPO GRACA explica que Edwards distinguia manifestações emocionais de evidências genuínas da ação do Espírito Santo, tendo sido posteriormente afastado de seu pastorado devido a uma controvérsia sobre a Ceia do Senhor, pois Edwards exigia uma profissão de fé para a participação, opondo-se à prática anterior que não cobrava tal exigência.",
+        "Após o afastamento, Edwards assumiu a presidência do colégio que hoje é a Universidade de Princeton antes de falecer."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:11:06",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Evidências de uma Conversão Genuína e o Legado de David Brainerd",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia e os líderes históricos orientam a identificar um verdadeiro crente por meio de marcas distintivas, como o cumprimento dos mandamentos, o amor a Jesus Cristo, a rejeição ao pecado e a valorização da palavra de Deus, em vez de aceitar uma prática espiritual superficial.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia e os líderes históricos orientam a identificar um verdadeiro crente por meio de marcas distintivas, como o cumprimento dos mandamentos, o amor a Jesus Cristo, a rejeição ao pecado e a valorização da palavra de Deus, em vez de aceitar uma prática espiritual superficial. Adicionalmente, HILARIO JOSE BISPO GRACA convida a estudar a vida de David Brainerd, um missionário congregacional entre indígenas norte-americanos na região de Delaware que faleceu aos 29 anos e cujos diários foram publicados por Jonathan Edwards, inspirando o despertamento missionário.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia e os líderes históricos orientam a identificar um verdadeiro crente por meio de marcas distintivas, como o cumprimento dos mandamentos, o amor a Jesus Cristo, a rejeição ao pecado e a valorização da palavra de Deus, em vez de aceitar uma prática espiritual superficial.",
+        "Adicionalmente, HILARIO JOSE BISPO GRACA convida a estudar a vida de David Brainerd, um missionário congregacional entre indígenas norte-americanos na região de Delaware que faleceu aos 29 anos e cujos diários foram publicados por Jonathan Edwards, inspirando o despertamento missionário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:15:44",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Resultados e Marcas Distintivas dos Grandes Avivamentos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA resume que o primeiro grande despertamento resultou na conversão de 25.000 a 50.000 pessoas, na renovação da pregação, no fortalecimento da experiência pessoal e no crescimento do interesse por missões e pela influência protestante na sociedade.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA resume que o primeiro grande despertamento resultou na conversão de 25.000 a 50.000 pessoas, na renovação da pregação, no fortalecimento da experiência pessoal e no crescimento do interesse por missões e pela influência protestante na sociedade. A lidença participante reforça que as ênfases essenciais de um avivamento verdadeiro são pregação, conversão, santificação e evangelização, alertando contra a frieza espiritual e o entretenimento na igreja. Por fim, HILARIO JOSE BISPO GRACA encerra a sessão informando que enviará notas aos participantes durante a semana, seguido pelas despedidas de Rosiane Lima (Rosi), jorge silva e Daniel Rodrigues.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA resume que o primeiro grande despertamento resultou na conversão de 25.000 a 50.000 pessoas, na renovação da pregação, no fortalecimento da experiência pessoal e no crescimento do interesse por missões e pela influência protestante na sociedade.",
+        "A lidença participante reforça que as ênfases essenciais de um avivamento verdadeiro são pregação, conversão, santificação e evangelização, alertando contra a frieza espiritual e o entretenimento na igreja.",
+        "Por fim, HILARIO JOSE BISPO GRACA encerra a sessão informando que enviará notas aos participantes durante a semana, seguido pelas despedidas de Rosiane Lima (Rosi), jorge silva e Daniel Rodrigues."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura e Recapitulação sobre o Liberalismo Teológico",
+      "relato": "HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial. Em seguida, HILARIO JOSE BISPO GRACA recapitulou a discussão da semana anterior sobre o liberalismo teológico dos séculos XVI ao XIX, destacando o esforço de Friedrich Schleiermacher em adaptar a fé cristã aos métodos de compreensão da modernidade, ciência e investigação histórica."
+    },
+    {
+      "titulo": "Contribuições dos Primeiros Despertamentos e Inovações Tecnológicas",
+      "relato": "HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas. A pessoa palestrante comparou a eficácia histórica das epístolas de Paulo com o uso intencional da tecnologia e das redes sociais na atualidade.",
+      "timestamp": "00:19:23"
+    },
+    {
+      "titulo": "Mobilização Missionária e Ação Social",
+      "relato": "HILARIO JOSE BISPO GRACA afirmou que uma igreja próspera necessita de mobilização missionária e responsabilidade social, exemplificando com o trabalho assistencial e médico realizado por projetos missionários no Amazonas, onde a presença do Estado é ausente. A pessoa oradora criticou atitudes cínicas de fiéis que prejudicam a credibilidade moral do testemunho cristão na sociedade.",
+      "timestamp": "00:34:46"
+    },
+    {
+      "titulo": "Debate Teológico sobre Charles Finney e Relatos de Seminário",
+      "relato": "HILARIO JOSE BISPO GRACA pontuou que a ênfase de Charles Finney na responsabilidade humana entra em conflito com a compreensão reformada da ação soberana de Deus. Em seguida, HILARIO JOSE BISPO GRACA rememorou os tempos de seminário ao lado de Salatiel Rodrigues e de um colega apelidado de \"fogo puro\", reconhecido pela vitalidade espiritual e leitura intensiva da Bíblia.",
+      "timestamp": "00:47:01"
+    },
+    {
+      "titulo": "O Impacto das Guerras no Declínio Espiritual",
+      "relato": "HILARIO JOSE BISPO GRACA concluiu discutindo os fatores associados ao declínio de igrejas historicamente avivadas, relatando o testemunho de um presbítero galeso centenário sobrevivente das duas guerras mundiais que atribuiu a perda de vigor espiritual à morte de gerações jovens nos conflitos. A pessoa oradora também mencionou as estimativas de cerca de 1 milhão de mortes em cada lado na guerra entre Ucrânia e Rússia.",
+      "timestamp": "00:57:30"
+    },
+    {
+      "titulo": "Resultados e Marcas Distintivas dos Grandes Avivamentos",
+      "relato": "HILARIO JOSE BISPO GRACA resume que o primeiro grande despertamento resultou na conversão de 25.000 a 50.000 pessoas, na renovação da pregação, no fortalecimento da experiência pessoal e no crescimento do interesse por missões e pela influência protestante na sociedade. A lidença participante reforça que as ênfases essenciais de um avivamento verdadeiro são pregação, conversão, santificação e evangelização, alertando contra a frieza espiritual e o entretenimento na igreja. Por fim, HILARIO JOSE BISPO GRACA encerra a sessão informando que enviará notas aos participantes durante a semana, seguido pelas despedidas de Rosiane Lima (Rosi), jorge silva e Daniel Rodrigues.",
+      "timestamp": "01:15:44"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Atos 19",
+      "contexto": "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2."
+    },
+    {
+      "referencia": "Apocalipse 2",
+      "contexto": "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Friedrich Schleiermacher (1768–1834)",
+      "detalhe": "O \"pai da teologia liberal\"; definiu a religião não como dogma ou moralidade, mas como a consciência/sentimento de absoluta dependência do Infinito (Gefühl)."
+    },
+    {
+      "titulo": "Karl Barth (1886–1968)",
+      "detalhe": "Teólogo da Neo-ortodoxia / Teologia Dialética; rompeu com o liberalismo alemão ao constatar o apoio de seus professores ao militarismo imperial; recolocou a revelação de Deus e a cristologia no centro."
+    },
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Recapitulação sobre o Liberalismo Teológico\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA iniciou a aula informando que entregará as notas da turma na semana seguinte e convidou Cristian Riffo para realizar a oração inicial. Em seguida, HILARIO JOSE BISPO GRACA recapitulou a discussão da semana anterior sobre o liberalismo teológico dos séculos XVI ao XIX, destacando o esforço de Friedrich Schleiermacher em adaptar a fé cristã aos métodos de compreensão da modernidade, ciência e investigação histórica."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Conceito de Avivamento e Chamado Missionário\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA argumentou que os grandes despertamentos espirituais ocorrem por vontade divina e estão diretamente atrelados à obra missionária e à obediência à Palavra de Deus. relatou memórias de sua juventude pregando em trens que faziam o trajeto entre Central e Odoro no Rio de Janeiro, enfatizando que o abandono da evangelização conduz ao declínio e à morte espiritual da igreja."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Exemplos Históricos de Avivamentos e a Igreja de Éfeso\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA citou o avivamento ocorrido no País de Gales no início do século passado, mencionando Evan Roberts e a visita ao local de seu sepultamento, além de correlacionar o movimento com o surgimento da igreja de Éfeso descrito em Atos 19 e Apocalipse 2. A pessoa oradora destacou que esses despertamentos não constituíram reações planejadas contra o liberalismo teológico, mas iniciativas soberanas de Deus."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Importância da Oração Permanente\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA defendeu que o avivamento exige um movimento de oração contínuo e estruturado na rotina da comunidade, e não apenas ações temporais. Como medida prática adotada em seu primeiro pastorado para unir os membros distantes, HILARIO JOSE BISPO GRACA instituiu a convocação para que toda a igreja orasse conjuntamente durante apenas 10 minutos diários, exatamente às 3 horas da madrugada, gerando transformações na vida particular e coletiva."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Contribuições dos Primeiros Despertamentos e Inovações Tecnológicas\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA detalhou as contribuições devocionais focadas na pregação, novo nascimento e teologia reformada do Primeiro Despertamento liderado por Jonathan Edwards e George Whitefield, bem como a expansão da evangelização ao ar livre por John e Charles Wesley nas ilhas britânicas. A pessoa palestrante comparou a eficácia histórica das epístolas de Paulo com o uso intencional da tecnologia e das redes sociais na atualidade."
+    }
+  ],
+  "encaminhamentos": [
+    "Estudar Redes Sociais: Pesquisar e investir em métodos para utilizar meios digitais de forma intencional na evangelização e integração da igreja.",
+    "Pesquisar David Bran: Realizar estudos sobre a vida e a obra missionária de David Bran. Aprofundar o conhecimento sobre sua influência no despertamento missionário."
+  ]
+}

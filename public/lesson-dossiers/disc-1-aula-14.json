@@ -1,0 +1,144 @@
+{
+  "id": "disc-1-aula-14",
+  "disciplinaId": "disc-1",
+  "disciplinaName": "01 - História do Congregacionalismo - Ary Júnior",
+  "disciplinaShortName": "História do Congregacionalismo",
+  "disciplinaCode": "HIS-202",
+  "professor": "Profº Ary Júnior",
+  "aulaNum": 14,
+  "unidade": 2,
+  "dateIso": "2026-11-17",
+  "dateBr": "17/11/2026",
+  "theme": "Aula 14 • 1913 e as \"Igrejas Indenominacionais do Brasil\"",
+  "geminiUrl": "https://docs.google.com/document/d/1gvg7E0kf0cakBge6lHp_cKToXM86S_utejmoQ0_0X9w/edit",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "Conclusão dos 28 Artigos (Cristologia, Soteriologia, ritos no Artigo 24 e escatologia) e organização denominacional: Help for Brazil, UEA e convenção de 1913 (\"Igrejas Indenominacionais do Brasil\").",
+    "sinteseGeral": "Conclusão dos 28 Artigos (Cristologia, Soteriologia, ritos no Artigo 24 e escatologia) e organização denominacional: Help for Brazil, UEA e convenção de 1913 (\"Igrejas Indenominacionais do Brasil\"). Pontos de aprofundamento vinculados à unidade: 1913 e as \"Igrejas Indenominacionais do Brasil\" (Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.) Help for Brazil e UEA (Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.) Base documental da avaliação: 3 te...",
+    "mapaRapido": [
+      "1913 e as \"Igrejas Indenominacionais do Brasil\": Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.",
+      "Help for Brazil e UEA: Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.",
+      "A Gênese dos 28 Artigos (1874–1876): Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "Artigo 24 (Cessação dos Ritos e Refutação Dispensacionalista): Afirma expressamente que os ritos judaicos mosaicos cessaram de forma definitiva com a vinda de Cristo, restando apenas dois ritos cristãos: Batismo e Ceia do Senhor (incompatível com retorno de sacrifícios milenares terrenos).",
+      "Igreja Evangélica Pernambucana (19/10/1873): Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    ],
+    "totalBlocos": 5
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "1913 e as \"Igrejas Indenominacionais do Brasil\"",
+      "resumoCurto": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.",
+      "detalhamento": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.",
+      "pontosChave": [
+        "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Help for Brazil e UEA",
+      "resumoCurto": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.",
+      "detalhamento": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley.",
+      "pontosChave": [
+        "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Gênese dos 28 Artigos (1874–1876)",
+      "resumoCurto": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "detalhamento": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia.",
+      "pontosChave": [
+        "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+        "O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Artigo 24 (Cessação dos Ritos e Refutação Dispensacionalista)",
+      "resumoCurto": "Afirma expressamente que os ritos judaicos mosaicos cessaram de forma definitiva com a vinda de Cristo, restando apenas dois ritos cristãos: Batismo e Ceia do Senhor (incompatível com retorno de sacrifícios milenares terrenos).",
+      "detalhamento": "Afirma expressamente que os ritos judaicos mosaicos cessaram de forma definitiva com a vinda de Cristo, restando apenas dois ritos cristãos: Batismo e Ceia do Senhor (incompatível com retorno de sacrifícios milenares terrenos).",
+      "pontosChave": [
+        "Afirma expressamente que os ritos judaicos mosaicos cessaram de forma definitiva com a vinda de Cristo, restando apenas dois ritos cristãos: Batismo e Ceia do Senhor (incompatível com retorno de sacrifícios milenares terrenos)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Contexto Histórico",
+      "titulo": "Igreja Evangélica Pernambucana (19/10/1873)",
+      "resumoCurto": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste.",
+      "detalhamento": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste.",
+      "pontosChave": [
+        "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 18:15-20",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "Atos 15:1-29",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "1 Pedro 2:9",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "1913 e as \"Igrejas Indenominacionais do Brasil\"",
+      "detalhe": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+    },
+    {
+      "titulo": "Help for Brazil e UEA",
+      "detalhe": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+    },
+    {
+      "titulo": "Igreja Evangélica Pernambucana (19/10/1873)",
+      "detalhe": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"1913 e as \"Igrejas Indenominacionais do Brasil\"\" nesta aula?",
+      "dicaResposta": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Help for Brazil e UEA\" nesta aula?",
+      "dicaResposta": "Sociedades missionárias britânicas que sustentaram o envio de novos obreiros ao Brasil após a partida dos Kalley."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Gênese dos 28 Artigos (1874–1876)\" nesta aula?",
+      "dicaResposta": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Artigo 24 (Cessação dos Ritos e Refutação Dispensacionalista)\" nesta aula?",
+      "dicaResposta": "Afirma expressamente que os ritos judaicos mosaicos cessaram de forma definitiva com a vinda de Cristo, restando apenas dois ritos cristãos: Batismo e Ceia do Senhor (incompatível com retorno de sacrifícios milenares terrenos)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Igreja Evangélica Pernambucana (19/10/1873)\" nesta aula?",
+      "dicaResposta": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar: 3 textos enviados pelo professor no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2) Síntese dos 28 Artigos; (3) Análise analítica ampla dos 28 Artigos."
+  ]
+}

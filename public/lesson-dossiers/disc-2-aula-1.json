@@ -1,0 +1,397 @@
+{
+  "id": "disc-2-aula-1",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 1,
+  "unidade": 1,
+  "dateIso": "2026-08-11",
+  "dateBr": "11/08/2026",
+  "theme": "Aula 1 • Abertura da Disciplina e Metas Semestrais",
+  "geminiUrl": "/gemini-notes/hpc_aula1_2026-08-11.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A disciplina de História do Pensamento Cristão apresentou diretrizes avaliativas e a centralidade das confissões doutrinárias. Objetivos e diretrizes avaliativas O curso focará na evolução histórica do pensamento cristão e teologia. As avaliações incluem um trabalho de pesquisa sobre o Iluminismo, prova objetiva e exame oral. Centralidade das confissões doutrinárias",
+    "sinteseGeral": "A disciplina de História do Pensamento Cristão apresentou diretrizes avaliativas e a centralidade das confissões doutrinárias. Objetivos e diretrizes avaliativas O curso focará na evolução histórica do pensamento cristão e teologia. As avaliações incluem um trabalho de pesquisa sobre o Iluminismo, prova objetiva e exame oral. Centralidade das confissões doutrinárias Confissões e catecismos históricos foram estabelecidos como ferramentas fundamentais para definir a identidade e preservar a ortodoxia institucional. A sistematização doutrinária é necessária para enfrentar desafios contemporâneos. Defesa da sã doutrina A liderança eclesiástica deve priorizar o ensino estruturado para evitar desvios teológicos frente ao liberalismo. O estudo histórico protege a comunidade contra interpretações equivocadas e influências heréticas.",
+    "mapaRapido": [
+      "Abertura da Disciplina e Metas Semestrais: HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual.",
+      "Orientações sobre as Avaliações (AV1, AV2 e AV3): HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula.",
+      "Diferenciação das Disciplinas Teológicas e Históricas: HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja.",
+      "Evolução Histórica do Pensamento Cristão: HILARIO JOSE BISPO GRACA traçou uma linha do tempo do pensamento cristão, iniciando no livro de Atos com o primeiro concílio em Jerusalém e passando pelo período dos pais apostólicos, cujo propósito era a preservação da unidade e devoção da igreja.",
+      "Sistematização Doutrinária na Ortodoxia Protestante: HILARIO JOSE BISPO GRACA explicou que, após a Reforma Protestante, a nova igreja reformada necessitou de um esforço intencional para se consolidar, o que gerou a necessidade de sistematizar e confessar a fé publicamente para se contrapor ao arcabouço dogmático já consolidado da Igreja Católica.",
+      "O Debate Atual sobre a Confissão de Fé na Denominação: HILARIO JOSE BISPO GRACA contextualizou a importância histórica das confissões de fé trazendo um panorama atual da sua própria denominação, a União das Igrejas Evangélicas Congregacionais do Brasil (UIECB), que está consultando as igrejas locais sobre a real necessidade de adotar uma confissão de fé formal."
+    ],
+    "totalBlocos": 19
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura da Disciplina e Metas Semestrais",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual. O professor ressaltou a importância de os alunos terem cursado o primeiro módulo da disciplina e destacou que o objetivo geral é compreender o desenvolvimento histórico do pensamento cristão e da teologia, analisando como as interpretações da palavra de Deus moldaram as doutrinas ao longo do tempo. Entre as metas específicas, mencionou a análise das contribuições teológicas dos pais apostólicos, a compreensão de movimentos heréticos, as respostas da igreja, e o estudo de figuras centrais como Agostinho na Patrística e Tomás de Aquino na Escolástica.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual.",
+        "O professor ressaltou a importância de os alunos terem cursado o primeiro módulo da disciplina e destacou que o objetivo geral é compreender o desenvolvimento histórico do pensamento cristão e da teologia, analisando como as interpretações da palavra de Deus moldaram as doutrinas ao longo do tempo.",
+        "Entre as metas específicas, mencionou a análise das contribuições teológicas dos pais apostólicos, a compreensão de movimentos heréticos, as respostas da igreja, e o estudo de figuras centrais como Agostinho na Patrística e Tomás de Aquino na Escolástica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Orientações sobre as Avaliações (AV1, AV2 e AV3)",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula. A primeira avaliação (AV1) consistirá em um trabalho acadêmico de pesquisa sobre o Iluminismo e a modernidade, com tópicos obrigatórios que abordam o conflito entre razão e revelação, os impactos dos princípios iluministas no cristianismo, a crítica à autoridade bíblica, o liberalismo teológico, seus principais representantes e as reações no século XX. O professor esclareceu a Antonio Marcos que o trabalho exige prospecção literária e confrontação de fontes pelos alunos, podendo ser feito individualmente ou em grupos de até três pessoas, desde que respeite as normas da ABNT e os prazos estabelecidos. A segunda avaliação (AV2) será uma prova objetiva contendo 10 questões de múltipla escolha via formulário do Google com resultado instantâneo, enquanto a terceira avaliação (AV3), descrita como uma proeza caso alguém necessite, consistirá em uma prova oral com tema a ser definido.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula.",
+        "A primeira avaliação (AV1) consistirá em um trabalho acadêmico de pesquisa sobre o Iluminismo e a modernidade, com tópicos obrigatórios que abordam o conflito entre razão e revelação, os impactos dos princípios iluministas no cristianismo, a crítica à autoridade bíblica, o liberalismo teológico, seus principais representantes e as reações no século XX.",
+        "O professor esclareceu a Antonio Marcos que o trabalho exige prospecção literária e confrontação de fontes pelos alunos, podendo ser feito individualmente ou em grupos de até três pessoas, desde que respeite as normas da ABNT e os prazos estabelecidos.",
+        "A segunda avaliação (AV2) será uma prova objetiva contendo 10 questões de múltipla escolha via formulário do Google com resultado instantâneo, enquanto a terceira avaliação (AV3), descrita como uma proeza caso alguém necessite, consistirá em uma prova oral com tema a ser definido."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Diferenciação das Disciplinas Teológicas e Históricas",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja. Explicou que a Introdução à Teologia Cristã foca na história da interpretação do texto sagrado e nos métodos que originaram os dogmas. A História da Igreja possui um foco institucional e social, analisando a trajetória da igreja como uma instituição humana inserida no tempo, lidando com eventos políticos, expansão geográfica, missões, perseguições e a relação entre Estado e Igreja através de figuras como papas e imperadores. Já a História do Pensamento Cristão concentra-se no aspecto filosófico, intelectual e doutrinário, investigando a evolução das ideias, o estabelecimento de dogmas como a Trindade e a Cristologia, as controvérsias heréticas e as contribuições de teólogos e filósofos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja.",
+        "Explicou que a Introdução à Teologia Cristã foca na história da interpretação do texto sagrado e nos métodos que originaram os dogmas.",
+        "A História da Igreja possui um foco institucional e social, analisando a trajetória da igreja como uma instituição humana inserida no tempo, lidando com eventos políticos, expansão geográfica, missões, perseguições e a relação entre Estado e Igreja através de figuras como papas e imperadores.",
+        "Já a História do Pensamento Cristão concentra-se no aspecto filosófico, intelectual e doutrinário, investigando a evolução das ideias, o estabelecimento de dogmas como a Trindade e a Cristologia, as controvérsias heréticas e as contribuições de teólogos e filósofos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Evolução Histórica do Pensamento Cristão",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA traçou uma linha do tempo do pensamento cristão, iniciando no livro de Atos com o primeiro concílio em Jerusalém e passando pelo período dos pais apostólicos, cujo propósito era a preservação da unidade e devoção da igreja.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA traçou uma linha do tempo do pensamento cristão, iniciando no livro de Atos com o primeiro concílio em Jerusalém e passando pelo período dos pais apostólicos, cujo propósito era a preservação da unidade e devoção da igreja. Na sequência, detalhou o período da Patrística, marcado pelo combate a heresias internas e externas por meio de pais apologistas e polemistas, com destaque para Agostinho, seguido pela queda do Império Romano do Ocidente e o início da Idade Média. O professor relembrou as discussões sobre fé e razão que culminaram no escolasticismo de Tomás de Aquino na Baixa Idade Média, o surgimento do Renascimento e do Humanismo na Pré-Reforma, e indicou que as próximas aulas focarão no período pós-Reforma, no Arminianismo, no Sínodo de Dort, no Iluminismo, no liberalismo teológico e nas respostas contemporâneas do século XX, como o pentecostalismo e o evangelicalismo.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA traçou uma linha do tempo do pensamento cristão, iniciando no livro de Atos com o primeiro concílio em Jerusalém e passando pelo período dos pais apostólicos, cujo propósito era a preservação da unidade e devoção da igreja.",
+        "Na sequência, detalhou o período da Patrística, marcado pelo combate a heresias internas e externas por meio de pais apologistas e polemistas, com destaque para Agostinho, seguido pela queda do Império Romano do Ocidente e o início da Idade Média.",
+        "O professor relembrou as discussões sobre fé e razão que culminaram no escolasticismo de Tomás de Aquino na Baixa Idade Média, o surgimento do Renascimento e do Humanismo na Pré-Reforma, e indicou que as próximas aulas focarão no período pós-Reforma, no Arminianismo, no Sínodo de Dort, no Iluminismo, no liberalismo teológico e nas respostas contemporâneas do século XX, como o pentecostalismo e o evangelicalismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Sistematização Doutrinária na Ortodoxia Protestante",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explicou que, após a Reforma Protestante, a nova igreja reformada necessitou de um esforço intencional para se consolidar, o que gerou a necessidade de sistematizar e confessar a fé publicamente para se contrapor ao arcabouço dogmático já consolidado da Igreja Católica.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explicou que, após a Reforma Protestante, a nova igreja reformada necessitou de um esforço intencional para se consolidar, o que gerou a necessidade de sistematizar e confessar a fé publicamente para se contrapor ao arcabouço dogmático já consolidado da Igreja Católica. Esse movimento deu origem à ortodoxia protestante e à produção de documentos confessionais de grande relevância histórica, como a Confissão de Augsburgo, os Catecismos de Lutero, a Segunda Confissão Helvética, a Confissão de Westminster, o Breve Catecismo, o Catecismo Maior e os Cânones de Dort. O professor enfatizou que esses documentos definem formalmente a tradição confessional reformada e asseguram a sua continuidade histórica.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explicou que, após a Reforma Protestante, a nova igreja reformada necessitou de um esforço intencional para se consolidar, o que gerou a necessidade de sistematizar e confessar a fé publicamente para se contrapor ao arcabouço dogmático já consolidado da Igreja Católica.",
+        "Esse movimento deu origem à ortodoxia protestante e à produção de documentos confessionais de grande relevância histórica, como a Confissão de Augsburgo, os Catecismos de Lutero, a Segunda Confissão Helvética, a Confissão de Westminster, o Breve Catecismo, o Catecismo Maior e os Cânones de Dort.",
+        "O professor enfatizou que esses documentos definem formalmente a tradição confessional reformada e asseguram a sua continuidade histórica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O Debate Atual sobre a Confissão de Fé na Denominação",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA contextualizou a importância histórica das confissões de fé trazendo um panorama atual da sua própria denominação, a União das Igrejas Evangélicas Congregacionais do Brasil (UIECB), que está consultando as igrejas locais sobre a real necessidade de adotar uma confissão de fé formal.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA contextualizou a importância histórica das confissões de fé trazendo um panorama atual da sua própria denominação, a União das Igrejas Evangélicas Congregacionais do Brasil (UIECB), que está consultando as igrejas locais sobre a real necessidade de adotar uma confissão de fé formal. O professor mencionou que o debate ganhou força na última assembleia geral em Caldas Novas e citou reflexões do pastor Hilário em uma entrevista à revista *The Right*, onde se questiona se os atuais 28 artigos e a síntese doutrinária de 1995 seriam suficientes para lidar com as complexidades do mundo dinâmico atual. Relembrou que, em 1993, a denominação precisou adotar uma síntese doutrinária para se posicionar contra a entrada de práticas pentecostais e os movimentos gedosistas nas igrejas congregacionais, definindo claramente no que criam ou não. O professor destacou que, em sua experiência de 22 anos pastoreando em Brasília, ministra estudos sobre os 28 artigos e a síntese doutrinária baseada na interpretação bíblica, defendendo que documentos normativos são essenciais para dar clareza doutrinária frente a novas práticas e influências externas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA contextualizou a importância histórica das confissões de fé trazendo um panorama atual da sua própria denominação, a União das Igrejas Evangélicas Congregacionais do Brasil (UIECB), que está consultando as igrejas locais sobre a real necessidade de adotar uma confissão de fé formal.",
+        "O professor mencionou que o debate ganhou força na última assembleia geral em Caldas Novas e citou reflexões do pastor Hilário em uma entrevista à revista *The Right*, onde se questiona se os atuais 28 artigos e a síntese doutrinária de 1995 seriam suficientes para lidar com as complexidades do mundo dinâmico atual.",
+        "Relembrou que, em 1993, a denominação precisou adotar uma síntese doutrinária para se posicionar contra a entrada de práticas pentecostais e os movimentos gedosistas nas igrejas congregacionais, definindo claramente no que criam ou não.",
+        "O professor destacou que, em sua experiência de 22 anos pastoreando em Brasília, ministra estudos sobre os 28 artigos e a síntese doutrinária baseada na interpretação bíblica, defendendo que documentos normativos são essenciais para dar clareza doutrinária frente a novas práticas e influências externas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Conceito, Funções e Estrutura das Confissões e Catecismos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA definiu conceitualmente que uma confissão de fé é uma declaração organizada e sistemática das doutrinas principais de uma igreja ou denominação, responsável por responder \"o que nós cremos\".",
+      "detalhamento": "HILARIO JOSE BISPO GRACA definiu conceitualmente que uma confissão de fé é uma declaração organizada e sistemática das doutrinas principais de uma igreja ou denominação, responsável por responder \"o que nós cremos\". Já o catecismo é um instrumento didático de ensino, frequentemente estruturado em perguntas e respostas, feito para responder \"como ensinamos essa fé\" a novos convertidos, crianças e jovens. Historicamente, esses documentos cumpriram quatro grandes funções: estabelecer a identidade da igreja (quem somos e no que cremos), definir a doutrina compartilhada, responder a erros doutrinários e instruir as próximas gerações. O professor mencionou exemplos como a Declaração de Savoy de 1658, que adaptou a tradição confessional reformada ao contexto congregacional, garantindo a autonomia do governo das igrejas locais e a sustentabilidade teológica ao longo dos séculos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA definiu conceitualmente que uma confissão de fé é uma declaração organizada e sistemática das doutrinas principais de uma igreja ou denominação, responsável por responder \"o que nós cremos\".",
+        "Já o catecismo é um instrumento didático de ensino, frequentemente estruturado em perguntas e respostas, feito para responder \"como ensinamos essa fé\" a novos convertidos, crianças e jovens.",
+        "Historicamente, esses documentos cumpriram quatro grandes funções: estabelecer a identidade da igreja (quem somos e no que cremos), definir a doutrina compartilhada, responder a erros doutrinários e instruir as próximas gerações.",
+        "O professor mencionou exemplos como a Declaração de Savoy de 1658, que adaptou a tradição confessional reformada ao contexto congregacional, garantindo a autonomia do governo das igrejas locais e a sustentabilidade teológica ao longo dos séculos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A Importância da Educação Doutrinária e da Organização Eclesiástica",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA defendeu a necessidade de a liderança investir na organização do ensino doutrinário e na Escola Dominical como ferramentas para evitar o esvaziamento e o desvio teológico das comunidades.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA defendeu a necessidade de a liderança investir na organização do ensino doutrinário e na Escola Dominical como ferramentas para evitar o esvaziamento e o desvio teológico das comunidades. O professor lamentou o cenário atual da igreja brasileira, no qual muitos membros apenas repetem discursos litúrgicos sem compreender os fundamentos da fé, criticando modelos focados em proselitismo e entretenimento em vez do discipulado eficaz. Citou o exemplo bíblico de Neemias 8, no qual Esdras e os levitas leram a lei e deram explicações claras para que o povo compreendesse, associando o evento à estrutura de uma Escola Dominical. Relatou sua prática em Brasília de reestruturar as salas por faixa etária e instituir classes de discipulado usando literaturas de referência, como a revista *O Novo e Vivo Caminho* do pastor Vanderli, enfatizando que crentes bem formados tornam-se sensíveis a erros teológicos e heresias.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA defendeu a necessidade de a liderança investir na organização do ensino doutrinário e na Escola Dominical como ferramentas para evitar o esvaziamento e o desvio teológico das comunidades.",
+        "O professor lamentou o cenário atual da igreja brasileira, no qual muitos membros apenas repetem discursos litúrgicos sem compreender os fundamentos da fé, criticando modelos focados em proselitismo e entretenimento em vez do discipulado eficaz.",
+        "Citou o exemplo bíblico de Neemias 8, no qual Esdras e os levitas leram a lei e deram explicações claras para que o povo compreendesse, associando o evento à estrutura de uma Escola Dominical.",
+        "Relatou sua prática em Brasília de reestruturar as salas por faixa etária e instituir classes de discipulado usando literaturas de referência, como a revista *O Novo e Vivo Caminho* do pastor Vanderli, enfatizando que crentes bem formados tornam-se sensíveis a erros teológicos e heresias."
+      ],
+      "referenciasNoBloco": [
+        "Neemias 8"
+      ]
+    },
+    {
+      "ordem": 9,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Autoridade Pastoral, Defesa da Fé e Conclusão",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA fundamentou o papel dos pastores e mestres como guardiões doutrinários baseando-se em Efésios 4:11-14, destacando que a liderança foi instituída para o aperfeiçoamento dos santos e para evitar que os crentes sejam levados por ventos de doutrinas e artimanhas humanas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA fundamentou o papel dos pastores e mestres como guardiões doutrinários baseando-se em Efésios 4:11-14, destacando que a liderança foi instituída para o aperfeiçoamento dos santos e para evitar que os crentes sejam levados por ventos de doutrinas e artimanhas humanas. Como exemplo de firmeza institucional contemporânea, citou a recente decisão da Igreja Presbiteriana em seu concílio de declarar a Igreja Adventista do Sétimo Dia como uma seita, demonstrando a importância de posicionamentos claros. O professor relatou casos em seu ministério de fiéis vindos da Congregação Cristã do Brasil que precisaram passar pelo rebatismo para evitar a compatibilização de declarações de fé divergentes. Concluiu afirmando que uma igreja se organiza quando o centro de suas ações é a palavra de Deus, pois o Criador é um Deus metódico e organizado, conforme relatado na criação em Gênesis. Ao final, devido a falhas na rede de internet que o desconectaram temporariamente, o professor optou por não projetar um quadro panorâmico, prometendo disponibilizá-lo posteriormente no ambiente virtual dos alunos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA fundamentou o papel dos pastores e mestres como guardiões doutrinários baseando-se em Efésios 4:11-14, destacando que a liderança foi instituída para o aperfeiçoamento dos santos e para evitar que os crentes sejam levados por ventos de doutrinas e artimanhas humanas.",
+        "Como exemplo de firmeza institucional contemporânea, citou a recente decisão da Igreja Presbiteriana em seu concílio de declarar a Igreja Adventista do Sétimo Dia como uma seita, demonstrando a importância de posicionamentos claros.",
+        "O professor relatou casos em seu ministério de fiéis vindos da Congregação Cristã do Brasil que precisaram passar pelo rebatismo para evitar a compatibilização de declarações de fé divergentes.",
+        "Concluiu afirmando que uma igreja se organiza quando o centro de suas ações é a palavra de Deus, pois o Criador é um Deus metódico e organizado, conforme relatado na criação em Gênesis."
+      ],
+      "referenciasNoBloco": [
+        "Efésios 4:11-14"
+      ]
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Consolidação da Igreja Pós-Reforma Protestante",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explicou que nas décadas imediatas após a Reforma Protestante, a igreja em formação necessitava de consolidação teológica.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explicou que nas décadas imediatas após a Reforma Protestante, a igreja em formação necessitava de consolidação teológica. Eles enfatizaram que a Reforma não se limitou a uma disputa política ou institucional, mas consistiu em uma reformulação profunda da teologia cristã. Essa mudança focou em pilares essenciais como a autoridade da escritura, a justificação, o papel da igreja, a salvação e a preservação dos sacramentos considerados válidos perante a palavra de Deus. HILARIO JOSE BISPO GRACA apontou que esse processo exigiu uma ortodoxia protestante declarada para a sistematização da fé, destacando a grande dificuldade enfrentada pelos teólogos da época para elaborar documentos e confissões que servissem de cercas de proteção para a nova igreja.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explicou que nas décadas imediatas após a Reforma Protestante, a igreja em formação necessitava de consolidação teológica.",
+        "Eles enfatizaram que a Reforma não se limitou a uma disputa política ou institucional, mas consistiu em uma reformulação profunda da teologia cristã.",
+        "Essa mudança focou em pilares essenciais como a autoridade da escritura, a justificação, o papel da igreja, a salvação e a preservação dos sacramentos considerados válidos perante a palavra de Deus.",
+        "HILARIO JOSE BISPO GRACA apontou que esse processo exigiu uma ortodoxia protestante declarada para a sistematização da fé, destacando a grande dificuldade enfrentada pelos teólogos da época para elaborar documentos e confissões que servissem de cercas de proteção para a nova igreja."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Controvérsias Teológicas e Unidade Doutrinária",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA expôs que, mesmo dentro da teologia reformada, surgiram controvérsias que perduram até a atualidade.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA expôs que, mesmo dentro da teologia reformada, surgiram controvérsias que perduram até a atualidade. Eles citaram como exemplo o debate entre o calvinismo e o arminianismo, mencionando a formulação histórica dos cinco pontos do calvinismo como uma resposta direta aos manifestantes. Embora esse fato histórico não tenha alcançado uma conclusão unificadora ou pacífica, HILARIO JOSE BISPO GRACA ressaltou que ele demonstra a necessidade contínua de se discutir e buscar estabelecer a unidade doutrinária diante das dificuldades teológicas existentes.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA expôs que, mesmo dentro da teologia reformada, surgiram controvérsias que perduram até a atualidade.",
+        "Eles citaram como exemplo o debate entre o calvinismo e o arminianismo, mencionando a formulação histórica dos cinco pontos do calvinismo como uma resposta direta aos manifestantes.",
+        "Embora esse fato histórico não tenha alcançado uma conclusão unificadora ou pacífica, HILARIO JOSE BISPO GRACA ressaltou que ele demonstra a necessidade contínua de se discutir e buscar estabelecer a unidade doutrinária diante das dificuldades teológicas existentes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Orientações sobre a Pesquisa Acadêmica e o Iluminismo",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA instruiu os participantes a realizarem o trabalho de pesquisa distribuído na data de hoje com bastante cuidado e antecedência, alertando que deixar a execução para a semana anterior à entrega impedirá o aprendizado real.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA instruiu os participantes a realizarem o trabalho de pesquisa distribuído na data de hoje com bastante cuidado e antecedência, alertando que deixar a execução para a semana anterior à entrega impedirá o aprendizado real. Eles justificaram a relevância de iniciar a pesquisa de imediato pelo fato de a igreja contemporânea lidar com o liberalismo teológico, cujas origens remontam ao Iluminismo no século XVIII. HILARIO JOSE BISPO GRACA argumentou que o Iluminismo trouxe o debate entre fé e razão, contestando a autoridade bíblica — que é um pilar da Reforma — e a autoridade que a igreja deteve por séculos, provocando um encolhimento de grandes teólogos quando o que não era explicado pela razão perdeu a validade.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA instruiu os participantes a realizarem o trabalho de pesquisa distribuído na data de hoje com bastante cuidado e antecedência, alertando que deixar a execução para a semana anterior à entrega impedirá o aprendizado real.",
+        "Eles justificaram a relevância de iniciar a pesquisa de imediato pelo fato de a igreja contemporânea lidar com o liberalismo teológico, cujas origens remontam ao Iluminismo no século XVIII.",
+        "HILARIO JOSE BISPO GRACA argumentou que o Iluminismo trouxe o debate entre fé e razão, contestando a autoridade bíblica — que é um pilar da Reforma — e a autoridade que a igreja deteve por séculos, provocando um encolhimento de grandes teólogos quando o que não era explicado pela razão perdeu a validade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Os Impactos do Liberalismo Teológico e o Desafio da Razão",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aprofundou o problema do liberalismo teológico ao explicar como a abordagem iluminista contestou milagres e elementos não operados pela razão, conectando isso ao conceito de prolegômena estudado em introdução à teologia.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aprofundou o problema do liberalismo teológico ao explicar como a abordagem iluminista contestou milagres e elementos não operados pela razão, conectando isso ao conceito de prolegômena estudado em introdução à teologia. Eles ressaltaram o momento crítico e as repercussões atuais dessa mentalidade, apontando que existem pastores e pregadores, inclusive no meio congregacional, adeptos da teologia liberal que pregam que a volta de Jesus é simbólica e não literal. HILARIO JOSE BISPO GRACA alertou que esse fenômeno enfraquece a igreja e orientou os participantes a estudarem tanto os filósofos que originaram essas ideias quanto aqueles que se levantaram para contestá-las.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aprofundou o problema do liberalismo teológico ao explicar como a abordagem iluminista contestou milagres e elementos não operados pela razão, conectando isso ao conceito de prolegômena estudado em introdução à teologia.",
+        "Eles ressaltaram o momento crítico e as repercussões atuais dessa mentalidade, apontando que existem pastores e pregadores, inclusive no meio congregacional, adeptos da teologia liberal que pregam que a volta de Jesus é simbólica e não literal.",
+        "HILARIO JOSE BISPO GRACA alertou que esse fenômeno enfraquece a igreja e orientou os participantes a estudarem tanto os filósofos que originaram essas ideias quanto aqueles que se levantaram para contestá-las."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Reflexos Modernos do Liberalismo e Reações Teológicas",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA detalhou que o liberalismo teológico se reflete nas igrejas atuais por meio de uma ênfase excessiva na experiência pessoal, a qual passa a substituir a palavra de Deus, e na valorização da consciência individual do pecador para ditar a ética.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA detalhou que o liberalismo teológico se reflete nas igrejas atuais por meio de uma ênfase excessiva na experiência pessoal, a qual passa a substituir a palavra de Deus, e na valorização da consciência individual do pecador para ditar a ética. Eles criticaram a postura de subordinar as ações ao sentimento pessoal de ser ou não algo bom, mas destacaram que houve reações a essa ameaça no século passado e no século XX. HILARIO JOSE BISPO GRACA atribuiu a Karl Barth a recuperação da centralidade da revelação, da palavra de Deus e da graça, apesar de reconhecerem que outras questões desse teólogo também são discutíveis. Além disso, mencionaram a necessidade de preparo doutrinário para lidar com movimentos modernos como o pentecostalismo e o evangelicalismo, nos quais os crentes priorizam a experiência.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA detalhou que o liberalismo teológico se reflete nas igrejas atuais por meio de uma ênfase excessiva na experiência pessoal, a qual passa a substituir a palavra de Deus, e na valorização da consciência individual do pecador para ditar a ética.",
+        "Eles criticaram a postura de subordinar as ações ao sentimento pessoal de ser ou não algo bom, mas destacaram que houve reações a essa ameaça no século passado e no século XX.",
+        "HILARIO JOSE BISPO GRACA atribuiu a Karl Barth a recuperação da centralidade da revelação, da palavra de Deus e da graça, apesar de reconhecerem que outras questões desse teólogo também são discutíveis.",
+        "Além disso, mencionaram a necessidade de preparo doutrinário para lidar com movimentos modernos como o pentecostalismo e o evangelicalismo, nos quais os crentes priorizam a experiência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Firmeza Doutrinária e o Afastamento da Sã Doutrina",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA alertou sobre o risco de líderes religiosos e pastores adotarem práticas desarrazoadas devido ao despreparo e à falta de firmeza doutrinária para defender a fé evangélica.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA alertou sobre o risco de líderes religiosos e pastores adotarem práticas desarrazoadas devido ao despreparo e à falta de firmeza doutrinária para defender a fé evangélica. Eles relacionaram esse cenário às advertências bíblicas de Paulo a Timóteo e aos Coríntios, sobre o surgimento de uma igreja em que as pessoas rejeitariam a sã doutrina para se entregar a fábulas e invencionices. HILARIO JOSE BISPO GRACA lamentou que muitos cultos e igrejas tenham se transformado em memes na internet por conta dessa resistência à sã doutrina, reforçando que o estudo da história da teologia é fundamental para evitar que os cristãos sejam levados por qualquer ensinamento.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA alertou sobre o risco de líderes religiosos e pastores adotarem práticas desarrazoadas devido ao despreparo e à falta de firmeza doutrinária para defender a fé evangélica.",
+        "Eles relacionaram esse cenário às advertências bíblicas de Paulo a Timóteo e aos Coríntios, sobre o surgimento de uma igreja em que as pessoas rejeitariam a sã doutrina para se entregar a fábulas e invencionices.",
+        "HILARIO JOSE BISPO GRACA lamentou que muitos cultos e igrejas tenham se transformado em memes na internet por conta dessa resistência à sã doutrina, reforçando que o estudo da história da teologia é fundamental para evitar que os cristãos sejam levados por qualquer ensinamento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Definição do Roteiro de Estudos e Encerramento",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA reportou que a conexão de rede se estabilizou e informou que disponibilizaria o material apresentado para os participantes.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA reportou que a conexão de rede se estabilizou e informou que disponibilizaria o material apresentado para os participantes. Eles estabeleceram o roteiro de tópicos que serão obedecidos na sequência do curso, que inclui o estudo da Reforma Protestante, a Reforma Radical (com movimentos como o Anabatismo), a Contrarreforma da Igreja Católica através do Concílio de Trento e a reafirmação dos sacramentos para combater a Reforma. Por fim, HILARIO JOSE BISPO GRACA indicou que as próximas aulas abordarão a ortodoxia protestante, a confessionalização das igrejas com a sistematização da doutrina e as controvérsias teológicas decorrentes.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA reportou que a conexão de rede se estabilizou e informou que disponibilizaria o material apresentado para os participantes.",
+        "Eles estabeleceram o roteiro de tópicos que serão obedecidos na sequência do curso, que inclui o estudo da Reforma Protestante, a Reforma Radical (com movimentos como o Anabatismo), a Contrarreforma da Igreja Católica através do Concílio de Trento e a reafirmação dos sacramentos para combater a Reforma.",
+        "Por fim, HILARIO JOSE BISPO GRACA indicou que as próximas aulas abordarão a ortodoxia protestante, a confessionalização das igrejas com a sistematização da doutrina e as controvérsias teológicas decorrentes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Instabilidade na plataforma de reuniões (MIT)",
+      "resumoCurto": "Os participantes discutiram a ocorrência de interrupções técnicas repentinas durante a sessão, com o sistema encerrando a reunião de forma abrupta.",
+      "detalhamento": "Os participantes discutiram a ocorrência de interrupções técnicas repentinas durante a sessão, com o sistema encerrando a reunião de forma abrupta. Rosiane Lima (Rosi) relatou que problemas semelhantes ocorreram na aula anterior, aproximadamente às 8:27, e, na condição de organizador, afirmou que não realizou qualquer alteração manual que justificasse o encerramento da sala. O grupo concluiu que se tratava de um problema técnico geral da plataforma MIT, e não de uma falha localizada nos dispositivos individuais dos participantes.",
+      "pontosChave": [
+        "Os participantes discutiram a ocorrência de interrupções técnicas repentinas durante a sessão, com o sistema encerrando a reunião de forma abrupta.",
+        "Rosiane Lima (Rosi) relatou que problemas semelhantes ocorreram na aula anterior, aproximadamente às 8:27, e, na condição de organizador, afirmou que não realizou qualquer alteração manual que justificasse o encerramento da sala.",
+        "O grupo concluiu que se tratava de um problema técnico geral da plataforma MIT, e não de uma falha localizada nos dispositivos individuais dos participantes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento e foco doutrinário",
+      "resumoCurto": "Antes da interrupção definitiva, HILARIO JOSE BISPO GRACA ofereceu um resumo sobre o progresso da disciplina e reforçou a importância do conhecimento doutrinário.",
+      "detalhamento": "Antes da interrupção definitiva, HILARIO JOSE BISPO GRACA ofereceu um resumo sobre o progresso da disciplina e reforçou a importância do conhecimento doutrinário. Foi enfatizado que a dedicação ao estudo e ao ensino das doutrinas da fé é essencial para garantir a segurança das igrejas, e que a falta dessa centralidade pode levar à dispersão.",
+      "pontosChave": [
+        "Antes da interrupção definitiva, HILARIO JOSE BISPO GRACA ofereceu um resumo sobre o progresso da disciplina e reforçou a importância do conhecimento doutrinário.",
+        "Foi enfatizado que a dedicação ao estudo e ao ensino das doutrinas da fé é essencial para garantir a segurança das igrejas, e que a falta dessa centralidade pode levar à dispersão."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Coordenação de estágios para o quinto período",
+      "resumoCurto": "iniciou um diálogo sobre os estágios obrigatórios para os estudantes do quinto período, mencionando que ainda aguardava o envio da relação oficial de alunos pela professora Carla.",
+      "detalhamento": "iniciou um diálogo sobre os estágios obrigatórios para os estudantes do quinto período, mencionando que ainda aguardava o envio da relação oficial de alunos pela professora Carla. Rosiane Lima (Rosi) e João Alexandre Souza Lemos confirmaram que fazem parte do quinto período. Para agilizar o processo e permitir o início do estágio assim que a rematrícula for concluída, Rosiane Lima (Rosi) se comprometeu a solicitar a lista dos estudantes do quinto período no grupo oficial de alunos e encaminhar os nomes para, permitindo que a coordenação forme o grupo de trabalho antes da data de início oficial.",
+      "pontosChave": [
+        "iniciou um diálogo sobre os estágios obrigatórios para os estudantes do quinto período, mencionando que ainda aguardava o envio da relação oficial de alunos pela professora Carla.",
+        "Rosiane Lima (Rosi) e João Alexandre Souza Lemos confirmaram que fazem parte do quinto período.",
+        "Para agilizar o processo e permitir o início do estágio assim que a rematrícula for concluída, Rosiane Lima (Rosi) se comprometeu a solicitar a lista dos estudantes do quinto período no grupo oficial de alunos e encaminhar os nomes para, permitindo que a coordenação forme o grupo de trabalho antes da data de início oficial."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura da Disciplina e Metas Semestrais",
+      "relato": "HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual. O professor ressaltou a importância de os alunos terem cursado o primeiro módulo da disciplina e destacou que o objetivo geral é compreender o desenvolvimento histórico do pensamento cristão e da teologia, analisando como as interpretações da palavra de Deus moldaram as doutrinas ao longo do tempo. Entre as metas específicas, mencionou a análise das contribuições teológicas dos pais apostólicos, a compreensão de movimentos heréticos, as respostas da igreja, e o estudo de figuras centrais como Agostinho na Patrística e Tomás de Aquino na Escolástica."
+    },
+    {
+      "titulo": "Orientações sobre as Avaliações (AV1, AV2 e AV3)",
+      "relato": "HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula. A primeira avaliação (AV1) consistirá em um trabalho acadêmico de pesquisa sobre o Iluminismo e a modernidade, com tópicos obrigatórios que abordam o conflito entre razão e revelação, os impactos dos princípios iluministas no cristianismo, a crítica à autoridade bíblica, o liberalismo teológico, seus principais representantes e as reações no século XX. O professor esclareceu a Antonio Marcos que o trabalho exige prospecção literária e confrontação de fontes pelos alunos, podendo ser feito individualmente ou em grupos de até três pessoas, desde que respeite as normas da ABNT e os prazos estabelecidos. A segunda avaliação (AV2) será uma prova objetiva contendo 10 questões de múltipla escolha via formulário do Google com resultado instantâneo, enquanto a terceira avaliação (AV3), descrita como uma proeza caso alguém necessite, consistirá em uma prova oral com tema a ser definido."
+    },
+    {
+      "titulo": "Diferenciação das Disciplinas Teológicas e Históricas",
+      "relato": "HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja. Explicou que a Introdução à Teologia Cristã foca na história da interpretação do texto sagrado e nos métodos que originaram os dogmas. A História da Igreja possui um foco institucional e social, analisando a trajetória da igreja como uma instituição humana inserida no tempo, lidando com eventos políticos, expansão geográfica, missões, perseguições e a relação entre Estado e Igreja através de figuras como papas e imperadores. Já a História do Pensamento Cristão concentra-se no aspecto filosófico, intelectual e doutrinário, investigando a evolução das ideias, o estabelecimento de dogmas como a Trindade e a Cristologia, as controvérsias heréticas e as contribuições de teólogos e filósofos."
+    },
+    {
+      "titulo": "O Debate Atual sobre a Confissão de Fé na Denominação",
+      "relato": "HILARIO JOSE BISPO GRACA contextualizou a importância histórica das confissões de fé trazendo um panorama atual da sua própria denominação, a União das Igrejas Evangélicas Congregacionais do Brasil (UIECB), que está consultando as igrejas locais sobre a real necessidade de adotar uma confissão de fé formal. O professor mencionou que o debate ganhou força na última assembleia geral em Caldas Novas e citou reflexões do pastor Hilário em uma entrevista à revista *The Right*, onde se questiona se os atuais 28 artigos e a síntese doutrinária de 1995 seriam suficientes para lidar com as complexidades do mundo dinâmico atual. Relembrou que, em 1993, a denominação precisou adotar uma síntese doutrinária para se posicionar contra a entrada de práticas pentecostais e os movimentos gedosistas nas igrejas congregacionais, definindo claramente no que criam ou não. O professor destacou que, em sua experiência de 22 anos pastoreando em Brasília, ministra estudos sobre os 28 artigos e a síntese doutrinária baseada na interpretação bíblica, defendendo que documentos normativos são essenciais para dar clareza doutrinária frente a novas práticas e influências externas."
+    },
+    {
+      "titulo": "Controvérsias Teológicas e Unidade Doutrinária",
+      "relato": "HILARIO JOSE BISPO GRACA expôs que, mesmo dentro da teologia reformada, surgiram controvérsias que perduram até a atualidade. Eles citaram como exemplo o debate entre o calvinismo e o arminianismo, mencionando a formulação histórica dos cinco pontos do calvinismo como uma resposta direta aos manifestantes. Embora esse fato histórico não tenha alcançado uma conclusão unificadora ou pacífica, HILARIO JOSE BISPO GRACA ressaltou que ele demonstra a necessidade contínua de se discutir e buscar estabelecer a unidade doutrinária diante das dificuldades teológicas existentes."
+    },
+    {
+      "titulo": "Orientações sobre a Pesquisa Acadêmica e o Iluminismo",
+      "relato": "HILARIO JOSE BISPO GRACA instruiu os participantes a realizarem o trabalho de pesquisa distribuído na data de hoje com bastante cuidado e antecedência, alertando que deixar a execução para a semana anterior à entrega impedirá o aprendizado real. Eles justificaram a relevância de iniciar a pesquisa de imediato pelo fato de a igreja contemporânea lidar com o liberalismo teológico, cujas origens remontam ao Iluminismo no século XVIII. HILARIO JOSE BISPO GRACA argumentou que o Iluminismo trouxe o debate entre fé e razão, contestando a autoridade bíblica — que é um pilar da Reforma — e a autoridade que a igreja deteve por séculos, provocando um encolhimento de grandes teólogos quando o que não era explicado pela razão perdeu a validade."
+    },
+    {
+      "titulo": "Os Impactos do Liberalismo Teológico e o Desafio da Razão",
+      "relato": "HILARIO JOSE BISPO GRACA aprofundou o problema do liberalismo teológico ao explicar como a abordagem iluminista contestou milagres e elementos não operados pela razão, conectando isso ao conceito de prolegômena estudado em introdução à teologia. Eles ressaltaram o momento crítico e as repercussões atuais dessa mentalidade, apontando que existem pastores e pregadores, inclusive no meio congregacional, adeptos da teologia liberal que pregam que a volta de Jesus é simbólica e não literal. HILARIO JOSE BISPO GRACA alertou que esse fenômeno enfraquece a igreja e orientou os participantes a estudarem tanto os filósofos que originaram essas ideias quanto aqueles que se levantaram para contestá-las."
+    },
+    {
+      "titulo": "Definição do Roteiro de Estudos e Encerramento",
+      "relato": "HILARIO JOSE BISPO GRACA reportou que a conexão de rede se estabilizou e informou que disponibilizaria o material apresentado para os participantes. Eles estabeleceram o roteiro de tópicos que serão obedecidos na sequência do curso, que inclui o estudo da Reforma Protestante, a Reforma Radical (com movimentos como o Anabatismo), a Contrarreforma da Igreja Católica através do Concílio de Trento e a reafirmação dos sacramentos para combater a Reforma. Por fim, HILARIO JOSE BISPO GRACA indicou que as próximas aulas abordarão a ortodoxia protestante, a confessionalização das igrejas com a sistematização da doutrina e as controvérsias teológicas decorrentes."
+    },
+    {
+      "titulo": "Instabilidade na plataforma de reuniões (MIT)",
+      "relato": "Os participantes discutiram a ocorrência de interrupções técnicas repentinas durante a sessão, com o sistema encerrando a reunião de forma abrupta. Rosiane Lima (Rosi) relatou que problemas semelhantes ocorreram na aula anterior, aproximadamente às 8:27, e, na condição de organizador, afirmou que não realizou qualquer alteração manual que justificasse o encerramento da sala. O grupo concluiu que se tratava de um problema técnico geral da plataforma MIT, e não de uma falha localizada nos dispositivos individuais dos participantes."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Neemias 8",
+      "contexto": "Citou o exemplo bíblico de Neemias 8, no qual Esdras e os levitas leram a lei e deram explicações claras para que o povo compreendesse, associando o evento à estrutura de uma Escola Dominical."
+    },
+    {
+      "referencia": "Efésios 4:11-14",
+      "contexto": "HILARIO JOSE BISPO GRACA fundamentou o papel dos pastores e mestres como guardiões doutrinários baseando-se em Efésios 4:11-14, destacando que a liderança foi instituída para o aperfeiçoamento dos santos e para evitar que os crentes sejam levados por ventos de doutrinas e artimanhas humanas."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    },
+    {
+      "titulo": "Karl Barth (1886–1968)",
+      "detalhe": "Teólogo da Neo-ortodoxia / Teologia Dialética; rompeu com o liberalismo alemão ao constatar o apoio de seus professores ao militarismo imperial; recolocou a revelação de Deus e a cristologia no centro."
+    },
+    {
+      "titulo": "Efeitos Noéticos do Pecado",
+      "detalhe": "Ensino reformado de que a mente e a razão humana foram corrompidas pela Queda, necessitando da iluminação soberana do Espírito Santo para compreender a revelação."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura da Disciplina e Metas Semestrais\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA deu as boas-vindas aos estudantes para o novo semestre letivo da disciplina \"História do Pensamento Cristão\" e realizou uma oração de abertura focada no aprendizado e no crescimento espiritual. O professor ressaltou a importância de os alunos terem cursado o primeiro módulo da disciplina e destacou que o objetivo geral é compreender o desenvolvimento histórico do pensamento cristão e da teologia, analisando como as interpretações da palavra de Deus moldaram as doutrinas ao longo do tempo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Orientações sobre as Avaliações (AV1, AV2 e AV3)\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA detalhou o sistema de avaliação, seguindo as diretrizes da coordenação para apresentar as regras logo na primeira aula. A primeira avaliação (AV1) consistirá em um trabalho acadêmico de pesquisa sobre o Iluminismo e a modernidade, com tópicos obrigatórios que abordam o conflito entre razão e revelação, os impactos dos princípios iluministas no cristianismo, a crítica à autoridade bíblica, o liberalismo teológico, seus principais representantes e as reações no século XX."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenciação das Disciplinas Teológicas e Históricas\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA apresentou um diagrama para diferenciar os focos de disciplinas que frequentemente se sobrepõem, como Introdução à Teologia Cristã, História do Pensamento Cristão e História da Igreja. Explicou que a Introdução à Teologia Cristã foca na história da interpretação do texto sagrado e nos métodos que originaram os dogmas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Evolução Histórica do Pensamento Cristão\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA traçou uma linha do tempo do pensamento cristão, iniciando no livro de Atos com o primeiro concílio em Jerusalém e passando pelo período dos pais apostólicos, cujo propósito era a preservação da unidade e devoção da igreja. Na sequência, detalhou o período da Patrística, marcado pelo combate a heresias internas e externas por meio de pais apologistas e polemistas, com destaque para Agostinho, seguido pela queda do Império Romano do Ocidente e o início da Idade Média."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Sistematização Doutrinária na Ortodoxia Protestante\" nesta aula?",
+      "dicaResposta": "HILARIO JOSE BISPO GRACA explicou que, após a Reforma Protestante, a nova igreja reformada necessitou de um esforço intencional para se consolidar, o que gerou a necessidade de sistematizar e confessar a fé publicamente para se contrapor ao arcabouço dogmático já consolidado da Igreja Católica. Esse movimento deu origem à ortodoxia protestante e à produção de documentos confessionais de grande relevância histórica, como a Confissão de Augsburgo, os Catecismos de Lutero, a Segunda Confissão Helvética, a Confissão de Westminster, o Breve Catecismo, o Catecismo Maior e os Cânones de Dort."
+    }
+  ],
+  "encaminhamentos": [
+    "Pesquisar Iluminismo: Realizar pesquisa acadêmica sobre o Iluminismo, cobrindo o problema central da razão e revelação, princípios iluministas, críticas à autoridade da Bíblia e milagres, liberalismo teológi...",
+    "Organizar Trabalho: Subdividir o trabalho acadêmico nos tópicos obrigatórios apresentados em aula, observando as normas da ABNT e garantindo que o grupo não exceda três componentes.",
+    "Compartilhar material: Disponibilizar o quadro informativo sobre a história do pensamento cristão para a turma após a aula.",
+    "Realizar trabalho acadêmico: Elaborar o trabalho solicitado com cuidado e iniciar a pesquisa imediatamente para garantir o aprendizado sobre o liberalismo teológico."
+  ]
+}

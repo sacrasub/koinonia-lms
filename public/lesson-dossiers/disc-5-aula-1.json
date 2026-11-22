@@ -1,0 +1,427 @@
+{
+  "id": "disc-5-aula-1",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 1,
+  "unidade": 1,
+  "dateIso": "2026-08-13",
+  "dateBr": "13/08/2026",
+  "theme": "Aula 1 • Avaliação das correntes éticas",
+  "geminiUrl": "/gemini-notes/eti_aula1_2026-08-13.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A sessão estruturou o programa de Ética Cristã e analisou correntes filosóficas mediante dilemas morais fundamentais. Organização e cronograma acadêmico O cronograma do semestre focará em dilemas éticos baseados na obra de Norman Geisler. A avaliação final consistirá em apresentações de grupos sobre os Dez Mandamentos. Análise de dilemas morais Debates teológicos exploraram conflitos entre leis morais divinas e condutas humanas em situações extremas. O grupo analisou a desobediência civil e o conflito entre mentira e preservação da vida.",
+    "sinteseGeral": "A sessão estruturou o programa de Ética Cristã e analisou correntes filosóficas mediante dilemas morais fundamentais. Organização e cronograma acadêmico O cronograma do semestre focará em dilemas éticos baseados na obra de Norman Geisler. A avaliação final consistirá em apresentações de grupos sobre os Dez Mandamentos. Análise de dilemas morais Debates teológicos exploraram conflitos entre leis morais divinas e condutas humanas em situações extremas. O grupo analisou a desobediência civil e o conflito entre mentira e preservação da vida. Avaliação das correntes éticas Visões éticas não cristãs foram contrapostas ao absolutismo cristão. O modelo de absolutismo graduado foi defendido como a estrutura superior para solucionar conflitos morais sem gerar culpa.",
+    "mapaRapido": [
+      "Introdução e Dinâmica de Aula: Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades.",
+      "Logística de Matrícula e Início da Aula: Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes.",
+      "Apresentação do Conteúdo Programático: Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã.",
+      "Indicações Bibliográficas Complementares: Profª Karoline Evangelista apresenta a obra de Walter Kaiser, intitulada \"O Cristão e as Questões Éticas da Atualidade\", estabelecendo um comparativo técnico com o livro de Norman Geisler para orientar o uso prático dos alunos.",
+      "Planejamento de Avaliações (V1 e V2): Profª Karoline Evangelista define que as notas de avaliação do semestre serão unificadas em uma única atividade prática baseada no Catecismo Maior de Westminster, focando especificamente na seção que comenta os Dez Mandamentos.",
+      "Regras de Avaliação e Critérios de Tempo: Profª Karoline Evangelista estabelece os critérios de atribuição de notas para o trabalho dos Dez Mandamentos, pacificando dúvidas de Antonio Marcos e Rosiane Lima."
+    ],
+    "totalBlocos": 20
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Introdução e Dinâmica de Aula",
+      "resumoCurto": "Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades.",
+      "detalhamento": "Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades. Daniel Rodrigues sugere, em tom de brincadeira, a realização de provas orais ou resenhas de múltiplos livros escritos à mão, o que gera uma discussão sobre os benefícios cognitivos da escrita manual, defendida por Profª Karoline Evangelista e complementada por Rosiane Lima como um excelente exercício para o cérebro e para a fixação de esboços de pregações. Rosiane Lima elogia o desempenho intelectual de Daniel Rodrigues, classificando-o como o principal aluno da turma, apesar de sua postura de falsa humildade, enquanto Daniel Rodrigues atribui a Rosiane Lima o papel de oradora oficial da turma.",
+      "pontosChave": [
+        "Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades.",
+        "Daniel Rodrigues sugere, em tom de brincadeira, a realização de provas orais ou resenhas de múltiplos livros escritos à mão, o que gera uma discussão sobre os benefícios cognitivos da escrita manual, defendida por Profª Karoline Evangelista e complementada por Rosiane Lima como um excelente exercício para o cérebro e para a fixação de esboços de pregações.",
+        "Rosiane Lima elogia o desempenho intelectual de Daniel Rodrigues, classificando-o como o principal aluno da turma, apesar de sua postura de falsa humildade, enquanto Daniel Rodrigues atribui a Rosiane Lima o papel de oradora oficial da turma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Logística de Matrícula e Início da Aula",
+      "resumoCurto": "Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes.",
+      "detalhamento": "Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes. Contudo, o problema técnico foi logo solucionado e os alunos conseguiram acessar a sala virtual. Diante da presença de 13 participantes no momento, Cristiano Sacramento e Rosiane Lima esclarecem que o tamanho oficial da turma gira em torno de 24 matriculados, e que as oscilações de quórum (com variações entre 18 e 24 presentes em dias anteriores) ocorrem devido a atrasos profissionais decorrentes do trânsito e do horário de trabalho dos estudantes. Na sequência, Profª Karoline Evangelista conduz uma oração de abertura focada nos desafios do novo semestre letivo e na necessidade de capacitação bíblica para responder aos questionamentos sociais contemporâneos.",
+      "pontosChave": [
+        "Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes.",
+        "Contudo, o problema técnico foi logo solucionado e os alunos conseguiram acessar a sala virtual.",
+        "Diante da presença de 13 participantes no momento, Cristiano Sacramento e Rosiane Lima esclarecem que o tamanho oficial da turma gira em torno de 24 matriculados, e que as oscilações de quórum (com variações entre 18 e 24 presentes em dias anteriores) ocorrem devido a atrasos profissionais decorrentes do trânsito e do horário de trabalho dos estudantes.",
+        "Na sequência, Profª Karoline Evangelista conduz uma oração de abertura focada nos desafios do novo semestre letivo e na necessidade de capacitação bíblica para responder aos questionamentos sociais contemporâneos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Apresentação do Conteúdo Programático",
+      "resumoCurto": "Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã.",
+      "detalhamento": "Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã. O cronograma pedagógico seguirá a sequência de tópicos proposta por Norman Geisler na obra \"Ética Cristã: Opções e Questões Contemporâneas\" (Editora Vida Nova, com aproximadamente 500 páginas), adotada como o livro-texto principal. O arcabouço conceitual do curso partirá da defesa do absolutismo graduado feita por Geisler para analisar uma série de dilemas éticos específicos. Os temas detalhados pela professora incluem aborto, infanticídio, eutanásia, questões biomédicas, controle de natalidade, pena de morte, guerra, desobediência civil, casamento e divórcio, ecologia e direitos dos animais (este último incluído em atendimento a um pedido anterior do aluno Marlon, que atua na área ambiental), uso de drogas, apostas, jogos de azar, além de uma abordagem diferenciada sobre sexo, pornografia e homossexualidade em comparação com o que já havia sido ministrado na disciplina de Apologética.",
+      "pontosChave": [
+        "Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã.",
+        "O cronograma pedagógico seguirá a sequência de tópicos proposta por Norman Geisler na obra \"Ética Cristã: Opções e Questões Contemporâneas\" (Editora Vida Nova, com aproximadamente 500 páginas), adotada como o livro-texto principal.",
+        "O arcabouço conceitual do curso partirá da defesa do absolutismo graduado feita por Geisler para analisar uma série de dilemas éticos específicos.",
+        "Os temas detalhados pela professora incluem aborto, infanticídio, eutanásia, questões biomédicas, controle de natalidade, pena de morte, guerra, desobediência civil, casamento e divórcio, ecologia e direitos dos animais (este último incluído em atendimento a um pedido anterior do aluno Marlon, que atua na área ambiental), uso de drogas, apostas, jogos de azar, além de uma abordagem diferenciada sobre sexo, pornografia e homossexualidade em comparação com o que já havia sido ministrado na disciplina de Apologética."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Indicações Bibliográficas Complementares",
+      "resumoCurto": "Profª Karoline Evangelista apresenta a obra de Walter Kaiser, intitulada \"O Cristão e as Questões Éticas da Atualidade\", estabelecendo um comparativo técnico com o livro de Norman Geisler para orientar o uso prático dos alunos.",
+      "detalhamento": "Profª Karoline Evangelista apresenta a obra de Walter Kaiser, intitulada \"O Cristão e as Questões Éticas da Atualidade\", estabelecendo um comparativo técnico com o livro de Norman Geisler para orientar o uso prático dos alunos. Após uma breve interrupção de Cristiano Sacramento e Antonio Marcos, que alertaram sobre a ausência de compartilhamento visual das imagens na tela, a professora ajustou a transmissão dos slides. Ela explicou que, enquanto o texto de Geisler possui maior densidade acadêmica e profundidade teórica — sendo o mais adequado para o nível de formação de um seminário —, a obra de Kaiser é estruturada em formatos menores com capítulos curtos organizados por passagens bíblicas (como a análise dos oprimidos a partir de Isaías 58). Por possuir esse caráter devocional e prático, o livro de Kaiser foi fortemente recomendado para pastores e líderes ministeriais utilizarem em pequenos grupos ou na estruturação de séries de sermões em suas igrejas locais.",
+      "pontosChave": [
+        "Profª Karoline Evangelista apresenta a obra de Walter Kaiser, intitulada \"O Cristão e as Questões Éticas da Atualidade\", estabelecendo um comparativo técnico com o livro de Norman Geisler para orientar o uso prático dos alunos.",
+        "Após uma breve interrupção de Cristiano Sacramento e Antonio Marcos, que alertaram sobre a ausência de compartilhamento visual das imagens na tela, a professora ajustou a transmissão dos slides.",
+        "Ela explicou que, enquanto o texto de Geisler possui maior densidade acadêmica e profundidade teórica — sendo o mais adequado para o nível de formação de um seminário —, a obra de Kaiser é estruturada em formatos menores com capítulos curtos organizados por passagens bíblicas (como a análise dos oprimidos a partir de Isaías 58).",
+        "Por possuir esse caráter devocional e prático, o livro de Kaiser foi fortemente recomendado para pastores e líderes ministeriais utilizarem em pequenos grupos ou na estruturação de séries de sermões em suas igrejas locais."
+      ],
+      "referenciasNoBloco": [
+        "Isaías 58"
+      ]
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Planejamento de Avaliações (V1 e V2)",
+      "resumoCurto": "Profª Karoline Evangelista define que as notas de avaliação do semestre serão unificadas em uma única atividade prática baseada no Catecismo Maior de Westminster, focando especificamente na seção que comenta os Dez Mandamentos.",
+      "detalhamento": "Profª Karoline Evangelista define que as notas de avaliação do semestre serão unificadas em uma única atividade prática baseada no Catecismo Maior de Westminster, focando especificamente na seção que comenta os Dez Mandamentos. A escolha bibliográfica justifica-se pela acessibilidade e ampla oferta de edições comentadas no mercado. O planejamento prevê a realização de apresentações em grupos compostos por três a quatro integrantes, em função da estimativa de 20 a 24 alunos na turma, uma vez que o tempo e o número de mandamentos inviabilizariam apresentações estritamente individuais. As bancas ocorrerão no período de 22 de outubro a 19 de novembro, ocupando 30 minutos de cada aula para a execução de duas apresentações por dia. O aluno Salatiel foi explicitamente dispensado de compor os grupos por já ter quitado a matéria anteriormente.",
+      "pontosChave": [
+        "Profª Karoline Evangelista define que as notas de avaliação do semestre serão unificadas em uma única atividade prática baseada no Catecismo Maior de Westminster, focando especificamente na seção que comenta os Dez Mandamentos.",
+        "A escolha bibliográfica justifica-se pela acessibilidade e ampla oferta de edições comentadas no mercado.",
+        "O planejamento prevê a realização de apresentações em grupos compostos por três a quatro integrantes, em função da estimativa de 20 a 24 alunos na turma, uma vez que o tempo e o número de mandamentos inviabilizariam apresentações estritamente individuais.",
+        "As bancas ocorrerão no período de 22 de outubro a 19 de novembro, ocupando 30 minutos de cada aula para a execução de duas apresentações por dia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Regras de Avaliação e Critérios de Tempo",
+      "resumoCurto": "Profª Karoline Evangelista estabelece os critérios de atribuição de notas para o trabalho dos Dez Mandamentos, pacificando dúvidas de Antonio Marcos e Rosiane Lima.",
+      "detalhamento": "Profª Karoline Evangelista estabelece os critérios de atribuição de notas para o trabalho dos Dez Mandamentos, pacificando dúvidas de Antonio Marcos e Rosiane Lima. A professora determina que a nota final será rigorosamente individual, baseada na confecção dos slides e no desempenho de cada estudante na tribuna, mitigando o risco de alunos se aproveitarem do esforço alheio. Para garantir a equidade do processo e contornar a desvantagem do tempo restrito, o cronograma de 30 minutos será rigorosamente fracionado por um cronômetro. No caso de quartetos, cada orador terá exatamente 10 minutos para falar, sendo interrompido pelo alarme para que o próximo colega assuma a palavra imediatamente e garanta a fluidez da exposição. A metodologia foi defendida pela docente como uma alternativa pedagogicamente superior às provas escritas manuscritas ou avaliações online convencionais, pois estimula múltiplos sentidos no aprendizado de um tema.",
+      "pontosChave": [
+        "Profª Karoline Evangelista estabelece os critérios de atribuição de notas para o trabalho dos Dez Mandamentos, pacificando dúvidas de Antonio Marcos e Rosiane Lima.",
+        "A professora determina que a nota final será rigorosamente individual, baseada na confecção dos slides e no desempenho de cada estudante na tribuna, mitigando o risco de alunos se aproveitarem do esforço alheio.",
+        "Para garantir a equidade do processo e contornar a desvantagem do tempo restrito, o cronograma de 30 minutos será rigorosamente fracionado por um cronômetro.",
+        "No caso de quartetos, cada orador terá exatamente 10 minutos para falar, sendo interrompido pelo alarme para que o próximo colega assuma a palavra imediatamente e garanta a fluidez da exposição."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Dilemas Éticos na Narrativa de Abraão e Isaque",
+      "resumoCurto": "Profª Karoline Evangelista introduz o conceito de dilema moral utilizando o relato bíblico de Gênesis 22, onde Deus ordena que Abraão ofereça seu filho Isaque em sacrifício.",
+      "detalhamento": "Profª Karoline Evangelista introduz o conceito de dilema moral utilizando o relato bíblico de Gênesis 22, onde Deus ordena que Abraão ofereça seu filho Isaque em sacrifício. A professora expõe o conflito essencial da cena: o choque direto entre a lei moral universal \"não matarás\" e uma contraordem divina direta de sacrifício, caracterizando a essência de um dilema ético, que ocorre quando duas normas ou leis morais entram em colisão frontal. João Alexandre Souza Lemos intervém no debate argumentando que, sob a perspectiva conceitual da época, a ordem não configurava um assassinato comum ou arbitrário, mas sim a execução de um rito formal de holocausto, cuja única distinção litúrgica era a substituição de uma vítima animal por uma vida humana. Rosiane Lima pondera que a obediência de Abraão e o consentimento de Isaque encontram respaldo teológico no fato de a ordem partir do próprio Deus, que é o autor supremo e a fonte instituidora de todo mandamento moral, legitimando a suspensão temporária da regra geral.",
+      "pontosChave": [
+        "Profª Karoline Evangelista introduz o conceito de dilema moral utilizando o relato bíblico de Gênesis 22, onde Deus ordena que Abraão ofereça seu filho Isaque em sacrifício.",
+        "A professora expõe o conflito essencial da cena: o choque direto entre a lei moral universal \"não matarás\" e uma contraordem divina direta de sacrifício, caracterizando a essência de um dilema ético, que ocorre quando duas normas ou leis morais entram em colisão frontal.",
+        "João Alexandre Souza Lemos intervém no debate argumentando que, sob a perspectiva conceitual da época, a ordem não configurava um assassinato comum ou arbitrário, mas sim a execução de um rito formal de holocausto, cuja única distinção litúrgica era a substituição de uma vítima animal por uma vida humana.",
+        "Rosiane Lima pondera que a obediência de Abraão e o consentimento de Isaque encontram respaldo teológico no fato de a ordem partir do próprio Deus, que é o autor supremo e a fonte instituidora de todo mandamento moral, legitimando a suspensão temporária da regra geral."
+      ],
+      "referenciasNoBloco": [
+        "Gênesis 22"
+      ]
+    },
+    {
+      "ordem": 8,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Análise da Desobediência Civil e das Parteiras Hebreias",
+      "resumoCurto": "Profª Karoline Evangelista explora o dilema da desobediência civil a partir do comportamento das parteiras hebreias no Egito, descritas no texto bíblico.",
+      "detalhamento": "Profª Karoline Evangelista explora o dilema da desobediência civil a partir do comportamento das parteiras hebreias no Egito, descritas no texto bíblico. O impasse ético residia na contradição entre o dever moral geral de submissão e obediência às autoridades governamentais instituídas e a ordem civil decretada pelo Faraó para assassinar os recém-nascidos do sexo masculino. A professora destaca que as parteiras decidiram descumprir deliberadamente o decreto imperial e que o texto sagrado valida formalmente essa conduta ao registrar que Deus foi bondoso com elas e prosperou suas respectivas famílias. A conclusão consensual do tópico aponta que a desobediência civil operada pelas parteiras foi inteiramente legítima por estar subordinada ao temor a Deus e à preservação da vida humana acima dos decretos de Estado.",
+      "pontosChave": [
+        "Profª Karoline Evangelista explora o dilema da desobediência civil a partir do comportamento das parteiras hebreias no Egito, descritas no texto bíblico.",
+        "O impasse ético residia na contradição entre o dever moral geral de submissão e obediência às autoridades governamentais instituídas e a ordem civil decretada pelo Faraó para assassinar os recém-nascidos do sexo masculino.",
+        "A professora destaca que as parteiras decidiram descumprir deliberadamente o decreto imperial e que o texto sagrado valida formalmente essa conduta ao registrar que Deus foi bondoso com elas e prosperou suas respectivas famílias.",
+        "A conclusão consensual do tópico aponta que a desobediência civil operada pelas parteiras foi inteiramente legítima por estar subordinada ao temor a Deus e à preservação da vida humana acima dos decretos de Estado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O Dilema da Mentira e o Caso de Raabe",
+      "resumoCurto": "Profª Karoline Evangelista aborda o conflito ético entre a preservação da verdade e a salvaguarda da vida por meio da história da prostituta Raabe, que mentiu intencionalmente aos oficiais de Jericó para ocultar e proteger os espias de Israel.",
+      "detalhamento": "Profª Karoline Evangelista aborda o conflito ético entre a preservação da verdade e a salvaguarda da vida por meio da história da prostituta Raabe, que mentiu intencionalmente aos oficiais de Jericó para ocultar e proteger os espias de Israel. Rosiane Lima inicialmente argumenta que a conduta de Raabe deve ser relativizada pelo contexto de sua biografia, visto que ela não era uma mulher convertida e nem pertencia formalmente ao povo de Deus, agindo com base em informações indiretas que ouviu sobre a soberania e os milagres divinos para propor um acordo de sobrevivência familiar. Todavia, o debate avança para a aplicação prática do dilema na contemporaneidade, simulando o cenário de um cristão na Coreia do Norte que precisa mentir para a fiscalização governamental para ocultar um missionário perseguido. Diante da provocação teórica, Rosiane Lima revê sua tese inicial sobre Raabe e admite que mentiria com o propósito de salvar a vida do missionário, utilizando o livro de Eclesiastes como pano de fundo para justificar a flexibilização da regra contra a mentira em prol de um bem maior.",
+      "pontosChave": [
+        "Profª Karoline Evangelista aborda o conflito ético entre a preservação da verdade e a salvaguarda da vida por meio da história da prostituta Raabe, que mentiu intencionalmente aos oficiais de Jericó para ocultar e proteger os espias de Israel.",
+        "Rosiane Lima inicialmente argumenta que a conduta de Raabe deve ser relativizada pelo contexto de sua biografia, visto que ela não era uma mulher convertida e nem pertencia formalmente ao povo de Deus, agindo com base em informações indiretas que ouviu sobre a soberania e os milagres divinos para propor um acordo de sobrevivência familiar.",
+        "Todavia, o debate avança para a aplicação prática do dilema na contemporaneidade, simulando o cenário de um cristão na Coreia do Norte que precisa mentir para a fiscalização governamental para ocultar um missionário perseguido.",
+        "Diante da provocação teórica, Rosiane Lima revê sua tese inicial sobre Raabe e admite que mentiria com o propósito de salvar a vida do missionário, utilizando o livro de Eclesiastes como pano de fundo para justificar a flexibilização da regra contra a mentira em prol de um bem maior."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectivas Humanas sob Situações de Perseguição Extrema",
+      "resumoCurto": "Cristiano Sacramento oferece uma contraposição realista ao debate sobre ocultar missionários em regimes totalitários, estabelecendo uma distinção severa entre a teorização abstrata e a prática sob coação física.",
+      "detalhamento": "Cristiano Sacramento oferece uma contraposição realista ao debate sobre ocultar missionários em regimes totalitários, estabelecendo uma distinção severa entre a teorização abstrata e a prática sob coação física. Sacramento argumenta que, embora no campo das ideias seja fácil para qualquer cristão afirmar que protegeria refugiados ou mentiria para a polícia política (como no caso de cidadãos que escondiam judeus da Gestapo nazista em seus porões), a realidade empírica demonstra a fragilidade humana sob tortura ou ameaça de morte. De acordo com o participante, a natureza humana tende ao instinto de autopreservação e a entregar o próximo em primeiro lugar quando espremida pelo medo. A manutenção de uma postura de sacrifício da própria vida por amor a Deus e pela proteção do irmão exige um nível profundo de maturidade espiritual e consolidação na fé, o que torna a mentira nessas circunstâncias excepcionais um ato genuíno de obediência aos mandamentos divinos superiores. João Alexandre Souza Lemos complementa lembrando que a mera presença clandestina do missionário em solo norte-coreano já configura uma infração deliberada contra as leis do Estado, tornando incoerente o receio legalista de mentir para as autoridades após o crime de desobediência civil já ter sido consumado.",
+      "pontosChave": [
+        "Cristiano Sacramento oferece uma contraposição realista ao debate sobre ocultar missionários em regimes totalitários, estabelecendo uma distinção severa entre a teorização abstrata e a prática sob coação física.",
+        "Sacramento argumenta que, embora no campo das ideias seja fácil para qualquer cristão afirmar que protegeria refugiados ou mentiria para a polícia política (como no caso de cidadãos que escondiam judeus da Gestapo nazista em seus porões), a realidade empírica demonstra a fragilidade humana sob tortura ou ameaça de morte.",
+        "De acordo com o participante, a natureza humana tende ao instinto de autopreservação e a entregar o próximo em primeiro lugar quando espremida pelo medo.",
+        "A manutenção de uma postura de sacrifício da própria vida por amor a Deus e pela proteção do irmão exige um nível profundo de maturidade espiritual e consolidação na fé, o que torna a mentira nessas circunstâncias excepcionais um ato genuíno de obediência aos mandamentos divinos superiores."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Revelação Geral, Revelação Especial e Responsabilidade Ética",
+      "resumoCurto": "Profª Karoline Evangelista expõe a fundamentação teológica da moralidade baseando-se nos conceitos de revelação geral e especial descritos na obra de Norman Geisler.",
+      "detalhamento": "Profª Karoline Evangelista expõe a fundamentação teológica da moralidade baseando-se nos conceitos de revelação geral e especial descritos na obra de Norman Geisler. A professora assevera que, por força da revelação geral e do registro da lei moral divina na tábua dos corações humanos (conforme Romanos), todo indivíduo — inclusive ateus, relativistas e niilistas — possui uma consciência funcional e reconhece que categorias como mentira e assassinato são intrinsecamente erradas. No entanto, Profª Karoline Evangelista adverte que a consciência humana foi severamente corrompida e afetada pelos efeitos da Queda, impedindo que o homem dependa exclusivamente do bom senso para mediar dilemas éticos complexos. Por essa razão, faz-se indispensável o recurso às normas fixas e aos princípios explícitos fornecidos pela revelação especial, que é a Palavra de Deus. A conclusão teológica estabelece que a negação ou o desconhecimento da existência de Deus não anula a responsabilidade ética do indivíduo, permanecendo o Criador como o padrão objetivo absoluto de julgamento para toda a humanidade.",
+      "pontosChave": [
+        "Profª Karoline Evangelista expõe a fundamentação teológica da moralidade baseando-se nos conceitos de revelação geral e especial descritos na obra de Norman Geisler.",
+        "A professora assevera que, por força da revelação geral e do registro da lei moral divina na tábua dos corações humanos (conforme Romanos), todo indivíduo — inclusive ateus, relativistas e niilistas — possui uma consciência funcional e reconhece que categorias como mentira e assassinato são intrinsecamente erradas.",
+        "No entanto, Profª Karoline Evangelista adverte que a consciência humana foi severamente corrompida e afetada pelos efeitos da Queda, impedindo que o homem dependa exclusivamente do bom senso para mediar dilemas éticos complexos.",
+        "Por essa razão, faz-se indispensável o recurso às normas fixas e aos princípios explícitos fornecidos pela revelação especial, que é a Palavra de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "As Visões Éticas Não Cristãs",
+      "resumoCurto": "Antinomismo e Generalismo: Profª Karoline Evangelista inicia a categorização das seis principais matrizes éticas mapeadas por Geisler, detalhando as duas primeiras correntes de natureza estritamente secular e ímpia.",
+      "detalhamento": "Antinomismo e Generalismo: Profª Karoline Evangelista inicia a categorização das seis principais matrizes éticas mapeadas por Geisler, detalhando as duas primeiras correntes de natureza estritamente secular e ímpia. A primeira delas é o Antinomismo, definido como uma vertente radical de relativismo moral que nega categoricamente a existência de qualquer lei moral objetiva, universal ou absoluta, operando sob a premissa de que o pecado não possui substância real. A segunda corrente é o Generalismo, modelo adotado pelas correntes filosóficas utilitaristas que reconhece a existência de regras morais gerais, mas sustenta que tais leis comportam exceções práticas comandadas pela máxima de que \"o fim justifica os meios\". O generalismo contemporâneo é apontado como herdeiro direto do hedonismo antigo, mensurando a validade moral de uma ação não pelo seu valor intrínseco perante Deus, mas pela sua utilidade prática e capacidade de produzir o maior bem e felicidade possível para o maior número de pessoas.",
+      "pontosChave": [
+        "Antinomismo e Generalismo: Profª Karoline Evangelista inicia a categorização das seis principais matrizes éticas mapeadas por Geisler, detalhando as duas primeiras correntes de natureza estritamente secular e ímpia.",
+        "A primeira delas é o Antinomismo, definido como uma vertente radical de relativismo moral que nega categoricamente a existência de qualquer lei moral objetiva, universal ou absoluta, operando sob a premissa de que o pecado não possui substância real.",
+        "A segunda corrente é o Generalismo, modelo adotado pelas correntes filosóficas utilitaristas que reconhece a existência de regras morais gerais, mas sustenta que tais leis comportam exceções práticas comandadas pela máxima de que \"o fim justifica os meios\".",
+        "O generalismo contemporâneo é apontado como herdeiro direto do hedonismo antigo, mensurando a validade moral de uma ação não pelo seu valor intrínseco perante Deus, mas pela sua utilidade prática e capacidade de produzir o maior bem e felicidade possível para o maior número de pessoas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Críticas ao Utilitarismo Coletivo e à Soberania da Maioria",
+      "resumoCurto": "Profª Karoline Evangelista e os alunos debatem as falhas estruturais da ética generalista e utilitarista, refutando a tese de que a aprovação da maioria valida uma conduta moral.",
+      "detalhamento": "Profª Karoline Evangelista e os alunos debatem as falhas estruturais da ética generalista e utilitarista, refutando a tese de que a aprovação da maioria valida uma conduta moral. João Alexandre Souza Lemos propõe uma ilustração prática baseada em debates contemporâneos sobre identidade de gênero, questionando os critérios matemáticos de representatividade (como maiorias de 49%) e citando os conflitos morais em torno da inclusão de atletas transexuais masculinos em ligas esportivas femininas. Profª Karoline Evangelista expande o exemplo simulando uma federação de atletas que aprova por maioria de votos a participação de uma mulher trans em uma equipe feminina. O grupo conclui unanimemente que a ratificação democrática ou coletiva de um comportamento não o torna eticamente correto perante os padrões imutáveis da verdade divina, desmistificando o ditado popular de que \"a voz do povo é a voz de Deus\". Rosiane Lima sintetiza que o perigo central do utilitarismo reside no fato de que as noções humanas de benefício são construídas a partir de desejos subjetivos, gerando meios injustos e incoerentes para alcançar fins supostamente bons.",
+      "pontosChave": [
+        "Profª Karoline Evangelista e os alunos debatem as falhas estruturais da ética generalista e utilitarista, refutando a tese de que a aprovação da maioria valida uma conduta moral.",
+        "João Alexandre Souza Lemos propõe uma ilustração prática baseada em debates contemporâneos sobre identidade de gênero, questionando os critérios matemáticos de representatividade (como maiorias de 49%) e citando os conflitos morais em torno da inclusão de atletas transexuais masculinos em ligas esportivas femininas.",
+        "Profª Karoline Evangelista expande o exemplo simulando uma federação de atletas que aprova por maioria de votos a participação de uma mulher trans em uma equipe feminina.",
+        "O grupo conclui unanimemente que a ratificação democrática ou coletiva de um comportamento não o torna eticamente correto perante os padrões imutáveis da verdade divina, desmistificando o ditado popular de que \"a voz do povo é a voz de Deus\"."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Conceito de Situacionismo e as Deturpações do Amor",
+      "resumoCurto": "Profª Karoline Evangelista analisa o Situacionismo como a terceira visão ética secular, classificando-a como a corrente mais disseminada e dissimulada no tecido social contemporâneo.",
+      "detalhamento": "Profª Karoline Evangelista analisa o Situacionismo como a terceira visão ética secular, classificando-a como a corrente mais disseminada e dissimulada no tecido social contemporâneo. Essa matriz prega a existência de um único absoluto moral inegociável: o amor. Sob essa lógica, todas as demais leis e mandamentos bíblicos tornam-se plenamente relativos e maleáveis, passando a ser julgados pelo critério pragmático de fazer o bem às pessoas. A professora alerta que o situacionismo atua de forma sedutora ao mascarar transgressões graves sob a rubrica do afeto, sendo utilizado de forma recorrente para legitimar práticas como a troca de casais, relações sexuais pré-matrimoniais, divórcios arbitrários e até o aborto, este último justificado pelo argumento de impedir o sofrimento financeiro ou social de uma criança em um mundo hostil. Profª Karoline Evangelista enfatiza que a redução de toda a moralidade a uma definição puramente humana de amor invalida as Escrituras e encerra o bloco das cosmovisões éticas não cristãs.",
+      "pontosChave": [
+        "Profª Karoline Evangelista analisa o Situacionismo como a terceira visão ética secular, classificando-a como a corrente mais disseminada e dissimulada no tecido social contemporâneo.",
+        "Essa matriz prega a existência de um único absoluto moral inegociável: o amor.",
+        "Sob essa lógica, todas as demais leis e mandamentos bíblicos tornam-se plenamente relativos e maleáveis, passando a ser julgados pelo critério pragmático de fazer o bem às pessoas.",
+        "A professora alerta que o situacionismo atua de forma sedutora ao mascarar transgressões graves sob a rubrica do afeto, sendo utilizado de forma recorrente para legitimar práticas como a troca de casais, relações sexuais pré-matrimoniais, divórcios arbitrários e até o aborto, este último justificado pelo argumento de impedir o sofrimento financeiro ou social de uma criança em um mundo hostil."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Introdução às Vertentes do Absolutismo Cristão",
+      "resumoCurto": "Profª Karoline Evangelista introduz o bloco das três visões éticas compartilhadas no ambiente evangélico, caracterizadas pelo reconhecimento formal de leis morais e absolutos divinamente instituídos.",
+      "detalhamento": "Profª Karoline Evangelista introduz o bloco das três visões éticas compartilhadas no ambiente evangélico, caracterizadas pelo reconhecimento formal de leis morais e absolutos divinamente instituídos. A professora traça uma correlação histórica inicial, associando o absolutismo não qualificado à herança anabatista, o absolutismo conflitante à matriz luterana e o absolutismo graduado à teologia reformada, ressalvando que tais rótulos históricos não guardam correspondência rígida ou obrigatória com as denominações atuais. Ao focar na análise do Absolutismo Não Qualificado — modelo teorizado por Agostinho de Hipona e subscrito por pensadores como Immanuel Kant, John Murray e Charles Hodge —, Profª Karoline Evangelista explica que essa é a linha interpretativa mais popular e influente na Igreja. Essa vertente postula de forma categórica que as leis morais de Deus nunca entram em rota de colisão real e que sempre haverá uma saída providencial e justa fornecida pelo Criador para evitar o pecado, negando a existência de conflitos insolúveis entre o dever de falar a verdade e o mandamento de proteger a vida.",
+      "pontosChave": [
+        "Profª Karoline Evangelista introduz o bloco das três visões éticas compartilhadas no ambiente evangélico, caracterizadas pelo reconhecimento formal de leis morais e absolutos divinamente instituídos.",
+        "A professora traça uma correlação histórica inicial, associando o absolutismo não qualificado à herança anabatista, o absolutismo conflitante à matriz luterana e o absolutismo graduado à teologia reformada, ressalvando que tais rótulos históricos não guardam correspondência rígida ou obrigatória com as denominações atuais.",
+        "Ao focar na análise do Absolutismo Não Qualificado — modelo teorizado por Agostinho de Hipona e subscrito por pensadores como Immanuel Kant, John Murray e Charles Hodge —, Profª Karoline Evangelista explica que essa é a linha interpretativa mais popular e influente na Igreja.",
+        "Essa vertente postula de forma categórica que as leis morais de Deus nunca entram em rota de colisão real e que sempre haverá uma saída providencial e justa fornecida pelo Criador para evitar o pecado, negando a existência de conflitos insolúveis entre o dever de falar a verdade e o mandamento de proteger a vida."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Absolutismo Não Qualificado - Análise e Críticas",
+      "resumoCurto": "Profª Karoline Evangelista explicou a perspectiva do absolutismo não qualificado, mencionando a visão de Agostinho influenciada pelo dualismo platônico, que atribui um peso maior ao espiritual em detrimento do físico.",
+      "detalhamento": "Profª Karoline Evangelista explicou a perspectiva do absolutismo não qualificado, mencionando a visão de Agostinho influenciada pelo dualismo platônico, que atribui um peso maior ao espiritual em detrimento do físico. Sob essa ótica, mentir é sempre errado, mesmo que resulte na morte de alguém, aplicando-se ao caso bíblico de Raab, onde defensores dessa linha afirmam que eles deveriam ter dito a verdade e confiado que Deus daria um escape. Profª Karoline Evangelista expôs os problemas dessa abordagem ao citar a crítica de Norman Geisler, baseada no princípio de que a lei da misericórdia é maior do que a lei da propriedade, exemplificando com o dilema de não devolver uma arma a um criminoso se soubesse que causaria uma morte. Ao falhar em demonstrar misericórdia para proteger inocentes, o absolutista não qualificado comete um pecado de omissão para evitar um pecado de comissão, falhando em preservar a vida. Rosiane Lima concordou, destacando que omitir a proteção constitui pecado por deixar de fazer o bem.",
+      "pontosChave": [
+        "Profª Karoline Evangelista explicou a perspectiva do absolutismo não qualificado, mencionando a visão de Agostinho influenciada pelo dualismo platônico, que atribui um peso maior ao espiritual em detrimento do físico.",
+        "Sob essa ótica, mentir é sempre errado, mesmo que resulte na morte de alguém, aplicando-se ao caso bíblico de Raab, onde defensores dessa linha afirmam que eles deveriam ter dito a verdade e confiado que Deus daria um escape.",
+        "Profª Karoline Evangelista expôs os problemas dessa abordagem ao citar a crítica de Norman Geisler, baseada no princípio de que a lei da misericórdia é maior do que a lei da propriedade, exemplificando com o dilema de não devolver uma arma a um criminoso se soubesse que causaria uma morte.",
+        "Ao falhar em demonstrar misericórdia para proteger inocentes, o absolutista não qualificado comete um pecado de omissão para evitar um pecado de comissão, falhando em preservar a vida."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Absolutismo Conflitante e o Dilema do Mal Menor",
+      "resumoCurto": "Profª Karoline Evangelista introduziu o absolutismo conflitante, que defende que diante de um conflito entre leis morais, deve-se escolher o menor de dois males, embora a pessoa continue culpada e cometa um pecado que exige confissão e o perdão de Deus.",
+      "detalhamento": "Profª Karoline Evangelista introduziu o absolutismo conflitante, que defende que diante de um conflito entre leis morais, deve-se escolher o menor de dois males, embora a pessoa continue culpada e cometa um pecado que exige confissão e o perdão de Deus. O exemplo citado envolveu esconder um missionário na Coreia e mentir para a fiscalização, gerando a necessidade de pedir perdão posteriormente. Foi discutido que esse modelo considera o mundo atual como caído, tornando os dilemas morais inevitáveis, e diferencia os pecados entre mais pesados e mais leves com base nas palavras de Jesus sobre o pecado de Judas. Alcimar Luiz da Silva concordou que o mundo caído força o enfrentamento de situações que obrigam o indivíduo a pecar, mas Profª Karoline Evangelista contrapôs questionando se Cristo pecou ao viver no mundo caído. A cruz não representou a escolha de um mal menor, mas sim a realização do bem maior, demonstrando que Deus enfrentou o conflito moral de sacrificar seu filho ou permitir o perecimento da humanidade sem incorrer em pecado.",
+      "pontosChave": [
+        "Profª Karoline Evangelista introduziu o absolutismo conflitante, que defende que diante de um conflito entre leis morais, deve-se escolher o menor de dois males, embora a pessoa continue culpada e cometa um pecado que exige confissão e o perdão de Deus.",
+        "O exemplo citado envolveu esconder um missionário na Coreia e mentir para a fiscalização, gerando a necessidade de pedir perdão posteriormente.",
+        "Foi discutido que esse modelo considera o mundo atual como caído, tornando os dilemas morais inevitáveis, e diferencia os pecados entre mais pesados e mais leves com base nas palavras de Jesus sobre o pecado de Judas.",
+        "Alcimar Luiz da Silva concordou que o mundo caído força o enfrentamento de situações que obrigam o indivíduo a pecar, mas Profª Karoline Evangelista contrapôs questionando se Cristo pecou ao viver no mundo caído."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Absolutismo Graduado e a Escolha do Bem Maior",
+      "resumoCurto": "Profª Karoline Evangelista detalhou o absolutismo graduado, modelo defendido por Norman Geisler, que afirma que quando as leis morais conflitam, Deus dispensa o indivíduo da obrigação de obedecer à lei menor (como mentir ou desobedecer civilmente) para cumprir a lei maior (como a proteção da vida ou a fidelidade a Deus).",
+      "detalhamento": "Profª Karoline Evangelista detalhou o absolutismo graduado, modelo defendido por Norman Geisler, que afirma que quando as leis morais conflitam, Deus dispensa o indivíduo da obrigação de obedecer à lei menor (como mentir ou desobedecer civilmente) para cumprir a lei maior (como a proteção da vida ou a fidelidade a Deus). Esse sistema isenta a pessoa de culpa, enxergando a ação como um ato de misericórdia e obediência prioritária, fundamentado nas escrituras que citam assuntos mais pesados na lei, gradações de punições no inferno e recompensas no céu, e o amor como a maior virtude. Foram expostos exemplos bíblicos de desobediência civil legítima, como as parteiras hebreias, os cativos judeus diante da imagem de ouro de Nabucodonosor, e Daniel ignorando a ordem de Dário. Profª Karoline Evangelista ressaltou que essa escolha do bem maior aplica-se apenas a situações extremas de preservação da vida e sob o temor de Deus, e não a conveniências cotidianas ou hábitos pessoais.",
+      "pontosChave": [
+        "Profª Karoline Evangelista detalhou o absolutismo graduado, modelo defendido por Norman Geisler, que afirma que quando as leis morais conflitam, Deus dispensa o indivíduo da obrigação de obedecer à lei menor (como mentir ou desobedecer civilmente) para cumprir a lei maior (como a proteção da vida ou a fidelidade a Deus).",
+        "Esse sistema isenta a pessoa de culpa, enxergando a ação como um ato de misericórdia e obediência prioritária, fundamentado nas escrituras que citam assuntos mais pesados na lei, gradações de punições no inferno e recompensas no céu, e o amor como a maior virtude.",
+        "Foram expostos exemplos bíblicos de desobediência civil legítima, como as parteiras hebreias, os cativos judeus diante da imagem de ouro de Nabucodonosor, e Daniel ignorando a ordem de Dário.",
+        "Profª Karoline Evangelista ressaltou que essa escolha do bem maior aplica-se apenas a situações extremas de preservação da vida e sob o temor de Deus, e não a conveniências cotidianas ou hábitos pessoais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre Desobediência Civil e Aplicações Práticas",
+      "resumoCurto": "Rejane Arruda participou por celular, superando dificuldades técnicas com o aparelho, e questionou se a premissa do absolutismo graduado implicava a desobrigação de obedecer à lei civil quando esta contrariasse a lei de Deus.",
+      "detalhamento": "Rejane Arruda participou por celular, superando dificuldades técnicas com o aparelho, e questionou se a premissa do absolutismo graduado implicava a desobrigação de obedecer à lei civil quando esta contrariasse a lei de Deus. Profª Karoline Evangelista confirmou a interpretação e adicionou que, em cenários futuros hipotéticos como o sinal da besta (666) ou em países onde a Bíblia é proibida, a escolha pelo bem maior ditará a desobediência civil. A aprovação divina em casos como os de Abraão, Isaque, Daniel, os três jovens hebreus, as parteiras hebreias e Davi com o pão consagrado demonstra a hierarquia onde amar e obedecer a Deus está acima do governo, e a misericórdia está acima da veracidade. Rosiane Lima trouxe o exemplo da mulher pega em adultério para ilustrar o contexto, afirmando que Cristo se posicionou em defesa dela, permitindo que a misericórdia sobrepujasse a atuação fria da lei cultural daquela época, o que Profª Karoline Evangelista validou como uma aplicação perfeita do conceito.",
+      "pontosChave": [
+        "Rejane Arruda participou por celular, superando dificuldades técnicas com o aparelho, e questionou se a premissa do absolutismo graduado implicava a desobrigação de obedecer à lei civil quando esta contrariasse a lei de Deus.",
+        "Profª Karoline Evangelista confirmou a interpretação e adicionou que, em cenários futuros hipotéticos como o sinal da besta (666) ou em países onde a Bíblia é proibida, a escolha pelo bem maior ditará a desobediência civil.",
+        "A aprovação divina em casos como os de Abraão, Isaque, Daniel, os três jovens hebreus, as parteiras hebreias e Davi com o pão consagrado demonstra a hierarquia onde amar e obedecer a Deus está acima do governo, e a misericórdia está acima da veracidade.",
+        "Rosiane Lima trouxe o exemplo da mulher pega em adultério para ilustrar o contexto, afirmando que Cristo se posicionou em defesa dela, permitindo que a misericórdia sobrepujasse a atuação fria da lei cultural daquela época, o que Profª Karoline Evangelista validou como uma aplicação perfeita do conceito."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Encerramento da Aula e Próximos Passos",
+      "resumoCurto": "Profª Karoline Evangelista concluiu a exposição das perspectivas éticas criticando o absolutismo conflitante por sugerir que o pecado é inevitável, o que anularia a responsabilidade humana, enquanto o absolutismo graduado prevê a isenção de culpa ao escolher a lei maior.",
+      "detalhamento": "Profª Karoline Evangelista concluiu a exposição das perspectivas éticas criticando o absolutismo conflitante por sugerir que o pecado é inevitável, o que anularia a responsabilidade humana, enquanto o absolutismo graduado prevê a isenção de culpa ao escolher a lei maior. João Alexandre Souza Lemos reconheceu a complexidade do tema, declarando-se \"cabeça dura\" e afirmando a necessidade de reler todo o material com muita calma. Profª Karoline Evangelista aceitou a proposta e combinou que o grupo estudará os textos bíblicos e revisará os slides que eles enviará durante a semana, reabrindo o debate na aula seguinte para aprofundar os fundamentos das decisões éticas com base na obra de Norman Geisler. Ao final, os participantes se despediram, Cristiano Sacramento incentivou Alcimar Luiz da Silva a enviar o e-mail para resolver seus problemas de acesso à plataforma, e Rosiane Lima relembrou a todos a necessidade de assinar a lista de presença, enquanto Alcimar Luiz da Silva celebrou ter conseguido acompanhar a aula apesar da qualidade ruim de sua conexão de internet.",
+      "pontosChave": [
+        "Profª Karoline Evangelista concluiu a exposição das perspectivas éticas criticando o absolutismo conflitante por sugerir que o pecado é inevitável, o que anularia a responsabilidade humana, enquanto o absolutismo graduado prevê a isenção de culpa ao escolher a lei maior.",
+        "João Alexandre Souza Lemos reconheceu a complexidade do tema, declarando-se \"cabeça dura\" e afirmando a necessidade de reler todo o material com muita calma.",
+        "Profª Karoline Evangelista aceitou a proposta e combinou que o grupo estudará os textos bíblicos e revisará os slides que eles enviará durante a semana, reabrindo o debate na aula seguinte para aprofundar os fundamentos das decisões éticas com base na obra de Norman Geisler.",
+        "Ao final, os participantes se despediram, Cristiano Sacramento incentivou Alcimar Luiz da Silva a enviar o e-mail para resolver seus problemas de acesso à plataforma, e Rosiane Lima relembrou a todos a necessidade de assinar a lista de presença, enquanto Alcimar Luiz da Silva celebrou ter conseguido acompanhar a aula apesar da qualidade ruim de sua conexão de internet."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Introdução e Dinâmica de Aula",
+      "relato": "Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades. Daniel Rodrigues sugere, em tom de brincadeira, a realização de provas orais ou resenhas de múltiplos livros escritos à mão, o que gera uma discussão sobre os benefícios cognitivos da escrita manual, defendida por Profª Karoline Evangelista e complementada por Rosiane Lima como um excelente exercício para o cérebro e para a fixação de esboços de pregações. Rosiane Lima elogia o desempenho intelectual de Daniel Rodrigues, classificando-o como o principal aluno da turma, apesar de sua postura de falsa humildade, enquanto Daniel Rodrigues atribui a Rosiane Lima o papel de oradora oficial da turma."
+    },
+    {
+      "titulo": "Logística de Matrícula e Início da Aula",
+      "relato": "Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes. Contudo, o problema técnico foi logo solucionado e os alunos conseguiram acessar a sala virtual. Diante da presença de 13 participantes no momento, Cristiano Sacramento e Rosiane Lima esclarecem que o tamanho oficial da turma gira em torno de 24 matriculados, e que as oscilações de quórum (com variações entre 18 e 24 presentes em dias anteriores) ocorrem devido a atrasos profissionais decorrentes do trânsito e do horário de trabalho dos estudantes. Na sequência, Profª Karoline Evangelista conduz uma oração de abertura focada nos desafios do novo semestre letivo e na necessidade de capacitação bíblica para responder aos questionamentos sociais contemporâneos."
+    },
+    {
+      "titulo": "Apresentação do Conteúdo Programático",
+      "relato": "Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã. O cronograma pedagógico seguirá a sequência de tópicos proposta por Norman Geisler na obra \"Ética Cristã: Opções e Questões Contemporâneas\" (Editora Vida Nova, com aproximadamente 500 páginas), adotada como o livro-texto principal. O arcabouço conceitual do curso partirá da defesa do absolutismo graduado feita por Geisler para analisar uma série de dilemas éticos específicos. Os temas detalhados pela professora incluem aborto, infanticídio, eutanásia, questões biomédicas, controle de natalidade, pena de morte, guerra, desobediência civil, casamento e divórcio, ecologia e direitos dos animais (este último incluído em atendimento a um pedido anterior do aluno Marlon, que atua na área ambiental), uso de drogas, apostas, jogos de azar, além de uma abordagem diferenciada sobre sexo, pornografia e homossexualidade em comparação com o que já havia sido ministrado na disciplina de Apologética."
+    },
+    {
+      "titulo": "Dilemas Éticos na Narrativa de Abraão e Isaque",
+      "relato": "Profª Karoline Evangelista introduz o conceito de dilema moral utilizando o relato bíblico de Gênesis 22, onde Deus ordena que Abraão ofereça seu filho Isaque em sacrifício. A professora expõe o conflito essencial da cena: o choque direto entre a lei moral universal \"não matarás\" e uma contraordem divina direta de sacrifício, caracterizando a essência de um dilema ético, que ocorre quando duas normas ou leis morais entram em colisão frontal. João Alexandre Souza Lemos intervém no debate argumentando que, sob a perspectiva conceitual da época, a ordem não configurava um assassinato comum ou arbitrário, mas sim a execução de um rito formal de holocausto, cuja única distinção litúrgica era a substituição de uma vítima animal por uma vida humana. Rosiane Lima pondera que a obediência de Abraão e o consentimento de Isaque encontram respaldo teológico no fato de a ordem partir do próprio Deus, que é o autor supremo e a fonte instituidora de todo mandamento moral, legitimando a suspensão temporária da regra geral."
+    },
+    {
+      "titulo": "O Dilema da Mentira e o Caso de Raabe",
+      "relato": "Profª Karoline Evangelista aborda o conflito ético entre a preservação da verdade e a salvaguarda da vida por meio da história da prostituta Raabe, que mentiu intencionalmente aos oficiais de Jericó para ocultar e proteger os espias de Israel. Rosiane Lima inicialmente argumenta que a conduta de Raabe deve ser relativizada pelo contexto de sua biografia, visto que ela não era uma mulher convertida e nem pertencia formalmente ao povo de Deus, agindo com base em informações indiretas que ouviu sobre a soberania e os milagres divinos para propor um acordo de sobrevivência familiar. Todavia, o debate avança para a aplicação prática do dilema na contemporaneidade, simulando o cenário de um cristão na Coreia do Norte que precisa mentir para a fiscalização governamental para ocultar um missionário perseguido. Diante da provocação teórica, Rosiane Lima revê sua tese inicial sobre Raabe e admite que mentiria com o propósito de salvar a vida do missionário, utilizando o livro de Eclesiastes como pano de fundo para justificar a flexibilização da regra contra a mentira em prol de um bem maior."
+    },
+    {
+      "titulo": "Perspectivas Humanas sob Situações de Perseguição Extrema",
+      "relato": "Cristiano Sacramento oferece uma contraposição realista ao debate sobre ocultar missionários em regimes totalitários, estabelecendo uma distinção severa entre a teorização abstrata e a prática sob coação física. Sacramento argumenta que, embora no campo das ideias seja fácil para qualquer cristão afirmar que protegeria refugiados ou mentiria para a polícia política (como no caso de cidadãos que escondiam judeus da Gestapo nazista em seus porões), a realidade empírica demonstra a fragilidade humana sob tortura ou ameaça de morte. De acordo com o participante, a natureza humana tende ao instinto de autopreservação e a entregar o próximo em primeiro lugar quando espremida pelo medo. A manutenção de uma postura de sacrifício da própria vida por amor a Deus e pela proteção do irmão exige um nível profundo de maturidade espiritual e consolidação na fé, o que torna a mentira nessas circunstâncias excepcionais um ato genuíno de obediência aos mandamentos divinos superiores. João Alexandre Souza Lemos complementa lembrando que a mera presença clandestina do missionário em solo norte-coreano já configura uma infração deliberada contra as leis do Estado, tornando incoerente o receio legalista de mentir para as autoridades após o crime de desobediência civil já ter sido consumado."
+    },
+    {
+      "titulo": "Críticas ao Utilitarismo Coletivo e à Soberania da Maioria",
+      "relato": "Profª Karoline Evangelista e os alunos debatem as falhas estruturais da ética generalista e utilitarista, refutando a tese de que a aprovação da maioria valida uma conduta moral. João Alexandre Souza Lemos propõe uma ilustração prática baseada em debates contemporâneos sobre identidade de gênero, questionando os critérios matemáticos de representatividade (como maiorias de 49%) e citando os conflitos morais em torno da inclusão de atletas transexuais masculinos em ligas esportivas femininas. Profª Karoline Evangelista expande o exemplo simulando uma federação de atletas que aprova por maioria de votos a participação de uma mulher trans em uma equipe feminina. O grupo conclui unanimemente que a ratificação democrática ou coletiva de um comportamento não o torna eticamente correto perante os padrões imutáveis da verdade divina, desmistificando o ditado popular de que \"a voz do povo é a voz de Deus\". Rosiane Lima sintetiza que o perigo central do utilitarismo reside no fato de que as noções humanas de benefício são construídas a partir de desejos subjetivos, gerando meios injustos e incoerentes para alcançar fins supostamente bons."
+    },
+    {
+      "titulo": "Absolutismo Não Qualificado - Análise e Críticas",
+      "relato": "Profª Karoline Evangelista explicou a perspectiva do absolutismo não qualificado, mencionando a visão de Agostinho influenciada pelo dualismo platônico, que atribui um peso maior ao espiritual em detrimento do físico. Sob essa ótica, mentir é sempre errado, mesmo que resulte na morte de alguém, aplicando-se ao caso bíblico de Raab, onde defensores dessa linha afirmam que eles deveriam ter dito a verdade e confiado que Deus daria um escape. Profª Karoline Evangelista expôs os problemas dessa abordagem ao citar a crítica de Norman Geisler, baseada no princípio de que a lei da misericórdia é maior do que a lei da propriedade, exemplificando com o dilema de não devolver uma arma a um criminoso se soubesse que causaria uma morte. Ao falhar em demonstrar misericórdia para proteger inocentes, o absolutista não qualificado comete um pecado de omissão para evitar um pecado de comissão, falhando em preservar a vida. Rosiane Lima concordou, destacando que omitir a proteção constitui pecado por deixar de fazer o bem."
+    },
+    {
+      "titulo": "Discussão sobre Desobediência Civil e Aplicações Práticas",
+      "relato": "Rejane Arruda participou por celular, superando dificuldades técnicas com o aparelho, e questionou se a premissa do absolutismo graduado implicava a desobrigação de obedecer à lei civil quando esta contrariasse a lei de Deus. Profª Karoline Evangelista confirmou a interpretação e adicionou que, em cenários futuros hipotéticos como o sinal da besta (666) ou em países onde a Bíblia é proibida, a escolha pelo bem maior ditará a desobediência civil. A aprovação divina em casos como os de Abraão, Isaque, Daniel, os três jovens hebreus, as parteiras hebreias e Davi com o pão consagrado demonstra a hierarquia onde amar e obedecer a Deus está acima do governo, e a misericórdia está acima da veracidade. Rosiane Lima trouxe o exemplo da mulher pega em adultério para ilustrar o contexto, afirmando que Cristo se posicionou em defesa dela, permitindo que a misericórdia sobrepujasse a atuação fria da lei cultural daquela época, o que Profª Karoline Evangelista validou como uma aplicação perfeita do conceito."
+    },
+    {
+      "titulo": "Encerramento da Aula e Próximos Passos",
+      "relato": "Profª Karoline Evangelista concluiu a exposição das perspectivas éticas criticando o absolutismo conflitante por sugerir que o pecado é inevitável, o que anularia a responsabilidade humana, enquanto o absolutismo graduado prevê a isenção de culpa ao escolher a lei maior. João Alexandre Souza Lemos reconheceu a complexidade do tema, declarando-se \"cabeça dura\" e afirmando a necessidade de reler todo o material com muita calma. Profª Karoline Evangelista aceitou a proposta e combinou que o grupo estudará os textos bíblicos e revisará os slides que eles enviará durante a semana, reabrindo o debate na aula seguinte para aprofundar os fundamentos das decisões éticas com base na obra de Norman Geisler. Ao final, os participantes se despediram, Cristiano Sacramento incentivou Alcimar Luiz da Silva a enviar o e-mail para resolver seus problemas de acesso à plataforma, e Rosiane Lima relembrou a todos a necessidade de assinar a lista de presença, enquanto Alcimar Luiz da Silva celebrou ter conseguido acompanhar a aula apesar da qualidade ruim de sua conexão de internet."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Isaías 58",
+      "contexto": "Ela explicou que, enquanto o texto de Geisler possui maior densidade acadêmica e profundidade teórica — sendo o mais adequado para o nível de formação de um seminário —, a obra de Kaiser é estruturada em formatos menores com capítulos curtos organizados por passagens bíblicas (como a análise dos oprimidos a partir de Isaías 58)."
+    },
+    {
+      "referencia": "Gênesis 22",
+      "contexto": "Profª Karoline Evangelista introduz o conceito de dilema moral utilizando o relato bíblico de Gênesis 22, onde Deus ordena que Abraão ofereça seu filho Isaque em sacrifício."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Norman Geisler e as 6 Matrizes Éticas",
+      "detalhe": "Antinomismo (sem normas), Generalismo (normas sem universalidade), Situacionismo (só o amor importa), Absolutismo Não Qualificado (sem conflitos reais), Absolutismo Conflitante (mal menor + perdão) e Absolutismo Graduado (dever moral superior sem culpa)."
+    },
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    },
+    {
+      "titulo": "Catecismo Maior de Westminster (Q. 91 a 150)",
+      "detalhe": "O manual confessional definitivo utilizado na disciplina para interpretar a extensão moral dos Dez Mandamentos."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Introdução e Dinâmica de Aula\" nesta aula?",
+      "dicaResposta": "Daniel Rodrigues, Rosiane Lima e Cristiano Sacramento iniciam a sessão conversando com Profª Profª Karoline Evangelista sobre o retorno das férias e a dinâmica das próximas atividades. Daniel Rodrigues sugere, em tom de brincadeira, a realização de provas orais ou resenhas de múltiplos livros escritos à mão, o que gera uma discussão sobre os benefícios cognitivos da escrita manual, defendida por Profª Karoline Evangelista e complementada por Rosiane Lima como um excelente exercício para o cérebro e para a fixação de esboços de pregações."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Logística de Matrícula e Início da Aula\" nesta aula?",
+      "dicaResposta": "Rosiane Lima assume a gravação da aula e relata que o Google Meet apresentou instabilidades temporárias, exigindo autorização manual para a entrada de todos os participantes. Contudo, o problema técnico foi logo solucionado e os alunos conseguiram acessar a sala virtual."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Apresentação do Conteúdo Programático\" nesta aula?",
+      "dicaResposta": "Profª Karoline Evangelista detalha as bases teóricas e a estrutura de temas que serão estudados ao longo do semestre na disciplina de Ética Cristã. O cronograma pedagógico seguirá a sequência de tópicos proposta por Norman Geisler na obra \"Ética Cristã: Opções e Questões Contemporâneas\" (Editora Vida Nova, com aproximadamente 500 páginas), adotada como o livro-texto principal."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Indicações Bibliográficas Complementares\" nesta aula?",
+      "dicaResposta": "Profª Karoline Evangelista apresenta a obra de Walter Kaiser, intitulada \"O Cristão e as Questões Éticas da Atualidade\", estabelecendo um comparativo técnico com o livro de Norman Geisler para orientar o uso prático dos alunos. Após uma breve interrupção de Cristiano Sacramento e Antonio Marcos, que alertaram sobre a ausência de compartilhamento visual das imagens na tela, a professora ajustou a transmissão dos slides."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Planejamento de Avaliações (V1 e V2)\" nesta aula?",
+      "dicaResposta": "Profª Karoline Evangelista define que as notas de avaliação do semestre serão unificadas em uma única atividade prática baseada no Catecismo Maior de Westminster, focando especificamente na seção que comenta os Dez Mandamentos. A escolha bibliográfica justifica-se pela acessibilidade e ampla oferta de edições comentadas no mercado."
+    }
+  ],
+  "encaminhamentos": [
+    "Formar Grupos: Organizar os alunos em grupos de 3 a 4 pessoas para as apresentações de trabalho.",
+    "Enviar Lista: Enviar a lista final dos grupos para a professora até a próxima aula.",
+    "Adquirir e Ler Livro: Comprar e ler o livro Ética Cristã de Norman Geisler.",
+    "Pesquisar Catecismo: Estudar o Catecismo Maior de Westminster para fundamentar as apresentações sobre os 10 mandamentos."
+  ]
+}

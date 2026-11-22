@@ -1,0 +1,455 @@
+{
+  "id": "disc-5-aula-10",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 10,
+  "unidade": 2,
+  "dateIso": "2026-10-22",
+  "dateBr": "22/10/2026",
+  "theme": "Aula 10 • Visão Cristã da Ecologia",
+  "geminiUrl": "https://docs.google.com/document/d/1Z1Tf7d25ZP6oaP4cM6Oy99Iz-uGu8uKLElKrgP8X8QE/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "1ª Rodada dos Seminários: O 1º e o 2º Mandamentos (o culto exclusivo a Deus versus idolatria de imagens e ritos pagãos).",
+    "sinteseGeral": "Debate ecológico cristão abordou visões ambientais e ecologia com ênfase prática e teológica. Visão Cristã da Ecologia Cristianismo equilibra o cuidado ambiental e o domínio humano, evitando extremos materialistas e panteístas. Debate sobre Animais e Teologia Teólogos liberais e tradicionais debateram direitos dos animais e hierarquia da criação sob premissa bíblica. Encerramento e Próximos Temas Cronograma futuro incluiu novos debates e aula terminou com oração coletiva.",
+    "mapaRapido": [
+      "Adiamento das Apresentações de Alunos: BiblicaMente por Profª Karoline Evangelista explicou que, devido ao tempo limitado e à dinâmica de participação da disciplina, as apresentações dos grupos agendadas para a primeira semana de aula não seriam concluídas.",
+      "Perspectiva Cristã sobre Guerra e Governo: BiblicaMente por Profª Karoline Evangelista pontuou que o assunto de guerra e governo não seria estendido, reafirmando o entendimento de que cristãos devem obedecer às autoridades constituídas, exceto quando o governo contraria a palavra de Deus, caso em que devem permanecer fiéis aos preceitos divinos independentemente das consequências.",
+      "Introdução ao Tema de Ecologia e Cuidado com o Meio Ambiente: BiblicaMente por Profª Karoline Evangelista mencionou que, embora houvesse outros tópicos de ética cristã não abordados em apologética (como sexualidade e divórcio), a prioridade seria dada ao tema solicitado por Marlon Pimentel, referente ao cuidado com o meio ambiente e com os animais.",
+      "Extremismos Ecológicos versus Visão Cristã: BiblicaMente por Profª Karoline Evangelista apresentou duas visões extremas sobre ecologia: a devastação materialista, focada na prosperidade humana e na energia ilimitada, e a adoração panteísta, que equipara Deus ao universo e supervaloriza a natureza.",
+      "Contrapontos Científicos ao Materialismo Secular: BiblicaMente por Profª Karoline Evangelista detalhou que, contra a visão materialista de energia ilimitada, a segunda lei da termodinâmica aponta que a energia utilizável do universo está diminuindo (entropia), indicando que o universo teve um início e foi criado.",
+      "Análise da Visão Panteísta e Independência da Criação: BiblicaMente por Profª Karoline Evangelista destacou que o panteísmo enxerga a natureza como divina, exemplificando com falas místicas, enquanto biblicamente a natureza procede de Deus mas não é uma extensão ou deificação Dele."
+    ],
+    "duracaoEstimada": "~1h20min",
+    "totalBlocos": 24
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Adiamento das Apresentações de Alunos",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista explicou que, devido ao tempo limitado e à dinâmica de participação da disciplina, as apresentações dos grupos agendadas para a primeira semana de aula não seriam concluídas.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista explicou que, devido ao tempo limitado e à dinâmica de participação da disciplina, as apresentações dos grupos agendadas para a primeira semana de aula não seriam concluídas. Ficou decidido que as apresentações começarão na semana seguinte, a menos que algum grupo fizesse questão de apresentar no dia.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista explicou que, devido ao tempo limitado e à dinâmica de participação da disciplina, as apresentações dos grupos agendadas para a primeira semana de aula não seriam concluídas.",
+        "Ficou decidido que as apresentações começarão na semana seguinte, a menos que algum grupo fizesse questão de apresentar no dia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Perspectiva Cristã sobre Guerra e Governo",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista pontuou que o assunto de guerra e governo não seria estendido, reafirmando o entendimento de que cristãos devem obedecer às autoridades constituídas, exceto quando o governo contraria a palavra de Deus, caso em que devem permanecer fiéis aos preceitos divinos independentemente das consequências.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista pontuou que o assunto de guerra e governo não seria estendido, reafirmando o entendimento de que cristãos devem obedecer às autoridades constituídas, exceto quando o governo contraria a palavra de Deus, caso em que devem permanecer fiéis aos preceitos divinos independentemente das consequências.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista pontuou que o assunto de guerra e governo não seria estendido, reafirmando o entendimento de que cristãos devem obedecer às autoridades constituídas, exceto quando o governo contraria a palavra de Deus, caso em que devem permanecer fiéis aos preceitos divinos independentemente das consequências."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:00:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Introdução ao Tema de Ecologia e Cuidado com o Meio Ambiente",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista mencionou que, embora houvesse outros tópicos de ética cristã não abordados em apologética (como sexualidade e divórcio), a prioridade seria dada ao tema solicitado por Marlon Pimentel, referente ao cuidado com o meio ambiente e com os animais.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista mencionou que, embora houvesse outros tópicos de ética cristã não abordados em apologética (como sexualidade e divórcio), a prioridade seria dada ao tema solicitado por Marlon Pimentel, referente ao cuidado com o meio ambiente e com os animais.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista mencionou que, embora houvesse outros tópicos de ética cristã não abordados em apologética (como sexualidade e divórcio), a prioridade seria dada ao tema solicitado por Marlon Pimentel, referente ao cuidado com o meio ambiente e com os animais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:12:55",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Extremismos Ecológicos versus Visão Cristã",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista apresentou duas visões extremas sobre ecologia: a devastação materialista, focada na prosperidade humana e na energia ilimitada, e a adoração panteísta, que equipara Deus ao universo e supervaloriza a natureza.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista apresentou duas visões extremas sobre ecologia: a devastação materialista, focada na prosperidade humana e na energia ilimitada, e a adoração panteísta, que equipara Deus ao universo e supervaloriza a natureza. O cristianismo posiciona-se no equilíbrio, definindo a humanidade como administradores e mordomos da criação de Deus.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista apresentou duas visões extremas sobre ecologia: a devastação materialista, focada na prosperidade humana e na energia ilimitada, e a adoração panteísta, que equipara Deus ao universo e supervaloriza a natureza.",
+        "O cristianismo posiciona-se no equilíbrio, definindo a humanidade como administradores e mordomos da criação de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:06:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Contrapontos Científicos ao Materialismo Secular",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista detalhou que, contra a visão materialista de energia ilimitada, a segunda lei da termodinâmica aponta que a energia utilizável do universo está diminuindo (entropia), indicando que o universo teve um início e foi criado.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista detalhou que, contra a visão materialista de energia ilimitada, a segunda lei da termodinâmica aponta que a energia utilizável do universo está diminuindo (entropia), indicando que o universo teve um início e foi criado. Adicionalmente, contra a crença materialista de que a tecnologia resolve todos os problemas, argumentou-se que a humanidade não possui capacidade antecipada de acumular informações para todas as crises, sendo o egoísmo e a ganância humana a raiz dos problemas de distribuição.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista detalhou que, contra a visão materialista de energia ilimitada, a segunda lei da termodinâmica aponta que a energia utilizável do universo está diminuindo (entropia), indicando que o universo teve um início e foi criado.",
+        "Adicionalmente, contra a crença materialista de que a tecnologia resolve todos os problemas, argumentou-se que a humanidade não possui capacidade antecipada de acumular informações para todas as crises, sendo o egoísmo e a ganância humana a raiz dos problemas de distribuição."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:11:17",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Análise da Visão Panteísta e Independência da Criação",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista destacou que o panteísmo enxerga a natureza como divina, exemplificando com falas místicas, enquanto biblicamente a natureza procede de Deus mas não é uma extensão ou deificação Dele.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista destacou que o panteísmo enxerga a natureza como divina, exemplificando com falas místicas, enquanto biblicamente a natureza procede de Deus mas não é uma extensão ou deificação Dele. Os seres humanos foram criados à imagem de Deus e estão acima da criação, diferentemente da premissa panteísta de igualdade com a natureza.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista destacou que o panteísmo enxerga a natureza como divina, exemplificando com falas místicas, enquanto biblicamente a natureza procede de Deus mas não é uma extensão ou deificação Dele.",
+        "Os seres humanos foram criados à imagem de Deus e estão acima da criação, diferentemente da premissa panteísta de igualdade com a natureza."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:14:09",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Três Obrigações Básicas do Cristão com o Meio Ambiente",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista explicou que as responsabilidades fundamentais com a criação incluem a propagação (mandamento dado à raça humana para reprodução, respeitando a condição de solteiro de alguns) e o domínio, onde a humanidade governa e cultiva a terra servindo à semelhança de Jesus Cristo.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista explicou que as responsabilidades fundamentais com a criação incluem a propagação (mandamento dado à raça humana para reprodução, respeitando a condição de solteiro de alguns) e o domínio, onde a humanidade governa e cultiva a terra servindo à semelhança de Jesus Cristo.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista explicou que as responsabilidades fundamentais com a criação incluem a propagação (mandamento dado à raça humana para reprodução, respeitando a condição de solteiro de alguns) e o domínio, onde a humanidade governa e cultiva a terra servindo à semelhança de Jesus Cristo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:17:01",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Princípios Bíblicos de Gestão Ambiental e Leis Antigas",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista abordou princípios práticos como a boa administração da natureza (evitando o desperdício do jardim de Deus), o descanso semanal e sabático para terra, humanidade e animais, a lei da colheita (deixando frutos para pobres e animais para combater a ganância), e leis sanitárias e de guerra presentes no Antigo Testamento orientadas à preservação da vida e saúde.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista abordou princípios práticos como a boa administração da natureza (evitando o desperdício do jardim de Deus), o descanso semanal e sabático para terra, humanidade e animais, a lei da colheita (deixando frutos para pobres e animais para combater a ganância), e leis sanitárias e de guerra presentes no Antigo Testamento orientadas à preservação da vida e saúde.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista abordou princípios práticos como a boa administração da natureza (evitando o desperdício do jardim de Deus), o descanso semanal e sabático para terra, humanidade e animais, a lei da colheita (deixando frutos para pobres e animais para combater a ganância), e leis sanitárias e de guerra presentes no Antigo Testamento orientadas à preservação da vida e saúde."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:23:54",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Valor Humano e Impacto de Projetos de Infraestrutura",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista destacou que o ser humano é o recurso mais valioso da Terra por ser capaz de desenvolver recursos e enriquecer a criação, exemplificando com barragens e indústrias agrícolas que geram benefícios sociais e alimentares apesar de impactos ambientais.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista destacou que o ser humano é o recurso mais valioso da Terra por ser capaz de desenvolver recursos e enriquecer a criação, exemplificando com barragens e indústrias agrícolas que geram benefícios sociais e alimentares apesar de impactos ambientais. carla p dos s de almeida acrescentou que a avaliação de impactos como a chuva depende da perspectiva e da necessidade momentânea de cada grupo, seja para plantio ou colheita.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista destacou que o ser humano é o recurso mais valioso da Terra por ser capaz de desenvolver recursos e enriquecer a criação, exemplificando com barragens e indústrias agrícolas que geram benefícios sociais e alimentares apesar de impactos ambientais.",
+        "carla p dos s de almeida acrescentou que a avaliação de impactos como a chuva depende da perspectiva e da necessidade momentânea de cada grupo, seja para plantio ou colheita."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:25:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Equilíbrio entre Domínio e Cuidado Ambiental",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista alertou que a falta de domínio aproxima os indivíduos do panteísmo, enquanto a falta de cuidado leva ao materialismo, ressaltando que a poluição do meio ambiente constitui pecado contra Deus, contra si e contra as gerações futuras.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista alertou que a falta de domínio aproxima os indivíduos do panteísmo, enquanto a falta de cuidado leva ao materialismo, ressaltando que a poluição do meio ambiente constitui pecado contra Deus, contra si e contra as gerações futuras.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista alertou que a falta de domínio aproxima os indivíduos do panteísmo, enquanto a falta de cuidado leva ao materialismo, ressaltando que a poluição do meio ambiente constitui pecado contra Deus, contra si e contra as gerações futuras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:27:06",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Experiências Locais com a Ecologia no Pantanal",
+      "resumoCurto": "Salatiel Rodrigues relatou que na região do Pantanal (Corumbá) há forte preocupação com a preservação, citando a proibição da pesca durante o período da Piracima no rio Paraguai para proteger a reprodução de espécies como pintado e pacu, além da convivência com a fauna local, como onças e jacarés.",
+      "detalhamento": "Salatiel Rodrigues relatou que na região do Pantanal (Corumbá) há forte preocupação com a preservação, citando a proibição da pesca durante o período da Piracima no rio Paraguai para proteger a reprodução de espécies como pintado e pacu, além da convivência com a fauna local, como onças e jacarés.",
+      "pontosChave": [
+        "Salatiel Rodrigues relatou que na região do Pantanal (Corumbá) há forte preocupação com a preservação, citando a proibição da pesca durante o período da Piracima no rio Paraguai para proteger a reprodução de espécies como pintado e pacu, além da convivência com a fauna local, como onças e jacarés."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:36:17",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atuação Profissional e Ação Teológica na Sociedade",
+      "resumoCurto": "Marlon Pimentel compartilhou experiência de mais de dez anos em segurança do trabalho e meio ambiente, atuando com energias renováveis, e argumentou que falta às igrejas uma ação teológica prática e alinhada à cosmovisão cristã para influenciar políticas, votações e projetos socioambientais.",
+      "detalhamento": "Marlon Pimentel compartilhou experiência de mais de dez anos em segurança do trabalho e meio ambiente, atuando com energias renováveis, e argumentou que falta às igrejas uma ação teológica prática e alinhada à cosmovisão cristã para influenciar políticas, votações e projetos socioambientais. BiblicaMente por Profª Karoline Evangelista reforçou a importância de seminaristas tratarem o tema com bases bíblicas para motivar a igreja ativa.",
+      "pontosChave": [
+        "Marlon Pimentel compartilhou experiência de mais de dez anos em segurança do trabalho e meio ambiente, atuando com energias renováveis, e argumentou que falta às igrejas uma ação teológica prática e alinhada à cosmovisão cristã para influenciar políticas, votações e projetos socioambientais.",
+        "BiblicaMente por Profª Karoline Evangelista reforçou a importância de seminaristas tratarem o tema com bases bíblicas para motivar a igreja ativa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:41:50",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto Ecológico do Amazonas e Mudanças Climáticas",
+      "resumoCurto": "Cristiano Sacramento contextualizou a relevância da bacia hidrográfica amazônica e da floresta no norte do país, ponderando que o ser humano foi criado para reinar servindo como Cristo.",
+      "detalhamento": "Cristiano Sacramento contextualizou a relevância da bacia hidrográfica amazônica e da floresta no norte do país, ponderando que o ser humano foi criado para reinar servindo como Cristo. Cristiano Sacramento também argumentou que o planeta passa por mudanças climáticas históricas e cíclicas, devendo os cristãos cuidar do planeta e do próximo sem endeusar a natureza.",
+      "pontosChave": [
+        "Cristiano Sacramento contextualizou a relevância da bacia hidrográfica amazônica e da floresta no norte do país, ponderando que o ser humano foi criado para reinar servindo como Cristo.",
+        "Cristiano Sacramento também argumentou que o planeta passa por mudanças climáticas históricas e cíclicas, devendo os cristãos cuidar do planeta e do próximo sem endeusar a natureza."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:45:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Influência da Mídia e Ideologias Antíbiblicas em Filmes",
+      "resumoCurto": "Adriel Carvalho pontuou que a negligência da igreja em temas ambientais abre espaço para que a mídia e o cinema (citando o filme Avatar e a deusa panteísta Aia) divulguem ideologias contrárias à Bíblia que moldam a visão pública sobre a natureza.",
+      "detalhamento": "Adriel Carvalho pontuou que a negligência da igreja em temas ambientais abre espaço para que a mídia e o cinema (citando o filme Avatar e a deusa panteísta Aia) divulguem ideologias contrárias à Bíblia que moldam a visão pública sobre a natureza.",
+      "pontosChave": [
+        "Adriel Carvalho pontuou que a negligência da igreja em temas ambientais abre espaço para que a mídia e o cinema (citando o filme Avatar e a deusa panteísta Aia) divulguem ideologias contrárias à Bíblia que moldam a visão pública sobre a natureza."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:49:49",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Criação, Queda e o Testemunho Cristão",
+      "resumoCurto": "Talita RF Felinto refletiu que o meio ambiente foi atingido pelo pecado e que o cuidado com a natureza manifesta a crença cristã, apontando para o Criador em vez de adorar a própria criação.",
+      "detalhamento": "Talita RF Felinto refletiu que o meio ambiente foi atingido pelo pecado e que o cuidado com a natureza manifesta a crença cristã, apontando para o Criador em vez de adorar a própria criação. BiblicaMente por Profª Karoline Evangelista complementou alertando sobre a influência de animações infantis na disseminação de conceitos panteístas inconscientes.",
+      "pontosChave": [
+        "Talita RF Felinto refletiu que o meio ambiente foi atingido pelo pecado e que o cuidado com a natureza manifesta a crença cristã, apontando para o Criador em vez de adorar a própria criação.",
+        "BiblicaMente por Profª Karoline Evangelista complementou alertando sobre a influência de animações infantis na disseminação de conceitos panteístas inconscientes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:54:09",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Iniciativas Práticas de Reciclagem e Sustentabilidade na Igreja",
+      "resumoCurto": "Marlon Pimentel apresentou exemplos práticos aplicados em ministérios eclesiásticos, como coleta seletiva e reciclagem de óleo de cozinha usado para arrecadar fundos para missões e assistência, além de proteger os recursos hídricos e o saneamento básico.",
+      "detalhamento": "Marlon Pimentel apresentou exemplos práticos aplicados em ministérios eclesiásticos, como coleta seletiva e reciclagem de óleo de cozinha usado para arrecadar fundos para missões e assistência, além de proteger os recursos hídricos e o saneamento básico. BiblicaMente por Profª Karoline Evangelista concluiu reforçando a necessidade de instrução e ensino ativo por parte das igrejas sobre o tema.",
+      "pontosChave": [
+        "Marlon Pimentel apresentou exemplos práticos aplicados em ministérios eclesiásticos, como coleta seletiva e reciclagem de óleo de cozinha usado para arrecadar fundos para missões e assistência, além de proteger os recursos hídricos e o saneamento básico.",
+        "BiblicaMente por Profª Karoline Evangelista concluiu reforçando a necessidade de instrução e ensino ativo por parte das igrejas sobre o tema."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:58:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Perspectiva Teológica Liberal e Direitos dos Animais",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista abordou a visão do liberalismo teológico, que utiliza a dogmática eclesiástica de Karl Barth como fundamento para incluir animais na aliança da graça como criaturas redimidas e de igual valor aos seres humanos.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista abordou a visão do liberalismo teológico, que utiliza a dogmática eclesiástica de Karl Barth como fundamento para incluir animais na aliança da graça como criaturas redimidas e de igual valor aos seres humanos. A pessoa discursou sobre a perspectiva materialista pré-darwiniana, em que os seres humanos eram vistos como os únicos racionais, contrapondo-se à visão de Darwin de que a diferença para com os animais é de grau e não de natureza. Os argumentos dos teólogos liberais citados incluem o valor intrínseco da criação, a redenção de toda a criação, a paz mútua entre Deus, humanos e animais, o desejo divino por misericórdia em vez de sacrifícios, e a ordem original do vegetarianismo em Gênesis 1:29.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista abordou a visão do liberalismo teológico, que utiliza a dogmática eclesiástica de Karl Barth como fundamento para incluir animais na aliança da graça como criaturas redimidas e de igual valor aos seres humanos.",
+        "A pessoa discursou sobre a perspectiva materialista pré-darwiniana, em que os seres humanos eram vistos como os únicos racionais, contrapondo-se à visão de Darwin de que a diferença para com os animais é de grau e não de natureza.",
+        "Os argumentos dos teólogos liberais citados incluem o valor intrínseco da criação, a redenção de toda a criação, a paz mútua entre Deus, humanos e animais, o desejo divino por misericórdia em vez de sacrifícios, e a ordem original do vegetarianismo em Gênesis 1:29."
+      ],
+      "referenciasNoBloco": [
+        "Gênesis 1:29"
+      ]
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:01:17",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Visão Tradicional e Hierarquia da Criação",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista apresentou a contraposição bíblica, destacando que a humanidade foi criada à imagem e semelhança de Deus, possuindo alma eterna, entendimento, consciência, memória e natureza distinta, além de receber domínio sobre as demais criaturas.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista apresentou a contraposição bíblica, destacando que a humanidade foi criada à imagem e semelhança de Deus, possuindo alma eterna, entendimento, consciência, memória e natureza distinta, além de receber domínio sobre as demais criaturas. Citando Romanos 1 e textos sobre condenação, a docente apontou que Deus instituiu uma hierarquia, que o domínio sobre os animais nunca foi perdido após a queda, que o primeiro sacrifício de vestimentas em pele foi feito por Deus para Adão e Eva, e que após o sacrifício de Cristo houve a ordem a Pedro para matar e comer animais.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista apresentou a contraposição bíblica, destacando que a humanidade foi criada à imagem e semelhança de Deus, possuindo alma eterna, entendimento, consciência, memória e natureza distinta, além de receber domínio sobre as demais criaturas.",
+        "Citando Romanos 1 e textos sobre condenação, a docente apontou que Deus instituiu uma hierarquia, que o domínio sobre os animais nunca foi perdido após a queda, que o primeiro sacrifício de vestimentas em pele foi feito por Deus para Adão e Eva, e que após o sacrifício de Cristo houve a ordem a Pedro para matar e comer animais."
+      ],
+      "referenciasNoBloco": [
+        "Romanos 1"
+      ]
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:05:16",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Restauração Futura e Relação com os Animais",
+      "resumoCurto": "Cristiano Sacramento comentou sobre a degradação do mundo perfeito criado por Deus devido ao pecado, destacando a esperança na restauração futura de um novo céu e nova terra onde haverá harmonia entre seres humanos e criação.",
+      "detalhamento": "Cristiano Sacramento comentou sobre a degradação do mundo perfeito criado por Deus devido ao pecado, destacando a esperança na restauração futura de um novo céu e nova terra onde haverá harmonia entre seres humanos e criação. afirmou que, embora o ser humano reine sobre a natureza, a esperança está no tempo vindouro da restituição total. Houve um breve debate entre BiblicaMente por Profª Karoline Evangelista, Cristiano Sacramento e Salatiel Rodrigues sobre a presença de animais de estimação na nova criação.",
+      "pontosChave": [
+        "Cristiano Sacramento comentou sobre a degradação do mundo perfeito criado por Deus devido ao pecado, destacando a esperança na restauração futura de um novo céu e nova terra onde haverá harmonia entre seres humanos e criação.",
+        "afirmou que, embora o ser humano reine sobre a natureza, a esperança está no tempo vindouro da restituição total.",
+        "Houve um breve debate entre BiblicaMente por Profª Karoline Evangelista, Cristiano Sacramento e Salatiel Rodrigues sobre a presença de animais de estimação na nova criação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:06:31",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Refutação do Pecado no Consumo de Carne e Direitos Morais",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista refutou a ideia de que consumir carne seja pecado, argumentando que Cristo e os discípulos comeram peixe e carne, inclusive após a ressurreição, e que a ordem dada a Pedro não constitui indução ao pecado.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista refutou a ideia de que consumir carne seja pecado, argumentando que Cristo e os discípulos comeram peixe e carne, inclusive após a ressurreição, e que a ordem dada a Pedro não constitui indução ao pecado. A docente mencionou que restrições ao consumo de carne no Novo Testamento decorreram de questões de saúde da época ou de escrúpulos de irmãos fracos na fé. Além disso, destacou que os direitos morais pertencem apenas a criaturas morais, embora o ser humano tenha o dever de preservar a vida criada por Deus.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista refutou a ideia de que consumir carne seja pecado, argumentando que Cristo e os discípulos comeram peixe e carne, inclusive após a ressurreição, e que a ordem dada a Pedro não constitui indução ao pecado.",
+        "A docente mencionou que restrições ao consumo de carne no Novo Testamento decorreram de questões de saúde da época ou de escrúpulos de irmãos fracos na fé.",
+        "Além disso, destacou que os direitos morais pertencem apenas a criaturas morais, embora o ser humano tenha o dever de preservar a vida criada por Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:10:14",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Prioridade da Vida Humana e Legítima Defesa",
+      "resumoCurto": "Rosiane Lima (Rosi) relatou um incidente em Maricá envolvendo três cães da raça Pitbull soltos que invadiram uma residência, levando o morador a atacar os animais com uma faca em legítima defesa de sua família e cão de estimação.",
+      "detalhamento": "Rosiane Lima (Rosi) relatou um incidente em Maricá envolvendo três cães da raça Pitbull soltos que invadiram uma residência, levando o morador a atacar os animais com uma faca em legítima defesa de sua família e cão de estimação. defendeu que a vida humana é prioridade absoluta e obra-prima de Deus, não devendo ser equiparada ou subordinada à vida animal, concordando com a premissa de que os seres humanos são dotados de raciocínio e relação com o Criador. BiblicaMente por Profª Karoline Evangelista endossou o posicionamento.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) relatou um incidente em Maricá envolvendo três cães da raça Pitbull soltos que invadiram uma residência, levando o morador a atacar os animais com uma faca em legítima defesa de sua família e cão de estimação.",
+        "defendeu que a vida humana é prioridade absoluta e obra-prima de Deus, não devendo ser equiparada ou subordinada à vida animal, concordando com a premissa de que os seres humanos são dotados de raciocínio e relação com o Criador.",
+        "BiblicaMente por Profª Karoline Evangelista endossou o posicionamento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:12:42",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectivas sobre Ecologia e Preservação da Criação",
+      "resumoCurto": "Grazi Guimarães compartilhou sobre um evento realizado em 2023 pela Confederação da COMEC (Congregacional) sobre evangelho e ecologia, utilizando o texto de Romanos para enfatizar a responsabilidade dos filhos de Deus na proteção e cuidado com a criação.",
+      "detalhamento": "Grazi Guimarães compartilhou sobre um evento realizado em 2023 pela Confederação da COMEC (Congregacional) sobre evangelho e ecologia, utilizando o texto de Romanos para enfatizar a responsabilidade dos filhos de Deus na proteção e cuidado com a criação. Rosiane Lima (Rosi) e BiblicaMente por Profª Karoline Evangelista discutiram a aliança de Noé com toda a criação e a expectativa de conviver com a natureza restaurada na eternidade.",
+      "pontosChave": [
+        "Grazi Guimarães compartilhou sobre um evento realizado em 2023 pela Confederação da COMEC (Congregacional) sobre evangelho e ecologia, utilizando o texto de Romanos para enfatizar a responsabilidade dos filhos de Deus na proteção e cuidado com a criação.",
+        "Rosiane Lima (Rosi) e BiblicaMente por Profª Karoline Evangelista discutiram a aliança de Noé com toda a criação e a expectativa de conviver com a natureza restaurada na eternidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:16:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desafios Teológicos sobre a Morte Animal e Sugestões de Trabalhos Acadêmicos",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista apontou a complexidade teológica de conciliar a ausência de morte na eternidade com a existência de animais.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista apontou a complexidade teológica de conciliar a ausência de morte na eternidade com a existência de animais. Diante das discussões, Salatiel Rodrigues e BiblicaMente por Profª Karoline Evangelista sugeriram temas para Trabalhos de Conclusão de Curso (TCC) ou teses focados em ecologia, meio ambiente ou na presença de animais na eternidade.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista apontou a complexidade teológica de conciliar a ausência de morte na eternidade com a existência de animais.",
+        "Diante das discussões, Salatiel Rodrigues e BiblicaMente por Profª Karoline Evangelista sugeriram temas para Trabalhos de Conclusão de Curso (TCC) ou teses focados em ecologia, meio ambiente ou na presença de animais na eternidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "01:19:49",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Cronograma Futuro, Jogos de Azar e Encerramento da Aula",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista informou que na semana seguinte iniciarão os grupos de estudo sobre os 10 mandamentos e propôs temas futuros para debate, como drogas, álcool, jogos de azar (incluindo apostas e rifas), pornografia e homossexualidade.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista informou que na semana seguinte iniciarão os grupos de estudo sobre os 10 mandamentos e propôs temas futuros para debate, como drogas, álcool, jogos de azar (incluindo apostas e rifas), pornografia e homossexualidade. Cristiano Sacramento relatou a prática comum de rifas em igrejas no Amazonas. A aula foi encerrada por BiblicaMente por Profª Karoline Evangelista com uma oração coletiva.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista informou que na semana seguinte iniciarão os grupos de estudo sobre os 10 mandamentos e propôs temas futuros para debate, como drogas, álcool, jogos de azar (incluindo apostas e rifas), pornografia e homossexualidade.",
+        "Cristiano Sacramento relatou a prática comum de rifas em igrejas no Amazonas.",
+        "A aula foi encerrada por BiblicaMente por Profª Karoline Evangelista com uma oração coletiva."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Análise da Visão Panteísta e Independência da Criação",
+      "relato": "BiblicaMente por Profª Karoline Evangelista destacou que o panteísmo enxerga a natureza como divina, exemplificando com falas místicas, enquanto biblicamente a natureza procede de Deus mas não é uma extensão ou deificação Dele. Os seres humanos foram criados à imagem de Deus e estão acima da criação, diferentemente da premissa panteísta de igualdade com a natureza.",
+      "timestamp": "00:11:17"
+    },
+    {
+      "titulo": "Valor Humano e Impacto de Projetos de Infraestrutura",
+      "relato": "BiblicaMente por Profª Karoline Evangelista destacou que o ser humano é o recurso mais valioso da Terra por ser capaz de desenvolver recursos e enriquecer a criação, exemplificando com barragens e indústrias agrícolas que geram benefícios sociais e alimentares apesar de impactos ambientais. carla p dos s de almeida acrescentou que a avaliação de impactos como a chuva depende da perspectiva e da necessidade momentânea de cada grupo, seja para plantio ou colheita.",
+      "timestamp": "00:23:54"
+    },
+    {
+      "titulo": "Criação, Queda e o Testemunho Cristão",
+      "relato": "Talita RF Felinto refletiu que o meio ambiente foi atingido pelo pecado e que o cuidado com a natureza manifesta a crença cristã, apontando para o Criador em vez de adorar a própria criação. BiblicaMente por Profª Karoline Evangelista complementou alertando sobre a influência de animações infantis na disseminação de conceitos panteístas inconscientes.",
+      "timestamp": "00:49:49"
+    },
+    {
+      "titulo": "Restauração Futura e Relação com os Animais",
+      "relato": "Cristiano Sacramento comentou sobre a degradação do mundo perfeito criado por Deus devido ao pecado, destacando a esperança na restauração futura de um novo céu e nova terra onde haverá harmonia entre seres humanos e criação. afirmou que, embora o ser humano reine sobre a natureza, a esperança está no tempo vindouro da restituição total. Houve um breve debate entre BiblicaMente por Profª Karoline Evangelista, Cristiano Sacramento e Salatiel Rodrigues sobre a presença de animais de estimação na nova criação.",
+      "timestamp": "01:05:16"
+    },
+    {
+      "titulo": "Prioridade da Vida Humana e Legítima Defesa",
+      "relato": "Rosiane Lima (Rosi) relatou um incidente em Maricá envolvendo três cães da raça Pitbull soltos que invadiram uma residência, levando o morador a atacar os animais com uma faca em legítima defesa de sua família e cão de estimação. defendeu que a vida humana é prioridade absoluta e obra-prima de Deus, não devendo ser equiparada ou subordinada à vida animal, concordando com a premissa de que os seres humanos são dotados de raciocínio e relação com o Criador. BiblicaMente por Profª Karoline Evangelista endossou o posicionamento.",
+      "timestamp": "01:10:14"
+    },
+    {
+      "titulo": "Perspectivas sobre Ecologia e Preservação da Criação",
+      "relato": "Grazi Guimarães compartilhou sobre um evento realizado em 2023 pela Confederação da COMEC (Congregacional) sobre evangelho e ecologia, utilizando o texto de Romanos para enfatizar a responsabilidade dos filhos de Deus na proteção e cuidado com a criação. Rosiane Lima (Rosi) e BiblicaMente por Profª Karoline Evangelista discutiram a aliança de Noé com toda a criação e a expectativa de conviver com a natureza restaurada na eternidade.",
+      "timestamp": "01:12:42"
+    },
+    {
+      "titulo": "Cronograma Futuro, Jogos de Azar e Encerramento da Aula",
+      "relato": "BiblicaMente por Profª Karoline Evangelista informou que na semana seguinte iniciarão os grupos de estudo sobre os 10 mandamentos e propôs temas futuros para debate, como drogas, álcool, jogos de azar (incluindo apostas e rifas), pornografia e homossexualidade. Cristiano Sacramento relatou a prática comum de rifas em igrejas no Amazonas. A aula foi encerrada por BiblicaMente por Profª Karoline Evangelista com uma oração coletiva.",
+      "timestamp": "01:19:49"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Gênesis 1:29",
+      "contexto": "Os argumentos dos teólogos liberais citados incluem o valor intrínseco da criação, a redenção de toda a criação, a paz mútua entre Deus, humanos e animais, o desejo divino por misericórdia em vez de sacrifícios, e a ordem original do vegetarianismo em Gênesis 1:29."
+    },
+    {
+      "referencia": "Romanos 1",
+      "contexto": "Citando Romanos 1 e textos sobre condenação, a docente apontou que Deus instituiu uma hierarquia, que o domínio sobre os animais nunca foi perdido após a queda, que o primeiro sacrifício de vestimentas em pele foi feito por Deus para Adão e Eva, e que após o sacrifício de Cristo houve a ordem a Pedro para matar e comer animais."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    },
+    {
+      "titulo": "Pena Capital e Guerra Justa",
+      "detalhe": "Fundamentadas em Romanos 13:4 e Gênesis 9:6 como espada legítima conferida exclusivamente ao Estado para refrear o mal e punir o crime gravoso."
+    },
+    {
+      "titulo": "Regras Hermenêuticas do Decálogo (Q. 99 do CMW)",
+      "detalhe": "A lei de Deus é perfeita e obriga o homem integral (corpo, mente, afetos e atos). Onde um pecado é proibido, o dever oposto é mandado; onde um dever é mandado, o pecado oposto é proibido. O que é mandado/proibido a nós devemos promover/evitar nos outros."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Adiamento das Apresentações de Alunos\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista explicou que, devido ao tempo limitado e à dinâmica de participação da disciplina, as apresentações dos grupos agendadas para a primeira semana de aula não seriam concluídas. Ficou decidido que as apresentações começarão na semana seguinte, a menos que algum grupo fizesse questão de apresentar no dia."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Perspectiva Cristã sobre Guerra e Governo\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista pontuou que o assunto de guerra e governo não seria estendido, reafirmando o entendimento de que cristãos devem obedecer às autoridades constituídas, exceto quando o governo contraria a palavra de Deus, caso em que devem permanecer fiéis aos preceitos divinos independentemente das consequências."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Introdução ao Tema de Ecologia e Cuidado com o Meio Ambiente\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista mencionou que, embora houvesse outros tópicos de ética cristã não abordados em apologética (como sexualidade e divórcio), a prioridade seria dada ao tema solicitado por Marlon Pimentel, referente ao cuidado com o meio ambiente e com os animais."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Extremismos Ecológicos versus Visão Cristã\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista apresentou duas visões extremas sobre ecologia: a devastação materialista, focada na prosperidade humana e na energia ilimitada, e a adoração panteísta, que equipara Deus ao universo e supervaloriza a natureza. O cristianismo posiciona-se no equilíbrio, definindo a humanidade como administradores e mordomos da criação de Deus."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Contrapontos Científicos ao Materialismo Secular\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista detalhou que, contra a visão materialista de energia ilimitada, a segunda lei da termodinâmica aponta que a energia utilizável do universo está diminuindo (entropia), indicando que o universo teve um início e foi criado. Adicionalmente, contra a crença materialista de que a tecnologia resolve todos os problemas, argumentou-se que a humanidade não possui capacidade antecipada de acumular informações para todas as crises, sendo o egoísmo e a ganância humana a raiz dos problemas de distribuição."
+    }
+  ],
+  "encaminhamentos": [
+    "Assistir aula gravada: Assistir ao início da aula gravada e preparar considerações sobre o tema discutido para compartilhar posteriormente com a turma.",
+    "Realizar apresentações: Apresentar os temas referentes ao primeiro, segundo, terceiro e quarto mandamentos durante a próxima aula.",
+    "Apresentar 10 Mandamentos: Preparar e apresentar os trabalhos em grupo sobre os 10 mandamentos durante a próxima aula."
+  ]
+}

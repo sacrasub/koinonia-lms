@@ -35,6 +35,7 @@ import {
 } from '@/data/dossieAv2_2026_2';
 import { getGeminiAulaRecord, buildCornellDeepLinkUrl } from '@/data/geminiAulasCornell';
 import { ReadAloudButton } from '@/components/ReadAloudButton';
+import { buildLessonDossierUrl } from '@/types/lessonDossier';
 
 const LINK_BASE_STYLES: Record<
   LinkBaseAv2['tipo'],
@@ -647,6 +648,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                 <div className="space-y-3">
                   {activeDisc.aulasUnidade2.map((aula) => {
                     const geminiRec = getGeminiAulaRecord(activeDisc.disciplinaId, aula.aulaNum, aula.dataAprox);
+                    const lessonDetailHref = buildLessonDossierUrl(activeDisc.disciplinaId, aula.aulaNum);
                     const cornellHref = buildCornellDeepLinkUrl(
                       activeDisc.disciplinaId,
                       geminiRec?.dateIso,
@@ -664,26 +666,42 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
                     return (
                       <div
                         key={aula.aulaNum}
-                        className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 shadow-2xs space-y-3"
+                        className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700/80 shadow-2xs space-y-3 transition"
                       >
                         <div className="flex flex-wrap items-start justify-between gap-2.5">
-                          <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                            <span className="px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-200 font-black text-[11px] shrink-0">
+                          <a
+                            href={lessonDetailHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Clique para abrir a página detalhada desta aula com linha do tempo cronológica e organização por IA (nova aba)"
+                            className="flex items-start gap-2.5 min-w-0 flex-1 group"
+                          >
+                            <span className="px-2.5 py-1 rounded-xl bg-indigo-100 group-hover:bg-indigo-600 dark:bg-indigo-950/70 dark:group-hover:bg-indigo-600 text-indigo-800 group-hover:text-white dark:text-indigo-200 font-black text-[11px] shrink-0 transition">
                               Aula {aula.aulaNum}
                             </span>
                             <div className="min-w-0">
                               <span className="text-[11px] font-bold text-gray-400 dark:text-slate-400 block">
                                 {geminiRec?.dateBr || aula.dataAprox}
                               </span>
-                              {geminiRec?.theme && (
-                                <h4 className="text-xs sm:text-sm font-black text-gray-900 dark:text-white leading-snug mt-0.5">
-                                  {geminiRec.theme}
-                                </h4>
-                              )}
+                              <h4 className="text-xs sm:text-sm font-black text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug mt-0.5 inline-flex items-center gap-1 transition">
+                                <span>{geminiRec?.theme || `Aula ${aula.aulaNum} • ${activeDisc.nomeCurto}`}</span>
+                                <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-80 shrink-0 transition" />
+                              </h4>
                             </div>
-                          </div>
+                          </a>
 
                           <div className="flex flex-wrap items-center gap-1.5">
+                            <a
+                              href={lessonDetailHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Abrir página completa da aula nos mesmos moldes da Linha do Tempo, com momentos detalhados e organização por IA"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold shadow-xs transition shrink-0"
+                            >
+                              <BookOpen className="w-3 h-3 shrink-0" />
+                              <span>Ver Aula Detalhada (IA)</span>
+                              <ExternalLink className="w-3 h-3 opacity-80 shrink-0" />
+                            </a>
                             <ReadAloudButton
                               variant="pill"
                               size="xs"

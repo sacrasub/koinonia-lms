@@ -1,0 +1,91 @@
+{
+  "id": "disc-8-aula-10",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 10,
+  "unidade": 2,
+  "dateIso": "2026-10-23",
+  "dateBr": "23/10/2026",
+  "theme": "Aula 10 • Cancelamento da aula",
+  "geminiUrl": "https://docs.google.com/document/d/1op8PfbAYUEXkMsYk05A2Wn8LGrWsVrUNIedIB5OX7ks/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Redação dos capítulos de Desenvolvimento: o diálogo entre autores com citações diretas curtas, diretas longas (recuo de 4 cm) e paráfrases.",
+    "sinteseGeral": "Cancelamento de aula discutido e comunicado confirmado para turmas Cancelamento da aula Ausência comunicada para a turma A mas ignorada pela turma B. Confirmação do cancelamento Confirmação direta obtida sobre a suspensão da aula.",
+    "mapaRapido": [
+      "Cancelamento da aula da professora Gabi: Marcelo Sereno informou, após conversar com a monitora Camila, que a diretora avisou a turma A oficial sobre a ausência de aula no dia devido a problemas de saúde da professora Gabi.",
+      "Confirmação do cancelamento da aula: Seminarista William Barros questionou se a aula da professora Gabriela não aconteceria, recebendo a confirmação direta de André Amaral e Marcelo Sereno de que a aula foi de fato cancelada."
+    ],
+    "totalBlocos": 2
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Cancelamento da aula da professora Gabi",
+      "resumoCurto": "Marcelo Sereno informou, após conversar com a monitora Camila, que a diretora avisou a turma A oficial sobre a ausência de aula no dia devido a problemas de saúde da professora Gabi.",
+      "detalhamento": "Marcelo Sereno informou, após conversar com a monitora Camila, que a diretora avisou a turma A oficial sobre a ausência de aula no dia devido a problemas de saúde da professora Gabi. André Amaral e Marcelo Sereno constataram que a turma B não havia recebido o mesmo comunicado.",
+      "pontosChave": [
+        "Marcelo Sereno informou, após conversar com a monitora Camila, que a diretora avisou a turma A oficial sobre a ausência de aula no dia devido a problemas de saúde da professora Gabi.",
+        "André Amaral e Marcelo Sereno constataram que a turma B não havia recebido o mesmo comunicado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Confirmação do cancelamento da aula",
+      "resumoCurto": "Seminarista William Barros questionou se a aula da professora Gabriela não aconteceria, recebendo a confirmação direta de André Amaral e Marcelo Sereno de que a aula foi de fato cancelada.",
+      "detalhamento": "Seminarista William Barros questionou se a aula da professora Gabriela não aconteceria, recebendo a confirmação direta de André Amaral e Marcelo Sereno de que a aula foi de fato cancelada.",
+      "pontosChave": [
+        "Seminarista William Barros questionou se a aula da professora Gabriela não aconteceria, recebendo a confirmação direta de André Amaral e Marcelo Sereno de que a aula foi de fato cancelada."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Regras de Citação ABNT (NBR 10520)",
+      "detalhe": "Direta Curta (até 3 linhas): no parágrafo, entre aspas duplas, com autor, ano e página (SOBRENOME, 2026, p. 45). Direta Longa (+3 linhas): bloco destacado com recuo de 4 cm da margem esquerda, fonte 10, espaçamento simples e SEM aspas. Indireta (Paráfrase): exige autor e ano (SOBRENOME, 2026)."
+    },
+    {
+      "titulo": "Normas de Referências Bibliográficas (NBR 6023)",
+      "detalhe": "Alinhadas estritamente à margem esquerda, espaçamento simples interno, separadas por 1 espaço em branco, ordenadas em ordem alfabética pelo sobrenome do autor e com título da obra em negrito."
+    },
+    {
+      "titulo": "Extensão Rígida de 20 a 25 Páginas",
+      "detalhe": "O artigo não pode ter menos de 20 nem mais de 25 páginas completas (da capa às referências)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Cancelamento da aula da professora Gabi\" nesta aula?",
+      "dicaResposta": "Marcelo Sereno informou, após conversar com a monitora Camila, que a diretora avisou a turma A oficial sobre a ausência de aula no dia devido a problemas de saúde da professora Gabi. André Amaral e Marcelo Sereno constataram que a turma B não havia recebido o mesmo comunicado."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Confirmação do cancelamento da aula\" nesta aula?",
+      "dicaResposta": "Seminarista William Barros questionou se a aula da professora Gabriela não aconteceria, recebendo a confirmação direta de André Amaral e Marcelo Sereno de que a aula foi de fato cancelada."
+    }
+  ],
+  "encaminhamentos": []
+}

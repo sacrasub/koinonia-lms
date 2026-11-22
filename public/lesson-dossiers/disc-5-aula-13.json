@@ -1,0 +1,366 @@
+{
+  "id": "disc-5-aula-13",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 13,
+  "unidade": 2,
+  "dateIso": "2026-11-12",
+  "dateBr": "12/11/2026",
+  "theme": "Aula 13 • Análise do sexto mandamento",
+  "geminiUrl": "https://docs.google.com/document/d/1ZyK4GLfnI6nWyPRcJRbI2va4mclULoJJK6K3AtXcat4/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "4ª Rodada dos Seminários: O 7º e o 8º Mandamentos (a pureza matrimonial/fidelidade e a integridade da propriedade alheia contra o furto).",
+    "sinteseGeral": "Reunião analisou o quinto e o sexto mandamentos com foco na preservação da vida e deveres morais. Apresentação do quinto mandamento A aula debateu a Confissão de Fé de Westminster e os deveres recíprocos entre superiores e inferiores na família e na sociedade. Ficou decidido que a submissão aos líderes deve sempre subordinar-se aos princípios da palavra de Deus. Análise do sexto mandamento O grupo examinou a proibição do homicídio e a necessidade de cultivar a preservação da vida física e espiritual. A discussão destacou que a responsabilidade cristã exige ações ativas de proteção ao próximo e evangelização. Ajustes de cronograma e avisos A organização ajustou o calendário das próximas apresentações devido a compromissos particulares e divulgou materiais de estudo bíblico. A liderança confirmou a data para o seminário de apologética com foco em temáticas políticas.",
+    "mapaRapido": [
+      "Planejamento de Local e Ausência de Alunos: BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutiram a possibilidade de realizar aulas no próximo ano na Universidade Fluminense ou em João Pessoa.",
+      "Abertura e Apresentação do Quinto Mandamento: Após uma oração inicial conduzida por BiblicaMente por Profª Karoline Evangelista, jorge silva e Maycoln Farias iniciaram a apresentação sobre o quinto mandamento com base na Confissão de Fé de Westminster e no livro de Êxodo 20:12 (\"Honra teu pai e tua mãe...\").",
+      "Definição de Superiores e Seus Deveres: Com base nas perguntas 124, 125 e 129 do catecismo, jorge silva explicou que os termos \"pai e mãe\" abrangem não apenas genitores biológicos, mas também autoridades hierárquicas naturais, pessoas mais velhas, avós, tios, governantes e líderes eclesiásticos.",
+      "Pecados dos Superiores: jorge silva apresentou, com base na pergunta 130 do catecismo, os pecados cometidos por superiores, que incluem egoísmo, busca de interesses pessoais, abusos, injustiças, favoritismo, correção desproporcional, negligência, falta de proteção, autoritarismo, omissão e incentivo ao pecado.",
+      "Extensão do Conceito de Pais e Mães pelos Inferiores: Maycoln Farias retomou a apresentação detalhando os deveres dos inferiores e conduziu uma breve sondagem com o grupo, constatando que a maioria considerava apenas pais biológicos antes de estudar o catecismo.",
+      "Honra Devida e Pecados dos Inferiores: Maycoln Farias abordou a pergunta 127 do catecismo sobre a honra devida aos superiores (reverência sincera, oração, imitação de virtudes, pronta obediência legítima, submissão a correções e encobrimento de fraquezas com amor) e a pergunta 128 sobre os pecados dos inferiores, como negligência, inveja, desprezo, rebelião, difamação pública e exposição impiedosa de falhas de líderes."
+    ],
+    "duracaoEstimada": "~1h23min",
+    "totalBlocos": 18
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:06:27",
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Planejamento de Local e Ausência de Alunos",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutiram a possibilidade de realizar aulas no próximo ano na Universidade Fluminense ou em João Pessoa.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutiram a possibilidade de realizar aulas no próximo ano na Universidade Fluminense ou em João Pessoa. Além disso, BiblicaMente por Profª Karoline Evangelista informou que Paulo Henrique, integrante do sétimo mandamento, estava em uma embarcação e não conseguiria participar, levantando a possibilidade de o grupo do oitavo mandamento (formado por Talita e Rodrigo) apresentar caso houvesse tempo disponível.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutiram a possibilidade de realizar aulas no próximo ano na Universidade Fluminense ou em João Pessoa.",
+        "Além disso, BiblicaMente por Profª Karoline Evangelista informou que Paulo Henrique, integrante do sétimo mandamento, estava em uma embarcação e não conseguiria participar, levantando a possibilidade de o grupo do oitavo mandamento (formado por Talita e Rodrigo) apresentar caso houvesse tempo disponível."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:08:05",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Abertura e Apresentação do Quinto Mandamento",
+      "resumoCurto": "Após uma oração inicial conduzida por BiblicaMente por Profª Karoline Evangelista, jorge silva e Maycoln Farias iniciaram a apresentação sobre o quinto mandamento com base na Confissão de Fé de Westminster e no livro de Êxodo 20:12 (\"Honra teu pai e tua mãe...\").",
+      "detalhamento": "Após uma oração inicial conduzida por BiblicaMente por Profª Karoline Evangelista, jorge silva e Maycoln Farias iniciaram a apresentação sobre o quinto mandamento com base na Confissão de Fé de Westminster e no livro de Êxodo 20:12 (\"Honra teu pai e tua mãe...\"). jorge silva relatou que a dupla dividiu o trabalho em metades e enfrentou breves dificuldades técnicas antes de compartilhar os slides.",
+      "pontosChave": [
+        "Após uma oração inicial conduzida por BiblicaMente por Profª Karoline Evangelista, jorge silva e Maycoln Farias iniciaram a apresentação sobre o quinto mandamento com base na Confissão de Fé de Westminster e no livro de Êxodo 20:12 (\"Honra teu pai e tua mãe...\").",
+        "jorge silva relatou que a dupla dividiu o trabalho em metades e enfrentou breves dificuldades técnicas antes de compartilhar os slides."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:13:08",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Definição de Superiores e Seus Deveres",
+      "resumoCurto": "Com base nas perguntas 124, 125 e 129 do catecismo, jorge silva explicou que os termos \"pai e mãe\" abrangem não apenas genitores biológicos, mas também autoridades hierárquicas naturais, pessoas mais velhas, avós, tios, governantes e líderes eclesiásticos.",
+      "detalhamento": "Com base nas perguntas 124, 125 e 129 do catecismo, jorge silva explicou que os termos \"pai e mãe\" abrangem não apenas genitores biológicos, mas também autoridades hierárquicas naturais, pessoas mais velhas, avós, tios, governantes e líderes eclesiásticos. jorge silva destacou cinco conjuntos de deveres fundamentais dos superiores: amar, orar e abençoar; instruir, aconselhar e admoestar; incentivar o bem e corrigir o mal; proteger e prover; e servir como exemplo de conduta.",
+      "pontosChave": [
+        "Com base nas perguntas 124, 125 e 129 do catecismo, jorge silva explicou que os termos \"pai e mãe\" abrangem não apenas genitores biológicos, mas também autoridades hierárquicas naturais, pessoas mais velhas, avós, tios, governantes e líderes eclesiásticos.",
+        "jorge silva destacou cinco conjuntos de deveres fundamentais dos superiores: amar, orar e abençoar; instruir, aconselhar e admoestar; incentivar o bem e corrigir o mal; proteger e prover; e servir como exemplo de conduta."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:21:29",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pecados dos Superiores",
+      "resumoCurto": "jorge silva apresentou, com base na pergunta 130 do catecismo, os pecados cometidos por superiores, que incluem egoísmo, busca de interesses pessoais, abusos, injustiças, favoritismo, correção desproporcional, negligência, falta de proteção, autoritarismo, omissão e incentivo ao pecado.",
+      "detalhamento": "jorge silva apresentou, com base na pergunta 130 do catecismo, os pecados cometidos por superiores, que incluem egoísmo, busca de interesses pessoais, abusos, injustiças, favoritismo, correção desproporcional, negligência, falta de proteção, autoritarismo, omissão e incentivo ao pecado.",
+      "pontosChave": [
+        "jorge silva apresentou, com base na pergunta 130 do catecismo, os pecados cometidos por superiores, que incluem egoísmo, busca de interesses pessoais, abusos, injustiças, favoritismo, correção desproporcional, negligência, falta de proteção, autoritarismo, omissão e incentivo ao pecado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:26:25",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Extensão do Conceito de Pais e Mães pelos Inferiores",
+      "resumoCurto": "Maycoln Farias retomou a apresentação detalhando os deveres dos inferiores e conduziu uma breve sondagem com o grupo, constatando que a maioria considerava apenas pais biológicos antes de estudar o catecismo.",
+      "detalhamento": "Maycoln Farias retomou a apresentação detalhando os deveres dos inferiores e conduziu uma breve sondagem com o grupo, constatando que a maioria considerava apenas pais biológicos antes de estudar o catecismo. Maycoln Farias destacou que a definição se estende a superiores em idade, habilidades e autoridades na família, igreja e estado, citando BiblicaMente por Profª Karoline Evangelista como superior em conhecimento perante os pupilos.",
+      "pontosChave": [
+        "Maycoln Farias retomou a apresentação detalhando os deveres dos inferiores e conduziu uma breve sondagem com o grupo, constatando que a maioria considerava apenas pais biológicos antes de estudar o catecismo.",
+        "Maycoln Farias destacou que a definição se estende a superiores em idade, habilidades e autoridades na família, igreja e estado, citando BiblicaMente por Profª Karoline Evangelista como superior em conhecimento perante os pupilos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:42:02",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Honra Devida e Pecados dos Inferiores",
+      "resumoCurto": "Maycoln Farias abordou a pergunta 127 do catecismo sobre a honra devida aos superiores (reverência sincera, oração, imitação de virtudes, pronta obediência legítima, submissão a correções e encobrimento de fraquezas com amor) e a pergunta 128 sobre os pecados dos inferiores, como negligência, inveja, desprezo, rebelião, difamação pública e exposição impiedosa de falhas de líderes.",
+      "detalhamento": "Maycoln Farias abordou a pergunta 127 do catecismo sobre a honra devida aos superiores (reverência sincera, oração, imitação de virtudes, pronta obediência legítima, submissão a correções e encobrimento de fraquezas com amor) e a pergunta 128 sobre os pecados dos inferiores, como negligência, inveja, desprezo, rebelião, difamação pública e exposição impiedosa de falhas de líderes. Maycoln Farias enfatizou que a obediência cristã é condicional e subordinada à palavra de Deus, devendo-se obedecer a Deus antes dos homens.",
+      "pontosChave": [
+        "Maycoln Farias abordou a pergunta 127 do catecismo sobre a honra devida aos superiores (reverência sincera, oração, imitação de virtudes, pronta obediência legítima, submissão a correções e encobrimento de fraquezas com amor) e a pergunta 128 sobre os pecados dos inferiores, como negligência, inveja, desprezo, rebelião, difamação pública e exposição impiedosa de falhas de líderes.",
+        "Maycoln Farias enfatizou que a obediência cristã é condicional e subordinada à palavra de Deus, devendo-se obedecer a Deus antes dos homens."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:47:15",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Deveres e Pecados dos Iguais e Conclusão do Quinto Mandamento",
+      "resumoCurto": "Maycoln Farias mencionou brevemente as perguntas 131, 132 e 133 sobre os iguais (considerar a dignidade alheia e alegrar-se com os dons dos outros sem concorrência) e os pecados correspondentes (depreciação e inveja), além da promessa de vida longa anexada ao mandamento.",
+      "detalhamento": "Maycoln Farias mencionou brevemente as perguntas 131, 132 e 133 sobre os iguais (considerar a dignidade alheia e alegrar-se com os dons dos outros sem concorrência) e os pecados correspondentes (depreciação e inveja), além da promessa de vida longa anexada ao mandamento. BiblicaMente por Profª Karoline Evangelista concluiu a seção pontuando que o padrão de justiça divina exige a graça por meio de Cristo.",
+      "pontosChave": [
+        "Maycoln Farias mencionou brevemente as perguntas 131, 132 e 133 sobre os iguais (considerar a dignidade alheia e alegrar-se com os dons dos outros sem concorrência) e os pecados correspondentes (depreciação e inveja), além da promessa de vida longa anexada ao mandamento.",
+        "BiblicaMente por Profª Karoline Evangelista concluiu a seção pontuando que o padrão de justiça divina exige a graça por meio de Cristo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:49:01",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Abertura da Apresentação do Sexto Mandamento",
+      "resumoCurto": "Após tratativas sobre problemas de câmera e logística doméstica relatadas por ANDREA PIMENTEL MARIANO E SILVA SILVA, Grazi Guimarães iniciou a apresentação sobre o sexto mandamento (\"Não matarás\") da Confissão de Fé de Westminster, com o auxílio de Rosiane Lima (Rosi) na projeção de slides e comentários bem-humorados de Daniel Rodrigues.",
+      "detalhamento": "Após tratativas sobre problemas de câmera e logística doméstica relatadas por ANDREA PIMENTEL MARIANO E SILVA SILVA, Grazi Guimarães iniciou a apresentação sobre o sexto mandamento (\"Não matarás\") da Confissão de Fé de Westminster, com o auxílio de Rosiane Lima (Rosi) na projeção de slides e comentários bem-humorados de Daniel Rodrigues.",
+      "pontosChave": [
+        "Após tratativas sobre problemas de câmera e logística doméstica relatadas por ANDREA PIMENTEL MARIANO E SILVA SILVA, Grazi Guimarães iniciou a apresentação sobre o sexto mandamento (\"Não matarás\") da Confissão de Fé de Westminster, com o auxílio de Rosiane Lima (Rosi) na projeção de slides e comentários bem-humorados de Daniel Rodrigues."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:55:50",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Fundamentos e Raiz Interna do Sexto Mandamento",
+      "resumoCurto": "Grazi Guimarães explicou que o mandamento vai além do ato físico de assassinato, exigindo o esforço de preservar a vida própria e alheia.",
+      "detalhamento": "Grazi Guimarães explicou que o mandamento vai além do ato físico de assassinato, exigindo o esforço de preservar a vida própria e alheia. Citando Charles Spurgeon e passagens como Mateus 5:21-22, Grazi Guimarães destacou que a raiz interna do assassinato inclui a ira injustificada, o rancor, a malícia e o ódio nutrido no coração.",
+      "pontosChave": [
+        "Grazi Guimarães explicou que o mandamento vai além do ato físico de assassinato, exigindo o esforço de preservar a vida própria e alheia.",
+        "Citando Charles Spurgeon e passagens como Mateus 5:21-22, Grazi Guimarães destacou que a raiz interna do assassinato inclui a ira injustificada, o rancor, a malícia e o ódio nutrido no coração."
+      ],
+      "referenciasNoBloco": [
+        "Mateus 5:21-22"
+      ]
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:57:26",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Preservação da Vida e Imagem de Deus",
+      "resumoCurto": "Grazi Guimarães detalhou as duas faces do sexto mandamento (proibir o mal e cultivar a preservação da vida, conforme a pergunta 69 da confissão e Atos 16:28), concluindo que o valor da vida humana fundamenta-se na criação à imagem de Deus (*imago dei*).",
+      "detalhamento": "Grazi Guimarães detalhou as duas faces do sexto mandamento (proibir o mal e cultivar a preservação da vida, conforme a pergunta 69 da confissão e Atos 16:28), concluindo que o valor da vida humana fundamenta-se na criação à imagem de Deus (*imago dei*).",
+      "pontosChave": [
+        "Grazi Guimarães detalhou as duas faces do sexto mandamento (proibir o mal e cultivar a preservação da vida, conforme a pergunta 69 da confissão e Atos 16:28), concluindo que o valor da vida humana fundamenta-se na criação à imagem de Deus (*imago dei*)."
+      ],
+      "referenciasNoBloco": [
+        "Atos 16:28"
+      ]
+    },
+    {
+      "ordem": 11,
+      "timestamp": "01:00:20",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Preservação da Vida Humana e o Sexto Mandamento",
+      "resumoCurto": "Grazi Guimarães discute o valor da vida humana fundamentado em Gênesis 4, argumentando que a vida pertence a Deus por carregar a Sua imagem e que negligenciar a própria saúde (mediante o uso de drogas, álcool e cigarro) ou atentar contra embriões constitui uma violação da preservação da vida.",
+      "detalhamento": "Grazi Guimarães discute o valor da vida humana fundamentado em Gênesis 4, argumentando que a vida pertence a Deus por carregar a Sua imagem e que negligenciar a própria saúde (mediante o uso de drogas, álcool e cigarro) ou atentar contra embriões constitui uma violação da preservação da vida. Adicionalmente, a pessoa palestrante distingue o assassinato — definido como a tirada injusta da vida — de situações de defesa legítima respaldadas em Êxodo 22:22, a exemplo da proteção de uma residência invadida ou da defesa de alguém sob ameaça injusta.",
+      "pontosChave": [
+        "Grazi Guimarães discute o valor da vida humana fundamentado em Gênesis 4, argumentando que a vida pertence a Deus por carregar a Sua imagem e que negligenciar a própria saúde (mediante o uso de drogas, álcool e cigarro) ou atentar contra embriões constitui uma violação da preservação da vida.",
+        "Adicionalmente, a pessoa palestrante distingue o assassinato — definido como a tirada injusta da vida — de situações de defesa legítima respaldadas em Êxodo 22:22, a exemplo da proteção de uma residência invadida ou da defesa de alguém sob ameaça injusta."
+      ],
+      "referenciasNoBloco": [
+        "Gênesis 4"
+      ]
+    },
+    {
+      "ordem": 12,
+      "timestamp": "01:01:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Responsabilidade Civil e Ação Ativa na Preservação da Vida",
+      "resumoCurto": "Grazi Guimarães enfatiza que o sexto mandamento impõe a responsabilidade de não permanecer passivo diante de ameaças ou agressões à vida de terceiros, sob risco de incorrer em acusações legais por omissão de socorro ou cumplicidade.",
+      "detalhamento": "Grazi Guimarães enfatiza que o sexto mandamento impõe a responsabilidade de não permanecer passivo diante de ameaças ou agressões à vida de terceiros, sob risco de incorrer em acusações legais por omissão de socorro ou cumplicidade. aponta que a reflexão moral deve transcender a simples evitação do homicídio, exigindo ações lícitas e necessárias para proteger as vidas ao redor, antes de passar a palavra para Adriel Carvalho.",
+      "pontosChave": [
+        "Grazi Guimarães enfatiza que o sexto mandamento impõe a responsabilidade de não permanecer passivo diante de ameaças ou agressões à vida de terceiros, sob risco de incorrer em acusações legais por omissão de socorro ou cumplicidade.",
+        "aponta que a reflexão moral deve transcender a simples evitação do homicídio, exigindo ações lícitas e necessárias para proteger as vidas ao redor, antes de passar a palavra para Adriel Carvalho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "01:05:53",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Profundidade do Mandamento, Visões Extrema e Racionalidade",
+      "resumoCurto": "Adriel Carvalho aborda a complexidade do sexto mandamento, criticando tanto a visão superficial de que abster-se de homicídio físico cumpre totalmente a regra quanto a rejeição absoluta da pena de morte, mencionando que o apóstolo Paulo reconhece o direito do Estado de julgar.",
+      "detalhamento": "Adriel Carvalho aborda a complexidade do sexto mandamento, criticando tanto a visão superficial de que abster-se de homicídio físico cumpre totalmente a regra quanto a rejeição absoluta da pena de morte, mencionando que o apóstolo Paulo reconhece o direito do Estado de julgar. Fazendo referência ao Código de Hamurabi e ao contraste apresentado por Jesus sobre o princípio de \"olho por olho\", Adriel Carvalho destaca que o mandamento promove a racionalidade e a humanização, citando uma pregação de Augusto Nicodemos sobre o Espírito Santo e apontando dados de trânsito em que 90% das mortes decorrem de imprudência humana em contraponto a 10% de causas climáticas.",
+      "pontosChave": [
+        "Adriel Carvalho aborda a complexidade do sexto mandamento, criticando tanto a visão superficial de que abster-se de homicídio físico cumpre totalmente a regra quanto a rejeição absoluta da pena de morte, mencionando que o apóstolo Paulo reconhece o direito do Estado de julgar.",
+        "Fazendo referência ao Código de Hamurabi e ao contraste apresentado por Jesus sobre o princípio de \"olho por olho\", Adriel Carvalho destaca que o mandamento promove a racionalidade e a humanização, citando uma pregação de Augusto Nicodemos sobre o Espírito Santo e apontando dados de trânsito em que 90% das mortes decorrem de imprudência humana em contraponto a 10% de causas climáticas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:09:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Cuidado Prático, Temperança e Exemplos Bíblicos",
+      "resumoCurto": "Adriel Carvalho relata um incidente fatal no esporte na segunda divisão espanhola resultante de uma colisão evitável com um goleiro para ilustrar que atividades cotidianas exigem cautela e vigilância contínuas.",
+      "detalhamento": "Adriel Carvalho relata um incidente fatal no esporte na segunda divisão espanhola resultante de uma colisão evitável com um goleiro para ilustrar que atividades cotidianas exigem cautela e vigilância contínuas. contrasta a atuação de Satanás como homicida desde o princípio com a postura de figuras bíblicas que apenas se entregavam à morte em prol do evangelho, defendendo a temperança e o equilíbrio em oposição ao legalismo.",
+      "pontosChave": [
+        "Adriel Carvalho relata um incidente fatal no esporte na segunda divisão espanhola resultante de uma colisão evitável com um goleiro para ilustrar que atividades cotidianas exigem cautela e vigilância contínuas.",
+        "contrasta a atuação de Satanás como homicida desde o princípio com a postura de figuras bíblicas que apenas se entregavam à morte em prol do evangelho, defendendo a temperança e o equilíbrio em oposição ao legalismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:13:09",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Dimensão Eterna e Salvação Espiritual no Sexto Mandamento",
+      "resumoCurto": "ANDREA PIMENTEL MARIANO E SILVA SILVA expande a interpretação do sexto mandamento para a dimensão eterna, argumentando que a norma protege tanto o corpo físico quanto a alma imortal, com base em passagens como Tiago 5:20.",
+      "detalhamento": "ANDREA PIMENTEL MARIANO E SILVA SILVA expande a interpretação do sexto mandamento para a dimensão eterna, argumentando que a norma protege tanto o corpo físico quanto a alma imortal, com base em passagens como Tiago 5:20. A pessoa palestrante destaca que omitir o anúncio do evangelho prejudica a salvação alheia e que a missão terrena envolve proclamar a palavra para resgatar pessoas da destruição espiritual.",
+      "pontosChave": [
+        "ANDREA PIMENTEL MARIANO E SILVA SILVA expande a interpretação do sexto mandamento para a dimensão eterna, argumentando que a norma protege tanto o corpo físico quanto a alma imortal, com base em passagens como Tiago 5:20.",
+        "A pessoa palestrante destaca que omitir o anúncio do evangelho prejudica a salvação alheia e que a missão terrena envolve proclamar a palavra para resgatar pessoas da destruição espiritual."
+      ],
+      "referenciasNoBloco": [
+        "Tiago 5:20"
+      ]
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:15:22",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Pirâmide dos Níveis do Mandamento e Autoexame Ético",
+      "resumoCurto": "ANDREA PIMENTEL MARIANO E SILVA SILVA apresenta uma pirâmide estruturada em cinco níveis de aplicação do sexto mandamento: nível 1 (evitar assassinato e violência injusta), nível 2 (apoiar a justiça civil e a defesa legítima), nível 3 (exercer a temperança), nível 4 (fazer o bem ativamente e proteger vulneráveis) e nível 5 (anunciar a vida eterna aos que perecem).",
+      "detalhamento": "ANDREA PIMENTEL MARIANO E SILVA SILVA apresenta uma pirâmide estruturada em cinco níveis de aplicação do sexto mandamento: nível 1 (evitar assassinato e violência injusta), nível 2 (apoiar a justiça civil e a defesa legítima), nível 3 (exercer a temperança), nível 4 (fazer o bem ativamente e proteger vulneráveis) e nível 5 (anunciar a vida eterna aos que perecem). observa que a maioria das pessoas reside nos níveis 1 e 2, propondo uma reflexão ética no espelho sobre a distinção entre uma postura passiva e a promoção ativa da vida no próprio círculo de convivência.",
+      "pontosChave": [
+        "ANDREA PIMENTEL MARIANO E SILVA SILVA apresenta uma pirâmide estruturada em cinco níveis de aplicação do sexto mandamento: nível 1 (evitar assassinato e violência injusta), nível 2 (apoiar a justiça civil e a defesa legítima), nível 3 (exercer a temperança), nível 4 (fazer o bem ativamente e proteger vulneráveis) e nível 5 (anunciar a vida eterna aos que perecem).",
+        "observa que a maioria das pessoas reside nos níveis 1 e 2, propondo uma reflexão ética no espelho sobre a distinção entre uma postura passiva e a promoção ativa da vida no próprio círculo de convivência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:19:32",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Cristo como Fonte da Vida e Encerramento da Apresentação",
+      "resumoCurto": "ANDREA PIMENTEL MARIANO E SILVA SILVA conclui a exposição apontando Cristo como a fonte da vida em abundância conforme João 10:10, exortando a comunidade a superar a acomodação e a engajar-se na evangelização e na conquista de almas.",
+      "detalhamento": "ANDREA PIMENTEL MARIANO E SILVA SILVA conclui a exposição apontando Cristo como a fonte da vida em abundância conforme João 10:10, exortando a comunidade a superar a acomodação e a engajar-se na evangelização e na conquista de almas. BiblicaMente por Profª Karoline Evangelista elogia o grupo pelo cumprimento do tempo limite e ressalta a importância de debater as virtudes dos dez mandamentos nas igrejas.",
+      "pontosChave": [
+        "ANDREA PIMENTEL MARIANO E SILVA SILVA conclui a exposição apontando Cristo como a fonte da vida em abundância conforme João 10:10, exortando a comunidade a superar a acomodação e a engajar-se na evangelização e na conquista de almas.",
+        "BiblicaMente por Profª Karoline Evangelista elogia o grupo pelo cumprimento do tempo limite e ressalta a importância de debater as virtudes dos dez mandamentos nas igrejas."
+      ],
+      "referenciasNoBloco": [
+        "João 10:10"
+      ]
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:22:51",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Materiais de Estudo, Cronograma de Apresentações e Convite Especial",
+      "resumoCurto": "Grazi Guimarães divulga a existência de uma revista de Escola Bíblica Dominical voltada aos dez mandamentos no departamento de publicações da denominação.",
+      "detalhamento": "Grazi Guimarães divulga a existência de uma revista de Escola Bíblica Dominical voltada aos dez mandamentos no departamento de publicações da denominação. BiblicaMente por Profª Karoline Evangelista conduz os ajustes finais do cronograma, remanejando a apresentação de Marlon Pimentel para o início da aula do dia 26 de outubro devido ao aniversário de um sobrinho, mantendo os grupos restantes para o dia 19. A pedido de Grazi Guimarães, BiblicaMente por Profª Karoline Evangelista concorda em disponibilizar o link para que a turma participe de uma aula de apologética com temáticas políticas ministrada no sábado às 7h da manhã.",
+      "pontosChave": [
+        "Grazi Guimarães divulga a existência de uma revista de Escola Bíblica Dominical voltada aos dez mandamentos no departamento de publicações da denominação.",
+        "BiblicaMente por Profª Karoline Evangelista conduz os ajustes finais do cronograma, remanejando a apresentação de Marlon Pimentel para o início da aula do dia 26 de outubro devido ao aniversário de um sobrinho, mantendo os grupos restantes para o dia 19.",
+        "A pedido de Grazi Guimarães, BiblicaMente por Profª Karoline Evangelista concorda em disponibilizar o link para que a turma participe de uma aula de apologética com temáticas políticas ministrada no sábado às 7h da manhã."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Cristo como Fonte da Vida e Encerramento da Apresentação",
+      "relato": "ANDREA PIMENTEL MARIANO E SILVA SILVA conclui a exposição apontando Cristo como a fonte da vida em abundância conforme João 10:10, exortando a comunidade a superar a acomodação e a engajar-se na evangelização e na conquista de almas. BiblicaMente por Profª Karoline Evangelista elogia o grupo pelo cumprimento do tempo limite e ressalta a importância de debater as virtudes dos dez mandamentos nas igrejas.",
+      "timestamp": "01:19:32"
+    },
+    {
+      "titulo": "Materiais de Estudo, Cronograma de Apresentações e Convite Especial",
+      "relato": "Grazi Guimarães divulga a existência de uma revista de Escola Bíblica Dominical voltada aos dez mandamentos no departamento de publicações da denominação. BiblicaMente por Profª Karoline Evangelista conduz os ajustes finais do cronograma, remanejando a apresentação de Marlon Pimentel para o início da aula do dia 26 de outubro devido ao aniversário de um sobrinho, mantendo os grupos restantes para o dia 19. A pedido de Grazi Guimarães, BiblicaMente por Profª Karoline Evangelista concorda em disponibilizar o link para que a turma participe de uma aula de apologética com temáticas políticas ministrada no sábado às 7h da manhã.",
+      "timestamp": "01:22:51"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 5:21-22",
+      "contexto": "Citando Charles Spurgeon e passagens como Mateus 5:21-22, Grazi Guimarães destacou que a raiz interna do assassinato inclui a ira injustificada, o rancor, a malícia e o ódio nutrido no coração."
+    },
+    {
+      "referencia": "Atos 16:28",
+      "contexto": "Grazi Guimarães detalhou as duas faces do sexto mandamento (proibir o mal e cultivar a preservação da vida, conforme a pergunta 69 da confissão e Atos 16:28), concluindo que o valor da vida humana fundamenta-se na criação à imagem de Deus (*imago dei*)."
+    },
+    {
+      "referencia": "Gênesis 4",
+      "contexto": "Grazi Guimarães discute o valor da vida humana fundamentado em Gênesis 4, argumentando que a vida pertence a Deus por carregar a Sua imagem e que negligenciar a própria saúde (mediante o uso de drogas, álcool e cigarro) ou atentar contra embriões constitui uma violação da preservação da vida."
+    },
+    {
+      "referencia": "Tiago 5:20",
+      "contexto": "ANDREA PIMENTEL MARIANO E SILVA SILVA expande a interpretação do sexto mandamento para a dimensão eterna, argumentando que a norma protege tanto o corpo físico quanto a alma imortal, com base em passagens como Tiago 5:20."
+    },
+    {
+      "referencia": "João 10:10",
+      "contexto": "ANDREA PIMENTEL MARIANO E SILVA SILVA conclui a exposição apontando Cristo como a fonte da vida em abundância conforme João 10:10, exortando a comunidade a superar a acomodação e a engajar-se na evangelização e na conquista de almas."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Catecismo Maior de Westminster (Q. 91 a 150)",
+      "detalhe": "O manual confessional definitivo utilizado na disciplina para interpretar a extensão moral dos Dez Mandamentos."
+    },
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    },
+    {
+      "titulo": "Bioética da Vida Humana (6º Mandamento)",
+      "detalhe": "O feto é pessoa humana completa dotada de Imago Dei desde a concepção (Sl 139:13-16; Jr 1:5); o aborto é repudiado como violação direta do sexto mandamento."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Planejamento de Local e Ausência de Alunos\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutiram a possibilidade de realizar aulas no próximo ano na Universidade Fluminense ou em João Pessoa. Além disso, BiblicaMente por Profª Karoline Evangelista informou que Paulo Henrique, integrante do sétimo mandamento, estava em uma embarcação e não conseguiria participar, levantando a possibilidade de o grupo do oitavo mandamento (formado por Talita e Rodrigo) apresentar caso houvesse tempo disponível."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Apresentação do Quinto Mandamento\" nesta aula?",
+      "dicaResposta": "Após uma oração inicial conduzida por BiblicaMente por Profª Karoline Evangelista, jorge silva e Maycoln Farias iniciaram a apresentação sobre o quinto mandamento com base na Confissão de Fé de Westminster e no livro de Êxodo 20:12 (\"Honra teu pai e tua mãe...\"). jorge silva relatou que a dupla dividiu o trabalho em metades e enfrentou breves dificuldades técnicas antes de compartilhar os slides."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Definição de Superiores e Seus Deveres\" nesta aula?",
+      "dicaResposta": "Com base nas perguntas 124, 125 e 129 do catecismo, jorge silva explicou que os termos \"pai e mãe\" abrangem não apenas genitores biológicos, mas também autoridades hierárquicas naturais, pessoas mais velhas, avós, tios, governantes e líderes eclesiásticos. jorge silva destacou cinco conjuntos de deveres fundamentais dos superiores: amar, orar e abençoar; instruir, aconselhar e admoestar; incentivar o bem e corrigir o mal; proteger e prover; e servir como exemplo de conduta."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Pecados dos Superiores\" nesta aula?",
+      "dicaResposta": "jorge silva apresentou, com base na pergunta 130 do catecismo, os pecados cometidos por superiores, que incluem egoísmo, busca de interesses pessoais, abusos, injustiças, favoritismo, correção desproporcional, negligência, falta de proteção, autoritarismo, omissão e incentivo ao pecado."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Extensão do Conceito de Pais e Mães pelos Inferiores\" nesta aula?",
+      "dicaResposta": "Maycoln Farias retomou a apresentação detalhando os deveres dos inferiores e conduziu uma breve sondagem com o grupo, constatando que a maioria considerava apenas pais biológicos antes de estudar o catecismo. Maycoln Farias destacou que a definição se estende a superiores em idade, habilidades e autoridades na família, igreja e estado, citando BiblicaMente por Profª Karoline Evangelista como superior em conhecimento perante os pupilos."
+    }
+  ],
+  "encaminhamentos": [
+    "Apresentar Trabalho: Realizar a apresentação sobre o oitavo mandamento na próxima aula.",
+    "Apresentar mandamento: Realizar a apresentação sobre o último mandamento na data acordada de 26.",
+    "Enviar link: Compartilhar o link de acesso para a aula de sábado sobre política com os participantes."
+  ]
+}

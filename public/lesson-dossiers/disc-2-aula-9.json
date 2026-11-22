@@ -1,0 +1,326 @@
+{
+  "id": "disc-2-aula-9",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 9,
+  "unidade": 2,
+  "dateIso": "2026-10-06",
+  "dateBr": "06/10/2026",
+  "theme": "Aula 9 • Impacto do Iluminismo teológico",
+  "geminiUrl": "https://docs.google.com/document/d/1gwe3NgkR7EzAJ7F_GLIXwLP07oLO8KNgphP33PhfaMw/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "O impacto do Iluminismo e o surgimento do Liberalismo Teológico; Friedrich Schleiermacher e o sentimento de absoluta dependência de Deus.",
+    "sinteseGeral": "Debate sobre o impacto do Iluminismo na teologia e a centralidade da Bíblia. Impacto do Iluminismo teológico Iluminismo colocou a razão acima das Escrituras. Teólogos buscaram explicações naturalistas para os milagres. Subjetividade de Friedrich Schleiermacher Friedrich Schleiermacher centrou a religião na experiência interior. Tradição reformada criticou essa subjetividade por desconsiderar a revelação divina. Autoridade das Escrituras Escrituras permanecem como padrão seguro contra o liberalismo. Tarefa teológica exige responder ao contexto mantendo fundamentos bíblicos.",
+    "mapaRapido": [
+      "Abertura da Aula e Oração Inicial: Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo.",
+      "Influência do Iluminismo na Teologia Reformada: Hilario Jose Bispo Graca abordou como o pensamento moderno e o Iluminismo forçaram os teólogos a reagir à pressão exercida sobre a fé e a tradição reformada.",
+      "A Razão Humana como Critério de Verdade: Hilario Jose Bispo Graca destacou que o Iluminismo estabeleceu a razão como julgadora da verdade religiosa, em contraste com a tradição reformada que fundamentava todas as coisas na autoridade e inspiração das Escrituras.",
+      "Ceticismo e Explicações Naturalistas para os Milagres: Hilario Jose Bispo Graca discutiu a consequente suspeita diante dos milagres nas narrativas bíblicas, que passaram a receber explicações naturalistas por meio de argumentos humanos e científicos, reduzindo-os a construções religiosas ou alegorias.",
+      "Mudança na Finalidade da Exegese e Introdução a Friedrich Schleiermacher: Hilario Jose Bispo Graca apontou a mudança na finalidade da exegese sob o liberalismo teológico, com foco em reconstruir a formação dos textos sem apontar para a fé ou autoridade escriturística.",
+      "Crítica Reformada à Experiência Religiosa e aos Efeitos do Pecado: Hilario Jose Bispo Graca avaliou que a proposta de Friedrich Schleiermacher deslocou o fundamento da teologia para a consciência religiosa, o que é contestado pela tradição reformada que fundamenta tudo na revelação divina."
+    ],
+    "duracaoEstimada": "~1h13min",
+    "totalBlocos": 16
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura da Aula e Oração Inicial",
+      "resumoCurto": "Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo.",
+      "detalhamento": "Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo. Em seguida, Rosiane Lima (Rosi) conduziu a oração inicial, solicitando compreensão e sabedoria para a ministração.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo.",
+        "Em seguida, Rosiane Lima (Rosi) conduziu a oração inicial, solicitando compreensão e sabedoria para a ministração."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Influência do Iluminismo na Teologia Reformada",
+      "resumoCurto": "Hilario Jose Bispo Graca abordou como o pensamento moderno e o Iluminismo forçaram os teólogos a reagir à pressão exercida sobre a fé e a tradição reformada.",
+      "detalhamento": "Hilario Jose Bispo Graca abordou como o pensamento moderno e o Iluminismo forçaram os teólogos a reagir à pressão exercida sobre a fé e a tradição reformada. O problema central consistiu na tentativa de adaptar a fé cristã às novas formas de pensamento sobre a vida, apontando que o pensamento kantiano e seu antropocentrismo representaram ameaças expressivas ao estabelecerem sistemas filosóficos alternativos.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca abordou como o pensamento moderno e o Iluminismo forçaram os teólogos a reagir à pressão exercida sobre a fé e a tradição reformada.",
+        "O problema central consistiu na tentativa de adaptar a fé cristã às novas formas de pensamento sobre a vida, apontando que o pensamento kantiano e seu antropocentrismo representaram ameaças expressivas ao estabelecerem sistemas filosóficos alternativos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:03:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Razão Humana como Critério de Verdade",
+      "resumoCurto": "Hilario Jose Bispo Graca destacou que o Iluminismo estabeleceu a razão como julgadora da verdade religiosa, em contraste com a tradição reformada que fundamentava todas as coisas na autoridade e inspiração das Escrituras.",
+      "detalhamento": "Hilario Jose Bispo Graca destacou que o Iluminismo estabeleceu a razão como julgadora da verdade religiosa, em contraste com a tradição reformada que fundamentava todas as coisas na autoridade e inspiração das Escrituras. Como consequência da mudança para o antropocentrismo de Kant, a Bíblia passou a ser submetida à razão humana, validando doutrinas e acontecimentos bíblicos apenas conforme o pensamento moderno considerasse aceitável.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca destacou que o Iluminismo estabeleceu a razão como julgadora da verdade religiosa, em contraste com a tradição reformada que fundamentava todas as coisas na autoridade e inspiração das Escrituras.",
+        "Como consequência da mudança para o antropocentrismo de Kant, a Bíblia passou a ser submetida à razão humana, validando doutrinas e acontecimentos bíblicos apenas conforme o pensamento moderno considerasse aceitável."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:06:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Ceticismo e Explicações Naturalistas para os Milagres",
+      "resumoCurto": "Hilario Jose Bispo Graca discutiu a consequente suspeita diante dos milagres nas narrativas bíblicas, que passaram a receber explicações naturalistas por meio de argumentos humanos e científicos, reduzindo-os a construções religiosas ou alegorias.",
+      "detalhamento": "Hilario Jose Bispo Graca discutiu a consequente suspeita diante dos milagres nas narrativas bíblicas, que passaram a receber explicações naturalistas por meio de argumentos humanos e científicos, reduzindo-os a construções religiosas ou alegorias. Como exemplo, Hilario Jose Bispo Graca citou a travessia do Mar Vermelho descrita em Êxodo capítulo 14, versículo 21, explicando que o texto aponta para um forte vento oriental providenciado por Deus, e argumentou que a palavra de Deus não necessita de validação fenomenalista humana.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca discutiu a consequente suspeita diante dos milagres nas narrativas bíblicas, que passaram a receber explicações naturalistas por meio de argumentos humanos e científicos, reduzindo-os a construções religiosas ou alegorias.",
+        "Como exemplo, Hilario Jose Bispo Graca citou a travessia do Mar Vermelho descrita em Êxodo capítulo 14, versículo 21, explicando que o texto aponta para um forte vento oriental providenciado por Deus, e argumentou que a palavra de Deus não necessita de validação fenomenalista humana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:09:38",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Mudança na Finalidade da Exegese e Introdução a Friedrich Schleiermacher",
+      "resumoCurto": "Hilario Jose Bispo Graca apontou a mudança na finalidade da exegese sob o liberalismo teológico, com foco em reconstruir a formação dos textos sem apontar para a fé ou autoridade escriturística.",
+      "detalhamento": "Hilario Jose Bispo Graca apontou a mudança na finalidade da exegese sob o liberalismo teológico, com foco em reconstruir a formação dos textos sem apontar para a fé ou autoridade escriturística. Na sequência, Hilario Jose Bispo Graca introduziu Friedrich Schleiermacher, considerado o pai da teologia liberal, destacando que o autor tentou reagir ao reducionismo da religião à razão ou moralidade localizando sua essência na experiência religiosa e no sentimento.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca apontou a mudança na finalidade da exegese sob o liberalismo teológico, com foco em reconstruir a formação dos textos sem apontar para a fé ou autoridade escriturística.",
+        "Na sequência, Hilario Jose Bispo Graca introduziu Friedrich Schleiermacher, considerado o pai da teologia liberal, destacando que o autor tentou reagir ao reducionismo da religião à razão ou moralidade localizando sua essência na experiência religiosa e no sentimento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:18:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Crítica Reformada à Experiência Religiosa e aos Efeitos do Pecado",
+      "resumoCurto": "Hilario Jose Bispo Graca avaliou que a proposta de Friedrich Schleiermacher deslocou o fundamento da teologia para a consciência religiosa, o que é contestado pela tradição reformada que fundamenta tudo na revelação divina.",
+      "detalhamento": "Hilario Jose Bispo Graca avaliou que a proposta de Friedrich Schleiermacher deslocou o fundamento da teologia para a consciência religiosa, o que é contestado pela tradição reformada que fundamenta tudo na revelação divina. Além disso, Hilario Jose Bispo Graca enfatizou que a cognição e as emoções humanas foram afetadas pelos efeitos noéticos do pecado, tornando arriscado e subjetivo validar a verdade de Deus a partir da experiência particular de cada indivíduo.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca avaliou que a proposta de Friedrich Schleiermacher deslocou o fundamento da teologia para a consciência religiosa, o que é contestado pela tradição reformada que fundamenta tudo na revelação divina.",
+        "Além disso, Hilario Jose Bispo Graca enfatizou que a cognição e as emoções humanas foram afetadas pelos efeitos noéticos do pecado, tornando arriscado e subjetivo validar a verdade de Deus a partir da experiência particular de cada indivíduo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:25:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Função da Consciência Humana e a Subjetividade",
+      "resumoCurto": "Hilario Jose Bispo Graca analisou o conceito de consciência com base em passagens bíblicas como Primeiro aos Coríntios capítulo 4, versículo 3 e Romanos capítulo 2, versículo 14, argumentando que a consciência funciona como um termômetro moral, mas não como um aferidor moral absoluto.",
+      "detalhamento": "Hilario Jose Bispo Graca analisou o conceito de consciência com base em passagens bíblicas como Primeiro aos Coríntios capítulo 4, versículo 3 e Romanos capítulo 2, versículo 14, argumentando que a consciência funciona como um termômetro moral, mas não como um aferidor moral absoluto. Hilario Jose Bispo Graca alertou que basear a fé na experiência humana torna a religiosidade extremamente subjetiva, visto que as pessoas podem ter percepções equivocadas e sentimentos contraditórios sobre o que é moralmente correto.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca analisou o conceito de consciência com base em passagens bíblicas como Primeiro aos Coríntios capítulo 4, versículo 3 e Romanos capítulo 2, versículo 14, argumentando que a consciência funciona como um termômetro moral, mas não como um aferidor moral absoluto.",
+        "Hilario Jose Bispo Graca alertou que basear a fé na experiência humana torna a religiosidade extremamente subjetiva, visto que as pessoas podem ter percepções equivocadas e sentimentos contraditórios sobre o que é moralmente correto."
+      ],
+      "referenciasNoBloco": [
+        "Romanos 2, :14"
+      ]
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:28:21",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "O Liberalismo Teológico e a Reação de Karl Barth",
+      "resumoCurto": "Hilario Jose Bispo Graca mencionou outros influenciadores do período, como David Hume, Emanuel Kant, Spinoza e Friedrich Schleiermacher, pontuando que o liberalismo teológico permitiu a reinterpretação dogmática a partir da experiência pessoal, citando exemplos de teólogos modernos como Ed Rene Kivitz, Caio Fabio e Ricardo Gondin.",
+      "detalhamento": "Hilario Jose Bispo Graca mencionou outros influenciadores do período, como David Hume, Emanuel Kant, Spinoza e Friedrich Schleiermacher, pontuando que o liberalismo teológico permitiu a reinterpretação dogmática a partir da experiência pessoal, citando exemplos de teólogos modernos como Ed Rene Kivitz, Caio Fabio e Ricardo Gondin. Em contrapartida, Hilario Jose Bispo Graca destacou que Karl Barth contestou a centralidade da experiência humana defendida por Friedrich Schleiermacher e recolocou a revelação divina no centro da teologia.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca mencionou outros influenciadores do período, como David Hume, Emanuel Kant, Spinoza e Friedrich Schleiermacher, pontuando que o liberalismo teológico permitiu a reinterpretação dogmática a partir da experiência pessoal, citando exemplos de teólogos modernos como Ed Rene Kivitz, Caio Fabio e Ricardo Gondin.",
+        "Em contrapartida, Hilario Jose Bispo Graca destacou que Karl Barth contestou a centralidade da experiência humana defendida por Friedrich Schleiermacher e recolocou a revelação divina no centro da teologia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:37:43",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Tentativa de Friedrich Schleiermacher de Preservar o Cristianismo na Modernidade",
+      "resumoCurto": "Hilario Jose Bispo Graca examinou as intenções pastorais de Friedrich Schleiermacher em Berlim, Alemanha, explicando que a tentativa do autor foi tornar o cristianismo defensável e compatível com os termos da filosofia racionalista moderna diante dos ataques aos dogmas tradicionais e à autoridade eclesiástica.",
+      "detalhamento": "Hilario Jose Bispo Graca examinou as intenções pastorais de Friedrich Schleiermacher em Berlim, Alemanha, explicando que a tentativa do autor foi tornar o cristianismo defensável e compatível com os termos da filosofia racionalista moderna diante dos ataques aos dogmas tradicionais e à autoridade eclesiástica. Hilario Jose Bispo Graca observou que, embora o resultado tenha gerado a teologia liberal, a intenção original não era destruir a fé, mas lidar com o desafio do intelectualismo e da transcendência divina.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca examinou as intenções pastorais de Friedrich Schleiermacher em Berlim, Alemanha, explicando que a tentativa do autor foi tornar o cristianismo defensável e compatível com os termos da filosofia racionalista moderna diante dos ataques aos dogmas tradicionais e à autoridade eclesiástica.",
+        "Hilario Jose Bispo Graca observou que, embora o resultado tenha gerado a teologia liberal, a intenção original não era destruir a fé, mas lidar com o desafio do intelectualismo e da transcendência divina."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:40:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Relato Histórico sobre Explicações Naturalistas em Seminário",
+      "resumoCurto": "Salatiel Rodrigues compartilhou uma lembrança dos anos de 1993 e 1994 em um seminário na Fluminense, quando um professor atribuiu a abertura do Mar Vermelho à ação de ventos e a queda das paredes de Jericó ao eco de gritos fortes.",
+      "detalhamento": "Salatiel Rodrigues compartilhou uma lembrança dos anos de 1993 e 1994 em um seminário na Fluminense, quando um professor atribuiu a abertura do Mar Vermelho à ação de ventos e a queda das paredes de Jericó ao eco de gritos fortes. Salatiel Rodrigues relatou que os estudantes questionaram onde ficava o agir divino nessa perspectiva naturalista e, sem argumentos, o professor deixou de lecionar na instituição.",
+      "pontosChave": [
+        "Salatiel Rodrigues compartilhou uma lembrança dos anos de 1993 e 1994 em um seminário na Fluminense, quando um professor atribuiu a abertura do Mar Vermelho à ação de ventos e a queda das paredes de Jericó ao eco de gritos fortes.",
+        "Salatiel Rodrigues relatou que os estudantes questionaram onde ficava o agir divino nessa perspectiva naturalista e, sem argumentos, o professor deixou de lecionar na instituição."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:44:46",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Relação entre o Ser Finito e a Realidade Infinita",
+      "resumoCurto": "Hilario Jose Bispo Graca retomou a discussão filosófica sobre como seres humanos finitos, limitados e passageiros podem se relacionar com uma realidade infinita, eterna, invisível e espiritual, conforme mencionado em Romanos capítulo 11.",
+      "detalhamento": "Hilario Jose Bispo Graca retomou a discussão filosófica sobre como seres humanos finitos, limitados e passageiros podem se relacionar com uma realidade infinita, eterna, invisível e espiritual, conforme mencionado em Romanos capítulo 11. Hilario Jose Bispo Graca questionou se essa coexistência é uma realidade ou apenas uma formulação religiosa imaginária, ponderando que a razão humana encontra limites na imensidão da sabedoria de Deus.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca retomou a discussão filosófica sobre como seres humanos finitos, limitados e passageiros podem se relacionar com uma realidade infinita, eterna, invisível e espiritual, conforme mencionado em Romanos capítulo 11.",
+        "Hilario Jose Bispo Graca questionou se essa coexistência é uma realidade ou apenas uma formulação religiosa imaginária, ponderando que a razão humana encontra limites na imensidão da sabedoria de Deus."
+      ],
+      "referenciasNoBloco": [
+        "Romanos 11"
+      ]
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:53:14",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Essência da Religião na Experiência Interior e Seus Riscos",
+      "resumoCurto": "Hilario Jose Bispo Graca concluiu detalhando que, para Friedrich Schleiermacher, a essência da religião reside na experiência interior e imediata da dependência do infinito, colocando a vivência religiosa no centro da teologia.",
+      "detalhamento": "Hilario Jose Bispo Graca concluiu detalhando que, para Friedrich Schleiermacher, a essência da religião reside na experiência interior e imediata da dependência do infinito, colocando a vivência religiosa no centro da teologia. Hilario Jose Bispo Graca apontou os perigos dessa abordagem, argumentando que a subjetividade humana pode equiparar o cristianismo a outras práticas experienciais e que a verdadeira fé deve estar fundamentada nas Escrituras e na revelação que vem do alto, e não apenas nas emoções mutáveis.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca concluiu detalhando que, para Friedrich Schleiermacher, a essência da religião reside na experiência interior e imediata da dependência do infinito, colocando a vivência religiosa no centro da teologia.",
+        "Hilario Jose Bispo Graca apontou os perigos dessa abordagem, argumentando que a subjetividade humana pode equiparar o cristianismo a outras práticas experienciais e que a verdadeira fé deve estar fundamentada nas Escrituras e na revelação que vem do alto, e não apenas nas emoções mutáveis."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "01:00:53",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A importância do culto coletivo e da experiência comunitária",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA discute que, embora a oração individual proporcione experiências válidas com Deus, existem percepções e reações emocionais e corporais que só ocorrem na reunião comunitária com os irmãos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA discute que, embora a oração individual proporcione experiências válidas com Deus, existem percepções e reações emocionais e corporais que só ocorrem na reunião comunitária com os irmãos. HILARIO JOSE BISPO GRACA menciona o livro de Alasdair Gruvos para ilustrar que uma multidão de vozes produz ondas materiais invisíveis que beneficiam positivamente o corpo e a mente. O problema abordado é o comportamento comum de evitar a igreja nos momentos de desânimo, quando a conduta correta, fundamentada no mandamento bíblico de congregar, deveria ser buscar a união com os irmãos para a restauração da alma. O consenso estabelecido é que a experiência na igreja é válida e necessária por ser respaldada pela palavra de Deus, não devendo ser julgada apenas por sentimentos subjetivos momentâneos.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA discute que, embora a oração individual proporcione experiências válidas com Deus, existem percepções e reações emocionais e corporais que só ocorrem na reunião comunitária com os irmãos.",
+        "HILARIO JOSE BISPO GRACA menciona o livro de Alasdair Gruvos para ilustrar que uma multidão de vozes produz ondas materiais invisíveis que beneficiam positivamente o corpo e a mente.",
+        "O problema abordado é o comportamento comum de evitar a igreja nos momentos de desânimo, quando a conduta correta, fundamentada no mandamento bíblico de congregar, deveria ser buscar a união com os irmãos para a restauração da alma.",
+        "O consenso estabelecido é que a experiência na igreja é válida e necessária por ser respaldada pela palavra de Deus, não devendo ser julgada apenas por sentimentos subjetivos momentâneos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:06:26",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A crítica à teologia de Schleiermacher e o subjetivismo religioso",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA analisa a formulação de SL Marer, apontando como problema fundamental o deslocamento da fé para a experiência subjetiva e a consciência individual em detrimento da revelação objetiva.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA analisa a formulação de SL Marer, apontando como problema fundamental o deslocamento da fé para a experiência subjetiva e a consciência individual em detrimento da revelação objetiva. HILARIO JOSE BISPO GRACA argumenta que essa abordagem perigosa faz com que a experiência humana passe a determinar a teologia, o dogma e a doutrina, enfraquecendo a distinção essencial entre o Criador e a criatura e diminuindo a transcendência divina. A crítica destaca que essa visão gerou uma teologia liberal que persiste desde o século dezesseis, motivando reações posteriores de teólogos conservadores e da neoortodoxia liderada por Cbart.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA analisa a formulação de SL Marer, apontando como problema fundamental o deslocamento da fé para a experiência subjetiva e a consciência individual em detrimento da revelação objetiva.",
+        "HILARIO JOSE BISPO GRACA argumenta que essa abordagem perigosa faz com que a experiência humana passe a determinar a teologia, o dogma e a doutrina, enfraquecendo a distinção essencial entre o Criador e a criatura e diminuindo a transcendência divina.",
+        "A crítica destaca que essa visão gerou uma teologia liberal que persiste desde o século dezesseis, motivando reações posteriores de teólogos conservadores e da neoortodoxia liderada por Cbart."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:11:25",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A autoridade das escrituras e a contextualização teológica",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA enfatiza que a autoridade das escrituras é o padrão permanente e seguro para avaliar qualquer sistema filosófico ou pensamento secular, ressaltando que a palavra de Deus sempre cumpre seus propósitos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA enfatiza que a autoridade das escrituras é o padrão permanente e seguro para avaliar qualquer sistema filosófico ou pensamento secular, ressaltando que a palavra de Deus sempre cumpre seus propósitos. HILARIO JOSE BISPO GRACA reconhece que pensadores históricos como Kant e Rilm se esforçaram para compreender a realidade de suas épocas, e aponta que a tarefa teológica contemporânea exige responder ao contexto atual sem abandonar os fundamentos bíblicos. O consenso reforça a instrução bíblica de julgar todas as coisas retendo o que é bom, utilizando armas espirituais para cativar a mente em Cristo contra filosofias e sutilezas humanas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA enfatiza que a autoridade das escrituras é o padrão permanente e seguro para avaliar qualquer sistema filosófico ou pensamento secular, ressaltando que a palavra de Deus sempre cumpre seus propósitos.",
+        "HILARIO JOSE BISPO GRACA reconhece que pensadores históricos como Kant e Rilm se esforçaram para compreender a realidade de suas épocas, e aponta que a tarefa teológica contemporânea exige responder ao contexto atual sem abandonar os fundamentos bíblicos.",
+        "O consenso reforça a instrução bíblica de julgar todas as coisas retendo o que é bom, utilizando armas espirituais para cativar a mente em Cristo contra filosofias e sutilezas humanas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:13:03",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento e avisos administrativos da aula",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA relata o extravio de um livro recém-adquirido sobre a história do protestantismo em Portugal, obtido durante uma viagem de dez dias a duas semanas realizada a serviço de um projeto em Portugal e Espanha, e anuncia a previsão de publicação das notas e avaliações para a semana seguinte.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA relata o extravio de um livro recém-adquirido sobre a história do protestantismo em Portugal, obtido durante uma viagem de dez dias a duas semanas realizada a serviço de um projeto em Portugal e Espanha, e anuncia a previsão de publicação das notas e avaliações para a semana seguinte.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA relata o extravio de um livro recém-adquirido sobre a história do protestantismo em Portugal, obtido durante uma viagem de dez dias a duas semanas realizada a serviço de um projeto em Portugal e Espanha, e anuncia a previsão de publicação das notas e avaliações para a semana seguinte."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura da Aula e Oração Inicial",
+      "relato": "Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo. Em seguida, Rosiane Lima (Rosi) conduziu a oração inicial, solicitando compreensão e sabedoria para a ministração."
+    },
+    {
+      "titulo": "A Relação entre o Ser Finito e a Realidade Infinita",
+      "relato": "Hilario Jose Bispo Graca retomou a discussão filosófica sobre como seres humanos finitos, limitados e passageiros podem se relacionar com uma realidade infinita, eterna, invisível e espiritual, conforme mencionado em Romanos capítulo 11. Hilario Jose Bispo Graca questionou se essa coexistência é uma realidade ou apenas uma formulação religiosa imaginária, ponderando que a razão humana encontra limites na imensidão da sabedoria de Deus.",
+      "timestamp": "00:44:46"
+    },
+    {
+      "titulo": "A crítica à teologia de Schleiermacher e o subjetivismo religioso",
+      "relato": "HILARIO JOSE BISPO GRACA analisa a formulação de SL Marer, apontando como problema fundamental o deslocamento da fé para a experiência subjetiva e a consciência individual em detrimento da revelação objetiva. HILARIO JOSE BISPO GRACA argumenta que essa abordagem perigosa faz com que a experiência humana passe a determinar a teologia, o dogma e a doutrina, enfraquecendo a distinção essencial entre o Criador e a criatura e diminuindo a transcendência divina. A crítica destaca que essa visão gerou uma teologia liberal que persiste desde o século dezesseis, motivando reações posteriores de teólogos conservadores e da neoortodoxia liderada por Cbart.",
+      "timestamp": "01:06:26"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Romanos 2, :14",
+      "contexto": "Hilario Jose Bispo Graca analisou o conceito de consciência com base em passagens bíblicas como Primeiro aos Coríntios capítulo 4, versículo 3 e Romanos capítulo 2, versículo 14, argumentando que a consciência funciona como um termômetro moral, mas não como um aferidor moral absoluto."
+    },
+    {
+      "referencia": "Romanos 11",
+      "contexto": "Hilario Jose Bispo Graca retomou a discussão filosófica sobre como seres humanos finitos, limitados e passageiros podem se relacionar com uma realidade infinita, eterna, invisível e espiritual, conforme mencionado em Romanos capítulo 11."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    },
+    {
+      "titulo": "Friedrich Schleiermacher (1768–1834)",
+      "detalhe": "O \"pai da teologia liberal\"; definiu a religião não como dogma ou moralidade, mas como a consciência/sentimento de absoluta dependência do Infinito (Gefühl)."
+    },
+    {
+      "titulo": "Karl Barth (1886–1968)",
+      "detalhe": "Teólogo da Neo-ortodoxia / Teologia Dialética; rompeu com o liberalismo alemão ao constatar o apoio de seus professores ao militarismo imperial; recolocou a revelação de Deus e a cristologia no centro."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura da Aula e Oração Inicial\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca iniciou a discussão sobre as repercussões do Iluminismo na teologia cristã e o surgimento da teologia liberal, destacando que o tema é amplo e abordará pensadores expressivos até o pensamento cristão contemporâneo. Em seguida, Rosiane Lima (Rosi) conduziu a oração inicial, solicitando compreensão e sabedoria para a ministração."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Influência do Iluminismo na Teologia Reformada\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca abordou como o pensamento moderno e o Iluminismo forçaram os teólogos a reagir à pressão exercida sobre a fé e a tradição reformada. O problema central consistiu na tentativa de adaptar a fé cristã às novas formas de pensamento sobre a vida, apontando que o pensamento kantiano e seu antropocentrismo representaram ameaças expressivas ao estabelecerem sistemas filosóficos alternativos."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Razão Humana como Critério de Verdade\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca destacou que o Iluminismo estabeleceu a razão como julgadora da verdade religiosa, em contraste com a tradição reformada que fundamentava todas as coisas na autoridade e inspiração das Escrituras. Como consequência da mudança para o antropocentrismo de Kant, a Bíblia passou a ser submetida à razão humana, validando doutrinas e acontecimentos bíblicos apenas conforme o pensamento moderno considerasse aceitável."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Ceticismo e Explicações Naturalistas para os Milagres\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca discutiu a consequente suspeita diante dos milagres nas narrativas bíblicas, que passaram a receber explicações naturalistas por meio de argumentos humanos e científicos, reduzindo-os a construções religiosas ou alegorias. Como exemplo, Hilario Jose Bispo Graca citou a travessia do Mar Vermelho descrita em Êxodo capítulo 14, versículo 21, explicando que o texto aponta para um forte vento oriental providenciado por Deus, e argumentou que a palavra de Deus não necessita de validação fenomenalista humana."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Mudança na Finalidade da Exegese e Introdução a Friedrich Schleiermacher\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca apontou a mudança na finalidade da exegese sob o liberalismo teológico, com foco em reconstruir a formação dos textos sem apontar para a fé ou autoridade escriturística. Na sequência, Hilario Jose Bispo Graca introduziu Friedrich Schleiermacher, considerado o pai da teologia liberal, destacando que o autor tentou reagir ao reducionismo da religião à razão ou moralidade localizando sua essência na experiência religiosa e no sentimento."
+    }
+  ],
+  "encaminhamentos": [
+    "Estudar Filósofos: Estudar as obras e o pensamento de Emanuel Kant e Friedrich Schleiermacher para aprofundar o entendimento sobre a teologia moderna.",
+    "Mostrar livro: Mostrar o livro sobre a história do protestantismo em Portugal na próxima semana."
+  ]
+}

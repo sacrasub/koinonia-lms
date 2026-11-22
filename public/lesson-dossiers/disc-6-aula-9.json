@@ -1,0 +1,137 @@
+{
+  "id": "disc-6-aula-9",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 9,
+  "unidade": 2,
+  "dateIso": "2026-10-15",
+  "dateBr": "15/10/2026",
+  "theme": "Aula 9 • 1 Pedro (Esperança Viva no Sofrimento)",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "1 Pedro: autoria do apóstolo Pedro com a mediação estilística de Silvano (Silas); envio a partir de Roma (\"Babilônia\", 1Pe 5:13) aos crentes da diáspora.",
+    "sinteseGeral": "1 Pedro: autoria do apóstolo Pedro com a mediação estilística de Silvano (Silas); envio a partir de Roma (\"Babilônia\", 1Pe 5:13) aos crentes da diáspora. Pontos de aprofundamento vinculados à unidade: 1 Pedro (Esperança Viva no Sofrimento) (Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo.) Epístola aos Hebreus (Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C.",
+    "mapaRapido": [
+      "1 Pedro (Esperança Viva no Sofrimento): Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo.",
+      "Epístola aos Hebreus: Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C.",
+      "2 Pedro (Alerta contra Falsos Mestres e a Parusia): Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento.",
+      "O Conhecimento Pleno (Epignosis): Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18).",
+      "Carta de Tiago: Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    ],
+    "totalBlocos": 5
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "1 Pedro (Esperança Viva no Sofrimento)",
+      "resumoCurto": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo.",
+      "detalhamento": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo.",
+      "pontosChave": [
+        "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Epístola aos Hebreus",
+      "resumoCurto": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C.",
+      "detalhamento": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão.",
+      "pontosChave": [
+        "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C.",
+        "(sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+      ],
+      "referenciasNoBloco": [
+        "Hb 13:24"
+      ]
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "2 Pedro (Alerta contra Falsos Mestres e a Parusia)",
+      "resumoCurto": "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento.",
+      "detalhamento": "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento.",
+      "pontosChave": [
+        "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Conhecimento Pleno (Epignosis)",
+      "resumoCurto": "Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18).",
+      "detalhamento": "Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18).",
+      "pontosChave": [
+        "Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Carta de Tiago",
+      "resumoCurto": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos).",
+      "detalhamento": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos).",
+      "pontosChave": [
+        "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Hb 13:24",
+      "contexto": "(sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "1 Pedro (Esperança Viva no Sofrimento)",
+      "detalhe": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+    },
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "titulo": "2 Pedro (Alerta contra Falsos Mestres e a Parusia)",
+      "detalhe": "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"1 Pedro (Esperança Viva no Sofrimento)\" nesta aula?",
+      "dicaResposta": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Epístola aos Hebreus\" nesta aula?",
+      "dicaResposta": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"2 Pedro (Alerta contra Falsos Mestres e a Parusia)\" nesta aula?",
+      "dicaResposta": "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"O Conhecimento Pleno (Epignosis)\" nesta aula?",
+      "dicaResposta": "Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Carta de Tiago\" nesta aula?",
+      "dicaResposta": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar: Slides do professor e o livro-texto Introdução ao Novo Testamento (D. A. Carson, Douglas J. Moo e Leon Morris)."
+  ]
+}

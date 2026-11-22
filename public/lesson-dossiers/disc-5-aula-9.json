@@ -1,0 +1,420 @@
+{
+  "id": "disc-5-aula-9",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 9,
+  "unidade": 2,
+  "dateIso": "2026-10-08",
+  "dateBr": "08/10/2026",
+  "theme": "Aula 9 • Perspectivas Éticas Sobre Guerra",
+  "geminiUrl": "https://docs.google.com/document/d/1w2xGUl8Ru7sSkltPpWN34rnPLkSCF-prX-1WO8XUXDI/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Alinhamento metodológico e divisão final dos grupos para os Seminários sobre o Decálogo com base no Catecismo Maior de Westminster.",
+    "sinteseGeral": "Debate de ética cristã e guerra justa, conflitos geopolíticos e dilemas morais. Perspectivas Éticas Sobre Guerra Revisão de ativismo e pacifismo. Seletivismo valida a defesa de inocentes. Conflito Israel e Hamas Discussão sobre legítima defesa e terrorismo. Divergências sobre proporcionalidade e crimes de guerra. Encerramento e Metanoia Reflexão sobre transformação mental e princípios cristãos. Conclusão da aula.",
+    "mapaRapido": [
+      "Organização das Apresentações Acadêmicas: BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma.",
+      "Revisão das Perspectivas Éticas sobre a Guerra: BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo.",
+      "Fundamentos do Seletivismo e Desobediência Civil: BiblicaMente por Profª Karoline Evangelista detalha a vertente seletivista, que diferencia guerras justas de injustas, permitindo a participação cívica em conflitos justos de defesa quando a paz falha, e reconhece a legitimidade da desobediência civil quando ordens governamentais violam preceitos divinos, a exemplo de Daniel e dos apóstolos, diferenciando também o uso agressivo da espada (vingança pessoal) do uso defensivo (proteção da vida e de inocentes).",
+      "Legítima Defesa e Guerras Divinamente Ordenadas: Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi).",
+      "Critérios para Guerra Justa e o Conflito entre Rússia e Ucrânia: BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva.",
+      "Geopolítica, Armamento Nuclear e Soberania Nacional: Alcimar Luiz da Silva contextualiza os aspectos geopolíticos da invasão da Ucrânia pela Rússia, citando o saudosismo soviético de Vladimir Putin, as negociações para a entrada ucraniana na OTAN e a entrega prévia de cerca de 1.500 ogivas nucleares pela Ucrânia após a Segunda Guerra Mundial, defendendo que nações soberanas, incluindo o Brasil, devem manter armamento nuclear e capacidade de dissuasão militar adequada."
+    ],
+    "duracaoEstimada": "~58min",
+    "totalBlocos": 20
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:01:57",
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Organização das Apresentações Acadêmicas",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:12:48",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Revisão das Perspectivas Éticas sobre a Guerra",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:18:32",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Fundamentos do Seletivismo e Desobediência Civil",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista detalha a vertente seletivista, que diferencia guerras justas de injustas, permitindo a participação cívica em conflitos justos de defesa quando a paz falha, e reconhece a legitimidade da desobediência civil quando ordens governamentais violam preceitos divinos, a exemplo de Daniel e dos apóstolos, diferenciando também o uso agressivo da espada (vingança pessoal) do uso defensivo (proteção da vida e de inocentes).",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista detalha a vertente seletivista, que diferencia guerras justas de injustas, permitindo a participação cívica em conflitos justos de defesa quando a paz falha, e reconhece a legitimidade da desobediência civil quando ordens governamentais violam preceitos divinos, a exemplo de Daniel e dos apóstolos, diferenciando também o uso agressivo da espada (vingança pessoal) do uso defensivo (proteção da vida e de inocentes).",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista detalha a vertente seletivista, que diferencia guerras justas de injustas, permitindo a participação cívica em conflitos justos de defesa quando a paz falha, e reconhece a legitimidade da desobediência civil quando ordens governamentais violam preceitos divinos, a exemplo de Daniel e dos apóstolos, diferenciando também o uso agressivo da espada (vingança pessoal) do uso defensivo (proteção da vida e de inocentes)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:27:18",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Legítima Defesa e Guerras Divinamente Ordenadas",
+      "resumoCurto": "Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi).",
+      "detalhamento": "Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi).",
+      "pontosChave": [
+        "Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:31:21",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Critérios para Guerra Justa e o Conflito entre Rússia e Ucrânia",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:37:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Geopolítica, Armamento Nuclear e Soberania Nacional",
+      "resumoCurto": "Alcimar Luiz da Silva contextualiza os aspectos geopolíticos da invasão da Ucrânia pela Rússia, citando o saudosismo soviético de Vladimir Putin, as negociações para a entrada ucraniana na OTAN e a entrega prévia de cerca de 1.500 ogivas nucleares pela Ucrânia após a Segunda Guerra Mundial, defendendo que nações soberanas, incluindo o Brasil, devem manter armamento nuclear e capacidade de dissuasão militar adequada.",
+      "detalhamento": "Alcimar Luiz da Silva contextualiza os aspectos geopolíticos da invasão da Ucrânia pela Rússia, citando o saudosismo soviético de Vladimir Putin, as negociações para a entrada ucraniana na OTAN e a entrega prévia de cerca de 1.500 ogivas nucleares pela Ucrânia após a Segunda Guerra Mundial, defendendo que nações soberanas, incluindo o Brasil, devem manter armamento nuclear e capacidade de dissuasão militar adequada.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva contextualiza os aspectos geopolíticos da invasão da Ucrânia pela Rússia, citando o saudosismo soviético de Vladimir Putin, as negociações para a entrada ucraniana na OTAN e a entrega prévia de cerca de 1.500 ogivas nucleares pela Ucrânia após a Segunda Guerra Mundial, defendendo que nações soberanas, incluindo o Brasil, devem manter armamento nuclear e capacidade de dissuasão militar adequada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:44:02",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectivas sobre Motivações Bélicas e Escatologia",
+      "resumoCurto": "Paulo Henrique pondera que tanto lados russos quanto ucranianos possuem justificativas operacionais internas para suas ações, traçando um paralelo analítico com a mentalidade de atletas em combates profissionais de alto nível, e conclui que o panorama global de conflitos reflete o distanciamento da sociedade em relação a Deus dentro de uma leitura escatológica.",
+      "detalhamento": "Paulo Henrique pondera que tanto lados russos quanto ucranianos possuem justificativas operacionais internas para suas ações, traçando um paralelo analítico com a mentalidade de atletas em combates profissionais de alto nível, e conclui que o panorama global de conflitos reflete o distanciamento da sociedade em relação a Deus dentro de uma leitura escatológica.",
+      "pontosChave": [
+        "Paulo Henrique pondera que tanto lados russos quanto ucranianos possuem justificativas operacionais internas para suas ações, traçando um paralelo analítico com a mentalidade de atletas em combates profissionais de alto nível, e conclui que o panorama global de conflitos reflete o distanciamento da sociedade em relação a Deus dentro de uma leitura escatológica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:47:36",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Opressão Estatal e o Testemunho de Refugiados",
+      "resumoCurto": "Salatiel Rodrigues relata o contexto dramático de uma família de refugiados venezuelanos acolhida pela comunidade eclesial, descrevendo cenários de escassez severa de água, eletricidade e alimentos decorrentes da opressão governamental, caracterizando tal situação como uma forma de conflito injusto, e pontua que o cumprimento de deveres militares ocorre por exigência profissional sem necessariamente expressar apoio ideológico à guerra.",
+      "detalhamento": "Salatiel Rodrigues relata o contexto dramático de uma família de refugiados venezuelanos acolhida pela comunidade eclesial, descrevendo cenários de escassez severa de água, eletricidade e alimentos decorrentes da opressão governamental, caracterizando tal situação como uma forma de conflito injusto, e pontua que o cumprimento de deveres militares ocorre por exigência profissional sem necessariamente expressar apoio ideológico à guerra.",
+      "pontosChave": [
+        "Salatiel Rodrigues relata o contexto dramático de uma família de refugiados venezuelanos acolhida pela comunidade eclesial, descrevendo cenários de escassez severa de água, eletricidade e alimentos decorrentes da opressão governamental, caracterizando tal situação como uma forma de conflito injusto, e pontua que o cumprimento de deveres militares ocorre por exigência profissional sem necessariamente expressar apoio ideológico à guerra."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:52:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Parâmetros Jurídicos e a Responsabilidade por Crimes de Guerra",
+      "resumoCurto": "João Alexandre Souza Lemos argumenta que integrar uma estrutura militar nacional em conflito não desabona a postura cristã desde que as regras e limites do engajamento sejam respeitados, o que é contraposto por Rodrigo Oliveira com base nos julgamentos de Nuremberg pós-Segunda Guerra Mundial, onde o argumento de cumprimento de ordens hierárquicas não isentou executores de responsabilidade por crimes contra a humanidade, enquanto Cristian Riffo destaca a inevitabilidade de guerras em um mundo decaído e a necessidade de preparação defensiva.",
+      "detalhamento": "João Alexandre Souza Lemos argumenta que integrar uma estrutura militar nacional em conflito não desabona a postura cristã desde que as regras e limites do engajamento sejam respeitados, o que é contraposto por Rodrigo Oliveira com base nos julgamentos de Nuremberg pós-Segunda Guerra Mundial, onde o argumento de cumprimento de ordens hierárquicas não isentou executores de responsabilidade por crimes contra a humanidade, enquanto Cristian Riffo destaca a inevitabilidade de guerras em um mundo decaído e a necessidade de preparação defensiva.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos argumenta que integrar uma estrutura militar nacional em conflito não desabona a postura cristã desde que as regras e limites do engajamento sejam respeitados, o que é contraposto por Rodrigo Oliveira com base nos julgamentos de Nuremberg pós-Segunda Guerra Mundial, onde o argumento de cumprimento de ordens hierárquicas não isentou executores de responsabilidade por crimes contra a humanidade, enquanto Cristian Riffo destaca a inevitabilidade de guerras em um mundo decaído e a necessidade de preparação defensiva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:57:41",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Limites Éticos e Defesa de Inocentes no Seletivismo",
+      "resumoCurto": "Paulo Henrique aponta que recusaria ordens extremas que violem a humanidade com base em critérios morais pessoais, e BiblicaMente por Profª Karoline Evangelista conclui que o seletivismo valida a guerra voltada estritamente para a proteção de inocentes e restauração da independência de nações subjugadas, exigindo retaliações militares proporcionais e justas contra atos de agressão e terrorismo.",
+      "detalhamento": "Paulo Henrique aponta que recusaria ordens extremas que violem a humanidade com base em critérios morais pessoais, e BiblicaMente por Profª Karoline Evangelista conclui que o seletivismo valida a guerra voltada estritamente para a proteção de inocentes e restauração da independência de nações subjugadas, exigindo retaliações militares proporcionais e justas contra atos de agressão e terrorismo.",
+      "pontosChave": [
+        "Paulo Henrique aponta que recusaria ordens extremas que violem a humanidade com base em critérios morais pessoais, e BiblicaMente por Profª Karoline Evangelista conclui que o seletivismo valida a guerra voltada estritamente para a proteção de inocentes e restauração da independência de nações subjugadas, exigindo retaliações militares proporcionais e justas contra atos de agressão e terrorismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Conflito entre Israel e o Hamas e a Definição de Guerra Justa",
+      "resumoCurto": "O problema central discutido foi a legitimidade das ações militares de Israel em resposta ao Hamas e a conceituação teológica de guerra justa.",
+      "detalhamento": "O problema central discutido foi a legitimidade das ações militares de Israel em resposta ao Hamas e a conceituação teológica de guerra justa. Paulo Henrique argumentou que o Hamas utiliza táticas sujas, como o uso de escudos humanos em hospitais e escolas, defendendo que tal grupo precisa deixar de existir, posição apoiada por Daniel Rodrigues, que criticou defensores públicos do Hamas. Em contrapartida, Rodrigo Oliveira argumentou que, independentemente dos atos do Hamas, as operações de Israel configuram genocídio, limpeza étnica e crimes de guerra. BiblicaMente por Profª Karoline Evangelista ponderou sobre a doutrina da guerra justa, afirmando que esta deve ser conduzida por governos e não por indivíduos, sem alcançar um consenso final sobre o caso israelense.",
+      "pontosChave": [
+        "O problema central discutido foi a legitimidade das ações militares de Israel em resposta ao Hamas e a conceituação teológica de guerra justa.",
+        "Paulo Henrique argumentou que o Hamas utiliza táticas sujas, como o uso de escudos humanos em hospitais e escolas, defendendo que tal grupo precisa deixar de existir, posição apoiada por Daniel Rodrigues, que criticou defensores públicos do Hamas.",
+        "Em contrapartida, Rodrigo Oliveira argumentou que, independentemente dos atos do Hamas, as operações de Israel configuram genocídio, limpeza étnica e crimes de guerra.",
+        "BiblicaMente por Profª Karoline Evangelista ponderou sobre a doutrina da guerra justa, afirmando que esta deve ser conduzida por governos e não por indivíduos, sem alcançar um consenso final sobre o caso israelense."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Legitimidade da Defesa de Israel e o Debate sobre Estado Terrorista",
+      "resumoCurto": "O debate prosseguiu sobre se Israel estaria exercendo legítima defesa ou atuando como um estado terrorista.",
+      "detalhamento": "O debate prosseguiu sobre se Israel estaria exercendo legítima defesa ou atuando como um estado terrorista. Daniel Rodrigues defendeu que Israel tem o direito de se defender agressivamente contra ataques, enquanto Rodrigo Oliveira classificou Israel como um estado terrorista e criticou a postura de apoiar ataques indiscriminados, baseando-se em especialistas e tribunais internacionais. Alcimar Luiz da Silva interveio para ponderar a discussão, argumentando que a neutralidade de especialistas é questionável e que Israel é uma nação formalmente estabelecida que reage a agressões externas. O debate encerrou-se sem acordo entre as posições de condenação e defesa irrestrita de Israel.",
+      "pontosChave": [
+        "O debate prosseguiu sobre se Israel estaria exercendo legítima defesa ou atuando como um estado terrorista.",
+        "Daniel Rodrigues defendeu que Israel tem o direito de se defender agressivamente contra ataques, enquanto Rodrigo Oliveira classificou Israel como um estado terrorista e criticou a postura de apoiar ataques indiscriminados, baseando-se em especialistas e tribunais internacionais.",
+        "Alcimar Luiz da Silva interveio para ponderar a discussão, argumentando que a neutralidade de especialistas é questionável e que Israel é uma nação formalmente estabelecida que reage a agressões externas.",
+        "O debate encerrou-se sem acordo entre as posições de condenação e defesa irrestrita de Israel."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto Histórico e a Formação do Estado de Israel",
+      "resumoCurto": "Discutiu-se o histórico da criação e consolidação territorial de Israel.",
+      "detalhamento": "Discutiu-se o histórico da criação e consolidação territorial de Israel. Alcimar Luiz da Silva apresentou o argumento de que Israel foi estabelecido pela Organização das Nações Unidas entre 1945 e 1948, com a participação do diplomata brasileiro Guilherme Maranha, e que sua expansão ocorreu porque os povos vizinhos uniram-se para tentar destruir o país, e não por iniciativa expansionista israelense. Alcimar Luiz da Silva destacou que Israel constitui uma democracia com exército regular e que o Hamas emprega o terror como arma de guerra, tornando impossível pregar ou coexistir pacificamente com tal grupo. Rodrigo Oliveira replicou que esta narrativa é parcial e pró-sionista, desconsiderando os crimes cometidos pelo Estado israelense.",
+      "pontosChave": [
+        "Discutiu-se o histórico da criação e consolidação territorial de Israel.",
+        "Alcimar Luiz da Silva apresentou o argumento de que Israel foi estabelecido pela Organização das Nações Unidas entre 1945 e 1948, com a participação do diplomata brasileiro Guilherme Maranha, e que sua expansão ocorreu porque os povos vizinhos uniram-se para tentar destruir o país, e não por iniciativa expansionista israelense.",
+        "Alcimar Luiz da Silva destacou que Israel constitui uma democracia com exército regular e que o Hamas emprega o terror como arma de guerra, tornando impossível pregar ou coexistir pacificamente com tal grupo.",
+        "Rodrigo Oliveira replicou que esta narrativa é parcial e pró-sionista, desconsiderando os crimes cometidos pelo Estado israelense."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Paralelo com a Guerra Urbana no Rio de Janeiro",
+      "resumoCurto": "O debate expandiu-se para conflitos armados locais, com Paulo Henrique introduzindo um paralelo com a segurança pública no Rio de Janeiro, citando a incursão da Polícia Civil no Jacarezinho em 2018, ocorrida após a morte de um delegado.",
+      "detalhamento": "O debate expandiu-se para conflitos armados locais, com Paulo Henrique introduzindo um paralelo com a segurança pública no Rio de Janeiro, citando a incursão da Polícia Civil no Jacarezinho em 2018, ocorrida após a morte de um delegado. Paulo Henrique relatou ter questionado inicialmente a energia da ação policial, mas ter sido corrigido por um funcionário terceirizado que afirmou que os indivíduos mortos eram traficantes em posição de confronto. Paulo Henrique defendeu que os futuros pastores devem exercer temperança, moderação e maturidade espiritual diante de conflitos armados, sejam geopolíticos ou locais, interpretando-os como consequência do distanciamento humano de Deus.",
+      "pontosChave": [
+        "O debate expandiu-se para conflitos armados locais, com Paulo Henrique introduzindo um paralelo com a segurança pública no Rio de Janeiro, citando a incursão da Polícia Civil no Jacarezinho em 2018, ocorrida após a morte de um delegado.",
+        "Paulo Henrique relatou ter questionado inicialmente a energia da ação policial, mas ter sido corrigido por um funcionário terceirizado que afirmou que os indivíduos mortos eram traficantes em posição de confronto.",
+        "Paulo Henrique defendeu que os futuros pastores devem exercer temperança, moderação e maturidade espiritual diante de conflitos armados, sejam geopolíticos ou locais, interpretando-os como consequência do distanciamento humano de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Aulas de Ética Cristã e a Necessidade de Metanoia",
+      "resumoCurto": "O propósito pedagógico da disciplina foi abordado por Cristiano Sacramento, que lembrou aos seminaristas que, embora haja divergências de opinião e ausência de consenso entre especialistas, a aula de ética cristã deve promover a transformação mental e a metanoia fundamentada na palavra de Deus.",
+      "detalhamento": "O propósito pedagógico da disciplina foi abordado por Cristiano Sacramento, que lembrou aos seminaristas que, embora haja divergências de opinião e ausência de consenso entre especialistas, a aula de ética cristã deve promover a transformação mental e a metanoia fundamentada na palavra de Deus. Cristiano Sacramento enfatizou que as convicções pessoais e os vieses dos futuros pastores, teólogos e missionários devem ser moldados pelos princípios cristãos na análise de conflitos éticos complexos.",
+      "pontosChave": [
+        "O propósito pedagógico da disciplina foi abordado por Cristiano Sacramento, que lembrou aos seminaristas que, embora haja divergências de opinião e ausência de consenso entre especialistas, a aula de ética cristã deve promover a transformação mental e a metanoia fundamentada na palavra de Deus.",
+        "Cristiano Sacramento enfatizou que as convicções pessoais e os vieses dos futuros pastores, teólogos e missionários devem ser moldados pelos princípios cristãos na análise de conflitos éticos complexos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Critérios de Meios Justos em uma Guerra Justa",
+      "resumoCurto": "A discussão retornou aos critérios normativos para a conduta em tempos de guerra.",
+      "detalhamento": "A discussão retornou aos critérios normativos para a conduta em tempos de guerra. BiblicaMente por Profª Karoline Evangelista pontuou que uma guerra justa exige meios justos, sendo vedados atos desumanos como guerra química, tortura sistemática, privação de fome e tratamento degradante de prisioneiros, além de exigir sensatez para evitar a destruição da própria nação. A questão central levantada girou em torno de como neutralizar o terrorismo, proteger fronteiras e negociar a libertação de reféns sem violar preceitos éticos fundamentais.",
+      "pontosChave": [
+        "A discussão retornou aos critérios normativos para a conduta em tempos de guerra.",
+        "BiblicaMente por Profª Karoline Evangelista pontuou que uma guerra justa exige meios justos, sendo vedados atos desumanos como guerra química, tortura sistemática, privação de fome e tratamento degradante de prisioneiros, além de exigir sensatez para evitar a destruição da própria nação.",
+        "A questão central levantada girou em torno de como neutralizar o terrorismo, proteger fronteiras e negociar a libertação de reféns sem violar preceitos éticos fundamentais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectivas sobre a Distância Emocional e Corações Distantes de Deus",
+      "resumoCurto": "João Alexandre Souza Lemos apresentou uma reflexão sobre a dificuldade de julgar o coração de nações em conflito, como a Ucrânia e a Rússia ou grupos como o Hamas, quando a própria convivência eclesiástica local já demonstra facilidade para discórdias e agressões verbais entre irmãos de fé.",
+      "detalhamento": "João Alexandre Souza Lemos apresentou uma reflexão sobre a dificuldade de julgar o coração de nações em conflito, como a Ucrânia e a Rússia ou grupos como o Hamas, quando a própria convivência eclesiástica local já demonstra facilidade para discórdias e agressões verbais entre irmãos de fé. João Alexandre Souza Lemos argumentou que é fácil julgar situações distantes, mas que a verdadeira dimensão de uma guerra só é sentida em tragédias pessoais diretas, como a perda de um familiar em um assalto no Rio de Janeiro, concluindo que o distanciamento dos corações humanos em relação a Deus alimenta tais conflitos.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos apresentou uma reflexão sobre a dificuldade de julgar o coração de nações em conflito, como a Ucrânia e a Rússia ou grupos como o Hamas, quando a própria convivência eclesiástica local já demonstra facilidade para discórdias e agressões verbais entre irmãos de fé.",
+        "João Alexandre Souza Lemos argumentou que é fácil julgar situações distantes, mas que a verdadeira dimensão de uma guerra só é sentida em tragédias pessoais diretas, como a perda de um familiar em um assalto no Rio de Janeiro, concluindo que o distanciamento dos corações humanos em relação a Deus alimenta tais conflitos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O Debate Legal e Ético sobre a Tortura em Cenários Extremos",
+      "resumoCurto": "O debate centrou-se na excludente moral e jurídica da tortura em situações extremas.",
+      "detalhamento": "O debate centrou-se na excludente moral e jurídica da tortura em situações extremas. BiblicaMente por Profª Karoline Evangelista argumentou que, sob a ótica da ética cristã e do princípio do bem maior, a coação física poderia ser aceitável caso evitasse uma tragédia em massa, como um ataque terrorista iminente com milhares de vítimas. Rodrigo Oliveira contestou veementemente a premissa sob a perspectiva do direito internacional, apontando que o Brasil é signatário de tratados internacionais que proíbem categoricamente a tortura e maus-tratos sem nenhuma exceção legal, diferenciando o ordenamento jurídico brasileiro de países como os Estados Unidos, que possuem menor adesão a tratados de direitos humanos. BiblicaMente por Profª Karoline Evangelista ponderou que se tratava de um cenário extremo hipotético de bomba-relógio, sem chegar a um consenso legal definitivo com Rodrigo Oliveira.",
+      "pontosChave": [
+        "O debate centrou-se na excludente moral e jurídica da tortura em situações extremas.",
+        "BiblicaMente por Profª Karoline Evangelista argumentou que, sob a ótica da ética cristã e do princípio do bem maior, a coação física poderia ser aceitável caso evitasse uma tragédia em massa, como um ataque terrorista iminente com milhares de vítimas.",
+        "Rodrigo Oliveira contestou veementemente a premissa sob a perspectiva do direito internacional, apontando que o Brasil é signatário de tratados internacionais que proíbem categoricamente a tortura e maus-tratos sem nenhuma exceção legal, diferenciando o ordenamento jurídico brasileiro de países como os Estados Unidos, que possuem menor adesão a tratados de direitos humanos.",
+        "BiblicaMente por Profª Karoline Evangelista ponderou que se tratava de um cenário extremo hipotético de bomba-relógio, sem chegar a um consenso legal definitivo com Rodrigo Oliveira."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Estatísticas Populacionais e a Dimensão Espiritual do Conflito",
+      "resumoCurto": "Alcimar Luiz da Silva retornou ao debate para refutar a caracterização de Israel como estado genocida, comparando a situação a regimes autoritários históricos e atuais, como a China de Mao Tsé-Tung ou a Venezuela de Nicolás Maduro.",
+      "detalhamento": "Alcimar Luiz da Silva retornou ao debate para refutar a caracterização de Israel como estado genocida, comparando a situação a regimes autoritários históricos e atuais, como a China de Mao Tsé-Tung ou a Venezuela de Nicolás Maduro. Alcimar Luiz da Silva apresentou dados informando que cerca de 1.750.000 palestinos vivem dentro de Israel e que muitos trabalham no território israelense, argumentando que a opressão decorre da ascensão de bases terroristas e que propostas de acordos estatais anteriores foram rejeitadas pela liderança palestina. Alcimar Luiz da Silva concluiu que o conflito possui uma raiz essencialmente espiritual, superior ao debate estritamente humano.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva retornou ao debate para refutar a caracterização de Israel como estado genocida, comparando a situação a regimes autoritários históricos e atuais, como a China de Mao Tsé-Tung ou a Venezuela de Nicolás Maduro.",
+        "Alcimar Luiz da Silva apresentou dados informando que cerca de 1.750.000 palestinos vivem dentro de Israel e que muitos trabalham no território israelense, argumentando que a opressão decorre da ascensão de bases terroristas e que propostas de acordos estatais anteriores foram rejeitadas pela liderança palestina.",
+        "Alcimar Luiz da Silva concluiu que o conflito possui uma raiz essencialmente espiritual, superior ao debate estritamente humano."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Proporcionalidade na Legítima Defesa e Encerramento da Aula",
+      "resumoCurto": "O debate sobre proporcionalidade bélica foi abordado por Grazi Guimarães, que questionou a exigência de equivalência de armas na legítima defesa, comparando a situação ao contra-ataque israelense e ilustrando com um exemplo de defesa residencial contra agressões graves.",
+      "detalhamento": "O debate sobre proporcionalidade bélica foi abordado por Grazi Guimarães, que questionou a exigência de equivalência de armas na legítima defesa, comparando a situação ao contra-ataque israelense e ilustrando com um exemplo de defesa residencial contra agressões graves. Grazi Guimarães defendeu que exigir o uso do mesmo armamento do agressor em legítima defesa é irracional. Devido ao avançado da hora, BiblicaMente por Profª Karoline Evangelista encerrou a aula e orientou os estudantes a assinarem a lista de presença, enquanto participantes como Rosiane Lima (Rosi), Daniel Rodrigues e João Alexandre Souza Lemos trocaram despedidas finais.",
+      "pontosChave": [
+        "O debate sobre proporcionalidade bélica foi abordado por Grazi Guimarães, que questionou a exigência de equivalência de armas na legítima defesa, comparando a situação ao contra-ataque israelense e ilustrando com um exemplo de defesa residencial contra agressões graves.",
+        "Grazi Guimarães defendeu que exigir o uso do mesmo armamento do agressor em legítima defesa é irracional.",
+        "Devido ao avançado da hora, BiblicaMente por Profª Karoline Evangelista encerrou a aula e orientou os estudantes a assinarem a lista de presença, enquanto participantes como Rosiane Lima (Rosi), Daniel Rodrigues e João Alexandre Souza Lemos trocaram despedidas finais."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Organização das Apresentações Acadêmicas",
+      "relato": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma.",
+      "timestamp": "00:01:57"
+    },
+    {
+      "titulo": "Revisão das Perspectivas Éticas sobre a Guerra",
+      "relato": "BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo.",
+      "timestamp": "00:12:48"
+    },
+    {
+      "titulo": "Legítima Defesa e Guerras Divinamente Ordenadas",
+      "relato": "Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi).",
+      "timestamp": "00:27:18"
+    },
+    {
+      "titulo": "Critérios para Guerra Justa e o Conflito entre Rússia e Ucrânia",
+      "relato": "BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva.",
+      "timestamp": "00:31:21"
+    },
+    {
+      "titulo": "Perspectivas sobre Motivações Bélicas e Escatologia",
+      "relato": "Paulo Henrique pondera que tanto lados russos quanto ucranianos possuem justificativas operacionais internas para suas ações, traçando um paralelo analítico com a mentalidade de atletas em combates profissionais de alto nível, e conclui que o panorama global de conflitos reflete o distanciamento da sociedade em relação a Deus dentro de uma leitura escatológica.",
+      "timestamp": "00:44:02"
+    },
+    {
+      "titulo": "Opressão Estatal e o Testemunho de Refugiados",
+      "relato": "Salatiel Rodrigues relata o contexto dramático de uma família de refugiados venezuelanos acolhida pela comunidade eclesial, descrevendo cenários de escassez severa de água, eletricidade e alimentos decorrentes da opressão governamental, caracterizando tal situação como uma forma de conflito injusto, e pontua que o cumprimento de deveres militares ocorre por exigência profissional sem necessariamente expressar apoio ideológico à guerra.",
+      "timestamp": "00:47:36"
+    },
+    {
+      "titulo": "A Legitimidade da Defesa de Israel e o Debate sobre Estado Terrorista",
+      "relato": "O debate prosseguiu sobre se Israel estaria exercendo legítima defesa ou atuando como um estado terrorista. Daniel Rodrigues defendeu que Israel tem o direito de se defender agressivamente contra ataques, enquanto Rodrigo Oliveira classificou Israel como um estado terrorista e criticou a postura de apoiar ataques indiscriminados, baseando-se em especialistas e tribunais internacionais. Alcimar Luiz da Silva interveio para ponderar a discussão, argumentando que a neutralidade de especialistas é questionável e que Israel é uma nação formalmente estabelecida que reage a agressões externas. O debate encerrou-se sem acordo entre as posições de condenação e defesa irrestrita de Israel."
+    },
+    {
+      "titulo": "Paralelo com a Guerra Urbana no Rio de Janeiro",
+      "relato": "O debate expandiu-se para conflitos armados locais, com Paulo Henrique introduzindo um paralelo com a segurança pública no Rio de Janeiro, citando a incursão da Polícia Civil no Jacarezinho em 2018, ocorrida após a morte de um delegado. Paulo Henrique relatou ter questionado inicialmente a energia da ação policial, mas ter sido corrigido por um funcionário terceirizado que afirmou que os indivíduos mortos eram traficantes em posição de confronto. Paulo Henrique defendeu que os futuros pastores devem exercer temperança, moderação e maturidade espiritual diante de conflitos armados, sejam geopolíticos ou locais, interpretando-os como consequência do distanciamento humano de Deus."
+    },
+    {
+      "titulo": "Aulas de Ética Cristã e a Necessidade de Metanoia",
+      "relato": "O propósito pedagógico da disciplina foi abordado por Cristiano Sacramento, que lembrou aos seminaristas que, embora haja divergências de opinião e ausência de consenso entre especialistas, a aula de ética cristã deve promover a transformação mental e a metanoia fundamentada na palavra de Deus. Cristiano Sacramento enfatizou que as convicções pessoais e os vieses dos futuros pastores, teólogos e missionários devem ser moldados pelos princípios cristãos na análise de conflitos éticos complexos."
+    },
+    {
+      "titulo": "Critérios de Meios Justos em uma Guerra Justa",
+      "relato": "A discussão retornou aos critérios normativos para a conduta em tempos de guerra. BiblicaMente por Profª Karoline Evangelista pontuou que uma guerra justa exige meios justos, sendo vedados atos desumanos como guerra química, tortura sistemática, privação de fome e tratamento degradante de prisioneiros, além de exigir sensatez para evitar a destruição da própria nação. A questão central levantada girou em torno de como neutralizar o terrorismo, proteger fronteiras e negociar a libertação de reféns sem violar preceitos éticos fundamentais."
+    },
+    {
+      "titulo": "Perspectivas sobre a Distância Emocional e Corações Distantes de Deus",
+      "relato": "João Alexandre Souza Lemos apresentou uma reflexão sobre a dificuldade de julgar o coração de nações em conflito, como a Ucrânia e a Rússia ou grupos como o Hamas, quando a própria convivência eclesiástica local já demonstra facilidade para discórdias e agressões verbais entre irmãos de fé. João Alexandre Souza Lemos argumentou que é fácil julgar situações distantes, mas que a verdadeira dimensão de uma guerra só é sentida em tragédias pessoais diretas, como a perda de um familiar em um assalto no Rio de Janeiro, concluindo que o distanciamento dos corações humanos em relação a Deus alimenta tais conflitos."
+    },
+    {
+      "titulo": "O Debate Legal e Ético sobre a Tortura em Cenários Extremos",
+      "relato": "O debate centrou-se na excludente moral e jurídica da tortura em situações extremas. BiblicaMente por Profª Karoline Evangelista argumentou que, sob a ótica da ética cristã e do princípio do bem maior, a coação física poderia ser aceitável caso evitasse uma tragédia em massa, como um ataque terrorista iminente com milhares de vítimas. Rodrigo Oliveira contestou veementemente a premissa sob a perspectiva do direito internacional, apontando que o Brasil é signatário de tratados internacionais que proíbem categoricamente a tortura e maus-tratos sem nenhuma exceção legal, diferenciando o ordenamento jurídico brasileiro de países como os Estados Unidos, que possuem menor adesão a tratados de direitos humanos. BiblicaMente por Profª Karoline Evangelista ponderou que se tratava de um cenário extremo hipotético de bomba-relógio, sem chegar a um consenso legal definitivo com Rodrigo Oliveira."
+    },
+    {
+      "titulo": "Estatísticas Populacionais e a Dimensão Espiritual do Conflito",
+      "relato": "Alcimar Luiz da Silva retornou ao debate para refutar a caracterização de Israel como estado genocida, comparando a situação a regimes autoritários históricos e atuais, como a China de Mao Tsé-Tung ou a Venezuela de Nicolás Maduro. Alcimar Luiz da Silva apresentou dados informando que cerca de 1.750.000 palestinos vivem dentro de Israel e que muitos trabalham no território israelense, argumentando que a opressão decorre da ascensão de bases terroristas e que propostas de acordos estatais anteriores foram rejeitadas pela liderança palestina. Alcimar Luiz da Silva concluiu que o conflito possui uma raiz essencialmente espiritual, superior ao debate estritamente humano."
+    },
+    {
+      "titulo": "Proporcionalidade na Legítima Defesa e Encerramento da Aula",
+      "relato": "O debate sobre proporcionalidade bélica foi abordado por Grazi Guimarães, que questionou a exigência de equivalência de armas na legítima defesa, comparando a situação ao contra-ataque israelense e ilustrando com um exemplo de defesa residencial contra agressões graves. Grazi Guimarães defendeu que exigir o uso do mesmo armamento do agressor em legítima defesa é irracional. Devido ao avançado da hora, BiblicaMente por Profª Karoline Evangelista encerrou a aula e orientou os estudantes a assinarem a lista de presença, enquanto participantes como Rosiane Lima (Rosi), Daniel Rodrigues e João Alexandre Souza Lemos trocaram despedidas finais."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Êxodo 20:1-17",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    },
+    {
+      "referencia": "Mateus 5:17-48",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    },
+    {
+      "referencia": "Romanos 12:1-2",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Norman Geisler e as 6 Matrizes Éticas",
+      "detalhe": "Antinomismo (sem normas), Generalismo (normas sem universalidade), Situacionismo (só o amor importa), Absolutismo Não Qualificado (sem conflitos reais), Absolutismo Conflitante (mal menor + perdão) e Absolutismo Graduado (dever moral superior sem culpa)."
+    },
+    {
+      "titulo": "Pena Capital e Guerra Justa",
+      "detalhe": "Fundamentadas em Romanos 13:4 e Gênesis 9:6 como espada legítima conferida exclusivamente ao Estado para refrear o mal e punir o crime gravoso."
+    },
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Organização das Apresentações Acadêmicas\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista e Daniel Rodrigues discutem a estruturação das apresentações acadêmicas focadas nos dez mandamentos e no catecismo para a disciplina de ética, estabelecendo que cada grupo dispondrá de um roteiro com tempo máximo de 10 minutos para a primeira exposição, o que visa abrir espaço para a participação e o debate coletivo entre a turma."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Revisão das Perspectivas Éticas sobre a Guerra\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista inicia a retomada do conteúdo programático revisando três posicionamentos centrais acerca do envolvimento em conflitos bélicos: o ativismo (engajamento incondicional em guerras), o pacifismo (recusa total de participação com base em interpretações bíblicas focadas na paz pessoal), e o seletivismo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Fundamentos do Seletivismo e Desobediência Civil\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista detalha a vertente seletivista, que diferencia guerras justas de injustas, permitindo a participação cívica em conflitos justos de defesa quando a paz falha, e reconhece a legitimidade da desobediência civil quando ordens governamentais violam preceitos divinos, a exemplo de Daniel e dos apóstolos, diferenciando também o uso agressivo da espada (vingança pessoal) do uso defensivo (proteção da vida e de inocentes)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Legítima Defesa e Guerras Divinamente Ordenadas\" nesta aula?",
+      "dicaResposta": "Paulo Henrique traz contribuições sobre a jurisprudência da legítima defesa para a proteção de si e de terceiros em situação de risco iminente, enquanto BiblicaMente por Profª Karoline Evangelista complementa com relatos bíblicos de combates divinamente sancionados, como a campanha de Abraão contra os reis do vale de Sidim para resgatar Ló, tópico apoiado pelas observações de Rosiane Lima (Rosi)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Critérios para Guerra Justa e o Conflito entre Rússia e Ucrânia\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista e Paulo Henrique utilizam o conflito entre Rússia e Ucrânia para examinar os parâmetros de uma guerra justa, gerando uma intervenção de Daniel Rodrigues sobre a existência de guerras injustas e o cumprimento de ordens em forças militares, o que motiva debates adicionais sobre obediência civil e o significado do nome de Daniel com a participação de Antonio Marcos e Alcimar Luiz da Silva."
+    }
+  ],
+  "encaminhamentos": [
+    "Apresentar Trabalho: Apresentar o trabalho em sala de aula seguindo o roteiro e os slides preparados, com duração máxima de 10 minutos."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "disc-1-aula-13",
+  "disciplinaId": "disc-1",
+  "disciplinaName": "01 - História do Congregacionalismo - Ary Júnior",
+  "disciplinaShortName": "História do Congregacionalismo",
+  "disciplinaCode": "HIS-202",
+  "professor": "Profº Ary Júnior",
+  "aulaNum": 13,
+  "unidade": 2,
+  "dateIso": "2026-11-10",
+  "dateBr": "10/11/2026",
+  "theme": "Aula 13 • A Gênese dos 28 Artigos (1874–1876)",
+  "geminiUrl": "https://docs.google.com/document/d/1Ku9I4Y1jOTe0EV4qmL3_6B2LLjfKwjcBNwJneLx8cMw/edit",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "Análise exegética e histórica dos 28 Artigos de Fé da Breve Exposição: Artigos 1 a 10 cobrindo Bibliologia, Teologia Própria, Criação e Queda (Federalismo em Adão).",
+    "sinteseGeral": "Análise exegética e histórica dos 28 Artigos de Fé da Breve Exposição: Artigos 1 a 10 cobrindo Bibliologia, Teologia Própria, Criação e Queda (Federalismo em Adão). Pontos de aprofundamento vinculados à unidade: A Gênese dos 28 Artigos (1874–1876) (Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia.) 1913 e as \"Igrejas Indenominacionais do Brasil\" (Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que cont...",
+    "mapaRapido": [
+      "A Gênese dos 28 Artigos (1874–1876): Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "1913 e as \"Igrejas Indenominacionais do Brasil\": Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+    ],
+    "totalBlocos": 2
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Exegese Bíblica",
+      "titulo": "A Gênese dos 28 Artigos (1874–1876)",
+      "resumoCurto": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+      "detalhamento": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia.",
+      "pontosChave": [
+        "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam.",
+        "O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "1913 e as \"Igrejas Indenominacionais do Brasil\"",
+      "resumoCurto": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.",
+      "detalhamento": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA.",
+      "pontosChave": [
+        "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 18:15-20",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "Atos 15:1-29",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "1 Pedro 2:9",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "A Gênese dos 28 Artigos (1874–1876)",
+      "detalhe": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+    },
+    {
+      "titulo": "1913 e as \"Igrejas Indenominacionais do Brasil\"",
+      "detalhe": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+    },
+    {
+      "titulo": "Dr. Robert Reid Kalley (1809–1888)",
+      "detalhe": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Gênese dos 28 Artigos (1874–1876)\" nesta aula?",
+      "dicaResposta": "Kalley convocou a congregação fluminense para que todos soubessem o que financiavam e criam. O texto inicial tinha 27 artigos sem o artigo 4º e sem versículos, adicionados depois em debate democrático em assembleia."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"1913 e as \"Igrejas Indenominacionais do Brasil\"\" nesta aula?",
+      "dicaResposta": "Criação da denominação com 13 igrejas; evitou-se a palavra \"Congregacional\" para fugir da pecha de liberalismo teológico, unitarianismo e universalismo que contaminava igrejas irmãs da Inglaterra e dos EUA."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar: 3 textos enviados pelo professor no WhatsApp: (1) Síntese do Congregacionalismo Brasileiro; (2) Síntese dos 28 Artigos; (3) Análise analítica ampla dos 28 Artigos."
+  ]
+}

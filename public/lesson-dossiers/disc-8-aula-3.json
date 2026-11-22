@@ -1,0 +1,442 @@
+{
+  "id": "disc-8-aula-3",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 3,
+  "unidade": 1,
+  "dateIso": "2026-08-28",
+  "dateBr": "28/08/2026",
+  "theme": "Aula 3 • Ansiedade relacionada ao Trabalho de Conclusão de Curso",
+  "geminiUrl": "/gemini-notes/tcc_aula3_2026-08-28.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "Debates sobre a escrita do Trabalho de Conclusão de Curso integraram exigências metodológicas e normas acadêmicas técnicas. Desafios na Escrita Acadêmica Estudantes discutiram tensões na conciliação do Trabalho de Conclusão de Curso com estágios. A diretriz principal estabeleceu manter o foco nos artigos atuais sem reestruturar projetos originais. Exigências Técnicas e Metodologia A orientação reforçou a necessidade de seguir rigidamente as normas da Associação Brasileira de Normas Técnicas. A escrita da metodologia deve iniciar imediatamente para estruturar a abordagem qualitativa ou quantitativa.",
+    "sinteseGeral": "Debates sobre a escrita do Trabalho de Conclusão de Curso integraram exigências metodológicas e normas acadêmicas técnicas. Desafios na Escrita Acadêmica Estudantes discutiram tensões na conciliação do Trabalho de Conclusão de Curso com estágios. A diretriz principal estabeleceu manter o foco nos artigos atuais sem reestruturar projetos originais. Exigências Técnicas e Metodologia A orientação reforçou a necessidade de seguir rigidamente as normas da Associação Brasileira de Normas Técnicas. A escrita da metodologia deve iniciar imediatamente para estruturar a abordagem qualitativa ou quantitativa. Estruturação dos Resultados Finais As seções de resultados, discussão e considerações finais devem demonstrar contribuições teóricas substanciais. Referências bibliográficas exigem organização alfabética rigorosa conforme o padrão exigido pela instituição.",
+    "mapaRapido": [
+      "Ansiedade relacionada ao Trabalho de Conclusão de Curso: Os estudantes expressaram tensão e ansiedade quanto à produção do Trabalho de Conclusão de Curso (TCC), destacando a dificuldade de conciliar o estágio e a escrita final durante o oitavo período.",
+      "Trajetória acadêmica e futura: A Professora Profº Profº Marcio Leal incentivou os estudantes a considerarem a continuidade acadêmica em mestrados e doutorados, enfatizando a importância de teólogos bem formados que unam a fé à ciência.",
+      "Homenagem ao trabalho acadêmico de Cristiano Sacramento: A Professora Profº Profº Marcio Leal parabenizou o filho de Cristiano Sacramento por sua corajosa defesa de tese sobre sexualidade, um tema considerado relevante e pouco abordado nas igrejas.",
+      "Mudança de foco no projeto de Cristiano Sacramento: Cristiano explicou que, por recomendação de seu orientador, decidiu manter seu pré-projeto atual em vez de mudar para o tema de povos originários e ribeirinhos, deixando o tópico mais complexo para uma futura pós-graduação.",
+      "Desenvolvimento ministerial de Cristiano Sacramento: Cristiano compartilhou que seu filho assumirá a liderança de uma congregação em Itaguaí, atuando como pastor presidente com Cristiano servindo como pastor auxiliar.",
+      "Oração de abertura: Daniel Rodrigues liderou uma oração pedindo sabedoria e entendimento para que a turma pudesse aplicar o conhecimento adquirido durante a escrita do artigo."
+    ],
+    "duracaoEstimada": "~1h01min",
+    "totalBlocos": 26
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Ansiedade relacionada ao Trabalho de Conclusão de Curso",
+      "resumoCurto": "Os estudantes expressaram tensão e ansiedade quanto à produção do Trabalho de Conclusão de Curso (TCC), destacando a dificuldade de conciliar o estágio e a escrita final durante o oitavo período.",
+      "detalhamento": "Os estudantes expressaram tensão e ansiedade quanto à produção do Trabalho de Conclusão de Curso (TCC), destacando a dificuldade de conciliar o estágio e a escrita final durante o oitavo período.",
+      "pontosChave": [
+        "Os estudantes expressaram tensão e ansiedade quanto à produção do Trabalho de Conclusão de Curso (TCC), destacando a dificuldade de conciliar o estágio e a escrita final durante o oitavo período."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:02:21",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Trajetória acadêmica e futura",
+      "resumoCurto": "A Professora Profº Profº Marcio Leal incentivou os estudantes a considerarem a continuidade acadêmica em mestrados e doutorados, enfatizando a importância de teólogos bem formados que unam a fé à ciência.",
+      "detalhamento": "A Professora Profº Profº Marcio Leal incentivou os estudantes a considerarem a continuidade acadêmica em mestrados e doutorados, enfatizando a importância de teólogos bem formados que unam a fé à ciência.",
+      "pontosChave": [
+        "A Professora Profº Profº Marcio Leal incentivou os estudantes a considerarem a continuidade acadêmica em mestrados e doutorados, enfatizando a importância de teólogos bem formados que unam a fé à ciência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:03:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Homenagem ao trabalho acadêmico de Cristiano Sacramento",
+      "resumoCurto": "A Professora Profº Profº Marcio Leal parabenizou o filho de Cristiano Sacramento por sua corajosa defesa de tese sobre sexualidade, um tema considerado relevante e pouco abordado nas igrejas.",
+      "detalhamento": "A Professora Profº Profº Marcio Leal parabenizou o filho de Cristiano Sacramento por sua corajosa defesa de tese sobre sexualidade, um tema considerado relevante e pouco abordado nas igrejas.",
+      "pontosChave": [
+        "A Professora Profº Profº Marcio Leal parabenizou o filho de Cristiano Sacramento por sua corajosa defesa de tese sobre sexualidade, um tema considerado relevante e pouco abordado nas igrejas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:04:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Mudança de foco no projeto de Cristiano Sacramento",
+      "resumoCurto": "Cristiano explicou que, por recomendação de seu orientador, decidiu manter seu pré-projeto atual em vez de mudar para o tema de povos originários e ribeirinhos, deixando o tópico mais complexo para uma futura pós-graduação.",
+      "detalhamento": "Cristiano explicou que, por recomendação de seu orientador, decidiu manter seu pré-projeto atual em vez de mudar para o tema de povos originários e ribeirinhos, deixando o tópico mais complexo para uma futura pós-graduação.",
+      "pontosChave": [
+        "Cristiano explicou que, por recomendação de seu orientador, decidiu manter seu pré-projeto atual em vez de mudar para o tema de povos originários e ribeirinhos, deixando o tópico mais complexo para uma futura pós-graduação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:07:17",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desenvolvimento ministerial de Cristiano Sacramento",
+      "resumoCurto": "Cristiano compartilhou que seu filho assumirá a liderança de uma congregação em Itaguaí, atuando como pastor presidente com Cristiano servindo como pastor auxiliar.",
+      "detalhamento": "Cristiano compartilhou que seu filho assumirá a liderança de uma congregação em Itaguaí, atuando como pastor presidente com Cristiano servindo como pastor auxiliar.",
+      "pontosChave": [
+        "Cristiano compartilhou que seu filho assumirá a liderança de uma congregação em Itaguaí, atuando como pastor presidente com Cristiano servindo como pastor auxiliar."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:08:25",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Oração de abertura",
+      "resumoCurto": "Daniel Rodrigues liderou uma oração pedindo sabedoria e entendimento para que a turma pudesse aplicar o conhecimento adquirido durante a escrita do artigo.",
+      "detalhamento": "Daniel Rodrigues liderou uma oração pedindo sabedoria e entendimento para que a turma pudesse aplicar o conhecimento adquirido durante a escrita do artigo.",
+      "pontosChave": [
+        "Daniel Rodrigues liderou uma oração pedindo sabedoria e entendimento para que a turma pudesse aplicar o conhecimento adquirido durante a escrita do artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:09:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Exigências de formatação da Maciço do Baturité",
+      "resumoCurto": "A Professora Profº Profº Marcio Leal reforçou a necessidade de seguir rigidamente as normas de formatação da faculdade Maciço do Baturité, advertindo que trabalhos fora do padrão serão devolvidos pela coordenação do seminário.",
+      "detalhamento": "A Professora Profº Profº Marcio Leal reforçou a necessidade de seguir rigidamente as normas de formatação da faculdade Maciço do Baturité, advertindo que trabalhos fora do padrão serão devolvidos pela coordenação do seminário.",
+      "pontosChave": [
+        "A Professora Profº Profº Marcio Leal reforçou a necessidade de seguir rigidamente as normas de formatação da faculdade Maciço do Baturité, advertindo que trabalhos fora do padrão serão devolvidos pela coordenação do seminário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:09:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Ciclos de revisão do trabalho",
+      "resumoCurto": "Foi explicado que os estudantes podem enfrentar até três momentos de alteração no trabalho: uma revisão interna do seminário, ajustes baseados em sugestões da banca examinadora e correções de formatação caso a instituição externa solicite.",
+      "detalhamento": "Foi explicado que os estudantes podem enfrentar até três momentos de alteração no trabalho: uma revisão interna do seminário, ajustes baseados em sugestões da banca examinadora e correções de formatação caso a instituição externa solicite.",
+      "pontosChave": [
+        "Foi explicado que os estudantes podem enfrentar até três momentos de alteração no trabalho: uma revisão interna do seminário, ajustes baseados em sugestões da banca examinadora e correções de formatação caso a instituição externa solicite."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:13:44",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Dificuldades acadêmicas e orientação",
+      "resumoCurto": "Ricardo Do Nascimento relatou desafios com a metodologia científica e a professora esclareceu que, embora não possa orientar individualmente todos os alunos, o pré-projeto escrito deve servir como base para o artigo final.",
+      "detalhamento": "Ricardo Do Nascimento relatou desafios com a metodologia científica e a professora esclareceu que, embora não possa orientar individualmente todos os alunos, o pré-projeto escrito deve servir como base para o artigo final.",
+      "pontosChave": [
+        "Ricardo Do Nascimento relatou desafios com a metodologia científica e a professora esclareceu que, embora não possa orientar individualmente todos os alunos, o pré-projeto escrito deve servir como base para o artigo final."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:18:40",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Esclarecimento sobre prazos e nivelamento",
+      "resumoCurto": "O Professor Sérgio buscou esclarecimentos sobre a tarefa de duas semanas para criar o esqueleto do projeto; a professora confirmou que esta etapa é destinada apenas aos alunos que ainda não possuíam um projeto escrito, visando nivelar a turma para o próximo encontro.",
+      "detalhamento": "O Professor Sérgio buscou esclarecimentos sobre a tarefa de duas semanas para criar o esqueleto do projeto; a professora confirmou que esta etapa é destinada apenas aos alunos que ainda não possuíam um projeto escrito, visando nivelar a turma para o próximo encontro.",
+      "pontosChave": [
+        "O Professor Sérgio buscou esclarecimentos sobre a tarefa de duas semanas para criar o esqueleto do projeto; a professora confirmou que esta etapa é destinada apenas aos alunos que ainda não possuíam um projeto escrito, visando nivelar a turma para o próximo encontro."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:22:03",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Objetivos do semestre",
+      "resumoCurto": "A Professora Profº Profº Marcio Leal estabeleceu como objetivo para o semestre avançar significativamente na escrita dos artigos, visando preparar os alunos para a apresentação final e evitar desespero na reta final do curso.",
+      "detalhamento": "A Professora Profº Profº Marcio Leal estabeleceu como objetivo para o semestre avançar significativamente na escrita dos artigos, visando preparar os alunos para a apresentação final e evitar desespero na reta final do curso.",
+      "pontosChave": [
+        "A Professora Profº Profº Marcio Leal estabeleceu como objetivo para o semestre avançar significativamente na escrita dos artigos, visando preparar os alunos para a apresentação final e evitar desespero na reta final do curso."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:25:18",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Importância da colaboração",
+      "resumoCurto": "O Seminarista William Barros agradeceu o apoio dos colegas com questões tecnológicas e normas da Associação Brasileira de Normas Técnicas (ABNT), e a professora ressaltou que a humildade acadêmica e o trabalho coletivo são essenciais.",
+      "detalhamento": "O Seminarista William Barros agradeceu o apoio dos colegas com questões tecnológicas e normas da Associação Brasileira de Normas Técnicas (ABNT), e a professora ressaltou que a humildade acadêmica e o trabalho coletivo são essenciais.",
+      "pontosChave": [
+        "O Seminarista William Barros agradeceu o apoio dos colegas com questões tecnológicas e normas da Associação Brasileira de Normas Técnicas (ABNT), e a professora ressaltou que a humildade acadêmica e o trabalho coletivo são essenciais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:29:03",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Humor sobre dificuldades técnicas",
+      "resumoCurto": "A turma teve um momento de descontração relacionado às dificuldades da professora em realizar o compartilhamento de tela durante a aula.",
+      "detalhamento": "A turma teve um momento de descontração relacionado às dificuldades da professora em realizar o compartilhamento de tela durante a aula.",
+      "pontosChave": [
+        "A turma teve um momento de descontração relacionado às dificuldades da professora em realizar o compartilhamento de tela durante a aula."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:32:36",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estrutura do artigo acadêmico",
+      "resumoCurto": "A professora detalhou a estrutura esperada, incluindo capa, contracapa, resumo sucinto (10 a 15 linhas) e um mínimo de três palavras-chave em português e inglês.",
+      "detalhamento": "A professora detalhou a estrutura esperada, incluindo capa, contracapa, resumo sucinto (10 a 15 linhas) e um mínimo de três palavras-chave em português e inglês.",
+      "pontosChave": [
+        "A professora detalhou a estrutura esperada, incluindo capa, contracapa, resumo sucinto (10 a 15 linhas) e um mínimo de três palavras-chave em português e inglês."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:37:35",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Limites de página e capacidade de síntese",
+      "resumoCurto": "O trabalho final deve ter entre 20 e 25 páginas, exigindo que os estudantes desenvolvam a capacidade de síntese e evitem se dispersar do objetivo central da pesquisa.",
+      "detalhamento": "O trabalho final deve ter entre 20 e 25 páginas, exigindo que os estudantes desenvolvam a capacidade de síntese e evitem se dispersar do objetivo central da pesquisa.",
+      "pontosChave": [
+        "O trabalho final deve ter entre 20 e 25 páginas, exigindo que os estudantes desenvolvam a capacidade de síntese e evitem se dispersar do objetivo central da pesquisa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:39:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Foco no artigo e não na reescrita do projeto",
+      "resumoCurto": "Ficou estabelecido que o projeto original não precisa ser alterado, funcionando apenas como um guia.",
+      "detalhamento": "Ficou estabelecido que o projeto original não precisa ser alterado, funcionando apenas como um guia. Camila Vieira e os demais alunos foram instruídos a focar na escrita do artigo, reservando temas excedentes para futuras pesquisas.",
+      "pontosChave": [
+        "Ficou estabelecido que o projeto original não precisa ser alterado, funcionando apenas como um guia.",
+        "Camila Vieira e os demais alunos foram instruídos a focar na escrita do artigo, reservando temas excedentes para futuras pesquisas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:43:21",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Produção da introdução e resumo",
+      "resumoCurto": "Foi orientado que o resumo e a introdução devem ser redigidos somente após a conclusão do artigo, aproveitando elementos da justificativa e dos objetivos já presentes no projeto.",
+      "detalhamento": "Foi orientado que o resumo e a introdução devem ser redigidos somente após a conclusão do artigo, aproveitando elementos da justificativa e dos objetivos já presentes no projeto.",
+      "pontosChave": [
+        "Foi orientado que o resumo e a introdução devem ser redigidos somente após a conclusão do artigo, aproveitando elementos da justificativa e dos objetivos já presentes no projeto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:45:48",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Início da escrita da metodologia",
+      "resumoCurto": "A professora incentivou os alunos a começarem a escrever a metodologia imediatamente, explicando a abordagem qualitativa ou quantitativa escolhida, com a possibilidade de expandir esse conteúdo posteriormente.",
+      "detalhamento": "A professora incentivou os alunos a começarem a escrever a metodologia imediatamente, explicando a abordagem qualitativa ou quantitativa escolhida, com a possibilidade de expandir esse conteúdo posteriormente.",
+      "pontosChave": [
+        "A professora incentivou os alunos a começarem a escrever a metodologia imediatamente, explicando a abordagem qualitativa ou quantitativa escolhida, com a possibilidade de expandir esse conteúdo posteriormente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "00:48:11",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Citação de novos formatos de mídia",
+      "resumoCurto": "Alcimar Luiz da Silva questionou como citar podcasts.",
+      "detalhamento": "Alcimar Luiz da Silva questionou como citar podcasts. A professora orientou consultar as normas da Associação Brasileira de Normas Técnicas (ABNT) e prometeu compartilhar o modelo correto de referência para podcasts no grupo da turma.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva questionou como citar podcasts.",
+        "A professora orientou consultar as normas da Associação Brasileira de Normas Técnicas (ABNT) e prometeu compartilhar o modelo correto de referência para podcasts no grupo da turma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "00:51:57",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Limite de referências",
+      "resumoCurto": "Daniel Rodrigues perguntou sobre o limite de referências bibliográficas, e a professora confirmou que não há limite, desde que todas as obras listadas sejam efetivamente citadas no corpo do artigo.",
+      "detalhamento": "Daniel Rodrigues perguntou sobre o limite de referências bibliográficas, e a professora confirmou que não há limite, desde que todas as obras listadas sejam efetivamente citadas no corpo do artigo.",
+      "pontosChave": [
+        "Daniel Rodrigues perguntou sobre o limite de referências bibliográficas, e a professora confirmou que não há limite, desde que todas as obras listadas sejam efetivamente citadas no corpo do artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "00:53:08",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Seção de resultados e discussão",
+      "resumoCurto": "A Professora Profº Profº Marcio Leal introduziu a seção de resultados e discussão, descrevendo-a como um diálogo com autores e análise de dados, mas informou que a explicação detalhada deste tópico será concluída na próxima aula.",
+      "detalhamento": "A Professora Profº Profº Marcio Leal introduziu a seção de resultados e discussão, descrevendo-a como um diálogo com autores e análise de dados, mas informou que a explicação detalhada deste tópico será concluída na próxima aula.",
+      "pontosChave": [
+        "A Professora Profº Profº Marcio Leal introduziu a seção de resultados e discussão, descrevendo-a como um diálogo com autores e análise de dados, mas informou que a explicação detalhada deste tópico será concluída na próxima aula."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "00:55:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Considerações finais",
+      "resumoCurto": "A professora concluiu a aula explicando que as considerações finais representam o desdobramento dessa conversa com os autores e a análise dos dados, reconhecendo que a pesquisa é um processo contínuo e sujeito a variações históricas.",
+      "detalhamento": "A professora concluiu a aula explicando que as considerações finais representam o desdobramento dessa conversa com os autores e a análise dos dados, reconhecendo que a pesquisa é um processo contínuo e sujeito a variações históricas.",
+      "pontosChave": [
+        "A professora concluiu a aula explicando que as considerações finais representam o desdobramento dessa conversa com os autores e a análise dos dados, reconhecendo que a pesquisa é um processo contínuo e sujeito a variações históricas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "00:57:31",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Estrutura das Considerações Finais",
+      "resumoCurto": "Profº Profº Marcio Leal orienta que a seção de \"Considerações Finais\" deve ser utilizada para apresentar as contribuições da pesquisa, sejam elas teológicas, sociológicas ou psicológicas, em vez de funcionar apenas como uma conclusão definitiva.",
+      "detalhamento": "Profº Profº Marcio Leal orienta que a seção de \"Considerações Finais\" deve ser utilizada para apresentar as contribuições da pesquisa, sejam elas teológicas, sociológicas ou psicológicas, em vez de funcionar apenas como uma conclusão definitiva. O objetivo é que os estudantes demonstrem como suas reflexões enriquecem o campo estudado, além de levantarem novas questões e problemáticas que possam servir de base para pesquisas futuras, incluindo trabalhos acadêmicos posteriores dos próprios pesquisadores ou de terceiros.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal orienta que a seção de \"Considerações Finais\" deve ser utilizada para apresentar as contribuições da pesquisa, sejam elas teológicas, sociológicas ou psicológicas, em vez de funcionar apenas como uma conclusão definitiva.",
+        "O objetivo é que os estudantes demonstrem como suas reflexões enriquecem o campo estudado, além de levantarem novas questões e problemáticas que possam servir de base para pesquisas futuras, incluindo trabalhos acadêmicos posteriores dos próprios pesquisadores ou de terceiros."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "00:59:15",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Formatação das Referências Bibliográficas",
+      "resumoCurto": "Profº Profº Marcio Leal reforça a necessidade de seguir estritamente as normas da Associação Brasileira de Normas Técnicas (ABNT) para o referencial bibliográfico.",
+      "detalhamento": "Profº Profº Marcio Leal reforça a necessidade de seguir estritamente as normas da Associação Brasileira de Normas Técnicas (ABNT) para o referencial bibliográfico. O professor esclarece que a lista deve conter apenas os materiais efetivamente citados no corpo do artigo e, fundamentalmente, deve ser organizada em ordem alfabética, e não pela ordem de citação no texto, para evitar que o trabalho seja devolvido por erro de formatação.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal reforça a necessidade de seguir estritamente as normas da Associação Brasileira de Normas Técnicas (ABNT) para o referencial bibliográfico.",
+        "O professor esclarece que a lista deve conter apenas os materiais efetivamente citados no corpo do artigo e, fundamentalmente, deve ser organizada em ordem alfabética, e não pela ordem de citação no texto, para evitar que o trabalho seja devolvido por erro de formatação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "timestamp": "00:59:15",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Planejamento das Próximas Atividades",
+      "resumoCurto": "Devido ao horário avançado de 21:02, Profº Profº Marcio Leal propõe o encerramento da aula e sugere retomar o conteúdo na semana seguinte, juntamente com a turma que está finalizando o projeto, para garantir que todas as dúvidas dos estudantes sejam esclarecidas.",
+      "detalhamento": "Devido ao horário avançado de 21:02, Profº Profº Marcio Leal propõe o encerramento da aula e sugere retomar o conteúdo na semana seguinte, juntamente com a turma que está finalizando o projeto, para garantir que todas as dúvidas dos estudantes sejam esclarecidas. O professor incentiva os alunos a iniciarem a escrita da metodologia durante o período e compromete-se a disponibilizar orientações e um modelo de referência na plataforma virtual para auxiliar na estrutura do artigo.",
+      "pontosChave": [
+        "Devido ao horário avançado de 21:02, Profº Profº Marcio Leal propõe o encerramento da aula e sugere retomar o conteúdo na semana seguinte, juntamente com a turma que está finalizando o projeto, para garantir que todas as dúvidas dos estudantes sejam esclarecidas.",
+        "O professor incentiva os alunos a iniciarem a escrita da metodologia durante o período e compromete-se a disponibilizar orientações e um modelo de referência na plataforma virtual para auxiliar na estrutura do artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 26,
+      "timestamp": "01:00:37",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento da Reunião",
+      "resumoCurto": "Após o alinhamento sobre a retomada das discussões na semana subsequente, a sessão é finalizada com despedidas entre Profº Profº Marcio Leal, Camila Vieira, Daniel Rodrigues, Seminarista William Barros, Wagner Augusto Dos Santos Costa, Marcos Paulo Carmo Nogueira, Lucas Ortega e Cristiano Sacramento.",
+      "detalhamento": "Após o alinhamento sobre a retomada das discussões na semana subsequente, a sessão é finalizada com despedidas entre Profº Profº Marcio Leal, Camila Vieira, Daniel Rodrigues, Seminarista William Barros, Wagner Augusto Dos Santos Costa, Marcos Paulo Carmo Nogueira, Lucas Ortega e Cristiano Sacramento. Ao final, Cristiano Sacramento aproveita o momento para solicitar ajuda aos colegas sobre o envio de seu TCC para a plataforma.",
+      "pontosChave": [
+        "Após o alinhamento sobre a retomada das discussões na semana subsequente, a sessão é finalizada com despedidas entre Profº Profº Marcio Leal, Camila Vieira, Daniel Rodrigues, Seminarista William Barros, Wagner Augusto Dos Santos Costa, Marcos Paulo Carmo Nogueira, Lucas Ortega e Cristiano Sacramento.",
+        "Ao final, Cristiano Sacramento aproveita o momento para solicitar ajuda aos colegas sobre o envio de seu TCC para a plataforma."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Seção de resultados e discussão",
+      "relato": "A Professora Profº Profº Marcio Leal introduziu a seção de resultados e discussão, descrevendo-a como um diálogo com autores e análise de dados, mas informou que a explicação detalhada deste tópico será concluída na próxima aula.",
+      "timestamp": "00:53:08"
+    },
+    {
+      "titulo": "Estrutura das Considerações Finais",
+      "relato": "Profº Profº Marcio Leal orienta que a seção de \"Considerações Finais\" deve ser utilizada para apresentar as contribuições da pesquisa, sejam elas teológicas, sociológicas ou psicológicas, em vez de funcionar apenas como uma conclusão definitiva. O objetivo é que os estudantes demonstrem como suas reflexões enriquecem o campo estudado, além de levantarem novas questões e problemáticas que possam servir de base para pesquisas futuras, incluindo trabalhos acadêmicos posteriores dos próprios pesquisadores ou de terceiros.",
+      "timestamp": "00:57:31"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    },
+    {
+      "titulo": "Normas de Referências Bibliográficas (NBR 6023)",
+      "detalhe": "Alinhadas estritamente à margem esquerda, espaçamento simples interno, separadas por 1 espaço em branco, ordenadas em ordem alfabética pelo sobrenome do autor e com título da obra em negrito."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Ansiedade relacionada ao Trabalho de Conclusão de Curso\" nesta aula?",
+      "dicaResposta": "Os estudantes expressaram tensão e ansiedade quanto à produção do Trabalho de Conclusão de Curso (TCC), destacando a dificuldade de conciliar o estágio e a escrita final durante o oitavo período."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Trajetória acadêmica e futura\" nesta aula?",
+      "dicaResposta": "A Professora Profº Profº Marcio Leal incentivou os estudantes a considerarem a continuidade acadêmica em mestrados e doutorados, enfatizando a importância de teólogos bem formados que unam a fé à ciência."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Homenagem ao trabalho acadêmico de Cristiano Sacramento\" nesta aula?",
+      "dicaResposta": "A Professora Profº Profº Marcio Leal parabenizou o filho de Cristiano Sacramento por sua corajosa defesa de tese sobre sexualidade, um tema considerado relevante e pouco abordado nas igrejas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Mudança de foco no projeto de Cristiano Sacramento\" nesta aula?",
+      "dicaResposta": "Cristiano explicou que, por recomendação de seu orientador, decidiu manter seu pré-projeto atual em vez de mudar para o tema de povos originários e ribeirinhos, deixando o tópico mais complexo para uma futura pós-graduação."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Desenvolvimento ministerial de Cristiano Sacramento\" nesta aula?",
+      "dicaResposta": "Cristiano compartilhou que seu filho assumirá a liderança de uma congregação em Itaguaí, atuando como pastor presidente com Cristiano servindo como pastor auxiliar."
+    }
+  ],
+  "encaminhamentos": [
+    "Compartilhar formato artigo: Publicar o guia de formatação do artigo da Faculdade Maciço do Baturité no grupo de metodologia após o término da aula.",
+    "Compartilhar modelo artigo: Disponibilizar um modelo de artigo que siga a estrutura exigida pela instituição no grupo de metodologia.",
+    "Enviar normas orientador: Encaminhar o documento com as normas de formatação do artigo para os respectivos orientadores acadêmicos.",
+    "Publicar guia ABNT: Publicar no grupo o guia de como realizar citações de podcast conforme as normas da ABNT."
+  ]
+}

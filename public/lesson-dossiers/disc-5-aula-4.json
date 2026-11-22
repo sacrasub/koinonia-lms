@@ -1,0 +1,491 @@
+{
+  "id": "disc-5-aula-4",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 4,
+  "unidade": 1,
+  "dateIso": "2026-09-03",
+  "dateBr": "03/09/2026",
+  "theme": "Aula 4 • Relevância social da igreja",
+  "geminiUrl": "/gemini-notes/eti_aula4_2026-09-03.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "Discussão ética cristã sobre aborto e a responsabilidade da igreja na assistência social e acolhimento comunitário. Fundamentos bíblicos sobre vida A reunião analisou perspectivas teológicas e exegeses bíblicas sobre a vida intrauterina e a proteção fetal. O consenso ético prioriza a preservação da vida sob princípios divinos. Dilemas e responsabilidade eclesial Debates abordaram casos de estupro e gestações de alto risco, destacando a necessidade do acolhimento cristão. A igreja deve oferecer suporte integral, evitando julgamentos e oferecendo assistência prática.",
+    "sinteseGeral": "Discussão ética cristã sobre aborto e a responsabilidade da igreja na assistência social e acolhimento comunitário. Fundamentos bíblicos sobre vida A reunião analisou perspectivas teológicas e exegeses bíblicas sobre a vida intrauterina e a proteção fetal. O consenso ético prioriza a preservação da vida sob princípios divinos. Dilemas e responsabilidade eclesial Debates abordaram casos de estupro e gestações de alto risco, destacando a necessidade do acolhimento cristão. A igreja deve oferecer suporte integral, evitando julgamentos e oferecendo assistência prática. Relevância social da igreja A conclusão reafirmou a importância da atuação prática da igreja na assistência social em vez de posições meramente teóricas. A vida foi estabelecida como o valor supremo cristão.",
+    "mapaRapido": [
+      "Abertura e Introdução ao Encontro: O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul.",
+      "Critérios Éticos sobre o Aborto: BiblicaMente por Profª Karoline Evangelista apresentou os fundamentos que definem as decisões sobre o aborto, explicando que a visão sobre o feto — como ser plenamente humano, humano em potencial ou subumano — determina a posição ética adotada.",
+      "Dificuldades na Definição de Pessoa: Foi discutida a complexidade científica e lógica de determinar o momento exato em que um feto passa de \"não pessoa\" para \"pessoa\".",
+      "Argumento Bíblico e a Vida no Ventre: Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno.",
+      "Exegese de Êxodo 21: 22-23 e Problemas de Tradução: BiblicaMente por Profª Karoline Evangelista apontou problemas sérios em certas traduções bíblicas de Êxodo 21:22-23, que utilizam termos como \"aborto\" em vez de \"dar à luz prematuramente\".",
+      "Contexto Cultural Israelita e a Bênção da Vida: Alcimar Luiz da Silva e Rosiane Lima (Rosi) destacaram que, na cultura judaica da época, o aborto era algo impensável e que filhos eram considerados bênçãos imensuráveis."
+    ],
+    "duracaoEstimada": "~1h31min",
+    "totalBlocos": 24
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:12:10",
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura e Introdução ao Encontro",
+      "resumoCurto": "O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul.",
+      "detalhamento": "O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul. A reunião foi formalmente aberta com uma oração, estabelecendo o foco na discussão sobre aborto à luz dos princípios cristãos.",
+      "pontosChave": [
+        "O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul.",
+        "A reunião foi formalmente aberta com uma oração, estabelecendo o foco na discussão sobre aborto à luz dos princípios cristãos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:16:38",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Critérios Éticos sobre o Aborto",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista apresentou os fundamentos que definem as decisões sobre o aborto, explicando que a visão sobre o feto — como ser plenamente humano, humano em potencial ou subumano — determina a posição ética adotada.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista apresentou os fundamentos que definem as decisões sobre o aborto, explicando que a visão sobre o feto — como ser plenamente humano, humano em potencial ou subumano — determina a posição ética adotada. Para quem considera o feto plenamente humano, o aborto é inaceitável, prevalecendo a dignidade da vida sobre a privacidade ou liberdade da mãe. Aqueles que veem o feto como subumano tendem a priorizar a qualidade de vida da mãe, tornando o aborto aceitável em diversas situações.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista apresentou os fundamentos que definem as decisões sobre o aborto, explicando que a visão sobre o feto — como ser plenamente humano, humano em potencial ou subumano — determina a posição ética adotada.",
+        "Para quem considera o feto plenamente humano, o aborto é inaceitável, prevalecendo a dignidade da vida sobre a privacidade ou liberdade da mãe.",
+        "Aqueles que veem o feto como subumano tendem a priorizar a qualidade de vida da mãe, tornando o aborto aceitável em diversas situações."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:18:14",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Dificuldades na Definição de Pessoa",
+      "resumoCurto": "Foi discutida a complexidade científica e lógica de determinar o momento exato em que um feto passa de \"não pessoa\" para \"pessoa\".",
+      "detalhamento": "Foi discutida a complexidade científica e lógica de determinar o momento exato em que um feto passa de \"não pessoa\" para \"pessoa\". BiblicaMente por Profª Karoline Evangelista observou que não existe uma resposta científica clara para essa transição, dado que o ser humano está em constante desenvolvimento, inclusive após o nascimento, o que gera um impasse ético e legal frequente nas discussões sobre direitos da mãe e do feto.",
+      "pontosChave": [
+        "Foi discutida a complexidade científica e lógica de determinar o momento exato em que um feto passa de \"não pessoa\" para \"pessoa\".",
+        "BiblicaMente por Profª Karoline Evangelista observou que não existe uma resposta científica clara para essa transição, dado que o ser humano está em constante desenvolvimento, inclusive após o nascimento, o que gera um impasse ético e legal frequente nas discussões sobre direitos da mãe e do feto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:21:18",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Argumento Bíblico e a Vida no Ventre",
+      "resumoCurto": "Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno.",
+      "detalhamento": "Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno. BiblicaMente por Profª Karoline Evangelista reforçou a importância deste texto como um argumento claro contra o aborto, sustentando que o feto já possui a condição de ser plenamente humano.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno.",
+        "BiblicaMente por Profª Karoline Evangelista reforçou a importância deste texto como um argumento claro contra o aborto, sustentando que o feto já possui a condição de ser plenamente humano."
+      ],
+      "referenciasNoBloco": [
+        "Salmo 139:13"
+      ]
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:23:58",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Exegese de Êxodo 21",
+      "resumoCurto": "22-23 e Problemas de Tradução: BiblicaMente por Profª Karoline Evangelista apontou problemas sérios em certas traduções bíblicas de Êxodo 21:22-23, que utilizam termos como \"aborto\" em vez de \"dar à luz prematuramente\".",
+      "detalhamento": "22-23 e Problemas de Tradução: BiblicaMente por Profª Karoline Evangelista apontou problemas sérios em certas traduções bíblicas de Êxodo 21:22-23, que utilizam termos como \"aborto\" em vez de \"dar à luz prematuramente\". Foi explicado que o texto original hebraico se refere a um parto prematuro sem dano grave, onde o ofensor paga uma indenização, e não a um aborto, diferenciando claramente entre a vida da criança e do feto em casos de ferimentos acidentais.",
+      "pontosChave": [
+        "22-23 e Problemas de Tradução: BiblicaMente por Profª Karoline Evangelista apontou problemas sérios em certas traduções bíblicas de Êxodo 21:22-23, que utilizam termos como \"aborto\" em vez de \"dar à luz prematuramente\".",
+        "Foi explicado que o texto original hebraico se refere a um parto prematuro sem dano grave, onde o ofensor paga uma indenização, e não a um aborto, diferenciando claramente entre a vida da criança e do feto em casos de ferimentos acidentais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:28:51",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Contexto Cultural Israelita e a Bênção da Vida",
+      "resumoCurto": "Alcimar Luiz da Silva e Rosiane Lima (Rosi) destacaram que, na cultura judaica da época, o aborto era algo impensável e que filhos eram considerados bênçãos imensuráveis.",
+      "detalhamento": "Alcimar Luiz da Silva e Rosiane Lima (Rosi) destacaram que, na cultura judaica da época, o aborto era algo impensável e que filhos eram considerados bênçãos imensuráveis. Foi ressaltado que a exegese correta do texto de Êxodo enfatiza a proteção às mulheres grávidas e a responsabilidade civil em casos de acidentes, sendo fundamental observar o contexto histórico para evitar interpretações equivocadas.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva e Rosiane Lima (Rosi) destacaram que, na cultura judaica da época, o aborto era algo impensável e que filhos eram considerados bênçãos imensuráveis.",
+        "Foi ressaltado que a exegese correta do texto de Êxodo enfatiza a proteção às mulheres grávidas e a responsabilidade civil em casos de acidentes, sendo fundamental observar o contexto histórico para evitar interpretações equivocadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:32:53",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectiva Clínica sobre Prematuridade",
+      "resumoCurto": "carla p dos s de almeida, técnica de enfermagem, contribuiu com uma perspectiva clínica, observando que, na prática, todo parto prematuro envolve riscos e danos potenciais à saúde.",
+      "detalhamento": "carla p dos s de almeida, técnica de enfermagem, contribuiu com uma perspectiva clínica, observando que, na prática, todo parto prematuro envolve riscos e danos potenciais à saúde. Foi discutido que a compreensão moderna sobre fetos com mais de 500 gramas ou com 22 semanas exige um cuidado diferenciado para tentar preservar a vida, reiterando a complexidade de tratar esses casos apenas sob a ótica do aborto.",
+      "pontosChave": [
+        "carla p dos s de almeida, técnica de enfermagem, contribuiu com uma perspectiva clínica, observando que, na prática, todo parto prematuro envolve riscos e danos potenciais à saúde.",
+        "Foi discutido que a compreensão moderna sobre fetos com mais de 500 gramas ou com 22 semanas exige um cuidado diferenciado para tentar preservar a vida, reiterando a complexidade de tratar esses casos apenas sob a ótica do aborto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:36:20",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Dilema Ético em Casos de Estupro e Menores",
+      "resumoCurto": "Marlon Pimentel questionou como a ética cristã deve lidar com casos extremos, como o de uma criança de 11 anos vítima de estupro.",
+      "detalhamento": "Marlon Pimentel questionou como a ética cristã deve lidar com casos extremos, como o de uma criança de 11 anos vítima de estupro. BiblicaMente por Profª Karoline Evangelista reconheceu a dificuldade extrema desses cenários, enfatizando que a prioridade deve ser salvar a vida da mãe e do bebê, e que o aborto, mesmo nessas circunstâncias, não resolve o trauma psicológico da vítima, sendo necessário buscar suporte espiritual e emocional.",
+      "pontosChave": [
+        "Marlon Pimentel questionou como a ética cristã deve lidar com casos extremos, como o de uma criança de 11 anos vítima de estupro.",
+        "BiblicaMente por Profª Karoline Evangelista reconheceu a dificuldade extrema desses cenários, enfatizando que a prioridade deve ser salvar a vida da mãe e do bebê, e que o aborto, mesmo nessas circunstâncias, não resolve o trauma psicológico da vítima, sendo necessário buscar suporte espiritual e emocional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:43:11",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O Papel da Igreja no Acolhimento e Cura",
+      "resumoCurto": "Jorge Silva e Talita RF Felinto discutiram a complexidade do trauma e a responsabilidade da igreja.",
+      "detalhamento": "Jorge Silva e Talita RF Felinto discutiram a complexidade do trauma e a responsabilidade da igreja. Ambos concordaram que, independentemente da visão sobre o aborto ser pecado, a igreja deve ter uma postura de acolhimento, cuidado e cura para pessoas traumatizadas, evitando o julgamento severo e oferecendo suporte integral em vez de empoderar decisões baseadas em um momento de dor.",
+      "pontosChave": [
+        "Jorge Silva e Talita RF Felinto discutiram a complexidade do trauma e a responsabilidade da igreja.",
+        "Ambos concordaram que, independentemente da visão sobre o aborto ser pecado, a igreja deve ter uma postura de acolhimento, cuidado e cura para pessoas traumatizadas, evitando o julgamento severo e oferecendo suporte integral em vez de empoderar decisões baseadas em um momento de dor."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:48:55",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Testemunho de Gestação na Adolescência",
+      "resumoCurto": "Rosiane Lima (Rosi) compartilhou a experiência de uma familiar que engravidou aos 12 anos.",
+      "detalhamento": "Rosiane Lima (Rosi) compartilhou a experiência de uma familiar que engravidou aos 12 anos. Apesar das dificuldades e da prematuridade do bebê, a família optou por seguir com a gestação. A criança sobreviveu, superou limitações físicas e hoje estuda psicologia, servindo como exemplo de que, mesmo em situações difíceis, a preservação da vida pode resultar em propósitos divinos, contrariando as expectativas iniciais de tragédia.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) compartilhou a experiência de uma familiar que engravidou aos 12 anos.",
+        "Apesar das dificuldades e da prematuridade do bebê, a família optou por seguir com a gestação.",
+        "A criança sobreviveu, superou limitações físicas e hoje estuda psicologia, servindo como exemplo de que, mesmo em situações difíceis, a preservação da vida pode resultar em propósitos divinos, contrariando as expectativas iniciais de tragédia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:54:00",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Reflexão sobre a Relevância Social e Política da Igreja",
+      "resumoCurto": "Marlon Pimentel propôs uma reflexão sobre a necessidade de a população cristã ser mais madura e relevante na discussão pública sobre aborto e outros temas, como o divórcio em casos de violência.",
+      "detalhamento": "Marlon Pimentel propôs uma reflexão sobre a necessidade de a população cristã ser mais madura e relevante na discussão pública sobre aborto e outros temas, como o divórcio em casos de violência. Foi sugerido que a igreja precisa atuar de forma prática, oferecendo apoio real e políticas de cuidado para a realidade brasileira, indo além de posições teóricas.",
+      "pontosChave": [
+        "Marlon Pimentel propôs uma reflexão sobre a necessidade de a população cristã ser mais madura e relevante na discussão pública sobre aborto e outros temas, como o divórcio em casos de violência.",
+        "Foi sugerido que a igreja precisa atuar de forma prática, oferecendo apoio real e políticas de cuidado para a realidade brasileira, indo além de posições teóricas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:59:21",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Conclusão sobre Priorização da Vida",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista concluiu reiterando que o dilema ético cristão é sempre voltado para a preservação da vida.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista concluiu reiterando que o dilema ético cristão é sempre voltado para a preservação da vida. Em casos onde a morte de ambos é inevitável sem intervenção, a ética cristã prioriza a sobrevivência da mãe, mas, de modo geral, o feto é reconhecido como vida e imagem de Deus, sendo a proteção de ambas as vidas o objetivo central em qualquer cenário.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista concluiu reiterando que o dilema ético cristão é sempre voltado para a preservação da vida.",
+        "Em casos onde a morte de ambos é inevitável sem intervenção, a ética cristã prioriza a sobrevivência da mãe, mas, de modo geral, o feto é reconhecido como vida e imagem de Deus, sendo a proteção de ambas as vidas o objetivo central em qualquer cenário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "01:03:14",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre riscos médicos e contexto legal do aborto",
+      "resumoCurto": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista analisam a dificuldade em determinar riscos de vida em gestações e os desafios impostos pela criminalização do aborto.",
+      "detalhamento": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista analisam a dificuldade em determinar riscos de vida em gestações e os desafios impostos pela criminalização do aborto. Marlon Pimentel argumenta que, devido à ilegalidade, não existem dados precisos ou análises clínicas adequadas para avaliar o risco de morte, tornando a avaliação subjetiva.",
+      "pontosChave": [
+        "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista analisam a dificuldade em determinar riscos de vida em gestações e os desafios impostos pela criminalização do aborto.",
+        "Marlon Pimentel argumenta que, devido à ilegalidade, não existem dados precisos ou análises clínicas adequadas para avaliar o risco de morte, tornando a avaliação subjetiva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:05:55",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Acesso ao sistema de saúde e barreiras socioeconômicas",
+      "resumoCurto": "Marlon Pimentel destaca que a falta de acompanhamento clínico adequado e o baixo capital cultural de parte da população dificultam o acesso e o uso efetivo do Sistema Único de Saúde (SUS).",
+      "detalhamento": "Marlon Pimentel destaca que a falta de acompanhamento clínico adequado e o baixo capital cultural de parte da população dificultam o acesso e o uso efetivo do Sistema Único de Saúde (SUS). BiblicaMente por Profª Karoline Evangelista esclarece que o aborto não é crime em casos de risco de vida para a gestante, pontuando que o debate frequentemente confunde casos legais com abortos clandestinos.",
+      "pontosChave": [
+        "Marlon Pimentel destaca que a falta de acompanhamento clínico adequado e o baixo capital cultural de parte da população dificultam o acesso e o uso efetivo do Sistema Único de Saúde (SUS).",
+        "BiblicaMente por Profª Karoline Evangelista esclarece que o aborto não é crime em casos de risco de vida para a gestante, pontuando que o debate frequentemente confunde casos legais com abortos clandestinos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:05:55",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Conflito ético entre a lei e a Bíblia",
+      "resumoCurto": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista refletem sobre o conflito entre o que a legislação permite e o que a perspectiva bíblica estabelece, concordando que nem tudo o que é legalmente permitido é necessariamente aceitável sob uma ótica cristã.",
+      "detalhamento": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista refletem sobre o conflito entre o que a legislação permite e o que a perspectiva bíblica estabelece, concordando que nem tudo o que é legalmente permitido é necessariamente aceitável sob uma ótica cristã.",
+      "pontosChave": [
+        "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista refletem sobre o conflito entre o que a legislação permite e o que a perspectiva bíblica estabelece, concordando que nem tudo o que é legalmente permitido é necessariamente aceitável sob uma ótica cristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:07:52",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Sensibilidade do tema e impacto emocional",
+      "resumoCurto": "Camila Vieira comenta sobre a sensibilidade do tema para as mulheres e a dificuldade de lidar com decisões em casos de violência sexual.",
+      "detalhamento": "Camila Vieira comenta sobre a sensibilidade do tema para as mulheres e a dificuldade de lidar com decisões em casos de violência sexual. Camila Vieira menciona que, embora a lei permita o aborto nessas circunstâncias, há um dilema interno sobre como proceder nessas situações de crise.",
+      "pontosChave": [
+        "Camila Vieira comenta sobre a sensibilidade do tema para as mulheres e a dificuldade de lidar com decisões em casos de violência sexual.",
+        "Camila Vieira menciona que, embora a lei permita o aborto nessas circunstâncias, há um dilema interno sobre como proceder nessas situações de crise."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:07:52",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Debate no Supremo Tribunal Federal",
+      "resumoCurto": "Camila Vieira pontua o debate existente no Supremo Tribunal Federal (STF) sobre se a vida deve ser considerada desde a fecundação ou se deve prevalecer o direito da mulher à dignidade e reprodução, destacando a complexidade do assunto.",
+      "detalhamento": "Camila Vieira pontua o debate existente no Supremo Tribunal Federal (STF) sobre se a vida deve ser considerada desde a fecundação ou se deve prevalecer o direito da mulher à dignidade e reprodução, destacando a complexidade do assunto.",
+      "pontosChave": [
+        "Camila Vieira pontua o debate existente no Supremo Tribunal Federal (STF) sobre se a vida deve ser considerada desde a fecundação ou se deve prevalecer o direito da mulher à dignidade e reprodução, destacando a complexidade do assunto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:09:20",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Testemunho sobre gravidez na adolescência",
+      "resumoCurto": "Salatiel Rodrigues relata uma experiência de quando atuava como líder de jovens, onde uma adolescente grávida foi acolhida pela igreja e pela turma, sem sofrer estigma, conseguindo seguir sua vida com o filho.",
+      "detalhamento": "Salatiel Rodrigues relata uma experiência de quando atuava como líder de jovens, onde uma adolescente grávida foi acolhida pela igreja e pela turma, sem sofrer estigma, conseguindo seguir sua vida com o filho.",
+      "pontosChave": [
+        "Salatiel Rodrigues relata uma experiência de quando atuava como líder de jovens, onde uma adolescente grávida foi acolhida pela igreja e pela turma, sem sofrer estigma, conseguindo seguir sua vida com o filho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:12:10",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Testemunho sobre gestação de alto risco",
+      "resumoCurto": "Salatiel Rodrigues compartilha um caso familiar em que médicos recomendaram o aborto devido à malformação de gêmeas siamesas.",
+      "detalhamento": "Salatiel Rodrigues compartilha um caso familiar em que médicos recomendaram o aborto devido à malformação de gêmeas siamesas. A família optou por não seguir a recomendação médica e, após acompanhamento hospitalar em Niterói, uma das crianças sobreviveu e completou 10 anos de idade, sendo apresentada como um testemunho de fé.",
+      "pontosChave": [
+        "Salatiel Rodrigues compartilha um caso familiar em que médicos recomendaram o aborto devido à malformação de gêmeas siamesas.",
+        "A família optou por não seguir a recomendação médica e, após acompanhamento hospitalar em Niterói, uma das crianças sobreviveu e completou 10 anos de idade, sendo apresentada como um testemunho de fé."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:15:42",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Aconselhamento e direção espiritual",
+      "resumoCurto": "carla p dos s de almeida reflete sobre a importância da igreja estar preparada para oferecer direção espiritual em momentos de crise, em vez de apenas especular sobre cenários hipotéticos.",
+      "detalhamento": "carla p dos s de almeida reflete sobre a importância da igreja estar preparada para oferecer direção espiritual em momentos de crise, em vez de apenas especular sobre cenários hipotéticos. Elas compartilham o testemunho de uma familiar que foi vítima de violência sexual e escolheu manter a gravidez, resultando no nascimento de um filho que hoje participa da igreja.",
+      "pontosChave": [
+        "carla p dos s de almeida reflete sobre a importância da igreja estar preparada para oferecer direção espiritual em momentos de crise, em vez de apenas especular sobre cenários hipotéticos.",
+        "Elas compartilham o testemunho de uma familiar que foi vítima de violência sexual e escolheu manter a gravidez, resultando no nascimento de um filho que hoje participa da igreja."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:20:06",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Testemunho de superação médica",
+      "resumoCurto": "Comercial Ferreira relata a história de Luciana Quixabeira, que foi alertada pelos médicos de que uma segunda gravidez seria fatal.",
+      "detalhamento": "Comercial Ferreira relata a história de Luciana Quixabeira, que foi alertada pelos médicos de que uma segunda gravidez seria fatal. Contra as probabilidades médicas, a gestação ocorreu com acompanhamento, e a criança nasceu e cresceu, com quase 14 anos de idade no momento do relato.",
+      "pontosChave": [
+        "Comercial Ferreira relata a história de Luciana Quixabeira, que foi alertada pelos médicos de que uma segunda gravidez seria fatal.",
+        "Contra as probabilidades médicas, a gestação ocorreu com acompanhamento, e a criança nasceu e cresceu, com quase 14 anos de idade no momento do relato."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:21:07",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Posicionamento contra a banalização do aborto",
+      "resumoCurto": "Comercial Ferreira critica a tentativa de formalizar políticas públicas que tratem o aborto como questão de saúde pública, classificando a movimentação como algo demoníaco e contrário à vontade de Deus.",
+      "detalhamento": "Comercial Ferreira critica a tentativa de formalizar políticas públicas que tratem o aborto como questão de saúde pública, classificando a movimentação como algo demoníaco e contrário à vontade de Deus. Eles argumentam que, embora a igreja deva acolher os pecadores, o aborto não deve ser banalizado, reforçando que o povo cristão deve manter uma postura firme baseada na Bíblia.",
+      "pontosChave": [
+        "Comercial Ferreira critica a tentativa de formalizar políticas públicas que tratem o aborto como questão de saúde pública, classificando a movimentação como algo demoníaco e contrário à vontade de Deus.",
+        "Eles argumentam que, embora a igreja deva acolher os pecadores, o aborto não deve ser banalizado, reforçando que o povo cristão deve manter uma postura firme baseada na Bíblia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:29:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Papel da igreja na assistência social",
+      "resumoCurto": "Jefferson Araujo, BiblicaMente por Profª Karoline Evangelista e outros discutem a necessidade de a igreja oferecer respostas práticas e assistência social em vez de permanecer inerte diante de dificuldades comunitárias.",
+      "detalhamento": "Jefferson Araujo, BiblicaMente por Profª Karoline Evangelista e outros discutem a necessidade de a igreja oferecer respostas práticas e assistência social em vez de permanecer inerte diante de dificuldades comunitárias. BiblicaMente por Profª Karoline Evangelista menciona que, por vezes, é necessário que lideranças sejam convencidas, até mesmo através de documentos históricos, da importância de oferecer assistência social à comunidade.",
+      "pontosChave": [
+        "Jefferson Araujo, BiblicaMente por Profª Karoline Evangelista e outros discutem a necessidade de a igreja oferecer respostas práticas e assistência social em vez de permanecer inerte diante de dificuldades comunitárias.",
+        "BiblicaMente por Profª Karoline Evangelista menciona que, por vezes, é necessário que lideranças sejam convencidas, até mesmo através de documentos históricos, da importância de oferecer assistência social à comunidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "01:30:57",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Conclusão e oração",
+      "resumoCurto": "Talita RF Felinto critica a tendência de algumas igrejas focarem em assuntos superficiais, como a cor do templo, em vez de servirem a sociedade.",
+      "detalhamento": "Talita RF Felinto critica a tendência de algumas igrejas focarem em assuntos superficiais, como a cor do templo, em vez de servirem a sociedade. A reunião é encerrada com uma oração conduzida por Talita RF Felinto, pedindo sabedoria, coragem e que a igreja seja luz em meio às trevas.",
+      "pontosChave": [
+        "Talita RF Felinto critica a tendência de algumas igrejas focarem em assuntos superficiais, como a cor do templo, em vez de servirem a sociedade.",
+        "A reunião é encerrada com uma oração conduzida por Talita RF Felinto, pedindo sabedoria, coragem e que a igreja seja luz em meio às trevas."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura e Introdução ao Encontro",
+      "relato": "O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul. A reunião foi formalmente aberta com uma oração, estabelecendo o foco na discussão sobre aborto à luz dos princípios cristãos.",
+      "timestamp": "00:12:10"
+    },
+    {
+      "titulo": "Perspectiva Clínica sobre Prematuridade",
+      "relato": "carla p dos s de almeida, técnica de enfermagem, contribuiu com uma perspectiva clínica, observando que, na prática, todo parto prematuro envolve riscos e danos potenciais à saúde. Foi discutido que a compreensão moderna sobre fetos com mais de 500 gramas ou com 22 semanas exige um cuidado diferenciado para tentar preservar a vida, reiterando a complexidade de tratar esses casos apenas sob a ótica do aborto.",
+      "timestamp": "00:32:53"
+    },
+    {
+      "titulo": "O Papel da Igreja no Acolhimento e Cura",
+      "relato": "Jorge Silva e Talita RF Felinto discutiram a complexidade do trauma e a responsabilidade da igreja. Ambos concordaram que, independentemente da visão sobre o aborto ser pecado, a igreja deve ter uma postura de acolhimento, cuidado e cura para pessoas traumatizadas, evitando o julgamento severo e oferecendo suporte integral em vez de empoderar decisões baseadas em um momento de dor.",
+      "timestamp": "00:43:11"
+    },
+    {
+      "titulo": "Testemunho de Gestação na Adolescência",
+      "relato": "Rosiane Lima (Rosi) compartilhou a experiência de uma familiar que engravidou aos 12 anos. Apesar das dificuldades e da prematuridade do bebê, a família optou por seguir com a gestação. A criança sobreviveu, superou limitações físicas e hoje estuda psicologia, servindo como exemplo de que, mesmo em situações difíceis, a preservação da vida pode resultar em propósitos divinos, contrariando as expectativas iniciais de tragédia.",
+      "timestamp": "00:48:55"
+    },
+    {
+      "titulo": "Reflexão sobre a Relevância Social e Política da Igreja",
+      "relato": "Marlon Pimentel propôs uma reflexão sobre a necessidade de a população cristã ser mais madura e relevante na discussão pública sobre aborto e outros temas, como o divórcio em casos de violência. Foi sugerido que a igreja precisa atuar de forma prática, oferecendo apoio real e políticas de cuidado para a realidade brasileira, indo além de posições teóricas.",
+      "timestamp": "00:54:00"
+    },
+    {
+      "titulo": "Discussão sobre riscos médicos e contexto legal do aborto",
+      "relato": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista analisam a dificuldade em determinar riscos de vida em gestações e os desafios impostos pela criminalização do aborto. Marlon Pimentel argumenta que, devido à ilegalidade, não existem dados precisos ou análises clínicas adequadas para avaliar o risco de morte, tornando a avaliação subjetiva.",
+      "timestamp": "01:03:14"
+    },
+    {
+      "titulo": "Acesso ao sistema de saúde e barreiras socioeconômicas",
+      "relato": "Marlon Pimentel destaca que a falta de acompanhamento clínico adequado e o baixo capital cultural de parte da população dificultam o acesso e o uso efetivo do Sistema Único de Saúde (SUS). BiblicaMente por Profª Karoline Evangelista esclarece que o aborto não é crime em casos de risco de vida para a gestante, pontuando que o debate frequentemente confunde casos legais com abortos clandestinos.",
+      "timestamp": "01:05:55"
+    },
+    {
+      "titulo": "Conflito ético entre a lei e a Bíblia",
+      "relato": "Marlon Pimentel e BiblicaMente por Profª Karoline Evangelista refletem sobre o conflito entre o que a legislação permite e o que a perspectiva bíblica estabelece, concordando que nem tudo o que é legalmente permitido é necessariamente aceitável sob uma ótica cristã.",
+      "timestamp": "01:05:55"
+    },
+    {
+      "titulo": "Debate no Supremo Tribunal Federal",
+      "relato": "Camila Vieira pontua o debate existente no Supremo Tribunal Federal (STF) sobre se a vida deve ser considerada desde a fecundação ou se deve prevalecer o direito da mulher à dignidade e reprodução, destacando a complexidade do assunto.",
+      "timestamp": "01:07:52"
+    },
+    {
+      "titulo": "Testemunho sobre gravidez na adolescência",
+      "relato": "Salatiel Rodrigues relata uma experiência de quando atuava como líder de jovens, onde uma adolescente grávida foi acolhida pela igreja e pela turma, sem sofrer estigma, conseguindo seguir sua vida com o filho.",
+      "timestamp": "01:09:20"
+    },
+    {
+      "titulo": "Testemunho sobre gestação de alto risco",
+      "relato": "Salatiel Rodrigues compartilha um caso familiar em que médicos recomendaram o aborto devido à malformação de gêmeas siamesas. A família optou por não seguir a recomendação médica e, após acompanhamento hospitalar em Niterói, uma das crianças sobreviveu e completou 10 anos de idade, sendo apresentada como um testemunho de fé.",
+      "timestamp": "01:12:10"
+    },
+    {
+      "titulo": "Aconselhamento e direção espiritual",
+      "relato": "carla p dos s de almeida reflete sobre a importância da igreja estar preparada para oferecer direção espiritual em momentos de crise, em vez de apenas especular sobre cenários hipotéticos. Elas compartilham o testemunho de uma familiar que foi vítima de violência sexual e escolheu manter a gravidez, resultando no nascimento de um filho que hoje participa da igreja.",
+      "timestamp": "01:15:42"
+    },
+    {
+      "titulo": "Testemunho de superação médica",
+      "relato": "Comercial Ferreira relata a história de Luciana Quixabeira, que foi alertada pelos médicos de que uma segunda gravidez seria fatal. Contra as probabilidades médicas, a gestação ocorreu com acompanhamento, e a criança nasceu e cresceu, com quase 14 anos de idade no momento do relato.",
+      "timestamp": "01:20:06"
+    },
+    {
+      "titulo": "Posicionamento contra a banalização do aborto",
+      "relato": "Comercial Ferreira critica a tentativa de formalizar políticas públicas que tratem o aborto como questão de saúde pública, classificando a movimentação como algo demoníaco e contrário à vontade de Deus. Eles argumentam que, embora a igreja deva acolher os pecadores, o aborto não deve ser banalizado, reforçando que o povo cristão deve manter uma postura firme baseada na Bíblia.",
+      "timestamp": "01:21:07"
+    },
+    {
+      "titulo": "Conclusão e oração",
+      "relato": "Talita RF Felinto critica a tendência de algumas igrejas focarem em assuntos superficiais, como a cor do templo, em vez de servirem a sociedade. A reunião é encerrada com uma oração conduzida por Talita RF Felinto, pedindo sabedoria, coragem e que a igreja seja luz em meio às trevas.",
+      "timestamp": "01:30:57"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Salmo 139:13",
+      "contexto": "Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    },
+    {
+      "titulo": "Bioética da Vida Humana (6º Mandamento)",
+      "detalhe": "O feto é pessoa humana completa dotada de Imago Dei desde a concepção (Sl 139:13-16; Jr 1:5); o aborto é repudiado como violação direta do sexto mandamento."
+    },
+    {
+      "titulo": "Norman Geisler e as 6 Matrizes Éticas",
+      "detalhe": "Antinomismo (sem normas), Generalismo (normas sem universalidade), Situacionismo (só o amor importa), Absolutismo Não Qualificado (sem conflitos reais), Absolutismo Conflitante (mal menor + perdão) e Absolutismo Graduado (dever moral superior sem culpa)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Introdução ao Encontro\" nesta aula?",
+      "dicaResposta": "O encontro foi iniciado por BiblicaMente por Profª Karoline Evangelista, que realizou um breve momento de acolhimento e interação com os participantes, incluindo uma breve troca de informações meteorológicas com Salatiel Rodrigues, que relatou temperaturas elevadas no Mato Grosso do Sul. A reunião foi formalmente aberta com uma oração, estabelecendo o foco na discussão sobre aborto à luz dos princípios cristãos."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Critérios Éticos sobre o Aborto\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista apresentou os fundamentos que definem as decisões sobre o aborto, explicando que a visão sobre o feto — como ser plenamente humano, humano em potencial ou subumano — determina a posição ética adotada. Para quem considera o feto plenamente humano, o aborto é inaceitável, prevalecendo a dignidade da vida sobre a privacidade ou liberdade da mãe."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Dificuldades na Definição de Pessoa\" nesta aula?",
+      "dicaResposta": "Foi discutida a complexidade científica e lógica de determinar o momento exato em que um feto passa de \"não pessoa\" para \"pessoa\". BiblicaMente por Profª Karoline Evangelista observou que não existe uma resposta científica clara para essa transição, dado que o ser humano está em constante desenvolvimento, inclusive após o nascimento, o que gera um impasse ético e legal frequente nas discussões sobre direitos da mãe e do feto."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Argumento Bíblico e a Vida no Ventre\" nesta aula?",
+      "dicaResposta": "Rosiane Lima (Rosi) trouxe o Salmo 139:13 para embasar a visão cristã, destacando a criação do ser humano por Deus desde o ventre materno. BiblicaMente por Profª Karoline Evangelista reforçou a importância deste texto como um argumento claro contra o aborto, sustentando que o feto já possui a condição de ser plenamente humano."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Exegese de Êxodo 21\" nesta aula?",
+      "dicaResposta": "22-23 e Problemas de Tradução: BiblicaMente por Profª Karoline Evangelista apontou problemas sérios em certas traduções bíblicas de Êxodo 21:22-23, que utilizam termos como \"aborto\" em vez de \"dar à luz prematuramente\". Foi explicado que o texto original hebraico se refere a um parto prematuro sem dano grave, onde o ofensor paga uma indenização, e não a um aborto, diferenciando claramente entre a vida da criança e do feto em casos de ferimentos acidentais."
+    }
+  ],
+  "encaminhamentos": [
+    "Analisar Êxodo 21: Verificar em diferentes traduções da Bíblia o texto de Êxodo 21 22 a 23 e identificar o termo utilizado para descrever a situação.",
+    "Continuar debate: Retomar a reflexão teológica e ética sobre o aborto na próxima aula para aprofundar o assunto."
+  ]
+}

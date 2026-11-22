@@ -1,0 +1,365 @@
+{
+  "id": "disc-8-aula-8",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 8,
+  "unidade": 2,
+  "dateIso": "2026-10-09",
+  "dateBr": "09/10/2026",
+  "theme": "Aula 8 • Abertura e Diretrizes Acadêmicas",
+  "geminiUrl": "https://docs.google.com/document/d/1mANDz_crlvKLbTE-UDDX9t9GjiCu5cPfO6pqP_813bE/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Devolutiva dos pré-projetos aprovados da AV1; orientação de transição definitiva para a redação do artigo científico final.",
+    "sinteseGeral": "Reunião abordou diretrizes de TCC com estratégias de pesquisa e relatos missionários. Abertura e Diretrizes Acadêmicas Aula introduziu a dinâmica de TCC e destacou a segurança de dados em nuvem. Rigor científico e cronogramas exigem planejamento adequado dos estudantes. Metodologia e Escrita Apresentação detalhou pesquisas de campo e leitura seletiva. Alinhamento entre dados práticos e fundamentação teórica estruturou a construção dos capítulos. Relatos Missionários e Parcerias Discussão abordou desafios de missionários na Bolívia. Parcerias estruturadas garantem apoio sem posturas de dependência.",
+    "mapaRapido": [
+      "Críticas à Liderança Eclesiástica e Dinâmicas de Reunião: Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo.",
+      "Abertura da Aula e Apresentação da Dinâmica do TCC: Profº Profº Marcio Leal abriu a aula com uma oração e introduziu a dinâmica de compartilhamento do processo de escrita do Trabalho de Conclusão de Curso (TCC), utilizando a trajetória de Salatiel Rodrigues como exemplo prático para a turma.",
+      "Segurança de Dados e Armazenamento em Nuvem: Profº Profº Marcio Leal alertou sobre o risco de perda total de pesquisas acadêmicas após relatar um incêndio em um centro de pesquisa da Universidade Federal de Pernambuco e um caso de furto de notebook.",
+      "Rigores Científicos, Prazos e Processos de Escrita: Profº Profº Marcio Leal abordou a exigência de rigor científico, enfatizando que achismos e opiniões baseadas no senso comum não são aceitos na ciência, diferentemente de hipóteses fundamentadas.",
+      "Escolha do Tema de Missões e Ajustes de Áudio: Salatiel Rodrigues explicou que escolheu como tema os desafios e a perseverança de missionários porque já vivenciava essa realidade prática antes do seminário.",
+      "Processo Inicial de Escrita Baseado em Conhecimento Prévio: Salatiel Rodrigues relatou que iniciou a redação de seu trabalho manuscritamente, apoiando-se em repertório prévio e vivências antes de aprofundar a pesquisa bibliográfica formal."
+    ],
+    "duracaoEstimada": "~1h03min",
+    "totalBlocos": 18
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:00:31",
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Críticas à Liderança Eclesiástica e Dinâmicas de Reunião",
+      "resumoCurto": "Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo.",
+      "detalhamento": "Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo. Ricardo Do Nascimento relatou que jovens em Brejo do Cruz sentem freios ao propor ideias devido a essa rigidez de liderança, enquanto Salatiel Rodrigues e Ricardo Do Nascimento debateram a falta de abertura para discordâncias, onde posturas autoritárias de pastores geram constrangimentos. O consenso estabeleceu que a condução de reuniões exige que a pessoa dirigente direcione a palavra com ordem e suprima discussões desordenadas.",
+      "pontosChave": [
+        "Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo.",
+        "Ricardo Do Nascimento relatou que jovens em Brejo do Cruz sentem freios ao propor ideias devido a essa rigidez de liderança, enquanto Salatiel Rodrigues e Ricardo Do Nascimento debateram a falta de abertura para discordâncias, onde posturas autoritárias de pastores geram constrangimentos.",
+        "O consenso estabeleceu que a condução de reuniões exige que a pessoa dirigente direcione a palavra com ordem e suprima discussões desordenadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:02:21",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Abertura da Aula e Apresentação da Dinâmica do TCC",
+      "resumoCurto": "Profº Profº Marcio Leal abriu a aula com uma oração e introduziu a dinâmica de compartilhamento do processo de escrita do Trabalho de Conclusão de Curso (TCC), utilizando a trajetória de Salatiel Rodrigues como exemplo prático para a turma.",
+      "detalhamento": "Profº Profº Marcio Leal abriu a aula com uma oração e introduziu a dinâmica de compartilhamento do processo de escrita do Trabalho de Conclusão de Curso (TCC), utilizando a trajetória de Salatiel Rodrigues como exemplo prático para a turma. Profº Profº Marcio Leal destacou que, embora cada discente possua seu próprio ritmo, o modelo serve para ilustrar os caminhos acadêmicos possíveis.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal abriu a aula com uma oração e introduziu a dinâmica de compartilhamento do processo de escrita do Trabalho de Conclusão de Curso (TCC), utilizando a trajetória de Salatiel Rodrigues como exemplo prático para a turma.",
+        "Profº Profº Marcio Leal destacou que, embora cada discente possua seu próprio ritmo, o modelo serve para ilustrar os caminhos acadêmicos possíveis."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:11:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Segurança de Dados e Armazenamento em Nuvem",
+      "resumoCurto": "Profº Profº Marcio Leal alertou sobre o risco de perda total de pesquisas acadêmicas após relatar um incêndio em um centro de pesquisa da Universidade Federal de Pernambuco e um caso de furto de notebook.",
+      "detalhamento": "Profº Profº Marcio Leal alertou sobre o risco de perda total de pesquisas acadêmicas após relatar um incêndio em um centro de pesquisa da Universidade Federal de Pernambuco e um caso de furto de notebook. Daniel Rodrigues informou que centraliza seus arquivos no OneDrive, Rosiane Lima (Rosi) relatou enviar documentos importantes para o próprio e-mail como redundância, e Lucas Guimaraes complementou que servidores de nuvem da Google e Microsoft oferecem alta segurança, mencionando ainda uma bonificação institucional de 400 GB gratuitos para estudantes. Celso oliveira corroborou a confiabilidade da nuvem citando o uso corporativo na digitalização e transferência sigilosa de prontuários médicos hospitalares. O consenso firmou que o armazenamento digital em múltiplos locais previne a perda de anos de trabalho.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal alertou sobre o risco de perda total de pesquisas acadêmicas após relatar um incêndio em um centro de pesquisa da Universidade Federal de Pernambuco e um caso de furto de notebook.",
+        "Daniel Rodrigues informou que centraliza seus arquivos no OneDrive, Rosiane Lima (Rosi) relatou enviar documentos importantes para o próprio e-mail como redundância, e Lucas Guimaraes complementou que servidores de nuvem da Google e Microsoft oferecem alta segurança, mencionando ainda uma bonificação institucional de 400 GB gratuitos para estudantes.",
+        "Celso oliveira corroborou a confiabilidade da nuvem citando o uso corporativo na digitalização e transferência sigilosa de prontuários médicos hospitalares.",
+        "O consenso firmou que o armazenamento digital em múltiplos locais previne a perda de anos de trabalho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:13:35",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Rigores Científicos, Prazos e Processos de Escrita",
+      "resumoCurto": "Profº Profº Marcio Leal abordou a exigência de rigor científico, enfatizando que achismos e opiniões baseadas no senso comum não são aceitos na ciência, diferentemente de hipóteses fundamentadas.",
+      "detalhamento": "Profº Profº Marcio Leal abordou a exigência de rigor científico, enfatizando que achismos e opiniões baseadas no senso comum não são aceitos na ciência, diferentemente de hipóteses fundamentadas. Profº Profº Marcio Leal também destacou que a pesquisa acadêmica possui prazos rígidos, como a entrega de relatórios para agências de fomento como o CNPq. O consenso determinou que a pessoa discente deve planejar seu tempo de produção textual para cumprir rigorosamente os cronogramas estabelecidos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal abordou a exigência de rigor científico, enfatizando que achismos e opiniões baseadas no senso comum não são aceitos na ciência, diferentemente de hipóteses fundamentadas.",
+        "Profº Profº Marcio Leal também destacou que a pesquisa acadêmica possui prazos rígidos, como a entrega de relatórios para agências de fomento como o CNPq.",
+        "O consenso determinou que a pessoa discente deve planejar seu tempo de produção textual para cumprir rigorosamente os cronogramas estabelecidos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:16:53",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Escolha do Tema de Missões e Ajustes de Áudio",
+      "resumoCurto": "Salatiel Rodrigues explicou que escolheu como tema os desafios e a perseverança de missionários porque já vivenciava essa realidade prática antes do seminário.",
+      "detalhamento": "Salatiel Rodrigues explicou que escolheu como tema os desafios e a perseverança de missionários porque já vivenciava essa realidade prática antes do seminário. Profº Profº Marcio Leal aconselhou que a escolha do tema deve ser guiada por interesse genuíno para evitar o desinteresse e evidenciar paixão perante a banca examinadora. Durante a exposição, Sérgio Dantas, enilson Santos Lima e Antonio Marcos apontaram problemas com o volume baixo do áudio de Salatiel Rodrigues, sendo o problema resolvido após orientações de Profº Profº Marcio Leal e ajustes no posicionamento do microfone.",
+      "pontosChave": [
+        "Salatiel Rodrigues explicou que escolheu como tema os desafios e a perseverança de missionários porque já vivenciava essa realidade prática antes do seminário.",
+        "Profº Profº Marcio Leal aconselhou que a escolha do tema deve ser guiada por interesse genuíno para evitar o desinteresse e evidenciar paixão perante a banca examinadora.",
+        "Durante a exposição, Sérgio Dantas, enilson Santos Lima e Antonio Marcos apontaram problemas com o volume baixo do áudio de Salatiel Rodrigues, sendo o problema resolvido após orientações de Profº Profº Marcio Leal e ajustes no posicionamento do microfone."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:21:17",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Processo Inicial de Escrita Baseado em Conhecimento Prévio",
+      "resumoCurto": "Salatiel Rodrigues relatou que iniciou a redação de seu trabalho manuscritamente, apoiando-se em repertório prévio e vivências antes de aprofundar a pesquisa bibliográfica formal.",
+      "detalhamento": "Salatiel Rodrigues relatou que iniciou a redação de seu trabalho manuscritamente, apoiando-se em repertório prévio e vivências antes de aprofundar a pesquisa bibliográfica formal. Profº Profº Marcio Leal pontuou que os métodos de escrita variam entre discentes, sendo válido redigir a partir de conhecimentos prévios enquanto se busca o embasamento teórico.",
+      "pontosChave": [
+        "Salatiel Rodrigues relatou que iniciou a redação de seu trabalho manuscritamente, apoiando-se em repertório prévio e vivências antes de aprofundar a pesquisa bibliográfica formal.",
+        "Profº Profº Marcio Leal pontuou que os métodos de escrita variam entre discentes, sendo válido redigir a partir de conhecimentos prévios enquanto se busca o embasamento teórico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:24:27",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Pesquisa Bibliográfica e Leitura Seletiva",
+      "resumoCurto": "Salatiel Rodrigues e Rosiane Lima (Rosi) discutiram hábitos de leitura, concordando que não é obrigatório ler obras inteiras, mas focar em capítulos e trechos específicos que atendam ao objetivo da pesquisa.",
+      "detalhamento": "Salatiel Rodrigues e Rosiane Lima (Rosi) discutiram hábitos de leitura, concordando que não é obrigatório ler obras inteiras, mas focar em capítulos e trechos específicos que atendam ao objetivo da pesquisa. Rosiane Lima (Rosi) compartilhou o hábito de alternar leituras e utilizar marcadores de texto em gel, enquanto Profº Profº Marcio Leal enfatizou que a leitura acadêmica tem caráter dinâmico e direcionado.",
+      "pontosChave": [
+        "Salatiel Rodrigues e Rosiane Lima (Rosi) discutiram hábitos de leitura, concordando que não é obrigatório ler obras inteiras, mas focar em capítulos e trechos específicos que atendam ao objetivo da pesquisa.",
+        "Rosiane Lima (Rosi) compartilhou o hábito de alternar leituras e utilizar marcadores de texto em gel, enquanto Profº Profº Marcio Leal enfatizou que a leitura acadêmica tem caráter dinâmico e direcionado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:28:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Definição e Execução de Metodologia de Campo",
+      "resumoCurto": "Salatiel Rodrigues esclareceu que sua metodologia baseou-se prioritariamente em pesquisa de campo, coletando áudios e entrevistas com missionários antes de integrar a literatura teórica.",
+      "detalhamento": "Salatiel Rodrigues esclareceu que sua metodologia baseou-se prioritariamente em pesquisa de campo, coletando áudios e entrevistas com missionários antes de integrar a literatura teórica. Profº Profº Marcio Leal pontuou que, embora o caminho de Salatiel Rodrigues tenha partido do campo, a maioria dos trabalhos de graduação opta por pesquisas bibliográficas devido à restrição de tempo.",
+      "pontosChave": [
+        "Salatiel Rodrigues esclareceu que sua metodologia baseou-se prioritariamente em pesquisa de campo, coletando áudios e entrevistas com missionários antes de integrar a literatura teórica.",
+        "Profº Profº Marcio Leal pontuou que, embora o caminho de Salatiel Rodrigues tenha partido do campo, a maioria dos trabalhos de graduação opta por pesquisas bibliográficas devido à restrição de tempo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:32:55",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Progresso do TCC e Fundamentação Teórica de Sérgio Dantas",
+      "resumoCurto": "Sérgio Dantas compartilhou o avanço de sua pesquisa, informando a conclusão do primeiro capítulo sobre o tema da revelação, fundamentado em 20 livros e três artigos científicos que articulam tradições reformadas e pentecostais dentro das normas da ABNT.",
+      "detalhamento": "Sérgio Dantas compartilhou o avanço de sua pesquisa, informando a conclusão do primeiro capítulo sobre o tema da revelação, fundamentado em 20 livros e três artigos científicos que articulam tradições reformadas e pentecostais dentro das normas da ABNT. Profº Profº Marcio Leal e Sérgio Dantas debateram o desafio de selecionar o vasto material para não exceder o limite de páginas, planejando aproveitar o excedente em futuras pós-graduações stricto sensu.",
+      "pontosChave": [
+        "Sérgio Dantas compartilhou o avanço de sua pesquisa, informando a conclusão do primeiro capítulo sobre o tema da revelação, fundamentado em 20 livros e três artigos científicos que articulam tradições reformadas e pentecostais dentro das normas da ABNT.",
+        "Profº Profº Marcio Leal e Sérgio Dantas debateram o desafio de selecionar o vasto material para não exceder o limite de páginas, planejando aproveitar o excedente em futuras pós-graduações stricto sensu."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:39:01",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Integração entre Dados de Campo e Teoria",
+      "resumoCurto": "Salatiel Rodrigues descreveu o processo de alinhar os relatos empíricos dos missionários às referências bibliográficas correspondentes.",
+      "detalhamento": "Salatiel Rodrigues descreveu o processo de alinhar os relatos empíricos dos missionários às referências bibliográficas correspondentes. Profº Profº Marcio Leal definiu essa etapa como a costura textual, ressaltando que a pessoa pesquisadora precisa selecionar estritamente os dados mais relevantes devido ao limite de extensão do trabalho.",
+      "pontosChave": [
+        "Salatiel Rodrigues descreveu o processo de alinhar os relatos empíricos dos missionários às referências bibliográficas correspondentes.",
+        "Profº Profº Marcio Leal definiu essa etapa como a costura textual, ressaltando que a pessoa pesquisadora precisa selecionar estritamente os dados mais relevantes devido ao limite de extensão do trabalho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:40:08",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Uso de Fotografias no TCC e na Apresentação",
+      "resumoCurto": "Profº Profº Marcio Leal e Rosiane Lima (Rosi) discutiram a inclusão de imagens no TCC, recomendando cautela para que fotografias não sejam inseridas apenas como preenchimento, mas mantenham relevância direta com o conteúdo.",
+      "detalhamento": "Profº Profº Marcio Leal e Rosiane Lima (Rosi) discutiram a inclusão de imagens no TCC, recomendando cautela para que fotografias não sejam inseridas apenas como preenchimento, mas mantenham relevância direta com o conteúdo. Profº Profº Marcio Leal sugeriu selecionar pelo menos uma imagem contextualizada para ilustrar a defesa perante a banca.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal e Rosiane Lima (Rosi) discutiram a inclusão de imagens no TCC, recomendando cautela para que fotografias não sejam inseridas apenas como preenchimento, mas mantenham relevância direta com o conteúdo.",
+        "Profº Profº Marcio Leal sugeriu selecionar pelo menos uma imagem contextualizada para ilustrar a defesa perante a banca."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:43:15",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Hábitos de Leitura e Seleção de Temas",
+      "resumoCurto": "Rosiane Lima (Rosi) relatou o hábito de alternar entre diferentes livros conforme o interesse e lidar com múltiplos focos de estudo, gerando observações bem-humoradas de Daniel Rodrigues sobre prazos de entrega.",
+      "detalhamento": "Rosiane Lima (Rosi) relatou o hábito de alternar entre diferentes livros conforme o interesse e lidar com múltiplos focos de estudo, gerando observações bem-humoradas de Daniel Rodrigues sobre prazos de entrega. O consenso apontou que estratégias flexíveis de leitura são comuns entre pesquisadores.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) relatou o hábito de alternar entre diferentes livros conforme o interesse e lidar com múltiplos focos de estudo, gerando observações bem-humoradas de Daniel Rodrigues sobre prazos de entrega.",
+        "O consenso apontou que estratégias flexíveis de leitura são comuns entre pesquisadores."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:46:30",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Persistência na Escolha do Tema Missionário",
+      "resumoCurto": "Rosiane Lima (Rosi) questionou Salatiel Rodrigues se a diversidade de disciplinas cursadas no seminário o estimulou a trocar de tema.",
+      "detalhamento": "Rosiane Lima (Rosi) questionou Salatiel Rodrigues se a diversidade de disciplinas cursadas no seminário o estimulou a trocar de tema. Salatiel Rodrigues respondeu que manteve irredutivelmente a temática missionária devido à imersão profunda na realidade dos campos e às severas dificuldades enfrentadas por missionários.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) questionou Salatiel Rodrigues se a diversidade de disciplinas cursadas no seminário o estimulou a trocar de tema.",
+        "Salatiel Rodrigues respondeu que manteve irredutivelmente a temática missionária devido à imersão profunda na realidade dos campos e às severas dificuldades enfrentadas por missionários."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:52:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estratégias de Estudo, Autores e Considerações Finais",
+      "resumoCurto": "Profº Profº Marcio Leal ressaltou a importância de verificar a linha teórica e a autoria das obras consultadas, além de sugerir alternativas de estudo para discentes que enfrentam limitações físicas ou dores crônicas, como a fibromialgia, recomendando o uso de recursos de áudio quando a leitura visual for comprometida.",
+      "detalhamento": "Profº Profº Marcio Leal ressaltou a importância de verificar a linha teórica e a autoria das obras consultadas, além de sugerir alternativas de estudo para discentes que enfrentam limitações físicas ou dores crônicas, como a fibromialgia, recomendando o uso de recursos de áudio quando a leitura visual for comprometida. Salatiel Rodrigues concluiu explicando que a seção de considerações finais sintetiza os resultados de todo o projeto desenvolvido.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal ressaltou a importância de verificar a linha teórica e a autoria das obras consultadas, além de sugerir alternativas de estudo para discentes que enfrentam limitações físicas ou dores crônicas, como a fibromialgia, recomendando o uso de recursos de áudio quando a leitura visual for comprometida.",
+        "Salatiel Rodrigues concluiu explicando que a seção de considerações finais sintetiza os resultados de todo o projeto desenvolvido."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:55:53",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Trabalho Missionário e Condições de Vida na Bolívia",
+      "resumoCurto": "Salatiel Rodrigues relatou as experiências no trabalho missionário próximo à Bolívia, mencionando o recurso de 600 reais arrecadado para exames médicos da esposa de um missionário residente na região há 20 anos, cuja moradia se limita a uma sala de aula de escola dominical e ao banheiro da igreja.",
+      "detalhamento": "Salatiel Rodrigues relatou as experiências no trabalho missionário próximo à Bolívia, mencionando o recurso de 600 reais arrecadado para exames médicos da esposa de um missionário residente na região há 20 anos, cuja moradia se limita a uma sala de aula de escola dominical e ao banheiro da igreja. Salatiel Rodrigues destacou os desafios logísticos e emocionais enfrentados, como estradas enlameadas, distância dos filhos, temperaturas de 42 a 43 graus e a ausência de parentes locais, que são amenizados pela convivência com uma família venezuelana regularizada e pela proclamação da palavra.",
+      "pontosChave": [
+        "Salatiel Rodrigues relatou as experiências no trabalho missionário próximo à Bolívia, mencionando o recurso de 600 reais arrecadado para exames médicos da esposa de um missionário residente na região há 20 anos, cuja moradia se limita a uma sala de aula de escola dominical e ao banheiro da igreja.",
+        "Salatiel Rodrigues destacou os desafios logísticos e emocionais enfrentados, como estradas enlameadas, distância dos filhos, temperaturas de 42 a 43 graus e a ausência de parentes locais, que são amenizados pela convivência com uma família venezuelana regularizada e pela proclamação da palavra."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:59:13",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Investimento em Campos Missionários e a Necessidade de Suporte",
+      "resumoCurto": "Profº Profº Marcio Leal informou que a igreja em Caraíra investe atualmente em 14 campos missionários e questionou de que forma seria possível estruturar uma rede para proporcionar melhor qualidade de vida a essas pessoas, evitando sofrimentos desnecessários decorrentes da falta de apoio.",
+      "detalhamento": "Profº Profº Marcio Leal informou que a igreja em Caraíra investe atualmente em 14 campos missionários e questionou de que forma seria possível estruturar uma rede para proporcionar melhor qualidade de vida a essas pessoas, evitando sofrimentos desnecessários decorrentes da falta de apoio. Salatiel Rodrigues compartilhou um relato sobre um pastor que criticou a qualidade da geladeira de um missionário para justificar o corte de ofertas, enquanto descreveu a rotina local de pregação, operação de som, louvor, discipulado e os preparativos para o batismo de uma adolescente.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal informou que a igreja em Caraíra investe atualmente em 14 campos missionários e questionou de que forma seria possível estruturar uma rede para proporcionar melhor qualidade de vida a essas pessoas, evitando sofrimentos desnecessários decorrentes da falta de apoio.",
+        "Salatiel Rodrigues compartilhou um relato sobre um pastor que criticou a qualidade da geladeira de um missionário para justificar o corte de ofertas, enquanto descreveu a rotina local de pregação, operação de som, louvor, discipulado e os preparativos para o batismo de uma adolescente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:01:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Parcerias Missionárias e Posicionamento contra a Postura de Pedinte",
+      "resumoCurto": "Profº Profº Marcio Leal defendeu que os missionários não precisam viver na miséria e que a responsabilidade pelo sustento deve ser assumida de forma organizada por todos.",
+      "detalhamento": "Profº Profº Marcio Leal defendeu que os missionários não precisam viver na miséria e que a responsabilidade pelo sustento deve ser assumida de forma organizada por todos. Salatiel Rodrigues detalhou uma parceria firmada com três missionários na Bolívia para arrecadação conjunta de recursos e apoio à recuperação cirúrgica de uma irmã em Motacocito, ressaltando veementemente que missionários não devem adotar uma postura de pedintes ou de \"chorar miséria\", mas sim manter uma visão cristã de crescimento e cooperação mútua.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal defendeu que os missionários não precisam viver na miséria e que a responsabilidade pelo sustento deve ser assumida de forma organizada por todos.",
+        "Salatiel Rodrigues detalhou uma parceria firmada com três missionários na Bolívia para arrecadação conjunta de recursos e apoio à recuperação cirúrgica de uma irmã em Motacocito, ressaltando veementemente que missionários não devem adotar uma postura de pedintes ou de \"chorar miséria\", mas sim manter uma visão cristã de crescimento e cooperação mútua."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:02:54",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Encerramento da Reunião e Considerações Finais",
+      "resumoCurto": "Profº Profº Marcio Leal encerrou a sessão informando sobre a continuidade da apresentação e do processo de escrita na semana seguinte, com a participação de Rose e Camila.",
+      "detalhamento": "Profº Profº Marcio Leal encerrou a sessão informando sobre a continuidade da apresentação e do processo de escrita na semana seguinte, com a participação de Rose e Camila. Vários participantes, incluindo Rosiane Lima, Alcimar Luiz da Silva, Antonio Marcos, Daniel Rodrigues e celso oliveira, manifestaram agradecimentos, e Rosiane Lima pontuou que a paixão pelas vidas evidencia que o fardo do trabalho missionário se torna mais leve quando a igreja se volta para o apoio ao reino.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal encerrou a sessão informando sobre a continuidade da apresentação e do processo de escrita na semana seguinte, com a participação de Rose e Camila.",
+        "Vários participantes, incluindo Rosiane Lima, Alcimar Luiz da Silva, Antonio Marcos, Daniel Rodrigues e celso oliveira, manifestaram agradecimentos, e Rosiane Lima pontuou que a paixão pelas vidas evidencia que o fardo do trabalho missionário se torna mais leve quando a igreja se volta para o apoio ao reino."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Críticas à Liderança Eclesiástica e Dinâmicas de Reunião",
+      "relato": "Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo. Ricardo Do Nascimento relatou que jovens em Brejo do Cruz sentem freios ao propor ideias devido a essa rigidez de liderança, enquanto Salatiel Rodrigues e Ricardo Do Nascimento debateram a falta de abertura para discordâncias, onde posturas autoritárias de pastores geram constrangimentos. O consenso estabeleceu que a condução de reuniões exige que a pessoa dirigente direcione a palavra com ordem e suprima discussões desordenadas.",
+      "timestamp": "00:00:31"
+    },
+    {
+      "titulo": "Pesquisa Bibliográfica e Leitura Seletiva",
+      "relato": "Salatiel Rodrigues e Rosiane Lima (Rosi) discutiram hábitos de leitura, concordando que não é obrigatório ler obras inteiras, mas focar em capítulos e trechos específicos que atendam ao objetivo da pesquisa. Rosiane Lima (Rosi) compartilhou o hábito de alternar leituras e utilizar marcadores de texto em gel, enquanto Profº Profº Marcio Leal enfatizou que a leitura acadêmica tem caráter dinâmico e direcionado.",
+      "timestamp": "00:24:27"
+    },
+    {
+      "titulo": "Progresso do TCC e Fundamentação Teórica de Sérgio Dantas",
+      "relato": "Sérgio Dantas compartilhou o avanço de sua pesquisa, informando a conclusão do primeiro capítulo sobre o tema da revelação, fundamentado em 20 livros e três artigos científicos que articulam tradições reformadas e pentecostais dentro das normas da ABNT. Profº Profº Marcio Leal e Sérgio Dantas debateram o desafio de selecionar o vasto material para não exceder o limite de páginas, planejando aproveitar o excedente em futuras pós-graduações stricto sensu.",
+      "timestamp": "00:32:55"
+    },
+    {
+      "titulo": "Encerramento da Reunião e Considerações Finais",
+      "relato": "Profº Profº Marcio Leal encerrou a sessão informando sobre a continuidade da apresentação e do processo de escrita na semana seguinte, com a participação de Rose e Camila. Vários participantes, incluindo Rosiane Lima, Alcimar Luiz da Silva, Antonio Marcos, Daniel Rodrigues e celso oliveira, manifestaram agradecimentos, e Rosiane Lima pontuou que a paixão pelas vidas evidencia que o fardo do trabalho missionário se torna mais leve quando a igreja se volta para o apoio ao reino.",
+      "timestamp": "01:02:54"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Regras de Citação ABNT (NBR 10520)",
+      "detalhe": "Direta Curta (até 3 linhas): no parágrafo, entre aspas duplas, com autor, ano e página (SOBRENOME, 2026, p. 45). Direta Longa (+3 linhas): bloco destacado com recuo de 4 cm da margem esquerda, fonte 10, espaçamento simples e SEM aspas. Indireta (Paráfrase): exige autor e ano (SOBRENOME, 2026)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Críticas à Liderança Eclesiástica e Dinâmicas de Reunião\" nesta aula?",
+      "dicaResposta": "Salatiel Rodrigues e Ricardo Do Nascimento discutiram o problema do engessamento e da resistência à inovação por parte de lideranças eclesiásticas com mais de 25 ou 30 anos no cargo. Ricardo Do Nascimento relatou que jovens em Brejo do Cruz sentem freios ao propor ideias devido a essa rigidez de liderança, enquanto Salatiel Rodrigues e Ricardo Do Nascimento debateram a falta de abertura para discordâncias, onde posturas autoritárias de pastores geram constrangimentos."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura da Aula e Apresentação da Dinâmica do TCC\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal abriu a aula com uma oração e introduziu a dinâmica de compartilhamento do processo de escrita do Trabalho de Conclusão de Curso (TCC), utilizando a trajetória de Salatiel Rodrigues como exemplo prático para a turma. Profº Profº Marcio Leal destacou que, embora cada discente possua seu próprio ritmo, o modelo serve para ilustrar os caminhos acadêmicos possíveis."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Segurança de Dados e Armazenamento em Nuvem\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal alertou sobre o risco de perda total de pesquisas acadêmicas após relatar um incêndio em um centro de pesquisa da Universidade Federal de Pernambuco e um caso de furto de notebook. Daniel Rodrigues informou que centraliza seus arquivos no OneDrive, Rosiane Lima (Rosi) relatou enviar documentos importantes para o próprio e-mail como redundância, e Lucas Guimaraes complementou que servidores de nuvem da Google e Microsoft oferecem alta segurança, mencionando ainda uma bonificação institucional de 400 GB gratuitos para estudantes."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Rigores Científicos, Prazos e Processos de Escrita\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal abordou a exigência de rigor científico, enfatizando que achismos e opiniões baseadas no senso comum não são aceitos na ciência, diferentemente de hipóteses fundamentadas. Profº Profº Marcio Leal também destacou que a pesquisa acadêmica possui prazos rígidos, como a entrega de relatórios para agências de fomento como o CNPq."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Escolha do Tema de Missões e Ajustes de Áudio\" nesta aula?",
+      "dicaResposta": "Salatiel Rodrigues explicou que escolheu como tema os desafios e a perseverança de missionários porque já vivenciava essa realidade prática antes do seminário. Profº Profº Marcio Leal aconselhou que a escolha do tema deve ser guiada por interesse genuíno para evitar o desinteresse e evidenciar paixão perante a banca examinadora."
+    }
+  ],
+  "encaminhamentos": [
+    "Compartilhar link: Publicar o link no grupo. Enviar novamente o link de acesso ao armazenamento em nuvem para os estudantes.",
+    "Apresentar vídeo: Exibir o vídeo na próxima aula conforme planejado anteriormente.",
+    "Concluir apresentação: Realizar o fechamento da apresentação na aula da próxima semana."
+  ]
+}

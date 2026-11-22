@@ -1,0 +1,413 @@
+{
+  "id": "disc-7-aula-1",
+  "disciplinaId": "disc-7",
+  "disciplinaName": "07 - Plantação e Revitalização de Igrejas II - Thácyto Lessa",
+  "disciplinaShortName": "Plantação & Revitalização II",
+  "disciplinaCode": "MIS-202",
+  "professor": "Profº Thácyto Lessa",
+  "aulaNum": 1,
+  "unidade": 1,
+  "dateIso": "2026-08-14",
+  "dateBr": "14/08/2026",
+  "theme": "Aula 1 • Dúvidas sobre a turma e acesso ao conteúdo",
+  "geminiUrl": "/gemini-notes/pri_aula1_2026-08-14.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A sessão definiu diretrizes para a disciplina de revitalização de igrejas e debateu seus fundamentos e objetivos. Logística e objetivos acadêmicos A disciplina foi introduzida com foco em revitalização de igrejas para denominações históricas. A avaliação foi definida como composta por participação, resumos de leitura e prova escrita. Diferenciação de conceitos fundamentais Revitalização foi distinguida de plantação e manutenção, sendo um processo contínuo de reorganização bíblica. O debate esclareceu que revitalização difere de avivamento por ser uma prática cotidiana.",
+    "sinteseGeral": "A sessão definiu diretrizes para a disciplina de revitalização de igrejas e debateu seus fundamentos e objetivos. Logística e objetivos acadêmicos A disciplina foi introduzida com foco em revitalização de igrejas para denominações históricas. A avaliação foi definida como composta por participação, resumos de leitura e prova escrita. Diferenciação de conceitos fundamentais Revitalização foi distinguida de plantação e manutenção, sendo um processo contínuo de reorganização bíblica. O debate esclareceu que revitalização difere de avivamento por ser uma prática cotidiana. Pilares e desafios pastorais A saúde da igreja depende da centralidade da palavra e da mudança na mentalidade pastoral. O processo exige cerca de 7 anos de persistência na reorganização estratégica.",
+    "mapaRapido": [
+      "Dúvidas sobre a turma e acesso ao conteúdo: Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão.",
+      "Apresentações e conexões pessoais: Hélio da Silva Costa e Daniel Rodrigues realizam uma breve apresentação e trocam cumprimentos, com a participação de outros estudantes que relatam suas origens geográficas.",
+      "Apresentação dos estudantes e ministérios: Profº Profº Thácyto Lessa conduz uma rodada de apresentações, na qual cada estudante compartilha informações sobre sua igreja, pastor e papel ministerial.",
+      "Objetivos da disciplina e contexto da revitalização: Profº Thácyto Lessa apresenta a disciplina de \"Plantação e Revitalização de Igrejas 2\", explicando que o módulo foca especificamente em revitalização, um tema essencial para denominações históricas que enfrentam desafios de crescimento e saúde espiritual.",
+      "Formação e metodologia de ensino: O docente expõe sua trajetória acadêmica, destacando pós-graduações em revitalização e liderança cristã, além de um mestrado em exposição bíblica e a colaboração com o movimento \"City to City Brasil\".",
+      "Critérios de avaliação e datas: O professor estabelece que a nota será composta pela participação e presença com a câmera ligada."
+    ],
+    "duracaoEstimada": "~1h01min",
+    "totalBlocos": 21
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Dúvidas sobre a turma e acesso ao conteúdo",
+      "resumoCurto": "Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão.",
+      "detalhamento": "Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão. Durante o diálogo, Seminarista William Barros esclarece que algumas aulas serão compartilhadas entre a turma A e a turma B, incluindo o Trabalho de Conclusão de Curso 1. A conversa reflete a incerteza dos alunos sobre a grade curricular e a necessidade de verificação junto à coordenação.",
+      "pontosChave": [
+        "Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão.",
+        "Durante o diálogo, Seminarista William Barros esclarece que algumas aulas serão compartilhadas entre a turma A e a turma B, incluindo o Trabalho de Conclusão de Curso 1.",
+        "A conversa reflete a incerteza dos alunos sobre a grade curricular e a necessidade de verificação junto à coordenação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Apresentações e conexões pessoais",
+      "resumoCurto": "Hélio da Silva Costa e Daniel Rodrigues realizam uma breve apresentação e trocam cumprimentos, com a participação de outros estudantes que relatam suas origens geográficas.",
+      "detalhamento": "Hélio da Silva Costa e Daniel Rodrigues realizam uma breve apresentação e trocam cumprimentos, com a participação de outros estudantes que relatam suas origens geográficas. Profº Profº Thácyto Lessa entra na chamada e estabelece que as aulas começarão pontualmente às 19:00, visando otimizar o tempo disponível durante as sextas-feiras.",
+      "pontosChave": [
+        "Hélio da Silva Costa e Daniel Rodrigues realizam uma breve apresentação e trocam cumprimentos, com a participação de outros estudantes que relatam suas origens geográficas.",
+        "Profº Profº Thácyto Lessa entra na chamada e estabelece que as aulas começarão pontualmente às 19:00, visando otimizar o tempo disponível durante as sextas-feiras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:13:18",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Apresentação dos estudantes e ministérios",
+      "resumoCurto": "Profº Profº Thácyto Lessa conduz uma rodada de apresentações, na qual cada estudante compartilha informações sobre sua igreja, pastor e papel ministerial.",
+      "detalhamento": "Profº Profº Thácyto Lessa conduz uma rodada de apresentações, na qual cada estudante compartilha informações sobre sua igreja, pastor e papel ministerial. Durante este processo, uma pessoa designada como \"\" faz uma intervenção importante, orientando que alunos da turma B que não cursaram as disciplinas de Homilética 1 e 2 devem migrar para outra sala, pois não deveriam estar presentes na atual turma.",
+      "pontosChave": [
+        "Profº Profº Thácyto Lessa conduz uma rodada de apresentações, na qual cada estudante compartilha informações sobre sua igreja, pastor e papel ministerial.",
+        "Durante este processo, uma pessoa designada como \"\" faz uma intervenção importante, orientando que alunos da turma B que não cursaram as disciplinas de Homilética 1 e 2 devem migrar para outra sala, pois não deveriam estar presentes na atual turma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:21:51",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Objetivos da disciplina e contexto da revitalização",
+      "resumoCurto": "Profº Thácyto Lessa apresenta a disciplina de \"Plantação e Revitalização de Igrejas 2\", explicando que o módulo foca especificamente em revitalização, um tema essencial para denominações históricas que enfrentam desafios de crescimento e saúde espiritual.",
+      "detalhamento": "Profº Thácyto Lessa apresenta a disciplina de \"Plantação e Revitalização de Igrejas 2\", explicando que o módulo foca especificamente em revitalização, um tema essencial para denominações históricas que enfrentam desafios de crescimento e saúde espiritual. O professor compartilha sua experiência pessoal na Igreja Congregacional de Teresópolis, descrevendo como a congregação estava em declínio antes do início de um processo intencional de revitalização.",
+      "pontosChave": [
+        "Profº Thácyto Lessa apresenta a disciplina de \"Plantação e Revitalização de Igrejas 2\", explicando que o módulo foca especificamente em revitalização, um tema essencial para denominações históricas que enfrentam desafios de crescimento e saúde espiritual.",
+        "O professor compartilha sua experiência pessoal na Igreja Congregacional de Teresópolis, descrevendo como a congregação estava em declínio antes do início de um processo intencional de revitalização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:24:11",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Formação e metodologia de ensino",
+      "resumoCurto": "O docente expõe sua trajetória acadêmica, destacando pós-graduações em revitalização e liderança cristã, além de um mestrado em exposição bíblica e a colaboração com o movimento \"City to City Brasil\".",
+      "detalhamento": "O docente expõe sua trajetória acadêmica, destacando pós-graduações em revitalização e liderança cristã, além de um mestrado em exposição bíblica e a colaboração com o movimento \"City to City Brasil\". O professor enfatiza que a metodologia de ensino evitará monólogos, incentivando a participação ativa e objetiva dos 38 alunos presentes nas discussões de aula.",
+      "pontosChave": [
+        "O docente expõe sua trajetória acadêmica, destacando pós-graduações em revitalização e liderança cristã, além de um mestrado em exposição bíblica e a colaboração com o movimento \"City to City Brasil\".",
+        "O professor enfatiza que a metodologia de ensino evitará monólogos, incentivando a participação ativa e objetiva dos 38 alunos presentes nas discussões de aula."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:29:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Critérios de avaliação e datas",
+      "resumoCurto": "O professor estabelece que a nota será composta pela participação e presença com a câmera ligada.",
+      "detalhamento": "O professor estabelece que a nota será composta pela participação e presença com a câmera ligada. A primeira avaliação (AV1) consiste em um resumo do livro \"A Treliça e a Videira\", escrito por Colin Marshall e Tony Payne, devendo ser entregue com uma página por capítulo para os 12 capítulos do livro. A segunda avaliação (AV2) será uma prova agendada para o dia 27/11/2026, data limite também para a entrega do resumo da AV1.",
+      "pontosChave": [
+        "O professor estabelece que a nota será composta pela participação e presença com a câmera ligada.",
+        "A primeira avaliação (AV1) consiste em um resumo do livro \"A Treliça e a Videira\", escrito por Colin Marshall e Tony Payne, devendo ser entregue com uma página por capítulo para os 12 capítulos do livro.",
+        "A segunda avaliação (AV2) será uma prova agendada para o dia 27/11/2026, data limite também para a entrega do resumo da AV1."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:38:14",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre o estado da igreja brasileira",
+      "resumoCurto": "Profº Thácyto Lessa provoca um debate sobre a condição atual da igreja brasileira, perguntando se ela é saudável ou meramente \"inchada\".",
+      "detalhamento": "Profº Thácyto Lessa provoca um debate sobre a condição atual da igreja brasileira, perguntando se ela é saudável ou meramente \"inchada\". Paulo Lima argumenta que muitas igrejas apresentam crescimento numérico sem discipulado, assemelhando-se aos 300 de Gideão. Cristiano Sacramento observa que, no interior do Amazonas, a prática é focada na figura do pastor e não no evangelho. Filipe Luiz aponta que muitas congregações estão despreparadas, com membros que não compreendem o evangelho mesmo após décadas de conversão.",
+      "pontosChave": [
+        "Profº Thácyto Lessa provoca um debate sobre a condição atual da igreja brasileira, perguntando se ela é saudável ou meramente \"inchada\".",
+        "Paulo Lima argumenta que muitas igrejas apresentam crescimento numérico sem discipulado, assemelhando-se aos 300 de Gideão.",
+        "Cristiano Sacramento observa que, no interior do Amazonas, a prática é focada na figura do pastor e não no evangelho.",
+        "Filipe Luiz aponta que muitas congregações estão despreparadas, com membros que não compreendem o evangelho mesmo após décadas de conversão."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:41:01",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Definições de revitalização",
+      "resumoCurto": "Estudantes e professor discutem o conceito de revitalização.",
+      "detalhamento": "Estudantes e professor discutem o conceito de revitalização. Caio Gracina descreve o termo como renovação e estratégia de abordagem para novas gerações. Antônio Silva define como uma atualização geral de processos. William Barros relaciona o conceito a um reavivamento, embora o professor esclareça que existem distinções técnicas entre os dois termos.",
+      "pontosChave": [
+        "Estudantes e professor discutem o conceito de revitalização.",
+        "Caio Gracina descreve o termo como renovação e estratégia de abordagem para novas gerações.",
+        "Antônio Silva define como uma atualização geral de processos.",
+        "William Barros relaciona o conceito a um reavivamento, embora o professor esclareça que existem distinções técnicas entre os dois termos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:43:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diferenciação entre plantação, manutenção e revitalização",
+      "resumoCurto": "O professor explica que as igrejas podem estar em três momentos: plantação (começando do zero), manutenção (em um platô) ou revitalização (enfrentando declínio).",
+      "detalhamento": "O professor explica que as igrejas podem estar em três momentos: plantação (começando do zero), manutenção (em um platô) ou revitalização (enfrentando declínio). Profº Thácyto Lessa enfatiza que a revitalização não busca apenas crescimento numérico, o qual é uma consequência, mas sim uma mudança de mentalidade e reorganização estratégica baseada na centralidade do evangelho.",
+      "pontosChave": [
+        "O professor explica que as igrejas podem estar em três momentos: plantação (começando do zero), manutenção (em um platô) ou revitalização (enfrentando declínio).",
+        "Profº Thácyto Lessa enfatiza que a revitalização não busca apenas crescimento numérico, o qual é uma consequência, mas sim uma mudança de mentalidade e reorganização estratégica baseada na centralidade do evangelho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:51:09",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Revitalização versus Revivamento",
+      "resumoCurto": "O professor esclarece que \"revivamento\" é uma obra extraordinária e temporária do Espírito Santo, enquanto a revitalização é um processo contínuo e organizacional.",
+      "detalhamento": "O professor esclarece que \"revivamento\" é uma obra extraordinária e temporária do Espírito Santo, enquanto a revitalização é um processo contínuo e organizacional. A revitalização envolve reorganizar a igreja a partir de princípios bíblicos para que ela funcione de maneira saudável, mesmo após o término de um período de avivamento extraordinário.",
+      "pontosChave": [
+        "O professor esclarece que \"revivamento\" é uma obra extraordinária e temporária do Espírito Santo, enquanto a revitalização é um processo contínuo e organizacional.",
+        "A revitalização envolve reorganizar a igreja a partir de princípios bíblicos para que ela funcione de maneira saudável, mesmo após o término de um período de avivamento extraordinário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:50:20",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Desafios e a natureza comum da revitalização",
+      "resumoCurto": "Profº Thácyto Lessa reforça que a revitalização é um processo longo, persistente e que pode ser exaustivo.",
+      "detalhamento": "Profº Thácyto Lessa reforça que a revitalização é um processo longo, persistente e que pode ser exaustivo. João Marcos Duarte e o professor concluem o debate concordando que a revitalização deve ser tratada como algo \"ordinário\" ou comum na ordem da igreja, sendo uma prática cotidiana e necessária, e não um evento excepcional.",
+      "pontosChave": [
+        "Profº Thácyto Lessa reforça que a revitalização é um processo longo, persistente e que pode ser exaustivo.",
+        "João Marcos Duarte e o professor concluem o debate concordando que a revitalização deve ser tratada como algo \"ordinário\" ou comum na ordem da igreja, sendo uma prática cotidiana e necessária, e não um evento excepcional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:53:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Definição e Natureza da Revitalização",
+      "resumoCurto": "Profº Thácyto Lessa esclarece que a revitalização não consiste meramente em estratégias organizacionais, mas trata-se de um movimento do espírito baseado em estratégias centradas no evangelho.",
+      "detalhamento": "Profº Thácyto Lessa esclarece que a revitalização não consiste meramente em estratégias organizacionais, mas trata-se de um movimento do espírito baseado em estratégias centradas no evangelho. O objetivo central desse processo não deve ser o alcance de números, mas sim a glorificação de Deus e a manutenção de uma igreja saudável e orgânica.",
+      "pontosChave": [
+        "Profº Thácyto Lessa esclarece que a revitalização não consiste meramente em estratégias organizacionais, mas trata-se de um movimento do espírito baseado em estratégias centradas no evangelho.",
+        "O objetivo central desse processo não deve ser o alcance de números, mas sim a glorificação de Deus e a manutenção de uma igreja saudável e orgânica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:53:16",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Fundamentos Bíblicos para a Revitalização",
+      "resumoCurto": "Para exemplificar o conceito, Profº Thácyto Lessa cita dois contextos bíblicos relevantes: Apocalipse 2 e 3, que abordam a necessidade de arrependimento e renovação espiritual nas igrejas da Ásia, e a visão do vale de ossos secos em Ezequiel, destacando o poder da palavra de Deus na restauração espiritual.",
+      "detalhamento": "Para exemplificar o conceito, Profº Thácyto Lessa cita dois contextos bíblicos relevantes: Apocalipse 2 e 3, que abordam a necessidade de arrependimento e renovação espiritual nas igrejas da Ásia, e a visão do vale de ossos secos em Ezequiel, destacando o poder da palavra de Deus na restauração espiritual.",
+      "pontosChave": [
+        "Para exemplificar o conceito, Profº Thácyto Lessa cita dois contextos bíblicos relevantes: Apocalipse 2 e 3, que abordam a necessidade de arrependimento e renovação espiritual nas igrejas da Ásia, e a visão do vale de ossos secos em Ezequiel, destacando o poder da palavra de Deus na restauração espiritual."
+      ],
+      "referenciasNoBloco": [
+        "Apocalipse 2 e 3"
+      ]
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:54:10",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Fatores de Enfraquecimento da Igreja",
+      "resumoCurto": "A necessidade de revitalização frequentemente surge devido a conflitos não resolvidos, relacionamentos problemáticos, falta de fidelidade à palavra, líderes espiritualmente doentes ou com má conduta, e o abandono do evangelho.",
+      "detalhamento": "A necessidade de revitalização frequentemente surge devido a conflitos não resolvidos, relacionamentos problemáticos, falta de fidelidade à palavra, líderes espiritualmente doentes ou com má conduta, e o abandono do evangelho. Mesmo igrejas que aparentam vivenciar um mover espiritual podem estar em declínio se houver uma conduta inadequada por parte da liderança.",
+      "pontosChave": [
+        "A necessidade de revitalização frequentemente surge devido a conflitos não resolvidos, relacionamentos problemáticos, falta de fidelidade à palavra, líderes espiritualmente doentes ou com má conduta, e o abandono do evangelho.",
+        "Mesmo igrejas que aparentam vivenciar um mover espiritual podem estar em declínio se houver uma conduta inadequada por parte da liderança."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:55:24",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Pilares da Igreja Forte e o Papel do Pastor",
+      "resumoCurto": "Uma igreja forte sustenta-se na centralidade da palavra, vida de oração, comunhão, serviço e culto verdadeiro.",
+      "detalhamento": "Uma igreja forte sustenta-se na centralidade da palavra, vida de oração, comunhão, serviço e culto verdadeiro. Embora o Senhor seja o responsável último pelo processo, humanamente a figura central na revitalização é o pastor, sendo imprescindível que a liderança pastoral compreenda a necessidade de mudança para que a igreja seja revitalizada.",
+      "pontosChave": [
+        "Uma igreja forte sustenta-se na centralidade da palavra, vida de oração, comunhão, serviço e culto verdadeiro.",
+        "Embora o Senhor seja o responsável último pelo processo, humanamente a figura central na revitalização é o pastor, sendo imprescindível que a liderança pastoral compreenda a necessidade de mudança para que a igreja seja revitalizada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:56:35",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Necessidade de Mudança na Mentalidade Pastoral",
+      "resumoCurto": "A revitalização é inviável sem uma mudança na mentalidade do pastor.",
+      "detalhamento": "A revitalização é inviável sem uma mudança na mentalidade do pastor. Profº Thácyto Lessa observa que alguns pastores resistem a essa transformação, mesmo quando a igreja enfrenta declínio evidente, necessitando de um quebrantamento profundo diante de Deus para que mudanças ocorram.",
+      "pontosChave": [
+        "A revitalização é inviável sem uma mudança na mentalidade do pastor.",
+        "Profº Thácyto Lessa observa que alguns pastores resistem a essa transformação, mesmo quando a igreja enfrenta declínio evidente, necessitando de um quebrantamento profundo diante de Deus para que mudanças ocorram."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:57:45",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Crítica à Justificativa de Igrejas Pequenas",
+      "resumoCurto": "Durante o debate, Ari Carlos Vieira menciona casos onde pastores justificam a saída de membros como um processo de \"limpeza\" divina por parte de Deus.",
+      "detalhamento": "Durante o debate, Ari Carlos Vieira menciona casos onde pastores justificam a saída de membros como um processo de \"limpeza\" divina por parte de Deus. Profº Thácyto Lessa refuta a ideia de que uma igreja pequena é necessariamente sinônimo de fidelidade ao evangelho, ou que o crescimento seja prova de infidelidade, argumentando que o reino pode avançar enquanto a igreja se mantém fiel.",
+      "pontosChave": [
+        "Durante o debate, Ari Carlos Vieira menciona casos onde pastores justificam a saída de membros como um processo de \"limpeza\" divina por parte de Deus.",
+        "Profº Thácyto Lessa refuta a ideia de que uma igreja pequena é necessariamente sinônimo de fidelidade ao evangelho, ou que o crescimento seja prova de infidelidade, argumentando que o reino pode avançar enquanto a igreja se mantém fiel."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:58:42",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Saúde Eclesiástica como Objetivo Final",
+      "resumoCurto": "O foco da revitalização deve ser a saúde e a natureza orgânica da igreja, independentemente do seu tamanho.",
+      "detalhamento": "O foco da revitalização deve ser a saúde e a natureza orgânica da igreja, independentemente do seu tamanho. Profº Thácyto Lessa reforça que tanto uma igreja com 10 membros quanto uma com 1000 podem ser ou não saudáveis, sendo a saúde e a fidelidade ao evangelho os verdadeiros indicadores de sucesso, independentemente dos números.",
+      "pontosChave": [
+        "O foco da revitalização deve ser a saúde e a natureza orgânica da igreja, independentemente do seu tamanho.",
+        "Profº Thácyto Lessa reforça que tanto uma igreja com 10 membros quanto uma com 1000 podem ser ou não saudáveis, sendo a saúde e a fidelidade ao evangelho os verdadeiros indicadores de sucesso, independentemente dos números."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "00:59:37",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Estudo de Caso sobre Revitalização",
+      "resumoCurto": "Seminarista William Barros relata o exemplo da Igreja Evangélica Vale da Bênção, em Santa Cruz de Caparibe, liderada pelo pastor Bruno César.",
+      "detalhamento": "Seminarista William Barros relata o exemplo da Igreja Evangélica Vale da Bênção, em Santa Cruz de Caparibe, liderada pelo pastor Bruno César. O relato destaca que, através da visitação aos membros e da pregação centralizada nas escrituras, a igreja, que estava prestes a fechar, tornou-se uma das maiores e que mais cresce na região, exemplificando o trabalho de restauração através da liderança e do Espírito Santo.",
+      "pontosChave": [
+        "Seminarista William Barros relata o exemplo da Igreja Evangélica Vale da Bênção, em Santa Cruz de Caparibe, liderada pelo pastor Bruno César.",
+        "O relato destaca que, através da visitação aos membros e da pregação centralizada nas escrituras, a igreja, que estava prestes a fechar, tornou-se uma das maiores e que mais cresce na região, exemplificando o trabalho de restauração através da liderança e do Espírito Santo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "00:59:37",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Fator Tempo na Revitalização",
+      "resumoCurto": "O processo de revitalização exige paciência, pois, segundo missiologistas, o primeiro grande fruto só é colhido após, no mínimo, 7 anos de trabalho contínuo.",
+      "detalhamento": "O processo de revitalização exige paciência, pois, segundo missiologistas, o primeiro grande fruto só é colhido após, no mínimo, 7 anos de trabalho contínuo. A persistência no processo é apontada como essencial para alcançar os resultados esperados.",
+      "pontosChave": [
+        "O processo de revitalização exige paciência, pois, segundo missiologistas, o primeiro grande fruto só é colhido após, no mínimo, 7 anos de trabalho contínuo.",
+        "A persistência no processo é apontada como essencial para alcançar os resultados esperados."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:00:37",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Logística e Encerramento da Reunião",
+      "resumoCurto": "Rosiane Lima (Rosi) comunica os procedimentos logísticos, informando que os participantes serão divididos em grupos para as próximas atividades acadêmicas.",
+      "detalhamento": "Rosiane Lima (Rosi) comunica os procedimentos logísticos, informando que os participantes serão divididos em grupos para as próximas atividades acadêmicas. Profº Thácyto Lessa conclui a sessão, indicando que o conteúdo será retomado na semana seguinte para dar continuidade aos princípios de revitalização.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) comunica os procedimentos logísticos, informando que os participantes serão divididos em grupos para as próximas atividades acadêmicas.",
+        "Profº Thácyto Lessa conclui a sessão, indicando que o conteúdo será retomado na semana seguinte para dar continuidade aos princípios de revitalização."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Dúvidas sobre a turma e acesso ao conteúdo",
+      "relato": "Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão. Durante o diálogo, Seminarista William Barros esclarece que algumas aulas serão compartilhadas entre a turma A e a turma B, incluindo o Trabalho de Conclusão de Curso 1. A conversa reflete a incerteza dos alunos sobre a grade curricular e a necessidade de verificação junto à coordenação."
+    },
+    {
+      "titulo": "Discussão sobre o estado da igreja brasileira",
+      "relato": "Profº Thácyto Lessa provoca um debate sobre a condição atual da igreja brasileira, perguntando se ela é saudável ou meramente \"inchada\". Paulo Lima argumenta que muitas igrejas apresentam crescimento numérico sem discipulado, assemelhando-se aos 300 de Gideão. Cristiano Sacramento observa que, no interior do Amazonas, a prática é focada na figura do pastor e não no evangelho. Filipe Luiz aponta que muitas congregações estão despreparadas, com membros que não compreendem o evangelho mesmo após décadas de conversão.",
+      "timestamp": "00:38:14"
+    },
+    {
+      "titulo": "Desafios e a natureza comum da revitalização",
+      "relato": "Profº Thácyto Lessa reforça que a revitalização é um processo longo, persistente e que pode ser exaustivo. João Marcos Duarte e o professor concluem o debate concordando que a revitalização deve ser tratada como algo \"ordinário\" ou comum na ordem da igreja, sendo uma prática cotidiana e necessária, e não um evento excepcional.",
+      "timestamp": "00:50:20"
+    },
+    {
+      "titulo": "Fundamentos Bíblicos para a Revitalização",
+      "relato": "Para exemplificar o conceito, Profº Thácyto Lessa cita dois contextos bíblicos relevantes: Apocalipse 2 e 3, que abordam a necessidade de arrependimento e renovação espiritual nas igrejas da Ásia, e a visão do vale de ossos secos em Ezequiel, destacando o poder da palavra de Deus na restauração espiritual.",
+      "timestamp": "00:53:16"
+    },
+    {
+      "titulo": "Crítica à Justificativa de Igrejas Pequenas",
+      "relato": "Durante o debate, Ari Carlos Vieira menciona casos onde pastores justificam a saída de membros como um processo de \"limpeza\" divina por parte de Deus. Profº Thácyto Lessa refuta a ideia de que uma igreja pequena é necessariamente sinônimo de fidelidade ao evangelho, ou que o crescimento seja prova de infidelidade, argumentando que o reino pode avançar enquanto a igreja se mantém fiel.",
+      "timestamp": "00:57:45"
+    },
+    {
+      "titulo": "Estudo de Caso sobre Revitalização",
+      "relato": "Seminarista William Barros relata o exemplo da Igreja Evangélica Vale da Bênção, em Santa Cruz de Caparibe, liderada pelo pastor Bruno César. O relato destaca que, através da visitação aos membros e da pregação centralizada nas escrituras, a igreja, que estava prestes a fechar, tornou-se uma das maiores e que mais cresce na região, exemplificando o trabalho de restauração através da liderança e do Espírito Santo.",
+      "timestamp": "00:59:37"
+    },
+    {
+      "titulo": "Logística e Encerramento da Reunião",
+      "relato": "Rosiane Lima (Rosi) comunica os procedimentos logísticos, informando que os participantes serão divididos em grupos para as próximas atividades acadêmicas. Profº Thácyto Lessa conclui a sessão, indicando que o conteúdo será retomado na semana seguinte para dar continuidade aos princípios de revitalização.",
+      "timestamp": "01:00:37"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Apocalipse 2 e 3",
+      "contexto": "Para exemplificar o conceito, Profº Thácyto Lessa cita dois contextos bíblicos relevantes: Apocalipse 2 e 3, que abordam a necessidade de arrependimento e renovação espiritual nas igrejas da Ásia, e a visão do vale de ossos secos em Ezequiel, destacando o poder da palavra de Deus na restauração espiritual."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Plantação vs. Manutenção vs. Revitalização",
+      "detalhe": "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave."
+    },
+    {
+      "titulo": "A Mudança de Mentalidade Pastoral (Ef 4:11-12)",
+      "detalhe": "Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\"."
+    },
+    {
+      "titulo": "As 9 Marcas de uma Igreja Saudável (Mark Dever)",
+      "detalhe": "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Dúvidas sobre a turma e acesso ao conteúdo\" nesta aula?",
+      "dicaResposta": "Os participantes Daniel Rodrigues e Cristiano Sacramento discutem a confusão sobre o link de acesso e a turma correta, questionando se já cursaram a disciplina em questão. Durante o diálogo, Seminarista William Barros esclarece que algumas aulas serão compartilhadas entre a turma A e a turma B, incluindo o Trabalho de Conclusão de Curso 1."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Apresentações e conexões pessoais\" nesta aula?",
+      "dicaResposta": "Hélio da Silva Costa e Daniel Rodrigues realizam uma breve apresentação e trocam cumprimentos, com a participação de outros estudantes que relatam suas origens geográficas. Profº Profº Thácyto Lessa entra na chamada e estabelece que as aulas começarão pontualmente às 19:00, visando otimizar o tempo disponível durante as sextas-feiras."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Apresentação dos estudantes e ministérios\" nesta aula?",
+      "dicaResposta": "Profº Profº Thácyto Lessa conduz uma rodada de apresentações, na qual cada estudante compartilha informações sobre sua igreja, pastor e papel ministerial. Durante este processo, uma pessoa designada como \"\" faz uma intervenção importante, orientando que alunos da turma B que não cursaram as disciplinas de Homilética 1 e 2 devem migrar para outra sala, pois não deveriam estar presentes na atual turma."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Objetivos da disciplina e contexto da revitalização\" nesta aula?",
+      "dicaResposta": "Profº Thácyto Lessa apresenta a disciplina de \"Plantação e Revitalização de Igrejas 2\", explicando que o módulo foca especificamente em revitalização, um tema essencial para denominações históricas que enfrentam desafios de crescimento e saúde espiritual. O professor compartilha sua experiência pessoal na Igreja Congregacional de Teresópolis, descrevendo como a congregação estava em declínio antes do início de um processo intencional de revitalização."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Formação e metodologia de ensino\" nesta aula?",
+      "dicaResposta": "O docente expõe sua trajetória acadêmica, destacando pós-graduações em revitalização e liderança cristã, além de um mestrado em exposição bíblica e a colaboração com o movimento \"City to City Brasil\". O professor enfatiza que a metodologia de ensino evitará monólogos, incentivando a participação ativa e objetiva dos 38 alunos presentes nas discussões de aula."
+    }
+  ],
+  "encaminhamentos": [
+    "Resumir livro: Resumir o livro A treliça e a videira capítulo por capítulo, com limite de uma folha por capítulo, e enviar para o e-mail do professor até o dia 27 de novembro de 2026.",
+    "Realizar prova: Realizar a prova da disciplina no dia 27 de novembro de 2026.",
+    "Enviar resumo: Enviar o resumo do livro para o e-mail do professor conforme disponibilidade."
+  ]
+}

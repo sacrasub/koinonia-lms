@@ -1,0 +1,434 @@
+{
+  "id": "disc-5-aula-2",
+  "disciplinaId": "disc-5",
+  "disciplinaName": "05 - Ética Cristã - Karoline Evangelista",
+  "disciplinaShortName": "Ética Cristã",
+  "disciplinaCode": "ETC-201",
+  "professor": "Profª Karoline Evangelista",
+  "aulaNum": 2,
+  "unidade": 1,
+  "dateIso": "2026-08-20",
+  "dateBr": "20/08/2026",
+  "theme": "Aula 2 • Aplicação prática da ética",
+  "geminiUrl": "/gemini-notes/eti_aula2_2026-08-20.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A reunião organizou grupos para seminários sobre os 10 mandamentos e debateu modelos de absolutismo ético cristão. Organização dos grupos acadêmicos Alunos organizaram grupos para seminários sobre os 10 mandamentos. A avaliação ocorrerá de 22 de outubro a 19 de novembro. Debates sobre absolutismo ético O grupo analisou três correntes de absolutismo cristão, identificando o absolutismo graduado como o modelo mais alinhado à tradição. Discussões diferenciaram dilemas éticos reais de conveniência pessoal.",
+    "sinteseGeral": "A reunião organizou grupos para seminários sobre os 10 mandamentos e debateu modelos de absolutismo ético cristão. Organização dos grupos acadêmicos Alunos organizaram grupos para seminários sobre os 10 mandamentos. A avaliação ocorrerá de 22 de outubro a 19 de novembro. Debates sobre absolutismo ético O grupo analisou três correntes de absolutismo cristão, identificando o absolutismo graduado como o modelo mais alinhado à tradição. Discussões diferenciaram dilemas éticos reais de conveniência pessoal. Aplicação prática da ética A turma concluiu que o absolutismo graduado não valida mentiras por conveniência, exigindo integridade absoluta sob pressão. A perspectiva reafirmou que o fim não justifica os meios.",
+    "mapaRapido": [
+      "Logística da Turma e Reposição de Conteúdo: BiblicaMente por Profª Karoline Evangelista iniciou a reunião pontuando a necessidade de aguardar mais estudantes para revisar o conteúdo da primeira aula, que serve de base para toda a disciplina, além de esclarecer dúvidas sobre a avaliação que haviam surgido durante a semana.",
+      "Processo de Formação de Grupos para a Avaliação: Com uma estimativa de 20 a 24 alunos, BiblicaMente por Profª Karoline Evangelista orientou que a turma se organizasse em duplas e alguns trios para cobrir os 10 mandamentos, sendo necessário reorganizar grupos pré-existentes que contavam com mais integrantes.",
+      "Atribuição dos Mandamentos (1º e 2º): O primeiro mandamento foi atribuído ao grupo de Daniel Rodrigues, após a exclusão de um membro que já havia cursado a disciplina.",
+      "Atribuição dos Mandamentos (3º e 4º): Rejane Arruda e Carla P dos S de Almeida formaram uma dupla para o terceiro mandamento.",
+      "Atribuição dos Mandamentos (5º, 6º e 7º): A dupla Maycoln Farias e Jorge Silva assumiu o quinto mandamento.",
+      "Integração de Novos Estudantes e Atribuição do 8º Mandamento: Talita RF Felinto, uma estudante transferida de turma, foi integrada ao grupo de Rodrigo Oliveira para o oitavo mandamento."
+    ],
+    "totalBlocos": 25
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Logística da Turma e Reposição de Conteúdo",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista iniciou a reunião pontuando a necessidade de aguardar mais estudantes para revisar o conteúdo da primeira aula, que serve de base para toda a disciplina, além de esclarecer dúvidas sobre a avaliação que haviam surgido durante a semana.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista iniciou a reunião pontuando a necessidade de aguardar mais estudantes para revisar o conteúdo da primeira aula, que serve de base para toda a disciplina, além de esclarecer dúvidas sobre a avaliação que haviam surgido durante a semana.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista iniciou a reunião pontuando a necessidade de aguardar mais estudantes para revisar o conteúdo da primeira aula, que serve de base para toda a disciplina, além de esclarecer dúvidas sobre a avaliação que haviam surgido durante a semana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Processo de Formação de Grupos para a Avaliação",
+      "resumoCurto": "Com uma estimativa de 20 a 24 alunos, BiblicaMente por Profª Karoline Evangelista orientou que a turma se organizasse em duplas e alguns trios para cobrir os 10 mandamentos, sendo necessário reorganizar grupos pré-existentes que contavam com mais integrantes.",
+      "detalhamento": "Com uma estimativa de 20 a 24 alunos, BiblicaMente por Profª Karoline Evangelista orientou que a turma se organizasse em duplas e alguns trios para cobrir os 10 mandamentos, sendo necessário reorganizar grupos pré-existentes que contavam com mais integrantes.",
+      "pontosChave": [
+        "Com uma estimativa de 20 a 24 alunos, BiblicaMente por Profª Karoline Evangelista orientou que a turma se organizasse em duplas e alguns trios para cobrir os 10 mandamentos, sendo necessário reorganizar grupos pré-existentes que contavam com mais integrantes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atribuição dos Mandamentos (1º e 2º)",
+      "resumoCurto": "O primeiro mandamento foi atribuído ao grupo de Daniel Rodrigues, após a exclusão de um membro que já havia cursado a disciplina.",
+      "detalhamento": "O primeiro mandamento foi atribuído ao grupo de Daniel Rodrigues, após a exclusão de um membro que já havia cursado a disciplina. O segundo mandamento foi definido para a dupla composta por Camila Vieira e Cristian Riffo.",
+      "pontosChave": [
+        "O primeiro mandamento foi atribuído ao grupo de Daniel Rodrigues, após a exclusão de um membro que já havia cursado a disciplina.",
+        "O segundo mandamento foi definido para a dupla composta por Camila Vieira e Cristian Riffo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atribuição dos Mandamentos (3º e 4º)",
+      "resumoCurto": "Rejane Arruda e Carla P dos S de Almeida formaram uma dupla para o terceiro mandamento.",
+      "detalhamento": "Rejane Arruda e Carla P dos S de Almeida formaram uma dupla para o terceiro mandamento. O quarto mandamento foi destinado a Cristiano Sacramento e Jefferson Araujo.",
+      "pontosChave": [
+        "Rejane Arruda e Carla P dos S de Almeida formaram uma dupla para o terceiro mandamento.",
+        "O quarto mandamento foi destinado a Cristiano Sacramento e Jefferson Araujo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atribuição dos Mandamentos (5º, 6º e 7º)",
+      "resumoCurto": "A dupla Maycoln Farias e Jorge Silva assumiu o quinto mandamento.",
+      "detalhamento": "A dupla Maycoln Farias e Jorge Silva assumiu o quinto mandamento. O sexto e o sétimo mandamentos foram distribuídos entre os integrantes do grupo de Andrea Pimentel Mariano e Silva Silva e Marcus Conteiro, respectivamente, dividindo os quatro membros em duplas.",
+      "pontosChave": [
+        "A dupla Maycoln Farias e Jorge Silva assumiu o quinto mandamento.",
+        "O sexto e o sétimo mandamentos foram distribuídos entre os integrantes do grupo de Andrea Pimentel Mariano e Silva Silva e Marcus Conteiro, respectivamente, dividindo os quatro membros em duplas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Integração de Novos Estudantes e Atribuição do 8º Mandamento",
+      "resumoCurto": "Talita RF Felinto, uma estudante transferida de turma, foi integrada ao grupo de Rodrigo Oliveira para o oitavo mandamento.",
+      "detalhamento": "Talita RF Felinto, uma estudante transferida de turma, foi integrada ao grupo de Rodrigo Oliveira para o oitavo mandamento.",
+      "pontosChave": [
+        "Talita RF Felinto, uma estudante transferida de turma, foi integrada ao grupo de Rodrigo Oliveira para o oitavo mandamento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Finalização das Composições de Grupo e 9º Mandamento",
+      "resumoCurto": "Celso Oliveira e Alexandre foram definidos para o nono mandamento.",
+      "detalhamento": "Celso Oliveira e Alexandre foram definidos para o nono mandamento. O décimo mandamento foi reservado para Marlon, com a observação de que, caso não houvesse novos alunos, integrantes de outros grupos poderiam ser remanejados para completar a dupla.",
+      "pontosChave": [
+        "Celso Oliveira e Alexandre foram definidos para o nono mandamento.",
+        "O décimo mandamento foi reservado para Marlon, com a observação de que, caso não houvesse novos alunos, integrantes de outros grupos poderiam ser remanejados para completar a dupla."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Detalhamento da Avaliação e Referências Bibliográficas",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista explicou que a avaliação consistirá em seminários realizados de 22 de outubro a 19 de novembro, baseados no livro Catecismo Maior de Westminster, focando em ética cristã, distinção entre legalismo e ética genuína, e aplicações contemporâneas.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista explicou que a avaliação consistirá em seminários realizados de 22 de outubro a 19 de novembro, baseados no livro Catecismo Maior de Westminster, focando em ética cristã, distinção entre legalismo e ética genuína, e aplicações contemporâneas. As notas serão atribuídas individualmente para cada estudante, independentemente da composição do grupo.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista explicou que a avaliação consistirá em seminários realizados de 22 de outubro a 19 de novembro, baseados no livro Catecismo Maior de Westminster, focando em ética cristã, distinção entre legalismo e ética genuína, e aplicações contemporâneas.",
+        "As notas serão atribuídas individualmente para cada estudante, independentemente da composição do grupo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Situação de Estudantes Externos",
+      "resumoCurto": "Durante a organização, constatou-se que Salatiel Rodrigues já havia concluído a disciplina, participando da aula apenas como ouvinte.",
+      "detalhamento": "Durante a organização, constatou-se que Salatiel Rodrigues já havia concluído a disciplina, participando da aula apenas como ouvinte.",
+      "pontosChave": [
+        "Durante a organização, constatou-se que Salatiel Rodrigues já havia concluído a disciplina, participando da aula apenas como ouvinte."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Recapitulação de Conflitos Éticos",
+      "resumoCurto": "A aula prosseguiu com uma revisão sobre conflitos éticos, citando dilemas bíblicos como o sacrifício de Isaque por Abraão, a desobediência civil das parteiras hebraicas e a mentira de Raabe, introduzindo o conceito de escolha entre o mal menor e o bem maior.",
+      "detalhamento": "A aula prosseguiu com uma revisão sobre conflitos éticos, citando dilemas bíblicos como o sacrifício de Isaque por Abraão, a desobediência civil das parteiras hebraicas e a mentira de Raabe, introduzindo o conceito de escolha entre o mal menor e o bem maior.",
+      "pontosChave": [
+        "A aula prosseguiu com uma revisão sobre conflitos éticos, citando dilemas bíblicos como o sacrifício de Isaque por Abraão, a desobediência civil das parteiras hebraicas e a mentira de Raabe, introduzindo o conceito de escolha entre o mal menor e o bem maior."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Responsabilidade Ética Cristã",
+      "resumoCurto": "Foi discutido que, embora a revelação geral e a consciência humana guiem a moral de todos, espera-se que os cristãos demonstrem um padrão ético superior, baseado na revelação especial das Escrituras.",
+      "detalhamento": "Foi discutido que, embora a revelação geral e a consciência humana guiem a moral de todos, espera-se que os cristãos demonstrem um padrão ético superior, baseado na revelação especial das Escrituras.",
+      "pontosChave": [
+        "Foi discutido que, embora a revelação geral e a consciência humana guiem a moral de todos, espera-se que os cristãos demonstrem um padrão ético superior, baseado na revelação especial das Escrituras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Visões Éticas Não Cristãs",
+      "resumoCurto": "Foram apresentadas três visões populares entre não cristãos: o Antinomismo, que exclui leis morais objetivas; o Generalismo, que defende que o fim justifica os meios; e as vertentes utilitaristas e hedonistas, que priorizam resultados e a busca pela felicidade.",
+      "detalhamento": "Foram apresentadas três visões populares entre não cristãos: o Antinomismo, que exclui leis morais objetivas; o Generalismo, que defende que o fim justifica os meios; e as vertentes utilitaristas e hedonistas, que priorizam resultados e a busca pela felicidade.",
+      "pontosChave": [
+        "Foram apresentadas três visões populares entre não cristãos: o Antinomismo, que exclui leis morais objetivas; o Generalismo, que defende que o fim justifica os meios; e as vertentes utilitaristas e hedonistas, que priorizam resultados e a busca pela felicidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conceito de Situacionismo",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista definiu o situacionismo como uma teoria ética que coloca o amor como o único absoluto, o que pode levar ao relativismo moral, sendo usado para justificar ações como adultério ou aborto em nome do amor.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista definiu o situacionismo como uma teoria ética que coloca o amor como o único absoluto, o que pode levar ao relativismo moral, sendo usado para justificar ações como adultério ou aborto em nome do amor.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista definiu o situacionismo como uma teoria ética que coloca o amor como o único absoluto, o que pode levar ao relativismo moral, sendo usado para justificar ações como adultério ou aborto em nome do amor."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Absolutismo Ético Cristão",
+      "resumoCurto": "Foram apresentadas três correntes de absolutismo defendidas por cristãos: o absolutismo não qualificado, o absolutismo conflitante e o absolutismo graduado (ou hierárquico), este último sendo o modelo mais alinhado à tradição reformada e ao pensamento de Norman Geisler.",
+      "detalhamento": "Foram apresentadas três correntes de absolutismo defendidas por cristãos: o absolutismo não qualificado, o absolutismo conflitante e o absolutismo graduado (ou hierárquico), este último sendo o modelo mais alinhado à tradição reformada e ao pensamento de Norman Geisler.",
+      "pontosChave": [
+        "Foram apresentadas três correntes de absolutismo defendidas por cristãos: o absolutismo não qualificado, o absolutismo conflitante e o absolutismo graduado (ou hierárquico), este último sendo o modelo mais alinhado à tradição reformada e ao pensamento de Norman Geisler."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Análise do Absolutismo Não Qualificado",
+      "resumoCurto": "Esta visão sustenta que não existem conflitos morais reais e que sempre há uma saída sem pecado, baseando-se em um dualismo platônico que valoriza a alma sobre o corpo, o que a professora apontou como um modelo menos aceito atualmente.",
+      "detalhamento": "Esta visão sustenta que não existem conflitos morais reais e que sempre há uma saída sem pecado, baseando-se em um dualismo platônico que valoriza a alma sobre o corpo, o que a professora apontou como um modelo menos aceito atualmente.",
+      "pontosChave": [
+        "Esta visão sustenta que não existem conflitos morais reais e que sempre há uma saída sem pecado, baseando-se em um dualismo platônico que valoriza a alma sobre o corpo, o que a professora apontou como um modelo menos aceito atualmente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão Prática sobre Legítima Defesa e Ética",
+      "resumoCurto": "Surgiu um debate entre os participantes sobre cenários de vida real, como legítima defesa e o uso de armas, onde a adrenalina e a urgência do momento tornam complexa a aplicação teórica da ética.",
+      "detalhamento": "Surgiu um debate entre os participantes sobre cenários de vida real, como legítima defesa e o uso de armas, onde a adrenalina e a urgência do momento tornam complexa a aplicação teórica da ética. BiblicaMente por Profª Karoline Evangelista enfatizou que fazer justiça com as próprias mãos não é defensável eticamente.",
+      "pontosChave": [
+        "Surgiu um debate entre os participantes sobre cenários de vida real, como legítima defesa e o uso de armas, onde a adrenalina e a urgência do momento tornam complexa a aplicação teórica da ética.",
+        "BiblicaMente por Profª Karoline Evangelista enfatizou que fazer justiça com as próprias mãos não é defensável eticamente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Crítica ao Absolutismo Não Qualificado e Introdução ao Absolutismo Conflitante",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista concluiu que o absolutismo não qualificado pode levar ao legalismo ou ao pecado de omissão, introduzindo então o absolutismo conflitante, onde a pessoa deve escolher o mal menor diante de um conflito de deveres, arcando com a carga da culpa.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista concluiu que o absolutismo não qualificado pode levar ao legalismo ou ao pecado de omissão, introduzindo então o absolutismo conflitante, onde a pessoa deve escolher o mal menor diante de um conflito de deveres, arcando com a carga da culpa.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista concluiu que o absolutismo não qualificado pode levar ao legalismo ou ao pecado de omissão, introduzindo então o absolutismo conflitante, onde a pessoa deve escolher o mal menor diante de um conflito de deveres, arcando com a carga da culpa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O dilema do \"mal menor\" e a necessidade de arrependimento",
+      "resumoCurto": "BiblicaMente por Profª Karoline Evangelista (Karoline) discute a ética do \"mal menor\", argumentando que, ao optar por ele, a pessoa ainda comete um ato pecaminoso que requer arrependimento.",
+      "detalhamento": "BiblicaMente por Profª Karoline Evangelista (Karoline) discute a ética do \"mal menor\", argumentando que, ao optar por ele, a pessoa ainda comete um ato pecaminoso que requer arrependimento. Karoline explica que o \"Absolutismo Conflitante\" sugere que, em um mundo caído, conflitos éticos podem forçar o indivíduo a pecar, mas questiona essa visão, observando que, se Jesus não pecou, o pecado não é inevitável. A discussão conclui que, embora existam pecados com consequências maiores ou menores, o \"Absolutismo Conflitante\" não resolve adequadamente a questão da culpa moral nessas situações.",
+      "pontosChave": [
+        "BiblicaMente por Profª Karoline Evangelista (Karoline) discute a ética do \"mal menor\", argumentando que, ao optar por ele, a pessoa ainda comete um ato pecaminoso que requer arrependimento.",
+        "Karoline explica que o \"Absolutismo Conflitante\" sugere que, em um mundo caído, conflitos éticos podem forçar o indivíduo a pecar, mas questiona essa visão, observando que, se Jesus não pecou, o pecado não é inevitável.",
+        "A discussão conclui que, embora existam pecados com consequências maiores ou menores, o \"Absolutismo Conflitante\" não resolve adequadamente a questão da culpa moral nessas situações."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Introdução ao Absolutismo Graduado",
+      "resumoCurto": "Karoline apresenta o \"Absolutismo Graduado\" como uma abordagem onde, em um conflito ético real, o cristão deve escolher o \"bem maior\" em vez de ser obrigado a pecar.",
+      "detalhamento": "Karoline apresenta o \"Absolutismo Graduado\" como uma abordagem onde, em um conflito ético real, o cristão deve escolher o \"bem maior\" em vez de ser obrigado a pecar. Diferente do \"mal menor\", esta visão defende que escolher o bem maior é a ética apropriada e não um pecado. Karoline enfatiza que essa abordagem não serve para justificar pecados cometidos por conveniência, como mentiras para obter promoções ou evitar conflitos conjugais, reforçando que o cristão deve arcar com as consequências da verdade. A escolha do bem maior, quando genuína, não é vista como uma tentativa de Deus ao pecado, mas como a decisão correta.",
+      "pontosChave": [
+        "Karoline apresenta o \"Absolutismo Graduado\" como uma abordagem onde, em um conflito ético real, o cristão deve escolher o \"bem maior\" em vez de ser obrigado a pecar.",
+        "Diferente do \"mal menor\", esta visão defende que escolher o bem maior é a ética apropriada e não um pecado.",
+        "Karoline enfatiza que essa abordagem não serve para justificar pecados cometidos por conveniência, como mentiras para obter promoções ou evitar conflitos conjugais, reforçando que o cristão deve arcar com as consequências da verdade.",
+        "A escolha do bem maior, quando genuína, não é vista como uma tentativa de Deus ao pecado, mas como a decisão correta."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Refinamento conceitual sobre a mentira",
+      "resumoCurto": "Rosiane Lima (Rosi) critica a formulação que sugere que \"mentir é certo\" em certas ocasiões, argumentando que a mentira, em si, permanece errada independentemente da situação.",
+      "detalhamento": "Rosiane Lima (Rosi) critica a formulação que sugere que \"mentir é certo\" em certas ocasiões, argumentando que a mentira, em si, permanece errada independentemente da situação. Rosi sugere que, em vez de classificar a mentira como correta, a discussão deveria focar na escolha do bem maior em situações de vida ou morte. Karoline concorda com a observação de Rosi e reconhece que a terminologia do livro estudado pode precisar de revisão para evitar a interpretação de que a mentira é validada como uma ação ética.",
+      "pontosChave": [
+        "Rosiane Lima (Rosi) critica a formulação que sugere que \"mentir é certo\" em certas ocasiões, argumentando que a mentira, em si, permanece errada independentemente da situação.",
+        "Rosi sugere que, em vez de classificar a mentira como correta, a discussão deveria focar na escolha do bem maior em situações de vida ou morte.",
+        "Karoline concorda com a observação de Rosi e reconhece que a terminologia do livro estudado pode precisar de revisão para evitar a interpretação de que a mentira é validada como uma ação ética."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Perspectiva histórica de Martinho Lutero",
+      "resumoCurto": "A turma debate o pensamento de Martinho Lutero sob a ótica do \"Absolutismo Conflitante\", onde a verdade é priorizada a qualquer custo.",
+      "detalhamento": "A turma debate o pensamento de Martinho Lutero sob a ótica do \"Absolutismo Conflitante\", onde a verdade é priorizada a qualquer custo. Antonio Marcos traz uma perspectiva histórica crítica, destacando como Lutero aplicou essa rigidez em seus escritos contra judeus, posicionando sua visão da \"verdade\" acima da vida humana. Karoline observa que essas contradições históricas mostram a complexidade de aplicar essas visões éticas e reforça que, no \"Absolutismo Graduado\", a vida humana teria um peso hierarquicamente superior.",
+      "pontosChave": [
+        "A turma debate o pensamento de Martinho Lutero sob a ótica do \"Absolutismo Conflitante\", onde a verdade é priorizada a qualquer custo.",
+        "Antonio Marcos traz uma perspectiva histórica crítica, destacando como Lutero aplicou essa rigidez em seus escritos contra judeus, posicionando sua visão da \"verdade\" acima da vida humana.",
+        "Karoline observa que essas contradições históricas mostram a complexidade de aplicar essas visões éticas e reforça que, no \"Absolutismo Graduado\", a vida humana teria um peso hierarquicamente superior."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Distinção entre dilemas éticos e conveniência pessoal",
+      "resumoCurto": "Grazi Guimarães compartilha dificuldades pessoais em evitar \"pequenas mentiras\" no cotidiano e em relacionamentos, questionando a viabilidade de aplicar o \"bem maior\" de forma consistente.",
+      "detalhamento": "Grazi Guimarães compartilha dificuldades pessoais em evitar \"pequenas mentiras\" no cotidiano e em relacionamentos, questionando a viabilidade de aplicar o \"bem maior\" de forma consistente. Karoline e as participantes reafirmam que situações de conveniência, como mentir para evitar conversas difíceis ou não assumir um erro, não constituem dilemas éticos reais. Rosi concorda, enfatizando que é necessário cuidado para não usar o conceito de \"bem maior\" como justificativa para comportamentos desonestos ou evitar consequências de erros pessoais.",
+      "pontosChave": [
+        "Grazi Guimarães compartilha dificuldades pessoais em evitar \"pequenas mentiras\" no cotidiano e em relacionamentos, questionando a viabilidade de aplicar o \"bem maior\" de forma consistente.",
+        "Karoline e as participantes reafirmam que situações de conveniência, como mentir para evitar conversas difíceis ou não assumir um erro, não constituem dilemas éticos reais.",
+        "Rosi concorda, enfatizando que é necessário cuidado para não usar o conceito de \"bem maior\" como justificativa para comportamentos desonestos ou evitar consequências de erros pessoais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Análise de figuras bíblicas e soberania divina",
+      "resumoCurto": "Karoline distingue os casos de figuras bíblicas, explicando que a escolha de Raab (salvar vidas) difere significativamente da negação de Pedro, que foi motivada por medo e autoproteção, configurando um pecado de conveniência.",
+      "detalhamento": "Karoline distingue os casos de figuras bíblicas, explicando que a escolha de Raab (salvar vidas) difere significativamente da negação de Pedro, que foi motivada por medo e autoproteção, configurando um pecado de conveniência. Talita RF Felinto questiona o caso de Jacó enganando seu pai, ao que Karoline responde que isso foi um ato de manipulação pecaminosa, embora Deus tenha mantido Sua soberania ao transformar tais atos históricos em propósitos maiores, conforme discutido por John Piper.",
+      "pontosChave": [
+        "Karoline distingue os casos de figuras bíblicas, explicando que a escolha de Raab (salvar vidas) difere significativamente da negação de Pedro, que foi motivada por medo e autoproteção, configurando um pecado de conveniência.",
+        "Talita RF Felinto questiona o caso de Jacó enganando seu pai, ao que Karoline responde que isso foi um ato de manipulação pecaminosa, embora Deus tenha mantido Sua soberania ao transformar tais atos históricos em propósitos maiores, conforme discutido por John Piper."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Aplicação prática em casos institucionais",
+      "resumoCurto": "Grazi relata uma situação passada na igreja onde a contabilidade foi alterada para esconder uma irregularidade trabalhista, apresentada como uma \"solução\" para o bem da instituição.",
+      "detalhamento": "Grazi relata uma situação passada na igreja onde a contabilidade foi alterada para esconder uma irregularidade trabalhista, apresentada como uma \"solução\" para o bem da instituição. Karoline e Rosi clarificam que este exemplo não constitui um dilema ético real, pois existiam outras soluções possíveis, e não um conflito onde a única saída seria o pecado. Elas reforçam que o \"Absolutismo Graduado\" não valida o \"fim justifica os meios\" e que, nesses casos, a integridade e a verdade devem prevalecer, aceitando-se as consequências de agir corretamente.",
+      "pontosChave": [
+        "Grazi relata uma situação passada na igreja onde a contabilidade foi alterada para esconder uma irregularidade trabalhista, apresentada como uma \"solução\" para o bem da instituição.",
+        "Karoline e Rosi clarificam que este exemplo não constitui um dilema ético real, pois existiam outras soluções possíveis, e não um conflito onde a única saída seria o pecado.",
+        "Elas reforçam que o \"Absolutismo Graduado\" não valida o \"fim justifica os meios\" e que, nesses casos, a integridade e a verdade devem prevalecer, aceitando-se as consequências de agir corretamente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Organização administrativa e encerramento",
+      "resumoCurto": "Karoline orienta os alunos sobre a formação de grupos para o estudo do 10º mandamento e se compromete a enviar os materiais necessários.",
+      "detalhamento": "Karoline orienta os alunos sobre a formação de grupos para o estudo do 10º mandamento e se compromete a enviar os materiais necessários. Cristiano Sacramento sugere que os materiais sejam disponibilizados no grupo oficial para facilitar o acesso de todos, com o auxílio das monitoras (Rosi, Camila, e o próprio Cristiano) para a distribuição nos grupos específicos dos alunos. A reunião é encerrada com Karoline confirmando que postará os documentos no grupo oficial e agradecendo a todos pela participação.",
+      "pontosChave": [
+        "Karoline orienta os alunos sobre a formação de grupos para o estudo do 10º mandamento e se compromete a enviar os materiais necessários.",
+        "Cristiano Sacramento sugere que os materiais sejam disponibilizados no grupo oficial para facilitar o acesso de todos, com o auxílio das monitoras (Rosi, Camila, e o próprio Cristiano) para a distribuição nos grupos específicos dos alunos.",
+        "A reunião é encerrada com Karoline confirmando que postará os documentos no grupo oficial e agradecendo a todos pela participação."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Discussão Prática sobre Legítima Defesa e Ética",
+      "relato": "Surgiu um debate entre os participantes sobre cenários de vida real, como legítima defesa e o uso de armas, onde a adrenalina e a urgência do momento tornam complexa a aplicação teórica da ética. BiblicaMente por Profª Karoline Evangelista enfatizou que fazer justiça com as próprias mãos não é defensável eticamente."
+    },
+    {
+      "titulo": "Crítica ao Absolutismo Não Qualificado e Introdução ao Absolutismo Conflitante",
+      "relato": "BiblicaMente por Profª Karoline Evangelista concluiu que o absolutismo não qualificado pode levar ao legalismo ou ao pecado de omissão, introduzindo então o absolutismo conflitante, onde a pessoa deve escolher o mal menor diante de um conflito de deveres, arcando com a carga da culpa."
+    },
+    {
+      "titulo": "O dilema do \"mal menor\" e a necessidade de arrependimento",
+      "relato": "BiblicaMente por Profª Karoline Evangelista (Karoline) discute a ética do \"mal menor\", argumentando que, ao optar por ele, a pessoa ainda comete um ato pecaminoso que requer arrependimento. Karoline explica que o \"Absolutismo Conflitante\" sugere que, em um mundo caído, conflitos éticos podem forçar o indivíduo a pecar, mas questiona essa visão, observando que, se Jesus não pecou, o pecado não é inevitável. A discussão conclui que, embora existam pecados com consequências maiores ou menores, o \"Absolutismo Conflitante\" não resolve adequadamente a questão da culpa moral nessas situações."
+    },
+    {
+      "titulo": "Refinamento conceitual sobre a mentira",
+      "relato": "Rosiane Lima (Rosi) critica a formulação que sugere que \"mentir é certo\" em certas ocasiões, argumentando que a mentira, em si, permanece errada independentemente da situação. Rosi sugere que, em vez de classificar a mentira como correta, a discussão deveria focar na escolha do bem maior em situações de vida ou morte. Karoline concorda com a observação de Rosi e reconhece que a terminologia do livro estudado pode precisar de revisão para evitar a interpretação de que a mentira é validada como uma ação ética."
+    },
+    {
+      "titulo": "Perspectiva histórica de Martinho Lutero",
+      "relato": "A turma debate o pensamento de Martinho Lutero sob a ótica do \"Absolutismo Conflitante\", onde a verdade é priorizada a qualquer custo. Antonio Marcos traz uma perspectiva histórica crítica, destacando como Lutero aplicou essa rigidez em seus escritos contra judeus, posicionando sua visão da \"verdade\" acima da vida humana. Karoline observa que essas contradições históricas mostram a complexidade de aplicar essas visões éticas e reforça que, no \"Absolutismo Graduado\", a vida humana teria um peso hierarquicamente superior."
+    },
+    {
+      "titulo": "Distinção entre dilemas éticos e conveniência pessoal",
+      "relato": "Grazi Guimarães compartilha dificuldades pessoais em evitar \"pequenas mentiras\" no cotidiano e em relacionamentos, questionando a viabilidade de aplicar o \"bem maior\" de forma consistente. Karoline e as participantes reafirmam que situações de conveniência, como mentir para evitar conversas difíceis ou não assumir um erro, não constituem dilemas éticos reais. Rosi concorda, enfatizando que é necessário cuidado para não usar o conceito de \"bem maior\" como justificativa para comportamentos desonestos ou evitar consequências de erros pessoais."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Êxodo 20:1-17",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    },
+    {
+      "referencia": "Mateus 5:17-48",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    },
+    {
+      "referencia": "Romanos 12:1-2",
+      "contexto": "Base bíblica trabalhada na disciplina Ética Cristã."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Norman Geisler e as 6 Matrizes Éticas",
+      "detalhe": "Antinomismo (sem normas), Generalismo (normas sem universalidade), Situacionismo (só o amor importa), Absolutismo Não Qualificado (sem conflitos reais), Absolutismo Conflitante (mal menor + perdão) e Absolutismo Graduado (dever moral superior sem culpa)."
+    },
+    {
+      "titulo": "Absolutismo Graduado na Prática",
+      "detalhe": "Diante de conflitos inevitáveis em um mundo caído, Deus estabeleceu uma hierarquia de mandamentos morais (misericórdia e vida superam a mentira circunstancial, como nas parteiras hebreias em Êxodo 1 e Raabe em Josué 2)."
+    },
+    {
+      "titulo": "Catecismo Maior de Westminster (Q. 91 a 150)",
+      "detalhe": "O manual confessional definitivo utilizado na disciplina para interpretar a extensão moral dos Dez Mandamentos."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Logística da Turma e Reposição de Conteúdo\" nesta aula?",
+      "dicaResposta": "BiblicaMente por Profª Karoline Evangelista iniciou a reunião pontuando a necessidade de aguardar mais estudantes para revisar o conteúdo da primeira aula, que serve de base para toda a disciplina, além de esclarecer dúvidas sobre a avaliação que haviam surgido durante a semana."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Processo de Formação de Grupos para a Avaliação\" nesta aula?",
+      "dicaResposta": "Com uma estimativa de 20 a 24 alunos, BiblicaMente por Profª Karoline Evangelista orientou que a turma se organizasse em duplas e alguns trios para cobrir os 10 mandamentos, sendo necessário reorganizar grupos pré-existentes que contavam com mais integrantes."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atribuição dos Mandamentos (1º e 2º)\" nesta aula?",
+      "dicaResposta": "O primeiro mandamento foi atribuído ao grupo de Daniel Rodrigues, após a exclusão de um membro que já havia cursado a disciplina. O segundo mandamento foi definido para a dupla composta por Camila Vieira e Cristian Riffo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atribuição dos Mandamentos (3º e 4º)\" nesta aula?",
+      "dicaResposta": "Rejane Arruda e Carla P dos S de Almeida formaram uma dupla para o terceiro mandamento. O quarto mandamento foi destinado a Cristiano Sacramento e Jefferson Araujo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atribuição dos Mandamentos (5º, 6º e 7º)\" nesta aula?",
+      "dicaResposta": "A dupla Maycoln Farias e Jorge Silva assumiu o quinto mandamento. O sexto e o sétimo mandamentos foram distribuídos entre os integrantes do grupo de Andrea Pimentel Mariano e Silva Silva e Marcus Conteiro, respectivamente, dividindo os quatro membros em duplas."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar Conteúdo Anterior: Realizar uma revisão do conteúdo da aula passada para os alunos que não puderam comparecer. Abordar os pontos principais ministrados anteriormente.",
+    "Preparar Seminário: Elaborar o trabalho sobre um dos 10 Mandamentos com base na literatura recomendada e aplicações práticas. Organizar a divisão de tarefas dentro dos grupos definidos.",
+    "Validar Grupos: Verificar a composição final dos grupos e a alocação dos alunos ausentes na próxima aula. Confirmar se todas as duplas e trios estão definidos corretamente.",
+    "Organizar Grupos: Definir os responsáveis pelos estudos do 10º mandamento entre os participantes."
+  ]
+}

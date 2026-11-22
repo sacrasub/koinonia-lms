@@ -1,0 +1,157 @@
+{
+  "id": "disc-6-aula-4",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 4,
+  "unidade": 1,
+  "dateIso": "2026-09-03",
+  "dateBr": "03/09/2026",
+  "theme": "Aula 4 • Ausência do Pastor Marcio e Status da Aula",
+  "geminiUrl": "/gemini-notes/nt3_aula4_2026-09-03.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A aula foi cancelada devido a falhas técnicas, enquanto participantes discutiram trajetórias pessoais e condições climáticas regionais. Indisponibilidade do instrutor A instabilidade na conexão de internet impediu a realização da aula prevista. A liderança acompanhou a situação antes da definição final. Troca de vivências acadêmicas",
+    "sinteseGeral": "A aula foi cancelada devido a falhas técnicas, enquanto participantes discutiram trajetórias pessoais e condições climáticas regionais. Indisponibilidade do instrutor A instabilidade na conexão de internet impediu a realização da aula prevista. A liderança acompanhou a situação antes da definição final. Troca de vivências acadêmicas Os participantes compartilharam seus históricos acadêmicos e eclesiásticos, relembrando trajetórias educacionais iniciadas em 1994. Clima e cancelamento oficial Conversas sobre temperaturas de 42 graus e baixa umidade precederam a decisão final de cancelar a aula do dia.",
+    "mapaRapido": [
+      "Ausência do Pastor Marcio e Status da Aula: Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento.",
+      "Histórico Acadêmico e Eclesiástico dos Participantes: Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos.",
+      "Condições Climáticas e Geográficas Regionais: A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista.",
+      "Cancelamento da Aula e Avisos Finais: Camila Vieira confirmou definitivamente que a aula não ocorreria, pois o Pastor Marcio não conseguiu solucionar os problemas técnicos de internet durante a viagem."
+    ],
+    "duracaoEstimada": "~16min",
+    "totalBlocos": 4
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:05:48",
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Ausência do Pastor Marcio e Status da Aula",
+      "resumoCurto": "Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento.",
+      "detalhamento": "Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento. Foi mencionado que a liderança, especificamente Robert, estava acompanhando a situação para verificar se a conexão seria restabelecida, com a expectativa de que o Pastor Marcio desse um retorno.",
+      "pontosChave": [
+        "Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento.",
+        "Foi mencionado que a liderança, especificamente Robert, estava acompanhando a situação para verificar se a conexão seria restabelecida, com a expectativa de que o Pastor Marcio desse um retorno."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:07:06",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Histórico Acadêmico e Eclesiástico dos Participantes",
+      "resumoCurto": "Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos.",
+      "detalhamento": "Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos. Dijair Oliveira compartilhou detalhes sobre a vinculação com a Igreja Congregacional de Brejo dos Santos, na Paraíba, enquanto Salatiel Rodrigues relembrou o início de sua formação acadêmica em 1994 e as conexões geográficas e familiares entre os participantes em diferentes regiões do Brasil.",
+      "pontosChave": [
+        "Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos.",
+        "Dijair Oliveira compartilhou detalhes sobre a vinculação com a Igreja Congregacional de Brejo dos Santos, na Paraíba, enquanto Salatiel Rodrigues relembrou o início de sua formação acadêmica em 1994 e as conexões geográficas e familiares entre os participantes em diferentes regiões do Brasil."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:11:16",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Condições Climáticas e Geográficas Regionais",
+      "resumoCurto": "A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista.",
+      "detalhamento": "A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista. Os participantes discutiram temas como temperaturas elevadas, chegando a marcas como 37º, 41º e 42º, a baixa umidade do ar, com registros de 12%, e os efeitos práticos dessas condições no cotidiano, incluindo a poeira intensa que suja veículos e sapatos, e a secagem rápida de roupas.",
+      "pontosChave": [
+        "A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista.",
+        "Os participantes discutiram temas como temperaturas elevadas, chegando a marcas como 37º, 41º e 42º, a baixa umidade do ar, com registros de 12%, e os efeitos práticos dessas condições no cotidiano, incluindo a poeira intensa que suja veículos e sapatos, e a secagem rápida de roupas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:15:53",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Cancelamento da Aula e Avisos Finais",
+      "resumoCurto": "Camila Vieira confirmou definitivamente que a aula não ocorreria, pois o Pastor Marcio não conseguiu solucionar os problemas técnicos de internet durante a viagem.",
+      "detalhamento": "Camila Vieira confirmou definitivamente que a aula não ocorreria, pois o Pastor Marcio não conseguiu solucionar os problemas técnicos de internet durante a viagem. Foi orientado que não havia necessidade de registrar presença ou realizar qualquer procedimento adicional, sendo o momento encerrado com votos de parabéns pelo aniversário de Cristiano e saudações de despedida entre os presentes, incluindo o registro da chegada tardia de Josias Ribeiro.",
+      "pontosChave": [
+        "Camila Vieira confirmou definitivamente que a aula não ocorreria, pois o Pastor Marcio não conseguiu solucionar os problemas técnicos de internet durante a viagem.",
+        "Foi orientado que não havia necessidade de registrar presença ou realizar qualquer procedimento adicional, sendo o momento encerrado com votos de parabéns pelo aniversário de Cristiano e saudações de despedida entre os presentes, incluindo o registro da chegada tardia de Josias Ribeiro."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Ausência do Pastor Marcio e Status da Aula",
+      "relato": "Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento. Foi mencionado que a liderança, especificamente Robert, estava acompanhando a situação para verificar se a conexão seria restabelecida, com a expectativa de que o Pastor Marcio desse um retorno.",
+      "timestamp": "00:05:48"
+    },
+    {
+      "titulo": "Histórico Acadêmico e Eclesiástico dos Participantes",
+      "relato": "Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos. Dijair Oliveira compartilhou detalhes sobre a vinculação com a Igreja Congregacional de Brejo dos Santos, na Paraíba, enquanto Salatiel Rodrigues relembrou o início de sua formação acadêmica em 1994 e as conexões geográficas e familiares entre os participantes em diferentes regiões do Brasil.",
+      "timestamp": "00:07:06"
+    },
+    {
+      "titulo": "Condições Climáticas e Geográficas Regionais",
+      "relato": "A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista. Os participantes discutiram temas como temperaturas elevadas, chegando a marcas como 37º, 41º e 42º, a baixa umidade do ar, com registros de 12%, e os efeitos práticos dessas condições no cotidiano, incluindo a poeira intensa que suja veículos e sapatos, e a secagem rápida de roupas.",
+      "timestamp": "00:11:16"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Tiago 1–5",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "1 Pedro 1–5",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "2 Pedro 1–3",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "1–3 João",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "Judas",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Carta de Tiago",
+      "detalhe": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    },
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "titulo": "1 Pedro (Esperança Viva no Sofrimento)",
+      "detalhe": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Ausência do Pastor Marcio e Status da Aula\" nesta aula?",
+      "dicaResposta": "Os participantes discutiram a possibilidade de o Pastor Marcio ministrar a aula, com Camila Vieira relatando que, devido a uma viagem e problemas de conexão com a internet no hotel, o pastor não poderia estar presente naquele momento. Foi mencionado que a liderança, especificamente Robert, estava acompanhando a situação para verificar se a conexão seria restabelecida, com a expectativa de que o Pastor Marcio desse um retorno."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Histórico Acadêmico e Eclesiástico dos Participantes\" nesta aula?",
+      "dicaResposta": "Dijair Oliveira e Salatiel Rodrigues conversaram sobre suas trajetórias no seminário, relatando períodos de interrupção nos estudos devido a dificuldades pessoais e o posterior retorno para a conclusão dos cursos. Dijair Oliveira compartilhou detalhes sobre a vinculação com a Igreja Congregacional de Brejo dos Santos, na Paraíba, enquanto Salatiel Rodrigues relembrou o início de sua formação acadêmica em 1994 e as conexões geográficas e familiares entre os participantes em diferentes regiões do Brasil."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Condições Climáticas e Geográficas Regionais\" nesta aula?",
+      "dicaResposta": "A conversa abordou as condições climáticas e características regionais de locais como Mato Grosso do Sul, Brasília e Vitória da Conquista. Os participantes discutiram temas como temperaturas elevadas, chegando a marcas como 37º, 41º e 42º, a baixa umidade do ar, com registros de 12%, e os efeitos práticos dessas condições no cotidiano, incluindo a poeira intensa que suja veículos e sapatos, e a secagem rápida de roupas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Cancelamento da Aula e Avisos Finais\" nesta aula?",
+      "dicaResposta": "Camila Vieira confirmou definitivamente que a aula não ocorreria, pois o Pastor Marcio não conseguiu solucionar os problemas técnicos de internet durante a viagem. Foi orientado que não havia necessidade de registrar presença ou realizar qualquer procedimento adicional, sendo o momento encerrado com votos de parabéns pelo aniversário de Cristiano e saudações de despedida entre os presentes, incluindo o registro da chegada tardia de Josias Ribeiro."
+    }
+  ],
+  "encaminhamentos": []
+}

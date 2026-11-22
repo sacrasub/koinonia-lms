@@ -1,0 +1,119 @@
+{
+  "id": "disc-9-aula-1",
+  "disciplinaId": "disc-9",
+  "disciplinaName": "09 - História da Cultura Afro Brasileira e Indígena - Alexsandro",
+  "disciplinaShortName": "Cultura Afro & Indígena",
+  "disciplinaCode": "AFR-101",
+  "professor": "Profº Alexsandro de Oliveira Silva",
+  "aulaNum": 1,
+  "unidade": 2,
+  "dateIso": "2026-08-14",
+  "dateBr": "14/08/2026",
+  "theme": "Aula 1 • Base Legal & Conceitos Fundamentais (Aula 1)",
+  "videoUrl": "https://drive.google.com/file/d/1ypH0nSMA6E02c2enTzeLSacRhY8q9n05/view?usp=drive_link",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "Por que esta disciplina é necessária à Teologia? Fundamentação legal (Leis 10.639/03, 11.645/08 e Resolução CNE/CES 4/2016) e conceitos de raça, etnia, preconceito e racismo institucional/estrutural.",
+    "sinteseGeral": "Por que esta disciplina é necessária à Teologia? Fundamentação legal (Leis 10.639/03, 11.645/08 e Resolução CNE/CES 4/2016) e conceitos de raça, etnia, preconceito e racismo institucional/estrutural. Pontos de aprofundamento vinculados à unidade: Base Legal & Conceitos Fundamentais (Aula 1) (Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia).",
+    "mapaRapido": [
+      "Base Legal & Conceitos Fundamentais (Aula 1): Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia).",
+      "Autores Estudados no Curso (Citar no Mínimo 2): Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\").",
+      "Fundamentação Bíblica Sugerida pelo Docente: Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    ],
+    "totalBlocos": 3
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Contexto Histórico",
+      "titulo": "Base Legal & Conceitos Fundamentais (Aula 1)",
+      "resumoCurto": "Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia).",
+      "detalhamento": "Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia). Distinção entre raça (construção sócio-histórica), etnia, preconceito, racismo institucional e racismo estrutural.",
+      "pontosChave": [
+        "Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia).",
+        "Distinção entre raça (construção sócio-histórica), etnia, preconceito, racismo institucional e racismo estrutural."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Autores Estudados no Curso (Citar no Mínimo 2)",
+      "resumoCurto": "Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\").",
+      "detalhamento": "Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\").",
+      "pontosChave": [
+        "Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\")."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Fundamentação Bíblica Sugerida pelo Docente",
+      "resumoCurto": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9.",
+      "detalhamento": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9.",
+      "pontosChave": [
+        "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+      ],
+      "referenciasNoBloco": [
+        "Gn 1:26-28",
+        "At 17:26",
+        "Gl 3:28",
+        "Tg 2:1-9"
+      ]
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Gn 1:26-28",
+      "contexto": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    },
+    {
+      "referencia": "At 17:26",
+      "contexto": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    },
+    {
+      "referencia": "Gl 3:28",
+      "contexto": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    },
+    {
+      "referencia": "Tg 2:1-9",
+      "contexto": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Base Legal & Conceitos Fundamentais (Aula 1)",
+      "detalhe": "Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia). Distinção entre raça (construção sócio-histórica), etnia, preconceito, racismo institucional e racismo estrutural."
+    },
+    {
+      "titulo": "Autores Estudados no Curso (Citar no Mínimo 2)",
+      "detalhe": "Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\")."
+    },
+    {
+      "titulo": "Fundamentação Bíblica Sugerida pelo Docente",
+      "detalhe": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Base Legal & Conceitos Fundamentais (Aula 1)\" nesta aula?",
+      "dicaResposta": "Leis 10.639/03 (História e Cultura Afro-Brasileira), 11.645/08 (inclusão da temática Indígena) e Resolução CNE/CES 4/2016 (diretrizes para cursos de Teologia). Distinção entre raça (construção sócio-histórica), etnia, preconceito, racismo institucional e racismo estrutural."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Autores Estudados no Curso (Citar no Mínimo 2)\" nesta aula?",
+      "dicaResposta": "Silvio Almeida (\"Racismo Estrutural\"); Gersem dos Santos Luciano Baniwa (\"O Índio Brasileiro\"); Esau McCaulley (\"Uma Leitura Negra\"); Marco Davi de Oliveira (\"A Religião Mais Negra do Brasil\"); Nilma Lino Gomes (\"Movimento Negro Educador\"); Ailton Krenak (\"Ideias para Adiar o Fim do Mundo\"); John Piper (\"O Racismo, a Cruz e o Cristão\")."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Fundamentação Bíblica Sugerida pelo Docente\" nesta aula?",
+      "dicaResposta": "Textos centrais indicados para sustentar a dignidade da Imago Dei, a unidade da humanidade e o repúdio à acepção de pessoas: Gn 1:26-28, At 17:26, Gl 3:28 e Tg 2:1-9."
+    }
+  ],
+  "encaminhamentos": [
+    "Revisar: Pasta compartilhada oficial no Google Drive com as 4 videoaulas gravadas e Plano de Curso. Autores estudados: Silvio Almeida, Gersem Baniwa, Esau McCaulley, Marco Davi de Oliveira, Nilma Lino Gomes, Ailton Krenak e John Piper."
+  ]
+}

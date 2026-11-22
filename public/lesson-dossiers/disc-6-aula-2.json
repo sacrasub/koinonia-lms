@@ -1,0 +1,436 @@
+{
+  "id": "disc-6-aula-2",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 2,
+  "unidade": 1,
+  "dateIso": "2026-08-20",
+  "dateBr": "20/08/2026",
+  "theme": "Aula 2 • Abertura e interações iniciais",
+  "geminiUrl": "/gemini-notes/nt3_aula2_2026-08-20.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "O encontro estabeleceu diretrizes disciplinares e explorou questões acadêmicas fundamentais sobre a autoria, destino e propósito de Hebreus. Diretrizes da disciplina acadêmica O curso exige uso de câmeras ligadas e realização de avaliações com 150 questões discursivas e orais. A referência bibliográfica principal definida para o semestre é a Introdução ao Novo Testamento. Análise histórica de Hebreus",
+    "sinteseGeral": "O encontro estabeleceu diretrizes disciplinares e explorou questões acadêmicas fundamentais sobre a autoria, destino e propósito de Hebreus. Diretrizes da disciplina acadêmica O curso exige uso de câmeras ligadas e realização de avaliações com 150 questões discursivas e orais. A referência bibliográfica principal definida para o semestre é a Introdução ao Novo Testamento. Análise histórica de Hebreus A autoria permanece desconhecida, enquanto evidências internas indicam Roma como destino provável. A datação do texto situa-se entre os anos 49 e 95. Propósito teológico da epístola O texto funciona como sermão de exortação focado no crescimento espiritual dos leitores. A maturidade cristã é confirmada como o propósito central da carta.",
+    "mapaRapido": [
+      "Abertura e interações iniciais: O encontro iniciou com uma conversa informal entre Profº Profº Marcio Leal, Rodrigo Oliveira, Camila Vieira e Daniel Rodrigues, onde compartilharam atualizações sobre viagens de férias e a rotina de trabalho de Camila.",
+      "Comentários sobre a aula anterior e citações: Salatiel Rodrigues mencionou que o nome de Profº Profº Marcio Leal foi citado em uma aula anterior, gerando curiosidade sobre quem teria feito o comentário.",
+      "Atividades acadêmicas e convites: Camila Vieira trouxe detalhes sobre o conteúdo ministrado pelo Willam, mencionando o conceito de \"caçar o coração\" e sua semelhança com o \"Gospel Coach\" da SRI.",
+      "Oração inicial: Após os avisos e saudações, Camila Vieira conduziu a oração de abertura, pedindo bênçãos para a aula e para que os presentes recebessem o ensino ministrado.",
+      "Boas-vindas aos novos alunos: Profº Profº Marcio Leal deu as boas-vindas aos novos estudantes, Talita RF Felinto, da Igreja Congregacional do Ligeiro em Campina Grande, e Dijair Oliveira, presbítero da Igreja Congregacional no bairro Alto do Cruzeiro, em Brejo dos Santos.",
+      "Diretrizes da disciplina: Profº Profº Marcio Leal reiterou regras importantes para o semestre: a necessidade de manter as câmeras ligadas, a flexibilidade quanto ao horário de término (encerrando o tema conforme necessário antes das 22h), e o uso de slides sintéticos, exigindo que os alunos façam suas próprias anotações."
+    ],
+    "duracaoEstimada": "~1h13min",
+    "totalBlocos": 22
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Abertura e interações iniciais",
+      "resumoCurto": "O encontro iniciou com uma conversa informal entre Profº Profº Marcio Leal, Rodrigo Oliveira, Camila Vieira e Daniel Rodrigues, onde compartilharam atualizações sobre viagens de férias e a rotina de trabalho de Camila.",
+      "detalhamento": "O encontro iniciou com uma conversa informal entre Profº Profº Marcio Leal, Rodrigo Oliveira, Camila Vieira e Daniel Rodrigues, onde compartilharam atualizações sobre viagens de férias e a rotina de trabalho de Camila. Profº Profº Marcio Leal comentou sobre uma visita pastoral que não ocorreu devido a uma negativa da família, e o grupo discutiu brevemente o retorno às atividades.",
+      "pontosChave": [
+        "O encontro iniciou com uma conversa informal entre Profº Profº Marcio Leal, Rodrigo Oliveira, Camila Vieira e Daniel Rodrigues, onde compartilharam atualizações sobre viagens de férias e a rotina de trabalho de Camila.",
+        "Profº Profº Marcio Leal comentou sobre uma visita pastoral que não ocorreu devido a uma negativa da família, e o grupo discutiu brevemente o retorno às atividades."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:01:03",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Comentários sobre a aula anterior e citações",
+      "resumoCurto": "Salatiel Rodrigues mencionou que o nome de Profº Profº Marcio Leal foi citado em uma aula anterior, gerando curiosidade sobre quem teria feito o comentário.",
+      "detalhamento": "Salatiel Rodrigues mencionou que o nome de Profº Profº Marcio Leal foi citado em uma aula anterior, gerando curiosidade sobre quem teria feito o comentário. Houve uma troca sobre se o autor do elogio seria Willam ou Tácito, com Daniel Rodrigues observando que Willam descreveu Profº Profº Marcio Leal em termos elevados, o que levou a uma brincadeira comparativa com Tim Keller.",
+      "pontosChave": [
+        "Salatiel Rodrigues mencionou que o nome de Profº Profº Marcio Leal foi citado em uma aula anterior, gerando curiosidade sobre quem teria feito o comentário.",
+        "Houve uma troca sobre se o autor do elogio seria Willam ou Tácito, com Daniel Rodrigues observando que Willam descreveu Profº Profº Marcio Leal em termos elevados, o que levou a uma brincadeira comparativa com Tim Keller."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:03:35",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Atividades acadêmicas e convites",
+      "resumoCurto": "Camila Vieira trouxe detalhes sobre o conteúdo ministrado pelo Willam, mencionando o conceito de \"caçar o coração\" e sua semelhança com o \"Gospel Coach\" da SRI.",
+      "detalhamento": "Camila Vieira trouxe detalhes sobre o conteúdo ministrado pelo Willam, mencionando o conceito de \"caçar o coração\" e sua semelhança com o \"Gospel Coach\" da SRI. Profº Profº Marcio Leal anunciou que Willam pediu para que Márcio pregasse em sua posse no dia 17 de outubro, e Márcio compartilhou que viajará para a Malásia no dia 24 de outubro para um encontro global de líderes organizado pela Saf City.",
+      "pontosChave": [
+        "Camila Vieira trouxe detalhes sobre o conteúdo ministrado pelo Willam, mencionando o conceito de \"caçar o coração\" e sua semelhança com o \"Gospel Coach\" da SRI.",
+        "Profº Profº Marcio Leal anunciou que Willam pediu para que Márcio pregasse em sua posse no dia 17 de outubro, e Márcio compartilhou que viajará para a Malásia no dia 24 de outubro para um encontro global de líderes organizado pela Saf City."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:05:13",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Oração inicial",
+      "resumoCurto": "Após os avisos e saudações, Camila Vieira conduziu a oração de abertura, pedindo bênçãos para a aula e para que os presentes recebessem o ensino ministrado.",
+      "detalhamento": "Após os avisos e saudações, Camila Vieira conduziu a oração de abertura, pedindo bênçãos para a aula e para que os presentes recebessem o ensino ministrado.",
+      "pontosChave": [
+        "Após os avisos e saudações, Camila Vieira conduziu a oração de abertura, pedindo bênçãos para a aula e para que os presentes recebessem o ensino ministrado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:06:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Boas-vindas aos novos alunos",
+      "resumoCurto": "Profº Profº Marcio Leal deu as boas-vindas aos novos estudantes, Talita RF Felinto, da Igreja Congregacional do Ligeiro em Campina Grande, e Dijair Oliveira, presbítero da Igreja Congregacional no bairro Alto do Cruzeiro, em Brejo dos Santos.",
+      "detalhamento": "Profº Profº Marcio Leal deu as boas-vindas aos novos estudantes, Talita RF Felinto, da Igreja Congregacional do Ligeiro em Campina Grande, e Dijair Oliveira, presbítero da Igreja Congregacional no bairro Alto do Cruzeiro, em Brejo dos Santos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal deu as boas-vindas aos novos estudantes, Talita RF Felinto, da Igreja Congregacional do Ligeiro em Campina Grande, e Dijair Oliveira, presbítero da Igreja Congregacional no bairro Alto do Cruzeiro, em Brejo dos Santos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:08:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diretrizes da disciplina",
+      "resumoCurto": "Profº Profº Marcio Leal reiterou regras importantes para o semestre: a necessidade de manter as câmeras ligadas, a flexibilidade quanto ao horário de término (encerrando o tema conforme necessário antes das 22h), e o uso de slides sintéticos, exigindo que os alunos façam suas próprias anotações.",
+      "detalhamento": "Profº Profº Marcio Leal reiterou regras importantes para o semestre: a necessidade de manter as câmeras ligadas, a flexibilidade quanto ao horário de término (encerrando o tema conforme necessário antes das 22h), e o uso de slides sintéticos, exigindo que os alunos façam suas próprias anotações. Foi explicado que a avaliação consistirá em 150 questões discursivas e orais via Google Forms, e foi indicado o uso do livro \"Introdução ao Novo Testamento\" de Carson como referência.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal reiterou regras importantes para o semestre: a necessidade de manter as câmeras ligadas, a flexibilidade quanto ao horário de término (encerrando o tema conforme necessário antes das 22h), e o uso de slides sintéticos, exigindo que os alunos façam suas próprias anotações.",
+        "Foi explicado que a avaliação consistirá em 150 questões discursivas e orais via Google Forms, e foi indicado o uso do livro \"Introdução ao Novo Testamento\" de Carson como referência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:12:01",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Introdução à Epístola aos Hebreus",
+      "resumoCurto": "O grupo iniciou a discussão teológica sobre a epístola aos Hebreus, analisando-a como um sermão transformado em carta.",
+      "detalhamento": "O grupo iniciou a discussão teológica sobre a epístola aos Hebreus, analisando-a como um sermão transformado em carta. Profº Profº Marcio Leal destacou a ausência de introdução identificando o autor e os destinatários, o que torna o estudo desse livro particularmente complexo.",
+      "pontosChave": [
+        "O grupo iniciou a discussão teológica sobre a epístola aos Hebreus, analisando-a como um sermão transformado em carta.",
+        "Profº Profº Marcio Leal destacou a ausência de introdução identificando o autor e os destinatários, o que torna o estudo desse livro particularmente complexo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:14:00",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Análise da autoria da Epístola",
+      "resumoCurto": "Foi debatida a questão da autoria, com a exclusão de Paulo como autor devido a evidências internas e externas.",
+      "detalhamento": "Foi debatida a questão da autoria, com a exclusão de Paulo como autor devido a evidências internas e externas. Profº Profº Marcio Leal explorou outras possibilidades, como Lucas, Barnabé, Clemente de Roma, Apolo e Silvano. Cada uma dessas atribuições enfrenta desafios, como diferenças estilísticas ou falta de evidências externas sólidas.",
+      "pontosChave": [
+        "Foi debatida a questão da autoria, com a exclusão de Paulo como autor devido a evidências internas e externas.",
+        "Profº Profº Marcio Leal explorou outras possibilidades, como Lucas, Barnabé, Clemente de Roma, Apolo e Silvano.",
+        "Cada uma dessas atribuições enfrenta desafios, como diferenças estilísticas ou falta de evidências externas sólidas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:23:03",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Conclusão sobre a autoria",
+      "resumoCurto": "Profº Profº Marcio Leal concluiu que o autor permanece desconhecido.",
+      "detalhamento": "Profº Profº Marcio Leal concluiu que o autor permanece desconhecido. Ressaltou-se que a importância reside no fato de que, independentemente de quem segurou a pena, Deus é o autor supremo das Escrituras, utilizando-se das formações e capacidades de diferentes instrumentos humanos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal concluiu que o autor permanece desconhecido.",
+        "Ressaltou-se que a importância reside no fato de que, independentemente de quem segurou a pena, Deus é o autor supremo das Escrituras, utilizando-se das formações e capacidades de diferentes instrumentos humanos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:24:52",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Problemas na destinação da carta",
+      "resumoCurto": "Iniciou-se a discussão sobre a destinação da carta.",
+      "detalhamento": "Iniciou-se a discussão sobre a destinação da carta. Profº Profº Marcio Leal explicou que, tal como a autoria, a destinação é incerta. O título \"aos Hebreus\" é uma adição posterior, feita pela tradição patrística, e não é parte original do texto, sendo um rótulo aplicado com base na interpretação do conteúdo.",
+      "pontosChave": [
+        "Iniciou-se a discussão sobre a destinação da carta.",
+        "Profº Profº Marcio Leal explicou que, tal como a autoria, a destinação é incerta.",
+        "O título \"aos Hebreus\" é uma adição posterior, feita pela tradição patrística, e não é parte original do texto, sendo um rótulo aplicado com base na interpretação do conteúdo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:30:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Refutação da tese de destinatários gentios",
+      "resumoCurto": "Profº Profº Marcio Leal abordou e refutou a hipótese de que a carta seria destinada a gentios.",
+      "detalhamento": "Profº Profº Marcio Leal abordou e refutou a hipótese de que a carta seria destinada a gentios. Argumentou-se que o texto pressupõe um conhecimento profundo do Antigo Testamento e do sacerdócio levítico, além de apresentar o cristianismo em direta oposição ao judaísmo, e não ao paganismo, tornando improvável que o público alvo fossem gentios.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal abordou e refutou a hipótese de que a carta seria destinada a gentios.",
+        "Argumentou-se que o texto pressupõe um conhecimento profundo do Antigo Testamento e do sacerdócio levítico, além de apresentar o cristianismo em direta oposição ao judaísmo, e não ao paganismo, tornando improvável que o público alvo fossem gentios."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:38:59",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Perfil dos destinatários",
+      "resumoCurto": "O grupo analisou evidências internas que descrevem os destinatários: eram pessoas conhecidas do autor, familiarizadas com o Antigo Testamento, que possuíam um histórico de generosidade e resiliência diante da perseguição, embora não tivessem chegado ao estágio do martírio.",
+      "detalhamento": "O grupo analisou evidências internas que descrevem os destinatários: eram pessoas conhecidas do autor, familiarizadas com o Antigo Testamento, que possuíam um histórico de generosidade e resiliência diante da perseguição, embora não tivessem chegado ao estágio do martírio.",
+      "pontosChave": [
+        "O grupo analisou evidências internas que descrevem os destinatários: eram pessoas conhecidas do autor, familiarizadas com o Antigo Testamento, que possuíam um histórico de generosidade e resiliência diante da perseguição, embora não tivessem chegado ao estágio do martírio."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:44:41",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Estado espiritual do grupo",
+      "resumoCurto": "Profº Profº Marcio Leal destacou que, apesar das virtudes do grupo, havia sinais de estagnação espiritual.",
+      "detalhamento": "Profº Profº Marcio Leal destacou que, apesar das virtudes do grupo, havia sinais de estagnação espiritual. O autor da carta exorta-os a guardar o coração e manter o foco na suficiência de Cristo, que é o tema central de Hebreus.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal destacou que, apesar das virtudes do grupo, havia sinais de estagnação espiritual.",
+        "O autor da carta exorta-os a guardar o coração e manter o foco na suficiência de Cristo, que é o tema central de Hebreus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:48:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Avaliação de destinos propostos (Jerusalém e Qumran)",
+      "resumoCurto": "Profº Profº Marcio Leal rejeitou Jerusalém como destino, pois a carta foca no tabernáculo móvel e não no templo, e utiliza a Septuaginta em vez da Torá.",
+      "detalhamento": "Profº Profº Marcio Leal rejeitou Jerusalém como destino, pois a carta foca no tabernáculo móvel e não no templo, e utiliza a Septuaginta em vez da Torá. Também foi refutada a ligação com a comunidade de Qumran (essênios), pois a visão de Melquizedec em Hebreus trata-o como figura histórica, diferentemente da concepção angélica dos essênios.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal rejeitou Jerusalém como destino, pois a carta foca no tabernáculo móvel e não no templo, e utiliza a Septuaginta em vez da Torá.",
+        "Também foi refutada a ligação com a comunidade de Qumran (essênios), pois a visão de Melquizedec em Hebreus trata-o como figura histórica, diferentemente da concepção angélica dos essênios."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:52:32",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Destinação provável em Roma",
+      "resumoCurto": "O debate concluiu que a destinação mais provável é Roma.",
+      "detalhamento": "O debate concluiu que a destinação mais provável é Roma. Esta hipótese é sustentada pela saudação em Hebreus 13:24 (\"os da Itália vos saúdam\"), pela existência de paralelos literários em escritos romanos antigos e pela consistência das características do grupo descritas na carta com a história da Igreja Romana.",
+      "pontosChave": [
+        "O debate concluiu que a destinação mais provável é Roma.",
+        "Esta hipótese é sustentada pela saudação em Hebreus 13:24 (\"os da Itália vos saúdam\"), pela existência de paralelos literários em escritos romanos antigos e pela consistência das características do grupo descritas na carta com a história da Igreja Romana."
+      ],
+      "referenciasNoBloco": [
+        "Hebreus 13:24"
+      ]
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:58:37",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Destinação da Epístola aos Hebreus",
+      "resumoCurto": "Profº Profº Marcio Leal argumenta que a igreja em Roma é a provável destinatária da epístola, citando o histórico de perseguição e perda de posses sem perda de vidas.",
+      "detalhamento": "Profº Profº Marcio Leal argumenta que a igreja em Roma é a provável destinatária da epístola, citando o histórico de perseguição e perda de posses sem perda de vidas. Esse cenário alinha-se com o período em que Cláudio expulsou judeus cristãos de Roma, por volta de 49 d.C. Há paralelos teológicos identificados entre Hebreus 13:9 e Romanos 14 sobre escrúpulos alimentares, além de referências à base judaico-cristã da igreja romana em Romanos 11:13 e 18. Embora não sejam conclusivas, essas evidências tornam a conexão com Roma a teoria que melhor preenche os requisitos de destinação.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal argumenta que a igreja em Roma é a provável destinatária da epístola, citando o histórico de perseguição e perda de posses sem perda de vidas.",
+        "Esse cenário alinha-se com o período em que Cláudio expulsou judeus cristãos de Roma, por volta de 49 d.C.",
+        "Há paralelos teológicos identificados entre Hebreus 13:9 e Romanos 14 sobre escrúpulos alimentares, além de referências à base judaico-cristã da igreja romana em Romanos 11:13 e 18.",
+        "Embora não sejam conclusivas, essas evidências tornam a conexão com Roma a teoria que melhor preenche os requisitos de destinação."
+      ],
+      "referenciasNoBloco": [
+        "Hebreus 13:9",
+        "Romanos 14",
+        "Romanos 11:13 e 18"
+      ]
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:02:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Datação da Epístola",
+      "resumoCurto": "Para determinar a data da escrita, Profº Profº Marcio Leal utiliza os conceitos de terminus ad quem e terminus a quo.",
+      "detalhamento": "Para determinar a data da escrita, Profº Profº Marcio Leal utiliza os conceitos de terminus ad quem e terminus a quo. O terminus ad quem é estabelecido em 95 d.C., pois Clemente de Roma fez referência à carta nessa época. O terminus a quo sugere o ano de 49 d.C., correlacionado com a expulsão dos judeus cristãos de Roma pelo imperador Cláudio. Conclui-se que o texto foi redigido entre 49 d.C. e 95 d.C., embora existam sugestões alternativas, como o ano de 70 d.C.",
+      "pontosChave": [
+        "Para determinar a data da escrita, Profº Profº Marcio Leal utiliza os conceitos de terminus ad quem e terminus a quo.",
+        "O terminus ad quem é estabelecido em 95 d.C., pois Clemente de Roma fez referência à carta nessa época.",
+        "O terminus a quo sugere o ano de 49 d.C., correlacionado com a expulsão dos judeus cristãos de Roma pelo imperador Cláudio.",
+        "Conclui-se que o texto foi redigido entre 49 d.C."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:04:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Propósito da Epístola - Visão Geral",
+      "resumoCurto": "Profº Profº Marcio Leal observa que a identificação do autor e dos leitores é secundária em relação ao propósito central da carta.",
+      "detalhamento": "Profº Profº Marcio Leal observa que a identificação do autor e dos leitores é secundária em relação ao propósito central da carta. O texto é definido pelo próprio autor como um \"sermão de exortação\" em Hebreus 13:22. A frequência dos verbos relacionados a exortar e advertir ao longo da epístola ressalta a urgência e a importância vital da mensagem para a comunidade original.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal observa que a identificação do autor e dos leitores é secundária em relação ao propósito central da carta.",
+        "O texto é definido pelo próprio autor como um \"sermão de exortação\" em Hebreus 13:22.",
+        "A frequência dos verbos relacionados a exortar e advertir ao longo da epístola ressalta a urgência e a importância vital da mensagem para a comunidade original."
+      ],
+      "referenciasNoBloco": [
+        "Hebreus 13:22"
+      ]
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:07:00",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Propósito da Epístola - Evangelização",
+      "resumoCurto": "Uma das teorias debatidas é se a epístola teria como objetivo a evangelização de judeus não cristãos, argumentando que a obra apresenta Jesus como o Messias prometido.",
+      "detalhamento": "Uma das teorias debatidas é se a epístola teria como objetivo a evangelização de judeus não cristãos, argumentando que a obra apresenta Jesus como o Messias prometido. Profº Profº Marcio Leal aponta que essa teoria possui pouco apoio acadêmico moderno, uma vez que capítulos como 3, 6, 10 e 12 demonstram que os leitores já eram cristãos, o que enfraquece a tese de que o propósito seria o evangelismo inicial.",
+      "pontosChave": [
+        "Uma das teorias debatidas é se a epístola teria como objetivo a evangelização de judeus não cristãos, argumentando que a obra apresenta Jesus como o Messias prometido.",
+        "Profº Profº Marcio Leal aponta que essa teoria possui pouco apoio acadêmico moderno, uma vez que capítulos como 3, 6, 10 e 12 demonstram que os leitores já eram cristãos, o que enfraquece a tese de que o propósito seria o evangelismo inicial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:11:30",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Propósito da Epístola - Apostasia",
+      "resumoCurto": "Profº Profº Marcio Leal discute a interpretação tradicional que vê a carta como um alerta contra a apostasia, motivado por perseguições e confisco de bens.",
+      "detalhamento": "Profº Profº Marcio Leal discute a interpretação tradicional que vê a carta como um alerta contra a apostasia, motivado por perseguições e confisco de bens. A argumentação aponta que, ao enfatizar a superioridade de Cristo sobre o sistema sacerdotal levítico, a \"apostasia\" seria entendida como um retorno ao judaísmo. Contudo, Profº Profº Marcio Leal questiona essa perspectiva ao notar que ela depende da crença de que um cristão poderia perder a sua salvação, o que contradiz a doutrina de que um cristão verdadeiro permanece como filho de Deus.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal discute a interpretação tradicional que vê a carta como um alerta contra a apostasia, motivado por perseguições e confisco de bens.",
+        "A argumentação aponta que, ao enfatizar a superioridade de Cristo sobre o sistema sacerdotal levítico, a \"apostasia\" seria entendida como um retorno ao judaísmo.",
+        "Contudo, Profº Profº Marcio Leal questiona essa perspectiva ao notar que ela depende da crença de que um cristão poderia perder a sua salvação, o que contradiz a doutrina de que um cristão verdadeiro permanece como filho de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:11:30",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Propósito da Epístola - Maturidade Cristã",
+      "resumoCurto": "Como alternativa às visões anteriores, Profº Profº Marcio Leal apresenta a exortação à maturidade cristã como a interpretação mais clara e o propósito fundamental da carta.",
+      "detalhamento": "Como alternativa às visões anteriores, Profº Profº Marcio Leal apresenta a exortação à maturidade cristã como a interpretação mais clara e o propósito fundamental da carta. Essa perspectiva é colocada como o foco para as futuras reflexões dos estudantes.",
+      "pontosChave": [
+        "Como alternativa às visões anteriores, Profº Profº Marcio Leal apresenta a exortação à maturidade cristã como a interpretação mais clara e o propósito fundamental da carta.",
+        "Essa perspectiva é colocada como o foco para as futuras reflexões dos estudantes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:13:22",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Encerramento da Reunião",
+      "resumoCurto": "Jorge Silva conduziu a oração final, agradecendo pelo aprendizado e pedindo capacitação para a aplicação dos ensinamentos.",
+      "detalhamento": "Jorge Silva conduziu a oração final, agradecendo pelo aprendizado e pedindo capacitação para a aplicação dos ensinamentos. Após a oração e as despedidas dos participantes, Rosiane Lima (Rosi) solicitou que todos assinassem a lista de presença.",
+      "pontosChave": [
+        "Jorge Silva conduziu a oração final, agradecendo pelo aprendizado e pedindo capacitação para a aplicação dos ensinamentos.",
+        "Após a oração e as despedidas dos participantes, Rosiane Lima (Rosi) solicitou que todos assinassem a lista de presença."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Introdução à Epístola aos Hebreus",
+      "relato": "O grupo iniciou a discussão teológica sobre a epístola aos Hebreus, analisando-a como um sermão transformado em carta. Profº Profº Marcio Leal destacou a ausência de introdução identificando o autor e os destinatários, o que torna o estudo desse livro particularmente complexo.",
+      "timestamp": "00:12:01"
+    },
+    {
+      "titulo": "Problemas na destinação da carta",
+      "relato": "Iniciou-se a discussão sobre a destinação da carta. Profº Profº Marcio Leal explicou que, tal como a autoria, a destinação é incerta. O título \"aos Hebreus\" é uma adição posterior, feita pela tradição patrística, e não é parte original do texto, sendo um rótulo aplicado com base na interpretação do conteúdo.",
+      "timestamp": "00:24:52"
+    },
+    {
+      "titulo": "Destinação provável em Roma",
+      "relato": "O debate concluiu que a destinação mais provável é Roma. Esta hipótese é sustentada pela saudação em Hebreus 13:24 (\"os da Itália vos saúdam\"), pela existência de paralelos literários em escritos romanos antigos e pela consistência das características do grupo descritas na carta com a história da Igreja Romana.",
+      "timestamp": "00:52:32"
+    },
+    {
+      "titulo": "Encerramento da Reunião",
+      "relato": "Jorge Silva conduziu a oração final, agradecendo pelo aprendizado e pedindo capacitação para a aplicação dos ensinamentos. Após a oração e as despedidas dos participantes, Rosiane Lima (Rosi) solicitou que todos assinassem a lista de presença.",
+      "timestamp": "01:13:22"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Hebreus 13:24",
+      "contexto": "Esta hipótese é sustentada pela saudação em Hebreus 13:24 (\"os da Itália vos saúdam\"), pela existência de paralelos literários em escritos romanos antigos e pela consistência das características do grupo descritas na carta com a história da Igreja Romana."
+    },
+    {
+      "referencia": "Hebreus 13:9",
+      "contexto": "Há paralelos teológicos identificados entre Hebreus 13:9 e Romanos 14 sobre escrúpulos alimentares, além de referências à base judaico-cristã da igreja romana em Romanos 11:13 e 18."
+    },
+    {
+      "referencia": "Romanos 14",
+      "contexto": "Há paralelos teológicos identificados entre Hebreus 13:9 e Romanos 14 sobre escrúpulos alimentares, além de referências à base judaico-cristã da igreja romana em Romanos 11:13 e 18."
+    },
+    {
+      "referencia": "Romanos 11:13 e 18",
+      "contexto": "Há paralelos teológicos identificados entre Hebreus 13:9 e Romanos 14 sobre escrúpulos alimentares, além de referências à base judaico-cristã da igreja romana em Romanos 11:13 e 18."
+    },
+    {
+      "referencia": "Hebreus 13:22",
+      "contexto": "O texto é definido pelo próprio autor como um \"sermão de exortação\" em Hebreus 13:22."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "titulo": "Carta de Tiago",
+      "detalhe": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    },
+    {
+      "titulo": "1 Pedro (Esperança Viva no Sofrimento)",
+      "detalhe": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e interações iniciais\" nesta aula?",
+      "dicaResposta": "O encontro iniciou com uma conversa informal entre Profº Profº Marcio Leal, Rodrigo Oliveira, Camila Vieira e Daniel Rodrigues, onde compartilharam atualizações sobre viagens de férias e a rotina de trabalho de Camila. Profº Profº Marcio Leal comentou sobre uma visita pastoral que não ocorreu devido a uma negativa da família, e o grupo discutiu brevemente o retorno às atividades."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Comentários sobre a aula anterior e citações\" nesta aula?",
+      "dicaResposta": "Salatiel Rodrigues mencionou que o nome de Profº Profº Marcio Leal foi citado em uma aula anterior, gerando curiosidade sobre quem teria feito o comentário. Houve uma troca sobre se o autor do elogio seria Willam ou Tácito, com Daniel Rodrigues observando que Willam descreveu Profº Profº Marcio Leal em termos elevados, o que levou a uma brincadeira comparativa com Tim Keller."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atividades acadêmicas e convites\" nesta aula?",
+      "dicaResposta": "Camila Vieira trouxe detalhes sobre o conteúdo ministrado pelo Willam, mencionando o conceito de \"caçar o coração\" e sua semelhança com o \"Gospel Coach\" da SRI. Profº Profº Marcio Leal anunciou que Willam pediu para que Márcio pregasse em sua posse no dia 17 de outubro, e Márcio compartilhou que viajará para a Malásia no dia 24 de outubro para um encontro global de líderes organizado pela Saf City."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Oração inicial\" nesta aula?",
+      "dicaResposta": "Após os avisos e saudações, Camila Vieira conduziu a oração de abertura, pedindo bênçãos para a aula e para que os presentes recebessem o ensino ministrado."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Boas-vindas aos novos alunos\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal deu as boas-vindas aos novos estudantes, Talita RF Felinto, da Igreja Congregacional do Ligeiro em Campina Grande, e Dijair Oliveira, presbítero da Igreja Congregacional no bairro Alto do Cruzeiro, em Brejo dos Santos."
+    }
+  ],
+  "encaminhamentos": [
+    "Enviar material: Enviar o arquivo em PDF com a introdução ao Novo Testamento para Camila.",
+    "Distribuir material: Encaminhar o arquivo PDF recebido para todos os alunos da turma.",
+    "Ler Hebreus: Realizar a leitura da epístola aos Hebreus ao longo da semana para acompanhamento das próximas aulas."
+  ]
+}

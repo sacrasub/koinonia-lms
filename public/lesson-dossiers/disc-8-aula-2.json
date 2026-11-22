@@ -1,0 +1,350 @@
+{
+  "id": "disc-8-aula-2",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 2,
+  "unidade": 1,
+  "dateIso": "2026-08-21",
+  "dateBr": "21/08/2026",
+  "theme": "Aula 2 • Início da Reunião e Logística Tecnológica",
+  "geminiUrl": "/gemini-notes/tcc_aula2_2026-08-21.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "Reunião de alinhamento metodológico definiu prazos, estruturas acadêmicas e responsabilidades para o Trabalho de Conclusão de Curso. Diretrizes e estrutura metodológica Foi estabelecido o prazo rigoroso de 2 semanas para a entrega do projeto de pesquisa. A estrutura exigida deve incluir capa, sumário, objetivos e justificativa, com a introdução finalizada obrigatoriamente ao final. Metodologia e pesquisa científica Definiu-se a predominância da pesquisa qualitativa bibliográfica, com ressalvas para a pesquisa campo que exige fundamentação teórica sólida. O uso de primeira pessoa foi proibido em favor de linguagem impessoal.",
+    "sinteseGeral": "Reunião de alinhamento metodológico definiu prazos, estruturas acadêmicas e responsabilidades para o Trabalho de Conclusão de Curso. Diretrizes e estrutura metodológica Foi estabelecido o prazo rigoroso de 2 semanas para a entrega do projeto de pesquisa. A estrutura exigida deve incluir capa, sumário, objetivos e justificativa, com a introdução finalizada obrigatoriamente ao final. Metodologia e pesquisa científica Definiu-se a predominância da pesquisa qualitativa bibliográfica, com ressalvas para a pesquisa campo que exige fundamentação teórica sólida. O uso de primeira pessoa foi proibido em favor de linguagem impessoal. Orientação e próximos passos Alunos devem formalizar convites aos orientadores imediatamente. O nivelamento da turma ocorrerá conforme os projetos forem entregues e revisados para o avanço conjunto na escrita do artigo científico.",
+    "mapaRapido": [
+      "Início da Reunião e Logística Tecnológica: No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras.",
+      "Diferenças no Progresso dos Alunos e a Importância do Projeto: Profº Profº Marcio Leal observou uma disparidade considerável no progresso dos estudantes: alguns já possuem o projeto finalizado ou rascunhos de artigos, enquanto outros definiram apenas a temática.",
+      "Definição de Prazos e Nivelamento da Turma: Profº Profº Marcio Leal estabeleceu o prazo rígido de duas semanas para a entrega do projeto de pesquisa, independentemente de os alunos estarem no quarto, quinto ou sétimo período.",
+      "Elementos Iniciais do Projeto - Capa, Sumário e Objetivos: Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares.",
+      "A Estrutura e o Sentido da Justificativa: Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho.",
+      "Metodologia de Pesquisa - Tipos e Aplicações: Profº Profº Marcio Leal expôs detalhadamente as três modalidades de metodologia aplicadas na graduação: a pesquisa qualitativa, a quantitativa e a mista (qualitativa-quantitativa)."
+    ],
+    "totalBlocos": 16
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Início da Reunião e Logística Tecnológica",
+      "resumoCurto": "No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras.",
+      "detalhamento": "No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras. Cristiano Sacramento também aconselhou todos os participantes a instalarem e utilizarem o Google Agenda, tanto no celular quanto no computador, justificando que a ferramenta facilita o gerenciamento de convites de forma mais organizada. Paralelamente, Alcimar Luiz da Silva confirmou o recebimento de referências enviadas por Profº Profº Marcio Leal, demonstrando a intenção de aprofundar os estudos no final de semana. Profº Profº Marcio Leal enfatizou a relevância de se recorrer aos textos originais e abordar a poesia, considerando esses elementos fundamentais para o desenvolvimento do trabalho de Alcimar Luiz da Silva. O momento de abertura foi formalmente encerrado com uma oração conduzida por Salatiel Rodrigues, que pediu capacitação e direcionamento para as orientações da noite.",
+      "pontosChave": [
+        "No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras.",
+        "Cristiano Sacramento também aconselhou todos os participantes a instalarem e utilizarem o Google Agenda, tanto no celular quanto no computador, justificando que a ferramenta facilita o gerenciamento de convites de forma mais organizada.",
+        "Paralelamente, Alcimar Luiz da Silva confirmou o recebimento de referências enviadas por Profº Profº Marcio Leal, demonstrando a intenção de aprofundar os estudos no final de semana.",
+        "Profº Profº Marcio Leal enfatizou a relevância de se recorrer aos textos originais e abordar a poesia, considerando esses elementos fundamentais para o desenvolvimento do trabalho de Alcimar Luiz da Silva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diferenças no Progresso dos Alunos e a Importância do Projeto",
+      "resumoCurto": "Profº Profº Marcio Leal observou uma disparidade considerável no progresso dos estudantes: alguns já possuem o projeto finalizado ou rascunhos de artigos, enquanto outros definiram apenas a temática.",
+      "detalhamento": "Profº Profº Marcio Leal observou uma disparidade considerável no progresso dos estudantes: alguns já possuem o projeto finalizado ou rascunhos de artigos, enquanto outros definiram apenas a temática. Diante disso, a palestrante argumentou detalhadamente que o projeto de pesquisa funciona como um planejamento indispensável e um norteador para evitar que o pesquisador se perca durante a escrita. Para ilustrar a importância desse planejamento, Profº Profº Marcio Leal fez analogias com a construção de uma casa, a organização de um casamento e o orçamento de uma viagem, ressaltando que, embora o resultado final possa sofrer alterações, reduções ou recortes no meio do caminho, a estruturação prévia é essencial. Foi mencionado ainda que a metodologia apresentada poderia diferir ligeiramente daquela ensinada pelo professor Alexandro, mas que a essência permaneceria idêntica, dando liberdade para os alunos escolherem a formatação de sua preferência.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal observou uma disparidade considerável no progresso dos estudantes: alguns já possuem o projeto finalizado ou rascunhos de artigos, enquanto outros definiram apenas a temática.",
+        "Diante disso, a palestrante argumentou detalhadamente que o projeto de pesquisa funciona como um planejamento indispensável e um norteador para evitar que o pesquisador se perca durante a escrita.",
+        "Para ilustrar a importância desse planejamento, Profº Profº Marcio Leal fez analogias com a construção de uma casa, a organização de um casamento e o orçamento de uma viagem, ressaltando que, embora o resultado final possa sofrer alterações, reduções ou recortes no meio do caminho, a estruturação prévia é essencial.",
+        "Foi mencionado ainda que a metodologia apresentada poderia diferir ligeiramente daquela ensinada pelo professor Alexandro, mas que a essência permaneceria idêntica, dando liberdade para os alunos escolherem a formatação de sua preferência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Definição de Prazos e Nivelamento da Turma",
+      "resumoCurto": "Profº Profº Marcio Leal estabeleceu o prazo rígido de duas semanas para a entrega do projeto de pesquisa, independentemente de os alunos estarem no quarto, quinto ou sétimo período.",
+      "detalhamento": "Profº Profº Marcio Leal estabeleceu o prazo rígido de duas semanas para a entrega do projeto de pesquisa, independentemente de os alunos estarem no quarto, quinto ou sétimo período. A justificativa para a imposição desse limite de tempo baseou-se na premissa de que a escrita científica exige prazos estipulados para evitar a procrastinação. O planejamento pedagógico prevê que, na semana seguinte, a estrutura do artigo científico será apresentada para o grupo que já possui o projeto pronto. Na outra semana, com a entrega dos projetos restantes, o objetivo é equiparar e nivelar os dois grupos para que avancem juntos na escrita até o final do ano. A meta de longo prazo para o início do próximo ano é fazer com que os alunos do TCC2 realizem apenas revisões finais e dediquem o tempo à elaboração de slides e ao treinamento para a banca examinadora.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal estabeleceu o prazo rígido de duas semanas para a entrega do projeto de pesquisa, independentemente de os alunos estarem no quarto, quinto ou sétimo período.",
+        "A justificativa para a imposição desse limite de tempo baseou-se na premissa de que a escrita científica exige prazos estipulados para evitar a procrastinação.",
+        "O planejamento pedagógico prevê que, na semana seguinte, a estrutura do artigo científico será apresentada para o grupo que já possui o projeto pronto.",
+        "Na outra semana, com a entrega dos projetos restantes, o objetivo é equiparar e nivelar os dois grupos para que avancem juntos na escrita até o final do ano."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Elementos Iniciais do Projeto - Capa, Sumário e Objetivos",
+      "resumoCurto": "Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares.",
+      "detalhamento": "Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares. Foi emitida uma regra metodológica clara: a introdução nunca deve ser o ponto de partida, devendo ser escrita obrigatoriamente apenas ao final de qualquer trabalho acadêmico. Avançando para a seção de objetivos, Profº Profº Marcio Leal explicitou que o objetivo geral deve ser único, amplo e iniciado com um verbo no infinitivo, exemplificando com o tema da história do protestantismo. Os objetivos específicos, que costumam variar de dois a três itens, também precisam começar com verbos no infinitivo e funcionar obrigatoriamente como desdobramentos conectados diretamente ao objetivo geral, evitando elementos aleatórios. Carla P. dos S. de Almeida questionou sobre a quantidade desses objetivos, e a professora confirmou que, embora o padrão seja de três, são aceitáveis no mínimo dois para desdobrar o assunto, cuja finalidade no artigo será responder a essas indagações ou hipóteses.",
+      "pontosChave": [
+        "Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares.",
+        "Foi emitida uma regra metodológica clara: a introdução nunca deve ser o ponto de partida, devendo ser escrita obrigatoriamente apenas ao final de qualquer trabalho acadêmico.",
+        "Avançando para a seção de objetivos, Profº Profº Marcio Leal explicitou que o objetivo geral deve ser único, amplo e iniciado com um verbo no infinitivo, exemplificando com o tema da história do protestantismo.",
+        "Os objetivos específicos, que costumam variar de dois a três itens, também precisam começar com verbos no infinitivo e funcionar obrigatoriamente como desdobramentos conectados diretamente ao objetivo geral, evitando elementos aleatórios."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Estrutura e o Sentido da Justificativa",
+      "resumoCurto": "Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho.",
+      "detalhamento": "Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho. A palestrante definiu a justificativa como a explicação do \"porquê\" o pesquisador se interessou pelo tema, diferenciando-a do objetivo, que foca no \"o que\" se deseja saber. Explicou-se que a justificativa pode possuir motivações pessoais, decorrentes de interesses de infância, debates eclesiásticos ou afinidades surgidas no seminário. Profº Profº Marcio Leal ressaltou que a escrita acadêmica é complexa e exige paixão e envolvimento real com a temática teológica e eclesiástica para que o texto não se torne enfadonho. Além disso, defendeu que esse domínio e entusiasmo se tornam evidentes de forma natural para a banca examinadora durante a apresentação. Como recomendação de linguagem, alertou que o projeto e o artigo científico não devem ser redigidos na primeira pessoa, exigindo-se o uso de uma linguagem científica e impessoal (como \"percebe-se\" ou \"observa-se\").",
+      "pontosChave": [
+        "Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho.",
+        "A palestrante definiu a justificativa como a explicação do \"porquê\" o pesquisador se interessou pelo tema, diferenciando-a do objetivo, que foca no \"o que\" se deseja saber.",
+        "Explicou-se que a justificativa pode possuir motivações pessoais, decorrentes de interesses de infância, debates eclesiásticos ou afinidades surgidas no seminário.",
+        "Profº Profº Marcio Leal ressaltou que a escrita acadêmica é complexa e exige paixão e envolvimento real com a temática teológica e eclesiástica para que o texto não se torne enfadonho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Metodologia de Pesquisa - Tipos e Aplicações",
+      "resumoCurto": "Profº Profº Marcio Leal expôs detalhadamente as três modalidades de metodologia aplicadas na graduação: a pesquisa qualitativa, a quantitativa e a mista (qualitativa-quantitativa).",
+      "detalhamento": "Profº Profº Marcio Leal expôs detalhadamente as três modalidades de metodologia aplicadas na graduação: a pesquisa qualitativa, a quantitativa e a mista (qualitativa-quantitativa). A pesquisa qualitativa pura, baseada estritamente na revisão bibliográfica, foi apontada como a predominante nos cursos de graduação. Sobre a pesquisa quantitativa, determinou-se que, no contexto dos artigos dos alunos, ela jamais pode aparecer de forma isolada — como ocorre em pesquisas de opinião eleitoral que apenas expõem porcentagens de aprovação. Caso o aluno colete dados numéricos ou estatísticos de um bairro (como a proporção de católicos e evangélicos), esses dados precisam obrigatoriamente ser analisados e confrontados com um referencial teórico. Portanto, para trabalhos de campo, a abordagem recomendada é a qualitativa-quantitativa, combinando a coleta de dados empíricos com a fundamentação bibliográfica.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal expôs detalhadamente as três modalidades de metodologia aplicadas na graduação: a pesquisa qualitativa, a quantitativa e a mista (qualitativa-quantitativa).",
+        "A pesquisa qualitativa pura, baseada estritamente na revisão bibliográfica, foi apontada como a predominante nos cursos de graduação.",
+        "Sobre a pesquisa quantitativa, determinou-se que, no contexto dos artigos dos alunos, ela jamais pode aparecer de forma isolada — como ocorre em pesquisas de opinião eleitoral que apenas expõem porcentagens de aprovação.",
+        "Caso o aluno colete dados numéricos ou estatísticos de um bairro (como a proporção de católicos e evangélicos), esses dados precisam obrigatoriamente ser analisados e confrontados com um referencial teórico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Pesquisa de Campo, Observação e Inclusão de Anexos",
+      "resumoCurto": "João Alexandre Souza Lemos indagou se a pesquisa quantitativa poderia englobar a observação de campo, e Profº Profº Marcio Leal confirmou a possibilidade, desde que seja elaborado um roteiro estruturado e planejado previamente de acordo com o tema, evitando visitas sem direcionamento.",
+      "detalhamento": "João Alexandre Souza Lemos indagou se a pesquisa quantitativa poderia englobar a observação de campo, e Profº Profº Marcio Leal confirmou a possibilidade, desde que seja elaborado um roteiro estruturado e planejado previamente de acordo com o tema, evitando visitas sem direcionamento. Toda coleta de dados empíricos por meio de observação ou entrevista caracteriza uma pesquisa de campo, cujos achados devem ser integrados ao artigo e analisados sob a ótica teórica. Respondendo a uma consulta do Seminarista William Barros, a professora instruiu que roteiros de entrevista, modelos de questionários, roteiros de observação ou documentos históricos de domínio público devem ser incluídos obrigatoriamente em um item final chamado \"anexos\". William Barros compartilhou seu plano de estudar a emancipação da Igreja Congregacional de Santa Cruz do Caparibe (anteriormente ligada à igreja de Poço Fundo), utilizando entrevistas com membros antigos e documentos, manifestando o desejo de dedicar o trabalho ao Reverendo Adonias Alves Rodrigues, considerado por eles uma figura paterna e mentora. Profº Profº Marcio Leal elogiou a iniciativa de honrar o pastor e sugeriu que a dedicatória fosse expressamente incluída no trabalho.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos indagou se a pesquisa quantitativa poderia englobar a observação de campo, e Profº Profº Marcio Leal confirmou a possibilidade, desde que seja elaborado um roteiro estruturado e planejado previamente de acordo com o tema, evitando visitas sem direcionamento.",
+        "Toda coleta de dados empíricos por meio de observação ou entrevista caracteriza uma pesquisa de campo, cujos achados devem ser integrados ao artigo e analisados sob a ótica teórica.",
+        "Respondendo a uma consulta do Seminarista William Barros, a professora instruiu que roteiros de entrevista, modelos de questionários, roteiros de observação ou documentos históricos de domínio público devem ser incluídos obrigatoriamente em um item final chamado \"anexos\".",
+        "William Barros compartilhou seu plano de estudar a emancipação da Igreja Congregacional de Santa Cruz do Caparibe (anteriormente ligada à igreja de Poço Fundo), utilizando entrevistas com membros antigos e documentos, manifestando o desejo de dedicar o trabalho ao Reverendo Adonias Alves Rodrigues, considerado por eles uma figura paterna e mentora."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Dilemas Metodológicos na Pesquisa Histórica e Teológica",
+      "resumoCurto": "Paulo Henrique expôs as bases de seu projeto de TCC sobre João Batista e a origem do batismo, tema motivado por uma dúvida surgida durante um discipulado que nem eles nem seu pastor souberam responder de imediato.",
+      "detalhamento": "Paulo Henrique expôs as bases de seu projeto de TCC sobre João Batista e a origem do batismo, tema motivado por uma dúvida surgida durante um discipulado que nem eles nem seu pastor souberam responder de imediato. O estudante, que estimou estar no sexto período por ter cumprido o estágio no período anterior, questionou como aplicar as pesquisas qualitativa e quantitativa ao seu tema, que envolve a trajetória de João Batista e as razões da existência de diferentes linhas de batismo (como aspersão, imersão e efusão) no congregacionalismo. Profº Profº Marcio Leal aconselhou Paulo Henrique a priorizar uma pesquisa puramente bibliográfica e histórica, ponderando que o tempo da graduação é restrito e que uma eventual pesquisa empírica (envolvendo entrevistas com lideranças de diferentes denominações) demandaria muito tempo e deveria ser guardada como uma \"carta na manga\" para um futuro mestrado. A professora pontuou que a pesquisa não esgota o tema, devendo terminar com \"considerações\" em vez de conclusões definitivas.",
+      "pontosChave": [
+        "Paulo Henrique expôs as bases de seu projeto de TCC sobre João Batista e a origem do batismo, tema motivado por uma dúvida surgida durante um discipulado que nem eles nem seu pastor souberam responder de imediato.",
+        "O estudante, que estimou estar no sexto período por ter cumprido o estágio no período anterior, questionou como aplicar as pesquisas qualitativa e quantitativa ao seu tema, que envolve a trajetória de João Batista e as razões da existência de diferentes linhas de batismo (como aspersão, imersão e efusão) no congregacionalismo.",
+        "Profº Profº Marcio Leal aconselhou Paulo Henrique a priorizar uma pesquisa puramente bibliográfica e histórica, ponderando que o tempo da graduação é restrito e que uma eventual pesquisa empírica (envolvendo entrevistas com lideranças de diferentes denominações) demandaria muito tempo e deveria ser guardada como uma \"carta na manga\" para um futuro mestrado.",
+        "A professora pontuou que a pesquisa não esgota o tema, devendo terminar com \"considerações\" em vez de conclusões definitivas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Neutralidade Acadêmica e o Processo de Orientação",
+      "resumoCurto": "O Professor Sergio, participando de sua primeira aula devido a problemas na semana anterior, apresentou sua proposta de TCC: uma análise da epistemologia cessacionista de John MacArthur, focando especificamente nas obras \"O Caos Carismático\" e \"Fogo Estranho\".",
+      "detalhamento": "O Professor Sergio, participando de sua primeira aula devido a problemas na semana anterior, apresentou sua proposta de TCC: uma análise da epistemologia cessacionista de John MacArthur, focando especificamente nas obras \"O Caos Carismático\" e \"Fogo Estranho\". Ele confirmou que sua abordagem seria estritamente qualitativa e bibliográfica e mencionou sua visão de que o cessacionismo possui falhas epistemológicas graves. Diante disso, Profº Profº Marcio Leal e o Professor Sergio discutiram a impossibilidade de uma neutralidade absoluta na pesquisa científica. A professora orientou que o pesquisador deve fazer o exercício de buscar o contraponto e incluir visões que divirjam de sua própria opinião teológica, uma prática descrita como um exercício acadêmico essencial. Além disso, sugeriu ao Professor Sergio expandir a pesquisa conectando o tema com autores contemporâneos. Na sequência, Wagner Augusto Dos Santos Costa solicitou a validação de seu trabalho sobre a Reforma, iniciado com o professor Alexandro, e testemunhou o impacto positivo que as aulas anteriores da professora sobre etnocentrismo tiveram em sua vida e visão de mundo.",
+      "pontosChave": [
+        "O Professor Sergio, participando de sua primeira aula devido a problemas na semana anterior, apresentou sua proposta de TCC: uma análise da epistemologia cessacionista de John MacArthur, focando especificamente nas obras \"O Caos Carismático\" e \"Fogo Estranho\".",
+        "Ele confirmou que sua abordagem seria estritamente qualitativa e bibliográfica e mencionou sua visão de que o cessacionismo possui falhas epistemológicas graves.",
+        "Diante disso, Profº Profº Marcio Leal e o Professor Sergio discutiram a impossibilidade de uma neutralidade absoluta na pesquisa científica.",
+        "A professora orientou que o pesquisador deve fazer o exercício de buscar o contraponto e incluir visões que divirjam de sua própria opinião teológica, uma prática descrita como um exercício acadêmico essencial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Processo de Escolha de Orientadores e Encerramento da Aula",
+      "resumoCurto": "Antônio Marcos justificou sua ausência na aula anterior devido às celebrações dos 171 anos do congregacionalismo e questionou sobre as regras para a definição do orientador.",
+      "detalhamento": "Antônio Marcos justificou sua ausência na aula anterior devido às celebrações dos 171 anos do congregacionalismo e questionou sobre as regras para a definição do orientador. Profº Profº Marcio Leal esclareceu que os próprios alunos têm a total responsabilidade de escolher, entrar em contato e formalizar o convite aos professores que possuam afinidade com suas respectivas temáticas. Alertou-se para a urgência desse convite, dado o elevado número de alunos e o limite de orientandos que cada docente pode aceitar. Nos minutos finais da aula, a palestrante sintetizou os componentes restantes do projeto: a base teórica (que engloba livros, artigos, podcasts e explicitamente a Bíblia como referencial histórico e poético) e as considerações, que trazem hipóteses temporárias e não conclusões. Por fim, explicou o funcionamento do referencial (composto apenas pelas obras efetivamente citadas no texto) e do cronograma, que deve ser apresentado em formato de tabela detalhando as etapas de execução até a entrega final.",
+      "pontosChave": [
+        "Antônio Marcos justificou sua ausência na aula anterior devido às celebrações dos 171 anos do congregacionalismo e questionou sobre as regras para a definição do orientador.",
+        "Profº Profº Marcio Leal esclareceu que os próprios alunos têm a total responsabilidade de escolher, entrar em contato e formalizar o convite aos professores que possuam afinidade com suas respectivas temáticas.",
+        "Alertou-se para a urgência desse convite, dado o elevado número de alunos e o limite de orientandos que cada docente pode aceitar.",
+        "Nos minutos finais da aula, a palestrante sintetizou os componentes restantes do projeto: a base teórica (que engloba livros, artigos, podcasts e explicitamente a Bíblia como referencial histórico e poético) e as considerações, que trazem hipóteses temporárias e não conclusões."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Instruções para o Cronograma e Metodologia do Artigo",
+      "resumoCurto": "O palestrante Profº Profº Marcio Leal detalhou as diretrizes para a elaboração do projeto acadêmico, orientando que os participantes devem preencher a metodologia até outubro ou novembro e finalizar a justificativa e a base teórica até dezembro.",
+      "detalhamento": "O palestrante Profº Profº Marcio Leal detalhou as diretrizes para a elaboração do projeto acadêmico, orientando que os participantes devem preencher a metodologia até outubro ou novembro e finalizar a justificativa e a base teórica até dezembro. Eles enfatizaram que as discussões específicas sobre o artigo ocorrerão mais adiante e que os participantes precisam estruturar um cronograma próprio e individualizado, funcionando como uma previsão que cobre desde a preparação do artigo até a apresentação final, ajustando-se ao período acadêmico em que cada um se encontra. O palestrante validou o entendimento da estrutura com Prof. Sergio e enilson Santos Lima, declarando o encerramento da aula em seguida devido ao horário avançado de 9h01.",
+      "pontosChave": [
+        "O palestrante Profº Profº Marcio Leal detalhou as diretrizes para a elaboração do projeto acadêmico, orientando que os participantes devem preencher a metodologia até outubro ou novembro e finalizar a justificativa e a base teórica até dezembro.",
+        "Eles enfatizaram que as discussões específicas sobre o artigo ocorrerão mais adiante e que os participantes precisam estruturar um cronograma próprio e individualizado, funcionando como uma previsão que cobre desde a preparação do artigo até a apresentação final, ajustando-se ao período acadêmico em que cada um se encontra.",
+        "O palestrante validou o entendimento da estrutura com Prof.",
+        "Sergio e enilson Santos Lima, declarando o encerramento da aula em seguida devido ao horário avançado de 9h01."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Compartilhamento de Slides e Estrutura da Introdução",
+      "resumoCurto": "A participante Rosiane Lima (Rosi) questionou se os slides apresentados seriam disponibilizados em uma pasta compartilhada do Google Drive.",
+      "detalhamento": "A participante Rosiane Lima (Rosi) questionou se os slides apresentados seriam disponibilizados em uma pasta compartilhada do Google Drive. Em resposta, o palestrante Profº Profº Marcio Leal propôs o envio dos arquivos diretamente pelo grupo de comunicação do WhatsApp, o que foi prontamente aceito por Rosiane Lima (Rosi) por considerar que a medida facilitaria o acesso dos estudantes. Dando continuidade aos esclarecimentos estruturais após uma intervenção de enilson Santos Lima, o palestrante Profº Profº Marcio Leal explicou que, após a conclusão das seções anteriores, os alunos devem redigir a introdução, caracterizando-a como um resumo conciso de todo o projeto de pesquisa.",
+      "pontosChave": [
+        "A participante Rosiane Lima (Rosi) questionou se os slides apresentados seriam disponibilizados em uma pasta compartilhada do Google Drive.",
+        "Em resposta, o palestrante Profº Profº Marcio Leal propôs o envio dos arquivos diretamente pelo grupo de comunicação do WhatsApp, o que foi prontamente aceito por Rosiane Lima (Rosi) por considerar que a medida facilitaria o acesso dos estudantes.",
+        "Dando continuidade aos esclarecimentos estruturais após uma intervenção de enilson Santos Lima, o palestrante Profº Profº Marcio Leal explicou que, após a conclusão das seções anteriores, os alunos devem redigir a introdução, caracterizando-a como um resumo conciso de todo o projeto de pesquisa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Disponibilização da Gravação da Aula",
+      "resumoCurto": "O participante Alcimar Luiz da Silva sugeriu que os monitores providenciassem a disponibilização da gravação da aula na sala virtual, argumentando que a explicação verbal detalhada fornecida pelo palestrante Profº Profº Marcio Leal agrega um valor explicativo superior ao conteúdo estático dos slides, o que previne dificuldades de compreensão após o término do encontro síncrono.",
+      "detalhamento": "O participante Alcimar Luiz da Silva sugeriu que os monitores providenciassem a disponibilização da gravação da aula na sala virtual, argumentando que a explicação verbal detalhada fornecida pelo palestrante Profº Profº Marcio Leal agrega um valor explicativo superior ao conteúdo estático dos slides, o que previne dificuldades de compreensão após o término do encontro síncrono. Posteriormente, Rosiane Lima (Rosi) informou ao grupo que entraria em contato com o coordenador Robert para solicitar que a gravação do encontro fosse publicada especificamente no grupo de Trabalho de Conclusão de Curso (TCC) para o benefício e consulta de todos os estudantes.",
+      "pontosChave": [
+        "O participante Alcimar Luiz da Silva sugeriu que os monitores providenciassem a disponibilização da gravação da aula na sala virtual, argumentando que a explicação verbal detalhada fornecida pelo palestrante Profº Profº Marcio Leal agrega um valor explicativo superior ao conteúdo estático dos slides, o que previne dificuldades de compreensão após o término do encontro síncrono.",
+        "Posteriormente, Rosiane Lima (Rosi) informou ao grupo que entraria em contato com o coordenador Robert para solicitar que a gravação do encontro fosse publicada especificamente no grupo de Trabalho de Conclusão de Curso (TCC) para o benefício e consulta de todos os estudantes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Reformulação do Projeto de Pesquisa e Mudança de Orientação",
+      "resumoCurto": "O participante Seminarista William Barros confirmou que o número de contato do palestrante Profº Profº Marcio Leal permanecia o mesmo e informou que já havia enviado um trabalho desenvolvido previamente sob a orientação do professor Alexandro na disciplina de metodologia.",
+      "detalhamento": "O participante Seminarista William Barros confirmou que o número de contato do palestrante Profº Profº Marcio Leal permanecia o mesmo e informou que já havia enviado um trabalho desenvolvido previamente sob a orientação do professor Alexandro na disciplina de metodologia. Contudo, eles ressaltaram que as informações e fontes daquele documento não seriam reaproveitadas devido a uma mudança de escopo e de orientador. Eles anunciaram que o novo orientador será o pastor Luciano, que se ofereceu para o papel, e definiram que o tema do projeto será focado no congregacionalismo na Inglaterra ou na Europa. Para iniciar a coleta de dados, eles planejam conduzir entrevistas e realizar pesquisas documentais em arquivos de câmaras de vereadores e registros históricos de igrejas.",
+      "pontosChave": [
+        "O participante Seminarista William Barros confirmou que o número de contato do palestrante Profº Profº Marcio Leal permanecia o mesmo e informou que já havia enviado um trabalho desenvolvido previamente sob a orientação do professor Alexandro na disciplina de metodologia.",
+        "Contudo, eles ressaltaram que as informações e fontes daquele documento não seriam reaproveitadas devido a uma mudança de escopo e de orientador.",
+        "Eles anunciaram que o novo orientador será o pastor Luciano, que se ofereceu para o papel, e definiram que o tema do projeto será focado no congregacionalismo na Inglaterra ou na Europa.",
+        "Para iniciar a coleta de dados, eles planejam conduzir entrevistas e realizar pesquisas documentais em arquivos de câmaras de vereadores e registros históricos de igrejas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Prazos do Projeto e Planejamento das Próximas Aulas",
+      "resumoCurto": "O palestrante Profº Profº Marcio Leal estabeleceu o prazo estrito de duas semanas para que os estudantes finalizem a redação de seus respectivos projetos de pesquisa, justificando a pressão pela necessidade de ter uma base que guie a escrita dos artigos.",
+      "detalhamento": "O palestrante Profº Profº Marcio Leal estabeleceu o prazo estrito de duas semanas para que os estudantes finalizem a redação de seus respectivos projetos de pesquisa, justificando a pressão pela necessidade de ter uma base que guie a escrita dos artigos. Eles detalharam que, na semana seguinte, o encontro será dedicado exclusivamente aos alunos que já possuem um projeto pronto para iniciar imediatamente a produção do artigo. O palestrante previu reencontrar o restante da turma em duas semanas para revisar os projetos concluídos e informou que, após esses dois encontros intermediários, as turmas serão unificadas para dar andamento conjunto aos trabalhos.",
+      "pontosChave": [
+        "O palestrante Profº Profº Marcio Leal estabeleceu o prazo estrito de duas semanas para que os estudantes finalizem a redação de seus respectivos projetos de pesquisa, justificando a pressão pela necessidade de ter uma base que guie a escrita dos artigos.",
+        "Eles detalharam que, na semana seguinte, o encontro será dedicado exclusivamente aos alunos que já possuem um projeto pronto para iniciar imediatamente a produção do artigo.",
+        "O palestrante previu reencontrar o restante da turma em duas semanas para revisar os projetos concluídos e informou que, após esses dois encontros intermediários, as turmas serão unificadas para dar andamento conjunto aos trabalhos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Metas Finais do Semestre e Encerramento da Reunião",
+      "resumoCurto": "O palestrante Profº Profº Marcio Leal orientou especificamente a participante Andreia a entrar em contato direto com eles assim que concluísse o seu projeto de pesquisa.",
+      "detalhamento": "O palestrante Profº Profº Marcio Leal orientou especificamente a participante Andreia a entrar em contato direto com eles assim que concluísse o seu projeto de pesquisa. Em resposta a um questionamento de João Alexandre Souza Lemos, o palestrante Profº Profº Marcio Leal confirmou e validou a meta acadêmica de finalizar o semestre com o projeto de pesquisa estruturado e com o artigo científico integralmente redigido. A reunião foi finalizada em tom motivacional pelo palestrante Profº Profº Marcio Leal, que expressou a expectativa de avaliar os trabalhos nas bancas examinadoras, seguido pela troca de saudações de encerramento e desejos de bom final de semana entre eles, Alcimar Luiz da Silva e Rosiane Lima (Rosi).",
+      "pontosChave": [
+        "O palestrante Profº Profº Marcio Leal orientou especificamente a participante Andreia a entrar em contato direto com eles assim que concluísse o seu projeto de pesquisa.",
+        "Em resposta a um questionamento de João Alexandre Souza Lemos, o palestrante Profº Profº Marcio Leal confirmou e validou a meta acadêmica de finalizar o semestre com o projeto de pesquisa estruturado e com o artigo científico integralmente redigido.",
+        "A reunião foi finalizada em tom motivacional pelo palestrante Profº Profº Marcio Leal, que expressou a expectativa de avaliar os trabalhos nas bancas examinadoras, seguido pela troca de saudações de encerramento e desejos de bom final de semana entre eles, Alcimar Luiz da Silva e Rosiane Lima (Rosi)."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Início da Reunião e Logística Tecnológica",
+      "relato": "No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras. Cristiano Sacramento também aconselhou todos os participantes a instalarem e utilizarem o Google Agenda, tanto no celular quanto no computador, justificando que a ferramenta facilita o gerenciamento de convites de forma mais organizada. Paralelamente, Alcimar Luiz da Silva confirmou o recebimento de referências enviadas por Profº Profº Marcio Leal, demonstrando a intenção de aprofundar os estudos no final de semana. Profº Profº Marcio Leal enfatizou a relevância de se recorrer aos textos originais e abordar a poesia, considerando esses elementos fundamentais para o desenvolvimento do trabalho de Alcimar Luiz da Silva. O momento de abertura foi formalmente encerrado com uma oração conduzida por Salatiel Rodrigues, que pediu capacitação e direcionamento para as orientações da noite."
+    },
+    {
+      "titulo": "Elementos Iniciais do Projeto - Capa, Sumário e Objetivos",
+      "relato": "Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares. Foi emitida uma regra metodológica clara: a introdução nunca deve ser o ponto de partida, devendo ser escrita obrigatoriamente apenas ao final de qualquer trabalho acadêmico. Avançando para a seção de objetivos, Profº Profº Marcio Leal explicitou que o objetivo geral deve ser único, amplo e iniciado com um verbo no infinitivo, exemplificando com o tema da história do protestantismo. Os objetivos específicos, que costumam variar de dois a três itens, também precisam começar com verbos no infinitivo e funcionar obrigatoriamente como desdobramentos conectados diretamente ao objetivo geral, evitando elementos aleatórios. Carla P. dos S. de Almeida questionou sobre a quantidade desses objetivos, e a professora confirmou que, embora o padrão seja de três, são aceitáveis no mínimo dois para desdobrar o assunto, cuja finalidade no artigo será responder a essas indagações ou hipóteses."
+    },
+    {
+      "titulo": "A Estrutura e o Sentido da Justificativa",
+      "relato": "Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho. A palestrante definiu a justificativa como a explicação do \"porquê\" o pesquisador se interessou pelo tema, diferenciando-a do objetivo, que foca no \"o que\" se deseja saber. Explicou-se que a justificativa pode possuir motivações pessoais, decorrentes de interesses de infância, debates eclesiásticos ou afinidades surgidas no seminário. Profº Profº Marcio Leal ressaltou que a escrita acadêmica é complexa e exige paixão e envolvimento real com a temática teológica e eclesiástica para que o texto não se torne enfadonho. Além disso, defendeu que esse domínio e entusiasmo se tornam evidentes de forma natural para a banca examinadora durante a apresentação. Como recomendação de linguagem, alertou que o projeto e o artigo científico não devem ser redigidos na primeira pessoa, exigindo-se o uso de uma linguagem científica e impessoal (como \"percebe-se\" ou \"observa-se\")."
+    },
+    {
+      "titulo": "Metodologia de Pesquisa - Tipos e Aplicações",
+      "relato": "Profº Profº Marcio Leal expôs detalhadamente as três modalidades de metodologia aplicadas na graduação: a pesquisa qualitativa, a quantitativa e a mista (qualitativa-quantitativa). A pesquisa qualitativa pura, baseada estritamente na revisão bibliográfica, foi apontada como a predominante nos cursos de graduação. Sobre a pesquisa quantitativa, determinou-se que, no contexto dos artigos dos alunos, ela jamais pode aparecer de forma isolada — como ocorre em pesquisas de opinião eleitoral que apenas expõem porcentagens de aprovação. Caso o aluno colete dados numéricos ou estatísticos de um bairro (como a proporção de católicos e evangélicos), esses dados precisam obrigatoriamente ser analisados e confrontados com um referencial teórico. Portanto, para trabalhos de campo, a abordagem recomendada é a qualitativa-quantitativa, combinando a coleta de dados empíricos com a fundamentação bibliográfica."
+    },
+    {
+      "titulo": "Neutralidade Acadêmica e o Processo de Orientação",
+      "relato": "O Professor Sergio, participando de sua primeira aula devido a problemas na semana anterior, apresentou sua proposta de TCC: uma análise da epistemologia cessacionista de John MacArthur, focando especificamente nas obras \"O Caos Carismático\" e \"Fogo Estranho\". Ele confirmou que sua abordagem seria estritamente qualitativa e bibliográfica e mencionou sua visão de que o cessacionismo possui falhas epistemológicas graves. Diante disso, Profº Profº Marcio Leal e o Professor Sergio discutiram a impossibilidade de uma neutralidade absoluta na pesquisa científica. A professora orientou que o pesquisador deve fazer o exercício de buscar o contraponto e incluir visões que divirjam de sua própria opinião teológica, uma prática descrita como um exercício acadêmico essencial. Além disso, sugeriu ao Professor Sergio expandir a pesquisa conectando o tema com autores contemporâneos. Na sequência, Wagner Augusto Dos Santos Costa solicitou a validação de seu trabalho sobre a Reforma, iniciado com o professor Alexandro, e testemunhou o impacto positivo que as aulas anteriores da professora sobre etnocentrismo tiveram em sua vida e visão de mundo."
+    },
+    {
+      "titulo": "Instruções para o Cronograma e Metodologia do Artigo",
+      "relato": "O palestrante Profº Profº Marcio Leal detalhou as diretrizes para a elaboração do projeto acadêmico, orientando que os participantes devem preencher a metodologia até outubro ou novembro e finalizar a justificativa e a base teórica até dezembro. Eles enfatizaram que as discussões específicas sobre o artigo ocorrerão mais adiante e que os participantes precisam estruturar um cronograma próprio e individualizado, funcionando como uma previsão que cobre desde a preparação do artigo até a apresentação final, ajustando-se ao período acadêmico em que cada um se encontra. O palestrante validou o entendimento da estrutura com Prof. Sergio e enilson Santos Lima, declarando o encerramento da aula em seguida devido ao horário avançado de 9h01."
+    },
+    {
+      "titulo": "Metas Finais do Semestre e Encerramento da Reunião",
+      "relato": "O palestrante Profº Profº Marcio Leal orientou especificamente a participante Andreia a entrar em contato direto com eles assim que concluísse o seu projeto de pesquisa. Em resposta a um questionamento de João Alexandre Souza Lemos, o palestrante Profº Profº Marcio Leal confirmou e validou a meta acadêmica de finalizar o semestre com o projeto de pesquisa estruturado e com o artigo científico integralmente redigido. A reunião foi finalizada em tom motivacional pelo palestrante Profº Profº Marcio Leal, que expressou a expectativa de avaliar os trabalhos nas bancas examinadoras, seguido pela troca de saudações de encerramento e desejos de bom final de semana entre eles, Alcimar Luiz da Silva e Rosiane Lima (Rosi)."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Linguagem Científica Impessoal",
+      "detalhe": "Terceira pessoa do singular ou voz passiva pronominal (\"observa-se\", \"constata-se\", \"pretende-se demonstrar\"). Jamais utilizar \"eu acho\", \"minha opinião\" ou \"percebemos\"."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Início da Reunião e Logística Tecnológica\" nesta aula?",
+      "dicaResposta": "No início do encontro, Cristiano Sacramento ofereceu suporte técnico a Profº Profº Marcio Leal (identificada no contexto como professora Gabriela) devido ao uso do e-mail de outra pessoa, sugerindo a inclusão automática do endereço para evitar a necessidade de autorizações futuras. Cristiano Sacramento também aconselhou todos os participantes a instalarem e utilizarem o Google Agenda, tanto no celular quanto no computador, justificando que a ferramenta facilita o gerenciamento de convites de forma mais organizada."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenças no Progresso dos Alunos e a Importância do Projeto\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal observou uma disparidade considerável no progresso dos estudantes: alguns já possuem o projeto finalizado ou rascunhos de artigos, enquanto outros definiram apenas a temática. Diante disso, a palestrante argumentou detalhadamente que o projeto de pesquisa funciona como um planejamento indispensável e um norteador para evitar que o pesquisador se perca durante a escrita."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Definição de Prazos e Nivelamento da Turma\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal estabeleceu o prazo rígido de duas semanas para a entrega do projeto de pesquisa, independentemente de os alunos estarem no quarto, quinto ou sétimo período. A justificativa para a imposição desse limite de tempo baseou-se na premissa de que a escrita científica exige prazos estipulados para evitar a procrastinação."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Elementos Iniciais do Projeto - Capa, Sumário e Objetivos\" nesta aula?",
+      "dicaResposta": "Ao detalhar a estrutura do projeto, Profº Profº Marcio Leal explicou que a capa deve conter o título provisório ou, no mínimo, a temática geral da pesquisa (como \"discipulado\" ou \"protestantismo no Brasil\"), seguida por um sumário com os itens regulamentares. Foi emitida uma regra metodológica clara: a introdução nunca deve ser o ponto de partida, devendo ser escrita obrigatoriamente apenas ao final de qualquer trabalho acadêmico."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Estrutura e o Sentido da Justificativa\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal respondeu a uma dúvida de Daniel Rodrigues, esclarecendo que a justificativa pode ser posicionada após a introdução sem que isso cause qualquer prejuízo ao cronograma do trabalho. A palestrante definiu a justificativa como a explicação do \"porquê\" o pesquisador se interessou pelo tema, diferenciando-a do objetivo, que foca no \"o que\" se deseja saber."
+    }
+  ],
+  "encaminhamentos": [
+    "Criar projeto: Desenvolver o projeto de pesquisa seguindo os tópicos apresentados em aula no prazo de 2 semanas.",
+    "Publicar itens: Disponibilizar no grupo os itens detalhados que compoem o projeto de pesquisa para consulta dos alunos.",
+    "Procurar orientador: Entrar em contato com o orientador acadêmico para auxiliar na estruturação e no direcionamento da pesquisa."
+  ]
+}

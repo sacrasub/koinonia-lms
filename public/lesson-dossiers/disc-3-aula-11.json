@@ -1,0 +1,94 @@
+{
+  "id": "disc-3-aula-11",
+  "disciplinaId": "disc-3",
+  "disciplinaName": "03 - Aconselhamento Bíblico II - Uilian Santos",
+  "disciplinaShortName": "Aconselhamento Bíblico II",
+  "disciplinaCode": "ACO-202",
+  "professor": "Profº Uilian Santos",
+  "aulaNum": 11,
+  "unidade": 2,
+  "dateIso": "2026-10-28",
+  "dateBr": "28/10/2026",
+  "theme": "Aula 11 • Esperança Bíblica versus Falsa Esperança",
+  "geminiUrl": "https://docs.google.com/document/d/15YRhOK7KEpH-YV0V-fkfTddxVymzA52PrZsvG_fvuis/edit",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "O perigo das \"falsas esperanças\" no aconselhamento; crítica ao pensamento mágico devocional e a injeção da verdadeira esperança do Evangelho.",
+    "sinteseGeral": "O perigo das \"falsas esperanças\" no aconselhamento; crítica ao pensamento mágico devocional e a injeção da verdadeira esperança do Evangelho. Pontos de aprofundamento vinculados à unidade: Esperança Bíblica versus Falsa Esperança (A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho.) Aconselhamento e Discipulado (Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado.)",
+    "mapaRapido": [
+      "Esperança Bíblica versus Falsa Esperança: A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho.",
+      "Aconselhamento e Discipulado: Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado."
+    ],
+    "totalBlocos": 2
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Esperança Bíblica versus Falsa Esperança",
+      "resumoCurto": "A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho.",
+      "detalhamento": "A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho.",
+      "pontosChave": [
+        "A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Aconselhamento e Discipulado",
+      "resumoCurto": "Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado.",
+      "detalhamento": "Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado.",
+      "pontosChave": [
+        "Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Provérbios 18:13",
+      "contexto": "Base bíblica trabalhada na disciplina Aconselhamento Bíblico II."
+    },
+    {
+      "referencia": "Romanos 15:14",
+      "contexto": "Base bíblica trabalhada na disciplina Aconselhamento Bíblico II."
+    },
+    {
+      "referencia": "Salmos 130",
+      "contexto": "Base bíblica trabalhada na disciplina Aconselhamento Bíblico II."
+    },
+    {
+      "referencia": "Hebreus 6:19",
+      "contexto": "Base bíblica trabalhada na disciplina Aconselhamento Bíblico II."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Esperança Bíblica versus Falsa Esperança",
+      "detalhe": "A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho."
+    },
+    {
+      "titulo": "Aconselhamento e Discipulado",
+      "detalhe": "Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado."
+    },
+    {
+      "titulo": "As 5 Áreas do Inventário do Coração",
+      "detalhe": "(1) Físico: sono, alimentação, rotina, enfermidades e medicamentos; (2) Recursos: condição espiritual (crente verdadeiro?), rede familiar, capacidade intelectual e financeira; (3) Emoções: fúria, medo, tristeza ou ansiedade como sintomas de ídolos ocultos (Gn 4:5-6); (4) Ações: o que faz e o que omite; (5) Conceitos e Crenças: o que crê sobre Deus, pecado, graça e responsabilidade."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Esperança Bíblica versus Falsa Esperança\" nesta aula?",
+      "dicaResposta": "A esperança cristã não é otimismo ingênuo (\"vai dar tudo certo nesta vida terrena\"), mas a ancoragem nas promessas firmes e eternas de Deus reveladas no Evangelho."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Aconselhamento e Discipulado\" nesta aula?",
+      "dicaResposta": "Quando a pessoa que procura ajuda não é convertida, o aconselhamento torna-se essencialmente uma oportunidade de evangelização e discipulado."
+    }
+  ],
+  "encaminhamentos": []
+}

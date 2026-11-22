@@ -1,0 +1,126 @@
+{
+  "id": "disc-7-aula-9",
+  "disciplinaId": "disc-7",
+  "disciplinaName": "07 - Plantação e Revitalização de Igrejas II - Thácyto Lessa",
+  "disciplinaShortName": "Plantação & Revitalização II",
+  "disciplinaCode": "MIS-202",
+  "professor": "Profº Thácyto Lessa",
+  "aulaNum": 9,
+  "unidade": 2,
+  "dateIso": "2026-10-16",
+  "dateBr": "16/10/2026",
+  "theme": "Aula 9 • Os 4 Ps da Revitalização Pastoral",
+  "geminiUrl": "https://docs.google.com/document/d/1p90BhDK1MudLADtl6xBSSE-K5QWr_z4QgyGk0YpAL1c/edit",
+  "sourceType": "dossie",
+  "panorama": {
+    "resumoCurado": "Os 4 Ps da Revitalização Pastoral: Pregar (exposição bíblica vibrante), Piedade (santidade da liderança), Pastorear (cuidado individual) e Perseverar (resiliência ministerial).",
+    "sinteseGeral": "Os 4 Ps da Revitalização Pastoral: Pregar (exposição bíblica vibrante), Piedade (santidade da liderança), Pastorear (cuidado individual) e Perseverar (resiliência ministerial). Pontos de aprofundamento vinculados à unidade: Os 4 Ps da Revitalização Pastoral ((1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências.) As 9 Marcas de uma Igreja Saudável (Mark Dever) (Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico,...",
+    "mapaRapido": [
+      "Os 4 Ps da Revitalização Pastoral: (1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências.",
+      "As 9 Marcas de uma Igreja Saudável (Mark Dever): Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica.",
+      "Plantação vs. Manutenção vs. Revitalização: Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave.",
+      "A Mudança de Mentalidade Pastoral (Ef 4:11-12): Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\"."
+    ],
+    "totalBlocos": 4
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Os 4 Ps da Revitalização Pastoral",
+      "resumoCurto": "(1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências.",
+      "detalhamento": "(1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências.",
+      "pontosChave": [
+        "(1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "As 9 Marcas de uma Igreja Saudável (Mark Dever)",
+      "resumoCurto": "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica.",
+      "detalhamento": "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica.",
+      "pontosChave": [
+        "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Plantação vs. Manutenção vs. Revitalização",
+      "resumoCurto": "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave.",
+      "detalhamento": "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave.",
+      "pontosChave": [
+        "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A Mudança de Mentalidade Pastoral (Ef 4:11-12)",
+      "resumoCurto": "Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\".",
+      "detalhamento": "Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\".",
+      "pontosChave": [
+        "Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\"."
+      ],
+      "referenciasNoBloco": [
+        "Ef 4:11-12"
+      ]
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Atos 2:42-47",
+      "contexto": "Base bíblica trabalhada na disciplina Plantação & Revitalização II."
+    },
+    {
+      "referencia": "Mateus 16:18",
+      "contexto": "Base bíblica trabalhada na disciplina Plantação & Revitalização II."
+    },
+    {
+      "referencia": "Efésios 4:11-16",
+      "contexto": "Base bíblica trabalhada na disciplina Plantação & Revitalização II."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Os 4 Ps da Revitalização Pastoral",
+      "detalhe": "(1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências."
+    },
+    {
+      "titulo": "As 9 Marcas de uma Igreja Saudável (Mark Dever)",
+      "detalhe": "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica."
+    },
+    {
+      "titulo": "Plantação vs. Manutenção vs. Revitalização",
+      "detalhe": "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Os 4 Ps da Revitalização Pastoral\" nesta aula?",
+      "dicaResposta": "(1) Pregar: exposição fiel, vibrante e cristocêntrica da Bíblia; (2) Piedade: santidade de vida pessoal do pastor, oração e dependência do Espírito; (3) Pastorear: cuidado relacional individualizado; (4) Perseverar: paciência a longo prazo perante resistências."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"As 9 Marcas de uma Igreja Saudável (Mark Dever)\" nesta aula?",
+      "dicaResposta": "Pregação Expositiva, Teologia Bíblica, Compreensão do Evangelho, Conversão Bíblica, Evangelismo Bíblico, Membresia Consciente, Disciplina Eclesiástica, Discipulado e Liderança Bíblica."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Plantação vs. Manutenção vs. Revitalização\" nesta aula?",
+      "dicaResposta": "Plantação: nascimento de nova igreja do zero; Manutenção: estado burocrático focado em programas sem conversões ou maturidade; Revitalização: restauração intencional de uma igreja histórica viva em declínio grave."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Mudança de Mentalidade Pastoral (Ef 4:11-12)\" nesta aula?",
+      "dicaResposta": "Transição do modelo de \"pastor como único funcionário prestador de serviços\" para \"pastor como treinador de fazedores de discípulos\"."
+    }
+  ],
+  "encaminhamentos": []
+}

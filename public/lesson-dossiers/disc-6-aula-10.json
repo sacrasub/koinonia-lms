@@ -1,0 +1,189 @@
+{
+  "id": "disc-6-aula-10",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 10,
+  "unidade": 2,
+  "dateIso": "2026-10-22",
+  "dateBr": "22/10/2026",
+  "theme": "Aula 10 • Autoria e Destinatários",
+  "geminiUrl": "https://docs.google.com/document/d/1Kq80omtq6u75kaI3x9nrvQfnHZBgPnfGydPMpN6XKGM/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "1 Pedro: a teologia da \"esperança viva\", santidade como sacerdócio real de Deus e o testemunho ético do crente no ambiente social pagão.",
+    "sinteseGeral": "Aula abordou a carta de Judas com análise de autoria e datação. Autoria e Destinatários Judas foi identificado como autor. Caráter circular da carta foi estabelecido. Datação e Apócrifos Datação fixada por volta do ano 70 d.C. Uso de literatura apócrifa foi debatido. Propósito e Vigilância Exortação contra falsos mestres destacada. Vigilância cristã recomendada.",
+    "mapaRapido": [
+      "Autoria e Destinatários da Epístola de Judas: A autoria da epístola foi atribuída a Judas, identificado como irmão de Jesus e de Tiago, embora o texto inicial não forneça indicações diretas sobre isso.",
+      "Datação e Local de Escrita da Carta de Judas: A datação da epístola depende de sua relação com segunda Pedro, oscilando entre os anos sessenta e cinco e sessenta e oito, ou em período posterior até a morte de Judas.",
+      "Utilização de Livros Apócrifos na Epístola de Judas: Abordou-se o fato de Judas ser o único livro do Novo Testamento a citar literaturas apócrifas, como o livro de Enoque e a Assunção de Moisés, gerando posições antagônicas na história, a exemplo de Tertuliano que aceitou Enoque e Jerônimo que duvidou da inspiração da carta.",
+      "Propósito da Escrita e Natureza da Heresia em Judas: O propósito inicial da carta, voltado ao desenvolvimento de temas soteriológicos conforme evidenciado no verso terceiro, foi alterado devido a uma situação urgente que exigiu uma abordagem prática de advertência contra a heresia gnóstica e os falsos mestres.",
+      "Estrutura e Conteúdo da Epístola de Judas: A epístola foi dividida em cinco partes fundamentais: saudação introdutória nos versos um e dois, introdução e explicação do propósito nos versos três e quatro, denúncia de falsos mestres e apostasia dos versos cinco a dezesseis, exortação à fidelidade cristã dos versos dezessete a vinte e três, e doxologia final.",
+      "Aplicação Contemporânea, Falsos Mestres e Vigilância Cristã: A pessoa docente fez um paralelo entre as perseguições da época — marcadas pelo gnosticismo — e o contexto contemporâneo, onde o legalismo e o antinomismo pervertem o evangelho da graça, gerando ídolos abordados na obra \"Deuses falsos\" de Tim Keller."
+    ],
+    "duracaoEstimada": "~39min",
+    "totalBlocos": 7
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:09:26",
+      "fase": "Abertura & Contexto",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Autoria e Destinatários da Epístola de Judas",
+      "resumoCurto": "A autoria da epístola foi atribuída a Judas, identificado como irmão de Jesus e de Tiago, embora o texto inicial não forneça indicações diretas sobre isso.",
+      "detalhamento": "A autoria da epístola foi atribuída a Judas, identificado como irmão de Jesus e de Tiago, embora o texto inicial não forneça indicações diretas sobre isso. O problema levantado refere-se à indefinição dos leitores originais, uma vez que a carta não é endereçada a nenhuma pessoa ou igreja específica, contendo apenas uma saudação ampla no verso primeiro aos chamados, amados em Deus Pai e guardados em Jesus Cristo. Discutiram-se três teorias principais entre estudiosos quanto à base dos destinatários: gentia, judaica ou mista, concluindo-se que a carta possui caráter circular devido à insuficiência de informações detalhadas nos vinte e cinco versículos.",
+      "pontosChave": [
+        "A autoria da epístola foi atribuída a Judas, identificado como irmão de Jesus e de Tiago, embora o texto inicial não forneça indicações diretas sobre isso.",
+        "O problema levantado refere-se à indefinição dos leitores originais, uma vez que a carta não é endereçada a nenhuma pessoa ou igreja específica, contendo apenas uma saudação ampla no verso primeiro aos chamados, amados em Deus Pai e guardados em Jesus Cristo.",
+        "Discutiram-se três teorias principais entre estudiosos quanto à base dos destinatários: gentia, judaica ou mista, concluindo-se que a carta possui caráter circular devido à insuficiência de informações detalhadas nos vinte e cinco versículos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:14:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Datação e Local de Escrita da Carta de Judas",
+      "resumoCurto": "A datação da epístola depende de sua relação com segunda Pedro, oscilando entre os anos sessenta e cinco e sessenta e oito, ou em período posterior até a morte de Judas.",
+      "detalhamento": "A datação da epístola depende de sua relação com segunda Pedro, oscilando entre os anos sessenta e cinco e sessenta e oito, ou em período posterior até a morte de Judas. Rosiane Lima apresentou o relato de Eusébio sobre os netos de Judas perante o imperador Domiciano como indicativo de que Judas já estaria falecido, enquanto outras correntes especulam sobre a presença de gnosticismo avançado ou referências veladas à destruição de Jerusalém no ano setenta. Após refutar teses de gnosticismo avançado e menções encobertas à destruição de Jerusalém — destacando que o propósito do texto não exigia tal citação —, concluiu-se que a datação mais provável situa-se por volta do ano setenta depois de Cristo, considerando o tempo necessário para que segunda Pedro chegasse às mãos de Judas.",
+      "pontosChave": [
+        "A datação da epístola depende de sua relação com segunda Pedro, oscilando entre os anos sessenta e cinco e sessenta e oito, ou em período posterior até a morte de Judas.",
+        "Rosiane Lima apresentou o relato de Eusébio sobre os netos de Judas perante o imperador Domiciano como indicativo de que Judas já estaria falecido, enquanto outras correntes especulam sobre a presença de gnosticismo avançado ou referências veladas à destruição de Jerusalém no ano setenta.",
+        "Após refutar teses de gnosticismo avançado e menções encobertas à destruição de Jerusalém — destacando que o propósito do texto não exigia tal citação —, concluiu-se que a datação mais provável situa-se por volta do ano setenta depois de Cristo, considerando o tempo necessário para que segunda Pedro chegasse às mãos de Judas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:22:40",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Utilização de Livros Apócrifos na Epístola de Judas",
+      "resumoCurto": "Abordou-se o fato de Judas ser o único livro do Novo Testamento a citar literaturas apócrifas, como o livro de Enoque e a Assunção de Moisés, gerando posições antagônicas na história, a exemplo de Tertuliano que aceitou Enoque e Jerônimo que duvidou da inspiração da carta.",
+      "detalhamento": "Abordou-se o fato de Judas ser o único livro do Novo Testamento a citar literaturas apócrifas, como o livro de Enoque e a Assunção de Moisés, gerando posições antagônicas na história, a exemplo de Tertuliano que aceitou Enoque e Jerônimo que duvidou da inspiração da carta. Rosiane Lima explicou que estudiosos modernos apontam o uso de tradição oral e que a ausência de um cânon fechado do Antigo Testamento até a reunião dos rabinos em Jânia no ano noventa depois de Cristo justifica a maleabilidade na citação dessas literaturas antes do estabelecimento oficial do cânon.",
+      "pontosChave": [
+        "Abordou-se o fato de Judas ser o único livro do Novo Testamento a citar literaturas apócrifas, como o livro de Enoque e a Assunção de Moisés, gerando posições antagônicas na história, a exemplo de Tertuliano que aceitou Enoque e Jerônimo que duvidou da inspiração da carta.",
+        "Rosiane Lima explicou que estudiosos modernos apontam o uso de tradição oral e que a ausência de um cânon fechado do Antigo Testamento até a reunião dos rabinos em Jânia no ano noventa depois de Cristo justifica a maleabilidade na citação dessas literaturas antes do estabelecimento oficial do cânon."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:29:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Propósito da Escrita e Natureza da Heresia em Judas",
+      "resumoCurto": "O propósito inicial da carta, voltado ao desenvolvimento de temas soteriológicos conforme evidenciado no verso terceiro, foi alterado devido a uma situação urgente que exigiu uma abordagem prática de advertência contra a heresia gnóstica e os falsos mestres.",
+      "detalhamento": "O propósito inicial da carta, voltado ao desenvolvimento de temas soteriológicos conforme evidenciado no verso terceiro, foi alterado devido a uma situação urgente que exigiu uma abordagem prática de advertência contra a heresia gnóstica e os falsos mestres. Rosiane Lima destacou que a intenção da escrita não era o julgamento ou a condenação, mas sim uma exortação para que os leitores guardassem a fé diante da ameaça, mantendo características similares às descritas em segunda Pedro.",
+      "pontosChave": [
+        "O propósito inicial da carta, voltado ao desenvolvimento de temas soteriológicos conforme evidenciado no verso terceiro, foi alterado devido a uma situação urgente que exigiu uma abordagem prática de advertência contra a heresia gnóstica e os falsos mestres.",
+        "Rosiane Lima destacou que a intenção da escrita não era o julgamento ou a condenação, mas sim uma exortação para que os leitores guardassem a fé diante da ameaça, mantendo características similares às descritas em segunda Pedro."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:35:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estrutura e Conteúdo da Epístola de Judas",
+      "resumoCurto": "A epístola foi dividida em cinco partes fundamentais: saudação introdutória nos versos um e dois, introdução e explicação do propósito nos versos três e quatro, denúncia de falsos mestres e apostasia dos versos cinco a dezesseis, exortação à fidelidade cristã dos versos dezessete a vinte e três, e doxologia final.",
+      "detalhamento": "A epístola foi dividida em cinco partes fundamentais: saudação introdutória nos versos um e dois, introdução e explicação do propósito nos versos três e quatro, denúncia de falsos mestres e apostasia dos versos cinco a dezesseis, exortação à fidelidade cristã dos versos dezessete a vinte e três, e doxologia final. Com base no livro base de Carson, detalhou-se o conteúdo que abrange desde o castigo divino a pecadores no passado, a insubordinação de homens ímpios comparados ao arcanjo Miguel, até a citação de profecias de destruição e o encorajamento à perseverança na fé.",
+      "pontosChave": [
+        "A epístola foi dividida em cinco partes fundamentais: saudação introdutória nos versos um e dois, introdução e explicação do propósito nos versos três e quatro, denúncia de falsos mestres e apostasia dos versos cinco a dezesseis, exortação à fidelidade cristã dos versos dezessete a vinte e três, e doxologia final.",
+        "Com base no livro base de Carson, detalhou-se o conteúdo que abrange desde o castigo divino a pecadores no passado, a insubordinação de homens ímpios comparados ao arcanjo Miguel, até a citação de profecias de destruição e o encorajamento à perseverança na fé."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:38:33",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Contexto Histórico",
+      "titulo": "Aplicação Contemporânea, Falsos Mestres e Vigilância Cristã",
+      "resumoCurto": "A pessoa docente fez um paralelo entre as perseguições da época — marcadas pelo gnosticismo — e o contexto contemporâneo, onde o legalismo e o antinomismo pervertem o evangelho da graça, gerando ídolos abordados na obra \"Deuses falsos\" de Tim Keller.",
+      "detalhamento": "A pessoa docente fez um paralelo entre as perseguições da época — marcadas pelo gnosticismo — e o contexto contemporâneo, onde o legalismo e o antinomismo pervertem o evangelho da graça, gerando ídolos abordados na obra \"Deuses falsos\" de Tim Keller. Destacou-se que, diferentemente do passado, os falsos mestres atuais atuam de maneira constante e numerosa, reforçando o apelo à fidelidade, à vigilância cristã e ao retorno às Sagradas Escrituras sob uma perspectiva reformada centrada no evangelho da graça.",
+      "pontosChave": [
+        "A pessoa docente fez um paralelo entre as perseguições da época — marcadas pelo gnosticismo — e o contexto contemporâneo, onde o legalismo e o antinomismo pervertem o evangelho da graça, gerando ídolos abordados na obra \"Deuses falsos\" de Tim Keller.",
+        "Destacou-se que, diferentemente do passado, os falsos mestres atuais atuam de maneira constante e numerosa, reforçando o apelo à fidelidade, à vigilância cristã e ao retorno às Sagradas Escrituras sob uma perspectiva reformada centrada no evangelho da graça."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Avisos Finais e Oração pela Saúde de Participantes",
+      "resumoCurto": "Após o encerramento da exposição teórica, a lista de presença foi disponibilizada no chat para assinatura e foi desejada boa noite à turma.",
+      "detalhamento": "Após o encerramento da exposição teórica, a lista de presença foi disponibilizada no chat para assinatura e foi desejada boa noite à turma. Em seguida, em um diálogo pós-aula entre celso oliveira e Rosiane Lima, foram levantados pedidos de oração para a cirurgia de João no dia seguinte e compartilhada uma atualização sobre a melhora da saúde de Rosiane Lima após o uso de anti-inflamatório e injeção de corticoide.",
+      "pontosChave": [
+        "Após o encerramento da exposição teórica, a lista de presença foi disponibilizada no chat para assinatura e foi desejada boa noite à turma.",
+        "Em seguida, em um diálogo pós-aula entre celso oliveira e Rosiane Lima, foram levantados pedidos de oração para a cirurgia de João no dia seguinte e compartilhada uma atualização sobre a melhora da saúde de Rosiane Lima após o uso de anti-inflamatório e injeção de corticoide."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Avisos Finais e Oração pela Saúde de Participantes",
+      "relato": "Após o encerramento da exposição teórica, a lista de presença foi disponibilizada no chat para assinatura e foi desejada boa noite à turma. Em seguida, em um diálogo pós-aula entre celso oliveira e Rosiane Lima, foram levantados pedidos de oração para a cirurgia de João no dia seguinte e compartilhada uma atualização sobre a melhora da saúde de Rosiane Lima após o uso de anti-inflamatório e injeção de corticoide."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Judas 5",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "Judas 9",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    },
+    {
+      "referencia": "Judas 3",
+      "contexto": "Base bíblica trabalhada na disciplina Novo Testamento III (Epístolas)."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "titulo": "Carta de Tiago",
+      "detalhe": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    },
+    {
+      "titulo": "2 Pedro (Alerta contra Falsos Mestres e a Parusia)",
+      "detalhe": "Pedro combate hereges internos que ensinavam libertinagem e zombavam da segunda vinda; em 2Pe 3:9 ensina que o Senhor não retarda a promessa, mas é paciente visando ao arrependimento."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Autoria e Destinatários da Epístola de Judas\" nesta aula?",
+      "dicaResposta": "A autoria da epístola foi atribuída a Judas, identificado como irmão de Jesus e de Tiago, embora o texto inicial não forneça indicações diretas sobre isso. O problema levantado refere-se à indefinição dos leitores originais, uma vez que a carta não é endereçada a nenhuma pessoa ou igreja específica, contendo apenas uma saudação ampla no verso primeiro aos chamados, amados em Deus Pai e guardados em Jesus Cristo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Datação e Local de Escrita da Carta de Judas\" nesta aula?",
+      "dicaResposta": "A datação da epístola depende de sua relação com segunda Pedro, oscilando entre os anos sessenta e cinco e sessenta e oito, ou em período posterior até a morte de Judas. Rosiane Lima apresentou o relato de Eusébio sobre os netos de Judas perante o imperador Domiciano como indicativo de que Judas já estaria falecido, enquanto outras correntes especulam sobre a presença de gnosticismo avançado ou referências veladas à destruição de Jerusalém no ano setenta."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Utilização de Livros Apócrifos na Epístola de Judas\" nesta aula?",
+      "dicaResposta": "Abordou-se o fato de Judas ser o único livro do Novo Testamento a citar literaturas apócrifas, como o livro de Enoque e a Assunção de Moisés, gerando posições antagônicas na história, a exemplo de Tertuliano que aceitou Enoque e Jerônimo que duvidou da inspiração da carta. Rosiane Lima explicou que estudiosos modernos apontam o uso de tradição oral e que a ausência de um cânon fechado do Antigo Testamento até a reunião dos rabinos em Jânia no ano noventa depois de Cristo justifica a maleabilidade na citação dessas literaturas antes do estabelecimento oficial do cânon."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Propósito da Escrita e Natureza da Heresia em Judas\" nesta aula?",
+      "dicaResposta": "O propósito inicial da carta, voltado ao desenvolvimento de temas soteriológicos conforme evidenciado no verso terceiro, foi alterado devido a uma situação urgente que exigiu uma abordagem prática de advertência contra a heresia gnóstica e os falsos mestres. Rosiane Lima destacou que a intenção da escrita não era o julgamento ou a condenação, mas sim uma exortação para que os leitores guardassem a fé diante da ameaça, mantendo características similares às descritas em segunda Pedro."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Estrutura e Conteúdo da Epístola de Judas\" nesta aula?",
+      "dicaResposta": "A epístola foi dividida em cinco partes fundamentais: saudação introdutória nos versos um e dois, introdução e explicação do propósito nos versos três e quatro, denúncia de falsos mestres e apostasia dos versos cinco a dezesseis, exortação à fidelidade cristã dos versos dezessete a vinte e três, e doxologia final. Com base no livro base de Carson, detalhou-se o conteúdo que abrange desde o castigo divino a pecadores no passado, a insubordinação de homens ímpios comparados ao arcanjo Miguel, até a citação de profecias de destruição e o encorajamento à perseverança na fé."
+    }
+  ],
+  "encaminhamentos": [
+    "Ler cartas joaninas: Realizar a leitura dos livros de primeira, segunda e terceira João. Utilizar o horário da aula suspensa da próxima semana para concluir esta tarefa."
+  ]
+}

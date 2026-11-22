@@ -1,0 +1,451 @@
+{
+  "id": "disc-1-aula-3",
+  "disciplinaId": "disc-1",
+  "disciplinaName": "01 - História do Congregacionalismo - Ary Júnior",
+  "disciplinaShortName": "História do Congregacionalismo",
+  "disciplinaCode": "HIS-202",
+  "professor": "Profº Ary Júnior",
+  "aulaNum": 3,
+  "unidade": 1,
+  "dateIso": "2026-08-25",
+  "dateBr": "25/08/2026",
+  "theme": "Aula 3 • Teologia e pacto voluntário",
+  "geminiUrl": "/gemini-notes/his_aula3_2026-08-25.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "Sessão explorou origens do congregacionalismo e teologia sobre a governança eclesiástica via pacto entre crentes. Origens do movimento congregacional O movimento puritano originou o congregacionalismo através da rejeição de reformas incompletas e da busca por autonomia local. Separatistas e independentes divergiram quanto à relação com a igreja estatal.",
+    "sinteseGeral": "Sessão explorou origens do congregacionalismo e teologia sobre a governança eclesiástica via pacto entre crentes. Origens do movimento congregacional O movimento puritano originou o congregacionalismo através da rejeição de reformas incompletas e da busca por autonomia local. Separatistas e independentes divergiram quanto à relação com a igreja estatal. Teologia e pacto voluntário A eclesiologia define a igreja visível como uma associação voluntária de crentes regida por pacto. Esse modelo valoriza a independência e o autogoverno das congregações locais. Democracia e governança interna O sistema congregacional promove a democracia interna e a fiscalização coletiva, prevenindo centralizações de poder. Essa estrutura exige maturidade espiritual e discipulado constante para funcionar adequadamente.",
+    "mapaRapido": [
+      "Clarificação da Tese de Eclesiologia: Ary Queiroz Jr inicia a aula esclarecendo a tese de Joelson Gomes, defendida na matéria, que sustenta que a eclesiologia dos reformadores se adequa mais ao governo congregacional do que a outros sistemas de governo eclesiástico.",
+      "Contexto Histórico do Puritanismo: O professor contextualiza que o congregacionalismo nasce no puritanismo, especificamente após o reinado de Maria Tudor, com o retorno de exilados durante o reinado de Elizabeth.",
+      "Diversidade no Movimento Puritano: Ary Queiroz Jr explica que o puritanismo não era um movimento coeso, existindo divisões significativas.",
+      "O Movimento dos Independentes: O docente apresenta o grupo dos \"independentes\" (termo que o professor nota ser anacrônico para o período), que propunham uma igreja oficial inglesa com governo congregacional.",
+      "Diferenciação entre Independentes e Separatistas: Ary Queiroz Jr diferencia os independentes dos separatistas.",
+      "Richard Fitz e a Primeira Igreja Separatista: Richard Fitz é identificado como o primeiro pastor separatista, tendo fundado uma igreja em 1567 no Plumbers Hall."
+    ],
+    "duracaoEstimada": "~1h19min",
+    "totalBlocos": 25
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:00:56",
+      "fase": "Abertura & Contexto",
+      "categoria": "Contexto Histórico",
+      "titulo": "Clarificação da Tese de Eclesiologia",
+      "resumoCurto": "Ary Queiroz Jr inicia a aula esclarecendo a tese de Joelson Gomes, defendida na matéria, que sustenta que a eclesiologia dos reformadores se adequa mais ao governo congregacional do que a outros sistemas de governo eclesiástico.",
+      "detalhamento": "Ary Queiroz Jr inicia a aula esclarecendo a tese de Joelson Gomes, defendida na matéria, que sustenta que a eclesiologia dos reformadores se adequa mais ao governo congregacional do que a outros sistemas de governo eclesiástico. O professor enfatiza que isso não implica que Lutero ou Calvino fossem congregacionais, mas sim que o conceito de igreja redescoberto na Reforma encontra maior aderência nessa forma de governo.",
+      "pontosChave": [
+        "Ary Queiroz Jr inicia a aula esclarecendo a tese de Joelson Gomes, defendida na matéria, que sustenta que a eclesiologia dos reformadores se adequa mais ao governo congregacional do que a outros sistemas de governo eclesiástico.",
+        "O professor enfatiza que isso não implica que Lutero ou Calvino fossem congregacionais, mas sim que o conceito de igreja redescoberto na Reforma encontra maior aderência nessa forma de governo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:02:50",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto Histórico do Puritanismo",
+      "resumoCurto": "O professor contextualiza que o congregacionalismo nasce no puritanismo, especificamente após o reinado de Maria Tudor, com o retorno de exilados durante o reinado de Elizabeth.",
+      "detalhamento": "O professor contextualiza que o congregacionalismo nasce no puritanismo, especificamente após o reinado de Maria Tudor, com o retorno de exilados durante o reinado de Elizabeth. O movimento puritano era unido pela rejeição ao que chamavam de \"reforma pela metade\" e pela defesa de que a Bíblia deveria ditar todos os aspectos da vida, incluindo liturgia e governo.",
+      "pontosChave": [
+        "O professor contextualiza que o congregacionalismo nasce no puritanismo, especificamente após o reinado de Maria Tudor, com o retorno de exilados durante o reinado de Elizabeth.",
+        "O movimento puritano era unido pela rejeição ao que chamavam de \"reforma pela metade\" e pela defesa de que a Bíblia deveria ditar todos os aspectos da vida, incluindo liturgia e governo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:04:39",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Diversidade no Movimento Puritano",
+      "resumoCurto": "Ary Queiroz Jr explica que o puritanismo não era um movimento coeso, existindo divisões significativas.",
+      "detalhamento": "Ary Queiroz Jr explica que o puritanismo não era um movimento coeso, existindo divisões significativas. Havia puritanos anglicanos que buscavam reformas sem alterar o episcopado, e puritanos presbiterianos, como Thomas Cartwright, que defendiam o governo presbiteriano.",
+      "pontosChave": [
+        "Ary Queiroz Jr explica que o puritanismo não era um movimento coeso, existindo divisões significativas.",
+        "Havia puritanos anglicanos que buscavam reformas sem alterar o episcopado, e puritanos presbiterianos, como Thomas Cartwright, que defendiam o governo presbiteriano."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:07:35",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Movimento dos Independentes",
+      "resumoCurto": "O docente apresenta o grupo dos \"independentes\" (termo que o professor nota ser anacrônico para o período), que propunham uma igreja oficial inglesa com governo congregacional.",
+      "detalhamento": "O docente apresenta o grupo dos \"independentes\" (termo que o professor nota ser anacrônico para o período), que propunham uma igreja oficial inglesa com governo congregacional. Segundo Martin Lloyd Jones, Henry Jacob é o autor de originalidade desse conceito. Eles não se opunham a uma igreja nacional, desde que as congregações locais tivessem independência.",
+      "pontosChave": [
+        "O docente apresenta o grupo dos \"independentes\" (termo que o professor nota ser anacrônico para o período), que propunham uma igreja oficial inglesa com governo congregacional.",
+        "Segundo Martin Lloyd Jones, Henry Jacob é o autor de originalidade desse conceito.",
+        "Eles não se opunham a uma igreja nacional, desde que as congregações locais tivessem independência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:09:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Diferenciação entre Independentes e Separatistas",
+      "resumoCurto": "Ary Queiroz Jr diferencia os independentes dos separatistas.",
+      "detalhamento": "Ary Queiroz Jr diferencia os independentes dos separatistas. Enquanto os independentes aceitavam uma igreja nacional e não se opunham à comunhão ocasional com a igreja anglicana, os separatistas defendiam a ruptura total entre igreja e estado e recusavam qualquer comunhão com a igreja anglicana, por entenderem que esta não havia realizado uma reforma completa.",
+      "pontosChave": [
+        "Ary Queiroz Jr diferencia os independentes dos separatistas.",
+        "Enquanto os independentes aceitavam uma igreja nacional e não se opunham à comunhão ocasional com a igreja anglicana, os separatistas defendiam a ruptura total entre igreja e estado e recusavam qualquer comunhão com a igreja anglicana, por entenderem que esta não havia realizado uma reforma completa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:12:38",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Richard Fitz e a Primeira Igreja Separatista",
+      "resumoCurto": "Richard Fitz é identificado como o primeiro pastor separatista, tendo fundado uma igreja em 1567 no Plumbers Hall.",
+      "detalhamento": "Richard Fitz é identificado como o primeiro pastor separatista, tendo fundado uma igreja em 1567 no Plumbers Hall. A congregação, baseada na compreensão de uma \"igreja segundo o Novo Testamento\" como uma associação voluntária de crentes, sofreu repressão policial em 19 de junho de 1567, resultando na prisão e morte de Fitz e outros membros, sendo este o marco do resgate moderno da maneira congregacional.",
+      "pontosChave": [
+        "Richard Fitz é identificado como o primeiro pastor separatista, tendo fundado uma igreja em 1567 no Plumbers Hall.",
+        "A congregação, baseada na compreensão de uma \"igreja segundo o Novo Testamento\" como uma associação voluntária de crentes, sofreu repressão policial em 19 de junho de 1567, resultando na prisão e morte de Fitz e outros membros, sendo este o marco do resgate moderno da maneira congregacional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:16:19",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Contribuições de Robert Browne e Robert Harrison",
+      "resumoCurto": "Robert Browne, considerado o primeiro teórico do congregacionalismo, e Robert Harrison fundaram uma igreja em Norwich baseada no princípio do pacto voluntário, onde a congregação se une a Cristo e entre si.",
+      "detalhamento": "Robert Browne, considerado o primeiro teórico do congregacionalismo, e Robert Harrison fundaram uma igreja em Norwich baseada no princípio do pacto voluntário, onde a congregação se une a Cristo e entre si. Devido à perseguição, Browne fugiu para a Holanda, onde publicou \"Reformação sem esperar por ninguém\", defendendo a autonomia local e a eleição de oficiais pelos membros.",
+      "pontosChave": [
+        "Robert Browne, considerado o primeiro teórico do congregacionalismo, e Robert Harrison fundaram uma igreja em Norwich baseada no princípio do pacto voluntário, onde a congregação se une a Cristo e entre si.",
+        "Devido à perseguição, Browne fugiu para a Holanda, onde publicou \"Reformação sem esperar por ninguém\", defendendo a autonomia local e a eleição de oficiais pelos membros."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:20:47",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desfecho do Movimento de Browne",
+      "resumoCurto": "Após desentendimentos com Harrison, Browne foi para a Escócia, retornou à Inglaterra em 1584 e reintegrou-se à igreja anglicana em 1591, permanecendo nela até sua morte em 1633.",
+      "detalhamento": "Após desentendimentos com Harrison, Browne foi para a Escócia, retornou à Inglaterra em 1584 e reintegrou-se à igreja anglicana em 1591, permanecendo nela até sua morte em 1633. Apesar da dissolução da congregação de Norwich, os princípios braunistas continuaram a influenciar outros movimentos.",
+      "pontosChave": [
+        "Após desentendimentos com Harrison, Browne foi para a Escócia, retornou à Inglaterra em 1584 e reintegrou-se à igreja anglicana em 1591, permanecendo nela até sua morte em 1633.",
+        "Apesar da dissolução da congregação de Norwich, os princípios braunistas continuaram a influenciar outros movimentos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:23:52",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Mártires do Congregacionalismo",
+      "resumoCurto": "Ary Queiroz Jr destaca os primeiros mártires reconhecidos do movimento: Henry Barrow e John Greenwood, enforcados em 6 de abril de 1593, e John Penry, martirizado em 29 de maio do mesmo ano.",
+      "detalhamento": "Ary Queiroz Jr destaca os primeiros mártires reconhecidos do movimento: Henry Barrow e John Greenwood, enforcados em 6 de abril de 1593, e John Penry, martirizado em 29 de maio do mesmo ano. O professor cita outros martírios decorrentes da distribuição das obras de Browne, incluindo John Coping, Elias Thacker e William Denis.",
+      "pontosChave": [
+        "Ary Queiroz Jr destaca os primeiros mártires reconhecidos do movimento: Henry Barrow e John Greenwood, enforcados em 6 de abril de 1593, e John Penry, martirizado em 29 de maio do mesmo ano.",
+        "O professor cita outros martírios decorrentes da distribuição das obras de Browne, incluindo John Coping, Elias Thacker e William Denis."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:25:31",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Dissolução das Primeiras Experiências",
+      "resumoCurto": "O docente resume que, até certo ponto, as primeiras experiências congregacionalistas (a igreja do Plumbers Hall e a de Norwich) não lograram continuidade histórica, dissolvendo-se devido à perseguição e desentendimentos internos, o que motiva a atenção aos grupos de Gainesborough e Scrooby.",
+      "detalhamento": "O docente resume que, até certo ponto, as primeiras experiências congregacionalistas (a igreja do Plumbers Hall e a de Norwich) não lograram continuidade histórica, dissolvendo-se devido à perseguição e desentendimentos internos, o que motiva a atenção aos grupos de Gainesborough e Scrooby.",
+      "pontosChave": [
+        "O docente resume que, até certo ponto, as primeiras experiências congregacionalistas (a igreja do Plumbers Hall e a de Norwich) não lograram continuidade histórica, dissolvendo-se devido à perseguição e desentendimentos internos, o que motiva a atenção aos grupos de Gainesborough e Scrooby."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:28:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Grupos de Gainesborough e Scrooby",
+      "resumoCurto": "Por volta de 1602, surgiram grupos separatistas em Gainesborough (liderado por John Smith) e em Scrooby (com Richard Clifton e, posteriormente, John Robinson).",
+      "detalhamento": "Por volta de 1602, surgiram grupos separatistas em Gainesborough (liderado por John Smith) e em Scrooby (com Richard Clifton e, posteriormente, John Robinson). Sob a perseguição do rei Tiago I, ambos migraram para a Holanda, sendo os de Gainesborough em 1606 e os de Scrooby em 1608.",
+      "pontosChave": [
+        "Por volta de 1602, surgiram grupos separatistas em Gainesborough (liderado por John Smith) e em Scrooby (com Richard Clifton e, posteriormente, John Robinson).",
+        "Sob a perseguição do rei Tiago I, ambos migraram para a Holanda, sendo os de Gainesborough em 1606 e os de Scrooby em 1608."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:30:37",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Surgimento dos Batistas Gerais",
+      "resumoCurto": "O grupo de Gainesborough, liderado por John Smith, foi influenciado por ideias menonitas e arminianas.",
+      "detalhamento": "O grupo de Gainesborough, liderado por John Smith, foi influenciado por ideias menonitas e arminianas. Smith rejeitou o batismo infantil e batizou a si mesmo e seus companheiros. Após a exclusão de Smith, seus seguidores como Thomas Helwys e John Murton organizaram em 1612, na Inglaterra, as primeiras igrejas batistas, chamadas de \"batistas gerais\" por defenderem a expiação ilimitada.",
+      "pontosChave": [
+        "O grupo de Gainesborough, liderado por John Smith, foi influenciado por ideias menonitas e arminianas.",
+        "Smith rejeitou o batismo infantil e batizou a si mesmo e seus companheiros.",
+        "Após a exclusão de Smith, seus seguidores como Thomas Helwys e John Murton organizaram em 1612, na Inglaterra, as primeiras igrejas batistas, chamadas de \"batistas gerais\" por defenderem a expiação ilimitada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:34:06",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "John Robinson e o Exílio em Leiden",
+      "resumoCurto": "O grupo de Scrooby, liderado por John Robinson, estabeleceu-se em Leiden em 1609.",
+      "detalhamento": "O grupo de Scrooby, liderado por John Robinson, estabeleceu-se em Leiden em 1609. Robinson, um líder proeminente, defendeu o calvinismo contra a influência arminiana em debates na Universidade de Leiden. Uma parte desse grupo retornou posteriormente à Inglaterra.",
+      "pontosChave": [
+        "O grupo de Scrooby, liderado por John Robinson, estabeleceu-se em Leiden em 1609.",
+        "Robinson, um líder proeminente, defendeu o calvinismo contra a influência arminiana em debates na Universidade de Leiden.",
+        "Uma parte desse grupo retornou posteriormente à Inglaterra."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:41:02",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Henry Jacob e o Plantio em Southwark",
+      "resumoCurto": "Henry Jacob, embora não fosse de Scrooby, manteve contato com Robinson e desenvolveu um congregacionalismo \"semiseparatista\".",
+      "detalhamento": "Henry Jacob, embora não fosse de Scrooby, manteve contato com Robinson e desenvolveu um congregacionalismo \"semiseparatista\". Em 1616, Jacob retornou à Inglaterra e plantou em Southwark, Londres, a primeira igreja congregacional inglesa com existência contínua, unindo membros locais e alguns vindos da comunidade de Leiden.",
+      "pontosChave": [
+        "Henry Jacob, embora não fosse de Scrooby, manteve contato com Robinson e desenvolveu um congregacionalismo \"semiseparatista\".",
+        "Em 1616, Jacob retornou à Inglaterra e plantou em Southwark, Londres, a primeira igreja congregacional inglesa com existência contínua, unindo membros locais e alguns vindos da comunidade de Leiden."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:44:40",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Teologia de Henry Jacob",
+      "resumoCurto": "Em suas obras, como a publicada em 1604, Jacob defendeu o princípio de *Sola Scriptura*, a necessidade de reformas na igreja da Inglaterra e a ideia de que o Novo Testamento prescreve um modelo específico de governo de igreja, distinto do sistema diocesano, que não deveria ser alterado por tradições humanas.",
+      "detalhamento": "Em suas obras, como a publicada em 1604, Jacob defendeu o princípio de *Sola Scriptura*, a necessidade de reformas na igreja da Inglaterra e a ideia de que o Novo Testamento prescreve um modelo específico de governo de igreja, distinto do sistema diocesano, que não deveria ser alterado por tradições humanas.",
+      "pontosChave": [
+        "Em suas obras, como a publicada em 1604, Jacob defendeu o princípio de *Sola Scriptura*, a necessidade de reformas na igreja da Inglaterra e a ideia de que o Novo Testamento prescreve um modelo específico de governo de igreja, distinto do sistema diocesano, que não deveria ser alterado por tradições humanas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:49:29",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conceito de Igreja Visível e Pacto",
+      "resumoCurto": "Ary Queiroz Jr destaca que Jacob definia a igreja visível como uma sociedade santa formada pelo consentimento livre de crentes.",
+      "detalhamento": "Ary Queiroz Jr destaca que Jacob definia a igreja visível como uma sociedade santa formada pelo consentimento livre de crentes. A igreja nasce através de um pacto ou aliança voluntária, na qual os membros se comprometem com os deveres da religião e a comunhão conforme ensinado pelos apóstolos.",
+      "pontosChave": [
+        "Ary Queiroz Jr destaca que Jacob definia a igreja visível como uma sociedade santa formada pelo consentimento livre de crentes.",
+        "A igreja nasce através de um pacto ou aliança voluntária, na qual os membros se comprometem com os deveres da religião e a comunhão conforme ensinado pelos apóstolos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:54:53",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Terceira Súplica Humilde",
+      "resumoCurto": "Em 1605, Jacob participou da \"Terceira Súplica Humilde\" ao rei Tiago I, solicitando liberdade de culto para congregações autogovernadas por pastores, presbíteros e diáconos.",
+      "detalhamento": "Em 1605, Jacob participou da \"Terceira Súplica Humilde\" ao rei Tiago I, solicitando liberdade de culto para congregações autogovernadas por pastores, presbíteros e diáconos. Embora negada, a ação consolidou a visão de Jacob de igrejas locais autônomas que coexistiam com a igreja estatal, caracterizando seu modelo de \"semiseparatismo\".",
+      "pontosChave": [
+        "Em 1605, Jacob participou da \"Terceira Súplica Humilde\" ao rei Tiago I, solicitando liberdade de culto para congregações autogovernadas por pastores, presbíteros e diáconos.",
+        "Embora negada, a ação consolidou a visão de Jacob de igrejas locais autônomas que coexistiam com a igreja estatal, caracterizando seu modelo de \"semiseparatismo\"."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:57:47",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Indicação de leitura complementar",
+      "resumoCurto": "Sergio recomenda a obra \"Congregacionalismo: origens e contribuições sociais da democracia protestante\", de autoria do Prof.",
+      "detalhamento": "Prof. Sergio recomenda a obra \"Congregacionalismo: origens e contribuições sociais da democracia protestante\", de autoria do Prof. Hidauro, observando que o conteúdo do livro está alinhado com os pontos apresentados na aula. Ary Queiroz Jr acolhe a sugestão e recomenda que os alunos registrem este título como leitura recomendada para aprofundar o conhecimento sobre o tema.",
+      "pontosChave": [
+        "Sergio recomenda a obra \"Congregacionalismo: origens e contribuições sociais da democracia protestante\", de autoria do Prof.",
+        "Hidauro, observando que o conteúdo do livro está alinhado com os pontos apresentados na aula.",
+        "Ary Queiroz Jr acolhe a sugestão e recomenda que os alunos registrem este título como leitura recomendada para aprofundar o conhecimento sobre o tema."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:00:06",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto histórico sobre o reinado do Rei Tiago",
+      "resumoCurto": "Rosiane Lima questiona sobre a postura do Rei Tiago, e Ary Queiroz Jr explica que, embora o monarca tenha convivido com o presbiterianismo na Escócia, na Inglaterra ele priorizou o episcopalismo, perseguindo ativamente os grupos separatistas.",
+      "detalhamento": "Rosiane Lima questiona sobre a postura do Rei Tiago, e Ary Queiroz Jr explica que, embora o monarca tenha convivido com o presbiterianismo na Escócia, na Inglaterra ele priorizou o episcopalismo, perseguindo ativamente os grupos separatistas.",
+      "pontosChave": [
+        "Rosiane Lima questiona sobre a postura do Rei Tiago, e Ary Queiroz Jr explica que, embora o monarca tenha convivido com o presbiterianismo na Escócia, na Inglaterra ele priorizou o episcopalismo, perseguindo ativamente os grupos separatistas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:01:16",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A importância do discipulado e maturidade congregacional",
+      "resumoCurto": "Cristian Riffo argumenta que o modelo congregacional exige crentes maduros e conhecedores da Palavra, o que demanda um forte trabalho de discipulado por parte do pastor.",
+      "detalhamento": "Cristian Riffo argumenta que o modelo congregacional exige crentes maduros e conhecedores da Palavra, o que demanda um forte trabalho de discipulado por parte do pastor. Ary Queiroz Jr confirma essa perspectiva e destaca que, na concepção congregacional, uma igreja nasce através de um pacto, no qual os crentes consentem em viver sob o evangelho e segundo a Palavra de Deus.",
+      "pontosChave": [
+        "Cristian Riffo argumenta que o modelo congregacional exige crentes maduros e conhecedores da Palavra, o que demanda um forte trabalho de discipulado por parte do pastor.",
+        "Ary Queiroz Jr confirma essa perspectiva e destaca que, na concepção congregacional, uma igreja nasce através de um pacto, no qual os crentes consentem em viver sob o evangelho e segundo a Palavra de Deus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:02:57",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Comparativo entre modelos de governo eclesiástico",
+      "resumoCurto": "Sergio compartilha sua experiência pessoal vinda da Assembleia de Deus e compara os diferentes modelos de governança, destacando que, diferentemente de modelos centralizados e monocráticos que podem propiciar abusos de poder e escândalos, o sistema congregacional oferece uma estrutura de governança que auxilia na prevenção desses problemas.",
+      "detalhamento": "Prof. Sergio compartilha sua experiência pessoal vinda da Assembleia de Deus e compara os diferentes modelos de governança, destacando que, diferentemente de modelos centralizados e monocráticos que podem propiciar abusos de poder e escândalos, o sistema congregacional oferece uma estrutura de governança que auxilia na prevenção desses problemas.",
+      "pontosChave": [
+        "Sergio compartilha sua experiência pessoal vinda da Assembleia de Deus e compara os diferentes modelos de governança, destacando que, diferentemente de modelos centralizados e monocráticos que podem propiciar abusos de poder e escândalos, o sistema congregacional oferece uma estrutura de governança que auxilia na prevenção desses problemas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:06:41",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Identidade denominacional e pertencimento",
+      "resumoCurto": "Alcimar Luiz da Silva compartilha reflexões sobre a percepção da identidade congregacional, mencionando uma anedota sobre a falta de um forte \"orgulho denominacional\" entre congregacionais, em contraste com outros grupos como presbiterianos e batistas.",
+      "detalhamento": "Alcimar Luiz da Silva compartilha reflexões sobre a percepção da identidade congregacional, mencionando uma anedota sobre a falta de um forte \"orgulho denominacional\" entre congregacionais, em contraste com outros grupos como presbiterianos e batistas. O participante ressalta que o estudo da história da denominação tem proporcionado a ele um maior senso de pertencimento a uma raiz teológica histórica e profunda.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva compartilha reflexões sobre a percepção da identidade congregacional, mencionando uma anedota sobre a falta de um forte \"orgulho denominacional\" entre congregacionais, em contraste com outros grupos como presbiterianos e batistas.",
+        "O participante ressalta que o estudo da história da denominação tem proporcionado a ele um maior senso de pertencimento a uma raiz teológica histórica e profunda."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:09:59",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Exercício da democracia interna na igreja",
+      "resumoCurto": "Grazi Guimarães enfatiza que o sistema congregacional garante aos membros voz ativa nas decisões da igreja local.",
+      "detalhamento": "Grazi Guimarães enfatiza que o sistema congregacional garante aos membros voz ativa nas decisões da igreja local. A participante argumenta que, em vez de abandonar a denominação diante de problemas ou erros, os membros devem utilizar os direitos democráticos e as assembleias para propor mudanças e exercer fiscalização, comparando a igreja a uma família que deve resolver seus conflitos internamente.",
+      "pontosChave": [
+        "Grazi Guimarães enfatiza que o sistema congregacional garante aos membros voz ativa nas decisões da igreja local.",
+        "A participante argumenta que, em vez de abandonar a denominação diante de problemas ou erros, os membros devem utilizar os direitos democráticos e as assembleias para propor mudanças e exercer fiscalização, comparando a igreja a uma família que deve resolver seus conflitos internamente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "01:15:13",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Eclesiologia segundo os artigos de Henry Jacob",
+      "resumoCurto": "Ary Queiroz Jr analisa os artigos 4 a 7 dos 28 artigos de fé de Henry Jacob, destacando que a verdadeira igreja visível e política, sob o evangelho, é uma congregação local, livre e independente, que possui autoridade para administração e governo com base no consentimento comum do povo.",
+      "detalhamento": "Ary Queiroz Jr analisa os artigos 4 a 7 dos 28 artigos de fé de Henry Jacob, destacando que a verdadeira igreja visível e política, sob o evangelho, é uma congregação local, livre e independente, que possui autoridade para administração e governo com base no consentimento comum do povo. O docente explica que os artigos negam a existência de uma igreja universal visível ou de estruturas diocesanas e provinciais que exerçam autoridade absoluta, reafirmando que apenas Cristo e as Escrituras ocupam tal posição, sendo esta a \"regra do evangelho\" defendida pelos primeiros congregacionalistas.",
+      "pontosChave": [
+        "Ary Queiroz Jr analisa os artigos 4 a 7 dos 28 artigos de fé de Henry Jacob, destacando que a verdadeira igreja visível e política, sob o evangelho, é uma congregação local, livre e independente, que possui autoridade para administração e governo com base no consentimento comum do povo.",
+        "O docente explica que os artigos negam a existência de uma igreja universal visível ou de estruturas diocesanas e provinciais que exerçam autoridade absoluta, reafirmando que apenas Cristo e as Escrituras ocupam tal posição, sendo esta a \"regra do evangelho\" defendida pelos primeiros congregacionalistas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "timestamp": "01:18:45",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Contexto Histórico",
+      "titulo": "Encerramento e planejamento da próxima aula",
+      "resumoCurto": "Ary Queiroz Jr encerra a sessão, orientando que o estudo do texto continuará a partir do parágrafo 7 na próxima terça-feira, ocasião em que será abordado o contexto histórico que redundou na vinda dos pais peregrinos no Mayflower.",
+      "detalhamento": "Ary Queiroz Jr encerra a sessão, orientando que o estudo do texto continuará a partir do parágrafo 7 na próxima terça-feira, ocasião em que será abordado o contexto histórico que redundou na vinda dos pais peregrinos no Mayflower.",
+      "pontosChave": [
+        "Ary Queiroz Jr encerra a sessão, orientando que o estudo do texto continuará a partir do parágrafo 7 na próxima terça-feira, ocasião em que será abordado o contexto histórico que redundou na vinda dos pais peregrinos no Mayflower."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Contribuições de Robert Browne e Robert Harrison",
+      "relato": "Robert Browne, considerado o primeiro teórico do congregacionalismo, e Robert Harrison fundaram uma igreja em Norwich baseada no princípio do pacto voluntário, onde a congregação se une a Cristo e entre si. Devido à perseguição, Browne fugiu para a Holanda, onde publicou \"Reformação sem esperar por ninguém\", defendendo a autonomia local e a eleição de oficiais pelos membros.",
+      "timestamp": "00:16:19"
+    },
+    {
+      "titulo": "John Robinson e o Exílio em Leiden",
+      "relato": "O grupo de Scrooby, liderado por John Robinson, estabeleceu-se em Leiden em 1609. Robinson, um líder proeminente, defendeu o calvinismo contra a influência arminiana em debates na Universidade de Leiden. Uma parte desse grupo retornou posteriormente à Inglaterra.",
+      "timestamp": "00:34:06"
+    },
+    {
+      "titulo": "Indicação de leitura complementar",
+      "relato": "Prof. Sergio recomenda a obra \"Congregacionalismo: origens e contribuições sociais da democracia protestante\", de autoria do Prof. Hidauro, observando que o conteúdo do livro está alinhado com os pontos apresentados na aula. Ary Queiroz Jr acolhe a sugestão e recomenda que os alunos registrem este título como leitura recomendada para aprofundar o conhecimento sobre o tema.",
+      "timestamp": "00:57:47"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Mateus 18:15-20",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "Atos 15:1-29",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    },
+    {
+      "referencia": "1 Pedro 2:9",
+      "contexto": "Base bíblica trabalhada na disciplina História do Congregacionalismo."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Dr. Robert Reid Kalley (1809–1888)",
+      "detalhe": "Médico escocês presbiteriano de nascimento que adotou a eclesiologia congregacional independente na prática missionária."
+    },
+    {
+      "titulo": "Sarah Poulton Wilson Kalley",
+      "detalhe": "Esposa de Kalley, vinda de família puritana congregacional inglesa; compositora de dezenas de Salmos e Hinos e incentivadora do modelo de governo local."
+    },
+    {
+      "titulo": "Igreja Evangélica Pernambucana (19/10/1873)",
+      "detalhe": "Fundada por Kalley em Recife, sendo a primeira igreja evangélica de brasileiros nativos no Nordeste."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Clarificação da Tese de Eclesiologia\" nesta aula?",
+      "dicaResposta": "Ary Queiroz Jr inicia a aula esclarecendo a tese de Joelson Gomes, defendida na matéria, que sustenta que a eclesiologia dos reformadores se adequa mais ao governo congregacional do que a outros sistemas de governo eclesiástico. O professor enfatiza que isso não implica que Lutero ou Calvino fossem congregacionais, mas sim que o conceito de igreja redescoberto na Reforma encontra maior aderência nessa forma de governo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Contexto Histórico do Puritanismo\" nesta aula?",
+      "dicaResposta": "O professor contextualiza que o congregacionalismo nasce no puritanismo, especificamente após o reinado de Maria Tudor, com o retorno de exilados durante o reinado de Elizabeth. O movimento puritano era unido pela rejeição ao que chamavam de \"reforma pela metade\" e pela defesa de que a Bíblia deveria ditar todos os aspectos da vida, incluindo liturgia e governo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diversidade no Movimento Puritano\" nesta aula?",
+      "dicaResposta": "Ary Queiroz Jr explica que o puritanismo não era um movimento coeso, existindo divisões significativas. Havia puritanos anglicanos que buscavam reformas sem alterar o episcopado, e puritanos presbiterianos, como Thomas Cartwright, que defendiam o governo presbiteriano."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"O Movimento dos Independentes\" nesta aula?",
+      "dicaResposta": "O docente apresenta o grupo dos \"independentes\" (termo que o professor nota ser anacrônico para o período), que propunham uma igreja oficial inglesa com governo congregacional. Segundo Martin Lloyd Jones, Henry Jacob é o autor de originalidade desse conceito."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenciação entre Independentes e Separatistas\" nesta aula?",
+      "dicaResposta": "Ary Queiroz Jr diferencia os independentes dos separatistas. Enquanto os independentes aceitavam uma igreja nacional e não se opunham à comunhão ocasional com a igreja anglicana, os separatistas defendiam a ruptura total entre igreja e estado e recusavam qualquer comunhão com a igreja anglicana, por entenderem que esta não havia realizado uma reforma completa."
+    }
+  ],
+  "encaminhamentos": [
+    "Enviar texto complementar: Enviar um texto importante para os alunos para permitir o avanço do conteúdo na próxima aula.",
+    "Ler livro: Ler o livro Congregacionalismo: origens e contribuições sociais da democracia protestante, do pastor Hidauro, conforme recomendado pelo professor."
+  ]
+}

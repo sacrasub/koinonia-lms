@@ -1,0 +1,415 @@
+{
+  "id": "disc-6-aula-1",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 1,
+  "unidade": 1,
+  "dateIso": "2026-08-13",
+  "dateBr": "13/08/2026",
+  "theme": "Aula 1 • Abertura e interação inicial",
+  "geminiUrl": "/gemini-notes/nt3_aula1_2026-08-13.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A aula estabeleceu diretrizes metodológicas e explorou debates históricos sobre a autoria da Epístola aos Hebreus. Metodologia e ferramentas digitais A nova metodologia prioriza anotações próprias e o uso de ferramentas digitais, incluindo o NotebookLM Pro. O semestre focará no estudo das Epístolas Gerais. Contexto da Epístola Hebreus O livro possui estrutura singular e utiliza grego refinado para confortar",
+    "sinteseGeral": "A aula estabeleceu diretrizes metodológicas e explorou debates históricos sobre a autoria da Epístola aos Hebreus. Metodologia e ferramentas digitais A nova metodologia prioriza anotações próprias e o uso de ferramentas digitais, incluindo o NotebookLM Pro. O semestre focará no estudo das Epístolas Gerais. Contexto da Epístola Hebreus O livro possui estrutura singular e utiliza grego refinado para confortar destinatários sob perseguição. A teologia enfatiza a supremacia de Cristo sobre elementos externos. Debates sobre a autoria Diversas hipóteses de autoria foram analisadas sem conclusão definitiva, reforçando a soberania divina na inspiração do texto. A identidade humana do escritor permanece desconhecida.",
+    "mapaRapido": [
+      "Abertura e interação inicial: Profº Profº Marcio Leal, Salatiel Rodrigues, Daniel Rodrigues, Rosiane Lima, Josias Ribeiro e Cristiano Sacramento iniciaram a sessão com saudações e comentários sobre o clima, marcando o começo do semestre.",
+      "Projetos e necessidades locais: Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma.",
+      "Orientações do curso e material didático: Profº Profº Marcio Leal informou que a metodologia do semestre será diferente, com as apresentações servindo apenas para pontuar os assuntos, exigindo que a turma faça anotações próprias.",
+      "Discussão sobre ferramentas digitais: Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações.",
+      "Logística das aulas: Profº Profº Marcio Leal esclareceu que, embora as aulas tenham previsão de término para às 22h, o horário é flexível conforme o desenvolvimento do tema.",
+      "Características literárias da Epístola aos Hebreus: O autor observou que Hebreus possui uma estrutura singular, iniciando como um tratado, seguindo como um sermão e concluindo como uma carta."
+    ],
+    "totalBlocos": 24
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Abertura e interação inicial",
+      "resumoCurto": "Profº Profº Marcio Leal, Salatiel Rodrigues, Daniel Rodrigues, Rosiane Lima, Josias Ribeiro e Cristiano Sacramento iniciaram a sessão com saudações e comentários sobre o clima, marcando o começo do semestre.",
+      "detalhamento": "Profº Profº Marcio Leal, Salatiel Rodrigues, Daniel Rodrigues, Rosiane Lima, Josias Ribeiro e Cristiano Sacramento iniciaram a sessão com saudações e comentários sobre o clima, marcando o começo do semestre.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal, Salatiel Rodrigues, Daniel Rodrigues, Rosiane Lima, Josias Ribeiro e Cristiano Sacramento iniciaram a sessão com saudações e comentários sobre o clima, marcando o começo do semestre."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Projetos e necessidades locais",
+      "resumoCurto": "Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma.",
+      "detalhamento": "Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma. Durante a discussão, Salatiel Rodrigues mencionou a necessidade de reparos no telhado do templo em Ladário, enquanto Cristiano Sacramento relatou o interesse da igreja em Tabatinga na aquisição de um motor de popa para o transporte de fiéis.",
+      "pontosChave": [
+        "Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma.",
+        "Durante a discussão, Salatiel Rodrigues mencionou a necessidade de reparos no telhado do templo em Ladário, enquanto Cristiano Sacramento relatou o interesse da igreja em Tabatinga na aquisição de um motor de popa para o transporte de fiéis."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Orientações do curso e material didático",
+      "resumoCurto": "Profº Profº Marcio Leal informou que a metodologia do semestre será diferente, com as apresentações servindo apenas para pontuar os assuntos, exigindo que a turma faça anotações próprias.",
+      "detalhamento": "Profº Profº Marcio Leal informou que a metodologia do semestre será diferente, com as apresentações servindo apenas para pontuar os assuntos, exigindo que a turma faça anotações próprias. O livro base adotado para a disciplina é \"Introdução ao Novo Testamento\", de Carson, Douglas e Morris, publicado pela editora Vida Nova.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal informou que a metodologia do semestre será diferente, com as apresentações servindo apenas para pontuar os assuntos, exigindo que a turma faça anotações próprias.",
+        "O livro base adotado para a disciplina é \"Introdução ao Novo Testamento\", de Carson, Douglas e Morris, publicado pela editora Vida Nova."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre ferramentas digitais",
+      "resumoCurto": "Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações.",
+      "detalhamento": "Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações. Profº Profº Marcio Leal relatou barreiras para acessar a versão paga da ferramenta, enquanto Josias Ribeiro recomendou o uso de um e-mail universitário para obter benefícios institucionais e acesso gratuito a recursos como armazenamento e o NotebookLM Pro. Cristiano Sacramento comentou que compartilha uma assinatura paga com outras quatro pessoas para reduzir os custos individuais.",
+      "pontosChave": [
+        "Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações.",
+        "Profº Profº Marcio Leal relatou barreiras para acessar a versão paga da ferramenta, enquanto Josias Ribeiro recomendou o uso de um e-mail universitário para obter benefícios institucionais e acesso gratuito a recursos como armazenamento e o NotebookLM Pro.",
+        "Cristiano Sacramento comentou que compartilha uma assinatura paga com outras quatro pessoas para reduzir os custos individuais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Logística das aulas",
+      "resumoCurto": "Profº Profº Marcio Leal esclareceu que, embora as aulas tenham previsão de término para às 22h, o horário é flexível conforme o desenvolvimento do tema.",
+      "detalhamento": "Profº Profº Marcio Leal esclareceu que, embora as aulas tenham previsão de término para às 22h, o horário é flexível conforme o desenvolvimento do tema. O foco do semestre serão as Epístolas Gerais, com início pelo livro de Hebreus.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal esclareceu que, embora as aulas tenham previsão de término para às 22h, o horário é flexível conforme o desenvolvimento do tema.",
+        "O foco do semestre serão as Epístolas Gerais, com início pelo livro de Hebreus."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Características literárias da Epístola aos Hebreus",
+      "resumoCurto": "O autor observou que Hebreus possui uma estrutura singular, iniciando como um tratado, seguindo como um sermão e concluindo como uma carta.",
+      "detalhamento": "O autor observou que Hebreus possui uma estrutura singular, iniciando como um tratado, seguindo como um sermão e concluindo como uma carta. O texto carece de saudação inicial, identificação do autor e definição de destinatários, contudo, é notável pelo uso de um grego de alta qualidade e um vocabulário refinado.",
+      "pontosChave": [
+        "O autor observou que Hebreus possui uma estrutura singular, iniciando como um tratado, seguindo como um sermão e concluindo como uma carta.",
+        "O texto carece de saudação inicial, identificação do autor e definição de destinatários, contudo, é notável pelo uso de um grego de alta qualidade e um vocabulário refinado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto histórico e destinatários originais",
+      "resumoCurto": "Os destinatários originais da epístola enfrentavam perseguição religiosa e instabilidade social, com a eminente destruição de Jerusalém e do templo, o que impactou a vida da comunidade cristã da época.",
+      "detalhamento": "Os destinatários originais da epístola enfrentavam perseguição religiosa e instabilidade social, com a eminente destruição de Jerusalém e do templo, o que impactou a vida da comunidade cristã da época.",
+      "pontosChave": [
+        "Os destinatários originais da epístola enfrentavam perseguição religiosa e instabilidade social, com a eminente destruição de Jerusalém e do templo, o que impactou a vida da comunidade cristã da época."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relevância contemporânea",
+      "resumoCurto": "Profº Profº Marcio Leal descreveu o momento atual como um período pós-cristão, de relativismo e hostilidade ao cristianismo, traçando um paralelo com o contexto da escrita de Hebreus.",
+      "detalhamento": "Profº Profº Marcio Leal descreveu o momento atual como um período pós-cristão, de relativismo e hostilidade ao cristianismo, traçando um paralelo com o contexto da escrita de Hebreus. Foi discutida a reflexão teológica sobre a existência de \"ateus anônimos\" dentro da igreja, em contraste com o conceito de \"cristãos anônimos\" de Karl Rahner.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal descreveu o momento atual como um período pós-cristão, de relativismo e hostilidade ao cristianismo, traçando um paralelo com o contexto da escrita de Hebreus.",
+        "Foi discutida a reflexão teológica sobre a existência de \"ateus anônimos\" dentro da igreja, em contraste com o conceito de \"cristãos anônimos\" de Karl Rahner."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "A centralidade de Cristo",
+      "resumoCurto": "A aula enfatizou que a verdadeira adoração não está vinculada a elementos externos, mas à fé na supremacia de Cristo como centro de todas as coisas.",
+      "detalhamento": "A aula enfatizou que a verdadeira adoração não está vinculada a elementos externos, mas à fé na supremacia de Cristo como centro de todas as coisas. Foi argumentado que a perda dessa perspectiva leva ao legalismo e à meritocracia.",
+      "pontosChave": [
+        "A aula enfatizou que a verdadeira adoração não está vinculada a elementos externos, mas à fé na supremacia de Cristo como centro de todas as coisas.",
+        "Foi argumentado que a perda dessa perspectiva leva ao legalismo e à meritocracia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desafios da análise de Hebreus",
+      "resumoCurto": "O livro apresenta incertezas significativas quanto à datação, autoria, local de escrita e propósito original, aspectos que exigem uma análise minuciosa.",
+      "detalhamento": "O livro apresenta incertezas significativas quanto à datação, autoria, local de escrita e propósito original, aspectos que exigem uma análise minuciosa.",
+      "pontosChave": [
+        "O livro apresenta incertezas significativas quanto à datação, autoria, local de escrita e propósito original, aspectos que exigem uma análise minuciosa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Metodologia de investigação da autoria",
+      "resumoCurto": "Para investigar a autoria, utilizam-se evidências externas, baseadas em escritos patrísticos, e evidências internas do próprio texto.",
+      "detalhamento": "Para investigar a autoria, utilizam-se evidências externas, baseadas em escritos patrísticos, e evidências internas do próprio texto. Foi destacado que o título \"aos Hebreus\" foi uma adição posterior pela igreja primitiva, não constando no manuscrito original.",
+      "pontosChave": [
+        "Para investigar a autoria, utilizam-se evidências externas, baseadas em escritos patrísticos, e evidências internas do próprio texto.",
+        "Foi destacado que o título \"aos Hebreus\" foi uma adição posterior pela igreja primitiva, não constando no manuscrito original."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Evidências externas e a perspectiva patrística",
+      "resumoCurto": "A ausência da epístola em listas canônicas antigas, como o Cânon de Marcião e o fragmento Muratoriano, aponta para dificuldades históricas.",
+      "detalhamento": "A ausência da epístola em listas canônicas antigas, como o Cânon de Marcião e o fragmento Muratoriano, aponta para dificuldades históricas. Autores como Clemente de Roma e Hermas citaram o livro sem identificar o autor. Hipólito de Roma, Irineu e Tertuliano rejeitaram a autoria paulina, com Tertuliano sugerindo Barnabé como possível autor.",
+      "pontosChave": [
+        "A ausência da epístola em listas canônicas antigas, como o Cânon de Marcião e o fragmento Muratoriano, aponta para dificuldades históricas.",
+        "Autores como Clemente de Roma e Hermas citaram o livro sem identificar o autor.",
+        "Hipólito de Roma, Irineu e Tertuliano rejeitaram a autoria paulina, com Tertuliano sugerindo Barnabé como possível autor."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Divergências geográficas sobre a autoria",
+      "resumoCurto": "Houve uma divisão histórica entre a igreja ocidental, que negava a autoria paulina, e a oriental, representada por Clemente de Alexandria e Pantenus, que aceitava a obra como anônima de Paulo, traduzida por Lucas.",
+      "detalhamento": "Houve uma divisão histórica entre a igreja ocidental, que negava a autoria paulina, e a oriental, representada por Clemente de Alexandria e Pantenus, que aceitava a obra como anônima de Paulo, traduzida por Lucas. Manuscritos como o P46, Vaticanus e Sinaiticus refletem diferentes posicionamentos sobre a colocação da epístola entre os escritos paulinos.",
+      "pontosChave": [
+        "Houve uma divisão histórica entre a igreja ocidental, que negava a autoria paulina, e a oriental, representada por Clemente de Alexandria e Pantenus, que aceitava a obra como anônima de Paulo, traduzida por Lucas.",
+        "Manuscritos como o P46, Vaticanus e Sinaiticus refletem diferentes posicionamentos sobre a colocação da epístola entre os escritos paulinos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Consenso histórico e a Reforma",
+      "resumoCurto": "Orígenes argumentou que as ideias eram paulinas, mas a escrita seria de outro discípulo.",
+      "detalhamento": "Orígenes argumentou que as ideias eram paulinas, mas a escrita seria de outro discípulo. A aceitação da autoria paulina, consolidada apenas com Jerônimo e Agostinho, foi descrita como um acordo entre as igrejas ocidental e oriental. Reformadores como Erasmo, Lutero e Calvino questionaram ou rejeitaram a autoria paulina, sugerindo nomes como Apolo, Lucas ou Clemente de Roma.",
+      "pontosChave": [
+        "Orígenes argumentou que as ideias eram paulinas, mas a escrita seria de outro discípulo.",
+        "A aceitação da autoria paulina, consolidada apenas com Jerônimo e Agostinho, foi descrita como um acordo entre as igrejas ocidental e oriental.",
+        "Reformadores como Erasmo, Lutero e Calvino questionaram ou rejeitaram a autoria paulina, sugerindo nomes como Apolo, Lucas ou Clemente de Roma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Evidências internas contra a autoria paulina",
+      "resumoCurto": "A análise interna mostra que o autor se coloca como alguém que recebeu o evangelho de testemunhas oculares, uma postura diferente da de Paulo, que enfatizava o apostolado direto recebido do Senhor.",
+      "detalhamento": "A análise interna mostra que o autor se coloca como alguém que recebeu o evangelho de testemunhas oculares, uma postura diferente da de Paulo, que enfatizava o apostolado direto recebido do Senhor. Além disso, o estilo literário e a qualidade do grego divergem dos escritos reconhecidamente paulinos.",
+      "pontosChave": [
+        "A análise interna mostra que o autor se coloca como alguém que recebeu o evangelho de testemunhas oculares, uma postura diferente da de Paulo, que enfatizava o apostolado direto recebido do Senhor.",
+        "Além disso, o estilo literário e a qualidade do grego divergem dos escritos reconhecidamente paulinos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Diferenças teológicas e hermenêuticas",
+      "resumoCurto": "O escritor demonstra um treinamento na escola de pensamento alexandrina de Filo, marcada pela alegoria, em contraste com a formação rabínica de Paulo.",
+      "detalhamento": "O escritor demonstra um treinamento na escola de pensamento alexandrina de Filo, marcada pela alegoria, em contraste com a formação rabínica de Paulo. Temas centrais de Hebreus, como o sumo sacerdócio de Cristo e a obra da santificação, não são desenvolvidos nos escritos de Paulo, e o uso frequente da Septuaginta em Hebreus difere do uso do Antigo Testamento hebraico por Paulo.",
+      "pontosChave": [
+        "O escritor demonstra um treinamento na escola de pensamento alexandrina de Filo, marcada pela alegoria, em contraste com a formação rabínica de Paulo.",
+        "Temas centrais de Hebreus, como o sumo sacerdócio de Cristo e a obra da santificação, não são desenvolvidos nos escritos de Paulo, e o uso frequente da Septuaginta em Hebreus difere do uso do Antigo Testamento hebraico por Paulo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A hipótese de Lucas",
+      "resumoCurto": "A sugestão de Lucas como autor, apresentada por Clemente de Alexandria, apoia-se em paralelos estilísticos com Lucas-Atos, embora a evidência literária não seja conclusiva.",
+      "detalhamento": "A sugestão de Lucas como autor, apresentada por Clemente de Alexandria, apoia-se em paralelos estilísticos com Lucas-Atos, embora a evidência literária não seja conclusiva.",
+      "pontosChave": [
+        "A sugestão de Lucas como autor, apresentada por Clemente de Alexandria, apoia-se em paralelos estilísticos com Lucas-Atos, embora a evidência literária não seja conclusiva."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Análise da autoria de Lucas e Clemente de Roma",
+      "resumoCurto": "Profº Profº Marcio Leal discute a possibilidade de Lucas ter escrito o livro de Hebreus, mas a hipótese é descartada, uma vez que a obra apresenta um pensamento judaico profundo e uma interpretação da lei que não condiz com a identidade de Lucas como um cristão gentio.",
+      "detalhamento": "Profº Profº Marcio Leal discute a possibilidade de Lucas ter escrito o livro de Hebreus, mas a hipótese é descartada, uma vez que a obra apresenta um pensamento judaico profundo e uma interpretação da lei que não condiz com a identidade de Lucas como um cristão gentio. Clemente de Roma também é considerado uma possibilidade após sugestão de Origens, mas Profº Profº Marcio Leal argumenta contra essa autoria devido a diferenças estilísticas entre os escritos de Clemente e a epístola, além de uma suposta falta de criatividade teológica nas cartas de Clemente.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal discute a possibilidade de Lucas ter escrito o livro de Hebreus, mas a hipótese é descartada, uma vez que a obra apresenta um pensamento judaico profundo e uma interpretação da lei que não condiz com a identidade de Lucas como um cristão gentio.",
+        "Clemente de Roma também é considerado uma possibilidade após sugestão de Origens, mas Profº Profº Marcio Leal argumenta contra essa autoria devido a diferenças estilísticas entre os escritos de Clemente e a epístola, além de uma suposta falta de criatividade teológica nas cartas de Clemente."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Análise da autoria de Barnabé",
+      "resumoCurto": "A possibilidade de Barnabé ter escrito Hebreus é avaliada por Profº Profº Marcio Leal, mencionando o registro de Tertuliano que defende essa autoria.",
+      "detalhamento": "A possibilidade de Barnabé ter escrito Hebreus é avaliada por Profº Profº Marcio Leal, mencionando o registro de Tertuliano que defende essa autoria. Os argumentos a favor incluem a designação de Barnabé como \"filho da consolação\" (Atos 4:36), a vasta cultura de Barnabé, a proximidade com Paulo e o conhecimento do sistema sacerdotal esperado de um levita de Chipre.",
+      "pontosChave": [
+        "A possibilidade de Barnabé ter escrito Hebreus é avaliada por Profº Profº Marcio Leal, mencionando o registro de Tertuliano que defende essa autoria.",
+        "Os argumentos a favor incluem a designação de Barnabé como \"filho da consolação\" (Atos 4:36), a vasta cultura de Barnabé, a proximidade com Paulo e o conhecimento do sistema sacerdotal esperado de um levita de Chipre."
+      ],
+      "referenciasNoBloco": [
+        "Atos 4:36"
+      ]
+    },
+    {
+      "ordem": 20,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Dificuldades na autoria de Barnabé",
+      "resumoCurto": "Profº Profº Marcio Leal pontua obstáculos para a tese de Barnabé, notando a existência da apócrifa Carta de Barnabé que circulou nos primeiros séculos.",
+      "detalhamento": "Profº Profº Marcio Leal pontua obstáculos para a tese de Barnabé, notando a existência da apócrifa Carta de Barnabé que circulou nos primeiros séculos. É argumentado que, caso Barnabé fosse o autor da referida carta, o conteúdo divergente entre os dois textos torna improvável que a mesma pessoa tenha escrito ambos, e, na ausência de certeza sobre a autoria da carta apócrifa, não é possível realizar uma comparação literária válida.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal pontua obstáculos para a tese de Barnabé, notando a existência da apócrifa Carta de Barnabé que circulou nos primeiros séculos.",
+        "É argumentado que, caso Barnabé fosse o autor da referida carta, o conteúdo divergente entre os dois textos torna improvável que a mesma pessoa tenha escrito ambos, e, na ausência de certeza sobre a autoria da carta apócrifa, não é possível realizar uma comparação literária válida."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Hipótese da autoria de Apolo",
+      "resumoCurto": "A sugestão de que Apolo tenha escrito Hebreus é apresentada como uma conjectura atraente, apoiada por Martinho Lutero em 1525, baseando-se na descrição de Apolo em Atos 18:24 e 18:28 como alguém eloquente e poderoso nas escrituras.",
+      "detalhamento": "A sugestão de que Apolo tenha escrito Hebreus é apresentada como uma conjectura atraente, apoiada por Martinho Lutero em 1525, baseando-se na descrição de Apolo em Atos 18:24 e 18:28 como alguém eloquente e poderoso nas escrituras. Profº Profº Marcio Leal ressalta como ponto contrário a essa teoria a total ausência de testemunho patrístico indicando Apolo como o autor.",
+      "pontosChave": [
+        "A sugestão de que Apolo tenha escrito Hebreus é apresentada como uma conjectura atraente, apoiada por Martinho Lutero em 1525, baseando-se na descrição de Apolo em Atos 18:24 e 18:28 como alguém eloquente e poderoso nas escrituras.",
+        "Profº Profº Marcio Leal ressalta como ponto contrário a essa teoria a total ausência de testemunho patrístico indicando Apolo como o autor."
+      ],
+      "referenciasNoBloco": [
+        "Atos 18:24 e 18:28"
+      ]
+    },
+    {
+      "ordem": 22,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Hipótese da autoria de Silvano (Silas)",
+      "resumoCurto": "A possibilidade de Silvano ter escrito a carta aos Hebreus, uma ideia que surgiu no século XIX, é analisada.",
+      "detalhamento": "A possibilidade de Silvano ter escrito a carta aos Hebreus, uma ideia que surgiu no século XIX, é analisada. Essa teoria baseia-se na afinidade literária observada entre o livro de 1 Pedro e Hebreus, sugerindo que Silvano, tendo atuado como amanuense em 1 Pedro, teria sido o autor. Entretanto, Profº Profº Marcio Leal aponta que se trata de uma conjectura, já que não há indicação na tradição da igreja ou no Novo Testamento de que Silvano tenha exercido outra função que não a de um secretário ou amanuense.",
+      "pontosChave": [
+        "A possibilidade de Silvano ter escrito a carta aos Hebreus, uma ideia que surgiu no século XIX, é analisada.",
+        "Essa teoria baseia-se na afinidade literária observada entre o livro de 1 Pedro e Hebreus, sugerindo que Silvano, tendo atuado como amanuense em 1 Pedro, teria sido o autor.",
+        "Entretanto, Profº Profº Marcio Leal aponta que se trata de uma conjectura, já que não há indicação na tradição da igreja ou no Novo Testamento de que Silvano tenha exercido outra função que não a de um secretário ou amanuense."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Conclusão sobre a autoria e significado teológico",
+      "resumoCurto": "Profº Profº Marcio Leal conclui que a identidade do autor de Hebreus permanece desconhecida, o que destaca a soberania de Deus na condução da história.",
+      "detalhamento": "Profº Profº Marcio Leal conclui que a identidade do autor de Hebreus permanece desconhecida, o que destaca a soberania de Deus na condução da história. Independentemente da autoria humana, é enfatizado que o texto faz parte das Escrituras Sagradas e aponta para a supremacia de Cristo e a salvação pela graça.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal conclui que a identidade do autor de Hebreus permanece desconhecida, o que destaca a soberania de Deus na condução da história.",
+        "Independentemente da autoria humana, é enfatizado que o texto faz parte das Escrituras Sagradas e aponta para a supremacia de Cristo e a salvação pela graça."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Encerramento e planejamento da próxima aula",
+      "resumoCurto": "Profº Profº Marcio Leal informa que, na aula seguinte, a reflexão sobre as epístolas gerais continuará com o tema da destinação da carta aos Hebreus.",
+      "detalhamento": "Profº Profº Marcio Leal informa que, na aula seguinte, a reflexão sobre as epístolas gerais continuará com o tema da destinação da carta aos Hebreus. Alcimar Luiz da Silva realiza a oração de encerramento, agradecendo pela aula e pelos instrutores, e os participantes são orientados a assinar a lista de presença.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal informa que, na aula seguinte, a reflexão sobre as epístolas gerais continuará com o tema da destinação da carta aos Hebreus.",
+        "Alcimar Luiz da Silva realiza a oração de encerramento, agradecendo pela aula e pelos instrutores, e os participantes são orientados a assinar a lista de presença."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Projetos e necessidades locais",
+      "relato": "Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma. Durante a discussão, Salatiel Rodrigues mencionou a necessidade de reparos no telhado do templo em Ladário, enquanto Cristiano Sacramento relatou o interesse da igreja em Tabatinga na aquisição de um motor de popa para o transporte de fiéis."
+    },
+    {
+      "titulo": "Discussão sobre ferramentas digitais",
+      "relato": "Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações. Profº Profº Marcio Leal relatou barreiras para acessar a versão paga da ferramenta, enquanto Josias Ribeiro recomendou o uso de um e-mail universitário para obter benefícios institucionais e acesso gratuito a recursos como armazenamento e o NotebookLM Pro. Cristiano Sacramento comentou que compartilha uma assinatura paga com outras quatro pessoas para reduzir os custos individuais."
+    },
+    {
+      "titulo": "Hipótese da autoria de Apolo",
+      "relato": "A sugestão de que Apolo tenha escrito Hebreus é apresentada como uma conjectura atraente, apoiada por Martinho Lutero em 1525, baseando-se na descrição de Apolo em Atos 18:24 e 18:28 como alguém eloquente e poderoso nas escrituras. Profº Profº Marcio Leal ressalta como ponto contrário a essa teoria a total ausência de testemunho patrístico indicando Apolo como o autor."
+    },
+    {
+      "titulo": "Encerramento e planejamento da próxima aula",
+      "relato": "Profº Profº Marcio Leal informa que, na aula seguinte, a reflexão sobre as epístolas gerais continuará com o tema da destinação da carta aos Hebreus. Alcimar Luiz da Silva realiza a oração de encerramento, agradecendo pela aula e pelos instrutores, e os participantes são orientados a assinar a lista de presença."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Atos 4:36",
+      "contexto": "Os argumentos a favor incluem a designação de Barnabé como \"filho da consolação\" (Atos 4:36), a vasta cultura de Barnabé, a proximidade com Paulo e o conhecimento do sistema sacerdotal esperado de um levita de Chipre."
+    },
+    {
+      "referencia": "Atos 18:24 e 18:28",
+      "contexto": "A sugestão de que Apolo tenha escrito Hebreus é apresentada como uma conjectura atraente, apoiada por Martinho Lutero em 1525, baseando-se na descrição de Apolo em Atos 18:24 e 18:28 como alguém eloquente e poderoso nas escrituras."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    },
+    {
+      "titulo": "1 Pedro (Esperança Viva no Sofrimento)",
+      "detalhe": "Escrita com Silvano a partir de Roma (\"Babilônia\"); exorta os cristãos peregrinos a manterem conduta ilibada sob difamação hostil, lembrando que o sofrimento purifica a fé como ouro refinado no fogo."
+    },
+    {
+      "titulo": "O Conhecimento Pleno (Epignosis)",
+      "detalhe": "Em 2 Pedro, a verdadeira arma contra a corrupção herética e o desvio moral é o crescimento no verdadeiro conhecimento salvífico de Jesus Cristo (2Pe 1:3; 3:18)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e interação inicial\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal, Salatiel Rodrigues, Daniel Rodrigues, Rosiane Lima, Josias Ribeiro e Cristiano Sacramento iniciaram a sessão com saudações e comentários sobre o clima, marcando o começo do semestre."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Projetos e necessidades locais\" nesta aula?",
+      "dicaResposta": "Cristiano Sacramento estimou a presença de 22 a 24 alunos na turma. Durante a discussão, Salatiel Rodrigues mencionou a necessidade de reparos no telhado do templo em Ladário, enquanto Cristiano Sacramento relatou o interesse da igreja em Tabatinga na aquisição de um motor de popa para o transporte de fiéis."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Orientações do curso e material didático\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal informou que a metodologia do semestre será diferente, com as apresentações servindo apenas para pontuar os assuntos, exigindo que a turma faça anotações próprias. O livro base adotado para a disciplina é \"Introdução ao Novo Testamento\", de Carson, Douglas e Morris, publicado pela editora Vida Nova."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Discussão sobre ferramentas digitais\" nesta aula?",
+      "dicaResposta": "Cristiano Sacramento sugeriu o uso do NotebookLM para as apresentações. Profº Profº Marcio Leal relatou barreiras para acessar a versão paga da ferramenta, enquanto Josias Ribeiro recomendou o uso de um e-mail universitário para obter benefícios institucionais e acesso gratuito a recursos como armazenamento e o NotebookLM Pro."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Logística das aulas\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal esclareceu que, embora as aulas tenham previsão de término para às 22h, o horário é flexível conforme o desenvolvimento do tema. O foco do semestre serão as Epístolas Gerais, com início pelo livro de Hebreus."
+    }
+  ],
+  "encaminhamentos": [
+    "Realizar anotações: Registrar os pontos abordados nas aulas para estudo posterior pois as apresentações servem apenas como roteiro de tópicos.",
+    "Adquirir livro: Providenciar o exemplar de Introdução ao Novo Testamento de Carson Douglas e Morris para aprofundamento do conteúdo.",
+    "Testar ferramenta: Tentar utilizar novamente o Notebook LM para a elaboração de futuras apresentações de slides."
+  ]
+}

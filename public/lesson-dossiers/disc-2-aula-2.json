@@ -1,0 +1,474 @@
+{
+  "id": "disc-2-aula-2",
+  "disciplinaId": "disc-2",
+  "disciplinaName": "02 - História do Pensamento Cristão II - Hilário Bispo",
+  "disciplinaShortName": "História do Pensamento Cristão II",
+  "disciplinaCode": "HIS-102",
+  "professor": "Profº Hilário Bispo",
+  "aulaNum": 2,
+  "unidade": 1,
+  "dateIso": "2026-08-18",
+  "dateBr": "18/08/2026",
+  "theme": "Aula 2 • Abertura e Logística",
+  "geminiUrl": "/gemini-notes/hpc_aula2_2026-08-18.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "Reunião de capacitação teológica discutiu fundamentos da Reforma Protestante e estratégias para fortalecer a liderança eclesiástica. Fundamentos da Fé Reformada O encontro estabeleceu a teologia reformada através da soberania divina e autoridade suprema das Escrituras. A priorização da pregação sistemática e do ensino doutrinário claro foi destacada como essencial. Organização e Prática Ministerial",
+    "sinteseGeral": "Reunião de capacitação teológica discutiu fundamentos da Reforma Protestante e estratégias para fortalecer a liderança eclesiástica. Fundamentos da Fé Reformada O encontro estabeleceu a teologia reformada através da soberania divina e autoridade suprema das Escrituras. A priorização da pregação sistemática e do ensino doutrinário claro foi destacada como essencial. Organização e Prática Ministerial Líderes reforçaram a importância da oração coletiva e do desenvolvimento de centros de formação bíblica. A administração correta dos sacramentos e a disciplina foram identificadas como marcas fundamentais da igreja. Missão e Expansão Teológica A reunião enfatizou que a missão da igreja pertence a Deus e requer líderes bem preparados. Ficou decidido o uso de materiais fundamentais para organizar o ensino teológico nas igrejas.",
+    "mapaRapido": [
+      "Abertura e Logística: Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento.",
+      "Visão Geral da Tradição Reformada: Hilario enfatizou a necessidade de sistematizar a fé reformada para consolidar o movimento, observando que a Reforma Protestante não foi um processo uniforme, mas composto por diversos centros com ênfases variadas.",
+      "Características Centrais da Fé Reformada: Apesar das diferenças, os movimentos compartilhavam princípios fundamentais: a autoridade suprema das Escrituras (Sola Scriptura), a soberania de Deus, a salvação pela graça e um culto baseado em princípios bíblicos.",
+      "A Importância de Huldrych Zwingli: Zwingli, sacerdote humanista de Zurique, foi essencial para a Reforma, defendendo uma adesão inflexível às Escrituras como a única autoridade para a doutrina e a vida da igreja.",
+      "Fidelidade Ministerial: Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica.",
+      "Reforma do Culto e Liturgia: O movimento reformado enfatizou a simplificação da liturgia e a centralidade da pregação, removendo imagens e práticas sem fundamentação bíblica."
+    ],
+    "duracaoEstimada": "~1h16min",
+    "totalBlocos": 26
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:01:55",
+      "fase": "Abertura & Contexto",
+      "categoria": "Debate em Turma",
+      "titulo": "Abertura e Logística",
+      "resumoCurto": "Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento.",
+      "detalhamento": "Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento. Carla P dos S de Almeida conduziu a oração inicial, solicitando orientação para o encontro. Carla também mencionou uma tarefa pendente referente a uma lista de missionários, que estava sendo finalizada por Marcia após ser refeita por outro pastor.",
+      "pontosChave": [
+        "Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento.",
+        "Carla P dos S de Almeida conduziu a oração inicial, solicitando orientação para o encontro.",
+        "Carla também mencionou uma tarefa pendente referente a uma lista de missionários, que estava sendo finalizada por Marcia após ser refeita por outro pastor."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:03:00",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Visão Geral da Tradição Reformada",
+      "resumoCurto": "Hilario enfatizou a necessidade de sistematizar a fé reformada para consolidar o movimento, observando que a Reforma Protestante não foi um processo uniforme, mas composto por diversos centros com ênfases variadas.",
+      "detalhamento": "Hilario enfatizou a necessidade de sistematizar a fé reformada para consolidar o movimento, observando que a Reforma Protestante não foi um processo uniforme, mas composto por diversos centros com ênfases variadas. Embora nomes como Lutero e Calvino sejam centrais, o movimento incluiu tradições distintas, como a luterana, a reformada, a anglicana e correntes radicais.",
+      "pontosChave": [
+        "Hilario enfatizou a necessidade de sistematizar a fé reformada para consolidar o movimento, observando que a Reforma Protestante não foi um processo uniforme, mas composto por diversos centros com ênfases variadas.",
+        "Embora nomes como Lutero e Calvino sejam centrais, o movimento incluiu tradições distintas, como a luterana, a reformada, a anglicana e correntes radicais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:06:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Características Centrais da Fé Reformada",
+      "resumoCurto": "Apesar das diferenças, os movimentos compartilhavam princípios fundamentais: a autoridade suprema das Escrituras (Sola Scriptura), a soberania de Deus, a salvação pela graça e um culto baseado em princípios bíblicos.",
+      "detalhamento": "Apesar das diferenças, os movimentos compartilhavam princípios fundamentais: a autoridade suprema das Escrituras (Sola Scriptura), a soberania de Deus, a salvação pela graça e um culto baseado em princípios bíblicos. Hilario destacou a Reforma Suíça, liderada inicialmente por Huldrych Zwingli, como um ponto crucial para a consolidação da teologia reformada.",
+      "pontosChave": [
+        "Apesar das diferenças, os movimentos compartilhavam princípios fundamentais: a autoridade suprema das Escrituras (Sola Scriptura), a soberania de Deus, a salvação pela graça e um culto baseado em princípios bíblicos.",
+        "Hilario destacou a Reforma Suíça, liderada inicialmente por Huldrych Zwingli, como um ponto crucial para a consolidação da teologia reformada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:09:36",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "A Importância de Huldrych Zwingli",
+      "resumoCurto": "Zwingli, sacerdote humanista de Zurique, foi essencial para a Reforma, defendendo uma adesão inflexível às Escrituras como a única autoridade para a doutrina e a vida da igreja.",
+      "detalhamento": "Zwingli, sacerdote humanista de Zurique, foi essencial para a Reforma, defendendo uma adesão inflexível às Escrituras como a única autoridade para a doutrina e a vida da igreja. O participante explicou que a abordagem de Zwingli exigia abandonar qualquer prática sem respaldo bíblico, rejeitando a colocação da tradição eclesiástica no mesmo patamar que a Bíblia.",
+      "pontosChave": [
+        "Zwingli, sacerdote humanista de Zurique, foi essencial para a Reforma, defendendo uma adesão inflexível às Escrituras como a única autoridade para a doutrina e a vida da igreja.",
+        "O participante explicou que a abordagem de Zwingli exigia abandonar qualquer prática sem respaldo bíblico, rejeitando a colocação da tradição eclesiástica no mesmo patamar que a Bíblia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:11:31",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Fidelidade Ministerial",
+      "resumoCurto": "Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica.",
+      "detalhamento": "Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica. O poder ministerial reside na Palavra, e não em métodos humanos ou na criatividade pessoal.",
+      "pontosChave": [
+        "Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica.",
+        "O poder ministerial reside na Palavra, e não em métodos humanos ou na criatividade pessoal."
+      ],
+      "referenciasNoBloco": [
+        "1 Coríntios 4:2"
+      ]
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:17:31",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Reforma do Culto e Liturgia",
+      "resumoCurto": "O movimento reformado enfatizou a simplificação da liturgia e a centralidade da pregação, removendo imagens e práticas sem fundamentação bíblica.",
+      "detalhamento": "O movimento reformado enfatizou a simplificação da liturgia e a centralidade da pregação, removendo imagens e práticas sem fundamentação bíblica. Hilario argumentou contra a transformação do culto em entretenimento, observando que uma liturgia simples e previsível mantém o foco na pregação. O orador compartilhou uma experiência de seus tempos de seminário para alertar contra o sacrifício do tempo da Palavra em favor de atrações secundárias.",
+      "pontosChave": [
+        "O movimento reformado enfatizou a simplificação da liturgia e a centralidade da pregação, removendo imagens e práticas sem fundamentação bíblica.",
+        "Hilario argumentou contra a transformação do culto em entretenimento, observando que uma liturgia simples e previsível mantém o foco na pregação.",
+        "O orador compartilhou uma experiência de seus tempos de seminário para alertar contra o sacrifício do tempo da Palavra em favor de atrações secundárias."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:22:32",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Influência Moral da Igreja",
+      "resumoCurto": "Hilario enfatizou que a igreja deve servir como padrão moral para a sociedade, criticando a participação de alguns líderes religiosos em escândalos e políticas partidárias.",
+      "detalhamento": "Hilario enfatizou que a igreja deve servir como padrão moral para a sociedade, criticando a participação de alguns líderes religiosos em escândalos e políticas partidárias. O participante notou que a igreja corre o risco de perder sua seriedade e testemunho quando se iguala a comportamentos mundanos, destacando que a instituição não deve se tornar um tropeço.",
+      "pontosChave": [
+        "Hilario enfatizou que a igreja deve servir como padrão moral para a sociedade, criticando a participação de alguns líderes religiosos em escândalos e políticas partidárias.",
+        "O participante notou que a igreja corre o risco de perder sua seriedade e testemunho quando se iguala a comportamentos mundanos, destacando que a instituição não deve se tornar um tropeço."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:23:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Divergências sobre a Ceia do Senhor",
+      "resumoCurto": "Zwingli rejeitou a compreensão católica da presença corporal de Cristo na Eucaristia, o que gerou divergência com Martin Lutero.",
+      "detalhamento": "Zwingli rejeitou a compreensão católica da presença corporal de Cristo na Eucaristia, o que gerou divergência com Martin Lutero. Embora o Colóquio de Marburg tenha tentado alinhar os reformadores, não houve consenso sobre a Ceia do Senhor, mantendo-se a prática das duas ordenanças: Batismo e Santa Ceia.",
+      "pontosChave": [
+        "Zwingli rejeitou a compreensão católica da presença corporal de Cristo na Eucaristia, o que gerou divergência com Martin Lutero.",
+        "Embora o Colóquio de Marburg tenha tentado alinhar os reformadores, não houve consenso sobre a Ceia do Senhor, mantendo-se a prática das duas ordenanças: Batismo e Santa Ceia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:25:24",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Legado e Morte de Zwingli",
+      "resumoCurto": "Hilario citou obras importantes de Zwingli, como os \"67 Artigos\", \"Comentário sobre a verdadeira e falsa religião\" e \"Sobre a providência de Deus\".",
+      "detalhamento": "Hilario citou obras importantes de Zwingli, como os \"67 Artigos\", \"Comentário sobre a verdadeira e falsa religião\" e \"Sobre a providência de Deus\". Zwingli faleceu em 1531 durante um conflito entre cantões suíços, mas suas contribuições foram fundamentais para a tradição reformada. Rodrigo Oliveira compartilhou brevemente a experiência de visitar locais históricos da Reforma em Genebra.",
+      "pontosChave": [
+        "Hilario citou obras importantes de Zwingli, como os \"67 Artigos\", \"Comentário sobre a verdadeira e falsa religião\" e \"Sobre a providência de Deus\".",
+        "Zwingli faleceu em 1531 durante um conflito entre cantões suíços, mas suas contribuições foram fundamentais para a tradição reformada.",
+        "Rodrigo Oliveira compartilhou brevemente a experiência de visitar locais históricos da Reforma em Genebra."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:35:59",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "João Calvino e a Sistematização",
+      "resumoCurto": "João Calvino, nascido em 1509, tornou-se o principal sistematizador da tradição reformada, fornecendo as estruturas organizacionais e educacionais necessárias para a expansão do movimento.",
+      "detalhamento": "João Calvino, nascido em 1509, tornou-se o principal sistematizador da tradição reformada, fornecendo as estruturas organizacionais e educacionais necessárias para a expansão do movimento. Sua obra principal, as \"Institutas da Religião Cristã\", teve o objetivo de apresentar uma síntese da fé cristã e defendê-la contra críticas da Igreja Católica.",
+      "pontosChave": [
+        "João Calvino, nascido em 1509, tornou-se o principal sistematizador da tradição reformada, fornecendo as estruturas organizacionais e educacionais necessárias para a expansão do movimento.",
+        "Sua obra principal, as \"Institutas da Religião Cristã\", teve o objetivo de apresentar uma síntese da fé cristã e defendê-la contra críticas da Igreja Católica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:32:50",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Clareza Doutrinária e Práticas",
+      "resumoCurto": "Hilario enfatizou a importância de confissões de fé e ensino doutrinário claro para evitar a desorganização na igreja.",
+      "detalhamento": "Hilario enfatizou a importância de confissões de fé e ensino doutrinário claro para evitar a desorganização na igreja. O participante criticou práticas modernas sem base bíblica, como orações de \"guerra\" ou comandos indevidos a entidades espirituais, incentivando os líderes a serem firmes em orientar as pessoas conforme as Escrituras.",
+      "pontosChave": [
+        "Hilario enfatizou a importância de confissões de fé e ensino doutrinário claro para evitar a desorganização na igreja.",
+        "O participante criticou práticas modernas sem base bíblica, como orações de \"guerra\" ou comandos indevidos a entidades espirituais, incentivando os líderes a serem firmes em orientar as pessoas conforme as Escrituras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:43:12",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estrutura do Estudo Teológico",
+      "resumoCurto": "As \"Institutas\" propuseram uma abordagem estruturada da teologia, iniciando pelo conhecimento de Deus, antropologia teológica, natureza da Escritura e a Trindade.",
+      "detalhamento": "As \"Institutas\" propuseram uma abordagem estruturada da teologia, iniciando pelo conhecimento de Deus, antropologia teológica, natureza da Escritura e a Trindade. Salatiel Rodrigues confirmou o plano de sua igreja de utilizar materiais básicos para ensinar os fundamentos bíblicos, uma iniciativa apoiada por Hilario como necessária para organizar o conhecimento teológico.",
+      "pontosChave": [
+        "As \"Institutas\" propuseram uma abordagem estruturada da teologia, iniciando pelo conhecimento de Deus, antropologia teológica, natureza da Escritura e a Trindade.",
+        "Salatiel Rodrigues confirmou o plano de sua igreja de utilizar materiais básicos para ensinar os fundamentos bíblicos, uma iniciativa apoiada por Hilario como necessária para organizar o conhecimento teológico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:47:06",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Organização da Igreja e Prioridades",
+      "resumoCurto": "Refletindo sobre o livro de Atos, Hilario discutiu a importância de priorizar a oração e a pregação para organizar a igreja eficazmente.",
+      "detalhamento": "Refletindo sobre o livro de Atos, Hilario discutiu a importância de priorizar a oração e a pregação para organizar a igreja eficazmente. O orador ressaltou que líderes devem ser capazes de hierarquizar prioridades, garantindo que o ministério da Palavra nunca seja sacrificado por demandas secundárias.",
+      "pontosChave": [
+        "Refletindo sobre o livro de Atos, Hilario discutiu a importância de priorizar a oração e a pregação para organizar a igreja eficazmente.",
+        "O orador ressaltou que líderes devem ser capazes de hierarquizar prioridades, garantindo que o ministério da Palavra nunca seja sacrificado por demandas secundárias."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:50:59",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Genebra como Centro de Influência",
+      "resumoCurto": "Sob a atuação de Calvino, Genebra consolidou-se como o centro intelectual e teológico da Reforma.",
+      "detalhamento": "Sob a atuação de Calvino, Genebra consolidou-se como o centro intelectual e teológico da Reforma. Hilario concluiu reforçando a importância da educação contínua, do treinamento de novos líderes e da oração para que as pessoas possam compartilhar o peso do ministério.",
+      "pontosChave": [
+        "Sob a atuação de Calvino, Genebra consolidou-se como o centro intelectual e teológico da Reforma.",
+        "Hilario concluiu reforçando a importância da educação contínua, do treinamento de novos líderes e da oração para que as pessoas possam compartilhar o peso do ministério."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:52:18",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Formação de Líderes Capacitados",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA destaca a necessidade imperativa de desenvolver líderes formados e capacitados dentro da igreja, ressaltando que uma única pessoa não consegue gerenciar todas as responsabilidades sozinha.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA destaca a necessidade imperativa de desenvolver líderes formados e capacitados dentro da igreja, ressaltando que uma única pessoa não consegue gerenciar todas as responsabilidades sozinha. Eles relatam que têm facilitado cursos como pregação expositiva, aconselhamento bíblico e teologia básica para equipar os membros, enfatizando que, ao orar e buscar, Deus provê pessoas dispostas a aprender.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA destaca a necessidade imperativa de desenvolver líderes formados e capacitados dentro da igreja, ressaltando que uma única pessoa não consegue gerenciar todas as responsabilidades sozinha.",
+        "Eles relatam que têm facilitado cursos como pregação expositiva, aconselhamento bíblico e teologia básica para equipar os membros, enfatizando que, ao orar e buscar, Deus provê pessoas dispostas a aprender."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:54:34",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Prática de Oração Diária",
+      "resumoCurto": "Salatiel Rodrigues compartilha a experiência de implementar uma prática de oração coletiva na igreja, realizada de segunda a sábado, às 6:30 da manhã, para intercessão.",
+      "detalhamento": "Salatiel Rodrigues compartilha a experiência de implementar uma prática de oração coletiva na igreja, realizada de segunda a sábado, às 6:30 da manhã, para intercessão. HILARIO JOSE BISPO GRACA reforça a importância dessa iniciativa, afirmando que nenhum ministério subsiste sem oração e que essa é uma prática estabelecida por Cristo.",
+      "pontosChave": [
+        "Salatiel Rodrigues compartilha a experiência de implementar uma prática de oração coletiva na igreja, realizada de segunda a sábado, às 6:30 da manhã, para intercessão.",
+        "HILARIO JOSE BISPO GRACA reforça a importância dessa iniciativa, afirmando que nenhum ministério subsiste sem oração e que essa é uma prática estabelecida por Cristo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:54:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pregação Sistemática das Escrituras",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA argumenta que a pregação deve ser uma exposição sistemática da Bíblia, e não uma abordagem aleatória, sugerindo que os capítulos 1, 2 e 3 de Gênesis sejam pregados anualmente como base para a compreensão do restante das Escrituras.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA argumenta que a pregação deve ser uma exposição sistemática da Bíblia, e não uma abordagem aleatória, sugerindo que os capítulos 1, 2 e 3 de Gênesis sejam pregados anualmente como base para a compreensão do restante das Escrituras. Eles enfatizam que o planejamento e a intencionalidade são fundamentais, desencorajando a dependência de improvisações ou inovações infundadas.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA argumenta que a pregação deve ser uma exposição sistemática da Bíblia, e não uma abordagem aleatória, sugerindo que os capítulos 1, 2 e 3 de Gênesis sejam pregados anualmente como base para a compreensão do restante das Escrituras.",
+        "Eles enfatizam que o planejamento e a intencionalidade são fundamentais, desencorajando a dependência de improvisações ou inovações infundadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:57:05",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Missão de Deus e a Igreja",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA asserta que a igreja tem uma missão que pertence a Deus e que todos os seus esforços devem convergir para o cumprimento desse propósito.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA asserta que a igreja tem uma missão que pertence a Deus e que todos os seus esforços devem convergir para o cumprimento desse propósito. Eles recomendam a leitura das obras de Christopher Wright, \"A Missão de Deus\" e \"A Missão do Povo de Deus\", e reiteram que os líderes são responsáveis por assegurar que a igreja opere dentro desse chamado, sob risco de desvio de propósito.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA asserta que a igreja tem uma missão que pertence a Deus e que todos os seus esforços devem convergir para o cumprimento desse propósito.",
+        "Eles recomendam a leitura das obras de Christopher Wright, \"A Missão de Deus\" e \"A Missão do Povo de Deus\", e reiteram que os líderes são responsáveis por assegurar que a igreja opere dentro desse chamado, sob risco de desvio de propósito."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "00:59:11",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Estabelecimento de Centros de Formação",
+      "resumoCurto": "Utilizando o exemplo do apóstolo Paulo em Éfeso, HILARIO JOSE BISPO GRACA defende a criação de centros de ensino, como a \"Escola de Tirano\", dentro das igrejas para preservar a doutrina.",
+      "detalhamento": "Utilizando o exemplo do apóstolo Paulo em Éfeso, HILARIO JOSE BISPO GRACA defende a criação de centros de ensino, como a \"Escola de Tirano\", dentro das igrejas para preservar a doutrina. Eles esclarecem que locais como a escola dominical ou estudos bíblicos devem ser ambientes de aprendizado profundo da Bíblia, e não apenas espaços recreativos para crianças ou socialização.",
+      "pontosChave": [
+        "Utilizando o exemplo do apóstolo Paulo em Éfeso, HILARIO JOSE BISPO GRACA defende a criação de centros de ensino, como a \"Escola de Tirano\", dentro das igrejas para preservar a doutrina.",
+        "Eles esclarecem que locais como a escola dominical ou estudos bíblicos devem ser ambientes de aprendizado profundo da Bíblia, e não apenas espaços recreativos para crianças ou socialização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:00:15",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Soberania de Deus",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA discute a soberania divina, definindo-a como o governo de Deus sobre a criação, providência, história e salvação.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA discute a soberania divina, definindo-a como o governo de Deus sobre a criação, providência, história e salvação. Eles abordam o sentimento de desânimo diante de cenários globais negativos, reafirmando que Deus mantém o controle de todas as coisas, conforme determinado e registrado em passagens como Mateus 24.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA discute a soberania divina, definindo-a como o governo de Deus sobre a criação, providência, história e salvação.",
+        "Eles abordam o sentimento de desânimo diante de cenários globais negativos, reafirmando que Deus mantém o controle de todas as coisas, conforme determinado e registrado em passagens como Mateus 24."
+      ],
+      "referenciasNoBloco": [
+        "Mateus 24"
+      ]
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:04:47",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Autoridade e Suficiência das Escrituras",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia é a autoridade máxima para a fé e para a vida, servindo como base para a resolução de debates e dúvidas.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia é a autoridade máxima para a fé e para a vida, servindo como base para a resolução de debates e dúvidas. Eles advertem contra a primazia de filosofias seculares no púlpito, insistindo que a pregação deve começar e manter-se fundamentada nas Escrituras.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia é a autoridade máxima para a fé e para a vida, servindo como base para a resolução de debates e dúvidas.",
+        "Eles advertem contra a primazia de filosofias seculares no púlpito, insistindo que a pregação deve começar e manter-se fundamentada nas Escrituras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:05:59",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pecaminosidade Humana e Soteriologia",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA aborda a profundidade da corrupção humana causada pelo pecado, notando que muitos desconhecem o alcance desse impacto na mente, nas emoções e na sociedade.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA aborda a profundidade da corrupção humana causada pelo pecado, notando que muitos desconhecem o alcance desse impacto na mente, nas emoções e na sociedade. Eles esclarecem que a salvação não consiste em mero aperfeiçoamento moral, mas é uma necessidade teológica, exigindo o entendimento da soteriologia e da eficácia do sacrifício de Cristo.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA aborda a profundidade da corrupção humana causada pelo pecado, notando que muitos desconhecem o alcance desse impacto na mente, nas emoções e na sociedade.",
+        "Eles esclarecem que a salvação não consiste em mero aperfeiçoamento moral, mas é uma necessidade teológica, exigindo o entendimento da soteriologia e da eficácia do sacrifício de Cristo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:10:02",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Os Cinco Pontos do Calvinismo",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA introduz os cinco pontos do Calvinismo como uma resposta do Sínodo de Dort aos remonstrantes: depravação total, eleição incondicional, expiação definitiva limitada, graça irresistível e perseverança dos santos.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA introduz os cinco pontos do Calvinismo como uma resposta do Sínodo de Dort aos remonstrantes: depravação total, eleição incondicional, expiação definitiva limitada, graça irresistível e perseverança dos santos. Eles ressaltam que, embora esses pontos sejam centrais, a teologia reformada abrange uma vasta gama de doutrinas, incluindo a antropologia, cristologia e pneumatologia.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA introduz os cinco pontos do Calvinismo como uma resposta do Sínodo de Dort aos remonstrantes: depravação total, eleição incondicional, expiação definitiva limitada, graça irresistível e perseverança dos santos.",
+        "Eles ressaltam que, embora esses pontos sejam centrais, a teologia reformada abrange uma vasta gama de doutrinas, incluindo a antropologia, cristologia e pneumatologia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "01:11:15",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Definição e Marcas da Igreja",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA define a igreja não como uma instituição humana, mas como o povo reunido por Deus mediante a palavra pregada.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA define a igreja não como uma instituição humana, mas como o povo reunido por Deus mediante a palavra pregada. Eles identificam as marcas essenciais da igreja como a pregação fiel das Escrituras, a administração correta dos sacramentos e a aplicação da disciplina como instrumento de restauração e crescimento.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA define a igreja não como uma instituição humana, mas como o povo reunido por Deus mediante a palavra pregada.",
+        "Eles identificam as marcas essenciais da igreja como a pregação fiel das Escrituras, a administração correta dos sacramentos e a aplicação da disciplina como instrumento de restauração e crescimento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "timestamp": "01:12:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Compreensão dos Sacramentos",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA explica que a tradição reformada reconhece o batismo, como sinal da aliança, e a ceia do Senhor, como um memorial da morte de Cristo.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA explica que a tradição reformada reconhece o batismo, como sinal da aliança, e a ceia do Senhor, como um memorial da morte de Cristo. Eles diferenciam essa visão das posições de transubstanciação romana e da visão puramente memorialista de Zuínglio, destacando a compreensão de Calvino sobre a presença espiritual de Cristo na ceia.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA explica que a tradição reformada reconhece o batismo, como sinal da aliança, e a ceia do Senhor, como um memorial da morte de Cristo.",
+        "Eles diferenciam essa visão das posições de transubstanciação romana e da visão puramente memorialista de Zuínglio, destacando a compreensão de Calvino sobre a presença espiritual de Cristo na ceia."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 26,
+      "timestamp": "01:16:09",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Contexto Histórico",
+      "titulo": "Histórico da Reforma e Logística do Curso",
+      "resumoCurto": "HILARIO JOSE BISPO GRACA, baseando-se em Justo González, explica que a Reforma Protestante foi um processo composto por diferentes movimentos liderados por figuras como Lutero, Zuínglio e Calvino, mencionando também as origens do anglicanismo e o movimento anabatista.",
+      "detalhamento": "HILARIO JOSE BISPO GRACA, baseando-se em Justo González, explica que a Reforma Protestante foi um processo composto por diferentes movimentos liderados por figuras como Lutero, Zuínglio e Calvino, mencionando também as origens do anglicanismo e o movimento anabatista. Por fim, HILARIO JOSE BISPO GRACA aborda a dificuldade de acesso aos slides da aula no armazenamento digital devido a problemas de espaço, concluindo o encontro.",
+      "pontosChave": [
+        "HILARIO JOSE BISPO GRACA, baseando-se em Justo González, explica que a Reforma Protestante foi um processo composto por diferentes movimentos liderados por figuras como Lutero, Zuínglio e Calvino, mencionando também as origens do anglicanismo e o movimento anabatista.",
+        "Por fim, HILARIO JOSE BISPO GRACA aborda a dificuldade de acesso aos slides da aula no armazenamento digital devido a problemas de espaço, concluindo o encontro."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Abertura e Logística",
+      "relato": "Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento. Carla P dos S de Almeida conduziu a oração inicial, solicitando orientação para o encontro. Carla também mencionou uma tarefa pendente referente a uma lista de missionários, que estava sendo finalizada por Marcia após ser refeita por outro pastor.",
+      "timestamp": "00:01:55"
+    },
+    {
+      "titulo": "Influência Moral da Igreja",
+      "relato": "Hilario enfatizou que a igreja deve servir como padrão moral para a sociedade, criticando a participação de alguns líderes religiosos em escândalos e políticas partidárias. O participante notou que a igreja corre o risco de perder sua seriedade e testemunho quando se iguala a comportamentos mundanos, destacando que a instituição não deve se tornar um tropeço.",
+      "timestamp": "00:22:32"
+    },
+    {
+      "titulo": "Legado e Morte de Zwingli",
+      "relato": "Hilario citou obras importantes de Zwingli, como os \"67 Artigos\", \"Comentário sobre a verdadeira e falsa religião\" e \"Sobre a providência de Deus\". Zwingli faleceu em 1531 durante um conflito entre cantões suíços, mas suas contribuições foram fundamentais para a tradição reformada. Rodrigo Oliveira compartilhou brevemente a experiência de visitar locais históricos da Reforma em Genebra.",
+      "timestamp": "00:25:24"
+    },
+    {
+      "titulo": "Autoridade e Suficiência das Escrituras",
+      "relato": "HILARIO JOSE BISPO GRACA enfatiza que a Bíblia é a autoridade máxima para a fé e para a vida, servindo como base para a resolução de debates e dúvidas. Eles advertem contra a primazia de filosofias seculares no púlpito, insistindo que a pregação deve começar e manter-se fundamentada nas Escrituras.",
+      "timestamp": "01:04:47"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "1 Coríntios 4:2",
+      "contexto": "Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica."
+    },
+    {
+      "referencia": "Mateus 24",
+      "contexto": "Eles abordam o sentimento de desânimo diante de cenários globais negativos, reafirmando que Deus mantém o controle de todas as coisas, conforme determinado e registrado em passagens como Mateus 24."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Crítica Reformada a Schleiermacher",
+      "detalhe": "A experiência humana substituiu a revelação objetiva, tornando a teologia subjetiva e relativista."
+    },
+    {
+      "titulo": "Declaração Teológica de Barmen (1934)",
+      "detalhe": "Redigida majoritariamente por Karl Barth pela Igreja Confessante alemã, rejeitando que o Estado nazista ou Hitler fossem fontes de revelação divina concorrentes a Jesus Cristo."
+    },
+    {
+      "titulo": "Efeitos Noéticos do Pecado",
+      "detalhe": "Ensino reformado de que a mente e a razão humana foram corrompidas pela Queda, necessitando da iluminação soberana do Espírito Santo para compreender a revelação."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Logística\" nesta aula?",
+      "dicaResposta": "Hilario Jose Bispo Graca iniciou a reunião, verificando a presença dos participantes e garantindo que o registro da sessão estivesse em andamento. Carla P dos S de Almeida conduziu a oração inicial, solicitando orientação para o encontro."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Visão Geral da Tradição Reformada\" nesta aula?",
+      "dicaResposta": "Hilario enfatizou a necessidade de sistematizar a fé reformada para consolidar o movimento, observando que a Reforma Protestante não foi um processo uniforme, mas composto por diversos centros com ênfases variadas. Embora nomes como Lutero e Calvino sejam centrais, o movimento incluiu tradições distintas, como a luterana, a reformada, a anglicana e correntes radicais."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Características Centrais da Fé Reformada\" nesta aula?",
+      "dicaResposta": "Apesar das diferenças, os movimentos compartilhavam princípios fundamentais: a autoridade suprema das Escrituras (Sola Scriptura), a soberania de Deus, a salvação pela graça e um culto baseado em princípios bíblicos. Hilario destacou a Reforma Suíça, liderada inicialmente por Huldrych Zwingli, como um ponto crucial para a consolidação da teologia reformada."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"A Importância de Huldrych Zwingli\" nesta aula?",
+      "dicaResposta": "Zwingli, sacerdote humanista de Zurique, foi essencial para a Reforma, defendendo uma adesão inflexível às Escrituras como a única autoridade para a doutrina e a vida da igreja. O participante explicou que a abordagem de Zwingli exigia abandonar qualquer prática sem respaldo bíblico, rejeitando a colocação da tradição eclesiástica no mesmo patamar que a Bíblia."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Fidelidade Ministerial\" nesta aula?",
+      "dicaResposta": "Hilario destacou que as pessoas no ministério devem ser fiéis na distribuição da Palavra de Deus, conforme sugerido em 1 Coríntios 4:2, resistindo à tendência atual de inovações e diversões que carecem de base bíblica. O poder ministerial reside na Palavra, e não em métodos humanos ou na criatividade pessoal."
+    }
+  ],
+  "encaminhamentos": [
+    "Iniciar estudo bíblico: Utilizar a revista do pastor Vanderlei para iniciar estudos bíblicos estruturados com os membros da igreja.",
+    "Ler livros recomendados: Adquirir e ler as obras A missao de Deus e A missao do povo de Deus de Christopher Wright."
+  ]
+}

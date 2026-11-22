@@ -1,0 +1,171 @@
+{
+  "id": "disc-8-aula-11",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 11,
+  "unidade": 2,
+  "dateIso": "2026-10-30",
+  "dateBr": "30/10/2026",
+  "theme": "Aula 11 • Chegada e Problema Técnico",
+  "geminiUrl": "https://docs.google.com/document/d/1Hv7A1JHsNEQY2BhnFCZfbf_LUBu8Vpb0_NyB_T8mFSE/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "O princípio da Impessoalidade Acadêmica: eliminação de expressões devocionais pessoais (\"eu penso\", \"meu trabalho\") e o rigor semântico teológico.",
+    "sinteseGeral": "Recepção de família e debate técnico e levantamento acadêmico e planos de viagem Chegada e Problema Técnico Família venezuelana chegou com documentação regularizada. Falta de acesso ao Microsoft Word persistiu por 1 mês. Levantamento Acadêmico e Avisos Levantamento identificou períodos acadêmicos da turma. Avaliações de História da Cultura Afro-Brasileira e Indígena ocorrerão em 3 semanas. Reconhecimento e Encerramento Capacidade de conteúdo foi elogiada. Viagens de carro foram discutidas antes das despedidas finais.",
+    "mapaRapido": [
+      "Chegada e Regularização de Família Venezuelana: Salatiel Rodrigues relata a chegada de uma família venezuelana à residência, destacando que estão hospedados no local e já possuem toda a documentação regularizada.",
+      "Problema Técnico com o Microsoft Word: Seminarista William Barros relata a que está sem acesso ao Microsoft Word há mais de um mês devido a uma atualização, recebendo respostas bem-humoradas de, Daniel Rodrigues e Alcimar Luiz da Silva sobre métodos alternativos de resolução.",
+      "Levantamento dos Períodos Acadêmicos da Turma: conduz um levantamento sobre o andamento dos períodos acadêmicos da turma, identificando quais estudantes estão cursando o quarto, quinto, sexto e sétimo períodos e planejam transições para o semestre seguinte.",
+      "Justificativa de Ausência da Professora Gabriela: explica que a Professora Gabriela está enfrentando problemas de saúde e passou a madrugada no hospital com a filha, motivo pelo qual não pôde ministrar a aula ao vivo.",
+      "Encaminhamento de Material de Aula e Alerta sobre Avaliações: combina com Rosiane Lima (Rosi) o envio de um vídeo gravado pela Professora Gabriela para o grupo de WhatsApp dedicado ao Trabalho de Conclusão de Curso, sem atribuição de atividades extras, e alerta sobre a proximidade das avaliações da disciplina de História da Cultura Afro-Brasileira e Indígena em três semanas.",
+      "Reconhecimento Acadêmico e Planos de Viagem: Seminarista William Barros elogia a capacidade de conteúdo de Daniel Rodrigues, enquanto celso oliveira, Salatiel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva conversam sobre planos de realizar viagens de carro para visitar colegas em outras localidades, incluindo o Paraguai."
+    ],
+    "totalBlocos": 7
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Chegada e Regularização de Família Venezuelana",
+      "resumoCurto": "Salatiel Rodrigues relata a chegada de uma família venezuelana à residência, destacando que estão hospedados no local e já possuem toda a documentação regularizada.",
+      "detalhamento": "Salatiel Rodrigues relata a chegada de uma família venezuelana à residência, destacando que estão hospedados no local e já possuem toda a documentação regularizada.",
+      "pontosChave": [
+        "Salatiel Rodrigues relata a chegada de uma família venezuelana à residência, destacando que estão hospedados no local e já possuem toda a documentação regularizada."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Problema Técnico com o Microsoft Word",
+      "resumoCurto": "Seminarista William Barros relata a que está sem acesso ao Microsoft Word há mais de um mês devido a uma atualização, recebendo respostas bem-humoradas de, Daniel Rodrigues e Alcimar Luiz da Silva sobre métodos alternativos de resolução.",
+      "detalhamento": "Seminarista William Barros relata a que está sem acesso ao Microsoft Word há mais de um mês devido a uma atualização, recebendo respostas bem-humoradas de, Daniel Rodrigues e Alcimar Luiz da Silva sobre métodos alternativos de resolução.",
+      "pontosChave": [
+        "Seminarista William Barros relata a que está sem acesso ao Microsoft Word há mais de um mês devido a uma atualização, recebendo respostas bem-humoradas de, Daniel Rodrigues e Alcimar Luiz da Silva sobre métodos alternativos de resolução."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Levantamento dos Períodos Acadêmicos da Turma",
+      "resumoCurto": "conduz um levantamento sobre o andamento dos períodos acadêmicos da turma, identificando quais estudantes estão cursando o quarto, quinto, sexto e sétimo períodos e planejam transições para o semestre seguinte.",
+      "detalhamento": "conduz um levantamento sobre o andamento dos períodos acadêmicos da turma, identificando quais estudantes estão cursando o quarto, quinto, sexto e sétimo períodos e planejam transições para o semestre seguinte.",
+      "pontosChave": [
+        "conduz um levantamento sobre o andamento dos períodos acadêmicos da turma, identificando quais estudantes estão cursando o quarto, quinto, sexto e sétimo períodos e planejam transições para o semestre seguinte."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Justificativa de Ausência da Professora Gabriela",
+      "resumoCurto": "explica que a Professora Gabriela está enfrentando problemas de saúde e passou a madrugada no hospital com a filha, motivo pelo qual não pôde ministrar a aula ao vivo.",
+      "detalhamento": "explica que a Professora Gabriela está enfrentando problemas de saúde e passou a madrugada no hospital com a filha, motivo pelo qual não pôde ministrar a aula ao vivo.",
+      "pontosChave": [
+        "explica que a Professora Gabriela está enfrentando problemas de saúde e passou a madrugada no hospital com a filha, motivo pelo qual não pôde ministrar a aula ao vivo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Encaminhamento de Material de Aula e Alerta sobre Avaliações",
+      "resumoCurto": "combina com Rosiane Lima (Rosi) o envio de um vídeo gravado pela Professora Gabriela para o grupo de WhatsApp dedicado ao Trabalho de Conclusão de Curso, sem atribuição de atividades extras, e alerta sobre a proximidade das avaliações da disciplina de História da Cultura Afro-Brasileira e Indígena em três semanas.",
+      "detalhamento": "combina com Rosiane Lima (Rosi) o envio de um vídeo gravado pela Professora Gabriela para o grupo de WhatsApp dedicado ao Trabalho de Conclusão de Curso, sem atribuição de atividades extras, e alerta sobre a proximidade das avaliações da disciplina de História da Cultura Afro-Brasileira e Indígena em três semanas.",
+      "pontosChave": [
+        "combina com Rosiane Lima (Rosi) o envio de um vídeo gravado pela Professora Gabriela para o grupo de WhatsApp dedicado ao Trabalho de Conclusão de Curso, sem atribuição de atividades extras, e alerta sobre a proximidade das avaliações da disciplina de História da Cultura Afro-Brasileira e Indígena em três semanas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Reconhecimento Acadêmico e Planos de Viagem",
+      "resumoCurto": "Seminarista William Barros elogia a capacidade de conteúdo de Daniel Rodrigues, enquanto celso oliveira, Salatiel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva conversam sobre planos de realizar viagens de carro para visitar colegas em outras localidades, incluindo o Paraguai.",
+      "detalhamento": "Seminarista William Barros elogia a capacidade de conteúdo de Daniel Rodrigues, enquanto celso oliveira, Salatiel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva conversam sobre planos de realizar viagens de carro para visitar colegas em outras localidades, incluindo o Paraguai.",
+      "pontosChave": [
+        "Seminarista William Barros elogia a capacidade de conteúdo de Daniel Rodrigues, enquanto celso oliveira, Salatiel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva conversam sobre planos de realizar viagens de carro para visitar colegas em outras localidades, incluindo o Paraguai."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Questões de Saúde Familiar e Encerramento",
+      "resumoCurto": "celso oliveira solicita formulários a Rosiane Lima (Rosi) e questiona Daniel Rodrigues sobre a saúde da esposa, que tem enfrentado picos de pressão arterial elevados entre 17 e 21, antes de os participantes realizarem as despedidas finais.",
+      "detalhamento": "celso oliveira solicita formulários a Rosiane Lima (Rosi) e questiona Daniel Rodrigues sobre a saúde da esposa, que tem enfrentado picos de pressão arterial elevados entre 17 e 21, antes de os participantes realizarem as despedidas finais.",
+      "pontosChave": [
+        "celso oliveira solicita formulários a Rosiane Lima (Rosi) e questiona Daniel Rodrigues sobre a saúde da esposa, que tem enfrentado picos de pressão arterial elevados entre 17 e 21, antes de os participantes realizarem as despedidas finais."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Questões de Saúde Familiar e Encerramento",
+      "relato": "celso oliveira solicita formulários a Rosiane Lima (Rosi) e questiona Daniel Rodrigues sobre a saúde da esposa, que tem enfrentado picos de pressão arterial elevados entre 17 e 21, antes de os participantes realizarem as despedidas finais."
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Eclesiastes 12:9-12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "Lucas 1:1-4",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "2 Timóteo 2:15",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Regras de Citação ABNT (NBR 10520)",
+      "detalhe": "Direta Curta (até 3 linhas): no parágrafo, entre aspas duplas, com autor, ano e página (SOBRENOME, 2026, p. 45). Direta Longa (+3 linhas): bloco destacado com recuo de 4 cm da margem esquerda, fonte 10, espaçamento simples e SEM aspas. Indireta (Paráfrase): exige autor e ano (SOBRENOME, 2026)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Chegada e Regularização de Família Venezuelana\" nesta aula?",
+      "dicaResposta": "Salatiel Rodrigues relata a chegada de uma família venezuelana à residência, destacando que estão hospedados no local e já possuem toda a documentação regularizada."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Problema Técnico com o Microsoft Word\" nesta aula?",
+      "dicaResposta": "Seminarista William Barros relata a que está sem acesso ao Microsoft Word há mais de um mês devido a uma atualização, recebendo respostas bem-humoradas de, Daniel Rodrigues e Alcimar Luiz da Silva sobre métodos alternativos de resolução."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Levantamento dos Períodos Acadêmicos da Turma\" nesta aula?",
+      "dicaResposta": "conduz um levantamento sobre o andamento dos períodos acadêmicos da turma, identificando quais estudantes estão cursando o quarto, quinto, sexto e sétimo períodos e planejam transições para o semestre seguinte."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Justificativa de Ausência da Professora Gabriela\" nesta aula?",
+      "dicaResposta": "explica que a Professora Gabriela está enfrentando problemas de saúde e passou a madrugada no hospital com a filha, motivo pelo qual não pôde ministrar a aula ao vivo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Encaminhamento de Material de Aula e Alerta sobre Avaliações\" nesta aula?",
+      "dicaResposta": "combina com Rosiane Lima (Rosi) o envio de um vídeo gravado pela Professora Gabriela para o grupo de WhatsApp dedicado ao Trabalho de Conclusão de Curso, sem atribuição de atividades extras, e alerta sobre a proximidade das avaliações da disciplina de História da Cultura Afro-Brasileira e Indígena em três semanas."
+    }
+  ],
+  "encaminhamentos": []
+}

@@ -1,0 +1,392 @@
+{
+  "id": "disc-8-aula-13",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 13,
+  "unidade": 2,
+  "dateIso": "2026-11-13",
+  "dateBr": "13/11/2026",
+  "theme": "Aula 13 • Reflexão sobre humildade epistêmica",
+  "geminiUrl": "https://docs.google.com/document/d/1XTq-zk-3TRNqujyrpQERGI_uAlj8RYJZ3YCrhBXBqE0/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Elaboração dos elementos pré-textuais por último: estrutura do Resumo e Abstract (150 a 500 palavras em parágrafo único) e da Introdução definitiva.",
+    "sinteseGeral": "Avaliação dos trabalhos de conclusão de curso com aprovação geral e reflexão sobre humildade epistêmica. Avaliação diagnóstica e aprovação Estudantes relataram o andamento de seus artigos e a busca por orientadores. A turma foi integralmente aprovada com foco na produção autônoma dos trabalhos. Reflexão sobre humildade epistêmica Apresentou-se a entrevista sobre a limitação do conhecimento humano e a autocorreção na ciência. Destacou-se que a arrogância trava a busca acadêmica. Considerações finais e cronograma Encerrou-se o semestre com incentivo às leituras e aviso das defesas marcadas para o dia 2 de dezembro. A formatura ocorrerá em 12 de dezembro.",
+    "mapaRapido": [
+      "Abertura e Avaliação Diagnóstica: Profº Profº Marcio Leal iniciou a aula com uma oração e explicou a metodologia da avaliação diagnóstica para acompanhar o andamento dos Trabalhos de Conclusão de Curso da turma, pontuando a necessidade de relatórios reais sobre a escolha de temas e orientadores.",
+      "Progresso de Salatiel Rodrigues e Rosiane Lima: Salatiel Rodrigues informou que está no sétimo período e na fase de conclusão de seu trabalho.",
+      "Atualizações de Caio Gracina e Ricardo Nascimento: Caio Gracina afirmou estar no quarto período, na fase de pesquisa e estruturação de tema, contando com o auxílio do professor Josias.",
+      "Progresso de Rejane Arruda e Jorge Lucas: Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados.",
+      "Andamento de Marcos Paulo e Wagner Augusto: Marcos Paulo Carmo Nogueira relatou estar no quarto período, conversando com um orientador e reunindo materiais.",
+      "Status de Marcelo Sereno e Enilson Santos Lima: Marcelo Sereno indicou estar no quarto período, com tema definido e esboçando fichamentos, mas sem orientador definido."
+    ],
+    "duracaoEstimada": "~1h05min",
+    "totalBlocos": 22
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Abertura e Avaliação Diagnóstica",
+      "resumoCurto": "Profº Profº Marcio Leal iniciou a aula com uma oração e explicou a metodologia da avaliação diagnóstica para acompanhar o andamento dos Trabalhos de Conclusão de Curso da turma, pontuando a necessidade de relatórios reais sobre a escolha de temas e orientadores.",
+      "detalhamento": "Profº Profº Marcio Leal iniciou a aula com uma oração e explicou a metodologia da avaliação diagnóstica para acompanhar o andamento dos Trabalhos de Conclusão de Curso da turma, pontuando a necessidade de relatórios reais sobre a escolha de temas e orientadores.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal iniciou a aula com uma oração e explicou a metodologia da avaliação diagnóstica para acompanhar o andamento dos Trabalhos de Conclusão de Curso da turma, pontuando a necessidade de relatórios reais sobre a escolha de temas e orientadores."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:02:52",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Progresso de Salatiel Rodrigues e Rosiane Lima",
+      "resumoCurto": "Salatiel Rodrigues informou que está no sétimo período e na fase de conclusão de seu trabalho.",
+      "detalhamento": "Salatiel Rodrigues informou que está no sétimo período e na fase de conclusão de seu trabalho. Rosiane Lima (Rosi) relatou estar no quinto período indo para o sexto, com tema definido, em processo de leitura, mas ainda sem orientador formalizado.",
+      "pontosChave": [
+        "Salatiel Rodrigues informou que está no sétimo período e na fase de conclusão de seu trabalho.",
+        "Rosiane Lima (Rosi) relatou estar no quinto período indo para o sexto, com tema definido, em processo de leitura, mas ainda sem orientador formalizado."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:04:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atualizações de Caio Gracina e Ricardo Nascimento",
+      "resumoCurto": "Caio Gracina afirmou estar no quarto período, na fase de pesquisa e estruturação de tema, contando com o auxílio do professor Josias.",
+      "detalhamento": "Caio Gracina afirmou estar no quarto período, na fase de pesquisa e estruturação de tema, contando com o auxílio do professor Josias. Ricardo Nascimento indicou estar no quarto período com tema focado na missão cristã em contexto de resistência cultural e religiosa, realizando leituras de John Stott e recebendo orientações do pastor Isaías Ferreira.",
+      "pontosChave": [
+        "Caio Gracina afirmou estar no quarto período, na fase de pesquisa e estruturação de tema, contando com o auxílio do professor Josias.",
+        "Ricardo Nascimento indicou estar no quarto período com tema focado na missão cristã em contexto de resistência cultural e religiosa, realizando leituras de John Stott e recebendo orientações do pastor Isaías Ferreira."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:08:51",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Progresso de Rejane Arruda e Jorge Lucas",
+      "resumoCurto": "Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados.",
+      "detalhamento": "Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados. Jorge Lucas (JL), por meio do chat, informou estar no sétimo período, possuir orientador e estar em mais da metade da produção do artigo.",
+      "pontosChave": [
+        "Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados.",
+        "Jorge Lucas (JL), por meio do chat, informou estar no sétimo período, possuir orientador e estar em mais da metade da produção do artigo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:09:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Andamento de Marcos Paulo e Wagner Augusto",
+      "resumoCurto": "Marcos Paulo Carmo Nogueira relatou estar no quarto período, conversando com um orientador e reunindo materiais.",
+      "detalhamento": "Marcos Paulo Carmo Nogueira relatou estar no quarto período, conversando com um orientador e reunindo materiais. Wagner Augusto dos Santos Costa informou estar no quarto período com tema sobre a reforma protestante do século dezesseis, utilizando o formato do trabalho de Daniel como modelo e buscando bibliografia, embora ainda não tenha orientador.",
+      "pontosChave": [
+        "Marcos Paulo Carmo Nogueira relatou estar no quarto período, conversando com um orientador e reunindo materiais.",
+        "Wagner Augusto dos Santos Costa informou estar no quarto período com tema sobre a reforma protestante do século dezesseis, utilizando o formato do trabalho de Daniel como modelo e buscando bibliografia, embora ainda não tenha orientador."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:14:16",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Status de Marcelo Sereno e Enilson Santos Lima",
+      "resumoCurto": "Marcelo Sereno indicou estar no quarto período, com tema definido e esboçando fichamentos, mas sem orientador definido.",
+      "detalhamento": "Marcelo Sereno indicou estar no quarto período, com tema definido e esboçando fichamentos, mas sem orientador definido. Enilson Santos Lima relatou estar no quarto período, já possuir orientadora definida e estar anotando questões das aulas para iniciar as leituras com orientações específicas.",
+      "pontosChave": [
+        "Marcelo Sereno indicou estar no quarto período, com tema definido e esboçando fichamentos, mas sem orientador definido.",
+        "Enilson Santos Lima relatou estar no quarto período, já possuir orientadora definida e estar anotando questões das aulas para iniciar as leituras com orientações específicas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:15:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Rodrigo Morais",
+      "resumoCurto": "Rodrigo Morais informou via chat que está no sétimo período, com orientador e tema definidos, e já em processo de escrita, acompanhando a aula de um restaurante.",
+      "detalhamento": "Rodrigo Morais informou via chat que está no sétimo período, com orientador e tema definidos, e já em processo de escrita, acompanhando a aula de um restaurante.",
+      "pontosChave": [
+        "Rodrigo Morais informou via chat que está no sétimo período, com orientador e tema definidos, e já em processo de escrita, acompanhando a aula de um restaurante."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:22:58",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Tema e Planejamento de William Barros",
+      "resumoCurto": "William Barros relatou estar no quarto período, desenvolvendo um trabalho histórico sobre o congregacionalismo desde os puritanos até Santa Cruz do Capibaribe e Poço Fundo, incluindo as biografias de William Bter Forsite e reverendo Adonias Alves Rodrigues, além de avaliar a troca de orientador e buscar auxílio para questões técnicas da língua portuguesa.",
+      "detalhamento": "William Barros relatou estar no quarto período, desenvolvendo um trabalho histórico sobre o congregacionalismo desde os puritanos até Santa Cruz do Capibaribe e Poço Fundo, incluindo as biografias de William Bter Forsite e reverendo Adonias Alves Rodrigues, além de avaliar a troca de orientador e buscar auxílio para questões técnicas da língua portuguesa.",
+      "pontosChave": [
+        "William Barros relatou estar no quarto período, desenvolvendo um trabalho histórico sobre o congregacionalismo desde os puritanos até Santa Cruz do Capibaribe e Poço Fundo, incluindo as biografias de William Bter Forsite e reverendo Adonias Alves Rodrigues, além de avaliar a troca de orientador e buscar auxílio para questões técnicas da língua portuguesa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:20:49",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Orientações sobre Orientadores e Língua Portuguesa",
+      "resumoCurto": "Profº Profº Marcio Leal orientou William Barros sobre a importância de definir um orientador para gerenciar o limite de páginas e o escopo histórico, esclarecendo que é permitido contratar profissionais ou pedir ajuda a colegas para revisão de língua portuguesa e normas da ABNT, desde que não haja compra ou cópia integral do trabalho.",
+      "detalhamento": "Profº Profº Marcio Leal orientou William Barros sobre a importância de definir um orientador para gerenciar o limite de páginas e o escopo histórico, esclarecendo que é permitido contratar profissionais ou pedir ajuda a colegas para revisão de língua portuguesa e normas da ABNT, desde que não haja compra ou cópia integral do trabalho.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal orientou William Barros sobre a importância de definir um orientador para gerenciar o limite de páginas e o escopo histórico, esclarecendo que é permitido contratar profissionais ou pedir ajuda a colegas para revisão de língua portuguesa e normas da ABNT, desde que não haja compra ou cópia integral do trabalho."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:26:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atualizações de Paulo Lima e Marlon Pimentel",
+      "resumoCurto": "Paulo Lima informou estar fazendo complementação de créditos, com tema escolhido e procurando orientador.",
+      "detalhamento": "Paulo Lima informou estar fazendo complementação de créditos, com tema escolhido e procurando orientador. Marlon Pimentel relatou estar no sexto período, com tema definido, realizando levantamento de dados e em contato com o pastor Tácito para possível orientação.",
+      "pontosChave": [
+        "Paulo Lima informou estar fazendo complementação de créditos, com tema escolhido e procurando orientador.",
+        "Marlon Pimentel relatou estar no sexto período, com tema definido, realizando levantamento de dados e em contato com o pastor Tácito para possível orientação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:29:41",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Relato de Lenilson Ferreira e Discussão sobre Temas",
+      "resumoCurto": "Lenilson Ferreira relatou estar no quarto período com dois temas em dúvida (sofrimento pastoral e missões) e sem orientador.",
+      "detalhamento": "Lenilson Ferreira relatou estar no quarto período com dois temas em dúvida (sofrimento pastoral e missões) e sem orientador. Profº Profº Marcio Leal incentivou a escolha do tema sobre sofrimento pastoral, ressaltando que o sofrimento é inerente e pedagógico no chamado ministerial.",
+      "pontosChave": [
+        "Lenilson Ferreira relatou estar no quarto período com dois temas em dúvida (sofrimento pastoral e missões) e sem orientador.",
+        "Profº Profº Marcio Leal incentivou a escolha do tema sobre sofrimento pastoral, ressaltando que o sofrimento é inerente e pedagógico no chamado ministerial."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:31:51",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento da Avaliação e Política de Aprovação",
+      "resumoCurto": "Profº Profº Marcio Leal concluiu a avaliação diagnóstica celebrando o engajamento da turma e informou que todos os estudantes estão aprovados na disciplina, visto que o objetivo central é a produção autônoma dos trabalhos para a obtenção do diploma.",
+      "detalhamento": "Profº Profº Marcio Leal concluiu a avaliação diagnóstica celebrando o engajamento da turma e informou que todos os estudantes estão aprovados na disciplina, visto que o objetivo central é a produção autônoma dos trabalhos para a obtenção do diploma.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal concluiu a avaliação diagnóstica celebrando o engajamento da turma e informou que todos os estudantes estão aprovados na disciplina, visto que o objetivo central é a produção autônoma dos trabalhos para a obtenção do diploma."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:32:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Introdução ao Tema de Humildade Epistêmica",
+      "resumoCurto": "Profº Profº Marcio Leal introduziu uma reflexão sobre a humildade ligada ao conhecimento, destacando que quanto mais se estuda, mais surgem perguntas e que o conhecimento humano sobre o universo é limitado, exigindo uma postura de humildade diante de Deus e da ciência.",
+      "detalhamento": "Profº Profº Marcio Leal introduziu uma reflexão sobre a humildade ligada ao conhecimento, destacando que quanto mais se estuda, mais surgem perguntas e que o conhecimento humano sobre o universo é limitado, exigindo uma postura de humildade diante de Deus e da ciência.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal introduziu uma reflexão sobre a humildade ligada ao conhecimento, destacando que quanto mais se estuda, mais surgem perguntas e que o conhecimento humano sobre o universo é limitado, exigindo uma postura de humildade diante de Deus e da ciência."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:35:39",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Sugestão de Tema sobre Acessibilidade",
+      "resumoCurto": "William Barros sugeriu que a acolhida e evangelização de pessoas com necessidades especiais na igreja seria um excelente tema de Trabalho de Conclusão de Curso.",
+      "detalhamento": "William Barros sugeriu que a acolhida e evangelização de pessoas com necessidades especiais na igreja seria um excelente tema de Trabalho de Conclusão de Curso.",
+      "pontosChave": [
+        "William Barros sugeriu que a acolhida e evangelização de pessoas com necessidades especiais na igreja seria um excelente tema de Trabalho de Conclusão de Curso."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:40:57",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Exibição da Entrevista com Marcelo Gleiser",
+      "resumoCurto": "Profº Profº Marcio Leal apresentou trechos da entrevista de Marcelo Tas com o astrônomo Marcelo Gleiser no programa Provoca, abordando o conceito de humildade epistêmica, a autorrevisão na ciência e os limites da certeza humana.",
+      "detalhamento": "Profº Profº Marcio Leal apresentou trechos da entrevista de Marcelo Tas com o astrônomo Marcelo Gleiser no programa Provoca, abordando o conceito de humildade epistêmica, a autorrevisão na ciência e os limites da certeza humana.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal apresentou trechos da entrevista de Marcelo Tas com o astrônomo Marcelo Gleiser no programa Provoca, abordando o conceito de humildade epistêmica, a autorrevisão na ciência e os limites da certeza humana."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:51:30",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre Erros e Inovação na Ciência",
+      "resumoCurto": "Os trechos exibidos da entrevista destacaram que a ciência se autocorrige e que a arrogância e a certeza absoluta travam a busca pelo conhecimento, sendo fundamental encarar o fracasso como aprendizado e permitir que equipes questionem chefes sem medo.",
+      "detalhamento": "Os trechos exibidos da entrevista destacaram que a ciência se autocorrige e que a arrogância e a certeza absoluta travam a busca pelo conhecimento, sendo fundamental encarar o fracasso como aprendizado e permitir que equipes questionem chefes sem medo.",
+      "pontosChave": [
+        "Os trechos exibidos da entrevista destacaram que a ciência se autocorrige e que a arrogância e a certeza absoluta travam a busca pelo conhecimento, sendo fundamental encarar o fracasso como aprendizado e permitir que equipes questionem chefes sem medo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:53:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Narrativa Humana e Impacto Ambiental",
+      "resumoCurto": "A entrevista continuou discutindo o papel do ser humano como criador de narrativas históricas e os desafios do progresso da civilização que atualmente destrói o planeta.",
+      "detalhamento": "A entrevista continuou discutindo o papel do ser humano como criador de narrativas históricas e os desafios do progresso da civilização que atualmente destrói o planeta.",
+      "pontosChave": [
+        "A entrevista continuou discutindo o papel do ser humano como criador de narrativas históricas e os desafios do progresso da civilização que atualmente destrói o planeta."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:55:42",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Considerações Finais e Cronograma de Conclusão",
+      "resumoCurto": "Profº Profº Marcio Leal encerrou a aula e o semestre incentivando a continuidade das leituras durante as férias, informou que a banca de defesa ocorrerá em dois de dezembro e a formatura em doze de dezembro, sugerindo a participação de todos na assistência às defesas dos colegas.",
+      "detalhamento": "Profº Profº Marcio Leal encerrou a aula e o semestre incentivando a continuidade das leituras durante as férias, informou que a banca de defesa ocorrerá em dois de dezembro e a formatura em doze de dezembro, sugerindo a participação de todos na assistência às defesas dos colegas.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal encerrou a aula e o semestre incentivando a continuidade das leituras durante as férias, informou que a banca de defesa ocorrerá em dois de dezembro e a formatura em doze de dezembro, sugerindo a participação de todos na assistência às defesas dos colegas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:00:09",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Aprovação de Mael em Exames e Próxima Etapa de Avaliação",
+      "resumoCurto": "Wagner Augusto Dos Santos Costa relatou ter conversado com Mael na segunda-feira, confirmando a aprovação de Mael na redação e na prova teórica, obtendo 32 acertos em 40 perguntas e superando o mínimo exigido de 28 acertos.",
+      "detalhamento": "Wagner Augusto Dos Santos Costa relatou ter conversado com Mael na segunda-feira, confirmando a aprovação de Mael na redação e na prova teórica, obtendo 32 acertos em 40 perguntas e superando o mínimo exigido de 28 acertos. enilson Santos Lima e Wagner Augusto Dos Santos Costa discutiram que Mael passará em seguida pela banca avaliadora e sabatina.",
+      "pontosChave": [
+        "Wagner Augusto Dos Santos Costa relatou ter conversado com Mael na segunda-feira, confirmando a aprovação de Mael na redação e na prova teórica, obtendo 32 acertos em 40 perguntas e superando o mínimo exigido de 28 acertos.",
+        "enilson Santos Lima e Wagner Augusto Dos Santos Costa discutiram que Mael passará em seguida pela banca avaliadora e sabatina."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:03:02",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desafios de Infraestrutura e Operação na Congregação Rural",
+      "resumoCurto": "Wagner Augusto Dos Santos Costa detalhou que Mael e a esposa enfrentam severas dificuldades de infraestrutura em uma zona rural de gado leiteiro, utilizando internet via rádio e lidando com quedas frequentes de energia.",
+      "detalhamento": "Wagner Augusto Dos Santos Costa detalhou que Mael e a esposa enfrentam severas dificuldades de infraestrutura em uma zona rural de gado leiteiro, utilizando internet via rádio e lidando com quedas frequentes de energia. Wagner Augusto Dos Santos Costa explicou que a congregação fica a uma distância de carro de 40 minutos a 1 hora após o término do asfalto, sendo visitada todo terceiro domingo do mês por um pastor e por Ari para ministrar a ceia, enquanto Mael conduz a escola dominical, os ensinamentos e a liturgia dos cultos.",
+      "pontosChave": [
+        "Wagner Augusto Dos Santos Costa detalhou que Mael e a esposa enfrentam severas dificuldades de infraestrutura em uma zona rural de gado leiteiro, utilizando internet via rádio e lidando com quedas frequentes de energia.",
+        "Wagner Augusto Dos Santos Costa explicou que a congregação fica a uma distância de carro de 40 minutos a 1 hora após o término do asfalto, sendo visitada todo terceiro domingo do mês por um pastor e por Ari para ministrar a ceia, enquanto Mael conduz a escola dominical, os ensinamentos e a liturgia dos cultos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:04:18",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Precedentes de Ordenação de Presbíteros como Pastores",
+      "resumoCurto": "enilson Santos Lima relatou casos ocorridos no norte de Minas em que presbíteros foram ordenados diretamente como pastores sem a necessidade prévia de cursar seminário, recebendo remuneração pastoral e realizando casamentos.",
+      "detalhamento": "enilson Santos Lima relatou casos ocorridos no norte de Minas em que presbíteros foram ordenados diretamente como pastores sem a necessidade prévia de cursar seminário, recebendo remuneração pastoral e realizando casamentos. Wagner Augusto Dos Santos Costa manifestou surpresa com a informação, afirmando nunca ter ouvido falar de tal prática na igreja congregacional.",
+      "pontosChave": [
+        "enilson Santos Lima relatou casos ocorridos no norte de Minas em que presbíteros foram ordenados diretamente como pastores sem a necessidade prévia de cursar seminário, recebendo remuneração pastoral e realizando casamentos.",
+        "Wagner Augusto Dos Santos Costa manifestou surpresa com a informação, afirmando nunca ter ouvido falar de tal prática na igreja congregacional."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:05:20",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Desafios de Segurança em Congregações Locais",
+      "resumoCurto": "Wagner Augusto Dos Santos Costa descreveu a situação de uma congregação local liderada por um presbítero que concluiu o seminário sem realizar provas, situada em uma comunidade sensível localizada praticamente na porta de um ponto de tráfico de drogas.",
+      "detalhamento": "Wagner Augusto Dos Santos Costa descreveu a situação de uma congregação local liderada por um presbítero que concluiu o seminário sem realizar provas, situada em uma comunidade sensível localizada praticamente na porta de um ponto de tráfico de drogas. enilson Santos Lima corroborou o relato informando que a própria igreja onde atua também possui um ponto de venda de drogas ao lado, após o que enilson Santos Lima e Wagner Augusto Dos Santos Costa encerraram a conversa para prosseguir para outra aula.",
+      "pontosChave": [
+        "Wagner Augusto Dos Santos Costa descreveu a situação de uma congregação local liderada por um presbítero que concluiu o seminário sem realizar provas, situada em uma comunidade sensível localizada praticamente na porta de um ponto de tráfico de drogas.",
+        "enilson Santos Lima corroborou o relato informando que a própria igreja onde atua também possui um ponto de venda de drogas ao lado, após o que enilson Santos Lima e Wagner Augusto Dos Santos Costa encerraram a conversa para prosseguir para outra aula."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Progresso de Rejane Arruda e Jorge Lucas",
+      "relato": "Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados. Jorge Lucas (JL), por meio do chat, informou estar no sétimo período, possuir orientador e estar em mais da metade da produção do artigo.",
+      "timestamp": "00:08:51"
+    },
+    {
+      "titulo": "Relato de Lenilson Ferreira e Discussão sobre Temas",
+      "relato": "Lenilson Ferreira relatou estar no quarto período com dois temas em dúvida (sofrimento pastoral e missões) e sem orientador. Profº Profº Marcio Leal incentivou a escolha do tema sobre sofrimento pastoral, ressaltando que o sofrimento é inerente e pedagógico no chamado ministerial.",
+      "timestamp": "00:29:41"
+    },
+    {
+      "titulo": "Discussão sobre Erros e Inovação na Ciência",
+      "relato": "Os trechos exibidos da entrevista destacaram que a ciência se autocorrige e que a arrogância e a certeza absoluta travam a busca pelo conhecimento, sendo fundamental encarar o fracasso como aprendizado e permitir que equipes questionem chefes sem medo.",
+      "timestamp": "00:51:30"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "João 23",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    },
+    {
+      "titulo": "Regras de Citação ABNT (NBR 10520)",
+      "detalhe": "Direta Curta (até 3 linhas): no parágrafo, entre aspas duplas, com autor, ano e página (SOBRENOME, 2026, p. 45). Direta Longa (+3 linhas): bloco destacado com recuo de 4 cm da margem esquerda, fonte 10, espaçamento simples e SEM aspas. Indireta (Paráfrase): exige autor e ano (SOBRENOME, 2026)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Abertura e Avaliação Diagnóstica\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal iniciou a aula com uma oração e explicou a metodologia da avaliação diagnóstica para acompanhar o andamento dos Trabalhos de Conclusão de Curso da turma, pontuando a necessidade de relatórios reais sobre a escolha de temas e orientadores."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Progresso de Salatiel Rodrigues e Rosiane Lima\" nesta aula?",
+      "dicaResposta": "Salatiel Rodrigues informou que está no sétimo período e na fase de conclusão de seu trabalho. Rosiane Lima (Rosi) relatou estar no quinto período indo para o sexto, com tema definido, em processo de leitura, mas ainda sem orientador formalizado."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Atualizações de Caio Gracina e Ricardo Nascimento\" nesta aula?",
+      "dicaResposta": "Caio Gracina afirmou estar no quarto período, na fase de pesquisa e estruturação de tema, contando com o auxílio do professor Josias. Ricardo Nascimento indicou estar no quarto período com tema focado na missão cristã em contexto de resistência cultural e religiosa, realizando leituras de John Stott e recebendo orientações do pastor Isaías Ferreira."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Progresso de Rejane Arruda e Jorge Lucas\" nesta aula?",
+      "dicaResposta": "Rejane Arruda relatou estar no sétimo período, já escrevendo com auxílio de uma orientadora, tendo concluído a metodologia e iniciado a discussão dos resultados. Jorge Lucas (JL), por meio do chat, informou estar no sétimo período, possuir orientador e estar em mais da metade da produção do artigo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Andamento de Marcos Paulo e Wagner Augusto\" nesta aula?",
+      "dicaResposta": "Marcos Paulo Carmo Nogueira relatou estar no quarto período, conversando com um orientador e reunindo materiais. Wagner Augusto dos Santos Costa informou estar no quarto período com tema sobre a reforma protestante do século dezesseis, utilizando o formato do trabalho de Daniel como modelo e buscando bibliografia, embora ainda não tenha orientador."
+    }
+  ],
+  "encaminhamentos": [
+    "Atualizar Tema: Modificar o tema escolhido no grupo da turma.",
+    "Definir Orientador: Selecionar um professor orientador que possua afinidade com a temática do trabalho.",
+    "Definir Orientador: Definir um orientador para acompanhar o desenvolvimento do trabalho acadêmico.",
+    "Definir Orientador: Buscar e selecionar um orientador acadêmico para o projeto de pesquisa."
+  ]
+}

@@ -1,0 +1,457 @@
+{
+  "id": "disc-4-aula-4",
+  "disciplinaId": "disc-4",
+  "disciplinaName": "04 - Direitos Humanos - Cleiton Barbirato",
+  "disciplinaShortName": "Direitos Humanos",
+  "disciplinaCode": "DIR-101",
+  "professor": "Profº Cleiton Barbirato",
+  "aulaNum": 4,
+  "unidade": 1,
+  "dateIso": "2026-09-02",
+  "dateBr": "02/09/2026",
+  "theme": "Aula 4 • Configuração da Aula e Saudações",
+  "geminiUrl": "/gemini-notes/dh_aula4_2026-09-02.pdf",
+  "sourceType": "pdf",
+  "panorama": {
+    "resumoCurado": "A sessão explorou fundamentos dos direitos humanos e estruturas legais brasileiras finalizando com orientações sobre trabalho acadêmico. Fundamentos dos Direitos Humanos A discussão estabeleceu o contexto histórico da proteção aos direitos humanos após conflitos mundiais. O grupo diferenciou igualdade de equidade e definiu os direitos fundamentais universais. Estruturas Legais e Normativas Foi analisada a hierarquia das leis conforme a Pirâmide de Kelsen e o controle de constitucionalidade realizado pelo Supremo Tribunal Federal. Analisaram-se",
+    "sinteseGeral": "A sessão explorou fundamentos dos direitos humanos e estruturas legais brasileiras finalizando com orientações sobre trabalho acadêmico. Fundamentos dos Direitos Humanos A discussão estabeleceu o contexto histórico da proteção aos direitos humanos após conflitos mundiais. O grupo diferenciou igualdade de equidade e definiu os direitos fundamentais universais. Estruturas Legais e Normativas Foi analisada a hierarquia das leis conforme a Pirâmide de Kelsen e o controle de constitucionalidade realizado pelo Supremo Tribunal Federal. Analisaram-se também as características dos direitos humanos e exceções legais. Direitos Específicos e Atividades Foram debatidos direitos de asilo, refúgio e direito humanitário, somados às gerações de direitos fundamentais. A sessão encerrou com orientações sobre trabalhos acadêmicos e isenções disciplinares.",
+    "mapaRapido": [
+      "Configuração da Aula e Saudações: Cristiano Sacramento e Rosiane Lima discutiram as configurações de gravação da aula antes do início formal.",
+      "Oração Inicial: A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo.",
+      "Contexto Histórico e Conflitos: Profº Cleiton Barbirato revisou que as atrocidades da Segunda Guerra Mundial foram o principal motivo para a comunidade internacional estabelecer mecanismos de proteção aos direitos humanos, destacando que conflitos atuais, como os ocorridos no Irã e na Ucrânia, demonstram a necessidade contínua de proteção a civis e militares tanto durante quanto após as guerras.",
+      "Conceito de Direitos Humanos Estrito Senso: Profº Cleiton Barbirato definiu os direitos humanos estrito senso como as legislações e regulações estabelecidas em tempos de paz para assegurar a dignidade humana, preferindo este termo em vez de \"dignidade da pessoa humana\" por considerar a expressão redundante.",
+      "Direitos Humanos Fundamentais: Os direitos universais identificados como essenciais para todos os cidadãos, independentemente de nacionalidade, gênero ou idade, incluem o direito à vida, à liberdade, à igualdade e ao tratamento equitativo.",
+      "Igualdade versus Equidade: Jorge Silva explicou a diferença entre igualdade e equidade, utilizando o exemplo de caixotes para visualizar que, enquanto a igualdade trata todos da mesma forma, a equidade foca em atender às necessidades específicas de cada indivíduo para garantir resultados justos, com o apoio adicional de Rosiane Lima."
+    ],
+    "duracaoEstimada": "~1h45min",
+    "totalBlocos": 26
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Configuração da Aula e Saudações",
+      "resumoCurto": "Cristiano Sacramento e Rosiane Lima discutiram as configurações de gravação da aula antes do início formal.",
+      "detalhamento": "Cristiano Sacramento e Rosiane Lima discutiram as configurações de gravação da aula antes do início formal. Após a resolução dos problemas técnicos, Daniel Rodrigues e Profº Cleiton Barbirato trocaram saudações cordiais.",
+      "pontosChave": [
+        "Cristiano Sacramento e Rosiane Lima discutiram as configurações de gravação da aula antes do início formal.",
+        "Após a resolução dos problemas técnicos, Daniel Rodrigues e Profº Cleiton Barbirato trocaram saudações cordiais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:22:44",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Oração Inicial",
+      "resumoCurto": "A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo.",
+      "detalhamento": "A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo.",
+      "pontosChave": [
+        "A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:23:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto Histórico e Conflitos",
+      "resumoCurto": "Profº Cleiton Barbirato revisou que as atrocidades da Segunda Guerra Mundial foram o principal motivo para a comunidade internacional estabelecer mecanismos de proteção aos direitos humanos, destacando que conflitos atuais, como os ocorridos no Irã e na Ucrânia, demonstram a necessidade contínua de proteção a civis e militares tanto durante quanto após as guerras.",
+      "detalhamento": "Profº Cleiton Barbirato revisou que as atrocidades da Segunda Guerra Mundial foram o principal motivo para a comunidade internacional estabelecer mecanismos de proteção aos direitos humanos, destacando que conflitos atuais, como os ocorridos no Irã e na Ucrânia, demonstram a necessidade contínua de proteção a civis e militares tanto durante quanto após as guerras.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato revisou que as atrocidades da Segunda Guerra Mundial foram o principal motivo para a comunidade internacional estabelecer mecanismos de proteção aos direitos humanos, destacando que conflitos atuais, como os ocorridos no Irã e na Ucrânia, demonstram a necessidade contínua de proteção a civis e militares tanto durante quanto após as guerras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:26:45",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conceito de Direitos Humanos Estrito Senso",
+      "resumoCurto": "Profº Cleiton Barbirato definiu os direitos humanos estrito senso como as legislações e regulações estabelecidas em tempos de paz para assegurar a dignidade humana, preferindo este termo em vez de \"dignidade da pessoa humana\" por considerar a expressão redundante.",
+      "detalhamento": "Profº Cleiton Barbirato definiu os direitos humanos estrito senso como as legislações e regulações estabelecidas em tempos de paz para assegurar a dignidade humana, preferindo este termo em vez de \"dignidade da pessoa humana\" por considerar a expressão redundante.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato definiu os direitos humanos estrito senso como as legislações e regulações estabelecidas em tempos de paz para assegurar a dignidade humana, preferindo este termo em vez de \"dignidade da pessoa humana\" por considerar a expressão redundante."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:28:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos Humanos Fundamentais",
+      "resumoCurto": "Os direitos universais identificados como essenciais para todos os cidadãos, independentemente de nacionalidade, gênero ou idade, incluem o direito à vida, à liberdade, à igualdade e ao tratamento equitativo.",
+      "detalhamento": "Os direitos universais identificados como essenciais para todos os cidadãos, independentemente de nacionalidade, gênero ou idade, incluem o direito à vida, à liberdade, à igualdade e ao tratamento equitativo.",
+      "pontosChave": [
+        "Os direitos universais identificados como essenciais para todos os cidadãos, independentemente de nacionalidade, gênero ou idade, incluem o direito à vida, à liberdade, à igualdade e ao tratamento equitativo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:31:05",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Igualdade versus Equidade",
+      "resumoCurto": "Jorge Silva explicou a diferença entre igualdade e equidade, utilizando o exemplo de caixotes para visualizar que, enquanto a igualdade trata todos da mesma forma, a equidade foca em atender às necessidades específicas de cada indivíduo para garantir resultados justos, com o apoio adicional de Rosiane Lima.",
+      "detalhamento": "Jorge Silva explicou a diferença entre igualdade e equidade, utilizando o exemplo de caixotes para visualizar que, enquanto a igualdade trata todos da mesma forma, a equidade foca em atender às necessidades específicas de cada indivíduo para garantir resultados justos, com o apoio adicional de Rosiane Lima.",
+      "pontosChave": [
+        "Jorge Silva explicou a diferença entre igualdade e equidade, utilizando o exemplo de caixotes para visualizar que, enquanto a igualdade trata todos da mesma forma, a equidade foca em atender às necessidades específicas de cada indivíduo para garantir resultados justos, com o apoio adicional de Rosiane Lima."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:32:23",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Influência das Condições Sociais na Aprendizagem",
+      "resumoCurto": "Profº Cleiton Barbirato discorreu sobre como a desigualdade de oportunidades, como alimentação, estrutura familiar e acesso à educação, afeta a capacidade cognitiva e o desenvolvimento dos indivíduos, impossibilitando que todos iniciem de uma mesma base de igualdade.",
+      "detalhamento": "Profº Cleiton Barbirato discorreu sobre como a desigualdade de oportunidades, como alimentação, estrutura familiar e acesso à educação, afeta a capacidade cognitiva e o desenvolvimento dos indivíduos, impossibilitando que todos iniciem de uma mesma base de igualdade.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato discorreu sobre como a desigualdade de oportunidades, como alimentação, estrutura familiar e acesso à educação, afeta a capacidade cognitiva e o desenvolvimento dos indivíduos, impossibilitando que todos iniciem de uma mesma base de igualdade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:35:27",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Desafios de Linguagem e Público",
+      "resumoCurto": "Profº Cleiton Barbirato abordou a dificuldade de lecionar para públicos heterogêneos, comparando o ambiente universitário com o ambiente eclesiástico, onde o orador deve adaptar sua linguagem para alcançar pessoas com diferentes níveis de escolaridade e alfabetização.",
+      "detalhamento": "Profº Cleiton Barbirato abordou a dificuldade de lecionar para públicos heterogêneos, comparando o ambiente universitário com o ambiente eclesiástico, onde o orador deve adaptar sua linguagem para alcançar pessoas com diferentes níveis de escolaridade e alfabetização.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato abordou a dificuldade de lecionar para públicos heterogêneos, comparando o ambiente universitário com o ambiente eclesiástico, onde o orador deve adaptar sua linguagem para alcançar pessoas com diferentes níveis de escolaridade e alfabetização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:37:59",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Convenções Internacionais e Soberania",
+      "resumoCurto": "Profº Cleiton Barbirato explicou que convenções internacionais são tratados elaborados por países que, ao se tornarem signatários, obrigam-se a não criar legislações internas contrárias a esses acordos, citando o Pacto de São José da Costa Rica como exemplo que veda a pena de morte no Brasil.",
+      "detalhamento": "Profº Cleiton Barbirato explicou que convenções internacionais são tratados elaborados por países que, ao se tornarem signatários, obrigam-se a não criar legislações internas contrárias a esses acordos, citando o Pacto de São José da Costa Rica como exemplo que veda a pena de morte no Brasil.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explicou que convenções internacionais são tratados elaborados por países que, ao se tornarem signatários, obrigam-se a não criar legislações internas contrárias a esses acordos, citando o Pacto de São José da Costa Rica como exemplo que veda a pena de morte no Brasil."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:40:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Hierarquia das Leis (Pirâmide de Kelsen)",
+      "resumoCurto": "Profº Cleiton Barbirato ilustrou o sistema legislativo brasileiro através da Pirâmide de Kelsen, definindo que a Constituição da República Federativa do Brasil ocupa o topo e nenhuma lei (ordinária ou complementar) pode ser promulgada em desacordo com ela.",
+      "detalhamento": "Profº Cleiton Barbirato ilustrou o sistema legislativo brasileiro através da Pirâmide de Kelsen, definindo que a Constituição da República Federativa do Brasil ocupa o topo e nenhuma lei (ordinária ou complementar) pode ser promulgada em desacordo com ela.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato ilustrou o sistema legislativo brasileiro através da Pirâmide de Kelsen, definindo que a Constituição da República Federativa do Brasil ocupa o topo e nenhuma lei (ordinária ou complementar) pode ser promulgada em desacordo com ela."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:43:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Controle de Constitucionalidade pelo STF",
+      "resumoCurto": "Profº Cleiton Barbirato e Camila Vieira discutiram o papel do Supremo Tribunal Federal (STF) como órgão responsável por julgar a inconstitucionalidade de leis, podendo intervir através de uma Ação Direta de Inconstitucionalidade (ADI) caso uma lei promulgada viole a Constituição.",
+      "detalhamento": "Profº Cleiton Barbirato e Camila Vieira discutiram o papel do Supremo Tribunal Federal (STF) como órgão responsável por julgar a inconstitucionalidade de leis, podendo intervir através de uma Ação Direta de Inconstitucionalidade (ADI) caso uma lei promulgada viole a Constituição.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato e Camila Vieira discutiram o papel do Supremo Tribunal Federal (STF) como órgão responsável por julgar a inconstitucionalidade de leis, podendo intervir através de uma Ação Direta de Inconstitucionalidade (ADI) caso uma lei promulgada viole a Constituição."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:47:41",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Exceções aos Direitos Universais",
+      "resumoCurto": "Cristiano Sacramento e Profº Cleiton Barbirato analisaram exceções aos direitos universais, especificamente a permissão da pena de morte no Código Penal brasileiro para casos de deserção militar em tempo de guerra e as restrições impostas aos militares quanto à liberdade de expressão política e ideológica.",
+      "detalhamento": "Cristiano Sacramento e Profº Cleiton Barbirato analisaram exceções aos direitos universais, especificamente a permissão da pena de morte no Código Penal brasileiro para casos de deserção militar em tempo de guerra e as restrições impostas aos militares quanto à liberdade de expressão política e ideológica.",
+      "pontosChave": [
+        "Cristiano Sacramento e Profº Cleiton Barbirato analisaram exceções aos direitos universais, especificamente a permissão da pena de morte no Código Penal brasileiro para casos de deserção militar em tempo de guerra e as restrições impostas aos militares quanto à liberdade de expressão política e ideológica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:50:09",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direito à Legítima Defesa",
+      "resumoCurto": "Profº Cleiton Barbirato explicou que a legítima defesa é uma excludente de ilicitude no direito penal brasileiro, permitindo que uma pessoa reaja a uma agressão injusta de forma proporcional para proteger a própria vida ou a de terceiros.",
+      "detalhamento": "Profº Cleiton Barbirato explicou que a legítima defesa é uma excludente de ilicitude no direito penal brasileiro, permitindo que uma pessoa reaja a uma agressão injusta de forma proporcional para proteger a própria vida ou a de terceiros.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explicou que a legítima defesa é uma excludente de ilicitude no direito penal brasileiro, permitindo que uma pessoa reaja a uma agressão injusta de forma proporcional para proteger a própria vida ou a de terceiros."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:51:14",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Características dos Direitos Humanos",
+      "resumoCurto": "Profº Cleiton Barbirato detalhou que os direitos humanos possuem características específicas: são universais, indivisíveis, históricos (fruto de uma construção social), inalienáveis (não podem ser vendidos ou doados), imprescritíveis (não perdem a validade pelo tempo), irrenunciáveis e relativos, pois dependem de contextos culturais e temporais.",
+      "detalhamento": "Profº Cleiton Barbirato detalhou que os direitos humanos possuem características específicas: são universais, indivisíveis, históricos (fruto de uma construção social), inalienáveis (não podem ser vendidos ou doados), imprescritíveis (não perdem a validade pelo tempo), irrenunciáveis e relativos, pois dependem de contextos culturais e temporais.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato detalhou que os direitos humanos possuem características específicas: são universais, indivisíveis, históricos (fruto de uma construção social), inalienáveis (não podem ser vendidos ou doados), imprescritíveis (não perdem a validade pelo tempo), irrenunciáveis e relativos, pois dependem de contextos culturais e temporais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:57:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos Humanos em sentido amplo",
+      "resumoCurto": "Profº Cleiton Barbirato explica que os direitos humanos em sentido amplo, ou lato sensu, são aplicáveis especificamente durante tempos de guerra.",
+      "detalhamento": "Profº Cleiton Barbirato explica que os direitos humanos em sentido amplo, ou lato sensu, são aplicáveis especificamente durante tempos de guerra. Eles incluem o direito de asilo, o direito de refúgio e o direito de socorro humanitário. Estes direitos são cumulativos, somando-se aos direitos fundamentais já existentes em tempos de paz.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explica que os direitos humanos em sentido amplo, ou lato sensu, são aplicáveis especificamente durante tempos de guerra.",
+        "Eles incluem o direito de asilo, o direito de refúgio e o direito de socorro humanitário.",
+        "Estes direitos são cumulativos, somando-se aos direitos fundamentais já existentes em tempos de paz."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:58:54",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Direito de Asilo",
+      "resumoCurto": "Profº Cleiton Barbirato define o direito de asilo como a proteção garantida a pessoas que sofrem perseguição política injusta em seu país de origem.",
+      "detalhamento": "Profº Cleiton Barbirato define o direito de asilo como a proteção garantida a pessoas que sofrem perseguição política injusta em seu país de origem. As embaixadas funcionam como território estrangeiro, sendo um local seguro para buscar asilo. O direito é temporário, destinado a proteger o indivíduo até que a ameaça cesse, e não se aplica a quem cometeu crimes contra a paz, crimes de guerra ou crimes contra a humanidade.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato define o direito de asilo como a proteção garantida a pessoas que sofrem perseguição política injusta em seu país de origem.",
+        "As embaixadas funcionam como território estrangeiro, sendo um local seguro para buscar asilo.",
+        "O direito é temporário, destinado a proteger o indivíduo até que a ameaça cesse, e não se aplica a quem cometeu crimes contra a paz, crimes de guerra ou crimes contra a humanidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:03:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direito de Refúgio",
+      "resumoCurto": "Profº Cleiton Barbirato diferencia o refúgio da imigração ilegal e aborda a necessidade de regulação.",
+      "detalhamento": "Profº Cleiton Barbirato diferencia o refúgio da imigração ilegal e aborda a necessidade de regulação. Ele menciona a situação de milhares de venezuelanos no Brasil, bem como a experiência de uma família afegã recebida na cidade. O refúgio é amparado por tratados internacionais, como a convenção de 28 de julho de 1951, e pela lei interna brasileira, o Estatuto dos Refugiados (Lei 947 de 1997).",
+      "pontosChave": [
+        "Profº Cleiton Barbirato diferencia o refúgio da imigração ilegal e aborda a necessidade de regulação.",
+        "Ele menciona a situação de milhares de venezuelanos no Brasil, bem como a experiência de uma família afegã recebida na cidade.",
+        "O refúgio é amparado por tratados internacionais, como a convenção de 28 de julho de 1951, e pela lei interna brasileira, o Estatuto dos Refugiados (Lei 947 de 1997)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:07:25",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Critérios para o Refúgio",
+      "resumoCurto": "Profº Cleiton Barbirato esclarece que, para solicitar refúgio, é necessário comprovar perseguição baseada em raça, cor, religião, nacionalidade, grupo social ou filiação política.",
+      "detalhamento": "Profº Cleiton Barbirato esclarece que, para solicitar refúgio, é necessário comprovar perseguição baseada em raça, cor, religião, nacionalidade, grupo social ou filiação política. A perseguição não precisa ser estatal, podendo partir de grupos organizados, como exemplificado pelo grupo Boko Haram na Nigéria.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato esclarece que, para solicitar refúgio, é necessário comprovar perseguição baseada em raça, cor, religião, nacionalidade, grupo social ou filiação política.",
+        "A perseguição não precisa ser estatal, podendo partir de grupos organizados, como exemplificado pelo grupo Boko Haram na Nigéria."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:08:43",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Desafios na Recepção de Refugiados",
+      "resumoCurto": "Profº Cleiton Barbirato, Salatiel Rodrigues e Rodrigo Oliveira discutem o impacto social e econômico de receber refugiados.",
+      "detalhamento": "Profº Cleiton Barbirato, Salatiel Rodrigues e Rodrigo Oliveira discutem o impacto social e econômico de receber refugiados. O grupo analisa a postura do Brasil, caracterizada historicamente pela neutralidade e abertura, em contraste com a decisão de países como a Alemanha de fechar fronteiras. Eles ressaltam que, embora o acolhimento seja humanitário, é necessário equilibrar a capacidade do país de oferecer infraestrutura básica, como saúde e educação.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato, Salatiel Rodrigues e Rodrigo Oliveira discutem o impacto social e econômico de receber refugiados.",
+        "O grupo analisa a postura do Brasil, caracterizada historicamente pela neutralidade e abertura, em contraste com a decisão de países como a Alemanha de fechar fronteiras.",
+        "Eles ressaltam que, embora o acolhimento seja humanitário, é necessário equilibrar a capacidade do país de oferecer infraestrutura básica, como saúde e educação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:13:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direito Humanitário e Neutralidade",
+      "resumoCurto": "Profº Cleiton Barbirato introduz o direito humanitário, que estabelece regras para restringir a violência em tempos de guerra, garantindo assistência a civis e o tratamento digno a prisioneiros.",
+      "detalhamento": "Profº Cleiton Barbirato introduz o direito humanitário, que estabelece regras para restringir a violência em tempos de guerra, garantindo assistência a civis e o tratamento digno a prisioneiros. O símbolo da cruz nos uniformes de socorristas é associado à bandeira da Suíça, refletindo a neutralidade diplomática do país em conflitos internacionais.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato introduz o direito humanitário, que estabelece regras para restringir a violência em tempos de guerra, garantindo assistência a civis e o tratamento digno a prisioneiros.",
+        "O símbolo da cruz nos uniformes de socorristas é associado à bandeira da Suíça, refletindo a neutralidade diplomática do país em conflitos internacionais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "01:20:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Primeira Geração de Direitos",
+      "resumoCurto": "Profº Cleiton Barbirato descreve os direitos fundamentais de primeira geração, ou liberdades públicas, como marcos surgidos com a independência dos Estados Unidos e a Revolução Francesa.",
+      "detalhamento": "Profº Cleiton Barbirato descreve os direitos fundamentais de primeira geração, ou liberdades públicas, como marcos surgidos com a independência dos Estados Unidos e a Revolução Francesa. Estes direitos atuam como \"direitos negativos\" ou freios ao poder estatal, protegendo o indivíduo através de garantias como o devido processo legal, liberdade religiosa e direitos políticos.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato descreve os direitos fundamentais de primeira geração, ou liberdades públicas, como marcos surgidos com a independência dos Estados Unidos e a Revolução Francesa.",
+        "Estes direitos atuam como \"direitos negativos\" ou freios ao poder estatal, protegendo o indivíduo através de garantias como o devido processo legal, liberdade religiosa e direitos políticos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "01:30:33",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Segunda Geração de Direitos",
+      "resumoCurto": "Profº Cleiton Barbirato explica que a segunda geração de direitos, consolidada após a Primeira Guerra Mundial, foca em aspectos sociais e econômicos.",
+      "detalhamento": "Profº Cleiton Barbirato explica que a segunda geração de direitos, consolidada após a Primeira Guerra Mundial, foca em aspectos sociais e econômicos. Estes exigem que o Estado adote uma postura ativa (prestação concreta) para garantir o bem-estar social, diferentemente da abstenção exigida pela primeira geração.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explica que a segunda geração de direitos, consolidada após a Primeira Guerra Mundial, foca em aspectos sociais e econômicos.",
+        "Estes exigem que o Estado adote uma postura ativa (prestação concreta) para garantir o bem-estar social, diferentemente da abstenção exigida pela primeira geração."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 23,
+      "timestamp": "01:33:20",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Terceira Geração de Direitos",
+      "resumoCurto": "Profº Cleiton Barbirato aborda a terceira geração de direitos, classificados como direitos difusos e coletivos.",
+      "detalhamento": "Profº Cleiton Barbirato aborda a terceira geração de direitos, classificados como direitos difusos e coletivos. Eles abrangem temas como a preservação ambiental, a proteção da infância e juventude, a defesa do consumidor e o direito à autodeterminação informativa, incluindo a proteção de dados pessoais sob a Lei Geral de Proteção de Dados (LGPD).",
+      "pontosChave": [
+        "Profº Cleiton Barbirato aborda a terceira geração de direitos, classificados como direitos difusos e coletivos.",
+        "Eles abrangem temas como a preservação ambiental, a proteção da infância e juventude, a defesa do consumidor e o direito à autodeterminação informativa, incluindo a proteção de dados pessoais sob a Lei Geral de Proteção de Dados (LGPD)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 24,
+      "timestamp": "01:36:26",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diretrizes para o Trabalho Acadêmico",
+      "resumoCurto": "Profº Cleiton Barbirato define as instruções para o trabalho que comporá a nota da AV1.",
+      "detalhamento": "Profº Cleiton Barbirato define as instruções para o trabalho que comporá a nota da AV1. O tema é desigualdade social e privilégios, com análise sobre o papel da igreja. O texto deve ter no máximo uma lauda, seguir a formatação Times New Roman, tamanho 12, espaçamento 1,5, e deve ser enviado por e-mail até o prazo improrrogável de 30 de setembro de 2026.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato define as instruções para o trabalho que comporá a nota da AV1.",
+        "O tema é desigualdade social e privilégios, com análise sobre o papel da igreja.",
+        "O texto deve ter no máximo uma lauda, seguir a formatação Times New Roman, tamanho 12, espaçamento 1,5, e deve ser enviado por e-mail até o prazo improrrogável de 30 de setembro de 2026."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 25,
+      "timestamp": "01:42:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Inquérito sobre Isenção de Disciplina",
+      "resumoCurto": "Celso Oliveira pergunta a Profº Cleiton Barbirato sobre o status de um pedido de isenção de disciplina baseada em cursos anteriores.",
+      "detalhamento": "Celso Oliveira pergunta a Profº Cleiton Barbirato sobre o status de um pedido de isenção de disciplina baseada em cursos anteriores. Profº Cleiton Barbirato informa que ainda não recebeu a documentação oficial da diretoria e orienta a manter a frequência nas aulas e trabalhos até que haja uma resposta definitiva sobre o deferimento.",
+      "pontosChave": [
+        "Celso Oliveira pergunta a Profº Cleiton Barbirato sobre o status de um pedido de isenção de disciplina baseada em cursos anteriores.",
+        "Profº Cleiton Barbirato informa que ainda não recebeu a documentação oficial da diretoria e orienta a manter a frequência nas aulas e trabalhos até que haja uma resposta definitiva sobre o deferimento."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 26,
+      "timestamp": "01:45:18",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Discussão sobre Digitalização de Documentos",
+      "resumoCurto": "Celso Oliveira e Profº Cleiton Barbirato conversam sobre oportunidades profissionais na área de digitalização.",
+      "detalhamento": "Celso Oliveira e Profº Cleiton Barbirato conversam sobre oportunidades profissionais na área de digitalização. Celso Oliveira menciona seu trabalho com prontuários médicos em sete hospitais públicos e Profº Cleiton Barbirato comenta sobre sistemas de cartório, com ambos trocando contatos profissionais sobre prestação de serviços de tecnologia e digitalização.",
+      "pontosChave": [
+        "Celso Oliveira e Profº Cleiton Barbirato conversam sobre oportunidades profissionais na área de digitalização.",
+        "Celso Oliveira menciona seu trabalho com prontuários médicos em sete hospitais públicos e Profº Cleiton Barbirato comenta sobre sistemas de cartório, com ambos trocando contatos profissionais sobre prestação de serviços de tecnologia e digitalização."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Oração Inicial",
+      "relato": "A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo.",
+      "timestamp": "00:22:44"
+    },
+    {
+      "titulo": "Critérios para o Refúgio",
+      "relato": "Profº Cleiton Barbirato esclarece que, para solicitar refúgio, é necessário comprovar perseguição baseada em raça, cor, religião, nacionalidade, grupo social ou filiação política. A perseguição não precisa ser estatal, podendo partir de grupos organizados, como exemplificado pelo grupo Boko Haram na Nigéria.",
+      "timestamp": "01:07:25"
+    },
+    {
+      "titulo": "Discussão sobre Digitalização de Documentos",
+      "relato": "Celso Oliveira e Profº Cleiton Barbirato conversam sobre oportunidades profissionais na área de digitalização. Celso Oliveira menciona seu trabalho com prontuários médicos em sete hospitais públicos e Profº Cleiton Barbirato comenta sobre sistemas de cartório, com ambos trocando contatos profissionais sobre prestação de serviços de tecnologia e digitalização.",
+      "timestamp": "01:45:18"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Gênesis 1:26-27",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Miqueias 6:8",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Deuteronômio 10:18-19",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Incorporação de Tratados Internacionais (Art. 5º, § 3º da CF/88)",
+      "detalhe": "Tratados sobre direitos humanos aprovados em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos, equivalem a Emendas Constitucionais no ápice da Pirâmide de Kelsen."
+    },
+    {
+      "titulo": "Dimensão Vertical vs. Horizontal",
+      "detalhe": "Vertical: o indivíduo buscando proteção contra os arbítrios e o poder punitivo do Estado (jus puniendi). Horizontal: aplicação dos direitos fundamentais nas relações entre particulares e instituições privadas."
+    },
+    {
+      "titulo": "Artigo 5º da Constituição Federal de 1988",
+      "detalhe": "Garante a brasileiros e estrangeiros residentes a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade (Cláusula Pétrea imutável por emenda)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Configuração da Aula e Saudações\" nesta aula?",
+      "dicaResposta": "Cristiano Sacramento e Rosiane Lima discutiram as configurações de gravação da aula antes do início formal. Após a resolução dos problemas técnicos, Daniel Rodrigues e Profº Cleiton Barbirato trocaram saudações cordiais."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Oração Inicial\" nesta aula?",
+      "dicaResposta": "A aula foi aberta com uma oração conduzida por Rosiane Lima, que solicitou bênçãos para os participantes e para as cordas vocais de Profº Cleiton Barbirato, visando o bom andamento da exposição do conteúdo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Contexto Histórico e Conflitos\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato revisou que as atrocidades da Segunda Guerra Mundial foram o principal motivo para a comunidade internacional estabelecer mecanismos de proteção aos direitos humanos, destacando que conflitos atuais, como os ocorridos no Irã e na Ucrânia, demonstram a necessidade contínua de proteção a civis e militares tanto durante quanto após as guerras."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Conceito de Direitos Humanos Estrito Senso\" nesta aula?",
+      "dicaResposta": "Profº Cleiton Barbirato definiu os direitos humanos estrito senso como as legislações e regulações estabelecidas em tempos de paz para assegurar a dignidade humana, preferindo este termo em vez de \"dignidade da pessoa humana\" por considerar a expressão redundante."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Direitos Humanos Fundamentais\" nesta aula?",
+      "dicaResposta": "Os direitos universais identificados como essenciais para todos os cidadãos, independentemente de nacionalidade, gênero ou idade, incluem o direito à vida, à liberdade, à igualdade e ao tratamento equitativo."
+    }
+  ],
+  "encaminhamentos": [
+    "Produzir trabalho AV1: Redigir um texto de até uma lauda sobre desigualdade social e privilégios. Enviar o arquivo para o email indicado pelo professor utilizando o assunto trabalho para composição de notas.",
+    "Solicitar link: Enviar uma mensagem ao professor solicitando o link do vídeo de 26 de setembro caso ainda não o tenham assistido."
+  ]
+}

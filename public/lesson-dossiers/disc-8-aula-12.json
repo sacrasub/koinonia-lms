@@ -1,0 +1,374 @@
+{
+  "id": "disc-8-aula-12",
+  "disciplinaId": "disc-8",
+  "disciplinaName": "08 - TCC I - Gabriela Leal",
+  "disciplinaShortName": "TCC I",
+  "disciplinaCode": "TCC-101",
+  "professor": "Profª Gabriela Leal",
+  "aulaNum": 12,
+  "unidade": 2,
+  "dateIso": "2026-11-06",
+  "dateBr": "06/11/2026",
+  "theme": "Aula 12 • Diretrizes e Recursos Acadêmicos",
+  "geminiUrl": "https://docs.google.com/document/d/1z4tSB5VQ4DyD2KWvIV4pFR_8Cdh-B7Hy1IDCxqVxFa0/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Redação das Considerações Finais: fechamento dos objetivos específicos sem introdução de citações teóricas inéditas.",
+    "sinteseGeral": "Reunião de orientação de TCC cobriu diretrizes acadêmicas e progresso discente com foco na escrita. Diretrizes e Recursos Acadêmicos Profº Profº Marcio Leal explicou as regras da disciplina de TCC 1 e recomendou recursos de apoio. A comunidade discente recebeu conselhos para manter os estudos durante o período de férias. Relatos de Progresso Discente Diversos estudantes apresentaram o andamento de seus trabalhos de conclusão de curso. O corpo discente detalhou temas, escolha de orientadores e etapas atuais de pesquisa. Orientações e Encerramento O professor orientou sobre a escrita textual e o afunilamento de temas de pesquisa. A aula foi encerrada com avisos sobre a confraternização final do semestre.",
+    "mapaRapido": [
+      "Indicação de Recursos de Apoio Acadêmico: Profº Profº Marcio Leal indicou um canal no YouTube gerenciado por uma doutoranda chamada Alice, o qual oferece dicas sobre escrita de teses, elaboração de slides e gestão das angústias do processo acadêmico.",
+      "Diretrizes e Diagnóstico da Disciplina de TCC 1: Profº Profº Marcio Leal explicou que a disciplina de TCC 1 não possui reprovação por provas, baseando-se na maturidade e responsabilidade individual para a escrita e apresentação obrigatória do artigo para a colação de grau.",
+      "Recomendações para o Período de Férias e Apresentações: Profº Profº Marcio Leal aconselhou a comunidade discente a não interromper totalmente as atividades de estudo durante as férias, visando adiantar etapas para o último período, e sugeriu a participação nas apresentações de TCC agendadas para 2 de dezembro para familiarização com a dinâmica da banca.",
+      "Requisitos para Orientadores de TCC: Rodrigo Oliveira questionou sobre a possibilidade de ter um pastor local como orientador, recebendo a confirmação de Profº Profº Marcio Leal de que é permitido desde que a pessoa orientadora possua, no mínimo, uma pós-graduação lato sensu (especialização), não sendo obrigatório pertencer ao corpo docente do seminário.",
+      "Relato de Progresso de Alcimar Luiz da Silva: Alcimar Luiz da Silva (sétimo período) relatou que já concluiu o projeto, encontrando-se na fase de organização textual e estruturação dos rascunhos em formato de artigo, pretendendo dedicar cerca de dez dias das férias para focar no texto, além de aplicar estudos de termos originais hebraicos e gregos em pregações.",
+      "Relato de Progresso de Sérgio Dantas: Sérgio Dantas (oitavo período / conclusão de horas, com orientação de Jeferson Pontes) apresentou o andamento de seu trabalho focado na análise da epistemologia da revelação na teologia de John MacArthur, baseando-se no livro *Caos Carismático*, com os capítulos um e dois concluídos e o capítulo três em fase de finalização."
+    ],
+    "duracaoEstimada": "~50min",
+    "totalBlocos": 22
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Indicação de Recursos de Apoio Acadêmico",
+      "resumoCurto": "Profº Profº Marcio Leal indicou um canal no YouTube gerenciado por uma doutoranda chamada Alice, o qual oferece dicas sobre escrita de teses, elaboração de slides e gestão das angústias do processo acadêmico.",
+      "detalhamento": "Profº Profº Marcio Leal indicou um canal no YouTube gerenciado por uma doutoranda chamada Alice, o qual oferece dicas sobre escrita de teses, elaboração de slides e gestão das angústias do processo acadêmico.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal indicou um canal no YouTube gerenciado por uma doutoranda chamada Alice, o qual oferece dicas sobre escrita de teses, elaboração de slides e gestão das angústias do processo acadêmico."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diretrizes e Diagnóstico da Disciplina de TCC 1",
+      "resumoCurto": "Profº Profº Marcio Leal explicou que a disciplina de TCC 1 não possui reprovação por provas, baseando-se na maturidade e responsabilidade individual para a escrita e apresentação obrigatória do artigo para a colação de grau.",
+      "detalhamento": "Profº Profº Marcio Leal explicou que a disciplina de TCC 1 não possui reprovação por provas, baseando-se na maturidade e responsabilidade individual para a escrita e apresentação obrigatória do artigo para a colação de grau. Além disso, solicitou que cadinforme o período acadêmico e a etapa atual do processo para compor um relatório diagnóstico destinado à professora Carla.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal explicou que a disciplina de TCC 1 não possui reprovação por provas, baseando-se na maturidade e responsabilidade individual para a escrita e apresentação obrigatória do artigo para a colação de grau.",
+        "Além disso, solicitou que cadinforme o período acadêmico e a etapa atual do processo para compor um relatório diagnóstico destinado à professora Carla."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Recomendações para o Período de Férias e Apresentações",
+      "resumoCurto": "Profº Profº Marcio Leal aconselhou a comunidade discente a não interromper totalmente as atividades de estudo durante as férias, visando adiantar etapas para o último período, e sugeriu a participação nas apresentações de TCC agendadas para 2 de dezembro para familiarização com a dinâmica da banca.",
+      "detalhamento": "Profº Profº Marcio Leal aconselhou a comunidade discente a não interromper totalmente as atividades de estudo durante as férias, visando adiantar etapas para o último período, e sugeriu a participação nas apresentações de TCC agendadas para 2 de dezembro para familiarização com a dinâmica da banca.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal aconselhou a comunidade discente a não interromper totalmente as atividades de estudo durante as férias, visando adiantar etapas para o último período, e sugeriu a participação nas apresentações de TCC agendadas para 2 de dezembro para familiarização com a dinâmica da banca."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Requisitos para Orientadores de TCC",
+      "resumoCurto": "Rodrigo Oliveira questionou sobre a possibilidade de ter um pastor local como orientador, recebendo a confirmação de Profº Profº Marcio Leal de que é permitido desde que a pessoa orientadora possua, no mínimo, uma pós-graduação lato sensu (especialização), não sendo obrigatório pertencer ao corpo docente do seminário.",
+      "detalhamento": "Rodrigo Oliveira questionou sobre a possibilidade de ter um pastor local como orientador, recebendo a confirmação de Profº Profº Marcio Leal de que é permitido desde que a pessoa orientadora possua, no mínimo, uma pós-graduação lato sensu (especialização), não sendo obrigatório pertencer ao corpo docente do seminário.",
+      "pontosChave": [
+        "Rodrigo Oliveira questionou sobre a possibilidade de ter um pastor local como orientador, recebendo a confirmação de Profº Profº Marcio Leal de que é permitido desde que a pessoa orientadora possua, no mínimo, uma pós-graduação lato sensu (especialização), não sendo obrigatório pertencer ao corpo docente do seminário."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:07:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Alcimar Luiz da Silva",
+      "resumoCurto": "Alcimar Luiz da Silva (sétimo período) relatou que já concluiu o projeto, encontrando-se na fase de organização textual e estruturação dos rascunhos em formato de artigo, pretendendo dedicar cerca de dez dias das férias para focar no texto, além de aplicar estudos de termos originais hebraicos e gregos em pregações.",
+      "detalhamento": "Alcimar Luiz da Silva (sétimo período) relatou que já concluiu o projeto, encontrando-se na fase de organização textual e estruturação dos rascunhos em formato de artigo, pretendendo dedicar cerca de dez dias das férias para focar no texto, além de aplicar estudos de termos originais hebraicos e gregos em pregações.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva (sétimo período) relatou que já concluiu o projeto, encontrando-se na fase de organização textual e estruturação dos rascunhos em formato de artigo, pretendendo dedicar cerca de dez dias das férias para focar no texto, além de aplicar estudos de termos originais hebraicos e gregos em pregações."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:08:42",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Sérgio Dantas",
+      "resumoCurto": "Sérgio Dantas (oitavo período / conclusão de horas, com orientação de Jeferson Pontes) apresentou o andamento de seu trabalho focado na análise da epistemologia da revelação na teologia de John MacArthur, baseando-se no livro *Caos Carismático*, com os capítulos um e dois concluídos e o capítulo três em fase de finalização.",
+      "detalhamento": "Sérgio Dantas (oitavo período / conclusão de horas, com orientação de Jeferson Pontes) apresentou o andamento de seu trabalho focado na análise da epistemologia da revelação na teologia de John MacArthur, baseando-se no livro *Caos Carismático*, com os capítulos um e dois concluídos e o capítulo três em fase de finalização.",
+      "pontosChave": [
+        "Sérgio Dantas (oitavo período / conclusão de horas, com orientação de Jeferson Pontes) apresentou o andamento de seu trabalho focado na análise da epistemologia da revelação na teologia de John MacArthur, baseando-se no livro *Caos Carismático*, com os capítulos um e dois concluídos e o capítulo três em fase de finalização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:11:22",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Andreia Pimentel Mariano e Silva Silva",
+      "resumoCurto": "Andreia Pimentel Mariano e Silva Silva (sétimo período) informou que está na etapa de ajustes em seu projeto conforme as orientações previamente recebidas.",
+      "detalhamento": "Andreia Pimentel Mariano e Silva Silva (sétimo período) informou que está na etapa de ajustes em seu projeto conforme as orientações previamente recebidas.",
+      "pontosChave": [
+        "Andreia Pimentel Mariano e Silva Silva (sétimo período) informou que está na etapa de ajustes em seu projeto conforme as orientações previamente recebidas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:12:53",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de André Amaral",
+      "resumoCurto": "André Amaral (quarto período, com orientação de Alexandro Silva) compartilhou que escolheu o tema sobre cristianismo autêntico versus tradição religiosa, focando na simplicidade da fé em contraponto aos dogmas e fardos das tradições, encontrando-se atualmente na definição da metodologia e busca de referências.",
+      "detalhamento": "André Amaral (quarto período, com orientação de Alexandro Silva) compartilhou que escolheu o tema sobre cristianismo autêntico versus tradição religiosa, focando na simplicidade da fé em contraponto aos dogmas e fardos das tradições, encontrando-se atualmente na definição da metodologia e busca de referências.",
+      "pontosChave": [
+        "André Amaral (quarto período, com orientação de Alexandro Silva) compartilhou que escolheu o tema sobre cristianismo autêntico versus tradição religiosa, focando na simplicidade da fé em contraponto aos dogmas e fardos das tradições, encontrando-se atualmente na definição da metodologia e busca de referências."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:14:52",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Antônio Marcos",
+      "resumoCurto": "Antônio Marcos (sétimo período) relatou que finalizou o projeto, obteve a aceitação de orientador e está acumulando conteúdo literário e referências bibliográficas para desenvolver a temática sobre a centralidade da escatologia na vida cristã.",
+      "detalhamento": "Antônio Marcos (sétimo período) relatou que finalizou o projeto, obteve a aceitação de orientador e está acumulando conteúdo literário e referências bibliográficas para desenvolver a temática sobre a centralidade da escatologia na vida cristã.",
+      "pontosChave": [
+        "Antônio Marcos (sétimo período) relatou que finalizou o projeto, obteve a aceitação de orientador e está acumulando conteúdo literário e referências bibliográficas para desenvolver a temática sobre a centralidade da escatologia na vida cristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:17:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Camila Vieira",
+      "resumoCurto": "Camila Vieira (sexto período, com orientação do pastor Hilário) relatou estar na fase de leitura, recebendo a recomendação de Profº Profº Marcio Leal para iniciar a escrita textual paralelamente e registrar *insights* em um caderno para evitar atrasos decorrentes do perfeccionismo.",
+      "detalhamento": "Camila Vieira (sexto período, com orientação do pastor Hilário) relatou estar na fase de leitura, recebendo a recomendação de Profº Profº Marcio Leal para iniciar a escrita textual paralelamente e registrar *insights* em um caderno para evitar atrasos decorrentes do perfeccionismo.",
+      "pontosChave": [
+        "Camila Vieira (sexto período, com orientação do pastor Hilário) relatou estar na fase de leitura, recebendo a recomendação de Profº Profº Marcio Leal para iniciar a escrita textual paralelamente e registrar *insights* em um caderno para evitar atrasos decorrentes do perfeccionismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:22:52",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Relato de Progresso de Celso Oliveira",
+      "resumoCurto": "Celso Oliveira (quinto período) apresentou seu tema sobre a origem e expansão do congregacionalismo brasileiro no Rio de Janeiro e na Baixada Fluminense, com foco na trajetória de um familiar, mencionando a possibilidade de alterar a orientação para o pastor Vanderlina devido à proximidade geográfica.",
+      "detalhamento": "Celso Oliveira (quinto período) apresentou seu tema sobre a origem e expansão do congregacionalismo brasileiro no Rio de Janeiro e na Baixada Fluminense, com foco na trajetória de um familiar, mencionando a possibilidade de alterar a orientação para o pastor Vanderlina devido à proximidade geográfica.",
+      "pontosChave": [
+        "Celso Oliveira (quinto período) apresentou seu tema sobre a origem e expansão do congregacionalismo brasileiro no Rio de Janeiro e na Baixada Fluminense, com foco na trajetória de um familiar, mencionando a possibilidade de alterar a orientação para o pastor Vanderlina devido à proximidade geográfica."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:26:58",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Carla P. dos S. de Almeida",
+      "resumoCurto": "de Almeida (sétimo período) informou que enviou o projeto à pessoa orientadora, mas que o progresso na escrita está lento devido a motivos pessoais, recebendo a sugestão de Profº Profº Marcio Leal para registrar notas imediatas durante as leituras.",
+      "detalhamento": "Carla P. dos S. de Almeida (sétimo período) informou que enviou o projeto à pessoa orientadora, mas que o progresso na escrita está lento devido a motivos pessoais, recebendo a sugestão de Profº Profº Marcio Leal para registrar notas imediatas durante as leituras.",
+      "pontosChave": [
+        "de Almeida (sétimo período) informou que enviou o projeto à pessoa orientadora, mas que o progresso na escrita está lento devido a motivos pessoais, recebendo a sugestão de Profº Profº Marcio Leal para registrar notas imediatas durante as leituras."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:31:29",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Cristian Rifo",
+      "resumoCurto": "Cristian Rifo (sexto período), por meio de manifestação no chat, informou que está coletando informações e avaliando três opções de temas (com duas mais avançadas), aguardando retorno de pessoa orientadora.",
+      "detalhamento": "Cristian Rifo (sexto período), por meio de manifestação no chat, informou que está coletando informações e avaliando três opções de temas (com duas mais avançadas), aguardando retorno de pessoa orientadora.",
+      "pontosChave": [
+        "Cristian Rifo (sexto período), por meio de manifestação no chat, informou que está coletando informações e avaliando três opções de temas (com duas mais avançadas), aguardando retorno de pessoa orientadora."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:32:27",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Relato de Progresso de Daniel Rodrigues",
+      "resumoCurto": "Daniel Rodrigues (sétimo período, com orientação de Carla Janaína) relatou que concluiu o trabalho de conclusão de curso e está na etapa de elaboração de slides.",
+      "detalhamento": "Daniel Rodrigues (sétimo período, com orientação de Carla Janaína) relatou que concluiu o trabalho de conclusão de curso e está na etapa de elaboração de slides.",
+      "pontosChave": [
+        "Daniel Rodrigues (sétimo período, com orientação de Carla Janaína) relatou que concluiu o trabalho de conclusão de curso e está na etapa de elaboração de slides."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:38:01",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Filipe Luiz",
+      "resumoCurto": "Filipe Luiz (quarto período, com orientação de Emerson) relatou que foca seu estudo no conceito de vocação, tendo recebido orientação para delimitar o tema e evitar misturar vocação, talento e dom para simplificar o escopo da pesquisa.",
+      "detalhamento": "Filipe Luiz (quarto período, com orientação de Emerson) relatou que foca seu estudo no conceito de vocação, tendo recebido orientação para delimitar o tema e evitar misturar vocação, talento e dom para simplificar o escopo da pesquisa.",
+      "pontosChave": [
+        "Filipe Luiz (quarto período, com orientação de Emerson) relatou que foca seu estudo no conceito de vocação, tendo recebido orientação para delimitar o tema e evitar misturar vocação, talento e dom para simplificar o escopo da pesquisa."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:40:34",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de John Soeiro",
+      "resumoCurto": "John Soeiro (quarto período) informou que planeja alterar seu tema de pesquisa, anteriormente focado em acústica e sonorização de templos, por considerá-lo excessivamente complexo.",
+      "detalhamento": "John Soeiro (quarto período) informou que planeja alterar seu tema de pesquisa, anteriormente focado em acústica e sonorização de templos, por considerá-lo excessivamente complexo.",
+      "pontosChave": [
+        "John Soeiro (quarto período) informou que planeja alterar seu tema de pesquisa, anteriormente focado em acústica e sonorização de templos, por considerá-lo excessivamente complexo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:42:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Relato de Progresso de Lenilson Ferreira",
+      "resumoCurto": "Lenilson Ferreira (quarto período) relatou que já iniciou a escrita e o desenvolvimento do texto, reunindo conteúdos antes de realizar a organização estrutural, e encontra-se na busca de pessoa orientadora.",
+      "detalhamento": "Lenilson Ferreira (quarto período) relatou que já iniciou a escrita e o desenvolvimento do texto, reunindo conteúdos antes de realizar a organização estrutural, e encontra-se na busca de pessoa orientadora.",
+      "pontosChave": [
+        "Lenilson Ferreira (quarto período) relatou que já iniciou a escrita e o desenvolvimento do texto, reunindo conteúdos antes de realizar a organização estrutural, e encontra-se na busca de pessoa orientadora."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "00:44:42",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Relato de Progresso de Lucas Guimarães",
+      "resumoCurto": "Lucas Guimarães (quarto período) relatou que escolheu focar em práticas estranhas observadas em cultos e igrejas (como caixas de oração), após descartar um tema anterior sobre igreja saudável, e busca orientações sobre teologia do culto.",
+      "detalhamento": "Lucas Guimarães (quarto período) relatou que escolheu focar em práticas estranhas observadas em cultos e igrejas (como caixas de oração), após descartar um tema anterior sobre igreja saudável, e busca orientações sobre teologia do culto.",
+      "pontosChave": [
+        "Lucas Guimarães (quarto período) relatou que escolheu focar em práticas estranhas observadas em cultos e igrejas (como caixas de oração), após descartar um tema anterior sobre igreja saudável, e busca orientações sobre teologia do culto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "00:46:24",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Tema de Pesquisa de Lucas Guimaraes",
+      "resumoCurto": "Lucas Guimaraes relata que Leon Leandro Paulino sugeriu um tema de pesquisa comparativo entre Levítico e Hebreus com foco em culto.",
+      "detalhamento": "Lucas Guimaraes relata que Leon Leandro Paulino sugeriu um tema de pesquisa comparativo entre Levítico e Hebreus com foco em culto. Lucas Guimaraes aponta que Leon Leandro Paulino alertou sobre a possibilidade de o tema se tornar muito extenso, motivo pelo qual Lucas Guimaraes está apenas reunindo materiais e estudando livros indicados por professores, sem começar a escrever ainda para evitar descartar textos. Lucas Guimaraes menciona estar no quarto período e possuir margem de tempo para estudar o assunto.",
+      "pontosChave": [
+        "Lucas Guimaraes relata que Leon Leandro Paulino sugeriu um tema de pesquisa comparativo entre Levítico e Hebreus com foco em culto.",
+        "Lucas Guimaraes aponta que Leon Leandro Paulino alertou sobre a possibilidade de o tema se tornar muito extenso, motivo pelo qual Lucas Guimaraes está apenas reunindo materiais e estudando livros indicados por professores, sem começar a escrever ainda para evitar descartar textos.",
+        "Lucas Guimaraes menciona estar no quarto período e possuir margem de tempo para estudar o assunto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "00:48:10",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Orientações sobre Escrita e Afunilamento do Tema",
+      "resumoCurto": "Profº Profº Marcio Leal aconselha os estudantes a nunca apagarem o que escrevem, mas a guardarem todo o material por ser precioso, pois pode ser útil no futuro.",
+      "detalhamento": "Profº Profº Marcio Leal aconselha os estudantes a nunca apagarem o que escrevem, mas a guardarem todo o material por ser precioso, pois pode ser útil no futuro. Profº Profº Marcio Leal sugere que Lucas Guimaraes faça um recorte na temática extensa com o auxílio de um orientador. Profº Profº Marcio Leal destaca que o assunto abordado por Lucas Guimaraes está diretamente relacionado ao conceito amplo de saúde da igreja, permitindo afunilar a pesquisa sem fugir do tema inicial, com a definição do título ficando para o final.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal aconselha os estudantes a nunca apagarem o que escrevem, mas a guardarem todo o material por ser precioso, pois pode ser útil no futuro.",
+        "Profº Profº Marcio Leal sugere que Lucas Guimaraes faça um recorte na temática extensa com o auxílio de um orientador.",
+        "Profº Profº Marcio Leal destaca que o assunto abordado por Lucas Guimaraes está diretamente relacionado ao conceito amplo de saúde da igreja, permitindo afunilar a pesquisa sem fugir do tema inicial, com a definição do título ficando para o final."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 21,
+      "timestamp": "00:48:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento Antecipado da Aula e Progresso Discente",
+      "resumoCurto": "Profº Profº Marcio Leal lamenta ter adoecido, mas anuncia o encerramento antecipado da aula, prevendo a continuação para a semana seguinte com a ajuda divina para concluir a disciplina.",
+      "detalhamento": "Profº Profº Marcio Leal lamenta ter adoecido, mas anuncia o encerramento antecipado da aula, prevendo a continuação para a semana seguinte com a ajuda divina para concluir a disciplina. Profº Profº Marcio Leal expressa alegria ao saber que estudantes do quarto período, como Lucas Guimaraes, já estão produzindo, além de mencionar que o grupo do sétimo período e Rosiane Lima (Rosi) caminham para a produção de cerca de quatro artigos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal lamenta ter adoecido, mas anuncia o encerramento antecipado da aula, prevendo a continuação para a semana seguinte com a ajuda divina para concluir a disciplina.",
+        "Profº Profº Marcio Leal expressa alegria ao saber que estudantes do quarto período, como Lucas Guimaraes, já estão produzindo, além de mencionar que o grupo do sétimo período e Rosiane Lima (Rosi) caminham para a produção de cerca de quatro artigos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 22,
+      "timestamp": "00:49:59",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Planejamento para o Encerramento do Semestre e Atualizações de Estudantes",
+      "resumoCurto": "Profº Profº Marcio Leal convida todos a levarem brigadeiro, pizza, salgado tipo roladinho e refrigerante, incluindo Coca Zero, para a confraternização de encerramento do semestre na próxima semana, enquanto Rosiane Lima (Rosi) pondera sobre a limitação de compartilhamentos virtuais.",
+      "detalhamento": "Profº Profº Marcio Leal convida todos a levarem brigadeiro, pizza, salgado tipo roladinho e refrigerante, incluindo Coca Zero, para a confraternização de encerramento do semestre na próxima semana, enquanto Rosiane Lima (Rosi) pondera sobre a limitação de compartilhamentos virtuais. Rosiane Lima (Rosi) lê no chat as informações enviadas por Paulo Lima sobre complementação de créditos, escolha de tema, elaboração de esboço e leitura em andamento. A aula é finalizada com despedidas e bênçãos trocadas entre Profº Profº Marcio Leal, Rosiane Lima (Rosi), Alcimar Luiz da Silva e Daniel Rodrigues.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal convida todos a levarem brigadeiro, pizza, salgado tipo roladinho e refrigerante, incluindo Coca Zero, para a confraternização de encerramento do semestre na próxima semana, enquanto Rosiane Lima (Rosi) pondera sobre a limitação de compartilhamentos virtuais.",
+        "Rosiane Lima (Rosi) lê no chat as informações enviadas por Paulo Lima sobre complementação de créditos, escolha de tema, elaboração de esboço e leitura em andamento.",
+        "A aula é finalizada com despedidas e bênçãos trocadas entre Profº Profº Marcio Leal, Rosiane Lima (Rosi), Alcimar Luiz da Silva e Daniel Rodrigues."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [],
+  "referenciasBiblicas": [
+    {
+      "referencia": "salmo 121",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    },
+    {
+      "referencia": "salmo 12",
+      "contexto": "Base bíblica trabalhada na disciplina TCC I."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Regras de Citação ABNT (NBR 10520)",
+      "detalhe": "Direta Curta (até 3 linhas): no parágrafo, entre aspas duplas, com autor, ano e página (SOBRENOME, 2026, p. 45). Direta Longa (+3 linhas): bloco destacado com recuo de 4 cm da margem esquerda, fonte 10, espaçamento simples e SEM aspas. Indireta (Paráfrase): exige autor e ano (SOBRENOME, 2026)."
+    },
+    {
+      "titulo": "Estrutura do Resumo Acadêmico (NBR 6028)",
+      "detalhe": "Parágrafo único contínuo de 150 a 500 palavras, espaçamento simples, contendo tema, objetivo geral, metodologia, principais resultados e conclusão, seguido de 3 a 5 palavras-chave separadas por ponto final."
+    },
+    {
+      "titulo": "Ordem Cronológica Recomendada de Redação",
+      "detalhe": "Metodologia → Desenvolvimento dos Capítulos (Fundamentação Teórica) → Considerações Finais → Introdução e Resumo/Abstract (redigidos por último, após a conclusão do texto)."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Indicação de Recursos de Apoio Acadêmico\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal indicou um canal no YouTube gerenciado por uma doutoranda chamada Alice, o qual oferece dicas sobre escrita de teses, elaboração de slides e gestão das angústias do processo acadêmico."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diretrizes e Diagnóstico da Disciplina de TCC 1\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal explicou que a disciplina de TCC 1 não possui reprovação por provas, baseando-se na maturidade e responsabilidade individual para a escrita e apresentação obrigatória do artigo para a colação de grau. Além disso, solicitou que cadinforme o período acadêmico e a etapa atual do processo para compor um relatório diagnóstico destinado à professora Carla."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Recomendações para o Período de Férias e Apresentações\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal aconselhou a comunidade discente a não interromper totalmente as atividades de estudo durante as férias, visando adiantar etapas para o último período, e sugeriu a participação nas apresentações de TCC agendadas para 2 de dezembro para familiarização com a dinâmica da banca."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Requisitos para Orientadores de TCC\" nesta aula?",
+      "dicaResposta": "Rodrigo Oliveira questionou sobre a possibilidade de ter um pastor local como orientador, recebendo a confirmação de Profº Profº Marcio Leal de que é permitido desde que a pessoa orientadora possua, no mínimo, uma pós-graduação lato sensu (especialização), não sendo obrigatório pertencer ao corpo docente do seminário."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Relato de Progresso de Alcimar Luiz da Silva\" nesta aula?",
+      "dicaResposta": "Alcimar Luiz da Silva (sétimo período) relatou que já concluiu o projeto, encontrando-se na fase de organização textual e estruturação dos rascunhos em formato de artigo, pretendendo dedicar cerca de dez dias das férias para focar no texto, além de aplicar estudos de termos originais hebraicos e gregos em pregações."
+    }
+  ],
+  "encaminhamentos": [
+    "Comunicar orientador: Enviar mensagem pelo WhatsApp para Márcio Leal confirmando o vínculo de orientação acadêmica.",
+    "Ajustar projeto: Implementar as modificações solicitadas no projeto acadêmico e enviar a versão atualizada para a professora.",
+    "Avançar TCC férias: Realizar registros e avançar com a produção textual do trabalho acadêmico durante o período de férias.",
+    "Iniciar escrita: Iniciar a redação do trabalho focando na seção de metodologia durante as férias."
+  ]
+}

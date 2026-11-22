@@ -69,6 +69,7 @@ import { saveCornellNote } from '@/services/studentSyncService';
 import { SupportMaterialsHub } from '@/components/SupportMaterialsHub';
 import { MobilePdfReaderModal } from '@/components/MobilePdfReaderModal';
 import { ReadAloudButton } from '@/components/ReadAloudButton';
+import { buildLessonDossierUrl } from '@/types/lessonDossier';
 import { trackEvent } from '@/services/telemetryService';
 
 interface DisciplinaDetailPageProps {
@@ -1601,6 +1602,22 @@ export const DisciplinaDetailPage: React.FC<DisciplinaDetailPageProps> = ({
                         <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
                           <span className="text-[10px] text-gray-500">Por: {note.author_name}</span>
                           <div className="flex flex-wrap items-center gap-2">
+                            {(geminiRecForAudio?.aulaNum || note.aula_num) && (
+                              <a
+                                href={buildLessonDossierUrl(
+                                  disciplina.id,
+                                  (geminiRecForAudio?.aulaNum || note.aula_num) as number
+                                )}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-1.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-bold text-xs rounded-xl shadow-2xs transition flex items-center gap-1.5 active:scale-95"
+                                title="Abrir página detalhada desta aula com linha do tempo momento a momento e IA (nova aba)"
+                              >
+                                <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
+                                <span>Aula Detalhada</span>
+                                <ExternalLink className="w-3 h-3 opacity-70" />
+                              </a>
+                            )}
                             <ReadAloudButton
                               variant="pill"
                               size="xs"

@@ -1,0 +1,388 @@
+{
+  "id": "disc-4-aula-8",
+  "disciplinaId": "disc-4",
+  "disciplinaName": "04 - Direitos Humanos - Cleiton Barbirato",
+  "disciplinaShortName": "Direitos Humanos",
+  "disciplinaCode": "DIR-101",
+  "professor": "Profº Cleiton Barbirato",
+  "aulaNum": 8,
+  "unidade": 2,
+  "dateIso": "2026-10-07",
+  "dateBr": "07/10/2026",
+  "theme": "Aula 8 • Devolutiva comentada da AV1",
+  "geminiUrl": "https://docs.google.com/document/d/1-ddZB6qd2ajhKqEOHaqQG-sUqamoq_Ba8HTRdvR0orc/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Devolutiva comentada da AV1; introdução à sistemática de proteção dos direitos fundamentais no Brasil pela Constituição Federal de 1988.",
+    "sinteseGeral": "Revisão de prova com análise constitucional e debates sobre a estrutura da ONU. Correção da primeira avaliação Correção detalhada da prova abordou conceitos fundamentais de direitos humanos, teorias de Kant, jusnaturalismo e teoria natalista. Tratados e Constituição Debate sobre a incorporação de tratados internacionais, as inovações da Constituição de 1988 e o papel do Supremo Tribunal Federal. Estrutura da ONU e corrupção Explicação da Carta das Nações Unidas e do Conselho de Segurança. Discussão sobre violações de direitos humanos associadas à corrupção estatal.",
+    "mapaRapido": [
+      "Oração inicial e abertura da aula: A aula iniciou-se com uma oração conduzida por celso oliveira, pedindo orientação e sabedoria para o aprendizado da matéria.",
+      "Correção da questão 1 sobre o Estado como personalidade fictícia: A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais.",
+      "Correção da questão 2 sobre os pilares fundamentais dos direitos humanos: A questão dois tratou dos três pilares fundamentais dos direitos humanos, apontados por Rosiane Lima (Rosi) e confirmados por Profº Cleiton Barbirato como universalidade, indivisibilidade e inalienabilidade.",
+      "Correção da questão 3 sobre os direitos humanos à luz da Bíblia: A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo.",
+      "Correção da questão 4 sobre os direitos humanos de primeira geração e a limitação do Estado: A questão quatro focou nos direitos humanos de primeira geração, cujo objetivo principal é garantir a liberdade humana frente à disparidade de forças com o Estado.",
+      "Correção da questão 5 sobre a dignidade humana segundo Immanuel Kant: A questão cinco abordou o conceito de dignidade humana sob a ótica da filosofia de Immanuel Kant."
+    ],
+    "duracaoEstimada": "~1h23min",
+    "totalBlocos": 19
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:00:00",
+      "fase": "Abertura & Contexto",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Oração inicial e abertura da aula",
+      "resumoCurto": "A aula iniciou-se com uma oração conduzida por celso oliveira, pedindo orientação e sabedoria para o aprendizado da matéria.",
+      "detalhamento": "A aula iniciou-se com uma oração conduzida por celso oliveira, pedindo orientação e sabedoria para o aprendizado da matéria. Logo em seguida, Profº Cleiton Barbirato iniciou a correção da prova da primeira avaliação, destacando o bom desempenho geral da turma e parabenizando quem assistiu às aulas.",
+      "pontosChave": [
+        "A aula iniciou-se com uma oração conduzida por celso oliveira, pedindo orientação e sabedoria para o aprendizado da matéria.",
+        "Logo em seguida, Profº Cleiton Barbirato iniciou a correção da prova da primeira avaliação, destacando o bom desempenho geral da turma e parabenizando quem assistiu às aulas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:04:45",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Correção da questão 1 sobre o Estado como personalidade fictícia",
+      "resumoCurto": "A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais.",
+      "detalhamento": "A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais. Rosiane Lima (Rosi) e Profº Cleiton Barbirato identificaram que a resposta correta é o Estado, definido como uma pessoa jurídica de direito público que detém o monopólio da punição, além dos poderes legislativo, judiciário e executivo.",
+      "pontosChave": [
+        "A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais.",
+        "Rosiane Lima (Rosi) e Profº Cleiton Barbirato identificaram que a resposta correta é o Estado, definido como uma pessoa jurídica de direito público que detém o monopólio da punição, além dos poderes legislativo, judiciário e executivo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:06:03",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Correção da questão 2 sobre os pilares fundamentais dos direitos humanos",
+      "resumoCurto": "A questão dois tratou dos três pilares fundamentais dos direitos humanos, apontados por Rosiane Lima (Rosi) e confirmados por Profº Cleiton Barbirato como universalidade, indivisibilidade e inalienabilidade.",
+      "detalhamento": "A questão dois tratou dos três pilares fundamentais dos direitos humanos, apontados por Rosiane Lima (Rosi) e confirmados por Profº Cleiton Barbirato como universalidade, indivisibilidade e inalienabilidade. Foi explicado que universalidade garante os direitos a todas as pessoas, indivisibilidade impede o fracionamento dos direitos, e inalienabilidade proíbe que o próprio indivíduo abra mão de direitos essenciais como a vida e a liberdade.",
+      "pontosChave": [
+        "A questão dois tratou dos três pilares fundamentais dos direitos humanos, apontados por Rosiane Lima (Rosi) e confirmados por Profº Cleiton Barbirato como universalidade, indivisibilidade e inalienabilidade.",
+        "Foi explicado que universalidade garante os direitos a todas as pessoas, indivisibilidade impede o fracionamento dos direitos, e inalienabilidade proíbe que o próprio indivíduo abra mão de direitos essenciais como a vida e a liberdade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:08:40",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Correção da questão 3 sobre os direitos humanos à luz da Bíblia",
+      "resumoCurto": "A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo.",
+      "detalhamento": "A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo. Profº Cleiton Barbirato esclareceu que, à luz da Bíblia, os direitos são necessários em razão da queda humana e de suas consequências, que geraram os problemas sociais, e não devido a uma bondade inerente ao ser humano.",
+      "pontosChave": [
+        "A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo.",
+        "Profº Cleiton Barbirato esclareceu que, à luz da Bíblia, os direitos são necessários em razão da queda humana e de suas consequências, que geraram os problemas sociais, e não devido a uma bondade inerente ao ser humano."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:11:08",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Correção da questão 4 sobre os direitos humanos de primeira geração e a limitação do Estado",
+      "resumoCurto": "A questão quatro focou nos direitos humanos de primeira geração, cujo objetivo principal é garantir a liberdade humana frente à disparidade de forças com o Estado.",
+      "detalhamento": "A questão quatro focou nos direitos humanos de primeira geração, cujo objetivo principal é garantir a liberdade humana frente à disparidade de forças com o Estado. Profº Cleiton Barbirato explicou que esses direitos impõem obrigações negativas ao Estado, limitando a atuação estatal para impedir abusos de poder, fazendo um paralelo com períodos totalitários históricos como a ditadura militar e a vigência do Ato Institucional Número 5 (A5).",
+      "pontosChave": [
+        "A questão quatro focou nos direitos humanos de primeira geração, cujo objetivo principal é garantir a liberdade humana frente à disparidade de forças com o Estado.",
+        "Profº Cleiton Barbirato explicou que esses direitos impõem obrigações negativas ao Estado, limitando a atuação estatal para impedir abusos de poder, fazendo um paralelo com períodos totalitários históricos como a ditadura militar e a vigência do Ato Institucional Número 5 (A5)."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:15:02",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Correção da questão 5 sobre a dignidade humana segundo Immanuel Kant",
+      "resumoCurto": "A questão cinco abordou o conceito de dignidade humana sob a ótica da filosofia de Immanuel Kant.",
+      "detalhamento": "A questão cinco abordou o conceito de dignidade humana sob a ótica da filosofia de Immanuel Kant. Profº Cleiton Barbirato pontuou que a alternativa correta baseia-se na capacidade humana de agir de forma autônoma e moral, correspondendo ao chamado imperativo categórico kantiano.",
+      "pontosChave": [
+        "A questão cinco abordou o conceito de dignidade humana sob a ótica da filosofia de Immanuel Kant.",
+        "Profº Cleiton Barbirato pontuou que a alternativa correta baseia-se na capacidade humana de agir de forma autônoma e moral, correspondendo ao chamado imperativo categórico kantiano."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:16:12",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Correção da questão 6 sobre o direito de asilo e perseguição política",
+      "resumoCurto": "A questão seis tratou do direito de asilo em casos de perseguição política, discutindo o uso de embaixadas como territórios internacionais.",
+      "detalhamento": "A questão seis tratou do direito de asilo em casos de perseguição política, discutindo o uso de embaixadas como territórios internacionais. João Alexandre Souza Lemos mencionou as embaixadas, e Profº Cleiton Barbirato detalhou que o asilo é garantido exclusivamente a indivíduos perseguidos de forma injusta por motivos políticos, religiosos, étnicos ou de gênero, sendo vedado a autores de crimes de guerra ou atentados terroristas.",
+      "pontosChave": [
+        "A questão seis tratou do direito de asilo em casos de perseguição política, discutindo o uso de embaixadas como territórios internacionais.",
+        "João Alexandre Souza Lemos mencionou as embaixadas, e Profº Cleiton Barbirato detalhou que o asilo é garantido exclusivamente a indivíduos perseguidos de forma injusta por motivos políticos, religiosos, étnicos ou de gênero, sendo vedado a autores de crimes de guerra ou atentados terroristas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:19:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Correção das questões 7 e 8 sobre jusnaturalismo e teoria natalista",
+      "resumoCurto": "A questão sete abordou o direito baseado no que é justo por natureza, sendo identificado por Profº Cleiton Barbirato como jusnaturalismo ou direito natural.",
+      "detalhamento": "A questão sete abordou o direito baseado no que é justo por natureza, sendo identificado por Profº Cleiton Barbirato como jusnaturalismo ou direito natural. A questão oito tratou da personalidade jurídica no direito brasileiro, onde Profº Cleiton Barbirato apontou que a teoria adotada é a natalista, determinando que a personalidade civil começa com o nascimento com vida, embora o ordenamento jurídico estenda alguns direitos protetivos ao feto, como nos casos de alimentos gravídicos.",
+      "pontosChave": [
+        "A questão sete abordou o direito baseado no que é justo por natureza, sendo identificado por Profº Cleiton Barbirato como jusnaturalismo ou direito natural.",
+        "A questão oito tratou da personalidade jurídica no direito brasileiro, onde Profº Cleiton Barbirato apontou que a teoria adotada é a natalista, determinando que a personalidade civil começa com o nascimento com vida, embora o ordenamento jurídico estenda alguns direitos protetivos ao feto, como nos casos de alimentos gravídicos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:24:12",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Introdução à matéria da segunda avaliação e trâmite de tratados internacionais",
+      "resumoCurto": "Profº Cleiton Barbirato introduziu o conteúdo da segunda avaliação (AV2) e revisou o processo de incorporação de tratados internacionais de direitos humanos no ordenamento jurídico brasileiro.",
+      "detalhamento": "Profº Cleiton Barbirato introduziu o conteúdo da segunda avaliação (AV2) e revisou o processo de incorporação de tratados internacionais de direitos humanos no ordenamento jurídico brasileiro. Alcimar Luiz da Silva participou indicando a necessidade de aprovação parlamentar. Profº Cleiton Barbirato explicou que o presidente da República negocia e assina o tratado externamente, mas o texto deve passar pelo Congresso Nacional com o mesmo rito de uma Proposta de Emenda Constitucional (PEC) para adquirir validade interna.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato introduziu o conteúdo da segunda avaliação (AV2) e revisou o processo de incorporação de tratados internacionais de direitos humanos no ordenamento jurídico brasileiro.",
+        "Alcimar Luiz da Silva participou indicando a necessidade de aprovação parlamentar.",
+        "Profº Cleiton Barbirato explicou que o presidente da República negocia e assina o tratado externamente, mas o texto deve passar pelo Congresso Nacional com o mesmo rito de uma Proposta de Emenda Constitucional (PEC) para adquirir validade interna."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:31:43",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Constituição da República Federativa do Brasil e a prevalência dos direitos humanos",
+      "resumoCurto": "Foi abordada a Constituição da República Federativa do Brasil (CRFB/88), especificamente o artigo quarto, que estabelece a prevalência dos direitos humanos como princípio norteador das relações internacionais do país.",
+      "detalhamento": "Foi abordada a Constituição da República Federativa do Brasil (CRFB/88), especificamente o artigo quarto, que estabelece a prevalência dos direitos humanos como princípio norteador das relações internacionais do país. Profº Cleiton Barbirato destacou que o Estado e o Congresso Nacional não podem assumir compromissos internacionais ou legislar violando os direitos humanos. O inciso dez do artigo quarto obriga o Estado a conceder asilo político cumpridos os requisitos, além de prever princípios fundamentais como independência nacional, autodeterminação dos povos, não intervenção, igualdade entre os Estados, defesa da paz e repúdio ao terrorismo e ao racismo.",
+      "pontosChave": [
+        "Foi abordada a Constituição da República Federativa do Brasil (CRFB/88), especificamente o artigo quarto, que estabelece a prevalência dos direitos humanos como princípio norteador das relações internacionais do país.",
+        "Profº Cleiton Barbirato destacou que o Estado e o Congresso Nacional não podem assumir compromissos internacionais ou legislar violando os direitos humanos.",
+        "O inciso dez do artigo quarto obriga o Estado a conceder asilo político cumpridos os requisitos, além de prever princípios fundamentais como independência nacional, autodeterminação dos povos, não intervenção, igualdade entre os Estados, defesa da paz e repúdio ao terrorismo e ao racismo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:34:39",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Convenção Americana de Direitos Humanos e o contexto da ditadura militar",
+      "resumoCurto": "Profº Cleiton Barbirato apresentou a Convenção Americana de Direitos Humanos, conhecida como Pacto de São José da Costa Rica, assinada em 1969, mas ratificada pelo Brasil apenas em 25 de setembro de 1992.",
+      "detalhamento": "Profº Cleiton Barbirato apresentou a Convenção Americana de Direitos Humanos, conhecida como Pacto de São José da Costa Rica, assinada em 1969, mas ratificada pelo Brasil apenas em 25 de setembro de 1992. João Alexandre Souza Lemos e Paulo Lima pontuaram que o atraso na ratificação ocorreu devido ao período da ditadura militar brasileira (1964-1985), caracterizada por graves violações estatais, sendo superada com a redemocratização e a promulgação da Constituição de 1988.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato apresentou a Convenção Americana de Direitos Humanos, conhecida como Pacto de São José da Costa Rica, assinada em 1969, mas ratificada pelo Brasil apenas em 25 de setembro de 1992.",
+        "João Alexandre Souza Lemos e Paulo Lima pontuaram que o atraso na ratificação ocorreu devido ao período da ditadura militar brasileira (1964-1985), caracterizada por graves violações estatais, sendo superada com a redemocratização e a promulgação da Constituição de 1988."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:43:41",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O movimento Diretas Já e a natureza do Poder Judiciário",
+      "resumoCurto": "A aula abordou o movimento Diretas Já de 1984-1985 e a transição para a democracia representativa indireta no Brasil.",
+      "detalhamento": "A aula abordou o movimento Diretas Já de 1984-1985 e a transição para a democracia representativa indireta no Brasil. O debate estendeu-se sobre a escolha de juízes e ministros dos tribunais superiores, contando com comentários de Grazi Guimarães, que defendeu a exigência de concursos públicos para magistrados de primeira instância. Profº Cleiton Barbirato e Grazi Guimarães discutiram as prerrogativas de autoridades judiciais, enquanto a análise sobre o Supremo Tribunal Federal destacou seu papel como ferramenta contramajoritária para proteger minorias, apesar de críticas sobre as indicações políticas realizadas pelo Poder Executivo.",
+      "pontosChave": [
+        "A aula abordou o movimento Diretas Já de 1984-1985 e a transição para a democracia representativa indireta no Brasil.",
+        "O debate estendeu-se sobre a escolha de juízes e ministros dos tribunais superiores, contando com comentários de Grazi Guimarães, que defendeu a exigência de concursos públicos para magistrados de primeira instância.",
+        "Profº Cleiton Barbirato e Grazi Guimarães discutiram as prerrogativas de autoridades judiciais, enquanto a análise sobre o Supremo Tribunal Federal destacou seu papel como ferramenta contramajoritária para proteger minorias, apesar de críticas sobre as indicações políticas realizadas pelo Poder Executivo."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:56:22",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Constituição Cidadã de 1988 e debates sobre interpretação jurídica",
+      "resumoCurto": "Profº Cleiton Barbirato detalhou as características da Constituição de 1988, apelidada de Constituição Cidadã, que ampliou os direitos humanos, garantiu a liberdade de imprensa e de expressão — com limites legais contra fake news, nazismo e racismo — e promoveu o respeito às minorias.",
+      "detalhamento": "Profº Cleiton Barbirato detalhou as características da Constituição de 1988, apelidada de Constituição Cidadã, que ampliou os direitos humanos, garantiu a liberdade de imprensa e de expressão — com limites legais contra fake news, nazismo e racismo — e promoveu o respeito às minorias. Alcimar Luiz da Silva criticou o texto constitucional por possuir cláusulas abertas que geram brechas processuais e insegurança jurídica, comparando-o com a Constituição dos Estados Unidos. Profº Cleiton Barbirato concordou que o excesso de minúcias e a margem ampla de interpretação pelos operadores do direito do Supremo Tribunal Federal dificultam a aplicação prática, embora considere a Constituição um avanço histórico fundamental em comparação ao período ditatorial anterior.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato detalhou as características da Constituição de 1988, apelidada de Constituição Cidadã, que ampliou os direitos humanos, garantiu a liberdade de imprensa e de expressão — com limites legais contra fake news, nazismo e racismo — e promoveu o respeito às minorias.",
+        "Alcimar Luiz da Silva criticou o texto constitucional por possuir cláusulas abertas que geram brechas processuais e insegurança jurídica, comparando-o com a Constituição dos Estados Unidos.",
+        "Profº Cleiton Barbirato concordou que o excesso de minúcias e a margem ampla de interpretação pelos operadores do direito do Supremo Tribunal Federal dificultam a aplicação prática, embora considere a Constituição um avanço histórico fundamental em comparação ao período ditatorial anterior."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:00:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "A Carta das Nações Unidas e seus Princípios",
+      "resumoCurto": "Profº Cleiton Barbirato explicou que a Carta das Nações Unidas, assinada em 26 de junho de 1945 em São Francisco, estabeleceu a organização para garantir os direitos humanos internacionalmente e preservar gerações futuras dos conflitos da Primeira e Segunda Guerra Mundial.",
+      "detalhamento": "Profº Cleiton Barbirato explicou que a Carta das Nações Unidas, assinada em 26 de junho de 1945 em São Francisco, estabeleceu a organização para garantir os direitos humanos internacionalmente e preservar gerações futuras dos conflitos da Primeira e Segunda Guerra Mundial. O documento define princípios de dignidade, igualdade entre homens, mulheres e nações, visando incentivar a tolerância e a convivência pacífica entre países com diferentes contextos culturais, religiosos e econômicos.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explicou que a Carta das Nações Unidas, assinada em 26 de junho de 1945 em São Francisco, estabeleceu a organização para garantir os direitos humanos internacionalmente e preservar gerações futuras dos conflitos da Primeira e Segunda Guerra Mundial.",
+        "O documento define princípios de dignidade, igualdade entre homens, mulheres e nações, visando incentivar a tolerância e a convivência pacífica entre países com diferentes contextos culturais, religiosos e econômicos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "01:02:14",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "A Estrutura da ONU e a Assembleia Geral",
+      "resumoCurto": "Profº Cleiton Barbirato detalhou a estrutura da ONU com base no artigo 7 da Carta, destacando a Assembleia Geral, que reúne representantes dos 193 estados-membros.",
+      "detalhamento": "Profº Cleiton Barbirato detalhou a estrutura da ONU com base no artigo 7 da Carta, destacando a Assembleia Geral, que reúne representantes dos 193 estados-membros. Alcimar Luiz da Silva apontou que os participantes da assembleia incluem líderes nacionais como presidentes, primeiros-ministros, monarcas e ministros das relações exteriores. Cada estado-membro possui direito a um voto, mas aqueles que não integram o Conselho de Segurança não possuem direito a voz nem a veto. Adicionalmente, Profº Cleiton Barbirato mencionou a tradição de o Brasil realizar o primeiro discurso na Assembleia Geral, associada a uma condecoração por pioneirismo nos debates de paz pós-guerra ou a um reconhecimento substitutivo por não possuir cadeira fixa no Conselho de Segurança.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato detalhou a estrutura da ONU com base no artigo 7 da Carta, destacando a Assembleia Geral, que reúne representantes dos 193 estados-membros.",
+        "Alcimar Luiz da Silva apontou que os participantes da assembleia incluem líderes nacionais como presidentes, primeiros-ministros, monarcas e ministros das relações exteriores.",
+        "Cada estado-membro possui direito a um voto, mas aqueles que não integram o Conselho de Segurança não possuem direito a voz nem a veto.",
+        "Adicionalmente, Profº Cleiton Barbirato mencionou a tradição de o Brasil realizar o primeiro discurso na Assembleia Geral, associada a uma condecoração por pioneirismo nos debates de paz pós-guerra ou a um reconhecimento substitutivo por não possuir cadeira fixa no Conselho de Segurança."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "01:11:29",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "O Conselho de Segurança da ONU e suas Resoluções",
+      "resumoCurto": "Profº Cleiton Barbirato explicou que o Conselho de Segurança atua como órgão executivo cujas decisões são vinculativas, obrigando todos os estados-membros a cumpri-las, diferentemente das recomendações da Assembleia Geral.",
+      "detalhamento": "Profº Cleiton Barbirato explicou que o Conselho de Segurança atua como órgão executivo cujas decisões são vinculativas, obrigando todos os estados-membros a cumpri-las, diferentemente das recomendações da Assembleia Geral. O conselho é composto por cinco membros permanentes com poder de veto (Estados Unidos, Rússia, China, França e Reino Unido) e dez membros não permanentes eleitos pela Assembleia Geral para mandatos de dois anos com revezamento geográfico. Os dez membros não permanentes atuais incluem Dinamarca, Grécia, Paquistão, Panamá, Somália, Bahrein, Colômbia, Letônia, Libéria e República Democrática do Congo. Profº Cleiton Barbirato destacou que o Brasil já integrou o conselho 11 vezes, com a participação mais recente por volta de 2022.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato explicou que o Conselho de Segurança atua como órgão executivo cujas decisões são vinculativas, obrigando todos os estados-membros a cumpri-las, diferentemente das recomendações da Assembleia Geral.",
+        "O conselho é composto por cinco membros permanentes com poder de veto (Estados Unidos, Rússia, China, França e Reino Unido) e dez membros não permanentes eleitos pela Assembleia Geral para mandatos de dois anos com revezamento geográfico.",
+        "Os dez membros não permanentes atuais incluem Dinamarca, Grécia, Paquistão, Panamá, Somália, Bahrein, Colômbia, Letônia, Libéria e República Democrática do Congo.",
+        "Profº Cleiton Barbirato destacou que o Brasil já integrou o conselho 11 vezes, com a participação mais recente por volta de 2022."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "01:19:21",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Violações de Direitos Humanos durante a Ditadura no Brasil",
+      "resumoCurto": "João Alexandre Souza Lemos questionou sobre a ocorrência de violações ativas de direitos humanos no período da ditadura brasileira.",
+      "detalhamento": "João Alexandre Souza Lemos questionou sobre a ocorrência de violações ativas de direitos humanos no período da ditadura brasileira. Profº Cleiton Barbirato confirmou que houve incontáveis violações durante os mais de 20 anos de regime ditatorial, período em que o Estado operava de maneira legal para violar direitos sem oferecer defesas ou devido processo legal, em contraste com as garantias processuais vigentes.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos questionou sobre a ocorrência de violações ativas de direitos humanos no período da ditadura brasileira.",
+        "Profº Cleiton Barbirato confirmou que houve incontáveis violações durante os mais de 20 anos de regime ditatorial, período em que o Estado operava de maneira legal para violar direitos sem oferecer defesas ou devido processo legal, em contraste com as garantias processuais vigentes."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:17:55",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Pobreza Extrema e Corrupção como Violação Ativa de Direitos Humanos",
+      "resumoCurto": "João Alexandre Souza Lemos relatou experiências pessoais de extrema pobreza observadas há décadas em um lixão em São Gonçalo e há dois anos em Brejo do Cruz, questionando se essas condições configuram violações passivas de direitos humanos.",
+      "detalhamento": "João Alexandre Souza Lemos relatou experiências pessoais de extrema pobreza observadas há décadas em um lixão em São Gonçalo e há dois anos em Brejo do Cruz, questionando se essas condições configuram violações passivas de direitos humanos. Profº Cleiton Barbirato argumentou que se trata de uma violação ativa decorrente da corrupção governamental, que desvia recursos públicos essenciais para moradia digna e saúde pública, citando a escassez de respiradores em unidades de terapia intensiva durante a pandemia. Profº Cleiton Barbirato criticou o argumento da reserva do possível utilizado por governantes para evitar responsabilização e defendeu punições mais rigorosas para crimes de corrupção a fim de garantir uma atuação estatal eficaz na proteção de populações vulneráveis.",
+      "pontosChave": [
+        "João Alexandre Souza Lemos relatou experiências pessoais de extrema pobreza observadas há décadas em um lixão em São Gonçalo e há dois anos em Brejo do Cruz, questionando se essas condições configuram violações passivas de direitos humanos.",
+        "Profº Cleiton Barbirato argumentou que se trata de uma violação ativa decorrente da corrupção governamental, que desvia recursos públicos essenciais para moradia digna e saúde pública, citando a escassez de respiradores em unidades de terapia intensiva durante a pandemia.",
+        "Profº Cleiton Barbirato criticou o argumento da reserva do possível utilizado por governantes para evitar responsabilização e defendeu punições mais rigorosas para crimes de corrupção a fim de garantir uma atuação estatal eficaz na proteção de populações vulneráveis."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:22:47",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Vulnerabilidade Social e Escândalos de Corrupção em Consórcios Regionais",
+      "resumoCurto": "Alcimar Luiz da Silva apontou situações graves de vulnerabilidade no Nordeste, onde jovens em extrema pobreza recorriam à gravidez precoce para obter benefícios e pensões.",
+      "detalhamento": "Alcimar Luiz da Silva apontou situações graves de vulnerabilidade no Nordeste, onde jovens em extrema pobreza recorriam à gravidez precoce para obter benefícios e pensões. Além disso, Alcimar Luiz da Silva mencionou o desvio de 8 milhões de reais destinados a respiradores no Consórcio Nordeste, sob a gestão de governadores como Wellington Dias e Rui Costa, apontando impunidade e barreiras políticas nas investigações. Profº Cleiton Barbirato encerrou a sessão lamentando o impacto dessas situações nas populações de baixa renda e reforçando a necessidade de responsabilidade no processo de votação eleitoral.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva apontou situações graves de vulnerabilidade no Nordeste, onde jovens em extrema pobreza recorriam à gravidez precoce para obter benefícios e pensões.",
+        "Além disso, Alcimar Luiz da Silva mencionou o desvio de 8 milhões de reais destinados a respiradores no Consórcio Nordeste, sob a gestão de governadores como Wellington Dias e Rui Costa, apontando impunidade e barreiras políticas nas investigações.",
+        "Profº Cleiton Barbirato encerrou a sessão lamentando o impacto dessas situações nas populações de baixa renda e reforçando a necessidade de responsabilidade no processo de votação eleitoral."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Correção da questão 1 sobre o Estado como personalidade fictícia",
+      "relato": "A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais. Rosiane Lima (Rosi) e Profº Cleiton Barbirato identificaram que a resposta correta é o Estado, definido como uma pessoa jurídica de direito público que detém o monopólio da punição, além dos poderes legislativo, judiciário e executivo.",
+      "timestamp": "00:04:45"
+    },
+    {
+      "titulo": "Correção da questão 3 sobre os direitos humanos à luz da Bíblia",
+      "relato": "A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo. Profº Cleiton Barbirato esclareceu que, à luz da Bíblia, os direitos são necessários em razão da queda humana e de suas consequências, que geraram os problemas sociais, e não devido a uma bondade inerente ao ser humano.",
+      "timestamp": "00:08:40"
+    },
+    {
+      "titulo": "O movimento Diretas Já e a natureza do Poder Judiciário",
+      "relato": "A aula abordou o movimento Diretas Já de 1984-1985 e a transição para a democracia representativa indireta no Brasil. O debate estendeu-se sobre a escolha de juízes e ministros dos tribunais superiores, contando com comentários de Grazi Guimarães, que defendeu a exigência de concursos públicos para magistrados de primeira instância. Profº Cleiton Barbirato e Grazi Guimarães discutiram as prerrogativas de autoridades judiciais, enquanto a análise sobre o Supremo Tribunal Federal destacou seu papel como ferramenta contramajoritária para proteger minorias, apesar de críticas sobre as indicações políticas realizadas pelo Poder Executivo.",
+      "timestamp": "00:43:41"
+    },
+    {
+      "titulo": "A Constituição Cidadã de 1988 e debates sobre interpretação jurídica",
+      "relato": "Profº Cleiton Barbirato detalhou as características da Constituição de 1988, apelidada de Constituição Cidadã, que ampliou os direitos humanos, garantiu a liberdade de imprensa e de expressão — com limites legais contra fake news, nazismo e racismo — e promoveu o respeito às minorias. Alcimar Luiz da Silva criticou o texto constitucional por possuir cláusulas abertas que geram brechas processuais e insegurança jurídica, comparando-o com a Constituição dos Estados Unidos. Profº Cleiton Barbirato concordou que o excesso de minúcias e a margem ampla de interpretação pelos operadores do direito do Supremo Tribunal Federal dificultam a aplicação prática, embora considere a Constituição um avanço histórico fundamental em comparação ao período ditatorial anterior.",
+      "timestamp": "00:56:22"
+    },
+    {
+      "titulo": "A Estrutura da ONU e a Assembleia Geral",
+      "relato": "Profº Cleiton Barbirato detalhou a estrutura da ONU com base no artigo 7 da Carta, destacando a Assembleia Geral, que reúne representantes dos 193 estados-membros. Alcimar Luiz da Silva apontou que os participantes da assembleia incluem líderes nacionais como presidentes, primeiros-ministros, monarcas e ministros das relações exteriores. Cada estado-membro possui direito a um voto, mas aqueles que não integram o Conselho de Segurança não possuem direito a voz nem a veto. Adicionalmente, Profº Cleiton Barbirato mencionou a tradição de o Brasil realizar o primeiro discurso na Assembleia Geral, associada a uma condecoração por pioneirismo nos debates de paz pós-guerra ou a um reconhecimento substitutivo por não possuir cadeira fixa no Conselho de Segurança.",
+      "timestamp": "01:02:14"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Gênesis 1:26-27",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Miqueias 6:8",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Deuteronômio 10:18-19",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Incorporação de Tratados Internacionais (Art. 5º, § 3º da CF/88)",
+      "detalhe": "Tratados sobre direitos humanos aprovados em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos, equivalem a Emendas Constitucionais no ápice da Pirâmide de Kelsen."
+    },
+    {
+      "titulo": "Artigo 5º da Constituição Federal de 1988",
+      "detalhe": "Garante a brasileiros e estrangeiros residentes a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade (Cláusula Pétrea imutável por emenda)."
+    },
+    {
+      "titulo": "Dimensão Vertical vs. Horizontal",
+      "detalhe": "Vertical: o indivíduo buscando proteção contra os arbítrios e o poder punitivo do Estado (jus puniendi). Horizontal: aplicação dos direitos fundamentais nas relações entre particulares e instituições privadas."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Oração inicial e abertura da aula\" nesta aula?",
+      "dicaResposta": "A aula iniciou-se com uma oração conduzida por celso oliveira, pedindo orientação e sabedoria para o aprendizado da matéria. Logo em seguida, Profº Cleiton Barbirato iniciou a correção da prova da primeira avaliação, destacando o bom desempenho geral da turma e parabenizando quem assistiu às aulas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Correção da questão 1 sobre o Estado como personalidade fictícia\" nesta aula?",
+      "dicaResposta": "A discussão da questão número um abordou a concepção de Thomas Hobbes de que o ser humano é naturalmente egoísta, exigindo a criação de uma personalidade fictícia para regular as relações sociais. Rosiane Lima (Rosi) e Profº Cleiton Barbirato identificaram que a resposta correta é o Estado, definido como uma pessoa jurídica de direito público que detém o monopólio da punição, além dos poderes legislativo, judiciário e executivo."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Correção da questão 2 sobre os pilares fundamentais dos direitos humanos\" nesta aula?",
+      "dicaResposta": "A questão dois tratou dos três pilares fundamentais dos direitos humanos, apontados por Rosiane Lima (Rosi) e confirmados por Profº Cleiton Barbirato como universalidade, indivisibilidade e inalienabilidade. Foi explicado que universalidade garante os direitos a todas as pessoas, indivisibilidade impede o fracionamento dos direitos, e inalienabilidade proíbe que o próprio indivíduo abra mão de direitos essenciais como a vida e a liberdade."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Correção da questão 3 sobre os direitos humanos à luz da Bíblia\" nesta aula?",
+      "dicaResposta": "A questão três debateu a justificativa para os direitos humanos sob a perspectiva bíblica, diferenciando-a de teorias filosóficas como as de Jean-Jacques Rousseau ou do arminianismo. Profº Cleiton Barbirato esclareceu que, à luz da Bíblia, os direitos são necessários em razão da queda humana e de suas consequências, que geraram os problemas sociais, e não devido a uma bondade inerente ao ser humano."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Correção da questão 4 sobre os direitos humanos de primeira geração e a limitação do Estado\" nesta aula?",
+      "dicaResposta": "A questão quatro focou nos direitos humanos de primeira geração, cujo objetivo principal é garantir a liberdade humana frente à disparidade de forças com o Estado. Profº Cleiton Barbirato explicou que esses direitos impõem obrigações negativas ao Estado, limitando a atuação estatal para impedir abusos de poder, fazendo um paralelo com períodos totalitários históricos como a ditadura militar e a vigência do Ato Institucional Número 5 (A5)."
+    }
+  ],
+  "encaminhamentos": [
+    "Solicitar revisão de prova: Contatar o professor no privado para solicitar a anulação da questão com erro de digitação caso tenha sido prejudicado na nota da prova.",
+    "Solicitar Constituição impressa: Acessar o portal do Senado Federal e realizar o pedido para receber um exemplar gratuito da Constituição da República Federativa do Brasil em casa."
+  ]
+}

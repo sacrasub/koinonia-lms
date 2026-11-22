@@ -1,0 +1,382 @@
+{
+  "id": "disc-4-aula-13",
+  "disciplinaId": "disc-4",
+  "disciplinaName": "04 - Direitos Humanos - Cleiton Barbirato",
+  "disciplinaShortName": "Direitos Humanos",
+  "disciplinaCode": "DIR-101",
+  "professor": "Profº Cleiton Barbirato",
+  "aulaNum": 13,
+  "unidade": 2,
+  "dateIso": "2026-11-11",
+  "dateBr": "11/11/2026",
+  "theme": "Aula 13 • Organizacao e Conteudo da V2",
+  "geminiUrl": "https://docs.google.com/document/d/1mMxMeEvCuWSJTr2H3D_uD2nBQokcFedsPZ7CeJlqmvI/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "Integridade física e psíquica; vedação absoluta à tortura; direitos da personalidade (honra objetiva/subjetiva, imagem e privacidade) e laicidade estatal.",
+    "sinteseGeral": "Avaliação V2 cobriu direitos constitucionais com discussões sobre integridade física, vacinação e laicidade estatal. Organizacao e Conteudo da V2 A segunda avaliacao consistira em uma prova objetiva de 10 questoes de multipla escolha sobre o conteudo posterior a primeira avaliacao. Nao havera trabalho academico complementar para compor a nota. Integridade Fisica e Consentimento O debate abordou a intangibilidade do corpo humano, regulando excecoes para procedimentos medicos invasivos e campanhas de vacinacao obrigatoria. A recusa de transfusao de sangue foi analisada sob a otica da liberdade religiosa. Estado Laico e Privacidade A aula debateu a neutralidade do estado laico frente as instrucoes religiosas e delimitou a protecao juridica da intimidade. A discussao concluiu sobre a necessidade de rigor etico na preservacao de sigilos.",
+    "mapaRapido": [
+      "Organização e Formato da Avaliação V2: A pessoa docente Profº Cleiton Barbirato explicou que a segunda avaliação (V2) consistirá em uma prova objetiva composta por 10 questões de múltipla escolha, valendo um ponto cada, com obtenção de nota de forma instantânea após o preenchimento do formulário.",
+      "Conteúdo Programático da V2: O escopo da matéria cobrada na V2 abrangerá estritamente o conteúdo iniciado após a primeira avaliação (V1), embora conceitos fundamentais anteriores possam ser acionados para a resolução das questões.",
+      "Dever de Inclusão e Acolhimento Infantil na Igreja: A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas.",
+      "Inclusão de Pessoas no Espectro Autista: A pessoa discente Rosiane Lima (Rosi) e a pessoa docente Profº Cleiton Barbirato discutiram os desafios de acessibilidade para pessoas no espectro autista, abordando a sensibilidade a estímulos auditivos e visuais intensos, como som alto e luzes intermitentes nos ambientes de culto.",
+      "Direito à Integridade Física e Psíquica: A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais.",
+      "Proteção contra Assédio e Abuso de Poder: A exposição abordou a aplicação da integridade física e psíquica nas relações trabalhistas contra o assédio moral e sexual, bem como a proibição de opressões emocionais e econômicas no âmbito familiar e conjugal."
+    ],
+    "duracaoEstimada": "~1h12min",
+    "totalBlocos": 20
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "fase": "Abertura & Contexto",
+      "categoria": "Ensino Central",
+      "titulo": "Organização e Formato da Avaliação V2",
+      "resumoCurto": "A pessoa docente Profº Cleiton Barbirato explicou que a segunda avaliação (V2) consistirá em uma prova objetiva composta por 10 questões de múltipla escolha, valendo um ponto cada, com obtenção de nota de forma instantânea após o preenchimento do formulário.",
+      "detalhamento": "A pessoa docente Profº Cleiton Barbirato explicou que a segunda avaliação (V2) consistirá em uma prova objetiva composta por 10 questões de múltipla escolha, valendo um ponto cada, com obtenção de nota de forma instantânea após o preenchimento do formulário. Não haverá trabalho acadêmico complementar para compor a nota desta avaliação.",
+      "pontosChave": [
+        "A pessoa docente Profº Cleiton Barbirato explicou que a segunda avaliação (V2) consistirá em uma prova objetiva composta por 10 questões de múltipla escolha, valendo um ponto cada, com obtenção de nota de forma instantânea após o preenchimento do formulário.",
+        "Não haverá trabalho acadêmico complementar para compor a nota desta avaliação."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Conteúdo Programático da V2",
+      "resumoCurto": "O escopo da matéria cobrada na V2 abrangerá estritamente o conteúdo iniciado após a primeira avaliação (V1), embora conceitos fundamentais anteriores possam ser acionados para a resolução das questões.",
+      "detalhamento": "O escopo da matéria cobrada na V2 abrangerá estritamente o conteúdo iniciado após a primeira avaliação (V1), embora conceitos fundamentais anteriores possam ser acionados para a resolução das questões.",
+      "pontosChave": [
+        "O escopo da matéria cobrada na V2 abrangerá estritamente o conteúdo iniciado após a primeira avaliação (V1), embora conceitos fundamentais anteriores possam ser acionados para a resolução das questões."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 3,
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Dever de Inclusão e Acolhimento Infantil na Igreja",
+      "resumoCurto": "A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas.",
+      "detalhamento": "A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas.",
+      "pontosChave": [
+        "A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 4,
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Inclusão de Pessoas no Espectro Autista",
+      "resumoCurto": "A pessoa discente Rosiane Lima (Rosi) e a pessoa docente Profº Cleiton Barbirato discutiram os desafios de acessibilidade para pessoas no espectro autista, abordando a sensibilidade a estímulos auditivos e visuais intensos, como som alto e luzes intermitentes nos ambientes de culto.",
+      "detalhamento": "A pessoa discente Rosiane Lima (Rosi) e a pessoa docente Profº Cleiton Barbirato discutiram os desafios de acessibilidade para pessoas no espectro autista, abordando a sensibilidade a estímulos auditivos e visuais intensos, como som alto e luzes intermitentes nos ambientes de culto.",
+      "pontosChave": [
+        "A pessoa discente Rosiane Lima (Rosi) e a pessoa docente Profº Cleiton Barbirato discutiram os desafios de acessibilidade para pessoas no espectro autista, abordando a sensibilidade a estímulos auditivos e visuais intensos, como som alto e luzes intermitentes nos ambientes de culto."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:06:11",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Direito à Integridade Física e Psíquica",
+      "resumoCurto": "A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais.",
+      "detalhamento": "A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais.",
+      "pontosChave": [
+        "A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:07:43",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Aplicação Pastoral",
+      "titulo": "Proteção contra Assédio e Abuso de Poder",
+      "resumoCurto": "A exposição abordou a aplicação da integridade física e psíquica nas relações trabalhistas contra o assédio moral e sexual, bem como a proibição de opressões emocionais e econômicas no âmbito familiar e conjugal.",
+      "detalhamento": "A exposição abordou a aplicação da integridade física e psíquica nas relações trabalhistas contra o assédio moral e sexual, bem como a proibição de opressões emocionais e econômicas no âmbito familiar e conjugal.",
+      "pontosChave": [
+        "A exposição abordou a aplicação da integridade física e psíquica nas relações trabalhistas contra o assédio moral e sexual, bem como a proibição de opressões emocionais e econômicas no âmbito familiar e conjugal."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:13:12",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Limites da Força Policial e Uso de Algemas",
+      "resumoCurto": "A pessoa docente Profº Cleiton Barbirato pontuou que o corpo humano é intangível, analisando as exceções legais para a atuação policial em casos de extrema necessidade e a jurisprudência relativa aos danos morais decorrentes do uso indevido de algemas.",
+      "detalhamento": "A pessoa docente Profº Cleiton Barbirato pontuou que o corpo humano é intangível, analisando as exceções legais para a atuação policial em casos de extrema necessidade e a jurisprudência relativa aos danos morais decorrentes do uso indevido de algemas.",
+      "pontosChave": [
+        "A pessoa docente Profº Cleiton Barbirato pontuou que o corpo humano é intangível, analisando as exceções legais para a atuação policial em casos de extrema necessidade e a jurisprudência relativa aos danos morais decorrentes do uso indevido de algemas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "00:17:05",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Integridade de Prisioneiros e Previdência Diferenciada",
+      "resumoCurto": "O debate abordou o dever estatal de respeitar a integridade de pessoas detidas sob custódia e a previsão legal de regimes previdenciários diferenciados, como o de professores, para preservar a integridade física e moral.",
+      "detalhamento": "O debate abordou o dever estatal de respeitar a integridade de pessoas detidas sob custódia e a previsão legal de regimes previdenciários diferenciados, como o de professores, para preservar a integridade física e moral.",
+      "pontosChave": [
+        "O debate abordou o dever estatal de respeitar a integridade de pessoas detidas sob custódia e a previsão legal de regimes previdenciários diferenciados, como o de professores, para preservar a integridade física e moral."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "00:20:04",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Condutas Invasivas e Consentimento do Paciente",
+      "resumoCurto": "A matéria tratou da regra geral de que a integridade corporal é intangível, exigindo anuência prévia e voluntária da pessoa titular para a realização de procedimentos médicos invasivos.",
+      "detalhamento": "A matéria tratou da regra geral de que a integridade corporal é intangível, exigindo anuência prévia e voluntária da pessoa titular para a realização de procedimentos médicos invasivos.",
+      "pontosChave": [
+        "A matéria tratou da regra geral de que a integridade corporal é intangível, exigindo anuência prévia e voluntária da pessoa titular para a realização de procedimentos médicos invasivos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "00:21:21",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Campanhas de Vacinação e Saúde Coletiva",
+      "resumoCurto": "A pessoa docente Profº Cleiton Barbirato analisou a mitigação da proibição de condutas invasivas em campanhas de vacinação, ponderando a imunização obrigatória com base na proteção da coletividade e no risco de retorno de doenças erradicadas.",
+      "detalhamento": "A pessoa docente Profº Cleiton Barbirato analisou a mitigação da proibição de condutas invasivas em campanhas de vacinação, ponderando a imunização obrigatória com base na proteção da coletividade e no risco de retorno de doenças erradicadas.",
+      "pontosChave": [
+        "A pessoa docente Profº Cleiton Barbirato analisou a mitigação da proibição de condutas invasivas em campanhas de vacinação, ponderando a imunização obrigatória com base na proteção da coletividade e no risco de retorno de doenças erradicadas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "00:28:56",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Recusa de Transfusão de Sangue por Testemunhas de Jeová",
+      "resumoCurto": "A turma examinou os temas 952 e 1069 do Supremo Tribunal Federal (STF) sobre o direito de pessoas adultas e capazes recusarem transfusões de sangue com base na liberdade religiosa e em documentação formal inequívoca.",
+      "detalhamento": "A turma examinou os temas 952 e 1069 do Supremo Tribunal Federal (STF) sobre o direito de pessoas adultas e capazes recusarem transfusões de sangue com base na liberdade religiosa e em documentação formal inequívoca.",
+      "pontosChave": [
+        "A turma examinou os temas 952 e 1069 do Supremo Tribunal Federal (STF) sobre o direito de pessoas adultas e capazes recusarem transfusões de sangue com base na liberdade religiosa e em documentação formal inequívoca."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "00:31:18",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Atuação Médica em Situações de Urgência e Incapacidade",
+      "resumoCurto": "Daniel Rodrigues relatou casos vivenciados em ambiente hospitalar, enquanto a pessoa docente Profº Cleiton Barbirato esclareceu que, na ausência de documento escrito ou em casos de menores e incapazes, os procedimentos de urgência devem ser realizados independentemente de convicções religiosas familiares.",
+      "detalhamento": "Daniel Rodrigues relatou casos vivenciados em ambiente hospitalar, enquanto a pessoa docente Profº Cleiton Barbirato esclareceu que, na ausência de documento escrito ou em casos de menores e incapazes, os procedimentos de urgência devem ser realizados independentemente de convicções religiosas familiares.",
+      "pontosChave": [
+        "Daniel Rodrigues relatou casos vivenciados em ambiente hospitalar, enquanto a pessoa docente Profº Cleiton Barbirato esclareceu que, na ausência de documento escrito ou em casos de menores e incapazes, os procedimentos de urgência devem ser realizados independentemente de convicções religiosas familiares."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "00:43:15",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Ordem de Não Reanimar (ONR)",
+      "resumoCurto": "A discussão abordou a regulamentação legal de 2016 sobre a Declaração de Ordem de Não Reanimar, permitindo que indivíduos formalizem por escrito ou escritura pública o direito de recusar manobras invasivas de ressuscitação cardiorrespiratória.",
+      "detalhamento": "A discussão abordou a regulamentação legal de 2016 sobre a Declaração de Ordem de Não Reanimar, permitindo que indivíduos formalizem por escrito ou escritura pública o direito de recusar manobras invasivas de ressuscitação cardiorrespiratória.",
+      "pontosChave": [
+        "A discussão abordou a regulamentação legal de 2016 sobre a Declaração de Ordem de Não Reanimar, permitindo que indivíduos formalizem por escrito ou escritura pública o direito de recusar manobras invasivas de ressuscitação cardiorrespiratória."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "00:46:06",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Histórico e Definição Jurídica de Tortura",
+      "resumoCurto": "A exposição resgatou a vedação à tortura desde a Constituição Imperial de 1824, o impacto histórico do Ato Institucional Número Cinco (AI-5) no governo de Artur da Costa Silva, e a interpretação jurisprudencial do ministro Celso de Mello no Supremo Tribunal Federal sobre as dimensões física, moral e psíquica da tortura.",
+      "detalhamento": "A exposição resgatou a vedação à tortura desde a Constituição Imperial de 1824, o impacto histórico do Ato Institucional Número Cinco (AI-5) no governo de Artur da Costa Silva, e a interpretação jurisprudencial do ministro Celso de Mello no Supremo Tribunal Federal sobre as dimensões física, moral e psíquica da tortura.",
+      "pontosChave": [
+        "A exposição resgatou a vedação à tortura desde a Constituição Imperial de 1824, o impacto histórico do Ato Institucional Número Cinco (AI-5) no governo de Artur da Costa Silva, e a interpretação jurisprudencial do ministro Celso de Mello no Supremo Tribunal Federal sobre as dimensões física, moral e psíquica da tortura."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 15,
+      "timestamp": "00:50:25",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Liberdade de Crença e Religião",
+      "resumoCurto": "A aula concluiu com a análise da liberdade de crença e religião como direito fundamental de autodeterminação, ressaltando que a prática de ritos religiosos possui limites legais para evitar a violação de outros direitos fundamentais.",
+      "detalhamento": "A aula concluiu com a análise da liberdade de crença e religião como direito fundamental de autodeterminação, ressaltando que a prática de ritos religiosos possui limites legais para evitar a violação de outros direitos fundamentais.",
+      "pontosChave": [
+        "A aula concluiu com a análise da liberdade de crença e religião como direito fundamental de autodeterminação, ressaltando que a prática de ritos religiosos possui limites legais para evitar a violação de outros direitos fundamentais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 16,
+      "timestamp": "00:54:15",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Conceito de Estado Laico e Liberdade Religiosa",
+      "resumoCurto": "Profº Cleiton Barbirato abordou a liberdade religiosa e definiu o estado laico como uma instituição neutra, sem religião oficial.",
+      "detalhamento": "Profº Cleiton Barbirato abordou a liberdade religiosa e definiu o estado laico como uma instituição neutra, sem religião oficial. A discussão destacou críticas ao monitoramento de 7.000 igrejas cristãs durante o segundo turno das eleições sem investigações equivalentes sobre universidades federais. Alcimar Luiz da Silva apontou preocupações com decisões recentes, como a classificação pelo Ministério da Justiça de desenhos bíblicos para maiores de 12 anos e deliberações do Supremo Tribunal Federal sobre aulas de gênero nas escolas. O consenso estabelecido foi de que o Brasil é formalmente um estado laico que não deve interferir nas escolhas religiosas dos cidadãos.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato abordou a liberdade religiosa e definiu o estado laico como uma instituição neutra, sem religião oficial.",
+        "A discussão destacou críticas ao monitoramento de 7.000 igrejas cristãs durante o segundo turno das eleições sem investigações equivalentes sobre universidades federais.",
+        "Alcimar Luiz da Silva apontou preocupações com decisões recentes, como a classificação pelo Ministério da Justiça de desenhos bíblicos para maiores de 12 anos e deliberações do Supremo Tribunal Federal sobre aulas de gênero nas escolas.",
+        "O consenso estabelecido foi de que o Brasil é formalmente um estado laico que não deve interferir nas escolhas religiosas dos cidadãos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 17,
+      "timestamp": "00:58:02",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Ensino Religioso nas Escolas Públicas",
+      "resumoCurto": "Alcimar Luiz da Silva relatou o problema de escolas públicas supostamente ensinando rituais de religiões afro-descendentes a crianças.",
+      "detalhamento": "Alcimar Luiz da Silva relatou o problema de escolas públicas supostamente ensinando rituais de religiões afro-descendentes a crianças. Profº Cleiton Barbirato e Rosiane Lima (Rosi) compartilharam memórias de terem tido aulas de ensino religioso com foco no catolicismo durante a infância. A conclusão consensual foi de que o estado laico não deve fomentar religiões ou ensinar rituais em sala de aula, sendo permitido apenas apresentar de forma imparcial a existência de diferentes orientações religiosas.",
+      "pontosChave": [
+        "Alcimar Luiz da Silva relatou o problema de escolas públicas supostamente ensinando rituais de religiões afro-descendentes a crianças.",
+        "Profº Cleiton Barbirato e Rosiane Lima (Rosi) compartilharam memórias de terem tido aulas de ensino religioso com foco no catolicismo durante a infância.",
+        "A conclusão consensual foi de que o estado laico não deve fomentar religiões ou ensinar rituais em sala de aula, sendo permitido apenas apresentar de forma imparcial a existência de diferentes orientações religiosas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 18,
+      "timestamp": "01:03:05",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direito à Privacidade e Exceções Investigativas",
+      "resumoCurto": "Profº Cleiton Barbirato definiu o direito à privacidade como a proteção da vida particular contra a publicidade e a chantagem sem consentimento do titular.",
+      "detalhamento": "Profº Cleiton Barbirato definiu o direito à privacidade como a proteção da vida particular contra a publicidade e a chantagem sem consentimento do titular. Foram discutidas exceções legais em investigações, permitindo a quebra de sigilo telefônico e bancário mediante autorização judicial dentro de limites estritos. Profº Cleiton Barbirato criticou a divulgação ilegal e inconstitucional de informações sigilosas durante as eleições de 2018 e 2022, afetando campanhas de Bolsonaro e Lula. Adicionalmente, destacou-se o dever ético de ministros religiosos de manterem sigilo absoluto sobre os relatos íntimos ouvidos em gabores pastorais.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato definiu o direito à privacidade como a proteção da vida particular contra a publicidade e a chantagem sem consentimento do titular.",
+        "Foram discutidas exceções legais em investigações, permitindo a quebra de sigilo telefônico e bancário mediante autorização judicial dentro de limites estritos.",
+        "Profº Cleiton Barbirato criticou a divulgação ilegal e inconstitucional de informações sigilosas durante as eleições de 2018 e 2022, afetando campanhas de Bolsonaro e Lula.",
+        "Adicionalmente, destacou-se o dever ético de ministros religiosos de manterem sigilo absoluto sobre os relatos íntimos ouvidos em gabores pastorais."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 19,
+      "timestamp": "01:10:48",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Direitos de Intimidade, Honra e Imagem",
+      "resumoCurto": "Profº Cleiton Barbirato diferenciou a privacidade (vida privada em geral e relações de trabalho) da intimidade (relações subjetivas com familiares e amigos, citando o conceito do Supremo Tribunal Federal através de Alexandre de Moraes).",
+      "detalhamento": "Profº Cleiton Barbirato diferenciou a privacidade (vida privada em geral e relações de trabalho) da intimidade (relações subjetivas com familiares e amigos, citando o conceito do Supremo Tribunal Federal através de Alexandre de Moraes). O direito à honra foi apresentado como a salvaguarda da reputação objetiva e da dignidade subjetiva contra calúnias. O direito à imagem protege contra o uso não autorizado de fotografias, vídeos, perfis falsos, ferramentas de inteligência artificial e logomarcas corporativas sem consentimento. Todos esses direitos foram fundamentados no princípio constitucional da dignidade da pessoa humana previsto no artigo 5º.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato diferenciou a privacidade (vida privada em geral e relações de trabalho) da intimidade (relações subjetivas com familiares e amigos, citando o conceito do Supremo Tribunal Federal através de Alexandre de Moraes).",
+        "O direito à honra foi apresentado como a salvaguarda da reputação objetiva e da dignidade subjetiva contra calúnias.",
+        "O direito à imagem protege contra o uso não autorizado de fotografias, vídeos, perfis falsos, ferramentas de inteligência artificial e logomarcas corporativas sem consentimento.",
+        "Todos esses direitos foram fundamentados no princípio constitucional da dignidade da pessoa humana previsto no artigo 5º."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 20,
+      "timestamp": "01:12:25",
+      "fase": "Síntese & Aplicação",
+      "categoria": "Ensino Central",
+      "titulo": "Encerramento e Orientações para a Proval",
+      "resumoCurto": "Profº Cleiton Barbirato encerrou a aula e forneceu orientações logísticas para a avaliação agendada para daqui a 15 dias.",
+      "detalhamento": "Profº Cleiton Barbirato encerrou a aula e forneceu orientações logísticas para a avaliação agendada para daqui a 15 dias. O conteúdo da prova baseia-se em um material com 52 slides, consistindo em 10 questões valendo 10 pontos cada, sem trabalhos adicionais para a nota da segunda avaliação. Daniel Rodrigues fez observações bem-humoradas sobre a disciplina de teologia em comparação ao direito, ao que Profº Cleiton Barbirato respondeu brincando sobre utilizar questões do exame da Ordem dos Advogados do Brasil, finalizando com despedidas entre Profº Cleiton Barbirato, Daniel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva.",
+      "pontosChave": [
+        "Profº Cleiton Barbirato encerrou a aula e forneceu orientações logísticas para a avaliação agendada para daqui a 15 dias.",
+        "O conteúdo da prova baseia-se em um material com 52 slides, consistindo em 10 questões valendo 10 pontos cada, sem trabalhos adicionais para a nota da segunda avaliação.",
+        "Daniel Rodrigues fez observações bem-humoradas sobre a disciplina de teologia em comparação ao direito, ao que Profº Cleiton Barbirato respondeu brincando sobre utilizar questões do exame da Ordem dos Advogados do Brasil, finalizando com despedidas entre Profº Cleiton Barbirato, Daniel Rodrigues, Rosiane Lima (Rosi) e Alcimar Luiz da Silva."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Dever de Inclusão e Acolhimento Infantil na Igreja",
+      "relato": "A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas."
+    },
+    {
+      "titulo": "Direito à Integridade Física e Psíquica",
+      "relato": "A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais.",
+      "timestamp": "00:06:11"
+    },
+    {
+      "titulo": "Integridade de Prisioneiros e Previdência Diferenciada",
+      "relato": "O debate abordou o dever estatal de respeitar a integridade de pessoas detidas sob custódia e a previsão legal de regimes previdenciários diferenciados, como o de professores, para preservar a integridade física e moral.",
+      "timestamp": "00:17:05"
+    },
+    {
+      "titulo": "Ordem de Não Reanimar (ONR)",
+      "relato": "A discussão abordou a regulamentação legal de 2016 sobre a Declaração de Ordem de Não Reanimar, permitindo que indivíduos formalizem por escrito ou escritura pública o direito de recusar manobras invasivas de ressuscitação cardiorrespiratória.",
+      "timestamp": "00:43:15"
+    },
+    {
+      "titulo": "Conceito de Estado Laico e Liberdade Religiosa",
+      "relato": "Profº Cleiton Barbirato abordou a liberdade religiosa e definiu o estado laico como uma instituição neutra, sem religião oficial. A discussão destacou críticas ao monitoramento de 7.000 igrejas cristãs durante o segundo turno das eleições sem investigações equivalentes sobre universidades federais. Alcimar Luiz da Silva apontou preocupações com decisões recentes, como a classificação pelo Ministério da Justiça de desenhos bíblicos para maiores de 12 anos e deliberações do Supremo Tribunal Federal sobre aulas de gênero nas escolas. O consenso estabelecido foi de que o Brasil é formalmente um estado laico que não deve interferir nas escolhas religiosas dos cidadãos.",
+      "timestamp": "00:54:15"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "Gênesis 1:26-27",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Miqueias 6:8",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    },
+    {
+      "referencia": "Deuteronômio 10:18-19",
+      "contexto": "Base bíblica trabalhada na disciplina Direitos Humanos."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Incorporação de Tratados Internacionais (Art. 5º, § 3º da CF/88)",
+      "detalhe": "Tratados sobre direitos humanos aprovados em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos, equivalem a Emendas Constitucionais no ápice da Pirâmide de Kelsen."
+    },
+    {
+      "titulo": "Dimensão Vertical vs. Horizontal",
+      "detalhe": "Vertical: o indivíduo buscando proteção contra os arbítrios e o poder punitivo do Estado (jus puniendi). Horizontal: aplicação dos direitos fundamentais nas relações entre particulares e instituições privadas."
+    },
+    {
+      "titulo": "Direito à Honra, Imagem e Privacidade",
+      "detalhe": "Direitos da personalidade invioláveis; a honra subjetiva relaciona-se à autoestima íntima, enquanto a honra objetiva refere-se à reputação social perante a comunidade."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Organização e Formato da Avaliação V2\" nesta aula?",
+      "dicaResposta": "A pessoa docente Profº Cleiton Barbirato explicou que a segunda avaliação (V2) consistirá em uma prova objetiva composta por 10 questões de múltipla escolha, valendo um ponto cada, com obtenção de nota de forma instantânea após o preenchimento do formulário. Não haverá trabalho acadêmico complementar para compor a nota desta avaliação."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Conteúdo Programático da V2\" nesta aula?",
+      "dicaResposta": "O escopo da matéria cobrada na V2 abrangerá estritamente o conteúdo iniciado após a primeira avaliação (V1), embora conceitos fundamentais anteriores possam ser acionados para a resolução das questões."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Dever de Inclusão e Acolhimento Infantil na Igreja\" nesta aula?",
+      "dicaResposta": "A turma debateu o dever de inclusão institucional, destacando estratégias de acolhimento e integração didática de crianças nos cultos religiosos, ponderando diferentes realidades e tamanhos de comunidades eclesiásticas."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Inclusão de Pessoas no Espectro Autista\" nesta aula?",
+      "dicaResposta": "A pessoa discente Rosiane Lima (Rosi) e a pessoa docente Profº Cleiton Barbirato discutiram os desafios de acessibilidade para pessoas no espectro autista, abordando a sensibilidade a estímulos auditivos e visuais intensos, como som alto e luzes intermitentes nos ambientes de culto."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Direito à Integridade Física e Psíquica\" nesta aula?",
+      "dicaResposta": "A aula introduziu o estudo do artigo 5º, inciso 3º da Constituição Federal, que proíbe a tortura e tratamentos desumanos ou degradantes, com intervenções das pessoas participantes Rosiane Lima (Rosi) e João sobre desdobramentos socioeconômicos e emocionais."
+    }
+  ],
+  "encaminhamentos": [
+    "Realizar Avaliação: Realizar a segunda prova da disciplina focada na matéria iniciada após a primeira avaliação.",
+    "Estudar slides: Revisar o material didático disponibilizado para a preparação da prova.",
+    "Preparar revisão: Conduzir uma sessão de revisão sobre o conteúdo estudado na próxima semana."
+  ]
+}

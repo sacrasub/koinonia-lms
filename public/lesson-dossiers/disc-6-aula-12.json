@@ -1,0 +1,345 @@
+{
+  "id": "disc-6-aula-12",
+  "disciplinaId": "disc-6",
+  "disciplinaName": "06 - Novo Testamento III - Epístolas Gerais - Marcio Leal",
+  "disciplinaShortName": "Novo Testamento III (Epístolas)",
+  "disciplinaCode": "NT-301",
+  "professor": "Profº Marcio Leal",
+  "aulaNum": 12,
+  "unidade": 2,
+  "dateIso": "2026-11-05",
+  "dateBr": "05/11/2026",
+  "theme": "Aula 12 • Introdução e diferenças críticas",
+  "geminiUrl": "https://docs.google.com/document/d/18ykCo3NYtT1JTBkWw0GLBZO9hkawUP6d9VK_S6Y6Mgo/edit",
+  "sourceType": "google-doc",
+  "panorama": {
+    "resumoCurado": "2 Pedro: a defesa da segunda vinda (Parusia); refutação dos escarnecedores e a demonstração de que a demora de Cristo é paciência de Deus visando ao arrependimento (2Pe 3:9).",
+    "sinteseGeral": "Estudo bíblico analisou a literatura joanina com foco na escatologia e combate às heresias atuais via amor cristão prático Introdução e diferenças críticas Estudo detalhou as epístolas joaninas comparando sua escatologia primitiva e visão da morte de Cristo com o Evangelho. Divergências doutrinárias foram explicadas pelos propósitos específicos de cada texto bíblico. Contexto histórico e gnosticismo Análise contextualizou Primeira João como um sermão contra o gnosticismo em Éfeso e a pós-modernidade. O espírito do anticristo foi combatido através da defesa da encarnação real de Jesus. Marcas do cristianismo autêntico Reunião definiu as marcas da verdadeira fé como a obediência aos mandamentos e o perdão prático. Encontro encerrou com oração focada na submissão à palavra e transformação interior.",
+    "mapaRapido": [
+      "Introdução à Literatura Joanina e Classificação das Epístolas: Profº Profº Marcio Leal iniciou a exposição sobre as epístolas gerais, focando nas epístolas joaninas, que compreendem cinco livros do Novo Testamento atribuídos a João (o Evangelho, o Apocalipse e as três epístolas).",
+      "Diferenças Críticas entre os Escritos Joaninos - Escatologia: Críticos apontam quatro diferenças principais entre o Evangelho de João e as epístolas que não teriam explicações simples, sendo a primeira delas a escatologia.",
+      "Diferenças Críticas entre os Escritos Joaninos - Morte de Cristo: A segunda diferença apontada por críticos refere-se à morte de Cristo: enquanto o Evangelho a apresenta como hora de lamento, dor e glorificação, Primeira João omite esses termos e foca na morte de Cristo como propiciação para a purificação da vida (mencionada nos capítulos 1, 2 e 4).",
+      "Diferenças Críticas entre os Escritos Joaninos - O Espírito Santo: A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia.",
+      "Diferenças Críticas entre os Escritos Joaninos - Centralidade de Cristo e o Conceito de Logos: A quarta diferença levantada por estudiosos é que o Evangelho seria cristocêntrico e a epístola teocêntrica.",
+      "Autoria e Propósito das Epístolas Joaninas: As evidências externas e o testemunho dos pais da igreja e de autores patrísticos apontam unanimemente o apóstolo João — o discípulo a quem Jesus amava, filho de Zebedeu e irmão de Tiago — como o autor das epístolas."
+    ],
+    "duracaoEstimada": "~1h28min",
+    "totalBlocos": 14
+  },
+  "linhaDoTempo": [
+    {
+      "ordem": 1,
+      "timestamp": "00:17:32",
+      "fase": "Abertura & Contexto",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Introdução à Literatura Joanina e Classificação das Epístolas",
+      "resumoCurto": "Profº Profº Marcio Leal iniciou a exposição sobre as epístolas gerais, focando nas epístolas joaninas, que compreendem cinco livros do Novo Testamento atribuídos a João (o Evangelho, o Apocalipse e as três epístolas).",
+      "detalhamento": "Profº Profº Marcio Leal iniciou a exposição sobre as epístolas gerais, focando nas epístolas joaninas, que compreendem cinco livros do Novo Testamento atribuídos a João (o Evangelho, o Apocalipse e as três epístolas). Esses escritos contêm três tipos de literatura: histórica (Evangelho), apocalíptica (Apocalipse) e epistolar (cartas). Embora as três epístolas de João sejam classificadas como gerais, existem ressalvas quanto a essa categorização, pois a primeira não possui as características costumeiras de uma correspondência e a segunda e terceira são breves e excessivamente pessoais, voltadas a leitores específicos. As epístolas mantêm forte conexão com o Evangelho de João, tendo o tema central do amor.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal iniciou a exposição sobre as epístolas gerais, focando nas epístolas joaninas, que compreendem cinco livros do Novo Testamento atribuídos a João (o Evangelho, o Apocalipse e as três epístolas).",
+        "Esses escritos contêm três tipos de literatura: histórica (Evangelho), apocalíptica (Apocalipse) e epistolar (cartas).",
+        "Embora as três epístolas de João sejam classificadas como gerais, existem ressalvas quanto a essa categorização, pois a primeira não possui as características costumeiras de uma correspondência e a segunda e terceira são breves e excessivamente pessoais, voltadas a leitores específicos.",
+        "As epístolas mantêm forte conexão com o Evangelho de João, tendo o tema central do amor."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 2,
+      "timestamp": "00:26:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Diferenças Críticas entre os Escritos Joaninos - Escatologia",
+      "resumoCurto": "Críticos apontam quatro diferenças principais entre o Evangelho de João e as epístolas que não teriam explicações simples, sendo a primeira delas a escatologia.",
+      "detalhamento": "Críticos apontam quatro diferenças principais entre o Evangelho de João e as epístolas que não teriam explicações simples, sendo a primeira delas a escatologia. Primeira João apresenta uma escatologia primitiva com a promessa da parusia, aparição visível, dia do juízo e a vida eterna tratada como possessão presente (como indicado em 1 João 5:11-13). Em contraste, o Evangelho apresenta uma escatologia avançada e realizada, onde a vida e o juízo ocorrem espiritualmente através do Espírito Santo e a restauração de todas as coisas é plenificada com a volta de Cristo. Profº Profº Marcio Leal argumenta que essa divergência não serve como argumento conclusivo para separar os autores, podendo ser explicada pelos diferentes propósitos de cada escrito.",
+      "pontosChave": [
+        "Críticos apontam quatro diferenças principais entre o Evangelho de João e as epístolas que não teriam explicações simples, sendo a primeira delas a escatologia.",
+        "Primeira João apresenta uma escatologia primitiva com a promessa da parusia, aparição visível, dia do juízo e a vida eterna tratada como possessão presente (como indicado em 1 João 5:11-13).",
+        "Em contraste, o Evangelho apresenta uma escatologia avançada e realizada, onde a vida e o juízo ocorrem espiritualmente através do Espírito Santo e a restauração de todas as coisas é plenificada com a volta de Cristo.",
+        "Profº Profº Marcio Leal argumenta que essa divergência não serve como argumento conclusivo para separar os autores, podendo ser explicada pelos diferentes propósitos de cada escrito."
+      ],
+      "referenciasNoBloco": [
+        "1 João 5:11-13"
+      ]
+    },
+    {
+      "ordem": 3,
+      "timestamp": "00:30:23",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Diferenças Críticas entre os Escritos Joaninos - Morte de Cristo",
+      "resumoCurto": "A segunda diferença apontada por críticos refere-se à morte de Cristo: enquanto o Evangelho a apresenta como hora de lamento, dor e glorificação, Primeira João omite esses termos e foca na morte de Cristo como propiciação para a purificação da vida (mencionada nos capítulos 1, 2 e 4).",
+      "detalhamento": "A segunda diferença apontada por críticos refere-se à morte de Cristo: enquanto o Evangelho a apresenta como hora de lamento, dor e glorificação, Primeira João omite esses termos e foca na morte de Cristo como propiciação para a purificação da vida (mencionada nos capítulos 1, 2 e 4). Profº Profº Marcio Leal explicou que essa variação ocorre devido aos objetivos distintos dos textos: o Evangelho foi escrito para despertar a fé (conforme João 20:30-31) ao enfatizar o significado da obra para Cristo, enquanto a epístola foi escrita para aprofundar a convicção do crente e relatar os benefícios práticos da salvação para os fiéis (conforme 1 João 5:13).",
+      "pontosChave": [
+        "A segunda diferença apontada por críticos refere-se à morte de Cristo: enquanto o Evangelho a apresenta como hora de lamento, dor e glorificação, Primeira João omite esses termos e foca na morte de Cristo como propiciação para a purificação da vida (mencionada nos capítulos 1, 2 e 4).",
+        "Profº Profº Marcio Leal explicou que essa variação ocorre devido aos objetivos distintos dos textos: o Evangelho foi escrito para despertar a fé (conforme João 20:30-31) ao enfatizar o significado da obra para Cristo, enquanto a epístola foi escrita para aprofundar a convicção do crente e relatar os benefícios práticos da salvação para os fiéis (conforme 1 João 5:13)."
+      ],
+      "referenciasNoBloco": [
+        "João 20:30-31",
+        "1 João 5:13"
+      ]
+    },
+    {
+      "ordem": 4,
+      "timestamp": "00:34:06",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Diferenças Críticas entre os Escritos Joaninos - O Espírito Santo",
+      "resumoCurto": "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia.",
+      "detalhamento": "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia. Profº Profº Marcio Leal ponderou que a leitura do texto não anula a pessoalidade do Espírito Santo, mas a ênfase na carta está no testemunho ortodoxo presente no crente, enquanto o Evangelho guia à toda verdade (João 16:13), o que novamente se alinha ao propósito específico de cada documento.",
+      "pontosChave": [
+        "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia.",
+        "Profº Profº Marcio Leal ponderou que a leitura do texto não anula a pessoalidade do Espírito Santo, mas a ênfase na carta está no testemunho ortodoxo presente no crente, enquanto o Evangelho guia à toda verdade (João 16:13), o que novamente se alinha ao propósito específico de cada documento."
+      ],
+      "referenciasNoBloco": [
+        "João 14:16",
+        "João 16:13"
+      ]
+    },
+    {
+      "ordem": 5,
+      "timestamp": "00:39:44",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Diferenças Críticas entre os Escritos Joaninos - Centralidade de Cristo e o Conceito de Logos",
+      "resumoCurto": "A quarta diferença levantada por estudiosos é que o Evangelho seria cristocêntrico e a epístola teocêntrica.",
+      "detalhamento": "A quarta diferença levantada por estudiosos é que o Evangelho seria cristocêntrico e a epístola teocêntrica. Profº Profº Marcio Leal discordou da ideia de que a epístola seja puramente teocêntrica, citando 1 João 5:13 como um texto de forte caráter cristocêntrico. Além disso, enquanto o Logos no Evangelho é identificado pessoalmente com o Filho (capítulo 1), na epístola o Logos refere-se ao \"logos da vida\", representando o corpo de ensinamentos e verdades que promovem a vida eterna, assim como o Evangelho trata Jesus como a luz verdadeira e a epístola declara que Deus é luz.",
+      "pontosChave": [
+        "A quarta diferença levantada por estudiosos é que o Evangelho seria cristocêntrico e a epístola teocêntrica.",
+        "Profº Profº Marcio Leal discordou da ideia de que a epístola seja puramente teocêntrica, citando 1 João 5:13 como um texto de forte caráter cristocêntrico.",
+        "Além disso, enquanto o Logos no Evangelho é identificado pessoalmente com o Filho (capítulo 1), na epístola o Logos refere-se ao \"logos da vida\", representando o corpo de ensinamentos e verdades que promovem a vida eterna, assim como o Evangelho trata Jesus como a luz verdadeira e a epístola declara que Deus é luz."
+      ],
+      "referenciasNoBloco": [
+        "1 João 5:13"
+      ]
+    },
+    {
+      "ordem": 6,
+      "timestamp": "00:49:29",
+      "fase": "Casos & Debate",
+      "categoria": "Estudo de Caso",
+      "titulo": "Autoria e Propósito das Epístolas Joaninas",
+      "resumoCurto": "As evidências externas e o testemunho dos pais da igreja e de autores patrísticos apontam unanimemente o apóstolo João — o discípulo a quem Jesus amava, filho de Zebedeu e irmão de Tiago — como o autor das epístolas.",
+      "detalhamento": "As evidências externas e o testemunho dos pais da igreja e de autores patrísticos apontam unanimemente o apóstolo João — o discípulo a quem Jesus amava, filho de Zebedeu e irmão de Tiago — como o autor das epístolas. As epístolas foram presumivelmente escritas após o Evangelho, permitindo que o autor partisse de premissas já estabelecidas para focar em outro objetivo: cultivar a convicção daqueles que já haviam sido alcançados pela nova vida em Cristo. Rosiane Lima (Rosi) corroborou essa perspectiva, destacando que o Evangelho foca no alcance do perdido com Cristo em ação, enquanto Primeira João atua no ensino e na exortação dos já alcançados em um contexto distinto. Profº Profº Marcio Leal complementou comparando a repetição de temas com a prática comum de pregadores que enfatizam conceitos centrais sob diferentes perspectivas.",
+      "pontosChave": [
+        "As evidências externas e o testemunho dos pais da igreja e de autores patrísticos apontam unanimemente o apóstolo João — o discípulo a quem Jesus amava, filho de Zebedeu e irmão de Tiago — como o autor das epístolas.",
+        "As epístolas foram presumivelmente escritas após o Evangelho, permitindo que o autor partisse de premissas já estabelecidas para focar em outro objetivo: cultivar a convicção daqueles que já haviam sido alcançados pela nova vida em Cristo.",
+        "Rosiane Lima (Rosi) corroborou essa perspectiva, destacando que o Evangelho foca no alcance do perdido com Cristo em ação, enquanto Primeira João atua no ensino e na exortação dos já alcançados em um contexto distinto.",
+        "Profº Profº Marcio Leal complementou comparando a repetição de temas com a prática comum de pregadores que enfatizam conceitos centrais sob diferentes perspectivas."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 7,
+      "timestamp": "00:55:46",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Exegese Bíblica",
+      "titulo": "Ordem Cronológica e Datação das Epístolas Joaninas",
+      "resumoCurto": "A ordem das epístolas no cânon não reflete necessariamente a cronologia de escrita, sendo difícil determinar a sequência exata de Segunda e Terceira João devido à brevidade dos textos.",
+      "detalhamento": "A ordem das epístolas no cânon não reflete necessariamente a cronologia de escrita, sendo difícil determinar a sequência exata de Segunda e Terceira João devido à brevidade dos textos. Embora existam teorias de que textos mais curtos sejam mais antigos — a exemplo do Evangelho de Marcos —, o consenso entre os melhores teólogos estabelece que Primeira João foi escrita antes de Segunda João, visto que o termo \"anticristo\" tem um uso anterior mais aprofundado em Primeira João. A datação das epístolas é vinculada à do quarto Evangelho, situando-se entre os anos 70 e 90 d.C., com forte tendência para o final da década de 80 ou início de 90 d.C., período corroborado por registros de Policarpo e Inácio.",
+      "pontosChave": [
+        "A ordem das epístolas no cânon não reflete necessariamente a cronologia de escrita, sendo difícil determinar a sequência exata de Segunda e Terceira João devido à brevidade dos textos.",
+        "Embora existam teorias de que textos mais curtos sejam mais antigos — a exemplo do Evangelho de Marcos —, o consenso entre os melhores teólogos estabelece que Primeira João foi escrita antes de Segunda João, visto que o termo \"anticristo\" tem um uso anterior mais aprofundado em Primeira João.",
+        "A datação das epístolas é vinculada à do quarto Evangelho, situando-se entre os anos 70 e 90 d.C., com forte tendência para o final da década de 80 ou início de 90 d.C., período corroborado por registros de Policarpo e Inácio."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 8,
+      "timestamp": "01:03:32",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "Local de Escrita e Características Estruturais de Primeira João",
+      "resumoCurto": "As tradições externas mais antigas, endossadas por figuras como Polícrates de Éfeso e Irineu, associam a literatura joanina à região da Ásia Menor, tendo Éfeso como centro onde João viveu, pastoreou e faleceu.",
+      "detalhamento": "As tradições externas mais antigas, endossadas por figuras como Polícrates de Éfeso e Irineu, associam a literatura joanina à região da Ásia Menor, tendo Éfeso como centro onde João viveu, pastoreou e faleceu. Esse período também coincidiu com a infiltração inicial da heresia gnóstica na Ásia Menor, conforme atestado por outros escritos do Novo Testamento. Estruturalmente, Primeira João diverge de uma epístola tradicional por não conter saudação inicial, identificação do autor, destinatários explícitos ou despedida. Estudiosos sugerem que o texto funciona como um breve sermão ou panfleto escrito em tom íntimo a leitores bem conhecidos pelo autor para tratar de um problema específico e grave na comunidade.",
+      "pontosChave": [
+        "As tradições externas mais antigas, endossadas por figuras como Polícrates de Éfeso e Irineu, associam a literatura joanina à região da Ásia Menor, tendo Éfeso como centro onde João viveu, pastoreou e faleceu.",
+        "Esse período também coincidiu com a infiltração inicial da heresia gnóstica na Ásia Menor, conforme atestado por outros escritos do Novo Testamento.",
+        "Estruturalmente, Primeira João diverge de uma epístola tradicional por não conter saudação inicial, identificação do autor, destinatários explícitos ou despedida.",
+        "Estudiosos sugerem que o texto funciona como um breve sermão ou panfleto escrito em tom íntimo a leitores bem conhecidos pelo autor para tratar de um problema específico e grave na comunidade."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 9,
+      "timestamp": "01:08:11",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Contexto Histórico",
+      "titulo": "Contexto histórico e propósito de Primeira João",
+      "resumoCurto": "Profº Profº Marcio Leal aponta que Primeira João foi escrita rapidamente como um sermão para combater heresias como o gnosticismo na região de Éfeso.",
+      "detalhamento": "Profº Profº Marcio Leal aponta que Primeira João foi escrita rapidamente como um sermão para combater heresias como o gnosticismo na região de Éfeso. O problema central discutido é a infiltração de ensinos heréticos gerados internamente, impulsionados por gerações habituadas à tecnologia e a vozes subjetivas que relativizam verdades antes inquestionáveis. O consenso é que a advertência da carta é altamente relevante para os dias atuais no enfrentamento de desvios doutrinários internos.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal aponta que Primeira João foi escrita rapidamente como um sermão para combater heresias como o gnosticismo na região de Éfeso.",
+        "O problema central discutido é a infiltração de ensinos heréticos gerados internamente, impulsionados por gerações habituadas à tecnologia e a vozes subjetivas que relativizam verdades antes inquestionáveis.",
+        "O consenso é que a advertência da carta é altamente relevante para os dias atuais no enfrentamento de desvios doutrinários internos."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 10,
+      "timestamp": "01:12:58",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Pós-modernidade, sistema límbico e o espírito do anticristo",
+      "resumoCurto": "Profº Profº Marcio Leal argumenta que a geração atual prioriza o sistema límbico, baseando-se em emoções e sentimentos em vez de verdades objetivas e escriturais.",
+      "detalhamento": "Profº Profº Marcio Leal argumenta que a geração atual prioriza o sistema límbico, baseando-se em emoções e sentimentos em vez de verdades objetivas e escriturais. A discussão ressalta que mestres heréticos e líderes que negam que Jesus é o Cristo manifestam o espírito do anticristo, refletindo a pós-modernidade e o fim das metanarrativas em favor de micronarrativas subjetivas. O argumento central aponta que a negação da encarnação, a iniquidade e a falta de amor caracterizam essa mentalidade anticristã.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal argumenta que a geração atual prioriza o sistema límbico, baseando-se em emoções e sentimentos em vez de verdades objetivas e escriturais.",
+        "A discussão ressalta que mestres heréticos e líderes que negam que Jesus é o Cristo manifestam o espírito do anticristo, refletindo a pós-modernidade e o fim das metanarrativas em favor de micronarrativas subjetivas.",
+        "O argumento central aponta que a negação da encarnação, a iniquidade e a falta de amor caracterizam essa mentalidade anticristã."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 11,
+      "timestamp": "01:16:07",
+      "fase": "Desenvolvimento Teológico",
+      "categoria": "Ensino Central",
+      "titulo": "As marcas do cristianismo autêntico e a obediência",
+      "resumoCurto": "Profº Profº Marcio Leal contrapõe o espírito do anticristo apresentando as marcas do cristianismo autêntico: a crença de que Jesus encarnou na carne, a obediência aos mandamentos para combater a iniquidade, e o amor prático.",
+      "detalhamento": "Profº Profº Marcio Leal contrapõe o espírito do anticristo apresentando as marcas do cristianismo autêntico: a crença de que Jesus encarnou na carne, a obediência aos mandamentos para combater a iniquidade, e o amor prático. É argumentado que o desejo humano por controle gera dificuldades na compreensão de temas complexos, como a predestinação, mas a exigência divina é pela obediência estrita aos princípios bíblicos, independentemente de preferências ideológicas ou emocionais. O consenso é que a submissão à palavra deve prevalecer sobre o controle intelectual.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal contrapõe o espírito do anticristo apresentando as marcas do cristianismo autêntico: a crença de que Jesus encarnou na carne, a obediência aos mandamentos para combater a iniquidade, e o amor prático.",
+        "É argumentado que o desejo humano por controle gera dificuldades na compreensão de temas complexos, como a predestinação, mas a exigência divina é pela obediência estrita aos princípios bíblicos, independentemente de preferências ideológicas ou emocionais.",
+        "O consenso é que a submissão à palavra deve prevalecer sobre o controle intelectual."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 12,
+      "timestamp": "01:22:50",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O amor cristão como atitude prática e histórias de perdão",
+      "resumoCurto": "Profº Profº Marcio Leal define o amor bíblico não como um mero sentimento ocidental, mas como uma atitude concreta, ilustrada pelo perdão oferecido por um pai ao assassino de sua filha.",
+      "detalhamento": "Profº Profº Marcio Leal define o amor bíblico não como um mero sentimento ocidental, mas como uma atitude concreta, ilustrada pelo perdão oferecido por um pai ao assassino de sua filha. Rosiane Lima (Rosi) complementa a discussão compartilhando o caso de uma policial nos Estados Unidos que matou um vizinho por engano e recebeu o perdão público do irmão da vítima durante o julgamento. A conclusão conjunta entre Profº Profº Marcio Leal e Rosiane Lima (Rosi) é que o amor cristão exige uma ação de bem ao próximo e perdão, independentemente de merecimento humano, sendo fundamental em tempos de polarização.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal define o amor bíblico não como um mero sentimento ocidental, mas como uma atitude concreta, ilustrada pelo perdão oferecido por um pai ao assassino de sua filha.",
+        "Rosiane Lima (Rosi) complementa a discussão compartilhando o caso de uma policial nos Estados Unidos que matou um vizinho por engano e recebeu o perdão público do irmão da vítima durante o julgamento.",
+        "A conclusão conjunta entre Profº Profº Marcio Leal e Rosiane Lima (Rosi) é que o amor cristão exige uma ação de bem ao próximo e perdão, independentemente de merecimento humano, sendo fundamental em tempos de polarização."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 13,
+      "timestamp": "01:25:15",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "O gnosticismo docético e os critérios da verdadeira fé",
+      "resumoCurto": "Profº Profº Marcio Leal detalha que a heresia combatida na carta era o gnosticismo docético, que ensinava que Jesus não possuía corpo físico real, mas era um fantasma cuja morte na cruz teria recaído sobre Simão Cirineu.",
+      "detalhamento": "Profº Profº Marcio Leal detalha que a heresia combatida na carta era o gnosticismo docético, que ensinava que Jesus não possuía corpo físico real, mas era um fantasma cuja morte na cruz teria recaído sobre Simão Cirineu. A discussão estabelece que a teologia verdadeira reconhece Jesus como o filho de Deus encarnado, unida à ética prática da obediência aos mandamentos e à comunhão expressa pelo amor prático. O propósito central da carta é dar aos leitores convicção de sua relação com Deus e certeza da vida eterna.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal detalha que a heresia combatida na carta era o gnosticismo docético, que ensinava que Jesus não possuía corpo físico real, mas era um fantasma cuja morte na cruz teria recaído sobre Simão Cirineu.",
+        "A discussão estabelece que a teologia verdadeira reconhece Jesus como o filho de Deus encarnado, unida à ética prática da obediência aos mandamentos e à comunhão expressa pelo amor prático.",
+        "O propósito central da carta é dar aos leitores convicção de sua relação com Deus e certeza da vida eterna."
+      ],
+      "referenciasNoBloco": []
+    },
+    {
+      "ordem": 14,
+      "timestamp": "01:28:10",
+      "fase": "Casos & Debate",
+      "categoria": "Debate em Turma",
+      "titulo": "Encerramento e considerações finais",
+      "resumoCurto": "Profº Profº Marcio Leal conclui o encontro reforçando a importância da obediência aos ensinos e da prática de um amor gerado pela ação do Espírito Santo, conduzindo em seguida uma oração final com pedidos de transformação interior e submissão à palavra.",
+      "detalhamento": "Profº Profº Marcio Leal conclui o encontro reforçando a importância da obediência aos ensinos e da prática de um amor gerado pela ação do Espírito Santo, conduzindo em seguida uma oração final com pedidos de transformação interior e submissão à palavra. Participantes como Camila Vieira, jorge silva, Rosiane Lima (Rosi), Daniel Rodrigues, Rodrigo Oliveira e celso oliveira trocam cumprimentos de boa noite para finalizar a reunião.",
+      "pontosChave": [
+        "Profº Profº Marcio Leal conclui o encontro reforçando a importância da obediência aos ensinos e da prática de um amor gerado pela ação do Espírito Santo, conduzindo em seguida uma oração final com pedidos de transformação interior e submissão à palavra.",
+        "Participantes como Camila Vieira, jorge silva, Rosiane Lima (Rosi), Daniel Rodrigues, Rodrigo Oliveira e celso oliveira trocam cumprimentos de boa noite para finalizar a reunião."
+      ],
+      "referenciasNoBloco": []
+    }
+  ],
+  "casosEDebates": [
+    {
+      "titulo": "Diferenças Críticas entre os Escritos Joaninos - O Espírito Santo",
+      "relato": "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia. Profº Profº Marcio Leal ponderou que a leitura do texto não anula a pessoalidade do Espírito Santo, mas a ênfase na carta está no testemunho ortodoxo presente no crente, enquanto o Evangelho guia à toda verdade (João 16:13), o que novamente se alinha ao propósito específico de cada documento.",
+      "timestamp": "00:34:06"
+    },
+    {
+      "titulo": "Autoria e Propósito das Epístolas Joaninas",
+      "relato": "As evidências externas e o testemunho dos pais da igreja e de autores patrísticos apontam unanimemente o apóstolo João — o discípulo a quem Jesus amava, filho de Zebedeu e irmão de Tiago — como o autor das epístolas. As epístolas foram presumivelmente escritas após o Evangelho, permitindo que o autor partisse de premissas já estabelecidas para focar em outro objetivo: cultivar a convicção daqueles que já haviam sido alcançados pela nova vida em Cristo. Rosiane Lima (Rosi) corroborou essa perspectiva, destacando que o Evangelho foca no alcance do perdido com Cristo em ação, enquanto Primeira João atua no ensino e na exortação dos já alcançados em um contexto distinto. Profº Profº Marcio Leal complementou comparando a repetição de temas com a prática comum de pregadores que enfatizam conceitos centrais sob diferentes perspectivas.",
+      "timestamp": "00:49:29"
+    },
+    {
+      "titulo": "Pós-modernidade, sistema límbico e o espírito do anticristo",
+      "relato": "Profº Profº Marcio Leal argumenta que a geração atual prioriza o sistema límbico, baseando-se em emoções e sentimentos em vez de verdades objetivas e escriturais. A discussão ressalta que mestres heréticos e líderes que negam que Jesus é o Cristo manifestam o espírito do anticristo, refletindo a pós-modernidade e o fim das metanarrativas em favor de micronarrativas subjetivas. O argumento central aponta que a negação da encarnação, a iniquidade e a falta de amor caracterizam essa mentalidade anticristã.",
+      "timestamp": "01:12:58"
+    },
+    {
+      "titulo": "O amor cristão como atitude prática e histórias de perdão",
+      "relato": "Profº Profº Marcio Leal define o amor bíblico não como um mero sentimento ocidental, mas como uma atitude concreta, ilustrada pelo perdão oferecido por um pai ao assassino de sua filha. Rosiane Lima (Rosi) complementa a discussão compartilhando o caso de uma policial nos Estados Unidos que matou um vizinho por engano e recebeu o perdão público do irmão da vítima durante o julgamento. A conclusão conjunta entre Profº Profº Marcio Leal e Rosiane Lima (Rosi) é que o amor cristão exige uma ação de bem ao próximo e perdão, independentemente de merecimento humano, sendo fundamental em tempos de polarização.",
+      "timestamp": "01:22:50"
+    },
+    {
+      "titulo": "O gnosticismo docético e os critérios da verdadeira fé",
+      "relato": "Profº Profº Marcio Leal detalha que a heresia combatida na carta era o gnosticismo docético, que ensinava que Jesus não possuía corpo físico real, mas era um fantasma cuja morte na cruz teria recaído sobre Simão Cirineu. A discussão estabelece que a teologia verdadeira reconhece Jesus como o filho de Deus encarnado, unida à ética prática da obediência aos mandamentos e à comunhão expressa pelo amor prático. O propósito central da carta é dar aos leitores convicção de sua relação com Deus e certeza da vida eterna.",
+      "timestamp": "01:25:15"
+    },
+    {
+      "titulo": "Encerramento e considerações finais",
+      "relato": "Profº Profº Marcio Leal conclui o encontro reforçando a importância da obediência aos ensinos e da prática de um amor gerado pela ação do Espírito Santo, conduzindo em seguida uma oração final com pedidos de transformação interior e submissão à palavra. Participantes como Camila Vieira, jorge silva, Rosiane Lima (Rosi), Daniel Rodrigues, Rodrigo Oliveira e celso oliveira trocam cumprimentos de boa noite para finalizar a reunião.",
+      "timestamp": "01:28:10"
+    }
+  ],
+  "referenciasBiblicas": [
+    {
+      "referencia": "1 João 5:11-13",
+      "contexto": "Primeira João apresenta uma escatologia primitiva com a promessa da parusia, aparição visível, dia do juízo e a vida eterna tratada como possessão presente (como indicado em 1 João 5:11-13)."
+    },
+    {
+      "referencia": "João 20:30-31",
+      "contexto": "Profº Profº Marcio Leal explicou que essa variação ocorre devido aos objetivos distintos dos textos: o Evangelho foi escrito para despertar a fé (conforme João 20:30-31) ao enfatizar o significado da obra para Cristo, enquanto a epístola foi escrita para aprofundar a convicção do crente e relatar os benefícios práticos da salvação para os fiéis (conforme 1 João 5:13)."
+    },
+    {
+      "referencia": "1 João 5:13",
+      "contexto": "Profº Profº Marcio Leal explicou que essa variação ocorre devido aos objetivos distintos dos textos: o Evangelho foi escrito para despertar a fé (conforme João 20:30-31) ao enfatizar o significado da obra para Cristo, enquanto a epístola foi escrita para aprofundar a convicção do crente e relatar os benefícios práticos da salvação para os fiéis (conforme 1 João 5:13)."
+    },
+    {
+      "referencia": "João 14:16",
+      "contexto": "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia."
+    },
+    {
+      "referencia": "João 16:13",
+      "contexto": "Profº Profº Marcio Leal ponderou que a leitura do texto não anula a pessoalidade do Espírito Santo, mas a ênfase na carta está no testemunho ortodoxo presente no crente, enquanto o Evangelho guia à toda verdade (João 16:13), o que novamente se alinha ao propósito específico de cada documento."
+    }
+  ],
+  "pontosDeProva": [
+    {
+      "titulo": "Carta de Tiago",
+      "detalhe": "Autoria de Tiago (irmão de Jesus, líder em Jerusalém); datação primitiva (45 a 49 d.C.); sabedoria prática com 54 imperativos; harmonia com Paulo (Paulo combate o legalismo antes da salvação; Tiago combate o antinomismo hipócrita sem frutos)."
+    },
+    {
+      "titulo": "Cartas Joaninas (1, 2 e 3 João)",
+      "detalhe": "Escritas pelo apóstolo João para refutar o docetismo (que negava a encarnação física real de Jesus); apresenta três testes do crente genuíno: doutrina correta, obediência moral e amor fraterno."
+    },
+    {
+      "titulo": "Epístola aos Hebreus",
+      "detalhe": "Estilo homilético (sermão em forma de epístola); autoria humana anônima; anterior a 70 d.C. (sacrifícios em vigor); destinação aos cristãos judeus de Roma (Hb 13:24); supremacia absoluta de Cristo sobre anjos, Moisés, Josué e Arão."
+    }
+  ],
+  "perguntasRevisao": [
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Introdução à Literatura Joanina e Classificação das Epístolas\" nesta aula?",
+      "dicaResposta": "Profº Profº Marcio Leal iniciou a exposição sobre as epístolas gerais, focando nas epístolas joaninas, que compreendem cinco livros do Novo Testamento atribuídos a João (o Evangelho, o Apocalipse e as três epístolas). Esses escritos contêm três tipos de literatura: histórica (Evangelho), apocalíptica (Apocalipse) e epistolar (cartas)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenças Críticas entre os Escritos Joaninos - Escatologia\" nesta aula?",
+      "dicaResposta": "Críticos apontam quatro diferenças principais entre o Evangelho de João e as epístolas que não teriam explicações simples, sendo a primeira delas a escatologia. Primeira João apresenta uma escatologia primitiva com a promessa da parusia, aparição visível, dia do juízo e a vida eterna tratada como possessão presente (como indicado em 1 João 5:11-13)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenças Críticas entre os Escritos Joaninos - Morte de Cristo\" nesta aula?",
+      "dicaResposta": "A segunda diferença apontada por críticos refere-se à morte de Cristo: enquanto o Evangelho a apresenta como hora de lamento, dor e glorificação, Primeira João omite esses termos e foca na morte de Cristo como propiciação para a purificação da vida (mencionada nos capítulos 1, 2 e 4). Profº Profº Marcio Leal explicou que essa variação ocorre devido aos objetivos distintos dos textos: o Evangelho foi escrito para despertar a fé (conforme João 20:30-31) ao enfatizar o significado da obra para Cristo, enquanto a epístola foi escrita para aprofundar a convicção do crente e relatar os benefícios práticos da salvação para os fiéis (conforme 1 João 5:13)."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenças Críticas entre os Escritos Joaninos - O Espírito Santo\" nesta aula?",
+      "dicaResposta": "A terceira diferença diz respeito ao Espírito Santo, cujo termo grego Paracletos é usado no Evangelho como \"outro consolador\" (João 14:16) onde Jesus é o advogado, enquanto em Primeira João (2:1) Jesus é o advogado e o Espírito Santo é visto por alguns teólogos como menos pessoal e mais associado a uma testemunha da ortodoxia. Profº Profº Marcio Leal ponderou que a leitura do texto não anula a pessoalidade do Espírito Santo, mas a ênfase na carta está no testemunho ortodoxo presente no crente, enquanto o Evangelho guia à toda verdade (João 16:13), o que novamente se alinha ao propósito específico de cada documento."
+    },
+    {
+      "pergunta": "O que foi ensinado e concluído sobre \"Diferenças Críticas entre os Escritos Joaninos - Centralidade de Cristo e o Conceito de Logos\" nesta aula?",
+      "dicaResposta": "A quarta diferença levantada por estudiosos é que o Evangelho seria cristocêntrico e a epístola teocêntrica. Profº Profº Marcio Leal discordou da ideia de que a epístola seja puramente teocêntrica, citando 1 João 5:13 como um texto de forte caráter cristocêntrico."
+    }
+  ],
+  "encaminhamentos": [
+    "Estudar Segunda João: Estudar a segunda carta de João durante o próximo encontro."
+  ]
+}
