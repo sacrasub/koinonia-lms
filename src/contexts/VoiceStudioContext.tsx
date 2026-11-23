@@ -13,12 +13,14 @@ import {
   VoiceStudioPlatformDefaults,
   VoiceStudioSettings,
   VoiceStudioVoiceItem,
+  buildAudioDownloadFilename,
   clearUserVoiceOverrides,
   fetchPlatformDefaultsFromCloud,
   getFactoryPlatformDefaults,
   invalidateVoiceStudioHealthProbe,
   loadPlatformDefaultsCache,
   loadUserVoiceOverrides,
+  mergeMp3Blobs,
   normalizeTextForSpeech,
   probeVoiceStudioStatus,
   publishPlatformDefaultsToCloud,
@@ -82,6 +84,13 @@ interface VoiceStudioContextValue {
   prevChunk: () => void;
   cycleSpeed: () => void;
   clearMessages: () => void;
+  isDownloadingAudio: boolean;
+  downloadProgress: { completed: number; total: number } | null;
+  downloadStatusMessage: string | null;
+  lastDownloadedFile: { url: string; filename: string; sizeBytes: number; blob: Blob } | null;
+  downloadCurrentAudio: () => Promise<void>;
+  cancelAudioDownload: () => void;
+  shareDownloadedAudio: () => Promise<void>;
 }
 
 const VoiceStudioContext = createContext<VoiceStudioContextValue | null>(null);
@@ -149,12 +158,24 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [chunks, setChunks] = useState<string[]>([]);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
+  const [isDownloadingAudio, setIsDownloadingAudio] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState<{ completed: number; total: number } | null>(null);
+  const [downloadStatusMessage, setDownloadStatusMessage] = useState<string | null>(null);
+  const [lastDownloadedFile, setLastDownloadedFile] = useState<{
+    url: string;
+    filename: string;
+    sizeBytes: number;
+    blob: Blob;
+  } | null>(null);
 
   const sessionIdRef = useRef(0);
   const abortControllerRef = useRef<AbortController | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioObjectUrlRef = useRef<string | null>(null);
   const prefetchCacheRef = useRef<Map<number, Promise<{ blob: Blob; mimeType: string }>>>(new Map());
+  const generatedBlobsRef = useRef<Map<number, { blob: Blob; mimeType: string }>>(new Map());
+  const downloadAbortRef = useRef<AbortController | null>(null);
+  const lastDownloadUrlRef = useRef<string | null>(null);
   const activeChunksRef = useRef<string[]>([]);
   const platformDefaultsRef = useRef<VoiceStudioPlatformDefaults>(getFactoryPlatformDefaults());
   const userOverridesRef = useRef<Partial<VoiceStudioSettings>>({});
@@ -257,6 +278,24 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
     };
   }, []);
 
+  const cleanupDownloadState = useCallback(() => {
+    if (downloadAbortRef.current) {
+      downloadAbortRef.current.abort();
+      downloadAbortRef.current = null;
+    }
+    generatedBlobsRef.current.clear();
+    if (lastDownloadUrlRef.current) {
+      try {
+        URL.revokeObjectURL(lastDownloadUrlRef.current);
+      } catch {}
+      lastDownloadUrlRef.current = null;
+    }
+    setIsDownloadingAudio(false);
+    setDownloadProgress(null);
+    setDownloadStatusMessage(null);
+    setLastDownloadedFile(null);
+  }, []);
+
   const cleanupPlaybackResources = useCallback(() => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -292,8 +331,9 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
     return () => {
       sessionIdRef.current += 1;
       cleanupPlaybackResources();
+      cleanupDownloadState();
     };
-  }, [cleanupPlaybackResources]);
+  }, [cleanupDownloadState, cleanupPlaybackResources]);
 
   const stop = useCallback(() => {
     sessionIdRef.current += 1;
@@ -432,7 +472,12 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
           effectiveSettings,
           controller.signal,
           timeoutMs
-        );
+        ).then((res) => {
+          if (sessionIdRef.current === sessionId) {
+            generatedBlobsRef.current.set(idx, res);
+          }
+          return res;
+        });
         prefetchCacheRef.current.set(idx, p);
         return p;
       };
@@ -536,6 +581,7 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
       const nextSession = sessionIdRef.current + 1;
       sessionIdRef.current = nextSession;
       cleanupPlaybackResources();
+      cleanupDownloadState();
       abortControllerRef.current = new AbortController();
 
       setCurrentChunkIndex(0);
@@ -781,10 +827,166 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }, [connectionStatus, refreshConnection, syncPlatformDefaults]);
 
   const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
+
+  const triggerBrowserDownload = useCallback((url: string, filename: string) => {
+    if (typeof document === 'undefined') return;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      try {
+        document.body.removeChild(a);
+      } catch {}
+    }, 100);
+  }, []);
+
+  const cancelAudioDownload = useCallback(() => {
+    if (downloadAbortRef.current) {
+      downloadAbortRef.current.abort();
+      downloadAbortRef.current = null;
+    }
+    setIsDownloadingAudio(false);
+    setDownloadProgress(null);
+    setDownloadStatusMessage('Download do MP3 cancelado.');
+  }, []);
+
+  const downloadCurrentAudio = useCallback(async () => {
+    if (isDownloadingAudio) return;
+    const list = [...activeChunksRef.current];
+    if (list.length === 0) return;
+
+    if (lastDownloadedFile) {
+      triggerBrowserDownload(lastDownloadedFile.url, lastDownloadedFile.filename);
+      return;
+    }
+
+    const dlController = new AbortController();
+    downloadAbortRef.current = dlController;
+    setIsDownloadingAudio(true);
+    setDownloadProgress({ completed: 0, total: list.length });
+    setDownloadStatusMessage(null);
+
+    try {
+      const effective = activeSettingsRef.current;
+      const status = await probeVoiceStudioStatus(effective, 1500);
+      if (dlController.signal.aborted) return;
+
+      if (!status.ok) {
+        setDownloadStatusMessage(
+          'Para baixar em MP3, mantenha o VoiceStudio aberto no PC (a voz nativa do navegador não exporta arquivo de áudio).'
+        );
+        return;
+      }
+
+      const mp3Settings: VoiceStudioSettings = {
+        ...effective,
+        responseFormat: 'mp3',
+      };
+      const isAlreadyMp3 = (effective.responseFormat || 'mp3') === 'mp3';
+      const orderedBlobs: Blob[] = [];
+
+      for (let i = 0; i < list.length; i++) {
+        if (dlController.signal.aborted) {
+          return;
+        }
+
+        const cachedChunk = generatedBlobsRef.current.get(i);
+        let chunkBlob: Blob | null = null;
+
+        if (cachedChunk && /mpeg|mp3/i.test(cachedChunk.mimeType)) {
+          chunkBlob = cachedChunk.blob;
+        } else if (isAlreadyMp3 && prefetchCacheRef.current.has(i)) {
+          try {
+            const prefetched = await prefetchCacheRef.current.get(i);
+            if (prefetched && /mpeg|mp3/i.test(prefetched.mimeType)) {
+              generatedBlobsRef.current.set(i, prefetched);
+              chunkBlob = prefetched.blob;
+            }
+          } catch {
+            // regera abaixo com dlController
+          }
+        }
+
+        if (!chunkBlob) {
+          const generated = await synthesizeVoiceStudioChunk(
+            list[i],
+            mp3Settings,
+            dlController.signal,
+            180000
+          );
+          if (dlController.signal.aborted) {
+            return;
+          }
+          if (isAlreadyMp3) {
+            generatedBlobsRef.current.set(i, generated);
+          }
+          chunkBlob = generated.blob;
+        }
+
+        orderedBlobs.push(chunkBlob);
+        setDownloadProgress({ completed: i + 1, total: list.length });
+      }
+
+      if (dlController.signal.aborted) return;
+
+      const mergedBlob = await mergeMp3Blobs(orderedBlobs);
+      const filename = buildAudioDownloadFilename(activeTitle || 'Audio_Koinonia_LMS');
+
+      if (lastDownloadUrlRef.current) {
+        try {
+          URL.revokeObjectURL(lastDownloadUrlRef.current);
+        } catch {}
+      }
+      const url = URL.createObjectURL(mergedBlob);
+      lastDownloadUrlRef.current = url;
+      setLastDownloadedFile({ url, filename, sizeBytes: mergedBlob.size, blob: mergedBlob });
+      triggerBrowserDownload(url, filename);
+
+      const kb = Math.round(mergedBlob.size / 1024);
+      const sizeLabel = kb >= 1024 ? `${(mergedBlob.size / (1024 * 1024)).toFixed(1)} MB` : `${kb} KB`;
+      setDownloadStatusMessage(`MP3 baixado (${sizeLabel})! Pronto para enviar no WhatsApp.`);
+    } catch (err: unknown) {
+      if (dlController.signal.aborted) return;
+      const msg = err instanceof Error ? err.message : 'Não foi possível gerar o MP3 completo.';
+      setDownloadStatusMessage(msg);
+    } finally {
+      if (downloadAbortRef.current === dlController) {
+        downloadAbortRef.current = null;
+      }
+      setIsDownloadingAudio(false);
+      setDownloadProgress(null);
+    }
+  }, [activeTitle, isDownloadingAudio, lastDownloadedFile, triggerBrowserDownload]);
+
+  const shareDownloadedAudio = useCallback(async () => {
+    if (!lastDownloadedFile) return;
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        const file = new File([lastDownloadedFile.blob], lastDownloadedFile.filename, {
+          type: 'audio/mpeg',
+        });
+        if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: activeTitle || 'Áudio Koinonia LMS',
+            files: [file],
+          });
+          return;
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') return;
+      }
+    }
+    triggerBrowserDownload(lastDownloadedFile.url, lastDownloadedFile.filename);
+  }, [activeTitle, lastDownloadedFile, triggerBrowserDownload]);
+
   const clearMessages = useCallback(() => {
     setFallbackNotice(null);
     setErrorMessage(null);
-  }, []);
+    cleanupDownloadState();
+  }, [cleanupDownloadState]);
 
   return (
     <VoiceStudioContext.Provider
@@ -828,6 +1030,13 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
         prevChunk,
         cycleSpeed,
         clearMessages,
+        isDownloadingAudio,
+        downloadProgress,
+        downloadStatusMessage,
+        lastDownloadedFile,
+        downloadCurrentAudio,
+        cancelAudioDownload,
+        shareDownloadedAudio,
       }}
     >
       {children}

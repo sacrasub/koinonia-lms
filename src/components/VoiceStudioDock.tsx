@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   AudioLines,
+  Download,
   Loader2,
   Pause,
   Play,
   Settings,
+  Share2,
   SkipBack,
   SkipForward,
   Square,
@@ -45,6 +47,13 @@ export const VoiceStudioDock: React.FC = () => {
     prevChunk,
     cycleSpeed,
     clearMessages,
+    isDownloadingAudio,
+    downloadProgress,
+    downloadStatusMessage,
+    lastDownloadedFile,
+    downloadCurrentAudio,
+    cancelAudioDownload,
+    shareDownloadedAudio,
   } = useVoiceStudio();
 
   const [selectionPopup, setSelectionPopup] = useState<SelectionPopupState | null>(null);
@@ -126,7 +135,13 @@ export const VoiceStudioDock: React.FC = () => {
     });
   };
 
-  const showMiniPlayer = isLoading || isSpeaking || isPaused || Boolean(errorMessage);
+  const showMiniPlayer =
+    isLoading ||
+    isSpeaking ||
+    isPaused ||
+    Boolean(errorMessage) ||
+    isDownloadingAudio ||
+    Boolean(downloadStatusMessage);
   const currentTextPreview = chunks[currentChunkIndex] || '';
   const totalChunks = chunks.length;
 
@@ -290,6 +305,33 @@ export const VoiceStudioDock: React.FC = () => {
                   >
                     <Square className="w-3.5 h-3.5 fill-current" />
                   </button>
+
+                  {isDownloadingAudio ? (
+                    <button
+                      type="button"
+                      onClick={cancelAudioDownload}
+                      title="Clique para cancelar o download do MP3"
+                      className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg bg-emerald-500/25 hover:bg-rose-500/30 text-emerald-200 hover:text-rose-200 text-[11px] font-bold transition cursor-pointer"
+                    >
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>
+                        {downloadProgress
+                          ? `${downloadProgress.completed}/${downloadProgress.total}`
+                          : 'MP3...'}
+                      </span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => void downloadCurrentAudio()}
+                      disabled={chunks.length === 0}
+                      title="Baixar áudio completo em MP3 (pronto para compartilhar no WhatsApp)"
+                      className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 disabled:opacity-30 text-emerald-200 hover:text-slate-950 text-[11px] font-extrabold transition cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>MP3</span>
+                    </button>
+                  )}
                 </div>
 
                 <button
@@ -301,6 +343,40 @@ export const VoiceStudioDock: React.FC = () => {
                   {settings.speed.toFixed(2).replace(/0$/, '')}x
                 </button>
               </div>
+
+              {downloadStatusMessage && (
+                <div
+                  className={`p-2 rounded-xl text-[11px] flex flex-wrap items-center justify-between gap-2 ${
+                    lastDownloadedFile
+                      ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-200'
+                      : 'bg-amber-950/70 border border-amber-500/40 text-amber-200'
+                  }`}
+                >
+                  <span className="flex-1 min-w-[140px] leading-snug">{downloadStatusMessage}</span>
+                  {lastDownloadedFile && (
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
+                        <button
+                          type="button"
+                          onClick={() => void shareDownloadedAudio()}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-[10px] font-black transition cursor-pointer"
+                        >
+                          <Share2 className="w-3 h-3" />
+                          <span>Compartilhar</span>
+                        </button>
+                      )}
+                      <a
+                        href={lastDownloadedFile.url}
+                        download={lastDownloadedFile.filename}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white text-[10px] font-bold transition"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>Baixar</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>

@@ -946,3 +946,135 @@ export async function synthesizeVoiceStudioChunk(
     cleanup();
   }
 }
+
+export function buildAudioDownloadFilename(title: string): string {
+  let clean = (title || '').trim();
+  // Remove prefixo repetido (ex: "Aula 8: Aula 8 • ...")
+  clean = clean.replace(/^(.{2,40}?):\s*\1\b[\s:•-]*/i, '$1 ');
+  clean = clean
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 64)
+    .replace(/_+$/g, '');
+
+  if (!clean) clean = 'Audio_Koinonia_LMS';
+  if (!/^koinonia/i.test(clean)) {
+    clean = `Koinonia_${clean}`.slice(0, 72);
+  }
+  return `${clean}.mp3`;
+}
+
+function getMpegLayer3FrameLength(bytes: Uint8Array, offset: number): { frameLen: number; sideInfoBytes: number } | null {
+  if (offset + 4 > bytes.length) return null;
+  const b0 = bytes[offset];
+  const b1 = bytes[offset + 1];
+  const b2 = bytes[offset + 2];
+  const b3 = bytes[offset + 3];
+  if (b0 !== 0xff || (b1 & 0xe0) !== 0xe0) return null;
+
+  const versionBits = (b1 >> 3) & 0x03; // 3=MPEG1, 2=MPEG2, 0=MPEG2.5
+  const layerBits = (b1 >> 1) & 0x03;   // 1=Layer III
+  if (versionBits === 1 || layerBits !== 1) return null;
+
+  const bitrateIdx = (b2 >> 4) & 0x0f;
+  const sampleRateIdx = (b2 >> 2) & 0x03;
+  const padding = (b2 >> 1) & 0x01;
+  if (bitrateIdx === 0 || bitrateIdx === 15 || sampleRateIdx === 3) return null;
+
+  const bitrateMpeg1 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0];
+  const bitrateMpeg2 = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0];
+  const srMpeg1 = [44100, 48000, 32000, 0];
+  const srMpeg2 = [22050, 24000, 16000, 0];
+  const srMpeg25 = [11025, 12000, 8000, 0];
+
+  const isMpeg1 = versionBits === 3;
+  const bitrateKbps = isMpeg1 ? bitrateMpeg1[bitrateIdx] : bitrateMpeg2[bitrateIdx];
+  const sampleRate = isMpeg1
+    ? srMpeg1[sampleRateIdx]
+    : versionBits === 2
+    ? srMpeg2[sampleRateIdx]
+    : srMpeg25[sampleRateIdx];
+  if (!bitrateKbps || !sampleRate) return null;
+
+  const coef = isMpeg1 ? 144 : 72;
+  const frameLen = Math.floor((coef * bitrateKbps * 1000) / sampleRate) + padding;
+  const channelMode = (b3 >> 6) & 0x03; // 3=mono
+  const sideInfoBytes = isMpeg1 ? (channelMode === 3 ? 17 : 32) : channelMode === 3 ? 9 : 17;
+  return { frameLen, sideInfoBytes };
+}
+
+function matchAsciiTag(bytes: Uint8Array, offset: number, tag: string): boolean {
+  if (offset < 0 || offset + tag.length > bytes.length) return false;
+  for (let i = 0; i < tag.length; i++) {
+    if (bytes[offset + i] !== tag.charCodeAt(i)) return false;
+  }
+  return true;
+}
+
+export function stripMp3ContainerAndXing(bytes: Uint8Array): Uint8Array {
+  let start = 0;
+  let end = bytes.length;
+
+  // Remove ID3v2 header no início
+  if (end >= 10 && bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) {
+    const flags = bytes[5];
+    const tagSize =
+      ((bytes[6] & 0x7f) << 21) |
+      ((bytes[7] & 0x7f) << 14) |
+      ((bytes[8] & 0x7f) << 7) |
+      (bytes[9] & 0x7f);
+    const id3End = 10 + tagSize + (flags & 0x10 ? 10 : 0);
+    if (id3End < end) {
+      start = id3End;
+    }
+  }
+
+  // Remove ID3v1 (últimos 128 bytes começando com TAG)
+  if (end - start > 128 && matchAsciiTag(bytes, end - 128, 'TAG')) {
+    end -= 128;
+  }
+
+  // Avança para o primeiro syncword MPEG válido
+  while (start + 4 < end && !(bytes[start] === 0xff && (bytes[start + 1] & 0xe0) === 0xe0)) {
+    start++;
+  }
+
+  // Remove frame de metadados Xing / Info / VBRI caso presente no início
+  const firstFrame = getMpegLayer3FrameLength(bytes, start);
+  if (firstFrame && start + firstFrame.frameLen <= end) {
+    const xingOff = start + 4 + firstFrame.sideInfoBytes;
+    const vbriOff = start + 36;
+    if (
+      matchAsciiTag(bytes, xingOff, 'Xing') ||
+      matchAsciiTag(bytes, xingOff, 'Info') ||
+      matchAsciiTag(bytes, vbriOff, 'VBRI')
+    ) {
+      start += firstFrame.frameLen;
+    }
+  }
+
+  return start < end ? bytes.subarray(start, end) : bytes;
+}
+
+export async function mergeMp3Blobs(blobs: Blob[]): Promise<Blob> {
+  if (blobs.length === 0) {
+    throw new Error('Nenhum bloco de áudio disponível para exportação.');
+  }
+  if (blobs.length === 1) {
+    return new Blob([blobs[0]], { type: 'audio/mpeg' });
+  }
+
+  const rawChunks = await Promise.all(
+    blobs.map(async (b) => stripMp3ContainerAndXing(new Uint8Array(await b.arrayBuffer())))
+  );
+  const totalBytes = rawChunks.reduce((sum, arr) => sum + arr.byteLength, 0);
+  const merged = new Uint8Array(totalBytes);
+  let cursor = 0;
+  for (const chunk of rawChunks) {
+    merged.set(chunk, cursor);
+    cursor += chunk.byteLength;
+  }
+  return new Blob([merged], { type: 'audio/mpeg' });
+}
