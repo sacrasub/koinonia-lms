@@ -319,11 +319,19 @@ export const VoiceStudioProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const matched = browserVoices.find((v) => v.voiceURI === effectiveSettings.browserVoiceURI);
         if (matched) return matched;
       }
-      const ptBrNatural = browserVoices.find(
-        (v) =>
-          v.lang.toLowerCase() === 'pt-br' &&
-          /(natural|neural|online|microsoft|google)/i.test(v.name)
-      );
+      const isPtBr = (v: SpeechSynthesisVoice) => v.lang.toLowerCase() === 'pt-br';
+      const isNatural = (v: SpeechSynthesisVoice) =>
+        /(natural|neural|online|microsoft|google)/i.test(v.name);
+      const isMalePtBr = (v: SpeechSynthesisVoice) =>
+        /(antonio|antônio|fabio|fábio|donato|humberto|julio|júlio|nicolau|valerio|valério|daniel|ricardo|felipe|rafael|tiago|thiago|lucas|masculin|male)/i.test(
+          v.name
+        );
+
+      const ptBrNaturalMale = browserVoices.find((v) => isPtBr(v) && isNatural(v) && isMalePtBr(v));
+      if (ptBrNaturalMale) return ptBrNaturalMale;
+      const ptBrAnyMale = browserVoices.find((v) => isPtBr(v) && isMalePtBr(v));
+      if (ptBrAnyMale) return ptBrAnyMale;
+      const ptBrNatural = browserVoices.find((v) => isPtBr(v) && isNatural(v));
       if (ptBrNatural) return ptBrNatural;
       const ptBrAny = browserVoices.find((v) => v.lang.toLowerCase().startsWith('pt-br'));
       if (ptBrAny) return ptBrAny;

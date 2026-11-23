@@ -96,7 +96,7 @@ export const DEFAULT_VOICESTUDIO_SETTINGS: VoiceStudioSettings = {
 
 export const DEFAULT_VOICESTUDIO_MODELS: VoiceStudioModelItem[] = [
   { id: 'tts-1', owned_by: 'Automático → Engine Ativa no VoiceStudio' },
-  { id: 'sherpa-onnx', owned_by: 'Sherpa-ONNX / Piper pt-BR (Ultra-rápido CPU)' },
+  { id: 'sherpa-onnx', owned_by: 'Sherpa-ONNX / Piper pt-BR Miro High (Ultra-rápida & Natural • CPU)' },
   { id: 'omnivoice-gguf', owned_by: 'OmniVoice GGUF (Vulkan AMD/Intel & CPU leve)' },
   { id: 'supertonic3', owned_by: 'Supertonic-3 (ONNX Leve CPU)' },
   { id: 'omnivoice', owned_by: 'VoiceStudio PyTorch (Padrão)' },
