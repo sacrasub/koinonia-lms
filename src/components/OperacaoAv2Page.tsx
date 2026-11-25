@@ -36,6 +36,7 @@ import {
 import { getGeminiAulaRecord, buildCornellDeepLinkUrl } from '@/data/geminiAulasCornell';
 import { ReadAloudButton } from '@/components/ReadAloudButton';
 import { buildLessonDossierUrl } from '@/types/lessonDossier';
+import { subscribeToStudentSync, saveAv2SimuladoAnswers } from '@/services/studentSyncService';
 
 const LINK_BASE_STYLES: Record<
   LinkBaseAv2['tipo'],
@@ -96,6 +97,7 @@ const DIA_FILTERS: { id: DiaAv2Filtro; label: string; count: number }[] = [
 ];
 
 export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onTabChange }) => {
+  const hasRealEmail = Boolean(userEmail && userEmail.trim() !== '');
   const normalizedEmail = (userEmail || 'aluno_padrao').toLowerCase().trim();
   const storageKey = `lms_av2_simulado_v1_${normalizedEmail}`;
 
@@ -107,7 +109,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
   const [copiedWhatsapp, setCopiedWhatsapp] = useState<boolean>(false);
   const [expandedTimelineAulas, setExpandedTimelineAulas] = useState<Record<string, boolean>>({});
 
-  // Carrega progresso do simulado localmente (Zero Egress no Supabase)
+  // Carrega progresso do simulado localmente (0ms) e sincroniza bidirecionalmente com o Supabase
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
@@ -119,7 +121,20 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
         }
       }
     } catch (_) {}
-  }, [storageKey]);
+
+    if (!hasRealEmail) return;
+
+    const unsubscribe = subscribeToStudentSync(normalizedEmail, (data) => {
+      if (data.av2SimuladoAnswers && typeof data.av2SimuladoAnswers === 'object') {
+        const nextAnswers = data.av2SimuladoAnswers;
+        setAnswers((prev) =>
+          JSON.stringify(prev) === JSON.stringify(nextAnswers) ? prev : nextAnswers
+        );
+      }
+    });
+
+    return () => unsubscribe();
+  }, [storageKey, hasRealEmail, normalizedEmail]);
 
   // Pre-seleção direta de disciplina vinda da Home do Aluno ou deep link interno
   useEffect(() => {
@@ -162,12 +177,15 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
     return () => window.removeEventListener('lms_open_av2_disciplina', onOpenDisc);
   }, []);
 
-  const persistAnswers = (next: Record<string, 'A' | 'B' | 'C' | 'D'>) => {
+  const persistAnswers = (next: Record<string, 'A' | 'B' | 'C' | 'D'>, immediate: boolean = false) => {
     setAnswers(next);
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem(storageKey, JSON.stringify(next));
       } catch (_) {}
+    }
+    if (hasRealEmail) {
+      saveAv2SimuladoAnswers(normalizedEmail, next, immediate);
     }
   };
 
@@ -231,7 +249,7 @@ export const OperacaoAv2Page: React.FC<OperacaoAv2PageProps> = ({ userEmail, onT
     activeDisc.simulado.forEach((q) => {
       delete next[q.id];
     });
-    persistAnswers(next);
+    persistAnswers(next, true);
   };
 
   const handleCopyMindmap = () => {

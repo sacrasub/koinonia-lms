@@ -13,7 +13,13 @@ import { GraduationCap, CheckSquare, FolderOpen, Compass, RefreshCw, BookOpen, A
 import { getAuthorizedUserInfo, parseJwtEmailAndUser, syncRbacFromCloud, getRevokedUsersList } from '@/lib/authConfig';
 
 import { supabase, signOut as supabaseSignOut } from '@/lib/supabaseClient';
-import { onSessionRestored, cleanupBulkyLocalStorage } from '@/services/studentSyncService';
+import {
+  onSessionRestored,
+  cleanupBulkyLocalStorage,
+  fetchStudentData,
+  flushAllPendingStudentSync,
+  SYNC_AUTH_REQUIRED_EVENT,
+} from '@/services/studentSyncService';
 import { startUserSession, endCurrentSession, trackEvent } from '@/services/telemetryService';
 
 const DynamicLoadingFallback = () => (
@@ -213,7 +219,11 @@ export default function Home() {
       if (pullDistance > 50) {
         setRefreshing(true);
         if (userEmail) {
-          syncRbacFromCloud(true).then(() => {
+          Promise.allSettled([
+            flushAllPendingStudentSync(userEmail),
+            fetchStudentData(userEmail, true),
+            syncRbacFromCloud(true),
+          ]).then(() => {
             if (typeof window !== 'undefined') {
               window.dispatchEvent(new CustomEvent('lms_student_sync_updated', { detail: { email: userEmail } }));
               window.dispatchEvent(new CustomEvent('lms_rbac_updated'));
@@ -302,6 +312,29 @@ export default function Home() {
         if (!session && typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
           const parsed = parseJwtEmailAndUser(window.location.hash);
           if (parsed && parsed.email) fallbackEmail = parsed.email;
+        }
+
+        // 3.0b Se só houver e-mail salvo localmente (sessão expirada), tenta renovar em background ou avisa para reconectar
+        if (!session && !fallbackEmail && storedEmail) {
+          supabase.auth.refreshSession().then(({ data: refreshed }) => {
+            if (refreshed?.session?.user?.email) {
+              onSessionRestored(refreshed.session.user.email).catch(() => {});
+            } else if (typeof window !== 'undefined') {
+              window.dispatchEvent(
+                new CustomEvent(SYNC_AUTH_REQUIRED_EVENT, {
+                  detail: { email: storedEmail.toLowerCase().trim(), required: true },
+                })
+              );
+            }
+          }).catch(() => {
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(
+                new CustomEvent(SYNC_AUTH_REQUIRED_EVENT, {
+                  detail: { email: storedEmail!.toLowerCase().trim(), required: true },
+                })
+              );
+            }
+          });
         }
 
         const email = session?.user?.email || fallbackEmail || storedEmail;

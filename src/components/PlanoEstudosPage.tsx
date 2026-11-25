@@ -16,6 +16,7 @@ import {
 } from '@/services/planoEstudosService';
 import { getDisciplinasForUser } from '@/services/disciplinasService';
 import { PomodoroTimerWidget } from '@/components/PomodoroTimerWidget';
+import { subscribeToStudentSync, savePlanoEstudosProgress } from '@/services/studentSyncService';
 
 interface PlanoEstudosPageProps {
   userEmail?: string;
@@ -170,6 +171,34 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
     } catch { return new Set(); }
   });
 
+  // Sincroniza checklist de entregáveis e leituras com a nuvem (Supabase)
+  useEffect(() => {
+    if (!normalizedEmail) return;
+    const unsubscribe = subscribeToStudentSync(normalizedEmail, (data) => {
+      if (Array.isArray(data.planoChecklist)) {
+        const nextPlano = data.planoChecklist;
+        setCheckedIds((prev) => {
+          const prevArr = Array.from(prev);
+          if (prevArr.length === nextPlano.length && prevArr.every((v, i) => v === nextPlano[i])) {
+            return prev;
+          }
+          return new Set(nextPlano);
+        });
+      }
+      if (Array.isArray(data.livrosLidos)) {
+        const nextLivros = data.livrosLidos;
+        setBooksReadSet((prev) => {
+          const prevArr = Array.from(prev);
+          if (prevArr.length === nextLivros.length && prevArr.every((v, i) => v === nextLivros[i])) {
+            return prev;
+          }
+          return new Set(nextLivros);
+        });
+      }
+    });
+    return () => unsubscribe();
+  }, [normalizedEmail]);
+
   const toggleBookRead = (bookKey: string) => {
     setBooksReadSet(prev => {
       const next = new Set(prev);
@@ -178,8 +207,12 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
       } else {
         next.add(bookKey);
       }
+      const nextArr = Array.from(next);
       if (typeof window !== 'undefined') {
-        localStorage.setItem(`lms_livros_lidos_${normalizedEmail}`, JSON.stringify(Array.from(next)));
+        localStorage.setItem(`lms_livros_lidos_${normalizedEmail}`, JSON.stringify(nextArr));
+      }
+      if (normalizedEmail) {
+        savePlanoEstudosProgress(normalizedEmail, { livrosLidos: nextArr });
       }
       return next;
     });
@@ -218,7 +251,11 @@ export const PlanoEstudosPage: React.FC<PlanoEstudosPageProps> = ({
     setCheckedIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id); else next.add(id);
-      try { localStorage.setItem(`lms_plano_checklist_${normalizedEmail}`, JSON.stringify([...next])); } catch {}
+      const nextArr = [...next];
+      try { localStorage.setItem(`lms_plano_checklist_${normalizedEmail}`, JSON.stringify(nextArr)); } catch {}
+      if (normalizedEmail) {
+        savePlanoEstudosProgress(normalizedEmail, { planoChecklist: nextArr });
+      }
       return next;
     });
   };

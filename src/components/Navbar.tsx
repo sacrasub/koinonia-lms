@@ -5,11 +5,18 @@ import { UserRole } from '@/types';
 import { 
   BookOpen, UserCheck, ShieldCheck, GraduationCap, LogOut, 
   RefreshCw, Check, Camera, Edit3, HelpCircle, Menu, Bell, Moon, Sun,
-  ChevronRight, ExternalLink, AudioLines
+  ChevronRight, ExternalLink, AudioLines, AlertTriangle
 } from 'lucide-react';
 import { getAuthorizedUserInfo, syncRbacFromCloud } from '@/lib/authConfig';
 import { getTabLabel } from '@/config/navigationConfig';
-import { fetchStudentData, subscribeToStudentSync } from '@/services/studentSyncService';
+import {
+  fetchStudentData,
+  subscribeToStudentSync,
+  flushAllPendingStudentSync,
+  SYNC_AUTH_REQUIRED_EVENT,
+  getSyncAuthRequired,
+} from '@/services/studentSyncService';
+import { signInWithGoogle } from '@/lib/supabaseClient';
 import { fetchGravacoesFromCloud } from '@/services/gravacoesService';
 import { uploadLocalSessionsToCloud } from '@/services/telemetryService';
 import { getUnreadUpdatesCount } from '@/services/systemUpdatesService';
@@ -53,6 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const [syncing, setSyncing] = useState(false);
   const [showSyncSuccess, setShowSyncSuccess] = useState(false);
+  const [syncAuthRequired, setSyncAuthRequired] = useState<boolean>(() => getSyncAuthRequired(normalizedEmail));
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isUpdatesModalOpen, setIsUpdatesModalOpen] = useState(false);
   const [unreadUpdatesCount, setUnreadUpdatesCount] = useState<number>(0);
@@ -138,9 +146,46 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, [normalizedEmail]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setSyncAuthRequired(getSyncAuthRequired(normalizedEmail));
+
+    const handleAuthRequired = (e: Event) => {
+      const detail = (e as CustomEvent<{ email?: string; required?: boolean }>).detail;
+      if (!detail?.email || detail.email === normalizedEmail) {
+        setSyncAuthRequired(Boolean(detail?.required));
+      }
+    };
+    const handleSyncCompleted = (e: Event) => {
+      const detail = (e as CustomEvent<{ success?: boolean; reason?: string }>).detail;
+      if (detail?.success) {
+        setSyncAuthRequired(false);
+      } else if (detail?.reason === 'auth_required') {
+        setSyncAuthRequired(true);
+      }
+    };
+
+    window.addEventListener(SYNC_AUTH_REQUIRED_EVENT, handleAuthRequired);
+    window.addEventListener('lms_sync_completed', handleSyncCompleted);
+    return () => {
+      window.removeEventListener(SYNC_AUTH_REQUIRED_EVENT, handleAuthRequired);
+      window.removeEventListener('lms_sync_completed', handleSyncCompleted);
+    };
+  }, [normalizedEmail]);
+
   const handleManualSync = async () => {
+    if (syncAuthRequired) {
+      try {
+        await signInWithGoogle();
+      } catch (e) {
+        console.error('Erro ao reconectar Google para sincronização:', e);
+      }
+      return;
+    }
+
     try {
       setSyncing(true);
+      await flushAllPendingStudentSync(normalizedEmail);
       await Promise.allSettled([
         fetchStudentData(normalizedEmail, true),
         fetchGravacoesFromCloud(true),
@@ -231,22 +276,37 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="hidden sm:inline">Estágio Supervisionado</span>
           </a>
 
-          {/* Botão de Sincronização em Nuvem (Apenas o símbolo) */}
+          {/* Botão de Sincronização em Nuvem */}
           <button
             data-tour="btn-sincronizar"
             onClick={handleManualSync}
             disabled={syncing}
-            className={`p-2 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 flex items-center justify-center ${
-              syncing
+            className={`px-2 py-2 rounded-xl text-xs font-bold transition-all shadow-xs border cursor-pointer active:scale-95 flex items-center justify-center gap-1.5 ${
+              syncAuthRequired
+                ? 'bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/70 text-amber-800 dark:text-amber-200 border-amber-300 dark:border-amber-700 ring-2 ring-amber-400/40'
+                : syncing
                 ? 'bg-blue-50/90 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 border-blue-300 dark:border-blue-700 ring-2 ring-blue-200 animate-pulse'
                 : showSyncSuccess
                 ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-700 ring-2 ring-emerald-200'
                 : 'bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-slate-700 hover:border-blue-300'
             }`}
-            title={syncing ? 'Sincronizando dados com a nuvem (Supabase)...' : showSyncSuccess ? 'Nuvem Atualizada!' : 'Sincronizar Dados'}
-            aria-label="Sincronizar Dados"
+            title={
+              syncAuthRequired
+                ? 'Sessão Google expirada para gravar na nuvem. Clique para reconectar e enviar seu progresso local.'
+                : syncing
+                ? 'Sincronizando dados com a nuvem (Supabase)...'
+                : showSyncSuccess
+                ? 'Nuvem Atualizada!'
+                : 'Sincronizar Dados'
+            }
+            aria-label={syncAuthRequired ? 'Reconectar nuvem' : 'Sincronizar Dados'}
           >
-            {syncing ? (
+            {syncAuthRequired ? (
+              <>
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span className="hidden sm:inline text-[11px] font-extrabold">Reconectar nuvem</span>
+              </>
+            ) : syncing ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600 dark:text-blue-400 shrink-0" />
             ) : showSyncSuccess ? (
               <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 stroke-[2.5]" />

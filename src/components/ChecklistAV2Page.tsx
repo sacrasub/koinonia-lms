@@ -18,7 +18,7 @@ import {
 } from './CalendarioAcademico';
 import { resolvePassoAcaoHref } from '@/data/avaliacoes2026_2';
 import type { KanbanStatus, PassoAcao } from '@/data/avaliacoes2026_2';
-import { subscribeToStudentSync, saveChecklistTasks } from '@/services/studentSyncService';
+import { subscribeToStudentSync, saveChecklistTasks, isLegacyChecklistTasks, mirrorChecklistTasksToLegacyKeys } from '@/services/studentSyncService';
 
 export type { KanbanTask, KanbanStatus };
 export { defaultSemesterTasks };
@@ -168,11 +168,20 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
     return result;
   };
 
-  // Helper para sincronizar um array de KanbanTask com os checklists do localStorage
-  const syncTasksWithLocalChecklists = (taskList: KanbanTask[]): KanbanTask[] => {
+  // Normaliza avaliações oficiais preservando o estado recebido da nuvem e espelha nas chaves de etapas locais
+  const normalizeOfficialTasksAndMirror = (taskList: KanbanTask[]): KanbanTask[] => {
+    const withOfficials = ensureAllOfficialAssessments(taskList);
+    if (typeof window !== 'undefined') {
+      mirrorChecklistTasksToLegacyKeys(normalizedEmail, withOfficials);
+    }
+    return withOfficials;
+  };
+
+  // Usado apenas quando a nuvem ainda não possui lista moderna com assessmentId (migração inicial)
+  const mergeLegacyLocalChecklistsOnce = (taskList: KanbanTask[]): KanbanTask[] => {
     if (typeof window === 'undefined') return taskList;
     const withOfficials = ensureAllOfficialAssessments(taskList);
-    return withOfficials.map((task) => {
+    const merged = withOfficials.map((task) => {
       const assessmentId = task.assessmentId || (task.id.startsWith('aval-') ? task.id : undefined);
       if (!assessmentId) return task;
       const storageKey = `koinonia_checklist_${normalizedEmail}_${assessmentId}`;
@@ -186,17 +195,12 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
           }));
           const status = resolveTaskStatus(updatedSubtasks, task.status, task.manualStatus);
           return { ...task, assessmentId, subtasks: updatedSubtasks, status, manualStatus: task.manualStatus };
-        } else {
-          // Se não há dados no localStorage, grava o estado atual das subtasks
-          const initialChecks: Record<number, boolean> = {};
-          task.subtasks.forEach((st, idx) => {
-            initialChecks[idx] = st.done;
-          });
-          localStorage.setItem(storageKey, JSON.stringify(initialChecks));
         }
       } catch (_) {}
       return { ...task, assessmentId };
     });
+    mirrorChecklistTasksToLegacyKeys(normalizedEmail, merged);
+    return merged;
   };
 
   const generateWhatsAppAssessmentsText = () => {
@@ -301,22 +305,25 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
   useEffect(() => {
     const unsubscribe = subscribeToStudentSync(normalizedEmail, (data) => {
       if (data.checklistTasks && Array.isArray(data.checklistTasks) && data.checklistTasks.length > 0) {
-        // Verifica se a lista salva na nuvem é legada (sem assessmentId nas avaliações oficiais)
-        const hasAssessmentIds = data.checklistTasks.some((t: any) => !!t.assessmentId);
-        if (!hasAssessmentIds) {
-          // Atualiza para a lista oficial vinculada aos 12 prazos, mantendo tarefas personalizadas do aluno
-          const customTasks = data.checklistTasks.filter((t: any) => !t.id.startsWith('LMS-'));
+        if (isLegacyChecklistTasks(data.checklistTasks)) {
+          // Atualiza para a lista oficial vinculada às avaliações 2026.2, mantendo tarefas personalizadas do aluno
+          const customTasks = data.checklistTasks.filter((t: any) => !String(t.id || '').startsWith('LMS-'));
           const upgraded = [...defaultSemesterTasks, ...customTasks];
-          const synced = syncTasksWithLocalChecklists(upgraded);
+          const synced = mergeLegacyLocalChecklistsOnce(upgraded);
           setTasks(synced);
           saveChecklistTasks(normalizedEmail, synced);
         } else {
-          const synced = syncTasksWithLocalChecklists(data.checklistTasks);
-          setTasks(synced);
+          const normalized = normalizeOfficialTasksAndMirror(data.checklistTasks);
+          setTasks((prev) =>
+            JSON.stringify(prev) === JSON.stringify(normalized) ? prev : normalized
+          );
+          if (normalized.length !== data.checklistTasks.length) {
+            saveChecklistTasks(normalizedEmail, normalized);
+          }
         }
       } else {
         // Se a nuvem não tiver tarefas gravadas para este aluno, inicializa com o padrão oficial e grava na nuvem
-        const synced = syncTasksWithLocalChecklists(defaultSemesterTasks);
+        const synced = mergeLegacyLocalChecklistsOnce(defaultSemesterTasks);
         setTasks(synced);
         saveChecklistTasks(normalizedEmail, synced);
       }
@@ -557,7 +564,7 @@ export const ChecklistAV2Page: React.FC<ChecklistAV2PageProps> = ({ userEmail })
       // Mescla tarefas personalizadas com a lista oficial
       const customTasks = tasks.filter((t) => !defaultSemesterTasks.some((dt) => dt.id === t.id));
       const merged = [...defaultSemesterTasks, ...customTasks];
-      const synced = syncTasksWithLocalChecklists(merged);
+      const synced = normalizeOfficialTasksAndMirror(merged);
       saveTasks(synced);
       showNotification('✓ Lista oficial do semestre 2026.2 sincronizada com a Nuvem e o Calendário!');
     }

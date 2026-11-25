@@ -229,52 +229,62 @@ export const CalendarioAcademico: React.FC<CalendarioAcademicoProps> = ({
     );
   }, [allCalendarEvents, showArchivedAv1]);
 
-  // Carregar checklists do localStorage
+  // Carregar checklists priorizando o Kanban sincronizado na nuvem (lms_checklist_)
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const initialChecklists: Record<string, Record<number, boolean>> = {};
-    const kanbanKey = `lms_checklist_${normalizedEmail}`;
-    const kanbanTasksMap: Record<string, any> = {};
-    try {
-      const rawKanban = localStorage.getItem(kanbanKey);
-      const kTasks = rawKanban ? JSON.parse(rawKanban) : defaultSemesterTasks;
-      kTasks.forEach((t: any) => {
-        if (t.id) kanbanTasksMap[t.id] = t;
-        if (t.assessmentId) kanbanTasksMap[t.assessmentId] = t;
-      });
-    } catch (_) {}
 
-    allCalendarEvents.forEach((ev) => {
-      const storageKey = `koinonia_checklist_${normalizedEmail}_${ev.id}`;
+    const loadChecklists = () => {
+      const initialChecklists: Record<string, Record<number, boolean>> = {};
+      const kanbanKey = `lms_checklist_${normalizedEmail}`;
+      const kanbanTasksMap: Record<string, any> = {};
       try {
-        const raw = localStorage.getItem(storageKey);
-        if (raw) {
-          initialChecklists[ev.id] = JSON.parse(raw);
-        } else {
-          // Inicializa a partir das subtasks do Kanban se existirem
-          const kTask = kanbanTasksMap[ev.id];
+        const rawKanban = localStorage.getItem(kanbanKey);
+        const kTasks = rawKanban ? JSON.parse(rawKanban) : defaultSemesterTasks;
+        kTasks.forEach((t: any) => {
+          if (t.id) kanbanTasksMap[t.id] = t;
+          if (t.assessmentId) kanbanTasksMap[t.assessmentId] = t;
+        });
+      } catch (_) {}
+
+      allCalendarEvents.forEach((ev) => {
+        const storageKey = `koinonia_checklist_${normalizedEmail}_${ev.id}`;
+        const kTask = kanbanTasksMap[ev.id];
+        if (kTask) {
           const checks: Record<number, boolean> = {};
-          if (kTask) {
-            if (kTask.status === 'done') {
-              ev.passoAPasso.forEach((_, idx) => {
-                checks[idx] = true;
-              });
-            } else if (kTask.subtasks && kTask.subtasks.length > 0) {
-              kTask.subtasks.forEach((st: any, idx: number) => {
-                checks[idx] = !!st.done;
-              });
-            }
-            try {
-              localStorage.setItem(storageKey, JSON.stringify(checks));
-            } catch (_) {}
+          if (kTask.status === 'done' || kTask.status === 'archived') {
+            ev.passoAPasso.forEach((_, idx) => {
+              checks[idx] = true;
+            });
+          } else if (Array.isArray(kTask.subtasks) && kTask.subtasks.length > 0) {
+            kTask.subtasks.forEach((st: any, idx: number) => {
+              checks[idx] = !!st.done;
+            });
           }
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(checks));
+          } catch (_) {}
           initialChecklists[ev.id] = checks;
+          return;
         }
-      } catch (_) {
-        initialChecklists[ev.id] = {};
-      }
-    });
-    setChecklistMap(initialChecklists);
+
+        try {
+          const raw = localStorage.getItem(storageKey);
+          initialChecklists[ev.id] = raw ? JSON.parse(raw) : {};
+        } catch (_) {
+          initialChecklists[ev.id] = {};
+        }
+      });
+
+      setChecklistMap(initialChecklists);
+    };
+
+    loadChecklists();
+    window.addEventListener('lms_student_sync_updated', loadChecklists);
+    window.addEventListener('storage', loadChecklists);
+    return () => {
+      window.removeEventListener('lms_student_sync_updated', loadChecklists);
+      window.removeEventListener('storage', loadChecklists);
+    };
   }, [normalizedEmail, allCalendarEvents]);
 
   // Concluir toda a avaliação de uma vez e sincronizar com o Kanban
